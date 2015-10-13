@@ -1,0 +1,33 @@
+<!--
+Copyright 2015 Google Inc. All rights reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+<resources>
+    <string name="app_name">Measurement Quickstart</string>
+    <string name="pattern1_title">A</string>
+    <string name="pattern2_title">B</string>
+    <string name="pattern3_title">C</string>
+    <string name="pattern4_title">D</string>
+    <string name="pattern1_id">id-A</string>
+    <string name="pattern2_id">id-B</string>
+    <string name="pattern3_id">id-C</string>
+    <string name="pattern4_id">id-D</string>
+    <string name="menu_share">Share</string>
+
+    <string name="food_dialog_title">Which food is your favorite?</string>
+    <array name="food_items">
+        <item>Hot Dogs</item>
+        <item>Hamburgers</item>
+        <item>Pizza</item>
+    </array>
+</resources>
