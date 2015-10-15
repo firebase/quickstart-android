@@ -1,0 +1,10 @@
+build
+
+.idea
+.gradle
+
+*.class
+*.properties
+*.iml
+
+google-services.json
