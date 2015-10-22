@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-// apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 23
@@ -26,5 +26,5 @@ dependencies {
     compile 'com.android.support:support-v4:23.0.1'
 
     // TODO(samstern): change this and re-enable plugin before launch
-    compile 'com.google.android.gms:play-services-measurement-app-measurement-second-party:8.4.59'
+    compile 'com.google.android.gms:firebase-measurement:8.4.0'
 }
