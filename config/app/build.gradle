@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 23
@@ -7,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.google.samples.quickstart.config"
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -21,6 +22,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.google.android.gms:play-services-config-second-party:8.2.83'
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.google.android.gms:firebase-config:8.4.0'
 }
