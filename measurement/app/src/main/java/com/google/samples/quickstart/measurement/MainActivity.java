@@ -19,6 +19,7 @@ package com.google.samples.quickstart.measurement;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -82,13 +83,11 @@ public class MainActivity extends AppCompatActivity {
 
         // On first app open, ask the user his/her favorite food. Then set this as a user property
         // on all subsequent opens.
-        if (savedInstanceState != null) {
-            mFavoriteFood = savedInstanceState.getString(KEY_FAVORITE_FOOD, null);
-            if (mFavoriteFood == null) {
-                askFavoriteFood();
-            } else {
-                setUserFavoriteFood(mFavoriteFood);
-            }
+        String userFavoriteFood = getUserFavoriteFood();
+        if (userFavoriteFood == null) {
+            askFavoriteFood();
+        } else {
+            setUserFavoriteFood(userFavoriteFood);
         }
 
 
@@ -109,12 +108,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Send initial screen screen view hit.
         recordImageView();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(KEY_FAVORITE_FOOD, mFavoriteFood);
     }
 
     /**
@@ -138,12 +131,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Set the user's favorite food as an app measurement user property.
+     * Get the user's favorite food from shared preferences.
+     * @return
+     */
+    private String getUserFavoriteFood() {
+        return PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(KEY_FAVORITE_FOOD, null);
+    }
+
+    /**
+     * Set the user's favorite food as an app measurement user property and in shared preferences.
      * @param food the user's favorite food.
      */
     private void setUserFavoriteFood(String food) {
         Log.d(TAG, "setFavoriteFood: " + food);
         mFavoriteFood = food;
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+                .putString(KEY_FAVORITE_FOOD, food)
+                .apply();
 
         // [START user_property]
         mAppMeasurement.setUserProperty("favorite_food", mFavoriteFood);
