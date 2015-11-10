@@ -1,0 +1,31 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        applicationId "com.google.firebase.example.auth"
+        minSdkVersion 15 // Minimum 15 to support Facebook SDK, 9 otherwise
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:design:23.1.0'
+
+    compile 'com.google.android.gms:firebase-auth:8.4.0'
+
+    // Only required if Facebook AuthProvider is enabled
+    compile 'com.facebook.android:facebook-android-sdk:4.7.0'
+}
