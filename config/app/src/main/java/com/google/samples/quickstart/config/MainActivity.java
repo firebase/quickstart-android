@@ -16,19 +16,16 @@
 
 package com.google.samples.quickstart.config;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.config.Config;
 import com.google.android.gms.config.ConfigApi;
-import com.google.android.gms.config.ConfigStatusCodes;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         if (fetchConfigResult.getStatus().isSuccess()) {
                             long price = 100;
                             boolean isPromo =
-                                    fetchConfigResult.getAsBoolean("is-promotion-on", false);
+                                    fetchConfigResult.getAsBoolean("is_promotion_on", false);
                             long discount = fetchConfigResult.getAsLong("discount", 0);
                             if (isPromo) {
                                 price = (price / 100) * (price - discount);
@@ -72,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                             TextView pv = (TextView) findViewById(R.id.priceView);
                             pv.setText(priceMsg);
                             boolean isDevBuild =
-                                    fetchConfigResult.getAsBoolean("dev-features-on", false);
+                                    fetchConfigResult.getAsBoolean("dev_features_on", false);
                             if (isDevBuild) {
                                 String debugMsg = "Config set size: " +
                                         fetchConfigResult.getAllConfigKeys().size();

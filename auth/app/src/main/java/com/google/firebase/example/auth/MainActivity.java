@@ -1,15 +1,5 @@
 package com.google.firebase.example.auth;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-
 import com.google.android.gms.auth.api.signin.EmailSignInOptions;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseError;
@@ -19,6 +9,16 @@ import com.google.firebase.auth.ui.EmailAuthProvider;
 import com.google.firebase.auth.ui.FacebookAuthProvider;
 import com.google.firebase.auth.ui.GoogleAuthProvider;
 import com.google.firebase.auth.ui.SignInUIBuilder;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
