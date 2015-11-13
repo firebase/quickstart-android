@@ -166,10 +166,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_share:
-                // [START custom_event]
-                mAppMeasurement.logEvent(AppMeasurement.Event.SHARE, null);
-                // [END custom_event]
-
                 String name = getCurrentImageTitle();
                 String text = "I'd love you to hear about " + name;
 
@@ -178,6 +174,13 @@ public class MainActivity extends AppCompatActivity {
                 sendIntent.putExtra(Intent.EXTRA_TEXT, text);
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
+
+                // [START custom_event]
+                Bundle params = new Bundle();
+                params.putString("image_name", name);
+                params.putString("full_text", text);
+                mAppMeasurement.logEvent("share_image", params);
+                // [END custom_event]
                 break;
         }
         return false;
