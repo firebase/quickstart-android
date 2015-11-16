@@ -32,10 +32,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // [START initialize_auth]
         // Initialize Firebase
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id));
 
-        // Initialize authentication
+        // Initialize authentication and set up callbacks
         mAuth = FirebaseAuth.getAuth();
         mAuth.addAuthResultCallback(new FirebaseAuth.AuthResultCallbacks() {
             @Override
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 showSignedOutUI();
             }
         });
+        // [END initialize_auth]
 
         // Click listeners
         findViewById(R.id.button_sign_in).setOnClickListener(this);
@@ -71,12 +73,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // [START on_sign_in_clicked]
     private void onSignInClicked() {
         // Support Google, Facebook, and Email/Password sign-in
         GoogleAuthProvider googleAuth = GoogleAuthProvider.getDefaultAuthProvider();
         EmailAuthProvider emailAuth = new EmailAuthProvider(Uri.parse(getString(R.string.server_widget_url)));
         FacebookAuthProvider facebookAuth = new FacebookAuthProvider().addScope("email");
 
+        // Build and launch sign-in Intent
         Intent intent = new SignInUIBuilder(mAuth)
                 .setServerClientId(getString(R.string.server_client_id))
                 .supportSignIn(googleAuth)
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build(this);
         startActivity(intent);
     }
+    // [END on_sign_in_clicked]
 
     private void onSignOutClicked() {
         mAuth.signOut(this);
