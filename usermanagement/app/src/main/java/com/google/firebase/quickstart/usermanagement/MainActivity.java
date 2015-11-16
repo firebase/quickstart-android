@@ -1,14 +1,4 @@
-package com.google.firebase.example.auth;
-
-import com.google.android.gms.auth.api.signin.EmailSignInOptions;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseError;
-import com.google.firebase.FirebaseUser;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.ui.EmailAuthProvider;
-import com.google.firebase.auth.ui.FacebookAuthProvider;
-import com.google.firebase.auth.ui.GoogleAuthProvider;
-import com.google.firebase.auth.ui.SignInUIBuilder;
+package com.google.firebase.quickstart.usermanagement;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseError;
+import com.google.firebase.FirebaseUser;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.ui.EmailAuthProvider;
+import com.google.firebase.auth.ui.FacebookAuthProvider;
+import com.google.firebase.auth.ui.GoogleAuthProvider;
+import com.google.firebase.auth.ui.SignInUIBuilder;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -75,13 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void onSignInClicked() {
         // Support Google, Facebook, and Email/Password sign-in
         GoogleAuthProvider googleAuth = GoogleAuthProvider.getDefaultAuthProvider();
-
-        EmailAuthProvider emailAuth = new EmailAuthProvider(
-                new EmailSignInOptions(Uri.parse(getString(R.string.server_widget_url))));
-
-        // TODO(samstern): this crashes
-        FacebookAuthProvider facebookAuth = new FacebookAuthProvider()
-                .addScope("email");
+        EmailAuthProvider emailAuth = new EmailAuthProvider(Uri.parse(getString(R.string.server_widget_url)));
+        FacebookAuthProvider facebookAuth = new FacebookAuthProvider().addScope("email");
 
         Intent intent = new SignInUIBuilder(mAuth)
                 .setServerClientId(getString(R.string.server_client_id))

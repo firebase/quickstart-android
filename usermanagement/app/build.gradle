@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.google.firebase.example.auth"
+        applicationId "com.google.firebase.quickstart.usermanagement"
         minSdkVersion 15 // Minimum 15 to support Facebook SDK, 9 otherwise
         targetSdkVersion 23
         versionCode 1
