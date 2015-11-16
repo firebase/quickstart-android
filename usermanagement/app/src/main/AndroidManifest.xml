@@ -21,11 +21,13 @@
         </activity>
 
         <!-- Only needed if using Facebook as one of the configured identity providers -->
+        <!-- [START facebook_manifest] -->
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
+        <!-- [END facebook_manifest] -->
 
     </application>
 

@@ -4,7 +4,9 @@
 
     <string name="server_client_id">423467802995-kov0v9v0blv1v09p1jja1sohsedrvlj8.apps.googleusercontent.com</string>
     <string name="server_widget_url">http://www.google.com</string>
+    <!-- [START facebook_app_id] -->
     <string name="facebook_app_id">1658045674469554</string>
+    <!-- [END facebook_app_id] -->
 
     <string name="signed_out">Signed Out</string>
     <string name="signed_in_as" formatted="false">Signed in as: %s\n%s</string>
