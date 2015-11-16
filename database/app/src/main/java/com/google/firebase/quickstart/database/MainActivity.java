@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
 
         mRecycler = (RecyclerView) findViewById(R.id.messages_list);
         mRecycler.setHasFixedSize(true);
-        final LinearLayoutManager mLlm = new LinearLayoutManager(this);
+        mLlm = new LinearLayoutManager(this);
         mLlm.setStackFromEnd(true);
         mRecycler.setLayoutManager(mLlm);
 
@@ -138,9 +138,9 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         firebaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
                 int max = firebaseAdapter.getItemCount();
                 int lastVis = mLlm.findLastCompletelyVisibleItemPosition();
-                super.onItemRangeInserted(positionStart, itemCount);
                 if (positionStart >= (max - 1) && lastVis == (positionStart - 1)) {
                     mRecycler.scrollToPosition(positionStart);
                 }
