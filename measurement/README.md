@@ -1,8 +1,23 @@
-Firebase App Measurement Quickstart
-===========================
+Firebase Analytics Quickstart
+==============================
 
-Google Analytics Android Quickstart app demonstrates collecting app usage information via
-the App Measurement API.
+Introduction
+------------
+
+- [Read more about Firebase Analytics](https://developers.google.com/firebase/)
+
+Getting Started
+---------------
+
+- [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
+- Follow the [quickstart guide](https://developers.google.com/firebase/docs/android/setup) to set up your project.
+- Run the sample on Android devide or emulator.
+
+
+Support
+-------
+
+https://developers.google.com/firebase/support/
 
 License
 -------
@@ -23,3 +38,4 @@ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 License for the specific language governing permissions and limitations under
 the License.
+

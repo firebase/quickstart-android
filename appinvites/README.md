@@ -1,19 +1,19 @@
-Google App Invites Quickstart
+Firebase App Invites Quickstart
 =============================
 
-The Google App Invites Android quickstart demonstrates how to enable your users to share your app with people they know.  AppInviteInvitation is used to send an invitation and AppInviteReferral is used to handle incoming invitations.
+The Firebase App Invites Android quickstart demonstrates how to enable your users to share your app with people they know.
 
 Introduction
 ------------
 
-- [Read more about Google App Invites](https://developers.google.com/app-invites/)
+- [Read more about Firebase App Invites](https://developers.google.com/firebase/)
 
 Getting Started
 ---------------
 
-- Follow the [quickstart guide](https://developers.google.com/app-invites/android/guides/start) to set up your project in Android Studio.
-- Run the sample on your Android device or emulator.
-- The running allows you to send and receive app invites.
+- [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
+- Follow the [quickstart guide](https://developers.google.com/app-invites/android/guides/start) to set up your project.
+- Run the sample on Android device or emulator.
 
 Screenshots
 -----------
@@ -22,11 +22,7 @@ Screenshots
 Support
 -------
 
-If you've found an error in this sample, please file an issue:
-https://github.com/googlesamples/google-services/issues
-
-Patches are encouraged, and may be submitted by forking this project and
-submitting a pull request through GitHub.
+https://developers.google.com/firebase/support/
 
 License
 -------

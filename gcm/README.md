@@ -1,27 +1,21 @@
-Google Cloud Messaging Quickstart
-=================================
+Firebase Notifications Quickstart
+==============================
 
-Google Cloud Messaging Android Quickstart app demonstrates registering
-an Android app for GCM and handling the receipt of a GCM message.
+The Firebase Notifications Android Quickstart app demonstrates registering
+an Android app for Notifications and handling the receipt of a message.
 InstanceID allows easy registration while GcmReceiver and
-GcmListenerService provide simple means of receiving and handling
-messages.
 
 Introduction
 ------------
 
-- [Read more about Google Cloud Messaging](https://developers.google.com/cloud-messaging/)
+- [Read more about Firebase Notifications](https://developers.google.com/firebase/)
 
 Getting Started
 ---------------
 
-- Follow the [quickstart guide](https://developers.google.com/cloud-messaging/)
-  to set up your project in Android Studio.
-- Run the sample on your Android device.
-- Update API_KEY in GcmSender.java, with API key from your project.
-- Run the terminal command to send GCM message to your device.
-- A notification containing the GCM message should be displayed on the
-  device.
+- [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
+- Follow the [quickstart guide](https://developers.google.com/cloud-messaging/) to set up your project.
+- Run the sample on Android devide or emulator.
 
 Screenshots
 -----------
@@ -30,13 +24,7 @@ Screenshots
 Support
 -------
 
-- Stack Overflow: http://stackoverflow.com/questions/tagged/google-cloud-messaging
-
-If you've found an error in this sample, please file an issue:
-https://github.com/googlesamples/google-services/issues
-
-Patches are encouraged, and may be submitted by forking this project and
-submitting a pull request through GitHub.
+https://developers.google.com/firebase/support/
 
 License
 -------
