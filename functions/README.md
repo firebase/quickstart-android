@@ -5,7 +5,7 @@ This quickstart demonstrates using **Google Cloud Functions** and its interactio
 
 ## Introduction
 
-This sample adds a Cloud Function that automatically makes all messages uppercase as soon as they are inserted in the Firebase database. It is meant to be used alongside the Android Firebase Database quickstart which serves as a UI for this sample. Please go through the [Android Firebase Database quickstart](../database/) first.
+This sample adds a Cloud Function that automatically makes all messages uppercase as soon as they are inserted in a Firebase database. This quickstart can be followed on its own but the Android Firebase Database quickstart app can serve as a UI for this sample so - ideally - please go through the [Android Firebase Database quickstart](../database/) first.
 
 Further reading:
 
@@ -79,11 +79,36 @@ Deploy your Cloud Functions using the following command:
 firebase deploy
 ```
 
-This deploys and activate the Cloud Function that will make all of your messages uppercase.
+This deploys and activates the Cloud Function that will make all of your messages uppercase.
 
 > The first time you call `firebase deploy` on a new project the Google Compute Engine instances and Kubernetes clusters required to run Cloud Functions will be spin-up. This may take a few minutes but things will be a lot faster on subsequent deploys.
 
-Now try the Firebase Database app again: the messages will now get uppercased automatically shortly after you add them.
+
+## See the results
+
+Once your Cloud Function is deployed add the following objects to your Firebase Database manually using the Firebase Console:
+
+```
+\firebase-database-12345
+    \messages
+        \key-123456
+            text: "This is my first message!"
+        \key-123457
+            text: "This is my second message!"
+```
+
+Adding these objects triggers the cloud function which makes the messages uppercase:
+
+```
+\firebase-database-12345
+    \messages
+        \key-123456
+            text: "THIS IS MY FIRST MESSAGE!"
+        \key-123457
+            text: "THIS IS MY SECOND MESSAGE!"
+```
+
+Now try to add messages using the Firebase Database Quickstart Android app: the messages will now get uppercased automatically shortly after you add them.
 
 
 ## Debugging
