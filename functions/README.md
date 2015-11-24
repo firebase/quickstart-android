@@ -53,7 +53,7 @@ You can also do this automatically by running:
 ./setup.sh <DATABASE_URL>
 ```
 
-For example: `./setup.sh https://hearth-quickstart-12345.firebaseio.com/`.
+For example: `./setup.sh https://functions-quickstart-12345.firebaseio.com/`.
 
 
 ### 4. Enable the Google Cloud Functions APIs
