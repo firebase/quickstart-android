@@ -1,14 +1,6 @@
 {
   "rules": {
     ".read": true,
-    "messages": {
-      "$message": {
-        // Users can only add new messages. Not modify or delete them. Cloud
-        // function can update though.
-        // TODO: Add security rule when we can authenticate inside GCF.
-        //".write": "!data.exists() || auth.uid === 'gcf-moderator'",
-        ".write": true
-      }
-    }
+    ".write": true
   }
 }
