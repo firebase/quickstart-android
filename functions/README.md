@@ -89,7 +89,7 @@ This deploys and activates the Cloud Function that will make all of your message
 Once your Cloud Function is deployed add the following objects to your Firebase Database manually using the Firebase Console:
 
 ```
-\firebase-database-12345
+\functions-quickstart-12345
     \messages
         \key-123456
             text: "This is my first message!"
@@ -100,7 +100,7 @@ Once your Cloud Function is deployed add the following objects to your Firebase 
 Adding these objects triggers the cloud function which makes the messages uppercase:
 
 ```
-\firebase-database-12345
+\functions-quickstart-12345
     \messages
         \key-123456
             text: "THIS IS MY FIRST MESSAGE!"
