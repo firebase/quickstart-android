@@ -26,7 +26,7 @@ npm install -g firebase-cli.3.0.0-alpha.latest.tar.gz
 
 > You might have to `sudo` the command above.
 
-Run `firebase auth` and authenticate with your Google account.
+Run `firebase login` and authenticate with your Google account.
 
 
 ### 2. Clone this repo
