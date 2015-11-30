@@ -36,36 +36,18 @@ public class MyGcmListenerService extends GcmListenerService {
      * Called when message is received.
      *
      * @param from SenderID of the sender.
-     * @param data Data bundle containing message data as key/value pairs.
+     * @param msgBundle Bundle containing message data as key/value pairs.
      *             For Set of keys use data.keySet().
      */
     // [START receive_message]
     @Override
-    public void onMessageReceived(String from, Bundle data) {
-        String message = data.getString("message");
+    public void onMessageReceived(String from, Bundle msgBundle) {
+        // TODO(developer): Handle GCM data messages here.
+        // If the application is in the foreground handle both data and notification messages here.
+        // Also if you intend on generating your own notifications as a result of a received GCM message,
+        // here is where that should be initiated. See sendNotification method below.
         Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
-
-        if (from.startsWith("/topics/")) {
-            // message received from some topic.
-        } else {
-            // normal downstream message.
-        }
-
-        // [START_EXCLUDE]
-        /**
-         * Production applications would usually process the message here.
-         * Eg: - Syncing with server.
-         *     - Store message in local database.
-         *     - Update UI.
-         */
-
-        /**
-         * In some cases it may be useful to show a notification indicating to the user
-         * that a message was received.
-         */
-        sendNotification(message);
-        // [END_EXCLUDE]
+        Log.d(TAG, "Message Bundle: " + msgBundle);
     }
     // [END receive_message]
 

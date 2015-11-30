@@ -17,9 +17,22 @@ Getting Started
 - Follow the [quickstart guide](https://developers.google.com/cloud-messaging/) to set up your project.
 - Run the sample on Android devide or emulator.
 
+Sending Notifications
+---------------------
+
+Use Firebase console to send GCM messages to device or emulator.
+- From Firebase console Notification section click New Message button.
+- Enter the text of your message in the Message Text field.
+- Ensure target is set to All.
+  - You can also set target to Topic and choose the global topic.
+- Click Send Message button.
+- If your application is in the foreground you should see the incoming
+  message printed in the logs. Otherwise a system notification should be
+  displayed, and when tapped should return to the quickstart.
+
 Screenshots
 -----------
-![Screenshot](app/src/main/gcm-sample.png)
+<img src="app/src/main/gcm-sample.png" height="534" width="300"/>
 
 Support
 -------
