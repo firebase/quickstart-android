@@ -46,6 +46,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Notification messages that do not specify a click_action, default to the launcher activity when tapped.
+        // The Activity/Fragment that is launched as a result will have the data (if sent) of the GCM message
+        // in extras of the current intent. eg:
+        //
+        // String gcmMesageDataFieldValue = getIntent().getStringExtra("GCM_MESSAGE_DATA_FIELD_NAME");
+        // Log.d(TAG, gcmMesageDataFieldValue);
+        //
+        // Firebase console only sends Notification messages.
+
         mRegistrationProgressBar = (ProgressBar) findViewById(R.id.registrationProgressBar);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
