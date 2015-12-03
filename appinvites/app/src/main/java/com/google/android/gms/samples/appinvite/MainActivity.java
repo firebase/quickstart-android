@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * For more information on setting up and running this sample code, see
+ * https://developers.google.com/firebase/docs/durable-links/android
+ */
+
 package com.google.android.gms.samples.appinvite;
 
 import android.content.Intent;

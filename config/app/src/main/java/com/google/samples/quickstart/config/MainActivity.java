@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ * For more information on setting up and running this sample code, see
+ * https://developers.google.com/firebase/docs/remote-config/android
+ */
+
 package com.google.samples.quickstart.config;
 
 import com.google.android.gms.common.ConnectionResult;
