@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 23
@@ -36,3 +35,5 @@ dependencies {
     compile 'com.google.android.gms:firebase-database:8.4.0'
     compile 'com.firebaseui:firebase-ui:0.2.2'
 }
+
+apply plugin: 'com.google.gms.google-services'
