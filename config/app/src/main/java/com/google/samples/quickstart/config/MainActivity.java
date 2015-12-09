@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.config.Config;
 import com.google.android.gms.config.ConfigApi;
+import com.google.android.gms.config.ConfigStatusCodes;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -54,6 +55,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // [START fetch_config_request]
         ConfigApi.FetchConfigRequest request = new ConfigApi.FetchConfigRequest.Builder()
                 .addCustomVariable("build", "dev")
+                /**
+                 Cache expiration defaults to 12 hours, uncomment the line below to change it.
+                 If you fetch too frequently though, your requests will be throttled and
+                 values read from the local cache. 20 minutes should prevent this from happening.
+                 */
+                //.setCacheExpirationSeconds(60 * 20)
                 .build();
         // [END fetch_config_request]
         // [START fetch_config_callback]
@@ -62,7 +69,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     @Override
                     public void onResult(ConfigApi.FetchConfigResult fetchConfigResult) {
                         Log.i(TAG, "onResult");
-                        if (fetchConfigResult.getStatus().isSuccess()) {
+                        TextView pv = (TextView) findViewById(R.id.priceView);
+                        int statusCode = fetchConfigResult.getStatus().getStatusCode();
+                        if (fetchConfigResult.getStatus().isSuccess() ||
+                                // if throttled, values won't be fresh
+                                statusCode == ConfigStatusCodes.FETCH_THROTTLED ||
+                                statusCode == ConfigStatusCodes.FETCH_THROTTLED_STALE) {
                             long price = 100;
                             boolean isPromo =
                                     fetchConfigResult.getAsBoolean("is_promotion_on", false);
@@ -71,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                 price = (price / 100) * (price - discount);
                             }
                             String priceMsg = "Your price is $" + price;
-                            TextView pv = (TextView) findViewById(R.id.priceView);
                             pv.setText(priceMsg);
                             boolean isDevBuild =
                                     fetchConfigResult.getAsBoolean("dev_features_on", false);
@@ -85,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                             // There has been an error fetching the config
                             Log.w(TAG, "Error fetching config: " +
                                     fetchConfigResult.getStatus().toString());
+                            pv.setText("Error fetching config: " +
+                                    fetchConfigResult.getStatus().getStatusMessage());
                         }
                     }
                 });
