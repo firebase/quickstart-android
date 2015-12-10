@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 23
@@ -29,3 +28,5 @@ dependencies {
     // Only required if Facebook AuthProvider is enabled
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
