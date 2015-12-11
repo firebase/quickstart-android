@@ -24,7 +24,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:support-v4:23.0.1'
 
-    compile 'com.google.android.gms:firebase-measurement:8.4.0'
+    compile 'com.google.android.gms:firebase-measurement:8.5.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
