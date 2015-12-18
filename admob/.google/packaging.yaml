@@ -1,0 +1,39 @@
+# GOOGLE SAMPLE PACKAGING DATA
+#
+# This file is used by Google as part of our samples packaging process.
+# End users may safely ignore this file. It has no relevance to other systems.
+---
+# Values: {DRAFT | PUBLISHED | INTERNAL | DEPRECATED | SUPERCEDED}
+status:       DRAFT
+
+# Optional, put additional explanation here for DEPRECATED or SUPERCEDED.
+# statusNote:
+
+# See http://go/sample-categories
+technologies: [Android, Google Play Services, Google AdMob]
+categories:   [Getting Started]
+languages:    [Java]
+solutions:    [Mobile]
+
+# May be omitted if unpublished
+# github:       google/actionbar-basics
+
+# Values: BEGINNER | INTERMEDIATE | ADVANCED | EXPERT
+level:        BEGINNER
+
+# Dimensions: 512x512, PNG fomrat
+icon: app/src/main/res/drawable/ic_launcher_big.png
+
+# List of APIs that this sample should be listed under. Use authoritive,
+# names that are unique for the product in question. Examples:
+#
+# Android -    android:<class-name>
+# App Engine - gae-java:<class name>
+#              gae-python:<package>
+# Web Services - ws:<name of API from Cloud Console>
+apiRefs:
+    - android:com.google.android.gms.ads
+
+# Default: apache2. May be omitted for most samples.
+# Alternatives: apache2-android (for AOSP)
+license: apache2

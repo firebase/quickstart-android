@@ -1,0 +1,26 @@
+# GOOGLE SAMPLE PACKAGING DATA
+#
+# This file is used by Google as part of our samples packaging process.
+# End users may safely ignore this file. It has no relevance to other systems.
+---
+status:       DRAFT
+
+
+# See http://go/sample-categories
+technologies: [Android, Search]
+categories:   [Quickstart]
+languages:    [Java]
+solutions:    [Mobile, Engagement]
+
+# May be omitted if unpublished
+#github:       google/actionbar-basics
+
+level:        BEGINNER
+
+# Dimensions: 512x512, PNG fomrat
+icon: screenshots/icon.png
+
+apiRefs:
+    - android:com.google.android.gms.appindexing.AppIndexApi
+
+license: apache2
