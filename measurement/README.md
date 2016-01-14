@@ -11,7 +11,7 @@ Getting Started
 
 - [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
 - Follow the [quickstart guide](https://developers.google.com/firebase/docs/android/setup) to set up your project.
-- Run the sample on Android devide or emulator.
+- Run the sample on Android device or emulator.
 
 
 Support

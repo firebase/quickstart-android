@@ -37,7 +37,7 @@ import android.widget.TextView;
 import java.util.UUID;
 
 
-public class MainActivity extends AppCompatActivity implements TextView.OnEditorActionListener{
+public class  MainActivity extends AppCompatActivity implements TextView.OnEditorActionListener{
 
     /**
      * Our reference to the root of our Firebase database.
@@ -77,8 +77,7 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
         setSupportActionBar(toolbar);
 
         // Create a reference to a location in our Firebase Database that stores the chat messages.
-        //TODO: Fix before release to use google-services.json
-        mFirebaseRef = new Firebase("YOUR_FIREBASE_DATABASE_URL");
+        mFirebaseRef = new Firebase(getString(R.string.firebase_database_url));
 
         mTextEdit = (EditText) findViewById(R.id.text_edit);
         mTextEdit.setOnEditorActionListener(this);
@@ -141,10 +140,10 @@ public class MainActivity extends AppCompatActivity implements TextView.OnEditor
                 super.onItemRangeInserted(positionStart, itemCount);
                 int max = firebaseAdapter.getItemCount();
                 int lastVis = mLlm.findLastCompletelyVisibleItemPosition();
-                if (positionStart >= (max - 1) && lastVis == (positionStart - 1)) {
+                if (lastVis == -1 ||
+                        (positionStart >= (max - 1) && lastVis == (positionStart - 1))) {
                     mRecycler.scrollToPosition(positionStart);
                 }
-
             }
         });
 
