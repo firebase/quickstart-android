@@ -1,26 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.google.firebase.example.usermanagement.MainActivity">
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.google.firebase.quickstart.usermanagement.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <TextView
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/custom_token" />
+
+    <TextView
+        android:id="@+id/text_token_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/token_null" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    <EditText
+        android:id="@+id/field_user_id"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_user_id" />
 
-    </android.support.design.widget.AppBarLayout>
+    <Button
+        android:id="@+id/button_get_custom_token"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/get_custom_token" />
 
-    <include layout="@layout/content_main" />
+    <TextView
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/firebase_user_management" />
 
-</android.support.design.widget.CoordinatorLayout>
+    <TextView
+        android:id="@+id/text_sign_in_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/signed_out" />
+
+    <Button
+        android:id="@+id/button_sign_in"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="@string/sign_in" />
+
+</LinearLayout>

@@ -1,15 +1,10 @@
 <resources>
-    <string name="app_name">Firebase Auth Quickstart</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="server_client_id">423467802995-kov0v9v0blv1v09p1jja1sohsedrvlj8.apps.googleusercontent.com</string>
-    <string name="server_widget_url">http://www.google.com</string>
-    <!-- [START facebook_app_id] -->
-    <string name="facebook_app_id">YOUR_FACEBOOK_APP_ID</string>
-    <!-- [END facebook_app_id] -->
-
-    <string name="signed_out">Signed Out</string>
-    <string name="signed_in_as" formatted="false">Signed in as: %s\n%s</string>
+    <string name="app_name">Firebase User Management</string>
+    <string name="hint_user_id">User ID</string>
+    <string name="get_custom_token">Get Token</string>
     <string name="sign_in">Sign In</string>
-    <string name="sign_out">Sign Out</string>
+    <string name="firebase_user_management">Firebase User Management</string>
+    <string name="custom_token">Custom Token</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="token_null">Token: null</string>
 </resources>

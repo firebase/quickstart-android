@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.usermanagement"
-        minSdkVersion 15 // Minimum 15 to support Facebook SDK, 9 otherwise
+        minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -20,13 +20,20 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:design:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
 
-    compile 'com.google.android.gms:firebase-auth:8.5.1'
+    compile 'com.google.android.gms:firebase-auth:8.5.2'
 
-    // Only required if Facebook AuthProvider is enabled
-    compile 'com.facebook.android:facebook-android-sdk:4.7.0'
+    // The dependencies below are only necessary for the MockTokenServer class and should not be
+    // included in your Android application. See the link below for more information:
+    // https://developers.google.com/api-client-library/java/google-api-java-client/setup
+    compile ('com.google.api-client:google-api-client:1.20.0') {
+        exclude group: 'xpp3', module: 'xpp3'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+        exclude group: 'junit', module: 'junit'
+        exclude group: 'com.google.android', module: 'android'
+    }
+    compile 'com.fasterxml.jackson.core:jackson-core:2.7.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

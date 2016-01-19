@@ -1,144 +1,135 @@
 /**
- * Copyright 2015 Google Inc. All Rights Reserved.
- *
+ * Copyright Google Inc. All Rights Reserved.
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/**
- * For more information on setting up and running this sample code, see
- * https://developers.google.com/firebase/docs/auth/android/user-auth
- */
-
 package com.google.firebase.quickstart.usermanagement;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseError;
-import com.google.firebase.FirebaseUser;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.ui.EmailAuthProvider;
-import com.google.firebase.auth.ui.FacebookAuthProvider;
-import com.google.firebase.auth.ui.GoogleAuthProvider;
-import com.google.firebase.auth.ui.SignInUIBuilder;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
 
     private FirebaseAuth mAuth;
+    private String mCustomToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        // [START initialize_auth]
-        // Initialize Firebase
-        FirebaseApp.initializeApp(this, getString(R.string.google_app_id));
-
-        // Initialize authentication and set up callbacks
-        mAuth = FirebaseAuth.getAuth();
-        mAuth.addAuthResultCallback(new FirebaseAuth.AuthResultCallbacks() {
-            @Override
-            public void onAuthenticated(@NonNull FirebaseUser firebaseUser) {
-                Log.d(TAG, "onAuthenticated:" + firebaseUser);
-                mAuth.removeAuthResultCallback(this);
-                showSignedInUI(firebaseUser);
-            }
-
-            @Override
-            public void onAuthenticationError(@NonNull FirebaseError firebaseError) {
-                Log.d(TAG, "onAuthenticationError:" + firebaseError.getErrorCode());
-                mAuth.removeAuthResultCallback(this);
-                showSignedOutUI();
-            }
-        });
-        // [END initialize_auth]
-
-        // Click listeners
+        // Button click listeners
+        findViewById(R.id.button_get_custom_token).setOnClickListener(this);
         findViewById(R.id.button_sign_in).setOnClickListener(this);
-        findViewById(R.id.button_sign_out).setOnClickListener(this);
+
+        // Initialize Firebase
+        String apiKey = getString(R.string.api_key);
+        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
+                new FirebaseOptions(apiKey));
+
+        // Get instance of FirebaseAuth
+        mAuth = FirebaseAuth.getAuth();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        // Check for signed-in user
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            showSignedInUI(currentUser);
-        } else {
-            showSignedOutUI();
-        }
     }
 
-    // [START on_sign_in_clicked]
-    private void onSignInClicked() {
-        // Support Google, Facebook, and Email/Password sign-in
-        GoogleAuthProvider googleAuth = GoogleAuthProvider.getDefaultAuthProvider();
-        EmailAuthProvider emailAuth = new EmailAuthProvider(Uri.parse(getString(R.string.server_widget_url)));
-        FacebookAuthProvider facebookAuth = new FacebookAuthProvider().addScope("email");
-
-        // Build and launch sign-in Intent
-        Intent intent = new SignInUIBuilder(mAuth)
-                .setServerClientId(getString(R.string.server_client_id))
-                .supportSignIn(googleAuth)
-                .supportSignIn(facebookAuth)
-                .supportSignIn(emailAuth)
-                .build(this);
-        startActivity(intent);
-    }
-    // [END on_sign_in_clicked]
-
-    private void onSignOutClicked() {
-        mAuth.signOut(this);
-        showSignedOutUI();
+    private void getCustomToken() {
+        // Get user ID and mint a custom token
+        String userId = ((EditText) findViewById(R.id.field_user_id)).getText().toString();
+        new GetTokenTask().execute(userId);
     }
 
-    private void showSignedInUI(FirebaseUser user) {
-        findViewById(R.id.button_sign_in).setVisibility(View.GONE);
-        findViewById(R.id.button_sign_out).setVisibility(View.VISIBLE);
-        ((TextView) findViewById(R.id.text_status)).setText(
-                getString(R.string.signed_in_as, user.getDisplayName(), user.getEmail()));
-    }
+    private void startSignIn() {
+        // Initiate sign in with custom token
+        mAuth.signInWithCustomToken(mCustomToken).setResultCallback(new ResultCallback<AuthResult>() {
+            @Override
+            public void onResult(@NonNull AuthResult authResult) {
+                Log.d(TAG, "signInWithCustomToken:" + authResult.getStatus());
 
-    private void showSignedOutUI() {
-        findViewById(R.id.button_sign_in).setVisibility(View.VISIBLE);
-        findViewById(R.id.button_sign_out).setVisibility(View.GONE);
-        ((TextView) findViewById(R.id.text_status)).setText(R.string.signed_out);
+                String message;
+                if (authResult.getStatus().isSuccess()) {
+                    message = "User ID: " + authResult.getUser().getUserId();
+                } else {
+                    message = "Error: " + authResult.getStatus().getStatusMessage();
+                }
+
+                ((TextView) findViewById(R.id.text_sign_in_status)).setText(message);
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.button_get_custom_token:
+                getCustomToken();
+                break;
             case R.id.button_sign_in:
-                onSignInClicked();
+                startSignIn();
                 break;
-            case R.id.button_sign_out:
-                onSignOutClicked();
-                break;
+        }
+    }
+
+    /**
+     * Request custom token for a given user ID. In a real application this would contact your
+     * authentication server over the internet, but for the purposes of this sample the
+     * MockTokenServer class generates the necessary JSON Web Token.
+     *
+     * In a real application this would be a network call, in which a case an IntentService would
+     * likely be more appropriate than an AsyncTask due to durability.
+     */
+    class GetTokenTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            MockTokenServer server = new MockTokenServer(MainActivity.this);
+
+            String userId = params[0];
+            return server.getCustomToken(userId);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.d(TAG, "GetTokenTask:token:" + result);
+            mCustomToken = result;
+
+            String status;
+            if (mCustomToken != null) {
+                status = "Token: " + mCustomToken;
+            } else {
+                status = "Token: null";
+            }
+
+            // Enable/disable sign-in button and show the token
+            findViewById(R.id.button_sign_in).setEnabled((mCustomToken != null));
+            ((TextView) findViewById(R.id.text_token_status)).setText(status);
         }
     }
 }
