@@ -12,19 +12,19 @@ Getting Started
 - [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
 - Follow the [quickstart guide](https://developers.google.com/firebase/docs/remote-config/android) to set up your project.
 - Go to the [Google Developers Console](https://console.developers.google.com/project) and navigate to your project:
-  - From the left "hamburger" menu navigate to the **API Manager** tab.
-  - Click on the **Credentials** item in the left column.
-  - Take the value of your **Server key** and copy it into the `res/values/ids.xml` file, replacing
+    - From the left "hamburger" menu navigate to the **API Manager** tab.
+    - Click on the **Credentials** item in the left column.
+    - Take the value of your **Server key** and copy it into the `res/values/ids.xml` file, replacing
     the value of the `api_key` entry (`<string name="api_key">YOUR_SERVER_KEY</string>`).
-  - Click **New credentials** and select **Service account key**. Select **New service account**,
+    - Click **New credentials** and select **Service account key**. Select **New service account**,
     pick any name, and select **JSON** as the key type. Then click **Create**.
-  - You should now have a new JSON file for your service account in your Downloads directory. Rename
+    - You should now have a new JSON file for your service account in your Downloads directory. Rename
     the file `service_account.json` and move it to the `app/src/main/res/raw` directory (create that
     directory if it foes not already exist).
 - Run the application on your Android device or emulator.
-  - Enter any string in the **User ID** field.
-  - Click **Get Token** to generate a JWT containing the User ID entered.
-  - Click **Sign In** to sign in to Firebase User Management with the generated JWT.
+    - Enter any string in the **User ID** field.
+    - Click **Get Token** to generate a JWT containing the User ID entered.
+    - Click **Sign In** to sign in to Firebase User Management with the generated JWT.
 
 
 Support
