@@ -32,7 +32,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.android.support:cardview-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
-    compile 'com.google.android.gms:firebase-database:8.5.1'
+    compile 'com.google.android.gms:firebase-database:8.5.2'
     compile 'com.firebaseui:firebase-ui:0.2.2'
 }
 

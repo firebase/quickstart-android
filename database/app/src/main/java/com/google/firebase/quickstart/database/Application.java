@@ -17,6 +17,7 @@
 package com.google.firebase.quickstart.database;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 
 import com.firebase.client.Firebase;
 
@@ -30,6 +31,7 @@ public class Application extends android.app.Application{
     public void onCreate() {
         super.onCreate();
 
-        FirebaseApp.initializeApp(this, getString(R.string.google_app_id));
+        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
+            new FirebaseOptions(getString(R.string.google_crash_reporting_api_key)));
     }
 }
