@@ -66,8 +66,10 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         throw new NullPointerException();
                     } catch (NullPointerException ex) {
+                        // [START log_and_report]
                         Crash.log(Level.INFO.intValue(), TAG, "NPE caught");
                         Crash.report(ex);
+                        // [END log_and_report]
                     }
                 } else {
                     throw new NullPointerException();
@@ -77,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Log that the Activity was created. This version of Crash.log() will include the message
         // in the crash report but will not be shown in logcat.
+        // [START log_event]
         Crash.log("Activity created");
+        // [END log_event]
     }
 }
