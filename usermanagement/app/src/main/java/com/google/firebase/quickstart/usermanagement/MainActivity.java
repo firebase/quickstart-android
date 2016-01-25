@@ -15,6 +15,7 @@
  */
 package com.google.firebase.quickstart.usermanagement;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FirebaseAuth mAuth;
     private String mCustomToken;
+    private TokenBroadcastReceiver mTokenReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Button click listeners
         findViewById(R.id.button_get_custom_token).setOnClickListener(this);
         findViewById(R.id.button_sign_in).setOnClickListener(this);
+
+        // Create token receiver (for demo purposes only)
+        mTokenReceiver = new TokenBroadcastReceiver() {
+            @Override
+            public void onNewToken(String token) {
+                Log.d(TAG, "onNewToken:" + token);
+                setCustomToken(token);
+            }
+        };
 
         // Initialize Firebase
         String apiKey = getString(R.string.api_key);
@@ -58,6 +69,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onStart() {
         super.onStart();
+        registerReceiver(mTokenReceiver, TokenBroadcastReceiver.getFilter());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        unregisterReceiver(mTokenReceiver);
     }
 
     private void getCustomToken() {
@@ -83,6 +101,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ((TextView) findViewById(R.id.text_sign_in_status)).setText(message);
             }
         });
+    }
+
+    private void setCustomToken(String token) {
+        mCustomToken = token;
+
+        String status;
+        if (mCustomToken != null) {
+            status = "Token: " + mCustomToken;
+        } else {
+            status = "Token: null";
+        }
+
+        // Enable/disable sign-in button and show the token
+        findViewById(R.id.button_sign_in).setEnabled((mCustomToken != null));
+        ((TextView) findViewById(R.id.text_token_status)).setText(status);
     }
 
     @Override
@@ -118,18 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(String result) {
             Log.d(TAG, "GetTokenTask:token:" + result);
-            mCustomToken = result;
-
-            String status;
-            if (mCustomToken != null) {
-                status = "Token: " + mCustomToken;
-            } else {
-                status = "Token: null";
-            }
-
-            // Enable/disable sign-in button and show the token
-            findViewById(R.id.button_sign_in).setEnabled((mCustomToken != null));
-            ((TextView) findViewById(R.id.text_token_status)).setText(status);
+            setCustomToken(result);
         }
     }
 }
