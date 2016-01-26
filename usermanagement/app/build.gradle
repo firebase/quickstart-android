@@ -23,17 +23,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
 
     compile 'com.google.android.gms:firebase-auth:8.5.2'
-
-    // The dependencies below are only necessary for the MockTokenServer class and should not be
-    // included in your Android application. See the link below for more information:
-    // https://developers.google.com/api-client-library/java/google-api-java-client/setup
-    compile ('com.google.api-client:google-api-client:1.20.0') {
-        exclude group: 'xpp3', module: 'xpp3'
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-        exclude group: 'junit', module: 'junit'
-        exclude group: 'com.google.android', module: 'android'
-    }
-    compile 'com.fasterxml.jackson.core:jackson-core:2.7.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

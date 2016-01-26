@@ -25,18 +25,6 @@
         android:maxLines="1"
         android:text="@string/token_null" />
 
-    <EditText
-        android:id="@+id/field_user_id"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/hint_user_id" />
-
-    <Button
-        android:id="@+id/button_get_custom_token"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="@string/get_custom_token" />
-
     <TextView
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"

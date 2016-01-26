@@ -15,15 +15,13 @@
  */
 package com.google.firebase.quickstart.usermanagement;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.FirebaseApp;
@@ -45,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         // Button click listeners
-        findViewById(R.id.button_get_custom_token).setOnClickListener(this);
         findViewById(R.id.button_sign_in).setOnClickListener(this);
 
         // Create token receiver (for demo purposes only)
@@ -78,12 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         unregisterReceiver(mTokenReceiver);
     }
 
-    private void getCustomToken() {
-        // Get user ID and mint a custom token
-        String userId = ((EditText) findViewById(R.id.field_user_id)).getText().toString();
-        new GetTokenTask().execute(userId);
-    }
-
     private void startSignIn() {
         // Initiate sign in with custom token
         mAuth.signInWithCustomToken(mCustomToken).setResultCallback(new ResultCallback<AuthResult>() {
@@ -94,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String message;
                 if (authResult.getStatus().isSuccess()) {
                     message = "User ID: " + authResult.getUser().getUserId();
+                    Toast.makeText(MainActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
                 } else {
                     message = "Error: " + authResult.getStatus().getStatusMessage();
                 }
@@ -121,37 +113,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_get_custom_token:
-                getCustomToken();
-                break;
             case R.id.button_sign_in:
                 startSignIn();
                 break;
-        }
-    }
-
-    /**
-     * Request custom token for a given user ID. In a real application this would contact your
-     * authentication server over the internet, but for the purposes of this sample the
-     * MockTokenServer class generates the necessary JSON Web Token.
-     *
-     * In a real application this would be a network call, in which a case an IntentService would
-     * likely be more appropriate than an AsyncTask due to durability.
-     */
-    class GetTokenTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            MockTokenServer server = new MockTokenServer(MainActivity.this);
-
-            String userId = params[0];
-            return server.getCustomToken(userId);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Log.d(TAG, "GetTokenTask:token:" + result);
-            setCustomToken(result);
         }
     }
 }

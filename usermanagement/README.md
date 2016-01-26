@@ -18,13 +18,16 @@ Getting Started
     the value of the `api_key` entry (`<string name="api_key">YOUR_SERVER_KEY</string>`).
     - Click **New credentials** and select **Service account key**. Select **New service account**,
     pick any name, and select **JSON** as the key type. Then click **Create**.
-    - You should now have a new JSON file for your service account in your Downloads directory. Rename
-    the file `service_account.json` and move it to the `app/src/main/res/raw` directory (create that
-    directory if it foes not already exist).
-- Run the application on your Android device or emulator.
-    - Enter any string in the **User ID** field.
-    - Click **Get Token** to generate a JWT containing the User ID entered.
-    - Click **Sign In** to sign in to Firebase User Management with the generated JWT.
+    - You should now have a new JSON file for your service account in your Downloads directory.
+- Open the file `web/auth.html` in your computer's web browser.
+    - Click **Choose File** and upload the JSON file you just downloaded.
+    - Enter any User ID and click **Generate**.
+    - Copy the text from the **ADB Command** section, you will need this.
+- Run the Android application on your Android device or emulator.
+    - Run the text you copied from the **ADB Command** section of the web page in the steps above.
+      This should send a token to the running app and update the Custom Token field.
+    - Click **Sign In** to sign in to Firebase User Management with the generated JWT. You should
+      see the User ID you entered when generating the token.
 
 
 Support
