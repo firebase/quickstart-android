@@ -55,9 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
 
         // Initialize Firebase
-        String apiKey = getString(R.string.api_key);
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions(apiKey));
+                new FirebaseOptions(getString(R.string.google_api_key)));
 
         // Get instance of FirebaseAuth
         mAuth = FirebaseAuth.getAuth();

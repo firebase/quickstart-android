@@ -32,6 +32,6 @@ public class Application extends android.app.Application{
         super.onCreate();
 
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-            new FirebaseOptions(getString(R.string.google_crash_reporting_api_key)));
+            new FirebaseOptions(getString(R.string.google_api_key)));
     }
 }

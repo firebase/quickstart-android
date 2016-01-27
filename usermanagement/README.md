@@ -14,8 +14,6 @@ Getting Started
 - Go to the [Google Developers Console](https://console.developers.google.com/project) and navigate to your project:
     - From the left "hamburger" menu navigate to the **API Manager** tab.
     - Click on the **Credentials** item in the left column.
-    - Take the value of your **Server key** and copy it into the `res/values/ids.xml` file, replacing
-    the value of the `api_key` entry (`<string name="api_key">YOUR_SERVER_KEY</string>`).
     - Click **New credentials** and select **Service account key**. Select **New service account**,
     pick any name, and select **JSON** as the key type. Then click **Create**.
     - You should now have a new JSON file for your service account in your Downloads directory.
