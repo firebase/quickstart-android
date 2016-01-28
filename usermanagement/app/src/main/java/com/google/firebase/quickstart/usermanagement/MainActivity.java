@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.FirebaseUser;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -54,12 +55,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
+        // [START initialize_auth]
         // Initialize Firebase
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
                 new FirebaseOptions(getString(R.string.google_api_key)));
 
         // Get instance of FirebaseAuth
         mAuth = FirebaseAuth.getAuth();
+        // [END initialize_auth]
     }
 
     @Override
@@ -76,22 +79,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void startSignIn() {
         // Initiate sign in with custom token
+        // [START sign_in_custom]
         mAuth.signInWithCustomToken(mCustomToken).setResultCallback(new ResultCallback<AuthResult>() {
             @Override
             public void onResult(@NonNull AuthResult authResult) {
                 Log.d(TAG, "signInWithCustomToken:" + authResult.getStatus());
-
-                String message;
                 if (authResult.getStatus().isSuccess()) {
-                    message = "User ID: " + authResult.getUser().getUserId();
+                    // Signed in, display user information.
+                    FirebaseUser user = authResult.getUser();
+
+                    // [START_EXCLUDE]
+                    ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+                            "User ID: " + user.getUserId());
                     Toast.makeText(MainActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
+                    // [END_EXCLUDE]
                 } else {
-                    message = "Error: " + authResult.getStatus().getStatusMessage();
+                    // Sign-in error, display a message.
+                    String errorMessage = authResult.getStatus().getStatusMessage();
+
+                    // [START_EXCLUDE]
+                    ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+                            "Error: " + authResult.getStatus().getStatusMessage());
+                    // [END_EXCLUDE]
                 }
 
-                ((TextView) findViewById(R.id.text_sign_in_status)).setText(message);
             }
         });
+        // [END sign_in_custom]
     }
 
     private void setCustomToken(String token) {
