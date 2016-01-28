@@ -18,13 +18,12 @@ package com.google.samples.quickstart.crash;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.google.android.gms.crash.Crash;
-
-import java.util.logging.Level;
 
 /**
  * This Activity shows the different ways of reporting application crashes.
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Log that crash button was clicked. This version of Crash.log() will include the
                 // message in the crash report as well as show the message in logcat.
-                Crash.log(Level.INFO.intValue(), TAG, "Crash button clicked");
+                Crash.log(Log.INFO, TAG, "Crash button clicked");
 
                 // If catchCrashCheckBox is checked catch the exception and report is using
                 // Crash.report(). Otherwise throw the exception and let Firebase Crash automatically
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                         throw new NullPointerException();
                     } catch (NullPointerException ex) {
                         // [START log_and_report]
-                        Crash.log(Level.INFO.intValue(), TAG, "NPE caught");
+                        Crash.log(Log.ERROR, TAG, "NPE caught");
                         Crash.report(ex);
                         // [END log_and_report]
                     }
