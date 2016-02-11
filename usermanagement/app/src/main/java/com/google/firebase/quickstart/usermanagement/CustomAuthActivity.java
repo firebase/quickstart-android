@@ -30,9 +30,9 @@ import com.google.firebase.FirebaseUser;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class CustomAuthActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "CustomAuthActivity";
 
     private FirebaseAuth mAuth;
     private String mCustomToken;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_custom);
 
         // Button click listeners
         findViewById(R.id.button_sign_in).setOnClickListener(this);
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // [START_EXCLUDE]
                     ((TextView) findViewById(R.id.text_sign_in_status)).setText(
                             "User ID: " + user.getUserId());
-                    Toast.makeText(MainActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CustomAuthActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
                     // [END_EXCLUDE]
                 } else {
                     // Sign-in error, display a message.
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     // [START_EXCLUDE]
                     ((TextView) findViewById(R.id.text_sign_in_status)).setText(
-                            "Error: " + authResult.getStatus().getStatusMessage());
+                            "Error: " + errorMessage);
                     // [END_EXCLUDE]
                 }
 
