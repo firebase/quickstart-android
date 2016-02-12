@@ -25,6 +25,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Demonstrate Firebase Authentication using a Facebook access token.
+ */
 public class FacebookLoginActivity extends AppCompatActivity {
 
     private static final String TAG = "FacebookLogin";
@@ -80,14 +83,11 @@ public class FacebookLoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+
         // Check for existing sign-in
+        // TODO(samstern): How to relate this to the Facebook LoginButton state?
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            Log.d(TAG, "Got cached FirebaseUser");
-            updateUI(user);
-        } else {
-            updateUI(null);
-        }
+        updateUI(user);
     }
 
 
@@ -118,7 +118,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
             updateUI(result.getUser());
         } else {
-            Log.d(TAG, "handleFirebaseAuthResukt:ERROR:" + result.getStatus().toString());
+            Log.d(TAG, "handleFirebaseAuthResult:ERROR:" + result.getStatus().toString());
             updateUI(null);
         }
     }

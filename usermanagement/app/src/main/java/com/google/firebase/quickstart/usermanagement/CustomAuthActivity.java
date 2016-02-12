@@ -30,6 +30,10 @@ import com.google.firebase.FirebaseUser;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Demonstrate Firebase Authentication using a custom minted token. For more information, see:
+ * https://developers.google.com/firebase/docs/auth/android/custom-auth
+ */
 public class CustomAuthActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "CustomAuthActivity";

@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.FacebookSdk;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -34,7 +33,6 @@ public class EmailPasswordActivity extends AppCompatActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_emailpassword);
 
         // Views
@@ -60,12 +58,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
 
         // Check for existing sign-in
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            Log.d(TAG, "Got cached FirebaseUser");
-            updateUI(user);
-        } else {
-            updateUI(null);
-        }
+        updateUI(user);
     }
 
     private void createAccount(String email, String password) {

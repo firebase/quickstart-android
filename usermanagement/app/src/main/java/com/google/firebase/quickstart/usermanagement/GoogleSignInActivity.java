@@ -27,6 +27,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+/**
+ * Demonstrate Firebase Authentication using a Google ID Token.
+ */
 public class GoogleSignInActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
@@ -76,14 +79,8 @@ public class GoogleSignInActivity extends AppCompatActivity implements
         super.onStart();
 
         // Check for existing sign-in
-        // TODO(samstern): How to relate this to the Facebook LoginButton state?
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            Log.d(TAG, "Got cached FirebaseUser");
-            updateUI(user);
-        } else {
-            updateUI(null);
-        }
+        updateUI(user);
     }
 
     @Override

@@ -13,7 +13,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * Simple list-based Activity to redirect to one of the other Activities.
+ * Simple list-based Activity to redirect to one of the other Activities. This Activity does not
+ * contain any useful code related to Firebase Authentication. You may want to start with
+ * one of the following Files:
+ *     {@link GoogleSignInActivity}
+ *     {@link FacebookLoginActivity}
+ *     {@link EmailPasswordActivity}
+ *     {@link CustomAuthActivity}
  */
 public class ChooserActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
