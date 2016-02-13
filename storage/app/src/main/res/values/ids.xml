@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="bucket_name">gs://ghquickstarts-c223b.storage.firebase.com</string>
+    <string name="server_client_id">337894900145-e4uksm38sne0bqrj6uvkbo4oiu4hvigl.apps.googleusercontent.com</string>
+</resources>

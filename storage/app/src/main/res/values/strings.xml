@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Firebase Storage</string>
+    <string name="camera_button_text">Upload Picture</string>
+</resources>

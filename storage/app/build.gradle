@@ -1,0 +1,36 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.google.firebase.quickstart.firebasestorage"
+        minSdkVersion 9
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:23.1.1'
+
+    compile 'pub.devrel:easypermissions:0.1.5'
+
+    // TODO(samstern): change
+    compile 'com.google.android.gms:firebase-auth:8.5.37'
+    compile 'com.google.android.gms:firebase-storage:8.5.37'
+    compile 'com.google.android.gms:firebase-common:8.5.37'
+    compile 'com.google.android.gms:play-services-auth:8.5.37'
+    compile 'com.google.android.gms:play-services-base:8.5.37'
+    compile 'com.google.android.gms:play-services-basement:8.5.37'
+}
+
+apply plugin: 'com.google.gms.google-services'
