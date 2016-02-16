@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign In to Begin" />
+            android:text="@string/sign_in_prompt" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_sign_in_button"
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Click the button below to take a picture and upload it to Firebase Storage" />
+            android:text="@string/take_photo_prompt" />
 
         <Button
             android:id="@+id/button_camera"

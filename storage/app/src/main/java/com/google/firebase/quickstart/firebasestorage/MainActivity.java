@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.firebasestorage;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,17 +26,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends AppCompatActivity implements
+public class
+MainActivity extends AppCompatActivity implements
         View.OnClickListener,
         EasyPermissions.PermissionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -49,11 +51,13 @@ public class MainActivity extends AppCompatActivity implements
     private static final String KEY_FILE_URI = "key_file_uri";
     private static final String[] perms = new String[]{
             Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
 
 
+    private ProgressDialog mProgressDialog;
     private FirebaseAuth mAuth;
-    private FirebaseStorage mStorage;
+    private FirebaseStorage mStorageRef;
     private GoogleApiClient mGoogleApiClient;
     private Uri mFileUri = null;
 
@@ -66,9 +70,14 @@ public class MainActivity extends AppCompatActivity implements
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
                 new FirebaseOptions(getString(R.string.google_api_key)));
 
-        // Initialize Firebase Storage and Auth
-        mStorage = new FirebaseStorage(getString(R.string.bucket_name));
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getAuth();
+
+        // Initialize Firebase Storage Ref
+        // [START get_storage_ref]
+        String bucketName = "gs://" + getString(R.string.project_id) + ".storage.firebase.com";
+        mStorageRef = new FirebaseStorage(bucketName);
+        // [END get_storage_ref]
 
         // Click listeners
         findViewById(R.id.button_camera).setOnClickListener(this);
@@ -105,11 +114,15 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
-        if (requestCode == RC_TAKE_PICTURE && resultCode == RESULT_OK) {
-            if (mFileUri != null) {
-                uploadFromUri(mFileUri);
+        if (requestCode == RC_TAKE_PICTURE) {
+            if (resultCode == RESULT_OK) {
+                if (mFileUri != null) {
+                    uploadFromUri(mFileUri);
+                } else {
+                    Log.w(TAG, "File URI is null");
+                }
             } else {
-                Log.w(TAG, "File URI is null");
+                Toast.makeText(this, "Taking picture failed.", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -119,33 +132,55 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void uploadFromUri(Uri uri) {
-        Log.d(TAG, "uploadFromUri:" + uri.toString());
+    // [START upload_from_uri]
+    private void uploadFromUri(Uri fileUri) {
+        Log.d(TAG, "uploadFromUri:" + fileUri.toString());
 
-        String fileName = uri.getLastPathSegment();
-        mStorage.getChild("photos").getChild(fileName).putFile(uri).addCallback(this,
+        // [START get_child_ref]
+        // Get a reference to store file at photos/<FILENAME>.jpg
+        final FirebaseStorage photoRef = mStorageRef.getChild("photos")
+                .getChild(fileUri.getLastPathSegment());
+        // [END get_child_ref]
+
+        // Upload file to Firebase Storage
+        showProgressDialog();
+        photoRef.putFile(fileUri).addCallback(this,
                 new UploadTask.Callback() {
                     @Override
                     protected void onCompleted(UploadTask uploadTask) {
+                        // Upload succeeded
                         Log.d(TAG, "uploadFromUri:onCompleted:" + uploadTask.getResultCode());
-                        Uri uploadUri = uploadTask.getUploadUri();
-                        if (uploadUri != null) {
-                            // Display the link in the UI
-                            // TODO(samstern): The real link is in the StorageMetadata
-                            ((TextView) findViewById(R.id.picture_download_uri))
-                                    .setText(uploadUri.toString());
-                        }
+                        hideProgressDialog();
+
+                        // Get the StorageMetadata and display public download URL
+                        showProgressDialog();
+                        photoRef.getMetadata(new FirebaseStorage.MetadataCallback() {
+                            @Override
+                            protected void onComplete(@NonNull StorageMetadata metadata) {
+                                Uri downloadUrl = metadata.getDownloadUrl();
+
+                                // [START_EXCLUDE]
+                                hideProgressDialog();
+                                ((TextView) findViewById(R.id.picture_download_uri))
+                                        .setText(metadata.getDownloadUrl().toString());
+                                // [END_EXCLUDE]
+                            }
+                        });
                     }
 
                     @Override
                     protected void onFailure(UploadTask uploadTask, int errorCode) {
+                        // Upload failed
                         Log.d(TAG, "uploadFromUri:onFailure:" + errorCode);
+                        hideProgressDialog();
+
                         // Show an error message
                         Toast.makeText(MainActivity.this, "Error: upload failed",
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+    // [END upload_from_uri]
 
     @AfterPermissionGranted(RC_PERMISSIONS)
     private void launchCamera() {
@@ -161,16 +196,9 @@ public class MainActivity extends AppCompatActivity implements
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         // Choose file storage location
-        File file;
-        try {
-            file = File.createTempFile(UUID.randomUUID().toString(), ".jpg", getCacheDir());
-
-            mFileUri = Uri.fromFile(file);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to create file", e);
-            return;
-        }
+        File file = new File(getExternalCacheDir(), UUID.randomUUID().toString() + ".jpg");
+        mFileUri = Uri.fromFile(file);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
 
         // Launch intent
         startActivityForResult(takePictureIntent, RC_TAKE_PICTURE);
@@ -210,6 +238,22 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -223,19 +267,18 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-    }
+    public void onPermissionsGranted(int requestCode, List<String> perms) {}
 
     @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-    }
+    public void onPermissionsDenied(int requestCode, List<String> perms) {}
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
