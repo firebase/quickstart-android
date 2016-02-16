@@ -57,10 +57,9 @@ public class GoogleSignInActivity extends AppCompatActivity implements
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
 
-        // TODO(samstern): Refactor and remove
-        String idToken = "337894900145-7le4p7c893uqiks32g9begn0et0pu7h0.apps.googleusercontent.com";
+        // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(idToken)
+                .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
 
@@ -94,11 +93,11 @@ public class GoogleSignInActivity extends AppCompatActivity implements
         }
     }
 
+    // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         OptionalPendingResult<AuthResult> opr = mAuth.signInWithCredential(credential);
-
         if (opr.isDone()) {
             Log.d(TAG, "Got cached firebase auth");
             handleFirebaseAuthResult(opr.get());
@@ -113,6 +112,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements
             });
         }
     }
+    // [END auth_with_google]
 
     private void handleFirebaseAuthResult(AuthResult result) {
         Log.d(TAG, "handleFirebaseAuthResult:" + result.getStatus());

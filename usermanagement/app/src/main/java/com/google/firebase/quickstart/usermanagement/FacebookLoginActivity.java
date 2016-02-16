@@ -97,12 +97,14 @@ public class FacebookLoginActivity extends AppCompatActivity {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    // [START auth_with_facebook]
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         OptionalPendingResult<AuthResult> opr = mAuth.signInWithCredential(credential);
         if (opr.isDone()) {
             handleFirebaseAuthResult(opr.get());
-        } else {showProgressDialog();
+        } else {
+            showProgressDialog();
             opr.setResultCallback(new ResultCallback<AuthResult>() {
                 @Override
                 public void onResult(@NonNull AuthResult result) {
@@ -112,6 +114,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
             });
         }
     }
+    // [END auth_with_facebook]
 
     private void handleFirebaseAuthResult(AuthResult result) {
         if (result.getStatus().isSuccess()) {

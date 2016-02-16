@@ -46,10 +46,12 @@ public class EmailPasswordActivity extends AppCompatActivity implements
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
 
+        // [START initialize_auth]
         // Initialize Firebase Auth
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
                 new FirebaseOptions(getString(R.string.google_api_key)));
         mAuth = FirebaseAuth.getAuth();
+        // [END initialize_auth]
     }
 
     @Override
@@ -65,6 +67,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
         Log.d(TAG, "createAccount:" + email);
         showProgressDialog();
 
+        // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password).setResultCallback(
                 new ResultCallback<AuthResult>() {
                     @Override
@@ -74,12 +77,14 @@ public class EmailPasswordActivity extends AppCompatActivity implements
                         hideProgressDialog();
                     }
                 });
+        // [END create_user_with_email]
     }
 
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
         showProgressDialog();
 
+        // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password).setResultCallback(
                 new ResultCallback<AuthResult>() {
                     @Override
@@ -89,6 +94,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
                         hideProgressDialog();
                     }
                 });
+        // [END sign_in_with_email]
     }
 
     private void signOut() {
@@ -96,16 +102,22 @@ public class EmailPasswordActivity extends AppCompatActivity implements
         updateUI(null);
     }
 
+    // [START handle_auth_result]
     private void handleFirebaseAuthResult(AuthResult result) {
         if (result.getStatus().isSuccess()) {
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
+            // [START_EXCLUDE]
             updateUI(result.getUser());
+            // [END_EXCLUDE]
         } else {
-            Log.d(TAG, "handleFirebaseAuthResukt:ERROR:" + result.getStatus().toString());
+            Log.d(TAG, "handleFirebaseAuthResult:ERROR:" + result.getStatus().toString());
             Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+            // [START_EXCLUDE]
             updateUI(null);
+            // [END_EXCLUDE]
         }
     }
+    // [END handle_auth_result]
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {

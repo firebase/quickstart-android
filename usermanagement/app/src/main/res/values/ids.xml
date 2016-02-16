@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--
+        Your Facebook App ID. See README.
+    -->
+    <!--  TODO(developer): REPLACE -->
     <string name="facebook_app_id">1541291982865404</string>
+
+    <!--
+        Your Web Client ID. See README.
+    -->
+    <!--  TODO(developer): REPLACE -->
+    <string name="server_client_id">337894900145-7le4p7c893uqiks32g9begn0et0pu7h0.apps.googleusercontent.com</string>
 </resources>
