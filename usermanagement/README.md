@@ -13,29 +13,13 @@ Getting Started
 - Follow the [quickstart guide](https://developers.google.com/firebase/docs/) to set up your project.
 
 
-### General Setup
-
-- Go to the [Google Developers Console](https://console.developers.google.com/project) and navigate to your project:
-    - From the left "hamburger" menu navigate to the **API Manager** tab.
-    - In the search box, enter **secure token**. One or multiple APIs should appear
-      as a result, **enable** all of them individually.
-    - Click **Enabled APIs** and then click the small **gear** icon next to the
-      **Identity Toolkit API**.
-        - For **Widget URL** select `https://www.google.com` from the dropdown menu.
-        - Enter `https://www.google.com` for all of the following fields:
-          **Sign-in success URL**, **Sign out URL**, and **Send email URL**.
-        - Make sure the box next to **Google** is checked. In the **Rollout** field under
-          Google, enter `100`.
-        - Scroll to the bottom of the page and click **Save**.
-
-
 ### Google Sign In Setup
 
-- Make sure you have followed all the steps in **General Setup**.
-- Go to the [Google Developers Console](https://console.developers.google.com/project) and navigate to your project:
-  - From the left "hamburger" menu select **API Manager** and then select **Credentials**. 
-  - Under the heading **OAuth 2.0 Client IDs** you should see at least one entry called
-    **Web client**.  Copy the value of that entry (it should be a string ending with
+- Go to the [Firebase Console](https://developers.google.com/firebase) and navigate to your project:
+  - Select the **User Management** panel.
+  - Toggle the **Google** switch to the **On** position.
+  - Select your OAuth 2.0 Client ID from the dropdown menu and then click **Save**. 
+  - Copy the value of the Client ID you just selected (it should be a string ending with
     `.apps.googleusercontent.com`). Open the file `app/src/main/res/values/ids.xml`
     and replace the value of the `server_client_id` string with the value you just copied.
 - Run the app on your device or emulator.
@@ -44,17 +28,14 @@ Getting Started
 
 ### Facebook Login Setup
 
-- Make sure you have followed all the steps in **General Setup**.
 - Go to the [Facebook Developers Site](https://developers.facebook.com) and follow all
   instructions to set up a new Android app. When asked for a package name, use
   `com.google.firebase.quickstart.usermanagement` and when asked for a main class name,
   use `com.google.firebase.quickstart.usermanagement.FacebookLoginActivity`.
-- Go to the [Google Developers Console](https://console.developers.google.com/project) and navigate to your project:
-    - From the left "hamburger" menu navigate to the **API Manager** tab.
-    - Click **Enabled APIs** and then click the small **gear** icon next to the
-      **Identity Toolkit API**.
-    - Under **Facebook** enter your Facebook **App Id** and **App Secret**, set **Rollout**
-      to `100` and then scroll to the bottom of the page and click **Save**.
+- Go to the [Firebase Console](https://developers.google.com/firebase) and navigate to your project:
+  - Go to the **User Management** panel. 
+  - Toggle the **Facebook** switch to the **On** position.
+  - Enter your Facebook **App Id** and **App Secret** and click **Save**.
 - Open the file `app/src/main/res/values/ids.xml` and replace the value of the `facebook_app_id` with the ID of the Facebook app you just created.
 - Run the app on your device or emulator.
     - Select `FacebookLoginActivity` from the main screen.
@@ -64,8 +45,9 @@ Getting Started
 
 ### Email/Password Setup
 
-- If you have followed all the steps in General Setup you are ready to use email/password
-  credentials with Firebase User Management.
+- Go to the [Firebase Console](https://developers.google.com/firebase) and navigate to your project:
+  - Select the **User Management** panel.
+  - Toggle the **Email/Password** switch to the **On** position, then click **Save**.
 - Run the app on your device or emulator.
     - Select `EmailPasswordActivity` from the main screen.
     - Fill in your desired email and password and click **Create Account** to begin.
