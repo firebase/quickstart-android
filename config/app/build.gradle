@@ -22,7 +22,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.google.android.gms:firebase-config:8.5.2'
+    compile 'com.google.android.gms:firebase-config:8.5.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
