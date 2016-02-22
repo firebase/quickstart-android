@@ -5,6 +5,7 @@ build
 
 *.class
 *.properties
+!gradle-wrapper.properties
 *.iml
 
 google-services.json
