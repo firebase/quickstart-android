@@ -3,10 +3,9 @@
     package="com.google.firebase.quickstart.firebasestorage">
 
     <!--
-        These permissions are only needed to take and save pictures,
+        Storage permissions are only needed to take and save pictures,
         they are not required by Firebase Storage
     -->
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -22,6 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".MyDownloadService"
+            android:exported="false"/>
     </application>
 
 </manifest>

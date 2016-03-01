@@ -54,6 +54,13 @@
             android:layout_height="wrap_content"
             android:autoLink="web" />
 
+        <Button
+            android:id="@+id/button_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/download"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </RelativeLayout>

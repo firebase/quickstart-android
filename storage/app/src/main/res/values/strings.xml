@@ -3,4 +3,5 @@
     <string name="camera_button_text">Upload Picture</string>
     <string name="sign_in_prompt">Sign In to begin</string>
     <string name="take_photo_prompt">Click the button below to take a picture and upload it to Firebase Storage</string>
+    <string name="download">Download</string>
 </resources>

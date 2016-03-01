@@ -2,11 +2,15 @@ package com.google.firebase.quickstart.firebasestorage;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +35,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -50,11 +55,10 @@ MainActivity extends AppCompatActivity implements
 
     private static final String KEY_FILE_URI = "key_file_uri";
     private static final String[] perms = new String[]{
-            Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
     };
 
-
+    private BroadcastReceiver mDownloadReceiver;
     private ProgressDialog mProgressDialog;
     private FirebaseAuth mAuth;
     private FirebaseStorage mStorageRef;
@@ -82,6 +86,7 @@ MainActivity extends AppCompatActivity implements
         // Click listeners
         findViewById(R.id.button_camera).setOnClickListener(this);
         findViewById(R.id.google_sign_in_button).setOnClickListener(this);
+        findViewById(R.id.button_download).setOnClickListener(this);
 
         // GoogleApiClient with Sign In
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -97,12 +102,50 @@ MainActivity extends AppCompatActivity implements
         if (savedInstanceState != null) {
             mFileUri = savedInstanceState.getParcelable(KEY_FILE_URI);
         }
+
+        // Download receiver
+        mDownloadReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d(TAG, "downloadReceiver:onReceive:" + intent);
+                hideProgressDialog();
+
+                if (MyDownloadService.ACTION_COMPLETED.equals(intent.getAction())) {
+                    String path = intent.getStringExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH);
+                    int numBytes = intent.getIntExtra(MyDownloadService.EXTRA_BYTES_DOWNLOADED, 0);
+
+                    // Alert success
+                    showMessageDialog("Success", String.format(Locale.getDefault(),
+                            "%d bytes downloaded from %s", numBytes, path));
+                }
+
+                if (MyDownloadService.ACTION_ERROR.equals(intent.getAction())) {
+                    String path = intent.getStringExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH);
+
+                    // Alert failure
+                    showMessageDialog("Error", String.format(Locale.getDefault(),
+                            "Failed to download from %s", path));
+                }
+            }
+        };
     }
 
     @Override
     public void onStart() {
         super.onStart();
         updateUI(mAuth.getCurrentUser());
+
+        // Register download receiver
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(mDownloadReceiver, MyDownloadService.getIntentFilter());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // Unregister download receiver
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mDownloadReceiver);
     }
 
     @Override
@@ -162,7 +205,8 @@ MainActivity extends AppCompatActivity implements
                                 // [START_EXCLUDE]
                                 hideProgressDialog();
                                 ((TextView) findViewById(R.id.picture_download_uri))
-                                        .setText(metadata.getDownloadUrl().toString());
+                                        .setText(downloadUrl.toString());
+                                findViewById(R.id.button_download).setVisibility(View.VISIBLE);
                                 // [END_EXCLUDE]
                             }
                         });
@@ -172,11 +216,11 @@ MainActivity extends AppCompatActivity implements
                     protected void onFailure(UploadTask uploadTask, int errorCode) {
                         // Upload failed
                         Log.d(TAG, "uploadFromUri:onFailure:" + errorCode);
-                        hideProgressDialog();
 
-                        // Show an error message
+                        hideProgressDialog();
                         Toast.makeText(MainActivity.this, "Error: upload failed",
                                 Toast.LENGTH_SHORT).show();
+                        findViewById(R.id.button_download).setVisibility(View.GONE);
                     }
                 });
     }
@@ -209,6 +253,20 @@ MainActivity extends AppCompatActivity implements
         startActivityForResult(intent, RC_SIGN_IN);
     }
 
+    private void beginDownload() {
+        // Get path
+        String path = "photos/" + mFileUri.getLastPathSegment();
+
+        // Kick off download service
+        Intent intent = new Intent(this, MyDownloadService.class);
+        intent.setAction(MyDownloadService.ACTION_DOWNLOAD);
+        intent.putExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH, path);
+        startService(intent);
+
+        // Show loading spinner
+        showProgressDialog();
+    }
+
     private void handleGoogleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleGoogleSignInResult:" + result.getStatus());
         if (result.isSuccess() && result.getSignInAccount() != null) {
@@ -238,6 +296,14 @@ MainActivity extends AppCompatActivity implements
         }
     }
 
+    private void showMessageDialog(String title, String message) {
+        AlertDialog ad = new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .create();
+        ad.show();
+    }
+
     private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -262,6 +328,9 @@ MainActivity extends AppCompatActivity implements
                 break;
             case R.id.google_sign_in_button:
                 signIn();
+                break;
+            case R.id.button_download:
+                beginDownload();
                 break;
         }
     }
