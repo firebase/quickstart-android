@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.google.firebase.quickstart.invites">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name="com.google.firebase.quickstart.invites.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name="com.google.firebase.quickstart.invites.DeepLinkActivity"
+            android:label="@string/app_name"
+            android:theme="@style/ThemeOverlay.MyDialogActivity">
+
+            <!-- [START deep_link_filter] -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:host="example.com" android:scheme="http"/>
+                <data android:host="example.com" android:scheme="https"/>
+            </intent-filter>
+            <!-- [END deep_link_filter] -->
+        </activity>
+    </application>
+
+</manifest>

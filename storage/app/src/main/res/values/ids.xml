@@ -4,11 +4,11 @@
         Google Developers Project ID.
     -->
     <!-- TODO(developer): Change this! See README -->
-    <string name="project_id">REPLACE_ME</string>
+    <string name="project_id">ghquickstarts-c223b</string>
 
     <!--
         Web Client ID for your Firebase project, required for Google Sign In.
     -->
     <!-- TODO(developer): Change this! See README -->
-    <string name="server_client_id">REPLACE_ME</string>
+    <string name="server_client_id">337894900145-e4uksm38sne0bqrj6uvkbo4oiu4hvigl.apps.googleusercontent.com</string>
 </resources>
