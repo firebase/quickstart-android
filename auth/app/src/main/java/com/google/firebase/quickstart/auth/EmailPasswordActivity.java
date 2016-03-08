@@ -98,7 +98,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
     }
 
     private void signOut() {
-        mAuth.signOut(this);
+        mAuth.signOut();
         updateUI(null);
     }
 
@@ -122,7 +122,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             mStatusTextView.setText(getString(R.string.emailpassword_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUserId()));
+            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
             findViewById(R.id.email_password_buttons).setVisibility(View.GONE);
             findViewById(R.id.email_password_fields).setVisibility(View.GONE);

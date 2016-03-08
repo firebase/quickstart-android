@@ -10,6 +10,9 @@
     <string name="label_emailpassword">Email/Password Authentication</string>
     <string name="desc_emailpassword">Use an email and password to authenticate with Firebase.</string>
 
+    <string name="label_anonymous_auth">Anonymous Authentication</string>
+    <string name="desc_anonymous_auth">Sign in anonymously and then later upgrade to a full Firebase Auth user..</string>
+
     <string name="label_custom_auth">Custom Authentication</string>
     <string name="desc_custom_auth">Use a custom token signed by your own server to authenticate with Firebase.</string>
 
@@ -40,4 +43,7 @@
     <string name="emailpassword_status_fmt">Email User: %s</string>
     <string name="emailpassword_title_text">Email and Password</string>
     <string name="desc_emailpassword_icon">Generic person icon</string>
+
+    <string name="id_fmt">User ID: %s</string>
+    <string name="email_fmt">Email: %s</string>
 </resources>

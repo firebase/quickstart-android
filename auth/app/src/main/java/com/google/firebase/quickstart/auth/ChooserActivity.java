@@ -27,6 +27,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             GoogleSignInActivity.class,
             FacebookLoginActivity.class,
             EmailPasswordActivity.class,
+            AnonymousAuthActivity.class,
             CustomAuthActivity.class
     };
 
@@ -34,7 +35,8 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             R.string.desc_google_sign_in,
             R.string.desc_facebook_login,
             R.string.desc_emailpassword,
-            R.string.desc_custom_auth
+            R.string.desc_anonymous_auth,
+            R.string.desc_custom_auth,
     };
 
     @Override

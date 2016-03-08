@@ -94,7 +94,7 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
 
                     // [START_EXCLUDE]
                     ((TextView) findViewById(R.id.text_sign_in_status)).setText(
-                            "User ID: " + user.getUserId());
+                            "User ID: " + user.getUid());
                     Toast.makeText(CustomAuthActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
                     // [END_EXCLUDE]
                 } else {

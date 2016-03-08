@@ -143,7 +143,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements
 
     private void signOut() {
         // Firebase sign out
-        mAuth.signOut(this);
+        mAuth.signOut();
 
         // Google sign out
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -157,7 +157,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements
 
     private void revokeAccess() {
         // Firebase sign out
-        mAuth.signOut(this);
+        mAuth.signOut();
 
         // Google revoke access
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
@@ -188,7 +188,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUserId()));
+            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);

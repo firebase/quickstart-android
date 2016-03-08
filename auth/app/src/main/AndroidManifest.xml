@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.firebase.quickstart.auth" >
+    package="com.google.firebase.quickstart.auth">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -9,44 +9,44 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-
-        <activity android:name="com.google.firebase.quickstart.auth.ChooserActivity">
+        android:theme="@style/AppTheme">
+        <activity android:name=".ChooserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CustomAuthActivity"
+            android:label="@string/label_custom_auth" />
 
         <activity
-            android:name="com.google.firebase.quickstart.auth.CustomAuthActivity"
-            android:label="@string/label_custom_auth">
-        </activity>
+            android:name=".GoogleSignInActivity"
+            android:label="@string/label_google_sign_in" />
 
         <activity
-            android:name="com.google.firebase.quickstart.auth.GoogleSignInActivity"
-            android:label="@string/label_google_sign_in">
-        </activity>
-
-        <activity
-            android:name="com.google.firebase.quickstart.auth.FacebookLoginActivity"
-            android:label="@string/label_facebook_login">
-        </activity>
+            android:name=".FacebookLoginActivity"
+            android:label="@string/label_facebook_login" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
+            android:value="@string/facebook_app_id" />
 
         <activity
-            android:name="com.google.firebase.quickstart.auth.EmailPasswordActivity"
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name=".EmailPasswordActivity"
             android:label="@string/label_emailpassword"
-            android:windowSoftInputMode="stateAlwaysHidden">
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name=".AnonymousAuthActivity"
+            android:label="@string/label_anonymous_auth"/>
 
     </application>
 

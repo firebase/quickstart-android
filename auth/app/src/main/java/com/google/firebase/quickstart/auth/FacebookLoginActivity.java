@@ -129,7 +129,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             mStatusTextView.setText(getString(R.string.facebook_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUserId()));
+            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
