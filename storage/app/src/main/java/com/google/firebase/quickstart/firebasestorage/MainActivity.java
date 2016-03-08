@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.firebasestorage;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,52 +16,34 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.FirebaseUser;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
-
-public class
-MainActivity extends AppCompatActivity implements
-        View.OnClickListener,
-        EasyPermissions.PermissionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity implements
+        View.OnClickListener {
 
     private static final String TAG = "MainActivity";
 
     private static final int RC_TAKE_PICTURE = 101;
-    private static final int RC_PERMISSIONS = 102;
-    private static final int RC_SIGN_IN = 103;
 
     private static final String KEY_FILE_URI = "key_file_uri";
-    private static final String[] perms = new String[]{
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-    };
 
     private BroadcastReceiver mDownloadReceiver;
     private ProgressDialog mProgressDialog;
     private FirebaseAuth mAuth;
-    private FirebaseStorage mStorageRef;
-    private GoogleApiClient mGoogleApiClient;
+    private StorageReference mStorageRef;
     private Uri mFileUri = null;
 
     @Override
@@ -80,23 +61,13 @@ MainActivity extends AppCompatActivity implements
         // Initialize Firebase Storage Ref
         // [START get_storage_ref]
         String bucketName = "gs://" + getString(R.string.project_id) + ".storage.firebase.com";
-        mStorageRef = new FirebaseStorage(bucketName);
+        mStorageRef = FirebaseStorage.getInstance().getReference(bucketName);
         // [END get_storage_ref]
 
         // Click listeners
         findViewById(R.id.button_camera).setOnClickListener(this);
-        findViewById(R.id.google_sign_in_button).setOnClickListener(this);
+        findViewById(R.id.button_sign_in).setOnClickListener(this);
         findViewById(R.id.button_download).setOnClickListener(this);
-
-        // GoogleApiClient with Sign In
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,
-                        new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                                .requestEmail()
-                                .requestIdToken(getString(R.string.server_client_id))
-                                .build())
-                .build();
 
         // Restore instance state
         if (savedInstanceState != null) {
@@ -168,11 +139,6 @@ MainActivity extends AppCompatActivity implements
                 Toast.makeText(this, "Taking picture failed.", Toast.LENGTH_SHORT).show();
             }
         }
-
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleGoogleSignInResult(result);
-        }
     }
 
     // [START upload_from_uri]
@@ -181,61 +147,47 @@ MainActivity extends AppCompatActivity implements
 
         // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
-        final FirebaseStorage photoRef = mStorageRef.getChild("photos")
+        final StorageReference photoRef = mStorageRef.getChild("photos")
                 .getChild(fileUri.getLastPathSegment());
         // [END get_child_ref]
 
         // Upload file to Firebase Storage
         showProgressDialog();
         photoRef.putFile(fileUri).addCallback(this,
-                new UploadTask.Callback() {
+                new UploadTask.Callbacks() {
                     @Override
-                    protected void onCompleted(UploadTask uploadTask) {
+                    protected void onSuccess(UploadTask uploadTask) {
                         // Upload succeeded
-                        Log.d(TAG, "uploadFromUri:onCompleted:" + uploadTask.getResultCode());
+                        Log.d(TAG, "uploadFromUri:onSuccess");
                         hideProgressDialog();
 
-                        // Get the StorageMetadata and display public download URL
-                        showProgressDialog();
-                        photoRef.getMetadata(new FirebaseStorage.MetadataCallback() {
-                            @Override
-                            protected void onComplete(@NonNull StorageMetadata metadata) {
-                                Uri downloadUrl = metadata.getDownloadUrl();
+                        // Get the public download URL
+                        Uri downloadUrl = uploadTask.getMetadata().getDownloadUrl();
 
-                                // [START_EXCLUDE]
-                                hideProgressDialog();
-                                ((TextView) findViewById(R.id.picture_download_uri))
-                                        .setText(downloadUrl.toString());
-                                findViewById(R.id.button_download).setVisibility(View.VISIBLE);
-                                // [END_EXCLUDE]
-                            }
-                        });
+                        // [START_EXCLUDE]
+                        ((TextView) findViewById(R.id.picture_download_uri))
+                                .setText(downloadUrl.toString());
+                        findViewById(R.id.button_download).setVisibility(View.VISIBLE);
+                        // [END_EXCLUDE]
                     }
 
                     @Override
-                    protected void onFailure(UploadTask uploadTask, int errorCode) {
+                    protected void onFailure(UploadTask uploadTask, StorageException e) {
                         // Upload failed
-                        Log.d(TAG, "uploadFromUri:onFailure:" + errorCode);
-
+                        Log.w(TAG, "uploadFromUri:onFailure", e);
                         hideProgressDialog();
+
+                        // [START_EXCLUDE]
                         Toast.makeText(MainActivity.this, "Error: upload failed",
                                 Toast.LENGTH_SHORT).show();
                         findViewById(R.id.button_download).setVisibility(View.GONE);
+                        // [END_EXCLUDE]
                     }
                 });
     }
     // [END upload_from_uri]
 
-    @AfterPermissionGranted(RC_PERMISSIONS)
     private void launchCamera() {
-        // Check for camera permissions
-        if (!EasyPermissions.hasPermissions(this, perms)) {
-            EasyPermissions.requestPermissions(this,
-                    "This sample will upload a picture from your Camera",
-                    RC_PERMISSIONS, perms);
-            return;
-        }
-
         // Create intent
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -248,9 +200,18 @@ MainActivity extends AppCompatActivity implements
         startActivityForResult(takePictureIntent, RC_TAKE_PICTURE);
     }
 
-    private void signIn() {
-        Intent intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(intent, RC_SIGN_IN);
+
+    private void signInAnonymously() {
+        // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
+        showProgressDialog();
+        mAuth.signInAnonymously().setResultCallback(new ResultCallback<AuthResult>() {
+            @Override
+            public void onResult(@NonNull AuthResult result) {
+                Log.d(TAG, "anonymous:onResult:" + result.getStatus());
+                hideProgressDialog();
+                updateUI(result.getUser());
+            }
+        });
     }
 
     private void beginDownload() {
@@ -266,25 +227,6 @@ MainActivity extends AppCompatActivity implements
         // Show loading spinner
         showProgressDialog();
     }
-
-    private void handleGoogleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleGoogleSignInResult:" + result.getStatus());
-        if (result.isSuccess() && result.getSignInAccount() != null) {
-            String idToken = result.getSignInAccount().getIdToken();
-            mAuth.signInWithCredential(
-                    GoogleAuthProvider.getCredential(idToken, null))
-                    .setResultCallback(new ResultCallback<AuthResult>() {
-                        @Override
-                        public void onResult(@NonNull AuthResult result) {
-                            Log.d(TAG, "onResult:" + result);
-                            updateUI(result.getUser());
-                        }
-                    });
-        } else {
-            updateUI(null);
-        }
-    }
-
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
@@ -326,31 +268,12 @@ MainActivity extends AppCompatActivity implements
             case R.id.button_camera:
                 launchCamera();
                 break;
-            case R.id.google_sign_in_button:
-                signIn();
+            case R.id.button_sign_in:
+                signInAnonymously();
                 break;
             case R.id.button_download:
                 beginDownload();
                 break;
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {}
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {}
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.w(TAG, "onConnectionFailed:" + connectionResult);
     }
 }

@@ -17,14 +17,16 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/status_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_in_prompt" />
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/google_sign_in_button"
+        <Button
+            android:id="@+id/button_sign_in"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in_anonymously"/>
 
     </LinearLayout>
 

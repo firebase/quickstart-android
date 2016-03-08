@@ -12,14 +12,7 @@ Getting Started
 - [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
 - Follow the [quickstart guide](https://developers.google.com/firebase/docs/) to set up your project.
 - Go to the [Google Developers Console](https://console.developers.google.com/project) and navigate to your project:
-    - From the left "hamburger" menu navigate to the **API Manager** tab.
-    - Click on the **Credentials** item in the left column.
-    - Under the heading **OAuth 2.0 Client IDs** you should see at least one entry called
-      **Web client**.  Copy the value of that entry (it should be a string ending with
-      `.apps.googleusercontent.com`). Open the file `app/src/main/res/values/ids.xml`
-      and replace the value of the `server_client_id` string with the value you just copied.
-    - Go back to your project in the Developers Console in your browser. Click the "hamburger"
-      meny and then click **Home**. On the Home page you should see the ID of your project.
+    - Click the "hamburger" menu and then click **Home**. On the Home page you should see the ID of your project.
       It will also be in your current browser URL as the `?project=YOUR_PROJECT_ID` parameter.
       Copy this value and replace the value of the `google_project_id` string in the same
       `app/src/res/values/ids.xml` you edited earlier.
