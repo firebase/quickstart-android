@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="price_prefix">Your price is: $</string>
+    <string name="fetching_msg">Checking your price…</string>
 </resources>

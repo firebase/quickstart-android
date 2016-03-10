@@ -21,97 +21,112 @@
 
 package com.google.samples.quickstart.config;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.config.Config;
-import com.google.android.gms.config.ConfigApi;
-import com.google.android.gms.config.ConfigStatusCodes;
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.config.FirebaseRemoteConfig;
+import com.google.android.gms.config.FirebaseRemoteConfigException;
+import com.google.android.gms.config.FirebaseRemoteConfigFetchCallback;
+import com.google.android.gms.config.FirebaseRemoteConfigSettings;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MyTestApp";
-    private GoogleApiClient mClient;
+    // Original price
+    private static final long PRICE = 100;
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private TextView mPriceTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mClient = new GoogleApiClient.Builder(this, this, this)
-                .addApi(Config.API)
-                .enableAutoManage(this, this)
+
+        mPriceTextView = (TextView) findViewById(R.id.priceView);
+
+        Button fetchButton = (Button) findViewById(R.id.fetchButton);
+        fetchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fetchDiscount();
+            }
+        });
+
+        // Initialize Firebase App. This is required to use Firebase Remote Config.
+        FirebaseApp.initializeApp(this, getResources().getString(R.string.google_app_id),
+                new FirebaseOptions.Builder(getResources().getString(R.string.google_api_key)).build());
+
+        // Get Remote Config instance.
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+        // Create Remote Config Setting to enable developer mode.
+        // Fetching configs from the server is normally limited to 5 requests per hour.
+        // Enabling developer mode allows many more requests to be made per hour, so developers
+        // can test different config values during development.
+        // [START enable_dev_mode]
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .build();
+        mFirebaseRemoteConfig.setConfigSettings(configSettings);
+        // [END enable_dev_mode]
+
+        // Fetch discount config.
+        fetchDiscount();
     }
 
-    public void onConnected(Bundle connectionHint) {
-        Log.i(TAG, "onConnected");
-        // [START fetch_config_request]
-        ConfigApi.FetchConfigRequest request = new ConfigApi.FetchConfigRequest.Builder()
-                .addCustomVariable("build", "dev")
-                /**
-                 Cache expiration defaults to 12 hours, uncomment the line below to change it.
-                 If you fetch too frequently though, your requests will be throttled and
-                 values read from the local cache. 20 minutes should prevent this from happening.
-                 */
-                //.setCacheExpirationSeconds(60 * 20)
-                .build();
-        // [END fetch_config_request]
-        // [START fetch_config_callback]
-        Config.ConfigApi.fetchConfig(mClient, request)
-                .setResultCallback(new ResultCallback<ConfigApi.FetchConfigResult>() {
-                    @Override
-                    public void onResult(ConfigApi.FetchConfigResult fetchConfigResult) {
-                        Log.i(TAG, "onResult");
-                        TextView pv = (TextView) findViewById(R.id.priceView);
-                        int statusCode = fetchConfigResult.getStatus().getStatusCode();
-                        if (fetchConfigResult.getStatus().isSuccess() ||
-                                // if throttled, values won't be fresh
-                                statusCode == ConfigStatusCodes.FETCH_THROTTLED ||
-                                statusCode == ConfigStatusCodes.FETCH_THROTTLED_STALE) {
-                            long price = 100;
-                            boolean isPromo =
-                                    fetchConfigResult.getAsBoolean("is_promotion_on", false);
-                            long discount = fetchConfigResult.getAsLong("discount", 0);
-                            if (isPromo) {
-                                price = (price / 100) * (price - discount);
-                            }
-                            String priceMsg = "Your price is $" + price;
-                            pv.setText(priceMsg);
-                            boolean isDevBuild =
-                                    fetchConfigResult.getAsBoolean("dev_features_on", false);
-                            if (isDevBuild) {
-                                String debugMsg = "Config set size: " +
-                                        fetchConfigResult.getAllConfigKeys().size();
-                                TextView dv = (TextView) findViewById(R.id.debugView);
-                                dv.setText(debugMsg);
-                            }
-                        } else {
-                            // There has been an error fetching the config
-                            Log.w(TAG, "Error fetching config: " +
-                                    fetchConfigResult.getStatus().toString());
-                            pv.setText("Error fetching config: " +
-                                    fetchConfigResult.getStatus().getStatusMessage());
-                        }
-                    }
-                });
-                // [END fetch_config_callback]
+    /**
+     * Fetch discount from server.
+     */
+    private void fetchDiscount() {
+        mPriceTextView.setText(getResources().getString(R.string.fetching_msg));
+
+        long cacheExpiration = 3600; // 1 hour in seconds.
+        // If in developer mode cacheExpiration is set to 0 so each fetch will retrieve values from
+        // the server.
+        if (mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
+            cacheExpiration = 0;
+        }
+
+        // cacheExpirationSeconds is set to cacheExpiration here, indicating that any previously
+        // fetched and cached config would be considered expired because it would have been fetched
+        // more than cacheExpiration seconds ago. Thus the next fetch would go to the server unless
+        // throttling is in progress. The default expiration duration is 43200 (12 hours).
+        // [START fetch_config_with_callback]
+        mFirebaseRemoteConfig.fetch(cacheExpiration, new FirebaseRemoteConfigFetchCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "Fetch Succeeded");
+                // Once the config is successfully fetched it must be activated before newly fetched
+                // values are returned.
+                mFirebaseRemoteConfig.activateFetched();
+                displayPrice();
+            }
+
+            @Override
+            public void onFailure(FirebaseRemoteConfigException e) {
+                Log.d(TAG, "Fetch failed");
+                mPriceTextView.setText(getResources().getString(R.string.price_prefix) + PRICE);
+            }
+        });
+        // [END fetch_config_with_callback]
     }
 
-    @Override
-    public void onConnectionSuspended(int cause) {
-        Log.w(TAG, "suspended: " + cause);
-    }
+    /**
+     * Display price with discount applied if promotion is on. Otherwise display original price.
+     */
+    private void displayPrice() {
+        if (mFirebaseRemoteConfig.getBoolean("is_promotion_on")) {
+            long discountedPrice = PRICE - mFirebaseRemoteConfig.getLong("discount");
+            mPriceTextView.setText(getResources().getString(R.string.price_prefix) + discountedPrice);
+        } else {
+            mPriceTextView.setText(getResources().getString(R.string.price_prefix) + PRICE);
+        }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult status) {
-        Log.w(TAG, "failed: " + status);
     }
-
 }

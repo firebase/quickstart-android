@@ -14,16 +14,12 @@
         android:layout_height="wrap_content"
         android:text="Checking your price..." />
 
-    <TextView
-        android:id="@+id/debugView"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/priceView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/priceView"
-        android:layout_below="@+id/priceView"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:text="fetch remote price"
+        android:id="@+id/fetchButton"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
