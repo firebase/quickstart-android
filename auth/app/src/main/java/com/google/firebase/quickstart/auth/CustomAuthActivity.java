@@ -62,7 +62,7 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         // [START initialize_auth]
         // Initialize Firebase
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions(getString(R.string.google_api_key)));
+                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
 
         // Get instance of FirebaseAuth
         mAuth = FirebaseAuth.getAuth();
