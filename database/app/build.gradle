@@ -32,9 +32,14 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.firebaseui:firebase-ui:0.2.2'
 
-    compile 'com.google.android.gms:firebase-database:8.5.3'
+    // Note: The FirebaseUI library has not yet been updated to support the new Firebase class
+    // structure. A small fork of the classes necessary for this sample has been provided
+    // as a separate module.
+    // compile 'com.firebaseui:firebase-ui:0.2.2'
+    compile project(':firebaseui')
+
+    compile 'com.google.android.gms:firebase-database:8.5.4'
 }
 
 apply plugin: 'com.google.gms.google-services'
