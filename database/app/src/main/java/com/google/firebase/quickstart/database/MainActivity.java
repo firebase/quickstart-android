@@ -16,11 +16,6 @@
 
 package com.google.firebase.quickstart.database;
 
-import com.google.firebase.quickstart.database.models.Message;
-
-import com.firebase.client.Firebase;
-import com.firebase.ui.FirebaseRecyclerViewAdapter;
-
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +29,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.firebase.ui.FirebaseRecyclerAdapter;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.quickstart.database.models.Message;
+
 import java.util.UUID;
 
 
@@ -42,7 +44,7 @@ public class  MainActivity extends AppCompatActivity implements TextView.OnEdito
     /**
      * Our reference to the root of our Firebase database.
      */
-    private Firebase mFirebaseRef;
+    private DatabaseReference mFirebaseRef;
 
     /**
      * The username of the signed in user, or nil if logged out.
@@ -76,8 +78,16 @@ public class  MainActivity extends AppCompatActivity implements TextView.OnEdito
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Create a reference to a location in our Firebase Database that stores the chat messages.
-        mFirebaseRef = new Firebase(getString(R.string.firebase_database_url));
+        // [START initialize_firebase]
+        // Initialize Firebase
+        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
+                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
+        // [END initialize_firebase]
+
+        // [START create_database_reference]
+        // Get a reference to the Firebase Database
+        mFirebaseRef = FirebaseDatabase.getInstance().getReference();
+        // [END create_database_reference]
 
         mTextEdit = (EditText) findViewById(R.id.text_edit);
         mTextEdit.setOnEditorActionListener(this);
@@ -93,8 +103,10 @@ public class  MainActivity extends AppCompatActivity implements TextView.OnEdito
 
                 // We will only send non-empty messages
                 if (message.getText().length() > 0) {
+                    // [START push_message]
                     // Create a new message in the Firebase Database.
                     mFirebaseRef.child("messages").push().setValue(message);
+                    // [END push_message]
 
                     // Clear the existing message, to make it obvious to the user that it was sent
                     // to Firebase.
@@ -118,8 +130,8 @@ public class  MainActivity extends AppCompatActivity implements TextView.OnEdito
         /**
          * Adapter for the view of chat messages from the Firebase Database.
          */
-        final FirebaseRecyclerViewAdapter<Message,MessageViewHolder> firebaseAdapter =
-                new FirebaseRecyclerViewAdapter<Message,MessageViewHolder> (
+        final FirebaseRecyclerAdapter<Message,MessageViewHolder> firebaseAdapter =
+                new FirebaseRecyclerAdapter<Message,MessageViewHolder> (
                         Message.class,
                         android.R.layout.simple_list_item_2,
                         MessageViewHolder.class,
@@ -142,7 +154,7 @@ public class  MainActivity extends AppCompatActivity implements TextView.OnEdito
                 int lastVis = mLlm.findLastCompletelyVisibleItemPosition();
                 if (lastVis == -1 ||
                         (positionStart >= (max - 1) && lastVis == (positionStart - 1))) {
-                    mRecycler.scrollToPosition(positionStart);
+                    mRecycler.smoothScrollToPosition(positionStart);
                 }
             }
         });

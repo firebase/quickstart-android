@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Database</string>
+    <string name="app_name">Firebase Database</string>
     <string name="action_settings">Settings</string>
     <string name="menu_login">Log in</string>
     <string name="menu_logout">Log out</string>
