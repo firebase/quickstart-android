@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Initialize Firebase
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions(getString(R.string.google_api_key)));
+                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getAuth();

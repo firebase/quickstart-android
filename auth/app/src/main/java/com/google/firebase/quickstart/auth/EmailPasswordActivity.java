@@ -49,7 +49,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
         // [START initialize_auth]
         // Initialize Firebase Auth
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions(getString(R.string.google_api_key)));
+                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
         mAuth = FirebaseAuth.getAuth();
         // [END initialize_auth]
     }

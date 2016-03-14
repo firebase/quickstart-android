@@ -37,7 +37,7 @@ public class MyDownloadService extends Service {
 
         // Initialize Firebase
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions(getString(R.string.google_api_key)));
+                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
 
         // Initialize Storage
         String bucketName = "gs://" + getString(R.string.project_id) + ".storage.firebase.com";
