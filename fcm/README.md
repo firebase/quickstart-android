@@ -1,34 +1,34 @@
-Firebase Cloud Messaging Quickstart
+Firebase Notifications Quickstart
 ==============================
 
-The Firebase Cloud Messaging Android Quickstart app demonstrates registering
-an Android app for Cloud Messaging and handling the receipt of a message.
-InstanceID allows easy registration while GcmReceiver and
+The Firebase Notifications Android Quickstart app demonstrates registering
+an Android app for Notifications and handling the receipt of a message.
+InstanceID allows easy registration while GcmReceiver and GcmListener
+enable message handling on the client.
 
 Introduction
 ------------
 
-- [Read more about Firebase Cloud Messaging](https://developers.google.com/firebase/)
+- [Read more about Firebase Notifications](https://developers.google.com/firebase/)
 
 Getting Started
 ---------------
 
-- [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
-- Follow the [quickstart guide](https://developers.google.com/cloud-messaging/) to set up your project.
+- [Add Firebase to your Android Projet](https://developers.google.com/firebase/docs/android/setup).
 - Run the sample on Android device or emulator.
 
 Sending Notifications
 ---------------------
 
-Use Firebase console to send FCM messages to device or emulator.
-- From Firebase console Notification section click New Message button.
+Use Firebase console to send GCM messages to device or emulator.
+
+- From Firebase console Notification section, click New Message.
 - Enter the text of your message in the Message Text field.
 - Ensure target is set to All.
-  - You can also set target to Topic and choose the global topic.
-- Click Send Message button.
+- Click Send Message.
 - If your application is in the foreground you should see the incoming
-  message printed in the logs. Otherwise a system notification should be
-  displayed, and when tapped should return to the quickstart.
+  message printed in the logs. If it is in the background, a system notification should be
+  displayed, and when tapped should return to the quickstart app.
 
 Screenshots
 -----------
