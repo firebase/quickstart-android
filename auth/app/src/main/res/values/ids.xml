@@ -6,10 +6,4 @@
     -->
     <!--  TODO(developer): REPLACE -->
     <string name="facebook_app_id">REPLACE_ME</string>
-
-    <!--
-        Your Web Client ID. See README.
-    -->
-    <!--  TODO(developer): REPLACE -->
-    <string name="server_client_id">REPLACE_ME</string>
 </resources>
