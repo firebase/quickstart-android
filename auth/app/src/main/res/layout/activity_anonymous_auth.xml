@@ -64,7 +64,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_linking"
-        android:hint="@string/hint_password"
+        android:hint="@string/hint_email"
         android:inputType="textEmailAddress" />
 
     <EditText
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/field_email"
         android:layout_toRightOf="@+id/field_email"
-        android:hint="@string/hint_email"
+        android:hint="@string/hint_password"
         android:inputType="textPassword" />
 
     <Button
