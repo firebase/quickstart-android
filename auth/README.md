@@ -19,9 +19,6 @@ Getting Started
   - Select the **Auth** panel.
   - Toggle the **Google** switch to the **On** position.
   - Select your OAuth 2.0 Client ID from the dropdown menu and then click **Save**.
-  - Copy the value of the Client ID you just selected (it should be a string ending with
-    `.apps.googleusercontent.com`). Open the file `app/src/main/res/values/ids.xml`
-    and replace the value of the `server_client_id` string with the value you just copied.
 - Run the app on your device or emulator.
     - Select `GoogleSignInActivity` from the main screen.
     - Click the **Sign In** button to begin.
