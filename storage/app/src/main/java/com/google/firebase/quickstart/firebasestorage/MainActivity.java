@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Initialize Firebase Storage Ref
         // [START get_storage_ref]
-        String bucketName = "gs://" + getString(R.string.project_id) + ".storage.firebase.com";
+        String bucketName = "gs://" + getString(R.string.google_project_id) + ".storage.firebase.com";
         mStorageRef = FirebaseStorage.getInstance().getReference(bucketName);
         // [END get_storage_ref]
 

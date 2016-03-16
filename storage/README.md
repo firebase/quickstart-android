@@ -12,10 +12,7 @@ Getting Started
 - [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
 - Follow the [quickstart guide](https://developers.google.com/firebase/docs/) to set up your project.
 - Go to the [Google Developers Console](https://console.developers.google.com/project) and navigate to your project:
-    - Click the "hamburger" menu and then click **Home**. On the Home page you should see the ID of your project.
-      It will also be in your current browser URL as the `?project=YOUR_PROJECT_ID` parameter.
-      Copy this value and replace the value of the `google_project_id` string in the same
-      `app/src/res/values/ids.xml` you edited earlier.
+    - Click the "hamburger" menu and then click **Billing**. Ensure that Billing is turned on for your project.
 - Run the Android application on your Android device or emulator.
 
 Support

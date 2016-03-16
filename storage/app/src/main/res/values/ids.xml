@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!--
-        Google Developers Project ID.
-    -->
-    <!-- TODO(developer): Change this! See README -->
-    <string name="project_id">ghquickstarts-c223b</string>
-</resources>

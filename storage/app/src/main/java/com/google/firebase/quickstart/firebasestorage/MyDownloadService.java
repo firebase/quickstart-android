@@ -40,7 +40,7 @@ public class MyDownloadService extends Service {
                 new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
 
         // Initialize Storage
-        String bucketName = "gs://" + getString(R.string.project_id) + ".storage.firebase.com";
+        String bucketName = "gs://" + getString(R.string.google_project_id) + ".storage.firebase.com";
         mStorage = FirebaseStorage.getInstance().getReference(bucketName);
     }
 
