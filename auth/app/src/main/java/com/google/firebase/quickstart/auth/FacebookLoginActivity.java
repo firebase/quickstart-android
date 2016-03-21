@@ -50,11 +50,14 @@ public class FacebookLoginActivity extends AppCompatActivity {
         mStatusTextView = (TextView) findViewById(R.id.status);
         mDetailTextView = (TextView) findViewById(R.id.detail);
 
+        // [START initialize_auth]
         // Initialize Firebase Auth
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
                 new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
         mAuth = FirebaseAuth.getAuth();
+        // [END initialize_auth]
 
+        // [START initialize_fblogin]
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.button_facebook_login);
@@ -69,15 +72,20 @@ public class FacebookLoginActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel");
+                // [START_EXCLUDE]
                 updateUI(null);
+                // [END_EXCLUDE]
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
+                // [START_EXCLUDE]
                 updateUI(null);
+                // [END_EXCLUDE]
             }
         });
+        // [END initialize_fblogin]
     }
 
     @Override
@@ -104,27 +112,38 @@ public class FacebookLoginActivity extends AppCompatActivity {
         if (opr.isDone()) {
             handleFirebaseAuthResult(opr.get());
         } else {
+            // Show progress dialog
+            // [START_EXCLUDE]
             showProgressDialog();
+            // [END_EXCLUDE]
             opr.setResultCallback(new ResultCallback<AuthResult>() {
                 @Override
                 public void onResult(@NonNull AuthResult result) {
                     handleFirebaseAuthResult(result);
+                    // Hide progress dialog
+                    // [START_EXCLUDE]
                     hideProgressDialog();
+                    // [END_EXCLUDE]
                 }
             });
         }
     }
-    // [END auth_with_facebook]
 
     private void handleFirebaseAuthResult(AuthResult result) {
         if (result.getStatus().isSuccess()) {
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
-            updateUI(result.getUser());
+            FirebaseUser user = result.getUser();
+            // [START_EXCLUDE]
+            updateUI(user);
+            // [END_EXCLUDE]
         } else {
             Log.d(TAG, "handleFirebaseAuthResult:ERROR:" + result.getStatus().toString());
+            // [START_EXCLUDE]
             updateUI(null);
+            // [END_EXCLUDE]
         }
     }
+    // [END auth_with_facebook]
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
