@@ -38,10 +38,12 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anonymous_auth);
 
+        // [START initialize_auth]
         // Initialize Firebase Auth
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
                 new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
         mAuth = FirebaseAuth.getAuth();
+        // [END initialize_auth]
 
         // Fields
         mEmailField = (EditText) findViewById(R.id.field_email);
@@ -54,14 +56,22 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
     }
 
     private void signInAnonymously() {
+        // [START signin_anonymously]
+        // Show a progress dialog
+        // [START_EXCLUDE]
         showProgressDialog();
+        // [END_EXCLUDE]
         mAuth.signInAnonymously().setResultCallback(new ResultCallback<AuthResult>() {
             @Override
             public void onResult(@NonNull AuthResult result) {
+                // Hide the progress dialog
+                // [START_EXCLUDE]
                 hideProgressDialog();
+                // [END_EXCLUDE]
                 handleFirebaseAuthResult(result);
             }
         });
+        // [END signin_anonymously]
     }
 
     private void signOut() {
@@ -74,27 +84,42 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
         AuthCredential credential = EmailAuthProvider.getEmailAuthCredential(email, password);
 
         // Link the anonymous user to the email credential
+        // [START link_credential]
+        // Show a progress dialog
+        // [START_EXCLUDE]
+        showProgressDialog();
+        // [END_EXCLUDE]
         showProgressDialog();
         mAuth.getCurrentUser().linkWithCredential(credential).setResultCallback(
                 new ResultCallback<AuthResult>() {
                     @Override
                     public void onResult(@NonNull AuthResult result) {
+                        // Hide the progress dialog
+                        // [START_EXCLUDE]
                         hideProgressDialog();
+                        // [END_EXCLUDE]
                         handleFirebaseAuthResult(result);
                     }
                 });
+        // [END link_credential]
     }
 
+    // [START handle_auth_result]
     private void handleFirebaseAuthResult(AuthResult result) {
         if (result.getStatus().isSuccess()) {
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
+            // [START_EXCLUDE]
             updateUI(result.getUser());
+            // [END_EXCLUDE]
         } else {
             Log.d(TAG, "handleFirebaseAuthResult:ERROR:" + result.getStatus().toString());
             Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+            // [START_EXCLUDE]
             updateUI(null);
+            // [END_EXCLUDE]
         }
     }
+    // [END handle_auth_result]
 
     private void updateUI(FirebaseUser user) {
         TextView idView = (TextView) findViewById(R.id.anonymous_status_id);

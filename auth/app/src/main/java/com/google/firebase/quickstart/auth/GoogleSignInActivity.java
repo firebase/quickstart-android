@@ -57,20 +57,24 @@ public class GoogleSignInActivity extends AppCompatActivity implements
         findViewById(R.id.sign_out_button).setOnClickListener(this);
         findViewById(R.id.disconnect_button).setOnClickListener(this);
 
+        // [START config_signin]
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+        // [END config_signin]
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        // [START initialize_auth]
         FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
                 new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
         mAuth = FirebaseAuth.getAuth();
+        // [END initialize_auth]
     }
 
     @Override
@@ -82,6 +86,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements
         updateUI(user);
     }
 
+    // [START onactivityresult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -89,9 +94,12 @@ public class GoogleSignInActivity extends AppCompatActivity implements
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            // [START_EXCLUDE]
             handleGoogleSignInResult(result);
+            // [END_EXCLUDE]
         }
     }
+    // [END onactivityresult]
 
     // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -102,27 +110,39 @@ public class GoogleSignInActivity extends AppCompatActivity implements
             Log.d(TAG, "Got cached firebase auth");
             handleFirebaseAuthResult(opr.get());
         } else {
+            // Show progress dialog
+            // [START_EXCLUDE]
             showProgressDialog();
+            // [END_EXCLUDE]
             opr.setResultCallback(new ResultCallback<AuthResult>() {
                 @Override
-                public void onResult(@NonNull AuthResult authResult) {
+                public void onResult(@NonNull AuthResult result) {
+                    handleFirebaseAuthResult(result);
+                    // Hide progress dialog
+                    // [START_EXCLUDE]
                     hideProgressDialog();
-                    handleFirebaseAuthResult(authResult);
+                    // [END_EXCLUDE]
                 }
             });
         }
     }
-    // [END auth_with_google]
 
     private void handleFirebaseAuthResult(AuthResult result) {
         Log.d(TAG, "handleFirebaseAuthResult:" + result.getStatus());
         if (result.getStatus().isSuccess()) {
-            Log.d(TAG, "handleFirebaseAuthResult:SUCCESS:" + result.getUser());
-            updateUI(result.getUser());
+            FirebaseUser user = result.getUser();
+            Log.d(TAG, "handleFirebaseAuthResult:SUCCESS:" + user);
+            // [START_EXCLUDE]
+            updateUI(user);
+            // [END_EXCLUDE]
         } else {
+            Log.d(TAG, "handleFirebaseAuthResult:ERROR:" + result.getStatus().toString());
+            // [START_EXCLUDE]
             updateUI(null);
+            // [END_EXCLUDE]
         }
     }
+    // [END auth_with_google]
 
     private void handleGoogleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.getStatus());
@@ -136,10 +156,12 @@ public class GoogleSignInActivity extends AppCompatActivity implements
         }
     }
 
+    // [START signin]
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+    // [END signin]
 
     private void signOut() {
         // Firebase sign out
