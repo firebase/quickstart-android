@@ -11,12 +11,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.FirebaseError;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.models.Message;
-
-import java.util.Map;
 
 /**
  * Activity to demonstrate basic data querying. To start this Activity, run:
@@ -62,14 +59,17 @@ public class QueryActivity extends AppCompatActivity {
                 // data at this path or a subpath.
 
                 // Get the data as Message objects
-                GenericTypeIndicator<Map<String, Message>> type =
-                        new GenericTypeIndicator<Map<String, Message>>() {};
-                Map<String,Message> messages = dataSnapshot.getValue(type);
+                Log.d(TAG, "Number of messages: " + dataSnapshot.getChildrenCount());
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    // Extract a Message object from the DataSnapshot
+                    Message message = child.getValue(Message.class);
 
-                // Use the messages
-                // [START_EXCLUDE]
-                Log.d(TAG, "onDataChange:numMessages:" + messages.size());
-                // [END_EXCLUDE]
+                    // Use the Message
+                    // [START_EXCLUDE]
+                    Log.d(TAG, "message text:" + message.getText());
+                    Log.d(TAG, "message sender name:" + message.getName());
+                    // [END_EXCLUDE]
+                }
             }
 
             @Override
