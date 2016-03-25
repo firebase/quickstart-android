@@ -43,8 +43,11 @@ public class MainActivity extends AppCompatActivity implements
     private BroadcastReceiver mDownloadReceiver;
     private ProgressDialog mProgressDialog;
     private FirebaseAuth mAuth;
-    private StorageReference mStorageRef;
     private Uri mFileUri = null;
+
+    // [START declare_ref]
+    private StorageReference mStorageRef;
+    // [END declare_ref]
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,19 +155,21 @@ public class MainActivity extends AppCompatActivity implements
         // [END get_child_ref]
 
         // Upload file to Firebase Storage
+        // [START_EXCLUDE]
         showProgressDialog();
+        // [END_EXCLUDE]
         photoRef.putFile(fileUri).addCallback(this,
                 new UploadTask.Callbacks() {
                     @Override
                     protected void onSuccess(UploadTask uploadTask) {
                         // Upload succeeded
                         Log.d(TAG, "uploadFromUri:onSuccess");
-                        hideProgressDialog();
 
                         // Get the public download URL
                         Uri downloadUrl = uploadTask.getMetadata().getDownloadUrl();
 
                         // [START_EXCLUDE]
+                        hideProgressDialog();
                         ((TextView) findViewById(R.id.picture_download_uri))
                                 .setText(downloadUrl.toString());
                         findViewById(R.id.button_download).setVisibility(View.VISIBLE);
@@ -175,9 +180,9 @@ public class MainActivity extends AppCompatActivity implements
                     protected void onFailure(UploadTask uploadTask, StorageException e) {
                         // Upload failed
                         Log.w(TAG, "uploadFromUri:onFailure", e);
-                        hideProgressDialog();
 
                         // [START_EXCLUDE]
+                        hideProgressDialog();
                         Toast.makeText(MainActivity.this, "Error: upload failed",
                                 Toast.LENGTH_SHORT).show();
                         findViewById(R.id.button_download).setVisibility(View.GONE);
