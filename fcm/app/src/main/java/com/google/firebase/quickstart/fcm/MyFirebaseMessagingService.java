@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Google Inc. All Rights Reserved.
+ * Copyright 2016 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,41 +22,39 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GcmListenerService;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
-public class MyGcmListenerService extends GcmListenerService {
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "MyGcmListenerService";
+    private static final String TAG = "MyFirebaseMsgService";
 
     /**
      * Called when message is received.
      *
-     * @param from SenderID of the sender.
-     * @param msgBundle Bundle containing message data as key/value pairs.
-     *             For Set of keys use data.keySet().
+     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
      */
     // [START receive_message]
     @Override
-    public void onMessageReceived(String from, Bundle msgBundle) {
-        // TODO(developer): Handle GCM data messages here.
+    public void onMessageReceived(RemoteMessage remoteMessage) {
+        // TODO(developer): Handle FCM messages here.
         // If the application is in the foreground handle both data and notification messages here.
-        // Also if you intend on generating your own notifications as a result of a received GCM message,
-        // here is where that should be initiated. See sendNotification method below.
-        Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message Bundle: " + msgBundle);
+        // Also if you intend on generating your own notifications as a result of a received FCM
+        // message, here is where that should be initiated. See sendNotification method below.
+        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
     }
     // [END receive_message]
 
     /**
-     * Create and show a simple notification containing the received GCM message.
+     * Create and show a simple notification containing the received FCM message.
      *
-     * @param message GCM message received.
+     * @param messageBody FCM message body received.
      */
-    private void sendNotification(String message) {
+    private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -65,8 +63,8 @@ public class MyGcmListenerService extends GcmListenerService {
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                .setContentTitle("GCM Message")
-                .setContentText(message)
+                .setContentTitle("FCM Message")
+                .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

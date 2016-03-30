@@ -1,15 +1,15 @@
-Firebase Notifications Quickstart
+Firebase Cloud Messaging Quickstart
 ==============================
 
-The Firebase Notifications Android Quickstart app demonstrates registering
+The Firebase Cloud Messaging Android Quickstart app demonstrates registering
 an Android app for Notifications and handling the receipt of a message.
-InstanceID allows easy registration while GcmReceiver and GcmListener
-enable message handling on the client.
+InstanceID allows easy registration while FirebaseMessagingService and FirebaseInstanceIDService
+enable token refreshes and message handling on the client.
 
 Introduction
 ------------
 
-- [Read more about Firebase Notifications](https://developers.google.com/firebase/)
+- [Read more about Firebase Cloud Messaging](https://developers.google.com/firebase/)
 
 Getting Started
 ---------------
@@ -20,11 +20,29 @@ Getting Started
 Sending Notifications
 ---------------------
 
-Use Firebase console to send GCM messages to device or emulator.
+Use Firebase console to send FCM messages to device or emulator.
+
+## Send to a single device
 
 - From Firebase console Notification section, click New Message.
 - Enter the text of your message in the Message Text field.
-- Ensure target is set to All.
+- Set the target to Single Device.
+- Check the logs for the InstanceID token, copy and paste it into the Firebase console Token field.
+  If you cannot find the token in your logs, hit the LOG TOKEN button in the app and the token will
+  be logged in logcat.
+- Click Send Message.
+- If your application is in the foreground you should see the incoming
+  message printed in the logs. If it is in the background, a system notification should be
+  displayed, and when tapped should return to the quickstart app.
+
+## Send to a topic
+
+- From Firebase console Notification section, click New Message.
+- Enter the text of your message in the Message Text field.
+- Hit the SUBSCRIBE TO NEWS button to subscribe to the news topic.
+- Set the target to Topic.
+- Select the news topic from the list of topics. You must subscribe from the device or emulator
+  before the topic will will be visible in the console.
 - Click Send Message.
 - If your application is in the foreground you should see the incoming
   message printed in the logs. If it is in the background, a system notification should be
@@ -32,7 +50,7 @@ Use Firebase console to send GCM messages to device or emulator.
 
 Screenshots
 -----------
-<img src="app/src/main/gcm-sample.png" height="534" width="300"/>
+<img src="app/src/main/fcm-sample.png" height="534" width="300"/>
 
 Support
 -------
@@ -42,7 +60,7 @@ https://developers.google.com/firebase/support/
 License
 -------
 
-Copyright 2015 Google, Inc.
+Copyright 2016 Google, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for

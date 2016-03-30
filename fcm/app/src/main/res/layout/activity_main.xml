@@ -7,14 +7,27 @@
     android:background="@color/blue_grey_700"
     android:orientation="vertical" tools:context="com.google.firebase.quickstart.fcm.MainActivity">
 
-    <TextView android:text="@string/registering_message" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/informationTextView"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <ProgressBar
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/registrationProgressBar" />
+        android:id="@+id/textView"
+        android:text="@string/quickstart_message"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subscribe_to_news"
+        android:id="@+id/subscribeButton"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:layout_width="182dp"
+        android:layout_height="wrap_content"
+        android:text="@string/log_token"
+        android:id="@+id/logTokenButton"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

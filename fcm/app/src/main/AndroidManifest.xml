@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.firebase.quickstart.fcm" >
 
-    <!-- [START gcm_permission] -->
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!-- [END gcm_permission] -->
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,40 +17,24 @@
             </intent-filter>
         </activity>
 
-        <!-- [START gcm_receiver] -->
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.google.firebase.quickstart.fcm" />
-            </intent-filter>
-        </receiver>
-        <!-- [END gcm_receiver] -->
-
-        <!-- [START gcm_listener] -->
+        <!-- [START firebase_servcie] -->
         <service
-            android:name="com.google.firebase.quickstart.fcm.MyGcmListenerService"
+            android:name=".MyFirebaseMessagingService"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!-- [END gcm_listener] -->
-        <!-- [START instanceId_listener] -->
+        <!-- [END firebase_servcie] -->
+        <!-- [START firebase_iid_service] -->
         <service
-            android:name="com.google.firebase.quickstart.fcm.MyInstanceIDListenerService"
+            android:name=".MyFirebaseInstanceIDService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
-        <!-- [END instanceId_listener] -->
-        <service
-            android:name="com.google.firebase.quickstart.fcm.RegistrationIntentService"
-            android:exported="false">
-        </service>
+        <!-- [END firebase_iid_service] -->
     </application>
 
 </manifest>
