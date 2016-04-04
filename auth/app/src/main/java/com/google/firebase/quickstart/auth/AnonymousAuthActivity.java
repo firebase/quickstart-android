@@ -10,14 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.FirebaseUser;
+import com.google.android.gms.common.tasks.OnFailureListener;
+import com.google.android.gms.common.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Activity to demonstrate anonymous login and account linking (with an email/password account).
@@ -40,9 +39,7 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
-        mAuth = FirebaseAuth.getAuth();
+        mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
 
         // Fields
@@ -56,21 +53,22 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
     }
 
     private void signInAnonymously() {
-        // [START signin_anonymously]
-        // Show a progress dialog
-        // [START_EXCLUDE]
         showProgressDialog();
-        // [END_EXCLUDE]
-        mAuth.signInAnonymously().setResultCallback(new ResultCallback<AuthResult>() {
-            @Override
-            public void onResult(@NonNull AuthResult result) {
-                // Hide the progress dialog
-                // [START_EXCLUDE]
-                hideProgressDialog();
-                // [END_EXCLUDE]
-                handleFirebaseAuthResult(result);
-            }
-        });
+        // [START signin_anonymously]
+        mAuth.signInAnonymously()
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult result) {
+                        handleFirebaseAuthResult(result);
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.e(TAG, "signInAnonymously:onFailure", throwable);
+                        handleFirebaseAuthResult(null);
+                    }
+                });
         // [END signin_anonymously]
     }
 
@@ -81,24 +79,23 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
 
     private void linkAccount(String email, String password) {
         // Create EmailAuthCredential with email and password
-        AuthCredential credential = EmailAuthProvider.getEmailAuthCredential(email, password);
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
         // Link the anonymous user to the email credential
+        showProgressDialog();
         // [START link_credential]
-        // Show a progress dialog
-        // [START_EXCLUDE]
-        showProgressDialog();
-        // [END_EXCLUDE]
-        showProgressDialog();
-        mAuth.getCurrentUser().linkWithCredential(credential).setResultCallback(
-                new ResultCallback<AuthResult>() {
+        mAuth.getCurrentUser().linkWithCredential(credential)
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onResult(@NonNull AuthResult result) {
-                        // Hide the progress dialog
-                        // [START_EXCLUDE]
-                        hideProgressDialog();
-                        // [END_EXCLUDE]
+                    public void onSuccess(AuthResult result) {
                         handleFirebaseAuthResult(result);
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.e(TAG, "linkWithCredential:onFailure", throwable);
+                        handleFirebaseAuthResult(null);
                     }
                 });
         // [END link_credential]
@@ -106,7 +103,7 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
 
     // [START handle_auth_result]
     private void handleFirebaseAuthResult(AuthResult result) {
-        if (result.getStatus().isSuccess()) {
+        if (result != null && result.getStatus().isSuccess()) {
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
             // [START_EXCLUDE]
             updateUI(result.getUser());
@@ -122,6 +119,8 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
     // [END handle_auth_result]
 
     private void updateUI(FirebaseUser user) {
+        hideProgressDialog();
+
         TextView idView = (TextView) findViewById(R.id.anonymous_status_id);
         TextView emailView = (TextView) findViewById(R.id.anonymous_status_email);
         boolean isSignedIn = (user != null);

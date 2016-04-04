@@ -23,12 +23,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.FirebaseUser;
+import com.google.android.gms.common.tasks.OnFailureListener;
+import com.google.android.gms.common.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Demonstrate Firebase Authentication using a custom minted token. For more information, see:
@@ -61,11 +60,8 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
 
         // [START initialize_auth]
         // Initialize Firebase
-        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
-
         // Get instance of FirebaseAuth
-        mAuth = FirebaseAuth.getAuth();
+        mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
     }
 
@@ -84,31 +80,30 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
     private void startSignIn() {
         // Initiate sign in with custom token
         // [START sign_in_custom]
-        mAuth.signInWithCustomToken(mCustomToken).setResultCallback(new ResultCallback<AuthResult>() {
-            @Override
-            public void onResult(@NonNull AuthResult authResult) {
-                Log.d(TAG, "signInWithCustomToken:" + authResult.getStatus());
-                if (authResult.getStatus().isSuccess()) {
-                    // Signed in, display user information.
-                    FirebaseUser user = authResult.getUser();
+        mAuth.signInWithCustomToken(mCustomToken)
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult result) {
+                        // Signed in, display user information.
+                        FirebaseUser user = result.getUser();
 
-                    // [START_EXCLUDE]
-                    ((TextView) findViewById(R.id.text_sign_in_status)).setText(
-                            "User ID: " + user.getUid());
-                    Toast.makeText(CustomAuthActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
-                    // [END_EXCLUDE]
-                } else {
-                    // Sign-in error, display a message.
-                    String errorMessage = authResult.getStatus().getStatusMessage();
-
-                    // [START_EXCLUDE]
-                    ((TextView) findViewById(R.id.text_sign_in_status)).setText(
-                            "Error: " + errorMessage);
-                    // [END_EXCLUDE]
-                }
-
-            }
-        });
+                        // [START_EXCLUDE]
+                        ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+                                "User ID: " + user.getUid());
+                        Toast.makeText(CustomAuthActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
+                        // [END_EXCLUDE]
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        // Sign-in error, display a message.
+                        // [START_EXCLUDE]
+                        ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+                                "Error: sign in failed.");
+                        // [END_EXCLUDE]
+                    }
+                });
         // [END sign_in_custom]
     }
 
@@ -117,7 +112,7 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
 
         String status;
         if (mCustomToken != null) {
-            status = "Token: " + mCustomToken;
+            status = "Token:" + mCustomToken;
         } else {
             status = "Token: null";
         }

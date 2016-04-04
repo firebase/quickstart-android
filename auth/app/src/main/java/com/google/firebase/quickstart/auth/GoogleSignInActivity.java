@@ -16,15 +16,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.FirebaseUser;
+import com.google.android.gms.common.tasks.OnFailureListener;
+import com.google.android.gms.common.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 /**
@@ -71,9 +70,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements
                 .build();
 
         // [START initialize_auth]
-        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
-        mAuth = FirebaseAuth.getAuth();
+        mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
     }
 
@@ -104,32 +101,29 @@ public class GoogleSignInActivity extends AppCompatActivity implements
     // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
+        // [START_EXCLUDE]
+        showProgressDialog();
+        // [END_EXCLUDE]
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        OptionalPendingResult<AuthResult> opr = mAuth.signInWithCredential(credential);
-        if (opr.isDone()) {
-            Log.d(TAG, "Got cached firebase auth");
-            handleFirebaseAuthResult(opr.get());
-        } else {
-            // Show progress dialog
-            // [START_EXCLUDE]
-            showProgressDialog();
-            // [END_EXCLUDE]
-            opr.setResultCallback(new ResultCallback<AuthResult>() {
-                @Override
-                public void onResult(@NonNull AuthResult result) {
-                    handleFirebaseAuthResult(result);
-                    // Hide progress dialog
-                    // [START_EXCLUDE]
-                    hideProgressDialog();
-                    // [END_EXCLUDE]
-                }
-            });
-        }
+        mAuth.signInWithCredential(credential)
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult result) {
+                        handleFirebaseAuthResult(result);
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.e(TAG, "authWithCredential:onFailure", throwable);
+                        handleFirebaseAuthResult(null);
+                    }
+                });
     }
 
     private void handleFirebaseAuthResult(AuthResult result) {
         Log.d(TAG, "handleFirebaseAuthResult:" + result.getStatus());
-        if (result.getStatus().isSuccess()) {
+        if (result != null && result.getStatus().isSuccess()) {
             FirebaseUser user = result.getUser();
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS:" + user);
             // [START_EXCLUDE]
@@ -208,6 +202,7 @@ public class GoogleSignInActivity extends AppCompatActivity implements
     }
 
     private void updateUI(FirebaseUser user) {
+        hideProgressDialog();
         if (user != null) {
             mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));

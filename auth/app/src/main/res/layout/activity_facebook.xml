@@ -16,17 +16,17 @@
 
         <ImageView
             android:id="@+id/icon"
+            style="@style/ThemeOverlay.AuthIcon"
             android:contentDescription="@string/desc_facebook_icon"
-            android:src="@drawable/ic_person_white"
-            style="@style/ThemeOverlay.AuthIcon" />
+            android:src="@drawable/ic_person_white" />
 
         <TextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="@string/facebook_title_text"
             android:gravity="center"
+            android:text="@string/facebook_title_text"
             android:textColor="@android:color/white"
             android:textSize="36sp" />
 
@@ -54,6 +54,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />
+
+        <Button
+            android:id="@+id/button_facebook_signout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/sign_out"
+            android:theme="@style/ThemeOverlay.MyDarkButton"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 

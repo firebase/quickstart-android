@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -15,20 +16,19 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.FirebaseUser;
+import com.google.android.gms.common.tasks.OnFailureListener;
+import com.google.android.gms.common.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Demonstrate Firebase Authentication using a Facebook access token.
  */
-public class FacebookLoginActivity extends AppCompatActivity {
+public class FacebookLoginActivity extends AppCompatActivity implements
+        View.OnClickListener {
 
     private static final String TAG = "FacebookLogin";
 
@@ -49,12 +49,11 @@ public class FacebookLoginActivity extends AppCompatActivity {
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
         mDetailTextView = (TextView) findViewById(R.id.detail);
+        findViewById(R.id.button_facebook_signout).setOnClickListener(this);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
-        mAuth = FirebaseAuth.getAuth();
+        mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
 
         // [START initialize_fblogin]
@@ -107,30 +106,29 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
     // [START auth_with_facebook]
     private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+        // [START_EXCLUDE]
+        showProgressDialog();
+        // [END_EXCLUDE]
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        OptionalPendingResult<AuthResult> opr = mAuth.signInWithCredential(credential);
-        if (opr.isDone()) {
-            handleFirebaseAuthResult(opr.get());
-        } else {
-            // Show progress dialog
-            // [START_EXCLUDE]
-            showProgressDialog();
-            // [END_EXCLUDE]
-            opr.setResultCallback(new ResultCallback<AuthResult>() {
-                @Override
-                public void onResult(@NonNull AuthResult result) {
-                    handleFirebaseAuthResult(result);
-                    // Hide progress dialog
-                    // [START_EXCLUDE]
-                    hideProgressDialog();
-                    // [END_EXCLUDE]
-                }
-            });
-        }
+        mAuth.signInWithCredential(credential)
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult result) {
+                        handleFirebaseAuthResult(result);
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.e(TAG, "authWithCredential:onFailure", throwable);
+                        handleFirebaseAuthResult(null);
+                    }
+                });
     }
 
     private void handleFirebaseAuthResult(AuthResult result) {
-        if (result.getStatus().isSuccess()) {
+        if (result != null && result.getStatus().isSuccess()) {
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
             FirebaseUser user = result.getUser();
             // [START_EXCLUDE]
@@ -145,13 +143,25 @@ public class FacebookLoginActivity extends AppCompatActivity {
     }
     // [END auth_with_facebook]
 
+    public void signOut() {
+        mAuth.signOut();
+        updateUI(null);
+    }
+
     private void updateUI(FirebaseUser user) {
+        hideProgressDialog();
         if (user != null) {
             mStatusTextView.setText(getString(R.string.facebook_status_fmt, user.getEmail()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+
+            findViewById(R.id.button_facebook_login).setVisibility(View.GONE);
+            findViewById(R.id.button_facebook_signout).setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
+
+            findViewById(R.id.button_facebook_login).setVisibility(View.VISIBLE);
+            findViewById(R.id.button_facebook_signout).setVisibility(View.GONE);
         }
     }
 
@@ -171,4 +181,12 @@ public class FacebookLoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_facebook_signout:
+                signOut();
+                break;
+        }
+    }
 }

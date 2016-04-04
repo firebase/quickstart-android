@@ -10,12 +10,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.FirebaseUser;
+import com.google.android.gms.common.tasks.OnFailureListener;
+import com.google.android.gms.common.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class EmailPasswordActivity extends AppCompatActivity implements
         View.OnClickListener {
@@ -48,9 +47,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
-        mAuth = FirebaseAuth.getAuth();
+        mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
     }
 
@@ -68,12 +65,19 @@ public class EmailPasswordActivity extends AppCompatActivity implements
         showProgressDialog();
 
         // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password).setResultCallback(
-                new ResultCallback<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onResult(@NonNull AuthResult result) {
-                        Log.d(TAG, "create:onResult:" + result.getStatus());
+                    public void onSuccess(AuthResult result) {
                         handleFirebaseAuthResult(result);
+                        hideProgressDialog();
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.e(TAG, "createUserWithEmail:onFailure", throwable);
+                        handleFirebaseAuthResult(null);
                         hideProgressDialog();
                     }
                 });
@@ -82,16 +86,23 @@ public class EmailPasswordActivity extends AppCompatActivity implements
 
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
+        // [START_EXCLUDE]
         showProgressDialog();
+        // [END_EXCLUDE]
 
         // [START sign_in_with_email]
-        mAuth.signInWithEmailAndPassword(email, password).setResultCallback(
-                new ResultCallback<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onResult(@NonNull AuthResult result) {
-                        Log.d(TAG, "signIn:onResult:" + result.getStatus());
+                    public void onSuccess(AuthResult result) {
                         handleFirebaseAuthResult(result);
-                        hideProgressDialog();
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.e(TAG, "signInWithEmail:onFailure", throwable);
+                        handleFirebaseAuthResult(null);
                     }
                 });
         // [END sign_in_with_email]
@@ -104,7 +115,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
 
     // [START handle_auth_result]
     private void handleFirebaseAuthResult(AuthResult result) {
-        if (result.getStatus().isSuccess()) {
+        if (result != null && result.getStatus().isSuccess()) {
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
             // [START_EXCLUDE]
             updateUI(result.getUser());
@@ -120,6 +131,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements
     // [END handle_auth_result]
 
     private void updateUI(FirebaseUser user) {
+        hideProgressDialog();
         if (user != null) {
             mStatusTextView.setText(getString(R.string.emailpassword_status_fmt, user.getEmail()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
