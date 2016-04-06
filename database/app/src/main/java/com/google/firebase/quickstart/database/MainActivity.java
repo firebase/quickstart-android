@@ -30,8 +30,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.firebase.ui.FirebaseRecyclerAdapter;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.quickstart.database.models.Message;
@@ -44,7 +42,9 @@ public class  MainActivity extends AppCompatActivity implements TextView.OnEdito
     /**
      * Our reference to the root of our Firebase database.
      */
+    // [START define_database_reference]
     private DatabaseReference mFirebaseRef;
+    // [END define_database_reference]
 
     /**
      * The username of the signed in user, or nil if logged out.
@@ -77,12 +77,6 @@ public class  MainActivity extends AppCompatActivity implements TextView.OnEdito
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // [START initialize_firebase]
-        // Initialize Firebase
-        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
-        // [END initialize_firebase]
 
         // [START create_database_reference]
         // Get a reference to the Firebase Database

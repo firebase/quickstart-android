@@ -28,10 +28,10 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'com.android.support:cardview-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
+    compile 'com.android.support:cardview-v7:23.2.1'
+    compile 'com.android.support:design:23.2.1'
 
     // Note: The FirebaseUI library has not yet been updated to support the new Firebase class
     // structure. A small fork of the classes necessary for this sample has been provided
@@ -39,7 +39,7 @@ dependencies {
     // compile 'com.firebaseui:firebase-ui:0.2.2'
     compile project(':firebaseui')
 
-    compile 'com.google.android.gms:firebase-database:8.5.4'
+    compile 'com.google.firebase:firebase-database:8.5.6'
 }
 
 apply plugin: 'com.google.gms.google-services'

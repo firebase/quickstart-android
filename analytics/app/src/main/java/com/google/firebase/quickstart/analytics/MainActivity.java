@@ -223,10 +223,10 @@ public class MainActivity extends AppCompatActivity {
 
         // [START image_view_event]
         Bundle bundle = new Bundle();
-        bundle.putString(AppMeasurement.Param.PRODUCT_ID, id);
-        bundle.putString(AppMeasurement.Param.PRODUCT_NAME, name);
-        bundle.putString(AppMeasurement.Param.PRODUCT_CATEGORY, "image");
-        mAppMeasurement.logEvent(AppMeasurement.Event.VIEW_CONTENT, bundle);
+        bundle.putString(AppMeasurement.Param.ITEM_ID, id);
+        bundle.putString(AppMeasurement.Param.ITEM_NAME, name);
+        bundle.putString(AppMeasurement.Param.CONTENT_TYPE, "image");
+        mAppMeasurement.logEvent(AppMeasurement.Event.SELECT_CONTENT, bundle);
         // [END image_view_event]
     }
 
