@@ -13,26 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 'use strict';
 
-var Firebase = require('firebase');
-var ref = new Firebase('<DATABASE_URL>');
+var functions = require('firebase-functions');
 
 // Makes all new messages ALL UPPERCASE.
-exports.makeuppercase = function(context, data) {
+exports.makeUppercase = functions.database()
+    .path('/messages/{messageId}').on('write', function(event) {
+      // Reference to the database object that triggered the function.
+      // This reference is authorized as the user who initiated the write that triggered the function.
+      var messageRef = event.data.ref();
+      console.log('Reading firebase object at path: ' + messageRef.toString());
 
-  // Read the Firebase database object that triggered the function.
-  var messageRef = ref.child(data.path);
-  console.log('Reading firebase object at path: ' + messageRef.toString());
-  messageRef.once('value', function(messageData) {
+      // The Firebase database object that triggered the function.
+      var messageDataValue = event.data.val();
+      console.log('Message content: ' + JSON.stringify(messageDataValue));
 
-    // Retrieved the message and uppercase it.
-    console.log('Retrieved message content: ' + JSON.stringify(messageData.val()));
-    var uppercased = messageData.val().text.toUpperCase();
+      // Uppercase the message.
+      var uppercased = messageDataValue.text.toUpperCase();
 
-    // Saving the uppercased message to DB.
-    console.log('Saving uppercased message: ' + uppercased);
-    messageRef.update({text: uppercased}, context.done);
-
-  }, context.done);
-};
+      // Saving the uppercased message to DB.
+      console.log('Saving uppercased message: ' + uppercased);
+      return messageRef.update({text: uppercased});
+    });
