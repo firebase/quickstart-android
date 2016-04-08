@@ -5,7 +5,7 @@
       Your app code, see:
       https://developers.google.com/firebase/docs/durable-links/android
     -->
-    <string name="app_code">dt3ar</string>
+    <string name="app_code">YOUR_APP_CODE</string>
 
 
     <string name="share">Share</string>

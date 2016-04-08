@@ -16,14 +16,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.FirebaseUser;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -54,17 +52,13 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize Firebase
-        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
-
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getAuth();
+        mAuth = FirebaseAuth.getInstance();
 
         // Initialize Firebase Storage Ref
         // [START get_storage_ref]
-        String bucketName = "gs://" + getString(R.string.google_project_id) + ".storage.firebase.com";
-        mStorageRef = FirebaseStorage.getInstance().getReference(bucketName);
+        mStorageRef = FirebaseStorage.getInstance()
+                .getReference(getString(R.string.google_storage_bucket));
         // [END get_storage_ref]
 
         // Click listeners
@@ -150,23 +144,23 @@ public class MainActivity extends AppCompatActivity implements
 
         // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
-        final StorageReference photoRef = mStorageRef.getChild("photos")
-                .getChild(fileUri.getLastPathSegment());
+        final StorageReference photoRef = mStorageRef.child("photos")
+                .child(fileUri.getLastPathSegment());
         // [END get_child_ref]
 
         // Upload file to Firebase Storage
         // [START_EXCLUDE]
         showProgressDialog();
         // [END_EXCLUDE]
-        photoRef.putFile(fileUri).addCallback(this,
-                new UploadTask.Callbacks() {
+        photoRef.putFile(fileUri)
+                .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    protected void onSuccess(UploadTask uploadTask) {
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         // Upload succeeded
                         Log.d(TAG, "uploadFromUri:onSuccess");
 
                         // Get the public download URL
-                        Uri downloadUrl = uploadTask.getMetadata().getDownloadUrl();
+                        Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
 
                         // [START_EXCLUDE]
                         hideProgressDialog();
@@ -175,11 +169,12 @@ public class MainActivity extends AppCompatActivity implements
                         findViewById(R.id.button_download).setVisibility(View.VISIBLE);
                         // [END_EXCLUDE]
                     }
-
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
                     @Override
-                    protected void onFailure(UploadTask uploadTask, StorageException e) {
+                    public void onFailure(@NonNull Throwable throwable) {
                         // Upload failed
-                        Log.w(TAG, "uploadFromUri:onFailure", e);
+                        Log.w(TAG, "uploadFromUri:onFailure", throwable);
 
                         // [START_EXCLUDE]
                         hideProgressDialog();
@@ -209,14 +204,23 @@ public class MainActivity extends AppCompatActivity implements
     private void signInAnonymously() {
         // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
         showProgressDialog();
-        mAuth.signInAnonymously().setResultCallback(new ResultCallback<AuthResult>() {
-            @Override
-            public void onResult(@NonNull AuthResult result) {
-                Log.d(TAG, "anonymous:onResult:" + result.getStatus());
-                hideProgressDialog();
-                updateUI(result.getUser());
-            }
-        });
+        mAuth.signInAnonymously()
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Log.d(TAG, "signInAnonymously:SUCCESS");
+                        hideProgressDialog();
+                        updateUI(authResult.getUser());
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.e(TAG, "signInAnonymously:FAILURE", throwable);
+                        hideProgressDialog();
+                        updateUI(null);
+                    }
+                });
     }
 
     private void beginDownload() {

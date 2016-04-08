@@ -23,7 +23,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
 
     // Firebase Authentication
-    compile 'com.google.firebase:firebase-auth:8.5.6'
+    compile 'com.google.firebase:firebase-auth-api:8.5.6'
 
     // Google Sign In SDK (only required for Google Sign In)
     compile 'com.google.android.gms:play-services-auth:8.5.6'

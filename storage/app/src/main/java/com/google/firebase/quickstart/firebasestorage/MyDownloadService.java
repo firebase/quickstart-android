@@ -9,9 +9,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -35,13 +34,9 @@ public class MyDownloadService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        // Initialize Firebase
-        FirebaseApp.initializeApp(this, getString(R.string.google_app_id),
-                new FirebaseOptions.Builder(getString(R.string.google_api_key)).build());
-
         // Initialize Storage
-        String bucketName = "gs://" + getString(R.string.google_project_id) + ".storage.firebase.com";
-        mStorage = FirebaseStorage.getInstance().getReference(bucketName);
+        mStorage = FirebaseStorage.getInstance()
+                .getReference(getString(R.string.google_storage_bucket));
     }
 
     @Nullable
@@ -63,34 +58,36 @@ public class MyDownloadService extends Service {
             taskStarted();
 
             // Download as bytes
-            mStorage.getChild(downloadPath).getBytes(Long.MAX_VALUE).setResultCallback(
-                    new ResultCallback<StorageReference.ByteResult>() {
+            mStorage.child(downloadPath).getBytes(Long.MAX_VALUE)
+                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
-                        public void onResult(@NonNull StorageReference.ByteResult result) {
-                            Log.d(TAG, "getBytes:onResult:" + result.getStatus());
-                            if (result.getStatus().isSuccess()) {
-                                // Get downloaded bytes
-                                byte[] bytes = result.getBytes();
+                        public void onSuccess(byte[] bytes) {
+                            Log.d(TAG, "download:SUCCESS");
 
-                                // Send success broadcast with number of bytes downloaded
-                                Intent broadcast = new Intent(ACTION_COMPLETED);
-                                broadcast.putExtra(EXTRA_DOWNLOAD_PATH, downloadPath);
-                                broadcast.putExtra(EXTRA_BYTES_DOWNLOADED, bytes.length);
-                                LocalBroadcastManager.getInstance(getApplicationContext())
-                                        .sendBroadcast(broadcast);
+                            // Send success broadcast with number of bytes downloaded
+                            Intent broadcast = new Intent(ACTION_COMPLETED);
+                            broadcast.putExtra(EXTRA_DOWNLOAD_PATH, downloadPath);
+                            broadcast.putExtra(EXTRA_BYTES_DOWNLOADED, bytes.length);
+                            LocalBroadcastManager.getInstance(getApplicationContext())
+                                    .sendBroadcast(broadcast);
 
-                                // Mark task completed
-                                taskCompleted();
-                            } else {
-                                // Send failure broadcast
-                                Intent broadcast = new Intent(ACTION_ERROR);
-                                broadcast.putExtra(EXTRA_DOWNLOAD_PATH, downloadPath);
-                                LocalBroadcastManager.getInstance(getApplicationContext())
-                                        .sendBroadcast(broadcast);
+                            // Mark task completed
+                            taskCompleted();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Throwable throwable) {
+                            Log.w(TAG, "download:FAILURE", throwable);
 
-                                // Mark task completed
-                                taskCompleted();
-                            }
+                            // Send failure broadcast
+                            Intent broadcast = new Intent(ACTION_ERROR);
+                            broadcast.putExtra(EXTRA_DOWNLOAD_PATH, downloadPath);
+                            LocalBroadcastManager.getInstance(getApplicationContext())
+                                    .sendBroadcast(broadcast);
+
+                            // Mark task completed
+                            taskCompleted();
                         }
                     });
         }

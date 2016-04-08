@@ -16,14 +16,14 @@
 
 package com.google.samples.quickstart.crash;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import com.google.android.gms.crash.Crash;
+import com.google.firebase.crash.FirebaseCrash;
 
 /**
  * This Activity shows the different ways of reporting application crashes.
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Log that crash button was clicked. This version of Crash.log() will include the
                 // message in the crash report as well as show the message in logcat.
-                Crash.log(Log.INFO, TAG, "Crash button clicked");
+                FirebaseCrash.logcat(Log.INFO, TAG, "Crash button clicked");
 
                 // If catchCrashCheckBox is checked catch the exception and report is using
                 // Crash.report(). Otherwise throw the exception and let Firebase Crash automatically
@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
                         throw new NullPointerException();
                     } catch (NullPointerException ex) {
                         // [START log_and_report]
-                        Crash.log(Log.ERROR, TAG, "NPE caught");
-                        Crash.report(ex);
+                        FirebaseCrash.logcat(Log.ERROR, TAG, "NPE caught");
+                        FirebaseCrash.report(ex);
                         // [END log_and_report]
                     }
                 } else {
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         // Log that the Activity was created. This version of Crash.log() will include the message
         // in the crash report but will not be shown in logcat.
         // [START log_event]
-        Crash.log("Activity created");
+        FirebaseCrash.log("Activity created");
         // [END log_event]
     }
 }

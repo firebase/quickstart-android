@@ -20,10 +20,10 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.2.1'
 
-    compile 'com.google.android.gms:firebase-auth:8.5.4'
-    compile 'com.google.android.gms:firebase-storage:8.5.4'
+    compile 'com.google.firebase:firebase-auth-api:8.5.6'
+    compile 'com.google.firebase:firebase-storage-api:8.5.6'
 }
 
 apply plugin: 'com.google.gms.google-services'

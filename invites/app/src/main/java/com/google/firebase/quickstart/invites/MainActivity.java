@@ -33,9 +33,11 @@ import android.view.ViewGroup;
 import com.google.android.gms.appinvite.AppInvite;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.appinvite.AppInviteInvitationResult;
+import com.google.android.gms.appinvite.AppInviteReferral;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.measurement.AppMeasurement;
 
 /**
  * Main Activity for sending App Invites and launching the DeepLinkActivity when an
@@ -48,7 +50,10 @@ public class MainActivity extends AppCompatActivity implements
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int REQUEST_INVITE = 0;
 
+    // [START define_variables]
     private GoogleApiClient mGoogleApiClient;
+    private AppMeasurement mMeasurement;
+    // [END define_variables]
 
     // [START on_create]
     @Override
@@ -67,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements
                 .enableAutoManage(this, this)
                 .build();
 
+        // Initialize Firebase Analytics
+        mMeasurement = AppMeasurement.getInstance(this);
+
         // Check for App Invite invitations and launch deep-link activity if possible.
         // Requires that an Activity is registered in AndroidManifest.xml to handle
         // deep-link URLs.
@@ -77,9 +85,24 @@ public class MainActivity extends AppCompatActivity implements
                             @Override
                             public void onResult(AppInviteInvitationResult result) {
                                 Log.d(TAG, "getInvitation:onResult:" + result.getStatus());
+
+                                // Extract information from the intent
+                                Intent intent = result.getInvitationIntent();
+                                String deepLink = AppInviteReferral.getDeepLink(intent);
+                                String invitationId = AppInviteReferral.getInvitationId(intent);
+
+                                // Log an event to Analytics
+                                Bundle bundle = new Bundle();
+                                bundle.putString("app_invitation_id", invitationId);
+                                bundle.putString(AppMeasurement.Param.ITEM_ID, deepLink);
+                                bundle.putString(AppMeasurement.Param.ITEM_NAME, "Standard Offer");
+                                bundle.putString(AppMeasurement.Param.ITEM_CATEGORY, "Offer");
+                                mMeasurement.logEvent(AppMeasurement.Event.VIEW_ITEM, bundle);
+
                                 // Because autoLaunchDeepLink = true we don't have to do anything
                                 // here, but we could set that to false and manually choose
                                 // an Activity to launch to handle the deep link here.
+                                // ...
                             }
                         });
     }
@@ -115,15 +138,23 @@ public class MainActivity extends AppCompatActivity implements
 
         if (requestCode == REQUEST_INVITE) {
             if (resultCode == RESULT_OK) {
-                // Check how many invitations were sent and log a message
-                // The ids array contains the unique invitation ids for each invitation sent
-                // (one for each contact select by the user). You can use these for analytics
-                // as the ID will be consistent on the sending and receiving devices.
+                // Get the invitation IDs of all sent messages
                 String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
-                Log.d(TAG, getString(R.string.sent_invitations_fmt, ids.length));
+
+                // Log an event to Firebase Analytics for each sent invite, using the invitation
+                // id as a cutom parameter.
+                for (String id : ids) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("app_invitation_id", id);
+                    bundle.putString(AppMeasurement.Param.ITEM_ID, getString(R.string.invitation_deep_link));
+                    bundle.putString(AppMeasurement.Param.CONTENT_TYPE, "invitation");
+                    mMeasurement.logEvent(AppMeasurement.Event.SHARE, bundle);
+                }
             } else {
                 // Sending failed or it was canceled, show failure message to the user
+                // [START_EXCLUDE]
                 showMessage(getString(R.string.send_failed));
+                // [END_EXCLUDE]
             }
         }
     }

@@ -22,11 +22,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.firebase.iid.FirebaseInstanceID;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.Iterator;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         logTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "InstanceID token: " + FirebaseInstanceID.getInstance().getToken());
+                Log.d(TAG, "InstanceID token: " + FirebaseInstanceId.getInstance().getToken());
             }
         });
     }
