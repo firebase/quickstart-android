@@ -37,7 +37,7 @@ import com.google.android.gms.common.api.ResultCallback;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "MainActivity";
-    private static final String DEEP_LINK_URL = "https://example.firebase.google.com/deeplinks";
+    private static final String DEEP_LINK_URL = "https://example.com/deeplinks";
 
     private GoogleApiClient mGoogleApiClient;
 
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         final Uri deepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0, false);
         ((TextView) findViewById(R.id.link_view_send)).setText(deepLink.toString());
 
+        // [START get_deep_link]
         // Build GoogleApiClient with AppInvite API for receiving deep links
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
@@ -69,13 +70,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                             Intent intent = result.getInvitationIntent();
                             String deepLink = AppInviteReferral.getDeepLink(intent);
 
+                            // Handle the deep link. For example, open the linked
+                            // content, or apply promotional credit to the user's
+                            // account.
+
+                            // [START_EXCLUDE]
                             // Display deep link in the UI
                             ((TextView) findViewById(R.id.link_view_receive)).setText(deepLink);
+                            // [END_EXCLUDE]
                         } else {
                             Log.d(TAG, "getInvitation: no deep link found.");
                         }
                     }
                 });
+        // [END get_deep_link]
 
         // Share button click listener
         findViewById(R.id.button_share).setOnClickListener(new View.OnClickListener() {
