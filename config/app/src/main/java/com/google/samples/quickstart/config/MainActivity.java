@@ -22,6 +22,7 @@
 package com.google.samples.quickstart.config;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -29,17 +30,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.config.FirebaseRemoteConfig;
-import com.google.android.gms.config.FirebaseRemoteConfigException;
-import com.google.android.gms.config.FirebaseRemoteConfigFetchCallback;
 import com.google.android.gms.config.FirebaseRemoteConfigSettings;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MyTestApp";
-    // Original price
-    private static final long PRICE = 100;
+    private static final String TAG = "MainActivity";
+
+    // Remote Config keys
+    private static final String PRICE_CONFIG_KEY = "price";
+    private static final String LOADING_PHRASE_CONFIG_KEY = "loading_phrase";
+    private static final String PRICE_PREFIX_CONFIG_KEY = "price_prefix";
+    private static final String DISCOUNT_CONFIG_KEY = "discount";
+    private static final String IS_PROMOTION_CONFIG_KEY = "is_promotion_on";
+
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private TextView mPriceTextView;
 
@@ -58,12 +63,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Initialize Firebase App. This is required to use Firebase Remote Config.
-        FirebaseApp.initializeApp(this, getResources().getString(R.string.google_app_id),
-                new FirebaseOptions.Builder(getResources().getString(R.string.google_api_key)).build());
-
         // Get Remote Config instance.
+        // [START get_remote_config_instance]
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        // [END get_remote_config_instance]
 
         // Create Remote Config Setting to enable developer mode.
         // Fetching configs from the server is normally limited to 5 requests per hour.
@@ -76,6 +79,17 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseRemoteConfig.setConfigSettings(configSettings);
         // [END enable_dev_mode]
 
+        // Set default Remote Config values. In general you should have in app defaults for all
+        // values that you may configure using Remote Config later on. The idea is that you
+        // use the in app defaults and when you need to adjust those defaults, you set an updated
+        // value in the App Manager console. Then the next time you application fetches from the
+        // server, the updated value will be used. You can set defaults via an xml file like done
+        // here or you can set defaults inline by using one of the other setDefaults methods.S
+        // [START set_default_values]
+        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+        // [END set_default_values]
+
+
         // Fetch discount config.
         fetchDiscount();
     }
@@ -84,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
      * Fetch discount from server.
      */
     private void fetchDiscount() {
-        mPriceTextView.setText(getResources().getString(R.string.fetching_msg));
+        mPriceTextView.setText(mFirebaseRemoteConfig.getString(LOADING_PHRASE_CONFIG_KEY));
 
         long cacheExpiration = 3600; // 1 hour in seconds.
         // If in developer mode cacheExpiration is set to 0 so each fetch will retrieve values from
@@ -93,27 +107,30 @@ public class MainActivity extends AppCompatActivity {
             cacheExpiration = 0;
         }
 
+        // [END fetch_config_with_callback]
         // cacheExpirationSeconds is set to cacheExpiration here, indicating that any previously
         // fetched and cached config would be considered expired because it would have been fetched
         // more than cacheExpiration seconds ago. Thus the next fetch would go to the server unless
         // throttling is in progress. The default expiration duration is 43200 (12 hours).
-        // [START fetch_config_with_callback]
-        mFirebaseRemoteConfig.fetch(cacheExpiration, new FirebaseRemoteConfigFetchCallback() {
-            @Override
-            public void onSuccess() {
-                Log.d(TAG, "Fetch Succeeded");
-                // Once the config is successfully fetched it must be activated before newly fetched
-                // values are returned.
-                mFirebaseRemoteConfig.activateFetched();
-                displayPrice();
-            }
-
-            @Override
-            public void onFailure(FirebaseRemoteConfigException e) {
-                Log.d(TAG, "Fetch failed");
-                mPriceTextView.setText(getResources().getString(R.string.price_prefix) + PRICE);
-            }
-        });
+        mFirebaseRemoteConfig.fetch(cacheExpiration)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Fetch Succeeded");
+                        // Once the config is successfully fetched it must be activated before newly fetched
+                        // values are returned.
+                        mFirebaseRemoteConfig.activateFetched();
+                        displayPrice();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Throwable throwable) {
+                        Log.d(TAG, "Fetch failed");
+                        mPriceTextView.setText(mFirebaseRemoteConfig.getString(PRICE_PREFIX_CONFIG_KEY) +
+                                mFirebaseRemoteConfig.getLong(PRICE_CONFIG_KEY));
+                    }
+                });
         // [END fetch_config_with_callback]
     }
 
@@ -121,11 +138,15 @@ public class MainActivity extends AppCompatActivity {
      * Display price with discount applied if promotion is on. Otherwise display original price.
      */
     private void displayPrice() {
-        if (mFirebaseRemoteConfig.getBoolean("is_promotion_on")) {
-            long discountedPrice = PRICE - mFirebaseRemoteConfig.getLong("discount");
-            mPriceTextView.setText(getResources().getString(R.string.price_prefix) + discountedPrice);
+        if (mFirebaseRemoteConfig.getBoolean(IS_PROMOTION_CONFIG_KEY)) {
+            // [START get_config_values]
+            long discountedPrice = mFirebaseRemoteConfig.getLong(PRICE_CONFIG_KEY) -
+                    mFirebaseRemoteConfig.getLong(DISCOUNT_CONFIG_KEY);
+            mPriceTextView.setText(mFirebaseRemoteConfig.getString(PRICE_PREFIX_CONFIG_KEY) + discountedPrice);
+            // [END get_config_values]
         } else {
-            mPriceTextView.setText(getResources().getString(R.string.price_prefix) + PRICE);
+            mPriceTextView.setText(mFirebaseRemoteConfig.getString(PRICE_PREFIX_CONFIG_KEY) +
+                    mFirebaseRemoteConfig.getLong(PRICE_CONFIG_KEY));
         }
 
     }
