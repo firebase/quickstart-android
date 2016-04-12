@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements
 
     // [START upload_from_uri]
     private void uploadFromUri(Uri fileUri) {
-        Log.d(TAG, "uploadFromUri:" + fileUri.toString());
+        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
 
         // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements
         // [START_EXCLUDE]
         showProgressDialog();
         // [END_EXCLUDE]
+        Log.d(TAG, "uploadFromUri:dst:" + photoRef.getPath());
         photoRef.putFile(fileUri)
                 .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override

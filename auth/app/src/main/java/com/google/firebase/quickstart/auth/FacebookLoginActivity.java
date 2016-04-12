@@ -151,7 +151,7 @@ public class FacebookLoginActivity extends AppCompatActivity implements
             updateUI(user);
             // [END_EXCLUDE]
         } else {
-            Log.d(TAG, "handleFirebaseAuthResult:ERROR:" + result.getStatus().toString());
+            Log.d(TAG, "handleFirebaseAuthResult:ERROR:" + result);
             // [START_EXCLUDE]
             updateUI(null);
             // [END_EXCLUDE]
