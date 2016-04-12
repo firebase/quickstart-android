@@ -49,11 +49,16 @@ public class MainActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest);
         // [END load_banner_ad]
 
+        // AdMob ad unit IDs are not currently stored inside the google-services.json file.
+        // Developers using AdMob can store them as custom values in a string resource file or
+        // simply use constants. Note that the ad units used here are configured to return only test
+        // ads, and should not be used outside this sample.
+
         // [START instantiate_interstitial_ad]
         // Create an InterstitialAd object. This same object can be re-used whenever you want to
         // show an interstitial.
         mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.test_interstitial_ad_unit_id));
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
         // [END instantiate_interstitial_ad]
 
         // [START create_interstitial_ad_listener]

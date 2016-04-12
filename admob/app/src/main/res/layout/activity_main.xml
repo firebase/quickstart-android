@@ -27,7 +27,7 @@ Define the namespace and AdView layout that will show the banner.
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/test_banner_ad_unit_id">
+        ads:adUnitId="@string/banner_ad_unit_id">
     </com.google.android.gms.ads.AdView>
 </RelativeLayout>
 <!-- [END define_ad_layout] -->
