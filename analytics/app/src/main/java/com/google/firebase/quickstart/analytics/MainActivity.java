@@ -35,7 +35,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.measurement.AppMeasurement;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Locale;
 
@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     /**
-     * The {@code AppMeasurement} used to record screen views.
+     * The {@code FirebaseAnalytics} used to record screen views.
      */
-    private AppMeasurement mAppMeasurement;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     /**
      * The user's favorite food, chosen from a dialog.
@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // [START shared_app_measurement]
-        // Obtain the AppMeasurement instance.
-        mAppMeasurement = AppMeasurement.getInstance(this);
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         // [END shared_app_measurement]
 
         // On first app open, ask the user his/her favorite food. Then set this as a user property
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Get the user's favorite food from shared preferences.
-     * @return
+     * @return favorite food, as a string.
      */
     private String getUserFavoriteFood() {
         return PreferenceManager.getDefaultSharedPreferences(this)
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 .apply();
 
         // [START user_property]
-        mAppMeasurement.setUserProperty("favorite_food", mFavoriteFood);
+        mFirebaseAnalytics.setUserProperty("favorite_food", mFavoriteFood);
         // [END user_property]
     }
 
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 Bundle params = new Bundle();
                 params.putString("image_name", name);
                 params.putString("full_text", text);
-                mAppMeasurement.logEvent("share_image", params);
+                mFirebaseAnalytics.logEvent("share_image", params);
                 // [END custom_event]
                 break;
         }
@@ -223,10 +223,10 @@ public class MainActivity extends AppCompatActivity {
 
         // [START image_view_event]
         Bundle bundle = new Bundle();
-        bundle.putString(AppMeasurement.Param.ITEM_ID, id);
-        bundle.putString(AppMeasurement.Param.ITEM_NAME, name);
-        bundle.putString(AppMeasurement.Param.CONTENT_TYPE, "image");
-        mAppMeasurement.logEvent(AppMeasurement.Event.SELECT_CONTENT, bundle);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         // [END image_view_event]
     }
 

@@ -119,15 +119,15 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
 
     // [START handle_auth_result]
     private void handleFirebaseAuthResult(AuthResult result) {
-        if (result != null && result.getStatus().isSuccess()) {
+        if (result != null) {
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
             // [START_EXCLUDE]
             updateUI(result.getUser());
             // [END_EXCLUDE]
         } else {
-            Log.d(TAG, "handleFirebaseAuthResult:ERROR:" + result);
-            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "handleFirebaseAuthResult:ERROR");
             // [START_EXCLUDE]
+            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
             updateUI(null);
             // [END_EXCLUDE]
         }

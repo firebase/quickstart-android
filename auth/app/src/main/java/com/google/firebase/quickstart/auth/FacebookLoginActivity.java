@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -144,15 +145,16 @@ public class FacebookLoginActivity extends AppCompatActivity implements
     }
 
     private void handleFirebaseAuthResult(AuthResult result) {
-        if (result != null && result.getStatus().isSuccess()) {
+        if (result != null) {
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
             FirebaseUser user = result.getUser();
             // [START_EXCLUDE]
             updateUI(user);
             // [END_EXCLUDE]
         } else {
-            Log.d(TAG, "handleFirebaseAuthResult:ERROR:" + result);
+            Log.d(TAG, "handleFirebaseAuthResult:ERROR");
             // [START_EXCLUDE]
+            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
             updateUI(null);
             // [END_EXCLUDE]
         }
@@ -167,7 +169,7 @@ public class FacebookLoginActivity extends AppCompatActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.facebook_status_fmt, user.getEmail()));
+            mStatusTextView.setText(getString(R.string.facebook_status_fmt, user.getDisplayName()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
             findViewById(R.id.button_facebook_login).setVisibility(View.GONE);

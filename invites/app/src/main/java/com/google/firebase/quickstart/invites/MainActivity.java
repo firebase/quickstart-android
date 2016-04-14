@@ -37,7 +37,7 @@ import com.google.android.gms.appinvite.AppInviteReferral;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.measurement.AppMeasurement;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * Main Activity for sending App Invites and launching the DeepLinkActivity when an
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements
 
     // [START define_variables]
     private GoogleApiClient mGoogleApiClient;
-    private AppMeasurement mMeasurement;
+    private FirebaseAnalytics mMeasurement;
     // [END define_variables]
 
     // [START on_create]
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements
                 .build();
 
         // Initialize Firebase Analytics
-        mMeasurement = AppMeasurement.getInstance(this);
+        mMeasurement = FirebaseAnalytics.getInstance(this);
 
         // Check for App Invite invitations and launch deep-link activity if possible.
         // Requires that an Activity is registered in AndroidManifest.xml to handle
@@ -94,10 +94,10 @@ public class MainActivity extends AppCompatActivity implements
                                 // Log an event to Analytics
                                 Bundle bundle = new Bundle();
                                 bundle.putString("app_invitation_id", invitationId);
-                                bundle.putString(AppMeasurement.Param.ITEM_ID, deepLink);
-                                bundle.putString(AppMeasurement.Param.ITEM_NAME, "Standard Offer");
-                                bundle.putString(AppMeasurement.Param.ITEM_CATEGORY, "Offer");
-                                mMeasurement.logEvent(AppMeasurement.Event.VIEW_ITEM, bundle);
+                                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, deepLink);
+                                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Standard Offer");
+                                bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Offer");
+                                mMeasurement.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
 
                                 // Because autoLaunchDeepLink = true we don't have to do anything
                                 // here, but we could set that to false and manually choose
@@ -146,9 +146,9 @@ public class MainActivity extends AppCompatActivity implements
                 for (String id : ids) {
                     Bundle bundle = new Bundle();
                     bundle.putString("app_invitation_id", id);
-                    bundle.putString(AppMeasurement.Param.ITEM_ID, getString(R.string.invitation_deep_link));
-                    bundle.putString(AppMeasurement.Param.CONTENT_TYPE, "invitation");
-                    mMeasurement.logEvent(AppMeasurement.Event.SHARE, bundle);
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, getString(R.string.invitation_deep_link));
+                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "invitation");
+                    mMeasurement.logEvent(FirebaseAnalytics.Event.SHARE, bundle);
                 }
             } else {
                 // Sending failed or it was canceled, show failure message to the user

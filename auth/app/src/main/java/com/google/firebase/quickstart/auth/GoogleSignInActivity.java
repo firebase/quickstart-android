@@ -138,16 +138,17 @@ public class GoogleSignInActivity extends AppCompatActivity implements
     }
 
     private void handleFirebaseAuthResult(AuthResult result) {
-        Log.d(TAG, "handleFirebaseAuthResult:" + result.getStatus());
-        if (result != null && result.getStatus().isSuccess()) {
+        Log.d(TAG, "handleFirebaseAuthResult:" + result);
+        if (result != null) {
             FirebaseUser user = result.getUser();
             Log.d(TAG, "handleFirebaseAuthResult:SUCCESS:" + user);
             // [START_EXCLUDE]
             updateUI(user);
             // [END_EXCLUDE]
         } else {
-            Log.d(TAG, "handleFirebaseAuthResult:ERROR:" + result);
+            Log.d(TAG, "handleFirebaseAuthResult:ERROR");
             // [START_EXCLUDE]
+            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
             updateUI(null);
             // [END_EXCLUDE]
         }
