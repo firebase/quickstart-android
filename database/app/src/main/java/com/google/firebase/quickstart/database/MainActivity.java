@@ -33,6 +33,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.quickstart.database.models.Message;
+import com.google.firebase.quickstart.database.viewholder.MessageViewHolder;
 
 import java.util.UUID;
 
@@ -125,7 +126,7 @@ public class  MainActivity extends AppCompatActivity implements TextView.OnEdito
          * Adapter for the view of chat messages from the Firebase Database.
          */
         final FirebaseRecyclerAdapter<Message,MessageViewHolder> firebaseAdapter =
-                new FirebaseRecyclerAdapter<Message,MessageViewHolder> (
+                new FirebaseRecyclerAdapter<Message, MessageViewHolder> (
                         Message.class,
                         android.R.layout.simple_list_item_2,
                         MessageViewHolder.class,
@@ -167,19 +168,5 @@ public class  MainActivity extends AppCompatActivity implements TextView.OnEdito
             return true;
         }
         return false;
-    }
-
-    /**
-     * ViewHolder for use in our RecyclerView.
-     */
-    public static class MessageViewHolder extends RecyclerView.ViewHolder {
-        TextView messageText;
-        TextView nameText;
-
-        public MessageViewHolder(View itemView) {
-            super(itemView);
-            nameText = (TextView)itemView.findViewById(android.R.id.text1);
-            messageText = (TextView) itemView.findViewById(android.R.id.text2);
-        }
     }
 }

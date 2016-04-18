@@ -19,6 +19,7 @@ package com.google.firebase.quickstart.database.models;
  * Model class that can be automatically marshaled by the Firebase SDK.
  */
 public class Message {
+
     private String name;
     private String text;
 

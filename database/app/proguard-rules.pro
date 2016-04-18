@@ -15,3 +15,11 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keep class com.google.firebase.quickstart.database.viewholder.** {
+    *;
+}
+
+-keepclassmembers class com.google.firebase.quickstart.database.models.** {
+    *;
+}
