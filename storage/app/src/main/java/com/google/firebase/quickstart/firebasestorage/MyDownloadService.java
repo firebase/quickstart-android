@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StreamDownloadTask;
 
 public class MyDownloadService extends Service {
 
@@ -73,17 +74,17 @@ public class MyDownloadService extends Service {
             Log.d(TAG, ACTION_DOWNLOAD + ":" + downloadPath);
             taskStarted();
 
-            // Download as bytes
-            mStorage.child(downloadPath).getBytes(Long.MAX_VALUE)
-                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            // Download and get total bytes
+            mStorage.child(downloadPath).getStream()
+                    .addOnSuccessListener(new OnSuccessListener<StreamDownloadTask.TaskSnapshot>() {
                         @Override
-                        public void onSuccess(byte[] bytes) {
+                        public void onSuccess(StreamDownloadTask.TaskSnapshot taskSnapshot) {
                             Log.d(TAG, "download:SUCCESS");
 
                             // Send success broadcast with number of bytes downloaded
                             Intent broadcast = new Intent(ACTION_COMPLETED);
                             broadcast.putExtra(EXTRA_DOWNLOAD_PATH, downloadPath);
-                            broadcast.putExtra(EXTRA_BYTES_DOWNLOADED, bytes.length);
+                            broadcast.putExtra(EXTRA_BYTES_DOWNLOADED, taskSnapshot.getTotalByteCount());
                             LocalBroadcastManager.getInstance(getApplicationContext())
                                     .sendBroadcast(broadcast);
 
