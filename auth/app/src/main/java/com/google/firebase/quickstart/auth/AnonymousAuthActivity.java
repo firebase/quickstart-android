@@ -75,14 +75,24 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult result) {
-                        handleFirebaseAuthResult(result);
+                        Log.d(TAG, "signInAnonymously:onSuccess");
+                        FirebaseUser user = result.getUser();
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        updateUI(user);
+                        // [END_EXCLUDE]
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Throwable throwable) {
                         Log.e(TAG, "signInAnonymously:onFailure", throwable);
-                        handleFirebaseAuthResult(null);
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        updateUI(null);
+                        // [END_EXCLUDE]
                     }
                 });
         // [END signin_anonymously]
@@ -104,35 +114,28 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult result) {
-                        handleFirebaseAuthResult(result);
+                        Log.d(TAG, "linkWithCredential:onSuccess");
+                        FirebaseUser user = result.getUser();
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        updateUI(user);
+                        // [END_EXCLUDE]
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Throwable throwable) {
                         Log.e(TAG, "linkWithCredential:onFailure", throwable);
-                        handleFirebaseAuthResult(null);
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        updateUI(null);
+                        // [END_EXCLUDE]
                     }
                 });
         // [END link_credential]
     }
-
-    // [START handle_auth_result]
-    private void handleFirebaseAuthResult(AuthResult result) {
-        if (result != null) {
-            Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
-            // [START_EXCLUDE]
-            updateUI(result.getUser());
-            // [END_EXCLUDE]
-        } else {
-            Log.d(TAG, "handleFirebaseAuthResult:ERROR");
-            // [START_EXCLUDE]
-            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-            updateUI(null);
-            // [END_EXCLUDE]
-        }
-    }
-    // [END handle_auth_result]
 
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();

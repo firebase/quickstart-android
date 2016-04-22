@@ -43,7 +43,9 @@ public class EmailPasswordActivity extends AppCompatActivity implements
     private EditText mEmailField;
     private EditText mPasswordField;
 
+    // [START declare_auth]
     private FirebaseAuth mAuth;
+    // [END declare_auth]
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,16 +87,24 @@ public class EmailPasswordActivity extends AppCompatActivity implements
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult result) {
-                        handleFirebaseAuthResult(result);
+                        Log.d(TAG, "createUserWithEmail:onSuccess");
+                        FirebaseUser newUser = result.getUser();
+                        // [START_EXCLUDE]
+                        updateUI(newUser);
                         hideProgressDialog();
+                        // [END_EXCLUDE]
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Throwable throwable) {
                         Log.e(TAG, "createUserWithEmail:onFailure", throwable);
-                        handleFirebaseAuthResult(null);
+                        Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        // [START_EXCLUDE]
+                        updateUI(null);
                         hideProgressDialog();
+                        // [END_EXCLUDE]
                     }
                 });
         // [END create_user_with_email]
@@ -102,23 +112,29 @@ public class EmailPasswordActivity extends AppCompatActivity implements
 
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
-        // [START_EXCLUDE]
         showProgressDialog();
-        // [END_EXCLUDE]
 
         // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult result) {
-                        handleFirebaseAuthResult(result);
+                        // [START_EXCLUDE]
+                        updateUI(result.getUser());
+                        hideProgressDialog();
+                        // [END_EXCLUDE]
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Throwable throwable) {
                         Log.e(TAG, "signInWithEmail:onFailure", throwable);
-                        handleFirebaseAuthResult(null);
+                        // [START_EXCLUDE]
+                        updateUI(null);
+                        Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        hideProgressDialog();
+                        // [END_EXCLUDE]
                     }
                 });
         // [END sign_in_with_email]
@@ -128,23 +144,6 @@ public class EmailPasswordActivity extends AppCompatActivity implements
         mAuth.signOut();
         updateUI(null);
     }
-
-    // [START handle_auth_result]
-    private void handleFirebaseAuthResult(AuthResult result) {
-        if (result != null) {
-            Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
-            // [START_EXCLUDE]
-            updateUI(result.getUser());
-            // [END_EXCLUDE]
-        } else {
-            Log.d(TAG, "handleFirebaseAuthResult:ERROR");
-            // [START_EXCLUDE]
-            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-            updateUI(null);
-            // [END_EXCLUDE]
-        }
-    }
-    // [END handle_auth_result]
 
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();

@@ -85,8 +85,8 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onSuccess(AuthResult result) {
                         // Signed in, display user information.
+                        Log.d(TAG, "signInWithCustomToken:onSuccess");
                         FirebaseUser user = result.getUser();
-
                         // [START_EXCLUDE]
                         ((TextView) findViewById(R.id.text_sign_in_status)).setText(
                                 "User ID: " + user.getUid());
@@ -98,6 +98,7 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onFailure(@NonNull Throwable throwable) {
                         // Sign-in error, display a message.
+                        Log.w(TAG, "signInWithCustomToken:onFailure", throwable);
                         // [START_EXCLUDE]
                         ((TextView) findViewById(R.id.text_sign_in_status)).setText(
                                 "Error: sign in failed.");

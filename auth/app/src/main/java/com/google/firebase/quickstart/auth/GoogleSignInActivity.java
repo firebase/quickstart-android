@@ -52,7 +52,10 @@ public class GoogleSignInActivity extends AppCompatActivity implements
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
+    // [START declare_auth]
     private FirebaseAuth mAuth;
+    // [END declare_auth]
+
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
@@ -125,33 +128,26 @@ public class GoogleSignInActivity extends AppCompatActivity implements
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult result) {
-                        handleFirebaseAuthResult(result);
+                        Log.d(TAG, "signInWithCredential:onSuccess");
+                        FirebaseUser user = result.getUser();
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        updateUI(user);
+                        // [END_EXCLUDE]
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Throwable throwable) {
-                        Log.e(TAG, "authWithCredential:onFailure", throwable);
-                        handleFirebaseAuthResult(null);
+                        Log.e(TAG, "signInWithCredential:onFailure", throwable);
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        updateUI(null);
+                        // [END_EXCLUDE]
                     }
                 });
-    }
-
-    private void handleFirebaseAuthResult(AuthResult result) {
-        Log.d(TAG, "handleFirebaseAuthResult:" + result);
-        if (result != null) {
-            FirebaseUser user = result.getUser();
-            Log.d(TAG, "handleFirebaseAuthResult:SUCCESS:" + user);
-            // [START_EXCLUDE]
-            updateUI(user);
-            // [END_EXCLUDE]
-        } else {
-            Log.d(TAG, "handleFirebaseAuthResult:ERROR");
-            // [START_EXCLUDE]
-            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-            updateUI(null);
-            // [END_EXCLUDE]
-        }
     }
     // [END auth_with_google]
 

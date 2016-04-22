@@ -53,7 +53,9 @@ public class FacebookLoginActivity extends AppCompatActivity implements
     private TextView mStatusTextView;
     private TextView mDetailTextView;
 
+    // [START declare_auth]
     private FirebaseAuth mAuth;
+    // [END declare_auth]
 
     private CallbackManager mCallbackManager;
 
@@ -132,32 +134,26 @@ public class FacebookLoginActivity extends AppCompatActivity implements
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult result) {
-                        handleFirebaseAuthResult(result);
+                        Log.d(TAG, "signInWithCredential:onSuccess");
+                        FirebaseUser user = result.getUser();
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        updateUI(user);
+                        // [END_EXCLUDE]
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Throwable throwable) {
-                        Log.e(TAG, "authWithCredential:onFailure", throwable);
-                        handleFirebaseAuthResult(null);
+                        Log.e(TAG, "signInWithCredential:onFailure", throwable);
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        Toast.makeText(FacebookLoginActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        updateUI(null);
+                        // [END_EXCLUDE]
                     }
                 });
-    }
-
-    private void handleFirebaseAuthResult(AuthResult result) {
-        if (result != null) {
-            Log.d(TAG, "handleFirebaseAuthResult:SUCCESS");
-            FirebaseUser user = result.getUser();
-            // [START_EXCLUDE]
-            updateUI(user);
-            // [END_EXCLUDE]
-        } else {
-            Log.d(TAG, "handleFirebaseAuthResult:ERROR");
-            // [START_EXCLUDE]
-            Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-            updateUI(null);
-            // [END_EXCLUDE]
-        }
     }
     // [END auth_with_facebook]
 
