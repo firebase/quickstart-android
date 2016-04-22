@@ -42,7 +42,9 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
 
     private static final String TAG = "AnonymousAuth";
 
+    // [START declare_auth]
     private FirebaseAuth mAuth;
+    // [END declare_auth]
 
     private ProgressDialog mProgressDialog;
     private EditText mEmailField;

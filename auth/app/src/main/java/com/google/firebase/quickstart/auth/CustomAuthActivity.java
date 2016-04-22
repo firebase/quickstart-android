@@ -37,7 +37,9 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
 
     private static final String TAG = "CustomAuthActivity";
 
+    // [START declare_auth]
     private FirebaseAuth mAuth;
+    // [END declare_auth]
     private String mCustomToken;
     private TokenBroadcastReceiver mTokenReceiver;
 
