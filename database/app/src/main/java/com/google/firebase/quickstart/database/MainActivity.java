@@ -16,157 +16,69 @@
 
 package com.google.firebase.quickstart.database;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.quickstart.database.models.Message;
-import com.google.firebase.quickstart.database.viewholder.MessageViewHolder;
-
-import java.util.UUID;
+import com.google.firebase.quickstart.database.fragment.MyPostsFragment;
+import com.google.firebase.quickstart.database.fragment.MyTopPostsFragment;
+import com.google.firebase.quickstart.database.fragment.RecentPostsFragment;
 
 
-public class  MainActivity extends AppCompatActivity implements TextView.OnEditorActionListener{
+public class  MainActivity extends BaseActivity {
 
-    /**
-     * Our reference to the root of our Firebase database.
-     */
-    // [START define_database_reference]
-    private DatabaseReference mFirebaseRef;
-    // [END define_database_reference]
+    private static final String TAG = "MainActivity";
 
-    /**
-     * The username of the signed in user, or nil if logged out.
-     */
-    private String mUsername;
-
-    /**
-     * The message send button.
-     */
-    private ImageButton mSend;
-
-    /**
-     * The chat text entry.
-     */
-    private EditText mTextEdit;
-
-    /**
-     * Our message display list.
-     */
-    private RecyclerView mRecycler;
-
-    /**
-     * The layout manager for our view.
-     */
-    private LinearLayoutManager mLlm;
+    private FragmentPagerAdapter mPagerAdapter;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        // [START create_database_reference]
-        // Get a reference to the Firebase Database
-        mFirebaseRef = FirebaseDatabase.getInstance().getReference();
-        // [END create_database_reference]
-
-        mTextEdit = (EditText) findViewById(R.id.text_edit);
-        mTextEdit.setOnEditorActionListener(this);
-
-        mUsername = UUID.randomUUID().toString().substring(0, 8);
-
-        mSend = (ImageButton) findViewById(R.id.send_button);
-        mSend.setOnClickListener(new View.OnClickListener() {
+        // Create the adapter that will return a fragment for each section
+        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            private final Fragment[] mFragments = new Fragment[] {
+                    new RecentPostsFragment(),
+                    new MyPostsFragment(),
+                    new MyTopPostsFragment(),
+            };
+            private final String[] mFragmentNames = new String[] {
+                    "Recent",
+                    "My Posts",
+                    "My Top Posts"
+            };
             @Override
-            public void onClick(View view) {
-                // Create a message object out of the username and the message the user entered
-                Message message = new Message("User " + mUsername, mTextEdit.getText().toString());
-
-                // We will only send non-empty messages
-                if (message.getText().length() > 0) {
-                    // [START push_message]
-                    // Create a new message in the Firebase Database.
-                    mFirebaseRef.child("messages").push().setValue(message);
-                    // [END push_message]
-
-                    // Clear the existing message, to make it obvious to the user that it was sent
-                    // to Firebase.
-                    mTextEdit.setText("");
-                    Snackbar.make(findViewById(android.R.id.content),
-                            "Message sent",
-                            Snackbar.LENGTH_SHORT)
-                            .show();
-                } else {
-                    mTextEdit.requestFocus();
-                }
+            public Fragment getItem(int position) {
+                return mFragments[position];
             }
-        });
-
-        mRecycler = (RecyclerView) findViewById(R.id.messages_list);
-        mRecycler.setHasFixedSize(true);
-        mLlm = new LinearLayoutManager(this);
-        mLlm.setStackFromEnd(true);
-        mRecycler.setLayoutManager(mLlm);
-
-        /**
-         * Adapter for the view of chat messages from the Firebase Database.
-         */
-        final FirebaseRecyclerAdapter<Message,MessageViewHolder> firebaseAdapter =
-                new FirebaseRecyclerAdapter<Message, MessageViewHolder> (
-                        Message.class,
-                        android.R.layout.simple_list_item_2,
-                        MessageViewHolder.class,
-                        mFirebaseRef.child("messages")) {
-
             @Override
-            public void populateViewHolder(MessageViewHolder viewHolder, Message message, int position) {
-                viewHolder.nameText.setText(message.getName());
-                viewHolder.messageText.setText(message.getText());
+            public int getCount() {
+                return mFragments.length;
+            }
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mFragmentNames[position];
             }
         };
-        mRecycler.setAdapter(firebaseAdapter);
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mPagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
-        // Display new items if at start of list.
-        firebaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        // Button launches NewPostActivity
+        findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                super.onItemRangeInserted(positionStart, itemCount);
-                int max = firebaseAdapter.getItemCount();
-                int lastVis = mLlm.findLastCompletelyVisibleItemPosition();
-                if (lastVis == -1 ||
-                        (positionStart >= (max - 1) && lastVis == (positionStart - 1))) {
-                    mRecycler.smoothScrollToPosition(positionStart);
-                }
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, NewPostActivity.class));
             }
         });
-
     }
 
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_SEND ||
-                actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
-            if (v.getText().length() > 0) {
-                mSend.performClick();
-            } else {
-                mTextEdit.requestFocus();
-            }
-            return true;
-        }
-        return false;
-    }
 }
