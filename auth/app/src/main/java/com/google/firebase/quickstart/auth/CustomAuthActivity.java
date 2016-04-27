@@ -23,8 +23,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,6 +40,11 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
     // [START declare_auth]
     private FirebaseAuth mAuth;
     // [END declare_auth]
+
+    // [START declare_auth_listener]
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    // [END declare_auth_listener]
+
     private String mCustomToken;
     private TokenBroadcastReceiver mTokenReceiver;
 
@@ -61,53 +66,83 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         };
 
         // [START initialize_auth]
-        // Initialize Firebase
-        // Get instance of FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+        // [START auth_state_listener]
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // [START_EXCLUDE]
+                updateUI(user);
+                // [END_EXCLUDE]
+            }
+        };
+        // [END auth_state_listener]
     }
 
+    // [START on_start_add_listener]
     @Override
     public void onStart() {
         super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+        // [START_EXCLUDE]
         registerReceiver(mTokenReceiver, TokenBroadcastReceiver.getFilter());
+        // [END_EXCLUDE]
     }
+    // [END on_start_add_listener]
 
+    // [START on_stop_remove_listener]
     @Override
     public void onStop() {
         super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+        // [START_EXCLUDE]
         unregisterReceiver(mTokenReceiver);
+        // [END_EXCLUDE]
     }
+    // [END on_stop_remove_listener]
 
     private void startSignIn() {
         // Initiate sign in with custom token
         // [START sign_in_custom]
         mAuth.signInWithCustomToken(mCustomToken)
-                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onSuccess(AuthResult result) {
-                        // Signed in, display user information.
-                        Log.d(TAG, "signInWithCustomToken:onSuccess");
-                        FirebaseUser user = result.getUser();
-                        // [START_EXCLUDE]
-                        ((TextView) findViewById(R.id.text_sign_in_status)).setText(
-                                "User ID: " + user.getUid());
-                        Toast.makeText(CustomAuthActivity.this, "Signed In", Toast.LENGTH_SHORT).show();
-                        // [END_EXCLUDE]
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Throwable throwable) {
-                        // Sign-in error, display a message.
-                        Log.w(TAG, "signInWithCustomToken:onFailure", throwable);
-                        // [START_EXCLUDE]
-                        ((TextView) findViewById(R.id.text_sign_in_status)).setText(
-                                "Error: sign in failed.");
-                        // [END_EXCLUDE]
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithCustomToken:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithCustomToken", task.getException());
+                            Toast.makeText(CustomAuthActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
         // [END sign_in_custom]
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+                    "User ID: " + user.getUid());
+        } else {
+            ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+                    "Error: sign in failed.");
+        }
     }
 
     private void setCustomToken(String token) {

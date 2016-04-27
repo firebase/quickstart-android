@@ -33,8 +33,8 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
@@ -57,6 +57,10 @@ public class FacebookLoginActivity extends AppCompatActivity implements
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
+    // [START declare_auth_listener]
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    // [END declare_auth_listener]
+
     private CallbackManager mCallbackManager;
 
     @Override
@@ -74,6 +78,25 @@ public class FacebookLoginActivity extends AppCompatActivity implements
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+        // [START auth_state_listener]
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // [START_EXCLUDE]
+                updateUI(user);
+                // [END_EXCLUDE]
+            }
+        };
+        // [END auth_state_listener]
 
         // [START initialize_fblogin]
         // Initialize Facebook Login button
@@ -106,15 +129,23 @@ public class FacebookLoginActivity extends AppCompatActivity implements
         // [END initialize_fblogin]
     }
 
+    // [START on_start_add_listener]
     @Override
     public void onStart() {
         super.onStart();
-
-        // Check for existing sign-in
-        // TODO(samstern): How to relate this to the Facebook LoginButton state?
-        FirebaseUser user = mAuth.getCurrentUser();
-        updateUI(user);
+        mAuth.addAuthStateListener(mAuthListener);
     }
+    // [END on_start_add_listener]
+
+    // [START on_stop_remove_listener]
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+    // [END on_stop_remove_listener]
 
 
     @Override
@@ -131,26 +162,22 @@ public class FacebookLoginActivity extends AppCompatActivity implements
         // [END_EXCLUDE]
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onSuccess(AuthResult result) {
-                        Log.d(TAG, "signInWithCredential:onSuccess");
-                        FirebaseUser user = result.getUser();
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(FacebookLoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
                         // [START_EXCLUDE]
                         hideProgressDialog();
-                        updateUI(user);
-                        // [END_EXCLUDE]
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Throwable throwable) {
-                        Log.e(TAG, "signInWithCredential:onFailure", throwable);
-                        // [START_EXCLUDE]
-                        hideProgressDialog();
-                        Toast.makeText(FacebookLoginActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                        updateUI(null);
                         // [END_EXCLUDE]
                     }
                 });

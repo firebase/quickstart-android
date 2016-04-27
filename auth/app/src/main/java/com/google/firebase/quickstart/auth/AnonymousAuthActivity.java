@@ -26,8 +26,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -46,6 +46,10 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
+    // [START declare_auth_listener]
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    // [END declare_auth_listener]
+
     private ProgressDialog mProgressDialog;
     private EditText mEmailField;
     private EditText mPasswordField;
@@ -56,9 +60,27 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_anonymous_auth);
 
         // [START initialize_auth]
-        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+        // [START auth_state_listener]
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // [START_EXCLUDE]
+                updateUI(user);
+                // [END_EXCLUDE]
+            }
+        };
+        // [END auth_state_listener]
 
         // Fields
         mEmailField = (EditText) findViewById(R.id.field_email);
@@ -70,30 +92,44 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
         findViewById(R.id.button_link_account).setOnClickListener(this);
     }
 
+    // [START on_start_add_listener]
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+    // [END on_start_add_listener]
+
+    // [START on_stop_remove_listener]
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+    // [END on_stop_remove_listener]
+
     private void signInAnonymously() {
         showProgressDialog();
         // [START signin_anonymously]
         mAuth.signInAnonymously()
-                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onSuccess(AuthResult result) {
-                        Log.d(TAG, "signInAnonymously:onSuccess");
-                        FirebaseUser user = result.getUser();
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInAnonymously:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInAnonymously", task.getException());
+                            Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
                         // [START_EXCLUDE]
                         hideProgressDialog();
-                        updateUI(user);
-                        // [END_EXCLUDE]
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Throwable throwable) {
-                        Log.e(TAG, "signInAnonymously:onFailure", throwable);
-                        // [START_EXCLUDE]
-                        hideProgressDialog();
-                        Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                        updateUI(null);
                         // [END_EXCLUDE]
                     }
                 });
@@ -113,26 +149,21 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
         showProgressDialog();
         // [START link_credential]
         mAuth.getCurrentUser().linkWithCredential(credential)
-                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onSuccess(AuthResult result) {
-                        Log.d(TAG, "linkWithCredential:onSuccess");
-                        FirebaseUser user = result.getUser();
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "linkWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
                         // [START_EXCLUDE]
                         hideProgressDialog();
-                        updateUI(user);
-                        // [END_EXCLUDE]
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Throwable throwable) {
-                        Log.e(TAG, "linkWithCredential:onFailure", throwable);
-                        // [START_EXCLUDE]
-                        hideProgressDialog();
-                        Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                        updateUI(null);
                         // [END_EXCLUDE]
                     }
                 });
