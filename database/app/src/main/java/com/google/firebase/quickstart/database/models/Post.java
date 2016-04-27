@@ -1,8 +1,11 @@
 package com.google.firebase.quickstart.database.models;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@IgnoreExtraProperties
 public class Post {
 
     public String uid;
