@@ -9,15 +9,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.google.firebase.quickstart.firebasestorage.MainActivity">
 
+    <ImageView
+        android:id="@+id/firebase_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/firebase_lockup_400" />
 
     <LinearLayout
         android:id="@+id/layout_signin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/firebase_logo"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/status_sign_in"
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_in_prompt" />
@@ -26,7 +35,7 @@
             android:id="@+id/button_sign_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_in_anonymously"/>
+            android:text="@string/sign_in_anonymously" />
 
     </LinearLayout>
 
@@ -34,12 +43,15 @@
         android:id="@+id/layout_storage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/layout_signin"
         android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible">
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/take_photo_prompt" />
@@ -50,19 +62,43 @@
             android:layout_height="wrap_content"
             android:text="@string/camera_button_text" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_storage"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_link"/>
+
         <TextView
             android:id="@+id/picture_download_uri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autoLink="web" />
+            android:autoLink="web"
+            tools:text="http://www.example.com/?id=UAOJNVKBMQUGPYZKCQZRZKJEXRCRXMRSMFBZBMBODWUSVTDXJCPJMYOKQQBODSGPYHPZUR"/>
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_download" />
 
         <Button
             android:id="@+id/button_download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/download"
-            android:visibility="gone" />
-
+            android:text="@string/download" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -16,12 +16,14 @@
 
 package com.google.firebase.quickstart.firebasestorage;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
@@ -42,15 +44,20 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity implements
-        View.OnClickListener {
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
-    private static final String TAG = "MainActivity";
+public class MainActivity extends AppCompatActivity implements
+        View.OnClickListener, EasyPermissions.PermissionCallbacks {
+
+    private static final String TAG = "Storage#MainActivity";
 
     private static final int RC_TAKE_PICTURE = 101;
+    private static final int RC_STORAGE_PERMS = 102;
 
     private static final String KEY_FILE_URI = "key_file_uri";
 
@@ -73,8 +80,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Initialize Firebase Storage Ref
         // [START get_storage_ref]
-        mStorageRef = FirebaseStorage.getInstance()
-                .getReference(getString(R.string.google_storage_bucket));
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         // [END get_storage_ref]
 
         // Click listeners
@@ -96,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 if (MyDownloadService.ACTION_COMPLETED.equals(intent.getAction())) {
                     String path = intent.getStringExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH);
-                    int numBytes = intent.getIntExtra(MyDownloadService.EXTRA_BYTES_DOWNLOADED, 0);
+                    long numBytes = intent.getLongExtra(MyDownloadService.EXTRA_BYTES_DOWNLOADED, 0);
 
                     // Alert success
                     showMessageDialog("Success", String.format(Locale.getDefault(),
@@ -183,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements
                         hideProgressDialog();
                         ((TextView) findViewById(R.id.picture_download_uri))
                                 .setText(downloadUrl.toString());
-                        findViewById(R.id.button_download).setVisibility(View.VISIBLE);
+                        findViewById(R.id.layout_download).setVisibility(View.VISIBLE);
                         // [END_EXCLUDE]
                     }
                 })
@@ -197,19 +203,28 @@ public class MainActivity extends AppCompatActivity implements
                         hideProgressDialog();
                         Toast.makeText(MainActivity.this, "Error: upload failed",
                                 Toast.LENGTH_SHORT).show();
-                        findViewById(R.id.button_download).setVisibility(View.GONE);
+                        findViewById(R.id.layout_download).setVisibility(View.GONE);
                         // [END_EXCLUDE]
                     }
                 });
     }
     // [END upload_from_uri]
 
+    @AfterPermissionGranted(RC_STORAGE_PERMS)
     private void launchCamera() {
+        // Check that we have permission to read images from external storage.
+        String perm = Manifest.permission.READ_EXTERNAL_STORAGE;
+        if (!EasyPermissions.hasPermissions(this, perm)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage),
+                    RC_STORAGE_PERMS, perm);
+            return;
+        }
+
         // Create intent
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         // Choose file storage location
-        File file = new File(getExternalCacheDir(), UUID.randomUUID().toString() + ".jpg");
+        File file = new File(Environment.getExternalStorageDirectory(), UUID.randomUUID().toString() + ".jpg");
         mFileUri = Uri.fromFile(file);
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
 
@@ -302,4 +317,16 @@ public class MainActivity extends AppCompatActivity implements
                 break;
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {}
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {}
 }

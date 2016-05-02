@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.firebasestorage"
-        minSdkVersion 9
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -21,6 +21,8 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
+
+    compile 'pub.devrel:easypermissions:0.1.5'
 
     compile 'com.google.firebase:firebase-auth-api:8.5.6'
     compile 'com.google.firebase:firebase-storage-api:8.5.6'
