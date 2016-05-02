@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.firebase.quickstart.firebasestorage">
 
+    <!--
+        This permission is not required for Firebase Storage and is only used to read
+        files from the camera and upload them to Firebase Storage as a demonstration.
+    -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

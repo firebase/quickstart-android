@@ -33,7 +33,7 @@ import com.google.firebase.storage.StreamDownloadTask;
 
 public class MyDownloadService extends Service {
 
-    private static final String TAG = "MyDownloadService";
+    private static final String TAG = "Storage#DownloadService";
 
     /** Actions **/
     public static final String ACTION_DOWNLOAD = "action_download";
@@ -52,8 +52,7 @@ public class MyDownloadService extends Service {
         super.onCreate();
 
         // Initialize Storage
-        mStorage = FirebaseStorage.getInstance()
-                .getReference(getString(R.string.google_storage_bucket));
+        mStorage = FirebaseStorage.getInstance().getReference();
     }
 
     @Nullable
