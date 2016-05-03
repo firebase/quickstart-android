@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -94,9 +93,9 @@ public class NewPostActivity extends BaseActivity {
         // /posts/$postid simultaneously
         String key = mDatabase.child("posts").push().getKey();
         Post post = new Post(userId, username, title, body);
-        Map<String, Object> postValues = new ObjectMapper().convertValue(post, Map.class);;
+        Map<String, Object> postValues = post.toMap();
 
-        Map<String, Object> childUpdates = new HashMap<String, Object>();
+        Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/posts/" + key, postValues);
         childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
 

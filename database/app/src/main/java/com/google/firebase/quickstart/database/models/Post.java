@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.database.models;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
@@ -22,6 +23,19 @@ public class Post {
         this.author = author;
         this.title = title;
         this.body = body;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("uid", uid);
+        result.put("author", author);
+        result.put("title", title);
+        result.put("body", body);
+        result.put("starCount", starCount);
+        result.put("stars", stars);
+
+        return result;
     }
 
 }

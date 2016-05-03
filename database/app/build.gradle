@@ -13,7 +13,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,8 +34,6 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
 
     compile 'com.firebaseui:firebase-ui-database:1.0.0-beta1'
-
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.0'
 
     compile 'com.google.firebase:firebase-auth-api:8.5.6'
     compile 'com.google.firebase:firebase-database:8.5.6'
