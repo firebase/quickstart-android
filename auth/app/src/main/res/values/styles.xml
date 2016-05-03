@@ -2,7 +2,9 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Activity with no Title -->
@@ -13,7 +15,9 @@
 
     <!-- Dark Buttons -->
     <style name="ThemeOverlay.MyDarkButton" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="colorButtonNormal">@color/blue_grey_500</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
@@ -26,17 +30,19 @@
         <item name="android:fadeScrollbars">true</item>
         <item name="android:gravity">center</item>
         <item name="android:maxLines">5</item>
-        <item name="android:padding">5dp</item>
+        <item name="android:padding">4dp</item>
         <item name="android:scrollbars">vertical</item>
-        <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="ThemeOverlay.AuthIcon" parent="AppTheme">
-        <item name="android:layout_width">48dp</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+    <style name="ThemeOverlay.FirebaseIcon" parent="AppTheme">
         <item name="android:layout_marginTop">@dimen/icon_top_margin</item>
+        <item name="android:layout_marginBottom">@dimen/icon_bottom_margin</item>
+    </style>
+
+    <style name="ThemeOverlay.MyTitleText" parent="AppTheme">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">36sp</item>
     </style>
 
 </resources>
