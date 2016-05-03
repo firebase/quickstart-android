@@ -29,8 +29,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
@@ -107,28 +107,24 @@ public class MainActivity extends AppCompatActivity {
             cacheExpiration = 0;
         }
 
-        // [END fetch_config_with_callback]
+        // [START fetch_config_with_callback]
         // cacheExpirationSeconds is set to cacheExpiration here, indicating that any previously
         // fetched and cached config would be considered expired because it would have been fetched
         // more than cacheExpiration seconds ago. Thus the next fetch would go to the server unless
         // throttling is in progress. The default expiration duration is 43200 (12 hours).
         mFirebaseRemoteConfig.fetch(cacheExpiration)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Fetch Succeeded");
-                        // Once the config is successfully fetched it must be activated before newly fetched
-                        // values are returned.
-                        mFirebaseRemoteConfig.activateFetched();
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Fetch Succeeded");
+                            // Once the config is successfully fetched it must be activated before newly fetched
+                            // values are returned.
+                            mFirebaseRemoteConfig.activateFetched();
+                        } else {
+                            Log.d(TAG, "Fetch failed");
+                        }
                         displayPrice();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Throwable throwable) {
-                        Log.d(TAG, "Fetch failed");
-                        mPriceTextView.setText(mFirebaseRemoteConfig.getString(PRICE_PREFIX_CONFIG_KEY) +
-                                mFirebaseRemoteConfig.getLong(PRICE_CONFIG_KEY));
                     }
                 });
         // [END fetch_config_with_callback]
@@ -138,16 +134,13 @@ public class MainActivity extends AppCompatActivity {
      * Display price with discount applied if promotion is on. Otherwise display original price.
      */
     private void displayPrice() {
+        long initialPrice = mFirebaseRemoteConfig.getLong(PRICE_CONFIG_KEY);
+        long finalPrice = initialPrice;
         if (mFirebaseRemoteConfig.getBoolean(IS_PROMOTION_CONFIG_KEY)) {
             // [START get_config_values]
-            long discountedPrice = mFirebaseRemoteConfig.getLong(PRICE_CONFIG_KEY) -
-                    mFirebaseRemoteConfig.getLong(DISCOUNT_CONFIG_KEY);
-            mPriceTextView.setText(mFirebaseRemoteConfig.getString(PRICE_PREFIX_CONFIG_KEY) + discountedPrice);
+            finalPrice = initialPrice - mFirebaseRemoteConfig.getLong(DISCOUNT_CONFIG_KEY);
             // [END get_config_values]
-        } else {
-            mPriceTextView.setText(mFirebaseRemoteConfig.getString(PRICE_PREFIX_CONFIG_KEY) +
-                    mFirebaseRemoteConfig.getLong(PRICE_CONFIG_KEY));
         }
-
+        mPriceTextView.setText(mFirebaseRemoteConfig.getString(PRICE_PREFIX_CONFIG_KEY) + finalPrice);
     }
 }
