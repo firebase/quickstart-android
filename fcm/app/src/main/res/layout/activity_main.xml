@@ -1,33 +1,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@color/blue_grey_700"
-    android:orientation="vertical" tools:context="com.google.firebase.quickstart.fcm.MainActivity">
+    tools:context="com.google.firebase.quickstart.fcm.MainActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/firebase_lockup_400" />
 
     <TextView
+        android:id="@+id/informationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:text="@string/quickstart_message"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:text="@string/quickstart_message" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/subscribe_to_news"
         android:id="@+id/subscribeButton"
+        android:layout_width="@dimen/standard_field_width"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:text="@string/subscribe_to_news" />
 
     <Button
-        android:layout_width="182dp"
-        android:layout_height="wrap_content"
-        android:text="@string/log_token"
         android:id="@+id/logTokenButton"
-        android:layout_gravity="center_horizontal" />
+        android:layout_width="@dimen/standard_field_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/log_token" />
 
 </LinearLayout>

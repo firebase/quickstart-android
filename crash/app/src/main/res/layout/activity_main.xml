@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 Copyright Google Inc. All rights reserved.
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License. You may obtain a copy of the
@@ -21,23 +20,31 @@ specific language governing permissions and limitations under the License.
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.google.samples.quickstart.crash.MainActivity">
 
-    <Button
+    <ImageView
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/crash_button_label"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/firebase_lockup_400" />
+
+    <Button
         android:id="@+id/crashButton"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/icon"
+        android:layout_centerHorizontal="true"
+        android:text="@string/crash_button_label" />
 
     <CheckBox
+        android:id="@+id/catchCrashCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/catch_crash_checkbox_label"
-        android:id="@+id/catchCrashCheckBox"
-        android:layout_below="@+id/crashButton"
         android:layout_alignEnd="@+id/crashButton"
         android:layout_alignStart="@+id/crashButton"
-        android:layout_marginTop="10dp"/>
+        android:layout_below="@+id/crashButton"
+        android:layout_marginTop="10dp"
+        android:text="@string/catch_crash_checkbox_label" />
 </RelativeLayout>
 
 

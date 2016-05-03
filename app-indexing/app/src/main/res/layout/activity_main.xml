@@ -1,42 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#fff2f2f2"
+    android:paddingTop="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
     tools:context="com.google.samples.quickstart.app_indexing.MainActivity">
 
     <ImageView
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/watermark" />
+        android:src="@drawable/firebase_lockup_400" />
 
     <TextView
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/deeplink_label"
-        android:id="@+id/textView"
-        android:layout_alignTop="@+id/deep_link"
-        android:layout_marginLeft="16dp"
-        android:textSize="10pt"
-        android:textColor="#ff5d5d5d"
-        android:textStyle="bold" />
+        android:layout_below="@+id/icon"
+        android:text="@string/deeplink_label" />
 
     <TextView
         android:id="@+id/deep_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="28dp"
-        android:textSize="10pt"
-        android:textColor="#ff5d5d5d"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/textView" />
+        android:layout_below="@id/textView"
+        android:text="@string/none" />
 
 </RelativeLayout>

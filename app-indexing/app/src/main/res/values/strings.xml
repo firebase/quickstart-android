@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">App Indexing Quickstart</string>
     <string name="deeplink_label">Deep Link:</string>
+    <string name="none">None</string>
 </resources>

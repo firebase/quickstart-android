@@ -2,7 +2,9 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Dialog Activity with no Title -->
@@ -13,7 +15,7 @@
 
     <!-- Blue Buttons -->
     <style name="ThemeOverlay.MyBlueButton" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="colorButtonNormal">@color/cyan_500</item>
+        <item name="colorButtonNormal">@color/colorAccent</item>
     </style>
 
 </resources>

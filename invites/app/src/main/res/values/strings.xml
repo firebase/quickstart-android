@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">App Invite Quickstart</string>
+    <string name="app_name">Invites Quickstart</string>
 
     <string name="action_deep_link">
         com.google.android.gms.samples.appinvite.DEEP_LINK_ACTION
     </string>
 
     <string name="invite">Send invitations!</string>
-    <string name="welcome">App Invite\nQuickstart</string>
+    <string name="welcome">Invites</string>
     <string name="referrer_hint">Deep link not provided</string>
     <string name="deep_link_default">Deep link not set</string>
     <string name="invitation_id_default">Invitation ID not set</string>
