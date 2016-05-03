@@ -10,11 +10,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".CustomAuthActivity">
 
+    <ImageView
+        android:id="@+id/icon"
+        android:contentDescription="@string/desc_firebase_lockup"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/firebase_lockup_400"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <TextView
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/custom_token" />
 
     <TextView
@@ -29,8 +37,8 @@
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="32dp"
         android:text="@string/firebase_user_management" />
 
     <TextView
@@ -41,7 +49,7 @@
 
     <Button
         android:id="@+id/button_sign_in"
-        android:layout_width="150dp"
+        android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
         android:enabled="false"
         android:text="@string/sign_in" />

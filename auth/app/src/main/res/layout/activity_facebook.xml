@@ -3,7 +3,7 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_grey_700"
+    android:background="@color/grey_100"
     android:orientation="vertical"
     android:weightSum="4">
 
@@ -16,19 +16,19 @@
 
         <ImageView
             android:id="@+id/icon"
-            style="@style/ThemeOverlay.AuthIcon"
-            android:contentDescription="@string/desc_facebook_icon"
-            android:src="@drawable/ic_person_white" />
+            style="@style/ThemeOverlay.FirebaseIcon"
+            android:contentDescription="@string/desc_firebase_lockup"
+            android:src="@drawable/firebase_lockup_400"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
+            android:layout_marginBottom="@dimen/title_bottom_margin"
             android:text="@string/facebook_title_text"
-            android:textColor="@android:color/white"
-            android:textSize="36sp" />
+            android:theme="@style/ThemeOverlay.MyTitleText" />
 
         <TextView
             android:id="@+id/status"
@@ -47,7 +47,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/blue_grey_900">
+        android:background="@color/grey_300">
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/button_facebook_login"

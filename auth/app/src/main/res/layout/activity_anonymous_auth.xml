@@ -9,11 +9,21 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.google.firebase.quickstart.auth.AnonymousAuthActivity">
 
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/desc_firebase_lockup"
+        android:src="@drawable/firebase_lockup_400" />
+
     <TextView
         android:id="@+id/title_anonymous"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/icon"
+        android:layout_marginBottom="8dp"
         android:text="Anonymous Sign In" />
 
     <TextView
@@ -21,8 +31,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_anonymous"
-        android:maxLines="1"
         android:ellipsize="end"
+        android:maxLines="1"
         android:text="@string/signed_out" />
 
     <TextView
@@ -30,19 +40,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/anonymous_status_id"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="8dp"
         tools:text="Email: none" />
 
     <Button
         android:id="@+id/button_anonymous_sign_in"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
         android:layout_below="@+id/anonymous_status_email"
         android:text="@string/sign_in" />
 
     <Button
         android:id="@+id/button_anonymous_sign_out"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/button_anonymous_sign_in"
         android:layout_toRightOf="@+id/button_anonymous_sign_in"
@@ -55,13 +65,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button_anonymous_sign_in"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="24dp"
         android:text="Account Linking" />
 
     <EditText
         android:id="@+id/field_email"
-        android:layout_width="150dp"
+        android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_linking"
         android:hint="@string/hint_email"
@@ -69,7 +79,7 @@
 
     <EditText
         android:id="@+id/field_password"
-        android:layout_width="150dp"
+        android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/field_email"
         android:layout_toRightOf="@+id/field_email"
@@ -78,7 +88,7 @@
 
     <Button
         android:id="@+id/button_link_account"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
         android:layout_below="@+id/field_email"
         android:enabled="false"
