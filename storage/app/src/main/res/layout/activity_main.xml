@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="@dimen/margin_2"
         android:src="@drawable/firebase_lockup_400" />
 
     <LinearLayout
@@ -29,11 +29,12 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_in_prompt" />
+            android:text="@string/sign_in_prompt"
+            android:layout_marginBottom="@dimen/margin_1" />
 
         <Button
             android:id="@+id/button_sign_in"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/standard_field_width"
             android:layout_height="wrap_content"
             android:text="@string/sign_in_anonymously" />
 
@@ -54,11 +55,12 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/take_photo_prompt" />
+            android:text="@string/take_photo_prompt"
+            android:layout_marginBottom="@dimen/margin_1" />
 
         <Button
             android:id="@+id/button_camera"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/standard_field_width"
             android:layout_height="wrap_content"
             android:text="@string/camera_button_text" />
 
@@ -77,26 +79,28 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/label_link"/>
+            android:layout_marginTop="@dimen/margin_2"
+            android:text="@string/label_link"
+            android:layout_marginBottom="@dimen/margin_1" />
 
         <TextView
             android:id="@+id/picture_download_uri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="web"
-            tools:text="http://www.example.com/?id=UAOJNVKBMQUGPYZKCQZRZKJEXRCRXMRSMFBZBMBODWUSVTDXJCPJMYOKQQBODSGPYHPZUR"/>
+            tools:text="http://www.example.com/?id=UAOJNVKBMQUGPYZKCQZRZKJEXRCRXMRSMFBZBMBODWUSVTDXJCPJMYOKQQBODSGPYHPZUR" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/label_download" />
+            android:layout_marginTop="@dimen/margin_2"
+            android:text="@string/label_download"
+            android:layout_marginBottom="@dimen/margin_1" />
 
         <Button
             android:id="@+id/button_download"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/standard_field_width"
             android:layout_height="wrap_content"
             android:text="@string/download" />
     </LinearLayout>

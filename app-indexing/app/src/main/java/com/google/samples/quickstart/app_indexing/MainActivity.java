@@ -16,10 +16,10 @@
 
 package com.google.samples.quickstart.app_indexing;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -30,7 +30,7 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
     private GoogleApiClient mClient;

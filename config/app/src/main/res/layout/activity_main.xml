@@ -8,10 +8,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/firebase_lockup_400" />
+
     <TextView
         android:id="@+id/priceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/icon"
+        android:layout_centerHorizontal="true"
         android:text="Checking your price..." />
 
     <Button
