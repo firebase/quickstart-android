@@ -60,10 +60,13 @@ public class MainActivity extends AppCompatActivity implements
     private static final int RC_STORAGE_PERMS = 102;
 
     private static final String KEY_FILE_URI = "key_file_uri";
+    private static final String KEY_DOWNLOAD_URL = "key_download_url";
 
     private BroadcastReceiver mDownloadReceiver;
     private ProgressDialog mProgressDialog;
     private FirebaseAuth mAuth;
+
+    private Uri mDownloadUrl = null;
     private Uri mFileUri = null;
 
     // [START declare_ref]
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements
         // Restore instance state
         if (savedInstanceState != null) {
             mFileUri = savedInstanceState.getParcelable(KEY_FILE_URI);
+            mDownloadUrl = savedInstanceState.getParcelable(KEY_DOWNLOAD_URL);
         }
 
         // Download receiver
@@ -142,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onSaveInstanceState(Bundle out) {
         super.onSaveInstanceState(out);
         out.putParcelable(KEY_FILE_URI, mFileUri);
+        out.putParcelable(KEY_DOWNLOAD_URL, mDownloadUrl);
     }
 
     @Override
@@ -183,13 +188,11 @@ public class MainActivity extends AppCompatActivity implements
                         Log.d(TAG, "uploadFromUri:onSuccess");
 
                         // Get the public download URL
-                        Uri downloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
+                        mDownloadUrl = taskSnapshot.getMetadata().getDownloadUrl();
 
                         // [START_EXCLUDE]
                         hideProgressDialog();
-                        ((TextView) findViewById(R.id.picture_download_uri))
-                                .setText(downloadUrl.toString());
-                        findViewById(R.id.layout_download).setVisibility(View.VISIBLE);
+                        updateUI(mAuth.getCurrentUser());
                         // [END_EXCLUDE]
                     }
                 })
@@ -199,11 +202,13 @@ public class MainActivity extends AppCompatActivity implements
                         // Upload failed
                         Log.w(TAG, "uploadFromUri:onFailure", throwable);
 
+                        mDownloadUrl = null;
+
                         // [START_EXCLUDE]
                         hideProgressDialog();
                         Toast.makeText(MainActivity.this, "Error: upload failed",
                                 Toast.LENGTH_SHORT).show();
-                        findViewById(R.id.layout_download).setVisibility(View.GONE);
+                        updateUI(mAuth.getCurrentUser());
                         // [END_EXCLUDE]
                     }
                 });
@@ -231,7 +236,6 @@ public class MainActivity extends AppCompatActivity implements
         // Launch intent
         startActivityForResult(takePictureIntent, RC_TAKE_PICTURE);
     }
-
 
     private void signInAnonymously() {
         // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
@@ -270,12 +274,24 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void updateUI(FirebaseUser user) {
+        // Signed in or Signed out
         if (user != null) {
             findViewById(R.id.layout_signin).setVisibility(View.GONE);
             findViewById(R.id.layout_storage).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.layout_signin).setVisibility(View.VISIBLE);
             findViewById(R.id.layout_storage).setVisibility(View.GONE);
+        }
+
+        // Download URL and Download button
+        if (mDownloadUrl != null) {
+            ((TextView) findViewById(R.id.picture_download_uri))
+                    .setText(mDownloadUrl.toString());
+            findViewById(R.id.layout_download).setVisibility(View.VISIBLE);
+        } else {
+            ((TextView) findViewById(R.id.picture_download_uri))
+                    .setText(null);
+            findViewById(R.id.layout_download).setVisibility(View.GONE);
         }
     }
 
