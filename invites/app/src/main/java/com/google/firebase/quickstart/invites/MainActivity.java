@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.invite_button).setOnClickListener(this);
         // [END_EXCLUDE]
 
-        // Create an auto-managed GoogleApiClient with acccess to App Invites.
+        // Create an auto-managed GoogleApiClient with access to App Invites.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(AppInvite.API)
                 .enableAutoManage(this, this)
