@@ -6,16 +6,33 @@ android {
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.auth"
-        minSdkVersion 15
+        minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    productFlavors {
+
+        // Build variant to include the Facebook Android SDk
+        // The Facebook Android SDK has a min SDK version of 15
+        facebook {
+            minSdkVersion 15
+        }
+
+        // Build variant to exclude the Facebook Android SDK
+        // Firebase Authentication has a min SDK version of 9
+        nofacebook {
+            minSdkVersion 9
+        }
+
     }
 }
 
@@ -30,7 +47,9 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth-api:8.5.6'
 
     // Facebook Android SDK (only required for Facebook Login)
-    compile 'com.facebook.android:facebook-android-sdk:4.9.0'
+    // This is only compiled into the 'facebook' variant of this app. You can build
+    // a 'nofacebook' variant to test on devices with SDK < 15.
+    facebookCompile 'com.facebook.android:facebook-android-sdk:4.9.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
