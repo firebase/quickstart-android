@@ -9,31 +9,75 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.google.firebase.quickstart.database.SignInActivity">
 
-    <TextView
-        android:id="@+id/text_sign_up"
-        style="@style/Base.TextAppearance.AppCompat.Headline"
+
+    <ImageView
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/create_account" />
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:src="@drawable/firebase_lockup_400" />
+
+    <LinearLayout
+        android:id="@+id/layout_email_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/icon"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/field_email"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:hint="@string/hint_email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1" />
+
+        <EditText
+            android:id="@+id/field_password"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:hint="@string/hint_password"
+            android:inputType="textPassword"
+            android:maxLines="1" />
+
+    </LinearLayout>
+
 
     <EditText
         android:id="@+id/field_username"
-        android:layout_width="200dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_sign_up"
+        android:layout_below="@+id/layout_email_password"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
         android:hint="@string/username" />
 
-    <Button
-        android:id="@+id/button_sign_in"
-        android:layout_width="200dp"
+    <LinearLayout
+        android:id="@+id/layout_buttons"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/field_username"
         android:layout_centerHorizontal="true"
-        android:text="@string/sign_up" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_sign_in"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in" />
+
+
+        <Button
+            android:id="@+id/button_sign_up"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>
