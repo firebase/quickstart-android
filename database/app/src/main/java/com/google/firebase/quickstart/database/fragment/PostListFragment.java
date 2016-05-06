@@ -116,6 +116,10 @@ public abstract class PostListFragment extends Fragment {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
                 Post p = mutableData.getValue(Post.class);
+                if (p == null) {
+                    return Transaction.success(mutableData);
+                }
+
                 if (p.stars.containsKey(getUid())) {
                     // Unstar the post and remove self from stars
                     p.starCount = p.starCount - 1;
