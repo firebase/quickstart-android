@@ -13,7 +13,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 -->
 <resources>
-    <string name="app_name">Analytics Quickstart</string>
+    <string name="app_name">Firebase Analytics</string>
     <string name="pattern1_title">A</string>
     <string name="pattern2_title">B</string>
     <string name="pattern3_title">C</string>

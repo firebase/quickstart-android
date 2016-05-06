@@ -1,37 +1,35 @@
-Google App Indexing Quickstart
+Firebase App Indexing Quickstart
 ==============================
 
-The Google App Indexing Android quickstart demonstrates how to help get your app found in Google Search.  AppIndex.AppIndexApi.view is used to record view events for indexing.
+The Firebase App Indexing Android quickstart demonstrates how to help get your app found in Google Search.  `AppIndex.AppIndexApi.view` is used to record view events for indexing.
 
 Introduction
 ------------
 
-- [Read more about Google App Indexing](https://developers.google.com/app-indexing/)
+- [Read more about Firebase App Indexing](https://firebase.google.com/docs/app-indexing/)
 
 Getting Started
 ---------------
 
-- [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
+- [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 - Open the App Indexing project in Android Studio.
 - Run the sample on your Android device or emulator.
 - The running sample records view events for indexing.
 
+Screenshots
+-----------
+<img src="app/src/screen.png" height="534" width="300"/>
+
 Support
 -------
 
-- Stack Overflow: http://stackoverflow.com/questions/tagged/android-app-indexing
-- [Firebase support](http://developers.google.com/firebase/support/)
-
-If you've found an error in this sample, please file an issue:
-https://github.com/googlesamples/google-services/issues
-
-Patches are encouraged, and may be submitted by forking this project and
-submitting a pull request through GitHub.
+- [Stack Overflow](http://stackoverflow.com/questions/tagged/android-app-indexing)
+- [Firebase Support](http://developers.google.com/firebase/support/)
 
 License
 -------
 
-Copyright 2015 Google, Inc.
+Copyright 2016 Google, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for

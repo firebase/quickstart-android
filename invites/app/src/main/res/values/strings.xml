@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Invites Quickstart</string>
+    <string name="app_name">Firebase Invites</string>
 
     <string name="action_deep_link">
         com.google.android.gms.samples.appinvite.DEEP_LINK_ACTION

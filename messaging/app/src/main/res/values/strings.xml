@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FCM Quickstart</string>
+    <string name="app_name">Firebase Cloud Messaging</string>
     <string name="quickstart_message">Click the SUBSCRIBE TO NEWS button below to subscribe to the
         news topic. Messages sent to the news topic will be received. The LOG TOKEN button logs the
         InstanceID token to logcat.</string>

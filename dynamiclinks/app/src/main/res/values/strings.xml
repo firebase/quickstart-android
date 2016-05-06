@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DeepLinks</string>
+    <string name="app_name">Firebase Dynamic Links</string>
 
     <!--
       Your app code, see:

@@ -1,16 +1,16 @@
-Firebase Deep Links Quickstart
+Firebase Dynamic Links Quickstart
 ==============================
 
 Introduction
 ------------
 
-- [Read more about Firebase Deep Links](https://developers.google.com/firebase/)
+- [Read more about Firebase Dynamic Links](https://firebase.google.com/docs/dynamic-links)
 
 Getting Started
 ---------------
 
-- [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
-- Follow the [quickstart guide](https://developers.google.com/firebase/docs/android/setup) to set up your project.
+- [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
+- Follow the [quickstart guide](https://firebase.google.comdocs/android/setup) to set up your project.
 - Configure the sample:
   - Replace the `app_code` value in `strings.xml` with your personal app code. If you don't have an app code, email your Google contact to begin the process.
   - Replace the `applicationId` in `app/build.gradle` with the package name that matches your app code.
@@ -22,16 +22,19 @@ Getting Started
     the link data is displayed under the **Receive** heading. Try sharing the deep link from the
     app and then using that link to re-launch the application.
 
+Screenshots
+-----------
+<img src="app/src/screen.png" height="534" width="300"/>
 
 Support
 -------
 
-https://developers.google.com/firebase/support/
+https://firebase.google.com/support/
 
 License
 -------
 
-Copyright 2015 Google, Inc.
+Copyright 2016 Google, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for

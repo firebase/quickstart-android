@@ -6,28 +6,27 @@ The Firebase Invites Android quickstart demonstrates how to enable your users to
 Introduction
 ------------
 
-- [Read more about Firebase Invites](https://developers.google.com/firebase/)
+- [Read more about Firebase Invites](https://firebase.google.com/docs/invites)
 
 Getting Started
 ---------------
 
-- [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
-- Follow the [quickstart guide](https://developers.google.com/app-invites/android/guides/start) to set up your project.
+- [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 - Run the sample on Android device or emulator.
 
 Screenshots
 -----------
-![Screenshot](app/src/main/app-invites-sample.png)
+<img src="app/src/screen.png" height="534" width="300"/>
 
 Support
 -------
 
-https://developers.google.com/firebase/support/
+https://firebase.google.com/support/
 
 License
 -------
 
-Copyright 2015 Google, Inc.
+Copyright 2016 Google, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for

@@ -4,24 +4,23 @@ Firebase Auth Quickstart
 Introduction
 ------------
 
-- [Read more about Firebase Auth](https://developers.google.com/firebase/)
+- [Read more about Firebase Auth](https://firebase.google.com)
 
 Getting Started
 ---------------
 
-- [Add Firebase to your Android Project](https://developers.google.com/firebase/docs/android/setup).
-- Follow the [quickstart guide](https://developers.google.com/firebase/docs/) to set up your project.
+- [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 
 
 ### Google Sign In Setup
 
-- Go to the [Firebase Console](https://developers.google.com/firebase) and navigate to your project:
-  - Select the **Auth** panel.
-  - Toggle the **Google** switch to the **On** position.
-  - Select your OAuth 2.0 Client ID from the dropdown menu and then click **Save**.
+- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+  - Select the **Auth** panel and then click the **Sign In Method** tab.
+  - Click **Google** and turn on the **Enable** switch, then click **Save**.
 - Run the app on your device or emulator.
     - Select `GoogleSignInActivity` from the main screen.
     - Click the **Sign In** button to begin.
+
 
 ### Facebook Login Setup
 
@@ -29,22 +28,23 @@ Getting Started
   instructions to set up a new Android app. When asked for a package name, use
   `com.google.firebase.quickstart.usermanagement` and when asked for a main class name,
   use `com.google.firebase.quickstart.usermanagement.FacebookLoginActivity`.
-- Go to the [Firebase Console](https://developers.google.com/firebase) and navigate to your project:
-  - Go to the **Auth** panel.
-  - Toggle the **Facebook** switch to the **On** position.
+- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+  - Select the **Auth** panel and then click the **Sign In Method** tab.
+  - Click **Facebook** and turn on the **Enable** switch, then click **Save**.
   - Enter your Facebook **App Id** and **App Secret** and click **Save**.
 - Open the file `app/src/main/res/values/ids.xml` and replace the value of the `facebook_app_id` with the ID of the Facebook app you just created.
 - Run the app on your device or emulator.
     - Select `FacebookLoginActivity` from the main screen.
     - Click the **Sign In** button to begin.
-
+    - If you see text that says Facebook is disabled, make sure you are running
+      either the `facebookDebug` or `facebookRelease` variants of this sample.
 
 
 ### Email/Password Setup
 
-- Go to the [Firebase Console](https://developers.google.com/firebase) and navigate to your project:
-  - Select the **Auth** panel.
-  - Toggle the **Email/Password** switch to the **On** position, then click **Save**.
+- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+  - Select the **Auth** panel and then click the **Sign In Method** tab.
+  - Click **Email/Password** and turn on the **Enable** switch, then click **Save**.
 - Run the app on your device or emulator.
     - Select `EmailPasswordActivity` from the main screen.
     - Fill in your desired email and password and click **Create Account** to begin.
@@ -52,7 +52,6 @@ Getting Started
 
 ### Custom Authentication Setup
 
-- Make sure you have done all the steps in **General Setup**.
 - Go to the [Google Developers Console](https://console.developers.google.com/project) and navigate to your project:
     - From the left "hamburger" menu navigate to the **API Manager** tab.
     - Click on the **Credentials** item in the left column.
@@ -71,15 +70,19 @@ Getting Started
       see the User ID you entered when generating the token.
 
 
+Screenshots
+-----------
+<img src="app/src/screen.png" height="534" width="300"/>
+
 Support
 -------
 
-https://developers.google.com/firebase/support/
+https://firebase.google.com/support/
 
 License
 -------
 
-Copyright 2015 Google, Inc.
+Copyright 2016 Google, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for

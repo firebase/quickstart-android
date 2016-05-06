@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Firebase User Management</string>
+    <string name="app_name">Firebase Authentication</string>
 
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>

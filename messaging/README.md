@@ -9,12 +9,12 @@ enable token refreshes and message handling on the client.
 Introduction
 ------------
 
-- [Read more about Firebase Cloud Messaging](https://developers.google.com/firebase/)
+- [Read more about Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging)
 
 Getting Started
 ---------------
 
-- [Add Firebase to your Android Projet](https://developers.google.com/firebase/docs/android/setup).
+- [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 - Run the sample on Android device or emulator.
 
 Sending Notifications
@@ -55,7 +55,7 @@ Screenshots
 Support
 -------
 
-https://developers.google.com/firebase/support/
+https://firebase.google.com/support/
 
 License
 -------

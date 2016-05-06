@@ -1,16 +1,16 @@
-Firebase Storage Quickstart
-==============================
+Firebase Crash Quickstart
+=============================
 
 Introduction
 ------------
 
-- [Read more about Firebase Storage](https://firebase.google.com/docs/storage)
+- [Read more about Firebase Crash](https://firebase.google.com/docs/crash)
 
 Getting Started
 ---------------
 
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
-- Run the Android application on your Android device or emulator.
+- Run the sample on Android device or emulator.
 
 Screenshots
 -----------
@@ -40,4 +40,3 @@ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 License for the specific language governing permissions and limitations under
 the License.
-
