@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -71,8 +72,16 @@ public class NewPostActivity extends BaseActivity {
                         User user = dataSnapshot.getValue(User.class);
 
                         // [START_EXCLUDE]
-                        // Write new post
-                        writeNewPost(userId, user.username, title, body);
+                        if (user == null) {
+                            // User is null, error out
+                            Log.e(TAG, "User " + userId + " is unexpectedly null");
+                            Toast.makeText(NewPostActivity.this,
+                                    "Error: could not fetch user.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Write new post
+                            writeNewPost(userId, user.username, title, body);
+                        }
 
                         // Finish this Activity, back to the stream
                         finish();
