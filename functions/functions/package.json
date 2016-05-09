@@ -1,7 +1,0 @@
-{
-  "main": "index.js",
-  "dependencies": {
-    "firebase": "^2.4.2",
-    "firebase-functions": "https://storage.googleapis.com/firebase-preview-drop/node/firebase-functions/firebase-functions-0.1.0-alpha.h.1.tar.gz"
-  }
-}
