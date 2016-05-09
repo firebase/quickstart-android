@@ -174,7 +174,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private static class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
 
         private Context mContext;
-        private DatabaseReference mRef;
+        private DatabaseReference mDatabaseReference;
         private ChildEventListener mChildEventListener;
 
         private List<String> mCommentIds = new ArrayList<>();
@@ -182,7 +182,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
         public CommentAdapter(final Context context, DatabaseReference ref) {
             mContext = context;
-            mRef = ref;
+            mDatabaseReference = ref;
 
             // Create child event listener
             // [START child_event_listener_recycler]
@@ -274,7 +274,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
         public void cleanupListener() {
             if (mChildEventListener != null) {
-                mRef.removeEventListener(mChildEventListener);
+                mDatabaseReference.removeEventListener(mChildEventListener);
             }
         }
 
