@@ -198,9 +198,9 @@ public class MainActivity extends AppCompatActivity implements
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Throwable throwable) {
+                    public void onFailure(@NonNull Exception exception) {
                         // Upload failed
-                        Log.w(TAG, "uploadFromUri:onFailure", throwable);
+                        Log.w(TAG, "uploadFromUri:onFailure", exception);
 
                         mDownloadUrl = null;
 
@@ -251,8 +251,8 @@ public class MainActivity extends AppCompatActivity implements
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Throwable throwable) {
-                        Log.e(TAG, "signInAnonymously:FAILURE", throwable);
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.e(TAG, "signInAnonymously:FAILURE", exception);
                         hideProgressDialog();
                         updateUI(null);
                     }

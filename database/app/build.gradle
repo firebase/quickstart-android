@@ -35,8 +35,8 @@ dependencies {
 
     compile 'com.firebaseui:firebase-ui-database:1.0.0-beta1'
 
-    compile 'com.google.firebase:firebase-auth-api:8.5.6'
-    compile 'com.google.firebase:firebase-database:8.5.6'
+    compile 'com.google.firebase:firebase-auth:9.0.0'
+    compile 'com.google.firebase:firebase-database:9.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

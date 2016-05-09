@@ -25,8 +25,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.android.support:appcompat-v7:23.2.1'
 
-    compile 'com.google.android.gms:play-services-base:8.5.6'
-    compile 'com.google.android.gms:play-services-appindexing:8.5.6'
+    compile 'com.google.android.gms:play-services-appindexing:9.0.0'
 
     // UiAutomatorTesting
     androidTestCompile 'com.android.support.test:runner:0.3'

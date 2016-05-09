@@ -93,8 +93,8 @@ public class MyDownloadService extends Service {
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onFailure(@NonNull Throwable throwable) {
-                            Log.w(TAG, "download:FAILURE", throwable);
+                        public void onFailure(@NonNull Exception exception) {
+                            Log.w(TAG, "download:FAILURE", exception);
 
                             // Send failure broadcast
                             Intent broadcast = new Intent(ACTION_ERROR);
