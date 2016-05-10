@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements
 
     // [START define_variables]
     private GoogleApiClient mGoogleApiClient;
-    private FirebaseAnalytics mMeasurement;
     // [END define_variables]
 
     // [START on_create]
@@ -72,9 +71,6 @@ public class MainActivity extends AppCompatActivity implements
                 .enableAutoManage(this, this)
                 .build();
 
-        // Initialize Firebase Analytics
-        mMeasurement = FirebaseAnalytics.getInstance(this);
-
         // Check for App Invite invitations and launch deep-link activity if possible.
         // Requires that an Activity is registered in AndroidManifest.xml to handle
         // deep-link URLs.
@@ -90,14 +86,6 @@ public class MainActivity extends AppCompatActivity implements
                                     Intent intent = result.getInvitationIntent();
                                     String deepLink = AppInviteReferral.getDeepLink(intent);
                                     String invitationId = AppInviteReferral.getInvitationId(intent);
-
-                                    // Log an event to Analytics
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("app_invitation_id", invitationId);
-                                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, deepLink);
-                                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Standard Offer");
-                                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Offer");
-                                    mMeasurement.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
 
                                     // Because autoLaunchDeepLink = true we don't have to do anything
                                     // here, but we could set that to false and manually choose
@@ -141,15 +129,8 @@ public class MainActivity extends AppCompatActivity implements
             if (resultCode == RESULT_OK) {
                 // Get the invitation IDs of all sent messages
                 String[] ids = AppInviteInvitation.getInvitationIds(resultCode, data);
-
-                // Log an event to Firebase Analytics for each sent invite, using the invitation
-                // id as a cutom parameter.
                 for (String id : ids) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("app_invitation_id", id);
-                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, getString(R.string.invitation_deep_link));
-                    bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "invitation");
-                    mMeasurement.logEvent(FirebaseAnalytics.Event.SHARE, bundle);
+                    Log.d(TAG, "onActivityResult: sent invitation " + id);
                 }
             } else {
                 // Sending failed or it was canceled, show failure message to the user
