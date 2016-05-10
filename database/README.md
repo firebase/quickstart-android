@@ -10,6 +10,8 @@ Getting Started
 ---------------
 
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
+- Go to the [Firebase Console](https://console.firebase.google.com)
+  - In the **Auth** tab enable **Email/Password** authentication.
 - Run the sample on Android device or emulator.
 
 Screenshots
