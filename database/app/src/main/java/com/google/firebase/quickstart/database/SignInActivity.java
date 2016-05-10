@@ -28,7 +28,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private EditText mEmailField;
     private EditText mPasswordField;
-    private EditText mUsernameField;
     private Button mSignInButton;
     private Button mSignUpButton;
 
@@ -43,7 +42,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         // Views
         mEmailField = (EditText) findViewById(R.id.field_email);
         mPasswordField = (EditText) findViewById(R.id.field_password);
-        mUsernameField = (EditText) findViewById(R.id.field_username);
         mSignInButton = (Button) findViewById(R.id.button_sign_in);
         mSignUpButton = (Button) findViewById(R.id.button_sign_up);
 
@@ -58,13 +56,13 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
         // Check auth on Activity start
         if (mAuth.getCurrentUser() != null) {
-            launchMainActivity();
+            onAuthSuccess(mAuth.getCurrentUser());
         }
     }
 
     private void signIn() {
         Log.d(TAG, "signIn");
-        if (!validateForm(false)) {
+        if (!validateForm()) {
             return;
         }
 
@@ -80,8 +78,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         hideProgressDialog();
 
                         if (task.isSuccessful()) {
-                            // Go to Main Activity
-                            launchMainActivity();
+                            onAuthSuccess(task.getResult().getUser());
                         } else {
                             Toast.makeText(SignInActivity.this, "Sign In Failed",
                                     Toast.LENGTH_SHORT).show();
@@ -92,7 +89,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private void signUp() {
         Log.d(TAG, "signUp");
-        if (!validateForm(true)) {
+        if (!validateForm()) {
             return;
         }
 
@@ -108,9 +105,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         hideProgressDialog();
 
                         if (task.isSuccessful()) {
-                            // Write new user and go to Main Activity
-                            writeNewUser(task.getResult().getUser(), mUsernameField.getText().toString());
-                            launchMainActivity();
+                            onAuthSuccess(task.getResult().getUser());
                         } else {
                             Toast.makeText(SignInActivity.this, "Sign Up Failed",
                                     Toast.LENGTH_SHORT).show();
@@ -119,7 +114,26 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 });
     }
 
-    private boolean validateForm(boolean requireUsername) {
+    private void onAuthSuccess(FirebaseUser user) {
+        String username = usernameFromEmail(user.getEmail());
+
+        // Write new user
+        writeNewUser(user, username);
+
+        // Go to MainActivity
+        startActivity(new Intent(SignInActivity.this, MainActivity.class));
+        finish();
+    }
+
+    private String usernameFromEmail(String email) {
+        if (email.contains("@")) {
+            return email.split("@")[0];
+        } else {
+            return email;
+        }
+    }
+
+    private boolean validateForm() {
         boolean result = true;
         if (TextUtils.isEmpty(mEmailField.getText().toString())) {
             mEmailField.setError("Required");
@@ -135,19 +149,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             mPasswordField.setError(null);
         }
 
-        if (requireUsername && TextUtils.isEmpty(mUsernameField.getText().toString())) {
-            mUsernameField.setError("Required");
-            result = false;
-        } else {
-            mUsernameField.setError(null);
-        }
-
         return result;
-    }
-
-    private void launchMainActivity() {
-        startActivity(new Intent(SignInActivity.this, MainActivity.class));
-        finish();
     }
 
     // [START basic_write]

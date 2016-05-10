@@ -48,21 +48,11 @@
 
     </LinearLayout>
 
-
-    <EditText
-        android:id="@+id/field_username"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_email_password"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
-        android:hint="@string/username" />
-
     <LinearLayout
         android:id="@+id/layout_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/field_username"
+        android:layout_below="@+id/layout_email_password"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
