@@ -85,24 +85,25 @@ public class MainActivity extends AppCompatActivity implements
                             @Override
                             public void onResult(AppInviteInvitationResult result) {
                                 Log.d(TAG, "getInvitation:onResult:" + result.getStatus());
+                                if (result.getStatus().isSuccess()) {
+                                    // Extract information from the intent
+                                    Intent intent = result.getInvitationIntent();
+                                    String deepLink = AppInviteReferral.getDeepLink(intent);
+                                    String invitationId = AppInviteReferral.getInvitationId(intent);
 
-                                // Extract information from the intent
-                                Intent intent = result.getInvitationIntent();
-                                String deepLink = AppInviteReferral.getDeepLink(intent);
-                                String invitationId = AppInviteReferral.getInvitationId(intent);
+                                    // Log an event to Analytics
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("app_invitation_id", invitationId);
+                                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, deepLink);
+                                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Standard Offer");
+                                    bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Offer");
+                                    mMeasurement.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
 
-                                // Log an event to Analytics
-                                Bundle bundle = new Bundle();
-                                bundle.putString("app_invitation_id", invitationId);
-                                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, deepLink);
-                                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Standard Offer");
-                                bundle.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "Offer");
-                                mMeasurement.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
-
-                                // Because autoLaunchDeepLink = true we don't have to do anything
-                                // here, but we could set that to false and manually choose
-                                // an Activity to launch to handle the deep link here.
-                                // ...
+                                    // Because autoLaunchDeepLink = true we don't have to do anything
+                                    // here, but we could set that to false and manually choose
+                                    // an Activity to launch to handle the deep link here.
+                                    // ...
+                                }
                             }
                         });
     }

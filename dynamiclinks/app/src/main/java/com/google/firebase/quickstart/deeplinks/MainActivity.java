@@ -39,10 +39,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private static final String TAG = "MainActivity";
     private static final String DEEP_LINK_URL = "https://example.com/deeplinks";
 
+    // [START define_variables]
     private GoogleApiClient mGoogleApiClient;
+    // [END define_variables]
 
+    // [START on_create]
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // [START_EXCLUDE]
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -53,38 +57,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         final Uri deepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0, false);
         ((TextView) findViewById(R.id.link_view_send)).setText(deepLink.toString());
 
-        // [START get_deep_link]
-        // Build GoogleApiClient with AppInvite API for receiving deep links
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(AppInvite.API)
-                .build();
-
-        // Check if this app was launched from a deep link
-        AppInvite.AppInviteApi.getInvitation(mGoogleApiClient, this, false).setResultCallback(
-                new ResultCallback<AppInviteInvitationResult>() {
-                    @Override
-                    public void onResult(@NonNull AppInviteInvitationResult result) {
-                        if (result.getStatus().isSuccess()) {
-                            // Extract deep link from Intent
-                            Intent intent = result.getInvitationIntent();
-                            String deepLink = AppInviteReferral.getDeepLink(intent);
-
-                            // Handle the deep link. For example, open the linked
-                            // content, or apply promotional credit to the user's
-                            // account.
-
-                            // [START_EXCLUDE]
-                            // Display deep link in the UI
-                            ((TextView) findViewById(R.id.link_view_receive)).setText(deepLink);
-                            // [END_EXCLUDE]
-                        } else {
-                            Log.d(TAG, "getInvitation: no deep link found.");
-                        }
-                    }
-                });
-        // [END get_deep_link]
-
         // Share button click listener
         findViewById(R.id.button_share).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +64,46 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 shareDeepLink(deepLink.toString());
             }
         });
+        // [END_EXCLUDE]
+
+        // [START build_api_client]
+        // Build GoogleApiClient with AppInvite API for receiving deep links
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(AppInvite.API)
+                .build();
+        // [END build_api_client]
+
+        // [START get_deep_link]
+        // Check if this app was launched from a deep link. Setting autoLaunchDeepLink to true
+        // would automatically launch the deep link if one is found.
+        boolean autoLaunchDeepLink = false;
+        AppInvite.AppInviteApi.getInvitation(mGoogleApiClient, this, autoLaunchDeepLink)
+                .setResultCallback(
+                        new ResultCallback<AppInviteInvitationResult>() {
+                            @Override
+                            public void onResult(@NonNull AppInviteInvitationResult result) {
+                                if (result.getStatus().isSuccess()) {
+                                    // Extract deep link from Intent
+                                    Intent intent = result.getInvitationIntent();
+                                    String deepLink = AppInviteReferral.getDeepLink(intent);
+
+                                    // Handle the deep link. For example, open the linked
+                                    // content, or apply promotional credit to the user's
+                                    // account.
+
+                                    // [START_EXCLUDE]
+                                    // Display deep link in the UI
+                                    ((TextView) findViewById(R.id.link_view_receive)).setText(deepLink);
+                                    // [END_EXCLUDE]
+                                } else {
+                                    Log.d(TAG, "getInvitation: no deep link found.");
+                                }
+                            }
+                        });
+        // [END get_deep_link]
     }
+    // [END on_create]
 
     /**
      * Build a Firebase Durable Deep Link.
