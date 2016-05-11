@@ -18,6 +18,7 @@ package com.google.firebase.quickstart.auth;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -108,6 +109,10 @@ public class EmailPasswordActivity extends BaseActivity implements
 
     private void createAccount(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
+        if (!validateForm()) {
+            return;
+        }
+
         showProgressDialog();
 
         // [START create_user_with_email]
@@ -135,6 +140,10 @@ public class EmailPasswordActivity extends BaseActivity implements
 
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
+        if (!validateForm()) {
+            return;
+        }
+
         showProgressDialog();
 
         // [START sign_in_with_email]
@@ -164,6 +173,28 @@ public class EmailPasswordActivity extends BaseActivity implements
     private void signOut() {
         mAuth.signOut();
         updateUI(null);
+    }
+
+    private boolean validateForm() {
+        boolean valid = true;
+
+        String email = mEmailField.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Required.");
+            valid = false;
+        } else {
+            mEmailField.setError(null);
+        }
+
+        String password = mPasswordField.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            mPasswordField.setError("Required.");
+            valid = false;
+        } else {
+            mPasswordField.setError(null);
+        }
+
+        return valid;
     }
 
     private void updateUI(FirebaseUser user) {
