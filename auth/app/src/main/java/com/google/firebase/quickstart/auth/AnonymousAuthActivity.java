@@ -16,10 +16,9 @@
 
 package com.google.firebase.quickstart.auth;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -37,7 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * Activity to demonstrate anonymous login and account linking (with an email/password account).
  */
-public class AnonymousAuthActivity extends AppCompatActivity implements
+public class AnonymousAuthActivity extends BaseActivity implements
         View.OnClickListener {
 
     private static final String TAG = "AnonymousAuth";
@@ -50,7 +49,6 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
     private FirebaseAuth.AuthStateListener mAuthListener;
     // [END declare_auth_listener]
 
-    private ProgressDialog mProgressDialog;
     private EditText mEmailField;
     private EditText mPasswordField;
 
@@ -141,7 +139,16 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
         updateUI(null);
     }
 
-    private void linkAccount(String email, String password) {
+    private void linkAccount() {
+        // Make sure form is valid
+        if (!validateLinkForm()) {
+            return;
+        }
+
+        // Get email and password from form
+        String email = mEmailField.getText().toString();
+        String password = mPasswordField.getText().toString();
+
         // Create EmailAuthCredential with email and password
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
@@ -170,6 +177,28 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
         // [END link_credential]
     }
 
+    private boolean validateLinkForm() {
+        boolean valid = true;
+
+        String email = mEmailField.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Required.");
+            valid = false;
+        } else {
+            mEmailField.setError(null);
+        }
+
+        String password = mPasswordField.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            mPasswordField.setError("Required.");
+            valid = false;
+        } else {
+            mPasswordField.setError(null);
+        }
+
+        return valid;
+    }
+
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
 
@@ -192,22 +221,6 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
         findViewById(R.id.button_link_account).setEnabled(isSignedIn);
     }
 
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
-        }
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -218,9 +231,7 @@ public class AnonymousAuthActivity extends AppCompatActivity implements
                 signOut();
                 break;
             case R.id.button_link_account:
-                String email = mEmailField.getText().toString();
-                String password = mPasswordField.getText().toString();
-                linkAccount(email, password);
+                linkAccount();
                 break;
         }
     }

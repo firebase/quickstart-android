@@ -16,10 +16,8 @@
 
 package com.google.firebase.quickstart.auth;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -32,12 +30,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class EmailPasswordActivity extends AppCompatActivity implements
+public class EmailPasswordActivity extends BaseActivity implements
         View.OnClickListener {
 
     private static final String TAG = "EmailPassword";
 
-    private ProgressDialog mProgressDialog;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
     private EditText mEmailField;
@@ -187,23 +184,6 @@ public class EmailPasswordActivity extends AppCompatActivity implements
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
         }
     }
-
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
-        }
-    }
-
 
     @Override
     public void onClick(View v) {

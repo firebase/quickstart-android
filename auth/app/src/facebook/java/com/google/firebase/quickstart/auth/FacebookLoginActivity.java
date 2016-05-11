@@ -16,11 +16,9 @@
 
 package com.google.firebase.quickstart.auth;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -44,12 +42,11 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * Demonstrate Firebase Authentication using a Facebook access token.
  */
-public class FacebookLoginActivity extends AppCompatActivity implements
+public class FacebookLoginActivity extends BaseActivity implements
         View.OnClickListener {
 
     private static final String TAG = "FacebookLogin";
 
-    private ProgressDialog mProgressDialog;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
 
@@ -203,22 +200,6 @@ public class FacebookLoginActivity extends AppCompatActivity implements
 
             findViewById(R.id.button_facebook_login).setVisibility(View.VISIBLE);
             findViewById(R.id.button_facebook_signout).setVisibility(View.GONE);
-        }
-    }
-
-    private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
         }
     }
 
