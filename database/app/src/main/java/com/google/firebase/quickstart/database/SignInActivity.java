@@ -159,6 +159,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
         mDatabase.child("users").child(userId).setValue(user);
     }
+    // [END basic_write]
 
     @Override
     public void onClick(View v) {
@@ -171,5 +172,4 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 break;
         }
     }
-    // [END basic_write]
 }

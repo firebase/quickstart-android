@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -101,8 +100,8 @@ public abstract class PostListFragment extends Fragment {
                         DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
 
                         // Run two transactions
-                        onStarClicked(globalPostRef, (ImageView) starView);
-                        onStarClicked(userPostRef, (ImageView) starView);
+                        onStarClicked(globalPostRef);
+                        onStarClicked(userPostRef);
                     }
                 });
             }
@@ -111,7 +110,7 @@ public abstract class PostListFragment extends Fragment {
     }
 
     // [START post_stars_transaction]
-    private void onStarClicked(DatabaseReference postRef, final ImageView starView) {
+    private void onStarClicked(DatabaseReference postRef) {
         postRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
