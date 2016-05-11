@@ -22,6 +22,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -217,9 +218,12 @@ public class MainActivity extends AppCompatActivity implements
 
     @AfterPermissionGranted(RC_STORAGE_PERMS)
     private void launchCamera() {
+        Log.d(TAG, "launchCamera");
+
         // Check that we have permission to read images from external storage.
         String perm = Manifest.permission.READ_EXTERNAL_STORAGE;
-        if (!EasyPermissions.hasPermissions(this, perm)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !EasyPermissions.hasPermissions(this, perm)) {
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage),
                     RC_STORAGE_PERMS, perm);
             return;
