@@ -16,7 +16,7 @@
 
 /**
  * For more information on setting up and running this sample code, see
- * https://developers.google.com/firebase/docs/remote-config/android
+ * https://firebase.google.com/docs/remote-config/android
  */
 
 package com.google.samples.quickstart.config;

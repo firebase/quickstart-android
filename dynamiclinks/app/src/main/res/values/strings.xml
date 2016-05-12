@@ -3,7 +3,7 @@
 
     <!--
       Your app code, see:
-      https://developers.google.com/firebase/docs/durable-links/android
+      https://firebase.google.com/docs/dynamic-links/android
     -->
     <string name="app_code">YOUR_APP_CODE</string>
 

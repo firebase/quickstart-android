@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     // [END on_create]
 
     /**
-     * Build a Firebase Durable Deep Link.
-     * https://developers.google.com/firebase/docs/durable-links/android#form-a-durable-link
+     * Build a Firebase Dynamic Link.
+     * https://firebase.google.com/docs/dynamic-links/android#create-a-dynamic-link
      *
      * @param deepLink the deep link your app will open. This link must be a valid URL and use the
      *                 HTTP or HTTPS scheme.
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
      *                   the deep link. If the installed app is an older version, the user is taken
      *                   to the Play store to upgrade the app. Pass 0 if you do not
      *                   require a minimum version.
-     * @param isAd true if the durable link is used in an advertisement, false otherwise.
+     * @param isAd true if the dynamic link is used in an advertisement, false otherwise.
      * @return a {@link Uri} representing a properly formed deep link.
      */
     private Uri buildDeepLink(@NonNull Uri deepLink, int minVersion, boolean isAd) {

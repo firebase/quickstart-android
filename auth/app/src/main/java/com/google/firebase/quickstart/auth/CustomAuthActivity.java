@@ -31,7 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Demonstrate Firebase Authentication using a custom minted token. For more information, see:
- * https://developers.google.com/firebase/docs/auth/android/custom-auth
+ * https://firebase.google.com/docs/auth/android/custom-auth
  */
 public class CustomAuthActivity extends AppCompatActivity implements View.OnClickListener {
 

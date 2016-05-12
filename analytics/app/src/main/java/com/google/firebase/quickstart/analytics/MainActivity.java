@@ -16,7 +16,7 @@
 
 /**
  * For more information on setting up and running this sample code, see
- * https://developers.google.com/firebase/docs/analytics/analytics-android
+ * https://firebase.google.com/docs/analytics/android
  */
 
 package com.google.firebase.quickstart.analytics;

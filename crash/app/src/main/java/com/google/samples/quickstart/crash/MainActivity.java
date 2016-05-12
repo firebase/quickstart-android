@@ -32,9 +32,9 @@ import com.google.firebase.crash.FirebaseCrash;
  *
  * It also shows how to add log messages to crash reports using Crash.log().
  *
- * Check https://developers.google.com/firebase/console to view and analyze your crash reports.
+ * Check https://console.firebase.google.com to view and analyze your crash reports.
  *
- * Check https://developers.google.com/firebase/docs/crash/crash-android for more on
+ * Check https://firebase.google.com/docs/crash/android for more on
  * Firebase Crash on Android.
  */
 public class MainActivity extends AppCompatActivity {

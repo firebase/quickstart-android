@@ -24,7 +24,7 @@ Support
 -------
 
 - [Stack Overflow](http://stackoverflow.com/questions/tagged/android-app-indexing)
-- [Firebase Support](http://developers.google.com/firebase/support/)
+- [Firebase Support](http://firebase.google.com/support/)
 
 License
 -------
