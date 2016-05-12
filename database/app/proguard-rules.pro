@@ -17,6 +17,7 @@
 #}
 
 -keepattributes Signature
+-keepattributes *Annotation*
 
 -keep class com.google.firebase.quickstart.database.viewholder.** {
     *;
