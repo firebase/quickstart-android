@@ -1,7 +1,8 @@
 Firebase App Indexing Quickstart
 ==============================
 
-The Firebase App Indexing Android quickstart demonstrates how to help get your app found in Google Search.  `AppIndex.AppIndexApi.view` is used to record view events for indexing.
+The Firebase App Indexing Android quickstart demonstrates how to help get your app
+found in Google Search.  `AppIndex.AppIndexApi.view` is used to index view events.
 
 Introduction
 ------------
@@ -13,8 +14,9 @@ Getting Started
 
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 - Open the App Indexing project in Android Studio.
-- Run the sample on your Android device or emulator.
-- The running sample records view events for indexing.
+- Run the sample on your Android device or emulator by issuing the following intent
+with the command line `adb` tool:
+adb shell am start -a android.intent.action.VIEW -d "http://www.example.com/articles/test" com.google.samples.quickstart.app_indexing
 
 Screenshots
 -----------

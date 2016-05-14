@@ -23,9 +23,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+// [START import_classes]
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+// [END import_classes]
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -51,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onNewIntent(Intent intent) {
         String action = intent.getAction();
-        String data = intent.getDataString();
+        Uri data = intent.getData();
         if (Intent.ACTION_VIEW.equals(action) && data != null) {
-            articleId = data.substring(data.lastIndexOf("/") + 1);
-            TextView deepLinkText = (TextView)findViewById(R.id.deep_link);
-            deepLinkText.setText(data);
+            articleId = data.getLastPathSegment();
+            TextView linkText = (TextView)findViewById(R.id.link);
+            linkText.setText(data.toString());
         }
     }
     // [END handle_intent]
@@ -69,10 +71,10 @@ public class MainActivity extends AppCompatActivity {
             // Connect your client
             mClient.connect();
 
-            final Uri APP_URI = Uri.parse("android-app://com.google.samples.quickstart.app_indexing/http/www.example.com/articles/" + articleId);
-            final Uri WEB_URL = Uri.parse("http://www.example.com/articles/" + articleId);
+            final Uri BASE_URL = Uri.parse("http://www.example.com/articles/");
+            final Uri APP_URI = BASE_URL.buildUpon().appendPath(articleId).build();
 
-            Action viewAction = Action.newAction(Action.TYPE_VIEW, TITLE, WEB_URL, APP_URI);
+            Action viewAction = Action.newAction(Action.TYPE_VIEW, TITLE, APP_URI);
 
             // Call the App Indexing API view method
             PendingResult<Status> result = AppIndex.AppIndexApi.start(mClient, viewAction);
@@ -81,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResult(Status status) {
                     if (status.isSuccess()) {
-                        Log.d(TAG, "App Indexing API: Recorded page view successfully.");
+                        Log.d(TAG, "App Indexing API: Indexed page view successfully.");
                     } else {
-                        Log.e(TAG, "App Indexing API: There was an error recording the page view."
+                        Log.e(TAG, "App Indexing API: There was an error indexing the page view."
                                 + status.toString());
                     }
                 }
@@ -96,7 +98,9 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
 
         if (articleId != null) {
-            final Uri APP_URI = Uri.parse("android-app://com.google.samples.quickstart.app_indexing/http/www.example.com/articles/" + articleId);
+            final Uri BASE_URL = Uri.parse("http://www.example.com/articles/");
+            final Uri APP_URI = BASE_URL.buildUpon().appendPath(articleId).build();
+
             Action viewAction = Action.newAction(Action.TYPE_VIEW, TITLE, APP_URI);
             PendingResult<Status> result = AppIndex.AppIndexApi.end(mClient, viewAction);
 
@@ -104,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResult(Status status) {
                     if (status.isSuccess()) {
-                        Log.d(TAG, "App Indexing API: Recorded recipe view end successfully.");
+                        Log.d(TAG, "App Indexing API: Indexed recipe view end successfully.");
                     } else {
-                        Log.e(TAG, "App Indexing API: There was an error recording the recipe view."
+                        Log.e(TAG, "App Indexing API: There was an error indexing the recipe view."
                                 + status.toString());
                     }
                 }

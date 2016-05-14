@@ -67,63 +67,21 @@ public class UiAutomatorTest {
         mContext = InstrumentationRegistry.getTargetContext();
     }
 
-//    @Test
-//    public void testLaunchDialog() {
-//        // Floating action button
-//        BySelector fabSelector = By.res(APP_PACKAGE, "invite_button");
-//
-//        // Click floating action button
-//        Assert.assertTrue(mDevice.wait(Until.hasObject(fabSelector), UI_TIMEOUT));
-//        mDevice.findObject(fabSelector).click();
-//
-//        // Radio button in the account picker dialog
-//        BySelector firstAccountSelector = By.clazz(CLASS_CHECKED_TEXT_VIEW);
-//
-//        // Wait for account picker (may not appear)
-//        if (mDevice.wait(Until.hasObject(firstAccountSelector), UI_TIMEOUT)) {
-//            // Click first account
-//            mDevice.findObjects(firstAccountSelector).get(0).click();
-//
-//            // Button with the text "OK" (enabled)
-//            BySelector okButtonSelector = By.clazz(CLASS_BUTTON).text("OK").enabled(true);
-//
-//            // Click OK on account picker
-//            Assert.assertTrue(mDevice.wait(Until.hasObject(okButtonSelector), UI_TIMEOUT));
-//            mDevice.findObject(okButtonSelector).click();
-//        }
-//
-//        // Check that we can see the title and message
-//        String titleText = mContext.getString(R.string.invitation_title);
-//        String messageText = mContext.getString(R.string.invitation_message);
-//
-//        BySelector titleTextSelector = By.text(titleText);
-//        BySelector messageTextSelector = By.text(messageText);
-//
-//        assertTrue(mDevice.wait(Until.hasObject(titleTextSelector), UI_TIMEOUT));
-//        assertTrue(mDevice.wait(Until.hasObject(messageTextSelector), UI_TIMEOUT));
-//
-//        // Back out of the dialog
-//        mDevice.pressBack();
-//    }
-
     @Test
     public void testDeepLink() {
         // Start from the home screen
         mDevice.pressHome();
         // Create intent to MainActivity
-        String deepLink = "http://www.example.com/articles/test";
-        Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW)
+        String link = "http://www.example.com/articles/test";
+        Intent linkIntent = new Intent(Intent.ACTION_VIEW)
                 .setClassName(APP_PACKAGE, APP_PACKAGE + ".MainActivity")
-                .setData(Uri.parse(deepLink))
+                .setData(Uri.parse(link))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-//        AppInviteReferral.addReferralDataToIntent(invitationId, deepLink, deepLinkIntent);
-
         // Start activity
-        mContext.startActivity(deepLinkIntent);
+        mContext.startActivity(linkIntent);
 
-        // Check that deeplink text is displayed
-//        String deeplinkLabelText = mContext.getString(R.string.deeplink_label);
-        assertTrue(mDevice.wait(Until.hasObject(By.text(deepLink)), UI_TIMEOUT));
+        // Check that link text is displayed
+        assertTrue(mDevice.wait(Until.hasObject(By.text(link)), UI_TIMEOUT));
     }
 }

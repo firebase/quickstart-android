@@ -22,16 +22,17 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:23.2.1'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-
+    // [START app_indexing_gradle_dep]
     compile 'com.google.android.gms:play-services-appindexing:9.0.0'
+    // [END app_indexing_gradle_dep]
+    compile 'com.android.support:support-v4:23.3.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
 
     // UiAutomatorTesting
     androidTestCompile 'com.android.support.test:runner:0.3'
     androidTestCompile 'com.android.support.test:rules:0.3'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
-    androidTestCompile 'com.android.support:support-annotations:23.2.1'
+    androidTestCompile 'com.android.support:support-annotations:23.3.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
