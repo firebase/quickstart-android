@@ -18,12 +18,6 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    packagingOptions {
-        // Required to avoid clashes in Jackson.
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE-FIREBASE.txt'
-        exclude 'META-INF/NOTICE'
-    }
 }
 
 dependencies {
