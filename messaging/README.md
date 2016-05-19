@@ -50,7 +50,8 @@ Use Firebase console to send FCM messages to device or emulator.
 
 Screenshots
 -----------
-<img src="app/src/main/fcm-sample.png" height="534" width="300"/>
+
+<img src="https://raw.githubusercontent.com/firebase/quickstart-android/master/messaging/app/src/screen.png" height="534" width="300"/>
 
 Support
 -------
