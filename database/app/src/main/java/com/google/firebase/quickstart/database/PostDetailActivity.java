@@ -81,7 +81,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
         // Add value event listener to the post
         // [START post_value_event_listener]
-        mPostListener = new ValueEventListener() {
+        ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
@@ -95,13 +95,19 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // [START_EXCLUDE]
                 Toast.makeText(PostDetailActivity.this, "Failed to load post.",
                         Toast.LENGTH_SHORT).show();
+                // [END_EXCLUDE]
             }
         };
-        mPostReference.addValueEventListener(mPostListener);
+        mPostReference.addValueEventListener(postListener);
         // [END post_value_event_listener]
+
+        // Keep copy of post listener so we can remove it when app stops
+        mPostListener = postListener;
 
         // Listen for comments
         mAdapter = new CommentAdapter(this, mCommentsReference);
@@ -186,7 +192,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
             // Create child event listener
             // [START child_event_listener_recycler]
-            mChildEventListener = new ChildEventListener() {
+            ChildEventListener childEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                     Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
@@ -267,8 +273,11 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                             Toast.LENGTH_SHORT).show();
                 }
             };
-            ref.addChildEventListener(mChildEventListener);
+            ref.addChildEventListener(childEventListener);
             // [END child_event_listener_recycler]
+
+            // Store reference to listener so it can be removed on app stop
+            mChildEventListener = childEventListener;
         }
 
         @Override
