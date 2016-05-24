@@ -155,7 +155,7 @@ public class GoogleSignInActivity extends BaseActivity implements
 
     // [START auth_with_google]
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGooogle:" + acct.getId());
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE]
         showProgressDialog();
         // [END_EXCLUDE]
