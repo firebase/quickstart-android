@@ -1,0 +1,18 @@
+language: android
+android:
+  components:
+    - platform-tools
+    - tools
+    - build-tools-23.0.3
+    - android-23
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - extra-android-support
+    - addon-google_apis-google-23
+  licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+script:
+  - ./build.sh
