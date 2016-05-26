@@ -34,7 +34,9 @@ import android.widget.TextView;
  * one of the following Files:
  *     {@link GoogleSignInActivity}
  *     {@link FacebookLoginActivity}
+ *     {@link TwitterLoginActivity}
  *     {@link EmailPasswordActivity}
+ *     {@link AnonymousAuthActivity}
  *     {@link CustomAuthActivity}
  */
 public class ChooserActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -42,6 +44,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
     private static final Class[] CLASSES = new Class[]{
             GoogleSignInActivity.class,
             FacebookLoginActivity.class,
+            TwitterLoginActivity.class,
             EmailPasswordActivity.class,
             AnonymousAuthActivity.class,
             CustomAuthActivity.class
@@ -50,6 +53,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
     private static final int[] DESCRIPTION_IDS = new int[] {
             R.string.desc_google_sign_in,
             R.string.desc_facebook_login,
+            R.string.desc_twitter_login,
             R.string.desc_emailpassword,
             R.string.desc_anonymous_auth,
             R.string.desc_custom_auth,

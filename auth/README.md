@@ -40,6 +40,20 @@ Getting Started
       either the `facebookDebug` or `facebookRelease` variants of this sample.
 
 
+### Twitter Login Setup
+
+- Go to the [Twitter Developers Site](https://dev.twitter.com) and follow all
+  instructions to set up a new Android app. Make sure to enable Twitter Login when appropriate.
+- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+  - Select the **Auth** panel and then click the **Sign In Method** tab.
+  - Click **Twitter** and turn on the **Enable** switch, then click **Save**.
+  - Enter your Twitter **API Key** and **API Secret** and click **Save**.
+- Open the file `app/src/main/res/values/ids.xml` and replace the value of the `twitter_consumer_key`
+  and `twitter_consumer_secret` with the key and secret you just put into the Firebase console.
+- Run the app on your device or emulator.
+    - Select `TwitterLoginActivity` from the main screen.
+    - Click the **Log In with Twitter** button to begin.
+
 ### Email/Password Setup
 
 - Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
