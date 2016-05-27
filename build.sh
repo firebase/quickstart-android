@@ -6,6 +6,9 @@ set -e
 # List of all samples
 samples=( admob analytics app-indexing auth config crash database dynamiclinks invites messaging storage )
 
+# Limit memory usage
+OPTS='-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+
 for sample in "${samples[@]}"
 do
   echo "Building ${sample}"
@@ -14,7 +17,7 @@ do
     # For a merged commit, build all configurations.
     cd $sample && \
       cp ../mock-google-services.json ./app/google-services.json && \
-      ./gradlew clean build
+      GRADLE_OPTS=$OPTS ./gradlew clean build
 
     # Back to parent directory.
     cd -
@@ -23,7 +26,7 @@ do
     # obvious errors.
     cd $sample && \
       cp ../mock-google-services.json ./app/google-services.json && \
-      ./gradlew clean :app:assembleDebug
+      GRADLE_OPTS=$OPTS ./gradlew clean :app:assembleDebug
 
     # Back to parent directory.
     cd -
