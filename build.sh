@@ -9,6 +9,14 @@ samples=( admob analytics app-indexing auth config crash database dynamiclinks i
 # Limit memory usage
 OPTS='-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
+# Work off travis
+if [[ -v TRAVIS_PULL_REQUEST ]]; then
+  echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
+else
+  echo "TRAVIS_PULL_REQUEST: unset, setting to false"
+  TRAVIS_PULL_REQUEST=false
+fi
+
 for sample in "${samples[@]}"
 do
   echo "Building ${sample}"
