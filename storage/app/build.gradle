@@ -27,10 +27,10 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
 
-    compile 'pub.devrel:easypermissions:0.1.5'
+    compile 'pub.devrel:easypermissions:0.1.7'
 
-    compile 'com.google.firebase:firebase-auth:9.0.1'
-    compile 'com.google.firebase:firebase-storage:9.0.1'
+    compile 'com.google.firebase:firebase-auth:9.0.2'
+    compile 'com.google.firebase:firebase-storage:9.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
