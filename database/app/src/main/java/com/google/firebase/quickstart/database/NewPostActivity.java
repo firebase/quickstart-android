@@ -23,7 +23,9 @@ public class NewPostActivity extends BaseActivity {
     private static final String TAG = "NewPostActivity";
     private static final String REQUIRED = "Required";
 
+    // [START declare_database_ref]
     private DatabaseReference mDatabase;
+    // [END declare_database_ref]
 
     private EditText mTitleField;
     private EditText mBodyField;
@@ -33,7 +35,9 @@ public class NewPostActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
 
+        // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        // [END initialize_database_ref]
 
         mTitleField = (EditText) findViewById(R.id.field_title);
         mBodyField = (EditText) findViewById(R.id.field_body);
