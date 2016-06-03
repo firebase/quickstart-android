@@ -42,12 +42,17 @@ Getting Started
 
 ### Twitter Login Setup
 
-- Go to the [Twitter Developers Site](https://dev.twitter.com) and follow all
-  instructions to set up a new Android app. Make sure to enable Twitter Login when appropriate.
+- Go to the [Twitter Developers Site](https://apps.twitter.com) and click **Create New App**
+  instructions to set up a new Android app.
+  - Go to the **Keys and Access Tokens** tab of your app and copy the **Consumer Key** and **Consumer Secret**.
 - Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Twitter** and turn on the **Enable** switch, then click **Save**.
   - Enter your Twitter **API Key** and **API Secret** and click **Save**.
+  - Copy the callback URL from the bottom of the panel (it should look like
+    `https://<your-app-id>.firebaseapp.com/__/auth/handler`).
+- Navigate back to your Twitter app settings on [apps.twitter.com](apps.twitter.com). Click the **Settings** tab and 
+  paste in the callback URL from the Firebase console.
 - Open the file `app/src/main/res/values/ids.xml` and replace the value of the `twitter_consumer_key`
   and `twitter_consumer_secret` with the key and secret you just put into the Firebase console.
 - Run the app on your device or emulator.
