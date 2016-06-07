@@ -95,6 +95,7 @@ public class  MainActivity extends BaseActivity {
             case R.id.action_logout:
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(this, SignInActivity.class));
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
