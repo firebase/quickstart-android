@@ -21,22 +21,25 @@ for sample in "${samples[@]}"
 do
   echo "Building ${sample}"
 
+  # Go to sample directory
+  cd $sample
+
+  # Copy mock google-services file if necessary
+  if [ ! -f ./app/google-services.json ]; then
+    echo "Using mock google-services.json"
+    cp ../mock-google-services.json ./app/google-services.json
+  fi
+
+  # Build
   if [ $TRAVIS_PULL_REQUEST = false ] ; then
     # For a merged commit, build all configurations.
-    cd $sample && \
-      cp ../mock-google-services.json ./app/google-services.json && \
-      GRADLE_OPTS=$OPTS ./gradlew clean build
-
-    # Back to parent directory.
-    cd -
+    GRADLE_OPTS=$OPTS ./gradlew clean build
   else
     # On a pull request, just build debug which is much faster and catches
     # obvious errors.
-    cd $sample && \
-      cp ../mock-google-services.json ./app/google-services.json && \
-      GRADLE_OPTS=$OPTS ./gradlew clean :app:assembleDebug
-
-    # Back to parent directory.
-    cd -
+    GRADLE_OPTS=$OPTS ./gradlew clean :app:assembleDebug
   fi
+
+  # Back to parent directory.
+  cd -
 done
