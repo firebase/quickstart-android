@@ -19,10 +19,6 @@ android {
         }
     }
 
-    lintOptions {
-        abortOnError false
-    }
-
     productFlavors {
 
         // Build variant to include the Facebook Android SDk
