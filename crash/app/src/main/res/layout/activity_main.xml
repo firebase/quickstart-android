@@ -46,5 +46,3 @@ specific language governing permissions and limitations under the License.
         android:layout_marginTop="10dp"
         android:text="@string/catch_crash_checkbox_label" />
 </RelativeLayout>
-
-

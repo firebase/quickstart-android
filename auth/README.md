@@ -51,7 +51,7 @@ Getting Started
   - Enter your Twitter **API Key** and **API Secret** and click **Save**.
   - Copy the callback URL from the bottom of the panel (it should look like
     `https://<your-app-id>.firebaseapp.com/__/auth/handler`).
-- Navigate back to your Twitter app settings on [apps.twitter.com](apps.twitter.com). Click the **Settings** tab and 
+- Navigate back to your Twitter app settings on [apps.twitter.com](apps.twitter.com). Click the **Settings** tab and
   paste in the callback URL from the Firebase console.
 - Open the file `app/src/main/res/values/ids.xml` and replace the value of the `twitter_consumer_key`
   and `twitter_consumer_secret` with the key and secret you just put into the Firebase console.
@@ -117,4 +117,3 @@ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 License for the specific language governing permissions and limitations under
 the License.
-
