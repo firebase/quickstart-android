@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Display price with discount applied if promotion is on. Otherwise display original price.
      */
+     // [START display_price]
     private void displayPrice() {
         long initialPrice = mFirebaseRemoteConfig.getLong(PRICE_CONFIG_KEY);
         long finalPrice = initialPrice;
@@ -143,4 +144,5 @@ public class MainActivity extends AppCompatActivity {
         }
         mPriceTextView.setText(mFirebaseRemoteConfig.getString(PRICE_PREFIX_CONFIG_KEY) + finalPrice);
     }
+    // [END display_price]
 }
