@@ -235,6 +235,7 @@ public class MainActivity extends AppCompatActivity implements
         // Choose file storage location
         File file = new File(Environment.getExternalStorageDirectory(), UUID.randomUUID().toString() + ".jpg");
         mFileUri = Uri.fromFile(file);
+
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
 
         // Launch intent
