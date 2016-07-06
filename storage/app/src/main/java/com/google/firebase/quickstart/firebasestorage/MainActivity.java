@@ -22,11 +22,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -221,24 +221,26 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "launchCamera");
 
         // Check that we have permission to read images from external storage.
-        String perm = Manifest.permission.READ_EXTERNAL_STORAGE;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && !EasyPermissions.hasPermissions(this, perm)) {
+        String perm = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        if (!EasyPermissions.hasPermissions(this, perm)) {
             EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage),
                     RC_STORAGE_PERMS, perm);
             return;
         }
 
-        // Create intent
+        // Choose file storage location, must be listed in res/xml/file_paths.xml
+        File externalDir = Environment.getExternalStorageDirectory();
+        File file = new File(externalDir, "photos/" + UUID.randomUUID().toString() + ".jpg");
+
+        // Create content:// URI for file, required since Android N
+        // See: https://developer.android.com/reference/android/support/v4/content/FileProvider.html
+        mFileUri = FileProvider.getUriForFile(this,
+                "com.google.firebase.quickstart.firebasestorage.fileprovider", file);
+
+        // Create and launch the intent
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        // Choose file storage location
-        File file = new File(Environment.getExternalStorageDirectory(), UUID.randomUUID().toString() + ".jpg");
-        mFileUri = Uri.fromFile(file);
-
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
 
-        // Launch intent
         startActivityForResult(takePictureIntent, RC_TAKE_PICTURE);
     }
 
