@@ -32,7 +32,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
 
     // [START gradle_play_config]
-    compile 'com.google.firebase:firebase-ads:9.2.0'
+    compile 'com.google.firebase:firebase-ads:9.2.1'
     // [END gradle_play_config]
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'

@@ -23,7 +23,7 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
 
-    compile 'com.google.firebase:firebase-invites:9.2.0'
+    compile 'com.google.firebase:firebase-invites:9.2.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

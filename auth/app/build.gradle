@@ -40,10 +40,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
 
     // Firebase Authentication
-    compile 'com.google.firebase:firebase-auth:9.2.0'
+    compile 'com.google.firebase:firebase-auth:9.2.1'
 
     // Google Sign In SDK (only required for Google Sign In)
-    compile 'com.google.android.gms:play-services-auth:9.2.0'
+    compile 'com.google.android.gms:play-services-auth:9.2.1'
 
     // Facebook Android SDK (only required for Facebook Login)
     // This is only compiled into the 'facebook' variant of this app. You can build

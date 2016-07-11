@@ -23,7 +23,7 @@ android {
 
 dependencies {
     // [START app_indexing_gradle_dep]
-    compile 'com.google.android.gms:play-services-appindexing:9.2.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.2.1'
     // [END app_indexing_gradle_dep]
     compile 'com.android.support:support-v4:24.0.0'
     compile 'com.android.support:appcompat-v7:24.0.0'
