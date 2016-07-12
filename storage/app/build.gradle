@@ -25,8 +25,8 @@ dependencies {
 
     compile 'pub.devrel:easypermissions:0.1.7'
 
-    compile 'com.google.firebase:firebase-auth:9.2.0'
-    compile 'com.google.firebase:firebase-storage:9.2.0'
+    compile 'com.google.firebase:firebase-auth:9.2.1'
+    compile 'com.google.firebase:firebase-storage:9.2.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
