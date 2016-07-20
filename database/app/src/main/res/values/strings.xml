@@ -13,4 +13,7 @@
     <string name="hint_password">password</string>
     <string name="hint_email">email</string>
     <string name="sign_in">Sign In</string>
+    <string name="heading_recent">Recent</string>
+    <string name="heading_my_posts">My Posts</string>
+    <string name="heading_my_top_posts">My Top Posts</string>
 </resources>
