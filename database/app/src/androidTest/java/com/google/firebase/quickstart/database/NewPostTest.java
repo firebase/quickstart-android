@@ -2,6 +2,7 @@ package com.google.firebase.quickstart.database;
 
 
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -119,10 +120,10 @@ public class NewPostTest {
      * Click the 'Log Out' overflow menu if it exists (which would mean we're signed in).
      */
     private void logOutIfPossible() {
-        openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         try {
+            openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
             onView(withText(R.string.menu_logout)).perform(click());
-        } catch (Exception e) {
+        } catch (NoMatchingViewException e) {
             // Ignore exception since we only want to do this operation if it's easy.
         }
 

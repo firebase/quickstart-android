@@ -1,0 +1,2 @@
+-dontobfuscate
+-dontwarn
