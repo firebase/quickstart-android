@@ -8,4 +8,6 @@
     <string name="rationale_storage">This sample reads images from your camera to demonstrate uploading.</string>
     <string name="label_link">Link to Uploaded File</string>
     <string name="label_download">Download File</string>
+    <string name="log_out">Log out</string>
+    <string name="success">Success</string>
 </resources>

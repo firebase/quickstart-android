@@ -31,6 +31,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +47,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -110,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements
                     long numBytes = intent.getLongExtra(MyDownloadService.EXTRA_BYTES_DOWNLOADED, 0);
 
                     // Alert success
-                    showMessageDialog("Success", String.format(Locale.getDefault(),
+                    showMessageDialog(getString(R.string.success), String.format(Locale.getDefault(),
                             "%d bytes downloaded from %s", numBytes, path));
                 }
 
@@ -229,8 +232,14 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         // Choose file storage location, must be listed in res/xml/file_paths.xml
-        File externalDir = Environment.getExternalStorageDirectory();
-        File file = new File(externalDir, "photos/" + UUID.randomUUID().toString() + ".jpg");
+        File file = new File(Environment.getExternalStorageDirectory(),
+                UUID.randomUUID().toString() + ".jpg");
+        try {
+            boolean created = file.createNewFile();
+            Log.d(TAG, "file.createNewFile:" + file.getAbsolutePath() + ":" + created);
+        } catch (IOException e) {
+            Log.e(TAG, "file.createNewFile" + file.getAbsolutePath() + ":FAILED", e);
+        }
 
         // Create content:// URI for file, required since Android N
         // See: https://developer.android.com/reference/android/support/v4/content/FileProvider.html
@@ -323,6 +332,24 @@ public class MainActivity extends AppCompatActivity implements
     private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_logout:
+                FirebaseAuth.getInstance().signOut();
+                updateUI(null);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
