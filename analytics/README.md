@@ -12,14 +12,14 @@ Getting Started
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 - Run the sample on Android device or emulator.
 
-Screenshots
+Result
 -----------
 <img src="app/src/screen.png" height="534" width="300"/>
 
 Support
 -------
 
-https://firebase.google.com/support/
+- [Firebase Support](https://firebase.google.com/support/)
 
 License
 -------
