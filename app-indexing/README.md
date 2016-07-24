@@ -23,8 +23,8 @@ Result
 Support
 -------
 
-- [Stack Overflow](http://stackoverflow.com/questions/tagged/android-app-indexing)
-- [Firebase Support](http://firebase.google.com/support/)
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/android-app-indexing)
+- [Firebase Support](https://firebase.google.com/support/)
 
 License
 -------
