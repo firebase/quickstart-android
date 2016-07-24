@@ -7,9 +7,9 @@ A collection of quickstart samples demonstrating the Firebase APIs on Android. F
 Samples available:
 
 - [Admob](admob)
-  - Display Simple Ad
+  - Display simple Ad on your App
 - [Analytics](analytics)
-  - Simple Analytics for your App
+  - Simple analytics for your App
 - [App-Indexing](app-indexing)
   - Get your App to be found in Google Search
 - [Auth](auth)
@@ -17,21 +17,22 @@ Samples available:
   - Facebook auth using Facebook login button
   - Twitter auth using Twitter login button
   - Auth using Email and password
-  - Cutom Auth
+  - Customized auth
 - [Configuration](config)
-  - Change the behavior or appearance of simple App 
+  - Change the behavior or appearance of your App 
 - [Crash](crash)
   - Diagnose and fix your App
 - [Database](database)
-  - Simple Social Blogging App
+  - Simple social blogging App
 - [Dynamic Links](dynamiclinks)
-  - Creating Dynamic Links for your App
+  - Creating dynamic links for your App
 - [Invites](invites)
   - Enabling users to share your App
 - [Messaging](messaging)
   - Generating notifications and handling the received messages
 - [Storage](storage)
   - Upload a file to Firebase storage and display its URL
+
 ## How to make contributions?
 Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
 
