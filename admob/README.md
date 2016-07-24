@@ -1,7 +1,7 @@
 AdMob by Google Quickstart
 =======================
 
-AdMob by Google Android quickstart demonstrates how to display an interstitial ad and
+The AdMob by Google Android quickstart demonstrates how to display an interstitial ad and
 a banner ad.  AdRequest and AdView are used to display a banner ad
 and InterstitialAd is used to display the interstitial ad.
 
