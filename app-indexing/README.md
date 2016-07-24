@@ -16,7 +16,7 @@ Getting Started
 - Run the sample on your Android device or emulator by issuing the following command using `adb` tool:
 `adb shell am start -a android.intent.action.VIEW -d "http://www.example.com/articles/test" com.google.samples.quickstart.app_indexing`
 
-Screenshots
+Result
 -----------
 <img src="app/src/screen.png" height="534" width="300"/>
 

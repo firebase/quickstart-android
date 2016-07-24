@@ -2,7 +2,7 @@ Firebase Cloud Messaging Quickstart
 ==============================
 
 The Firebase Cloud Messaging Android Quickstart app demonstrates registering
-an Android app for Notifications and handling the receipt of a message.
+an Android app for notifications and handling the receipt of a message.
 InstanceID allows easy registration while FirebaseMessagingService and FirebaseInstanceIDService
 enable token refreshes and message handling on the client.
 
@@ -48,14 +48,15 @@ Use Firebase console to send FCM messages to device or emulator.
   message printed in the logs. If it is in the background, a system notification should be
   displayed, and when tapped should return to the quickstart app.
 
-Screenshots
+Result
 -----------
 <img src="app/src/screen.png" height="534" width="300"/>
 
 Support
 -------
 
-https://firebase.google.com/support/
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/firebase-cloud-messaging)
+- [Firebase Support](https://firebase.google.com/support/)
 
 License
 -------
