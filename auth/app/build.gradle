@@ -10,6 +10,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
@@ -36,6 +37,10 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy.force 'com.android.support:support-annotations:24.0.0'
+}
+
 dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
 
@@ -57,6 +62,9 @@ dependencies {
     compile('com.twitter.sdk.android:twitter:1.13.1@aar') {
         transitive = true;
     }
+
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
 }
 
 apply plugin: 'com.google.gms.google-services'
