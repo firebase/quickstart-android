@@ -126,7 +126,7 @@ public class EmailPasswordActivity extends BaseActivity implements
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                            Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -157,12 +157,15 @@ public class EmailPasswordActivity extends BaseActivity implements
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail", task.getException());
-                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                            Log.w(TAG, "signInWithEmail:failed", task.getException());
+                            Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
 
                         // [START_EXCLUDE]
+                        if (!task.isSuccessful()) {
+                            mStatusTextView.setText(R.string.auth_failed);
+                        }
                         hideProgressDialog();
                         // [END_EXCLUDE]
                     }
