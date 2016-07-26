@@ -26,6 +26,10 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy.force 'com.android.support:support-annotations:24.0.0'
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // AppCompat
@@ -35,9 +39,8 @@ dependencies {
     compile 'com.google.firebase:firebase-ads:9.2.1'
     // [END gradle_play_config]
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.1'
-    androidTestCompile 'com.android.support.test:runner:0.2'
-    androidTestCompile 'com.android.support:support-annotations:24.0.0'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
 }
 
 apply plugin: 'com.google.gms.google-services'

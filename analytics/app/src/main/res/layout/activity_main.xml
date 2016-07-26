@@ -20,6 +20,7 @@ specific language governing permissions and limitations under the License.
     tools:context="com.google.firebase.quickstart.analytics.MainActivity">
 
     <android.support.v4.view.PagerTabStrip
+        android:id="@+id/pager_tab_strip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top" />

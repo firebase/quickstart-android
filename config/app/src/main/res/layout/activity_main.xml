@@ -27,7 +27,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="fetch remote price"
+        android:text="@string/fetch_remote_price"
         android:id="@+id/fetchButton"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />

@@ -15,73 +15,38 @@ package com.google.samples.quickstart.app_indexing;
  * limitations under the License.
  */
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.test.InstrumentationRegistry;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.By;
-import android.support.test.uiautomator.BySelector;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.Until;
 
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static junit.framework.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 
 @RunWith(AndroidJUnit4.class)
 public class UiAutomatorTest {
 
-    private static final long LAUNCH_TIMEOUT = 10000;
-    private static final long UI_TIMEOUT = 10000;
-
-    private static final String APP_PACKAGE = MainActivity.class.getPackage().getName();
-
-    private UiDevice mDevice;
-    private Context mContext;
-
-    @Before
-    public void setUp() {
-        // Get the device instance
-        mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-        assertThat(mDevice, notNullValue());
-
-        // Start from the home screen
-        mDevice.pressHome();
-
-        // Launch the app
-        Context context = InstrumentationRegistry.getContext();
-        Intent intent = new Intent()
-                .setClassName(APP_PACKAGE, APP_PACKAGE + ".MainActivity")
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-
-        // Wait for the app to appear
-        mDevice.wait(Until.hasObject(By.pkg(APP_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
-        mContext = InstrumentationRegistry.getTargetContext();
-    }
+    @Rule
+    public ActivityTestRule<MainActivity> rule =
+            new ActivityTestRule<>(MainActivity.class, true, false /* launchActivity */);
 
     @Test
     public void testDeepLink() {
-        // Start from the home screen
-        mDevice.pressHome();
         // Create intent to MainActivity
         String link = "http://www.example.com/articles/test";
         Intent linkIntent = new Intent(Intent.ACTION_VIEW)
-                .setClassName(APP_PACKAGE, APP_PACKAGE + ".MainActivity")
                 .setData(Uri.parse(link))
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        rule.launchActivity(linkIntent);
 
-        // Start activity
-        mContext.startActivity(linkIntent);
-
-        // Check that link text is displayed
-        assertTrue(mDevice.wait(Until.hasObject(By.text(link)), UI_TIMEOUT));
+        onView(withText(link))
+                .check(matches(isDisplayed()));
     }
 }
