@@ -10,7 +10,7 @@ Getting Started
 ---------------
 
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
-- Follow the [quickstart guide](https://firebase.google.comdocs/android/setup) to set up your project.
+- Follow the [quickstart guide](https://firebase.google.com/docs/android/setup) to set up your project.
 - Configure the sample:
   - Replace the `app_code` value in `strings.xml` with your personal app code. If you don't have an app code, email your Google contact to begin the process.
   - Replace the `applicationId` in `app/build.gradle` with the package name that matches your app code.
