@@ -4,7 +4,7 @@ Firebase Crash Quickstart
 Introduction
 ------------
 
-- [Read more about Firebase Crash](https://firebase.google.com/docs/crash)
+- [Read more about Firebase Crash Reporting](https://firebase.google.com/docs/crash)
 
 Getting Started
 ---------------
@@ -19,7 +19,8 @@ Screenshots
 Support
 -------
 
-https://firebase.google.com/support/
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/firebase-crash-reporting)
+- [Firebase Support](https://firebase.google.com/support/)
 
 License
 -------
