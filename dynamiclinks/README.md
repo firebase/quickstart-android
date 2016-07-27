@@ -12,24 +12,25 @@ Getting Started
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 - Follow the [quickstart guide](https://firebase.google.com/docs/android/setup) to set up your project.
 - Configure the sample:
-  - Replace the `app_code` value in `strings.xml` with your personal app code. If you don't have an app code, email your Google contact to begin the process.
-  - Replace the `applicationId` in `app/build.gradle` with the package name that matches your app code.
+  - Replace the **app_code** value in `strings.xml` with your personal **app code**. If you don't have an **app code**, email your Google contact to begin the process.
+  - Replace the **applicationId** in `app/build.gradle` with the package name that matches your app code.
 - Run the sample on your Android device or emulator.
 - Using the sample:
-  - When the application is started a deep link is generated using your app code. Click **Share**
-    to share this deep link to another application (like Google Keep).
-  - When the application is started the app checks if it was launched from a deep link. If so,
-    the link data is displayed under the **Receive** heading. Try sharing the deep link from the
-    app and then using that link to re-launch the application.
+  - When the application is started, a deep link will be generated using your app code. 
+  - Click **Share**
+    to share this deep link to another application.
+  - The application checks if it was launched from a deep link. If so, the link data will be displayed under the **Receive** heading.
+  - Try sharing the deep link from the application and use that deep link to re-launch the application.
 
-Screenshots
+Result
 -----------
 <img src="app/src/screen.png" height="534" width="300"/>
 
 Support
 -------
 
-https://firebase.google.com/support/
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/firebase-dynamic-links)
+- [Firebase Support](https://firebase.google.com/support/)
 
 License
 -------
