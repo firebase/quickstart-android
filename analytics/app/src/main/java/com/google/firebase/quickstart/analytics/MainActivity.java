@@ -105,6 +105,11 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mImagePagerAdapter);
 
+        // Workaround for AppCompat issue not showing ViewPager titles
+        ViewPager.LayoutParams params = (ViewPager.LayoutParams)
+                findViewById(R.id.pager_tab_strip).getLayoutParams();
+        params.isDecor = true;
+
         // When the visible image changes, send a screen view hit.
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
