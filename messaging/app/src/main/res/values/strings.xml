@@ -5,4 +5,7 @@
         InstanceID token to logcat.</string>
     <string name="subscribe_to_news">Subscribe To News</string>
     <string name="log_token">Log Token</string>
+
+    <string name="msg_subscribed">Subscribed to news topic</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
 </resources>

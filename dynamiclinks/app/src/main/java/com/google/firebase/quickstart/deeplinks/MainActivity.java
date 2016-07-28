@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -118,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
      * @param isAd true if the dynamic link is used in an advertisement, false otherwise.
      * @return a {@link Uri} representing a properly formed deep link.
      */
-    private Uri buildDeepLink(@NonNull Uri deepLink, int minVersion, boolean isAd) {
+    @VisibleForTesting
+    public Uri buildDeepLink(@NonNull Uri deepLink, int minVersion, boolean isAd) {
         // Get the unique appcode for this app.
         String appCode = getString(R.string.app_code);
 
