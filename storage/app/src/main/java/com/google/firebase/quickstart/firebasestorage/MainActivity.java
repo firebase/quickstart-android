@@ -232,9 +232,13 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         // Choose file storage location, must be listed in res/xml/file_paths.xml
-        File file = new File(Environment.getExternalStorageDirectory(),
-                UUID.randomUUID().toString() + ".jpg");
+        File dir = new File(Environment.getExternalStorageDirectory() + "/photos");
+        File file = new File(dir, UUID.randomUUID().toString() + ".jpg");
         try {
+            // Create directory if it does not exist.
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
             boolean created = file.createNewFile();
             Log.d(TAG, "file.createNewFile:" + file.getAbsolutePath() + ":" + created);
         } catch (IOException e) {
