@@ -162,13 +162,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_sign_in:
-                signIn();
-                break;
-            case R.id.button_sign_up:
-                signUp();
-                break;
+        int i = v.getId();
+        if (i == R.id.button_sign_in) {
+            signIn();
+        } else if (i == R.id.button_sign_up) {
+            signUp();
         }
     }
 }

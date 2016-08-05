@@ -162,10 +162,10 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_sign_in:
-                startSignIn();
-                break;
+        int i = v.getId();
+        if (i == R.id.button_sign_in) {
+            startSignIn();
+
         }
     }
 }

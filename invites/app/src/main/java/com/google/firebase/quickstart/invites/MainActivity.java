@@ -37,7 +37,6 @@ import com.google.android.gms.appinvite.AppInviteReferral;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * Main Activity for sending App Invites and launching the DeepLinkActivity when an
@@ -149,10 +148,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.invite_button:
-                onInviteClicked();
-                break;
+        int i = view.getId();
+        if (i == R.id.invite_button) {
+            onInviteClicked();
         }
     }
 }

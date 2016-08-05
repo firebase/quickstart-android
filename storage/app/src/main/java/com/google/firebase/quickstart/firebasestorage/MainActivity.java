@@ -347,28 +347,25 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_logout:
-                FirebaseAuth.getInstance().signOut();
-                updateUI(null);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        int i = item.getItemId();
+        if (i == R.id.action_logout) {
+            FirebaseAuth.getInstance().signOut();
+            updateUI(null);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_camera:
-                launchCamera();
-                break;
-            case R.id.button_sign_in:
-                signInAnonymously();
-                break;
-            case R.id.button_download:
-                beginDownload();
-                break;
+        int i = v.getId();
+        if (i == R.id.button_camera) {
+            launchCamera();
+        } else if (i == R.id.button_sign_in) {
+            signInAnonymously();
+        } else if (i == R.id.button_download) {
+            beginDownload();
         }
     }
 
