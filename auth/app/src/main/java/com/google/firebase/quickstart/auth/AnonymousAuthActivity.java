@@ -223,16 +223,13 @@ public class AnonymousAuthActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_anonymous_sign_in:
-                signInAnonymously();
-                break;
-            case R.id.button_anonymous_sign_out:
-                signOut();
-                break;
-            case R.id.button_link_account:
-                linkAccount();
-                break;
+        int i = v.getId();
+        if (i == R.id.button_anonymous_sign_in) {
+            signInAnonymously();
+        } else if (i == R.id.button_anonymous_sign_out) {
+            signOut();
+        } else if (i == R.id.button_link_account) {
+            linkAccount();
         }
     }
 }

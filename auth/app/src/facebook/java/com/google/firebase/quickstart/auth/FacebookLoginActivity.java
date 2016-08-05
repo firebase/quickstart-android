@@ -209,10 +209,9 @@ public class FacebookLoginActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_facebook_signout:
-                signOut();
-                break;
+        int i = v.getId();
+        if (i == R.id.button_facebook_signout) {
+            signOut();
         }
     }
 }

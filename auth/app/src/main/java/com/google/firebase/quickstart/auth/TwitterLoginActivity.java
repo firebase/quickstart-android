@@ -189,10 +189,9 @@ public class TwitterLoginActivity extends BaseActivity
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_twitter_signout:
-                signOut();
-                break;
+        int i = v.getId();
+        if (i == R.id.button_twitter_signout) {
+            signOut();
         }
     }
 }

@@ -176,24 +176,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_share:
-                String name = getCurrentImageTitle();
-                String text = "I'd love you to hear about " + name;
+        int i = item.getItemId();
+        if (i == R.id.menu_share) {
+            String name = getCurrentImageTitle();
+            String text = "I'd love you to hear about " + name;
 
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-                sendIntent.setType("text/plain");
-                startActivity(sendIntent);
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
 
-                // [START custom_event]
-                Bundle params = new Bundle();
-                params.putString("image_name", name);
-                params.putString("full_text", text);
-                mFirebaseAnalytics.logEvent("share_image", params);
-                // [END custom_event]
-                break;
+            // [START custom_event]
+            Bundle params = new Bundle();
+            params.putString("image_name", name);
+            params.putString("full_text", text);
+            mFirebaseAnalytics.logEvent("share_image", params);
+            // [END custom_event]
         }
         return false;
     }
