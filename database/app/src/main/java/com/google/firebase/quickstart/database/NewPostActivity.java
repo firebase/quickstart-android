@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.database;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +13,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.quickstart.database.models.User;
 import com.google.firebase.quickstart.database.models.Post;
+import com.google.firebase.quickstart.database.models.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class NewPostActivity extends BaseActivity {
 
     private EditText mTitleField;
     private EditText mBodyField;
+    private FloatingActionButton mSubmitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +43,9 @@ public class NewPostActivity extends BaseActivity {
 
         mTitleField = (EditText) findViewById(R.id.field_title);
         mBodyField = (EditText) findViewById(R.id.field_body);
+        mSubmitButton = (FloatingActionButton) findViewById(R.id.fab_submit_post);
 
-        findViewById(R.id.fab_submit_post).setOnClickListener(new View.OnClickListener() {
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitPost();
@@ -66,6 +69,10 @@ public class NewPostActivity extends BaseActivity {
             return;
         }
 
+        // Disable button so there are no multi-posts
+        setEditingEnabled(false);
+        Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
+
         // [START single_value_read]
         final String userId = getUid();
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
@@ -88,6 +95,7 @@ public class NewPostActivity extends BaseActivity {
                         }
 
                         // Finish this Activity, back to the stream
+                        setEditingEnabled(true);
                         finish();
                         // [END_EXCLUDE]
                     }
@@ -95,9 +103,22 @@ public class NewPostActivity extends BaseActivity {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                        // [START_EXCLUDE]
+                        setEditingEnabled(true);
+                        // [END_EXCLUDE]
                     }
                 });
         // [END single_value_read]
+    }
+
+    private void setEditingEnabled(boolean enabled) {
+        mTitleField.setEnabled(enabled);
+        mBodyField.setEnabled(enabled);
+        if (enabled) {
+            mSubmitButton.setVisibility(View.VISIBLE);
+        } else {
+            mSubmitButton.setVisibility(View.GONE);
+        }
     }
 
     // [START write_fan_out]
