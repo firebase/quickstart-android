@@ -32,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StreamDownloadTask;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class MyDownloadService extends Service {
 
@@ -76,7 +77,15 @@ public class MyDownloadService extends Service {
             taskStarted();
 
             // Download and get total bytes
-            mStorage.child(downloadPath).getStream()
+            mStorage.child(downloadPath).getStream(
+                    new StreamDownloadTask.StreamProcessor() {
+                        @Override
+                        public void doInBackground(StreamDownloadTask.TaskSnapshot taskSnapshot,
+                                                   InputStream inputStream) throws IOException {
+                            // Close the stream at the end of the Task
+                            inputStream.close();
+                        }
+                    })
                     .addOnSuccessListener(new OnSuccessListener<StreamDownloadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(StreamDownloadTask.TaskSnapshot taskSnapshot) {
@@ -88,13 +97,6 @@ public class MyDownloadService extends Service {
                             broadcast.putExtra(EXTRA_BYTES_DOWNLOADED, taskSnapshot.getTotalByteCount());
                             LocalBroadcastManager.getInstance(getApplicationContext())
                                     .sendBroadcast(broadcast);
-
-                            // Close stream
-                            try {
-                                taskSnapshot.getStream().close();
-                            } catch (IOException e) {
-                                Log.w(TAG, "Error in getStream:close", e);
-                            }
 
                             // Mark task completed
                             taskCompleted();
