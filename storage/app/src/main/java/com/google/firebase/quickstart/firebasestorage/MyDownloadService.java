@@ -31,6 +31,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StreamDownloadTask;
 
+import java.io.IOException;
+
 public class MyDownloadService extends Service {
 
     private static final String TAG = "Storage#DownloadService";
@@ -86,6 +88,13 @@ public class MyDownloadService extends Service {
                             broadcast.putExtra(EXTRA_BYTES_DOWNLOADED, taskSnapshot.getTotalByteCount());
                             LocalBroadcastManager.getInstance(getApplicationContext())
                                     .sendBroadcast(broadcast);
+
+                            // Close stream
+                            try {
+                                taskSnapshot.getStream().close();
+                            } catch (IOException e) {
+                                Log.w(TAG, "Error in getStream:close", e);
+                            }
 
                             // Mark task completed
                             taskCompleted();
