@@ -21,6 +21,8 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -254,6 +256,16 @@ public class MainActivity extends AppCompatActivity implements
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
 
+        // Grant permission to camera (this is required on KitKat and below)
+        List<ResolveInfo> resolveInfos = getPackageManager()
+                .queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resolveInfos) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            grantUriPermission(packageName, mFileUri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+
+        // Start picture-taking intent
         startActivityForResult(takePictureIntent, RC_TAKE_PICTURE);
     }
 
