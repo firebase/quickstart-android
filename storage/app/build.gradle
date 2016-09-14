@@ -57,7 +57,7 @@ android.applicationVariants.all { variant ->
 dependencies {
     compile 'com.android.support:appcompat-v7:24.0.0'
 
-    compile 'pub.devrel:easypermissions:0.1.9'
+    compile 'pub.devrel:easypermissions:0.2.0'
 
     compile 'com.google.firebase:firebase-auth:9.4.0'
     compile 'com.google.firebase:firebase-storage:9.4.0'

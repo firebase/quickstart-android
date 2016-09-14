@@ -14,7 +14,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,6 +27,10 @@
         <service
             android:name=".MyDownloadService"
             android:exported="false"/>
+
+        <service
+            android:name=".MyUploadService"
+            android:exported="false" />
 
         <!--
           Android N SDK has new restrictions around sharing file:// URIs
