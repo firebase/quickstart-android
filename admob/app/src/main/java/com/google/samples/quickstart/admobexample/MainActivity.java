@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 if (mLoadInterstitialButton != null) {
                     mLoadInterstitialButton.setEnabled(true);
                 }
-                // [START_EXCLUDE]
+                // [END_EXCLUDE]
             }
         });
         // [END create_interstitial_ad_listener]
