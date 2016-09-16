@@ -69,6 +69,16 @@ public class MainActivity extends AppCompatActivity {
                 requestNewInterstitial();
                 beginSecondActivity();
             }
+
+            @Override
+            public void onAdLoaded() {
+                // Ad received, ready to display
+                // [START_EXCLUDE]
+                if (mLoadInterstitialButton != null) {
+                    mLoadInterstitialButton.setEnabled(true);
+                }
+                // [START_EXCLUDE]
+            }
         });
         // [END create_interstitial_ad_listener]
 
@@ -85,6 +95,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // [END display_interstitial_ad]
+
+
+        // Disable button if an interstitial ad is not loaded yet.
+        mLoadInterstitialButton.setEnabled(mInterstitialAd.isLoaded());
     }
 
     /**
