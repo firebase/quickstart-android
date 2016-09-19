@@ -115,11 +115,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 recordImageView();
+                recordScreenView();
             }
         });
 
         // Send initial screen screen view hit.
         recordImageView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        recordScreenView();
     }
 
     /**
@@ -234,6 +241,19 @@ public class MainActivity extends AppCompatActivity {
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
         // [END image_view_event]
+    }
+
+    /**
+     * This sample has a single Activity, so we need to manually record "screen views" as
+     * we change fragments.
+     */
+    private void recordScreenView() {
+        // This string must be <= 36 characters long in order for setCurrentScreen to succeed.
+        String screenName = getCurrentImageId() + "-" + getCurrentImageTitle();
+
+        // [START set_current_screen]
+        mFirebaseAnalytics.setCurrentScreen(this, screenName, null /* class override */);
+        // [END set_current_screen]
     }
 
     /**
