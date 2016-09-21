@@ -5,6 +5,7 @@ import android.app.Instrumentation;
 import android.content.Intent;
 import android.provider.MediaStore;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.Intents;
@@ -38,6 +39,8 @@ public class MainActivityTest {
 
     private static final String TAG = "MainActivityTest";
 
+    private ServiceIdlingResource mUploadIdlingResource;
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -55,12 +58,22 @@ public class MainActivityTest {
         // Intercept photo intent
         Matcher<Intent> pictureIntentMatch = allOf(hasAction(MediaStore.ACTION_IMAGE_CAPTURE));
         intending(pictureIntentMatch).respondWith(result);
+
+        // Idling resource
+        mUploadIdlingResource = new ServiceIdlingResource(mActivityTestRule.getActivity(),
+                MyUploadService.class);
+        Espresso.registerIdlingResources(mUploadIdlingResource);
     }
 
     @After
     public void after() {
         // Release intents
         Intents.release();
+
+        // Idling resource
+        if (mUploadIdlingResource != null) {
+            Espresso.unregisterIdlingResources(mUploadIdlingResource);
+        }
     }
 
 
