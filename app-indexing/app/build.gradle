@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         applicationId "com.google.samples.quickstart.app_indexing"
@@ -22,15 +22,15 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:24.0.0'
+    resolutionStrategy.force 'com.android.support:support-annotations:24.2.1'
 }
 
 dependencies {
     // [START app_indexing_gradle_dep]
-    compile 'com.google.android.gms:play-services-appindexing:9.4.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.6.0'
     // [END app_indexing_gradle_dep]
-    compile 'com.android.support:support-v4:24.0.0'
-    compile 'com.android.support:appcompat-v7:24.0.0'
+    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
 
     // Testing
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
