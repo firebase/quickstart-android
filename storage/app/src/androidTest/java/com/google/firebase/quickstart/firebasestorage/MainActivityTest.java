@@ -97,7 +97,6 @@ public class MainActivityTest {
         uploadButton.perform(click());
 
         // Confirm that download link label is displayed
-        // TODO(samstern): Make sure tests still pass with behavior change
         onView(withText(R.string.label_link))
                 .check(matches(isDisplayed()));
 

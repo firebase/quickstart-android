@@ -186,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
 
         // Save the File URI
-        // TODO(samstern): Why does this not work?
         mFileUri = fileUri;
 
         // Toast message in case the user does not see the notificatio
