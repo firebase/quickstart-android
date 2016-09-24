@@ -11,6 +11,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This variant excludes Facebook. Build the 'facebookDebug' or 'facebookRelease' variants in order to try Firebase Authentication with Facebook" />
+        android:text="This variant excludes Facebook. Build the 'minSdkJellybeanDebug' or 'minSdkJellybeanRelease' variants in order to try Firebase Authentication with Facebook." />
 
 </LinearLayout>

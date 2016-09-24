@@ -17,7 +17,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".CustomAuthActivity"
             android:label="@string/label_custom_auth" />
@@ -34,11 +33,12 @@
         <activity
             android:name=".AnonymousAuthActivity"
             android:label="@string/label_anonymous_auth" />
-
         <activity
             android:name=".TwitterLoginActivity"
             android:label="@string/label_twitter_login" />
-
+        <activity
+            android:name=".FirebaseUIActivity"
+            android:label="@string/label_firebase_ui"/>
     </application>
 
 </manifest>
