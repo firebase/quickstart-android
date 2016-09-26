@@ -27,7 +27,7 @@ configurations.all {
 
 dependencies {
     // [START app_indexing_gradle_dep]
-    compile 'com.google.android.gms:play-services-appindexing:9.6.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.6.1'
     // [END app_indexing_gradle_dep]
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
