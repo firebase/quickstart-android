@@ -1,11 +1,9 @@
-build
-
-.idea
 .gradle
-
-*.class
-*.properties
-!gradle-wrapper.properties
-*.iml
-
+/local.properties
+.DS_Store
+build/
 google-services.json
+
+# Android Studio
+.idea
+*.iml
