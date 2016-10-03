@@ -18,6 +18,8 @@
 
 -keepattributes Signature
 -keepattributes *Annotation*
+-keepattributes EnclosingMethod
+-keepattributes InnerClasses
 
 -keep class com.google.firebase.quickstart.database.viewholder.** {
     *;
