@@ -18,6 +18,8 @@
 
 -keepattributes Signature
 -keepattributes *Annotation*
+-keepattributes EnclosingMethod
+-keepattributes InnerClasses
 
 # Required for Twitter Authentication
 # https://docs.fabric.io/android/twitter/twitter.html#set-up-kit
