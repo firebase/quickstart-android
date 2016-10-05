@@ -47,6 +47,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             TwitterLoginActivity.class,
             EmailPasswordActivity.class,
             AnonymousAuthActivity.class,
+            FirebaseUIActivity.class,
             CustomAuthActivity.class
     };
 
@@ -56,6 +57,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             R.string.desc_twitter_login,
             R.string.desc_emailpassword,
             R.string.desc_anonymous_auth,
+            R.string.desc_firebase_ui,
             R.string.desc_custom_auth,
     };
 
