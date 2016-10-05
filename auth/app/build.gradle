@@ -22,15 +22,13 @@ android {
 
     productFlavors {
 
-        // Build variant to include the Facebook Android SDk
-        // The Facebook Android SDK has a min SDK version of 15
-        facebook {
-            minSdkVersion 15
+        // Build variant with minSdk 16 to include Facebook and FirebaseUI libraries.
+        minSdkJellybean {
+            minSdkVersion 16
         }
 
-        // Build variant to exclude the Facebook Android SDK
-        // Firebase Authentication has a min SDK version of 9
-        nofacebook {
+        // Build variant with minSdk 9, excludes Facebook and FirebaseUI libraries.
+        minSdkGingerbread {
             minSdkVersion 9
         }
 
@@ -50,10 +48,15 @@ dependencies {
     // Google Sign In SDK (only required for Google Sign In)
     compile 'com.google.android.gms:play-services-auth:9.6.1'
 
+    // Firebase UI
+    // Used in FirebaseUIActivity. The FirebaseUI-Android library has a minSdk level of 16
+    // so this library is only included in the minSdkJellybean variant.
+    minSdkJellybeanCompile 'com.firebaseui:firebase-ui-auth:0.6.0'
+
     // Facebook Android SDK (only required for Facebook Login)
-    // This is only compiled into the 'facebook' variant of this app. You can build
-    // a 'nofacebook' variant to test on devices with SDK < 15.
-    facebookCompile 'com.facebook.android:facebook-android-sdk:4.9.0'
+    // Used in FacebookLoginActivity. This is only compiled into the minSdkJellybean variant of this
+    // app. You can build a 'minSdkGingerbread' variant to test on devices with 9 <= SDK <= 15.
+    minSdkJellybeanCompile 'com.facebook.android:facebook-android-sdk:4.9.0'
 
     // Twitter Android SDK (only required for Twitter Login)
     compile('com.twitter.sdk.android:twitter-core:1.6.6@aar') {
