@@ -188,6 +188,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Save the File URI
         mFileUri = fileUri;
 
+        // Clear the last download, if any
+        updateUI(mAuth.getCurrentUser());
+        mDownloadUrl = null;
+
         // Toast message in case the user does not see the notificatio
         Toast.makeText(this, "Uploading...", Toast.LENGTH_SHORT).show();
 
