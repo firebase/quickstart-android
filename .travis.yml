@@ -16,5 +16,27 @@ android:
     - 'android-sdk-preview-license-52d11cd2'
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+env:
+  - SAMPLE=admob 
+  - SAMPLE=analytics 
+  - SAMPLE=app-indexing 
+  - SAMPLE=auth 
+  - SAMPLE=config 
+  - SAMPLE=crash 
+  - SAMPLE=database 
+  - SAMPLE=dynamiclinks 
+  - SAMPLE=invites 
+  - SAMPLE=messaging 
+  - SAMPLE=storage
+
 script:
   - ./build.sh
