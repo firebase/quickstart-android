@@ -39,27 +39,25 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     // Remote Config keys
-    private static final String PRICE_CONFIG_KEY = "price";
     private static final String LOADING_PHRASE_CONFIG_KEY = "loading_phrase";
-    private static final String PRICE_PREFIX_CONFIG_KEY = "price_prefix";
-    private static final String DISCOUNT_CONFIG_KEY = "discount";
-    private static final String IS_PROMOTION_CONFIG_KEY = "is_promotion_on";
+    private static final String WELCOME_MESSAGE_KEY = "welcome_message";
+    private static final String WELCOME_MESSAGE_CAPS_KEY = "welcome_message_caps";
 
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
-    private TextView mPriceTextView;
+    private TextView mWelcomeTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mPriceTextView = (TextView) findViewById(R.id.priceView);
+        mWelcomeTextView = (TextView) findViewById(R.id.welcomeTextView);
 
         Button fetchButton = (Button) findViewById(R.id.fetchButton);
         fetchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fetchDiscount();
+                fetchWelcome();
             }
         });
 
@@ -89,16 +87,14 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
         // [END set_default_values]
 
-
-        // Fetch discount config.
-        fetchDiscount();
+        fetchWelcome();
     }
 
     /**
-     * Fetch discount from server.
+     * Fetch welcome message from server.
      */
-    private void fetchDiscount() {
-        mPriceTextView.setText(mFirebaseRemoteConfig.getString(LOADING_PHRASE_CONFIG_KEY));
+    private void fetchWelcome() {
+        mWelcomeTextView.setText(mFirebaseRemoteConfig.getString(LOADING_PHRASE_CONFIG_KEY));
 
         long cacheExpiration = 3600; // 1 hour in seconds.
         // If in developer mode cacheExpiration is set to 0 so each fetch will retrieve values from
@@ -127,25 +123,27 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Fetch Failed",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        displayPrice();
+                        displayWelcomeMessage();
                     }
                 });
         // [END fetch_config_with_callback]
     }
 
     /**
-     * Display price with discount applied if promotion is on. Otherwise display original price.
+     * Display welcome message in all caps if welcome_message_caps is set to true. Otherwise
+     * display welcome message as fetched from welcome_message.
      */
-     // [START display_price]
-    private void displayPrice() {
-        long initialPrice = mFirebaseRemoteConfig.getLong(PRICE_CONFIG_KEY);
-        long finalPrice = initialPrice;
-        if (mFirebaseRemoteConfig.getBoolean(IS_PROMOTION_CONFIG_KEY)) {
-            // [START get_config_values]
-            finalPrice = initialPrice - mFirebaseRemoteConfig.getLong(DISCOUNT_CONFIG_KEY);
-            // [END get_config_values]
+     // [START display_welcome_message]
+    private void displayWelcomeMessage() {
+        // [START get_config_values]
+        String welcomeMessage = mFirebaseRemoteConfig.getString(WELCOME_MESSAGE_KEY);
+        // [END get_config_values]
+        if (mFirebaseRemoteConfig.getBoolean(WELCOME_MESSAGE_CAPS_KEY)) {
+            mWelcomeTextView.setAllCaps(true);
+        } else {
+            mWelcomeTextView.setAllCaps(false);
         }
-        mPriceTextView.setText(mFirebaseRemoteConfig.getString(PRICE_PREFIX_CONFIG_KEY) + finalPrice);
+        mWelcomeTextView.setText(welcomeMessage);
     }
-    // [END display_price]
+    // [END display_welcome_message]
 }

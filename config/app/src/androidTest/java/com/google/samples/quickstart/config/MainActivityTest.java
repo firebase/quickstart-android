@@ -28,7 +28,7 @@ public class MainActivityTest {
     @Test
     public void testFetchConfig() {
         // Click fetch config button
-        onView(withText(R.string.fetch_remote_price))
+        onView(withText(R.string.fetch_remote_welcome_message))
                 .check(matches(isDisplayed()))
                 .perform(click());
 

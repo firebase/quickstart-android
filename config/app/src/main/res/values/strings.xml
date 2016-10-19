@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Firebase Remote Config</string>
-    <string name="fetch_remote_price">fetch remote price</string>
+    <string name="fetch_remote_welcome_message">fetch remote welcome</string>
 </resources>
