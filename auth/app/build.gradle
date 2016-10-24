@@ -51,7 +51,7 @@ dependencies {
     // Firebase UI
     // Used in FirebaseUIActivity. The FirebaseUI-Android library has a minSdk level of 16
     // so this library is only included in the minSdkJellybean variant.
-    minSdkJellybeanCompile 'com.firebaseui:firebase-ui-auth:0.6.0'
+    minSdkJellybeanCompile 'com.firebaseui:firebase-ui-auth:0.6.2'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity. This is only compiled into the minSdkJellybean variant of this
