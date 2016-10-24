@@ -43,10 +43,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
 
     // Firebase Authentication
-    compile 'com.google.firebase:firebase-auth:9.6.1'
+    compile 'com.google.firebase:firebase-auth:9.8.0'
 
     // Google Sign In SDK (only required for Google Sign In)
-    compile 'com.google.android.gms:play-services-auth:9.6.1'
+    compile 'com.google.android.gms:play-services-auth:9.8.0'
 
     // Firebase UI
     // Used in FirebaseUIActivity. The FirebaseUI-Android library has a minSdk level of 16
