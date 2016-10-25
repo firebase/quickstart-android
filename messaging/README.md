@@ -48,6 +48,27 @@ Use Firebase console to send FCM messages to device or emulator.
   message printed in the logs. If it is in the background, a system notification should be
   displayed. When the notification is tapped, the application should return to the quickstart application.
 
+Best Practices
+--------------
+
+## Customize default notification
+
+### Custom default icon
+
+Setting a custom default icon allows you to specify what icon is used for notification
+messages if no icon is set in the notification payload. Also use the custom default
+icon to set the icon used by notification messages sent from the Firebase console.
+If no custom default icon is set and no icon is set in the notification payload,
+the application icon (rendered in white) is used.
+
+### Custom default Color
+
+You can also define what color is used with your notification. Different android
+versions use this settings in different ways: Android < N use this as background color
+for the icon. Android >= N use this to color the icon and the app name.
+
+See the [docs](https://goo.gl/sPggnS) for more.
+
 Result
 -----------
 <img src="app/src/screen.png" height="534" width="300"/>
