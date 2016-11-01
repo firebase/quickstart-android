@@ -40,8 +40,8 @@ specific language governing permissions and limitations under the License.
         android:id="@+id/catchCrashCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/crashButton"
-        android:layout_alignStart="@+id/crashButton"
+        android:layout_alignRight="@+id/crashButton"
+        android:layout_alignLeft="@+id/crashButton"
         android:layout_below="@+id/crashButton"
         android:layout_marginTop="10dp"
         android:text="@string/catch_crash_checkbox_label" />
