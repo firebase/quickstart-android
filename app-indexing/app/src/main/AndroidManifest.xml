@@ -28,8 +28,8 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "http://www.example.com/articles/" -->
-                <data android:scheme="http"
+                <!-- Accepts URIs that begin with "https://www.example.com/articles/" -->
+                <data android:scheme="https"
                     android:host="www.example.com"
                     android:pathPrefix="/articles/" />
             </intent-filter>
