@@ -2,10 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.firebase.quickstart.firebasestorage">
 
-    <!--
-        This permission is not required for Firebase Storage and is only used to read
-        files from the camera and upload them to Firebase Storage as a demonstration.
-    -->
+    <!-- Used only for testing purposes, not required for Firebase Storage -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -31,20 +28,6 @@
         <service
             android:name=".MyUploadService"
             android:exported="false" />
-
-        <!--
-          Android N SDK has new restrictions around sharing file:// URIs
-          https://developer.android.com/reference/android/support/v4/content/FileProvider.html#ProviderDefinition
-        -->
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.google.firebase.quickstart.firebasestorage.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
 
     </application>
 

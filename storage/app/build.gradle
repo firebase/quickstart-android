@@ -25,39 +25,8 @@ configurations.all {
     resolutionStrategy.force 'com.android.support:support-annotations:24.2.1'
 }
 
-// Based on: http://goo.gl/cuAayN
-// To run a test with permission granted:
-//  ./gradlew :app:grantDebugPermissions :app:runDebugEspressoTests
-android.applicationVariants.all { variant ->
-    def applicationId = variant.applicationId
-    def adb = android.getAdbExe().toString()
-    def variantName = variant.name.capitalize()
-    def grantPermissionTask = tasks.create(name: "grant${variantName}Permissions", type: Exec) {
-        "${adb} devices".execute().text.eachLine {
-            if (it.endsWith("device")) {
-                def device = it.split()[0]
-                commandLine(adb, "-s", device, "shell", "pm", "grant", applicationId,
-                        "android.permission.WRITE_EXTERNAL_STORAGE")
-                commandLine(adb, "-s", device, "shell", "pm", "grant", applicationId,
-                        "android.permission.READ_EXTERNAL_STORAGE")
-            }
-        }
-    }
-
-    grantPermissionTask.dependsOn "install${variantName}"
-    grantPermissionTask.dependsOn "install${variantName}AndroidTest"
-
-    def runEspressoTestsTask = tasks.create(name: "run${variantName}EspressoTests", type: Exec) {
-        commandLine(adb, "shell", "am", "instrument", "-w",  "-r", "-e", "debug", "false", "-e",
-                "class", "${applicationId}.MainActivityTest",
-                "${applicationId}.test/android.support.test.runner.AndroidJUnitRunner")
-    }
-}
-
 dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
-
-    compile 'pub.devrel:easypermissions:0.2.0'
 
     compile 'com.google.firebase:firebase-auth:9.8.0'
     compile 'com.google.firebase:firebase-storage:9.8.0'
