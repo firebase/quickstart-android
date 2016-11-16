@@ -16,19 +16,13 @@
 
 package com.google.firebase.quickstart.firebasestorage;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -45,14 +39,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
-
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Activity to upload and download photos from Firebase Storage.
@@ -65,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "Storage#MainActivity";
 
     private static final int RC_TAKE_PICTURE = 101;
-    private static final int RC_STORAGE_PERMS = 102;
 
     private static final String KEY_FILE_URI = "key_file_uri";
     private static final String KEY_DOWNLOAD_URL = "key_download_url";
@@ -171,6 +157,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
         if (requestCode == RC_TAKE_PICTURE) {
             if (resultCode == RESULT_OK) {
+                mFileUri = data.getData();
+
                 if (mFileUri != null) {
                     uploadFromUri(mFileUri);
                 } else {
@@ -216,53 +204,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         showProgressDialog();
     }
 
-
-    @AfterPermissionGranted(RC_STORAGE_PERMS)
     private void launchCamera() {
         Log.d(TAG, "launchCamera");
 
-        // Check that we have permission to read images from external storage.
-        String perm = Manifest.permission.WRITE_EXTERNAL_STORAGE;
-        if (!EasyPermissions.hasPermissions(this, perm)) {
-            EasyPermissions.requestPermissions(this, getString(R.string.rationale_storage),
-                    RC_STORAGE_PERMS, perm);
-            return;
-        }
-
-        // Choose file storage location, must be listed in res/xml/file_paths.xml
-        File dir = new File(Environment.getExternalStorageDirectory() + "/photos");
-        File file = new File(dir, UUID.randomUUID().toString() + ".jpg");
-        try {
-            // Create directory if it does not exist.
-            if (!dir.exists()) {
-                dir.mkdir();
-            }
-            boolean created = file.createNewFile();
-            Log.d(TAG, "file.createNewFile:" + file.getAbsolutePath() + ":" + created);
-        } catch (IOException e) {
-            Log.e(TAG, "file.createNewFile" + file.getAbsolutePath() + ":FAILED", e);
-        }
-
-        // Create content:// URI for file, required since Android N
-        // See: https://developer.android.com/reference/android/support/v4/content/FileProvider.html
-        mFileUri = FileProvider.getUriForFile(this,
-                "com.google.firebase.quickstart.firebasestorage.fileprovider", file);
-
-        // Create and launch the intent
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri);
-
-        // Grant permission to camera (this is required on KitKat and below)
-        List<ResolveInfo> resolveInfos = getPackageManager()
-                .queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
-        for (ResolveInfo resolveInfo : resolveInfos) {
-            String packageName = resolveInfo.activityInfo.packageName;
-            grantUriPermission(packageName, mFileUri,
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-
-        // Start picture-taking intent
-        startActivityForResult(takePictureIntent, RC_TAKE_PICTURE);
+        // Pick an image from storage
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, RC_TAKE_PICTURE);
     }
 
     private void signInAnonymously() {
@@ -369,11 +317,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (i == R.id.button_download) {
             beginDownload();
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 }
