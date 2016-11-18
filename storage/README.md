@@ -10,7 +10,10 @@ Getting Started
 ---------------
 
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
-- Run the Android application on your Android device or emulator.
+The package name you'll use is `com.google.firebase.quickstart.firebasestorage`.
+- Run the Android application on your Android device or emulator. The app prompts you to
+sign in, so make sure to [enable anonymous authentication](https://console.firebase.google.com/project/_/authentication/providers) 
+for your project.
 
 Screenshots
 -----------
