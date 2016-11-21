@@ -19,26 +19,27 @@ package com.google.samples.quickstart.app_indexing;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 // [START import_classes]
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.appindexing.FirebaseAppIndex;
+import com.google.firebase.appindexing.FirebaseUserActions;
+import com.google.firebase.appindexing.Indexable;
+import com.google.firebase.appindexing.builders.Actions;
 // [END import_classes]
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
-    private GoogleApiClient mClient;
-    private String articleId;
     // Define a title for your current page, shown in autocompletion UI
     private static final String TITLE = "Sample Article";
+    private String articleId;
 
     // [START handle_intent]
     @Override
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // [END_EXCLUDE]
-        mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         onNewIntent(getIntent());
     }
 
@@ -68,26 +68,48 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         if (articleId != null) {
-            // Connect your client
-            mClient.connect();
+            final Uri BASE_URL = Uri.parse("https://www.example.com/articles/");
+            final String APP_URI = BASE_URL.buildUpon().appendPath(articleId).build().toString();
 
-            final Uri BASE_URL = Uri.parse("http://www.example.com/articles/");
-            final Uri APP_URI = BASE_URL.buildUpon().appendPath(articleId).build();
+            Indexable articleToIndex = new Indexable.Builder()
+                    .setName(TITLE)
+                    .setUrl(APP_URI)
+                    .build();
 
-            Action viewAction = Action.newAction(Action.TYPE_VIEW, TITLE, APP_URI);
+            Task<Void> task = FirebaseAppIndex.getInstance().update(articleToIndex);
 
-            // Call the App Indexing API view method
-            PendingResult<Status> result = AppIndex.AppIndexApi.start(mClient, viewAction);
-
-            result.setResultCallback(new ResultCallback<Status>() {
+            // If the Task is already complete, a call to the listener will be immediately
+            // scheduled
+            task.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
                 @Override
-                public void onResult(Status status) {
-                    if (status.isSuccess()) {
-                        Log.d(TAG, "App Indexing API: Indexed page view successfully.");
-                    } else {
-                        Log.e(TAG, "App Indexing API: There was an error indexing the page view."
-                                + status.toString());
-                    }
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "App Indexing API: Successfully added " + TITLE + " to index");
+                }
+            });
+
+            task.addOnFailureListener(MainActivity.this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.e(TAG, "App Indexing API: Failed to add " + TITLE + " to index. " + exception.getMessage());
+                }
+            });
+
+            // log the view action
+            Task<Void> actionTask = FirebaseUserActions.getInstance().start(Actions.newView(TITLE,
+                    APP_URI));
+
+            actionTask.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "App Indexing API: Successfully started view action on " + TITLE);
+                }
+            });
+
+            actionTask.addOnFailureListener(MainActivity.this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.e(TAG, "App Indexing API: Failed to start view action on " + TITLE + ". "
+                            + exception.getMessage());
                 }
             });
         }
@@ -98,27 +120,27 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
 
         if (articleId != null) {
-            final Uri BASE_URL = Uri.parse("http://www.example.com/articles/");
-            final Uri APP_URI = BASE_URL.buildUpon().appendPath(articleId).build();
+            final Uri BASE_URL = Uri.parse("https://www.example.com/articles/");
+            final String APP_URI = BASE_URL.buildUpon().appendPath(articleId).build().toString();
 
-            Action viewAction = Action.newAction(Action.TYPE_VIEW, TITLE, APP_URI);
-            PendingResult<Status> result = AppIndex.AppIndexApi.end(mClient, viewAction);
+            Task<Void> actionTask = FirebaseUserActions.getInstance().end(Actions.newView(TITLE,
+                    APP_URI));
 
-            result.setResultCallback(new ResultCallback<Status>() {
+            actionTask.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
                 @Override
-                public void onResult(Status status) {
-                    if (status.isSuccess()) {
-                        Log.d(TAG, "App Indexing API: Indexed recipe view end successfully.");
-                    } else {
-                        Log.e(TAG, "App Indexing API: There was an error indexing the recipe view."
-                                + status.toString());
-                    }
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "App Indexing API: Successfully ended view action on " + TITLE);
                 }
             });
 
-            mClient.disconnect();
+            actionTask.addOnFailureListener(MainActivity.this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.e(TAG, "App Indexing API: Failed to end view action on " + TITLE + ". "
+                            + exception.getMessage());
+                }
+            });
         }
     }
     // [END app_indexing_view]
-
 }
