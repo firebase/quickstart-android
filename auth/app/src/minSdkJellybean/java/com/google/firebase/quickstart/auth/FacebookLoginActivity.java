@@ -146,11 +146,15 @@ public class FacebookLoginActivity extends BaseActivity implements
     // [END on_stop_remove_listener]
 
 
+    // [START on_activity_result]
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
+    // [END on_activity_result]
 
     // [START auth_with_facebook]
     private void handleFacebookAccessToken(AccessToken token) {

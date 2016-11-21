@@ -121,6 +121,7 @@ public class TwitterLoginActivity extends BaseActivity
     }
     // [END on_stop_remove_listener]
 
+    // [START on_activity_result]
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -128,6 +129,7 @@ public class TwitterLoginActivity extends BaseActivity
         // Pass the activity result to the Twitter login button.
         mLoginButton.onActivityResult(requestCode, resultCode, data);
     }
+    // [END on_activity_result]
 
     // [START auth_with_twitter]
     private void handleTwitterSession(TwitterSession session) {
