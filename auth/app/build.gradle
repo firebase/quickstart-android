@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.auth"
-        minSdkVersion 9
-        targetSdkVersion 24
+        minSdkVersion 14
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
@@ -27,31 +27,31 @@ android {
             minSdkVersion 16
         }
 
-        // Build variant with minSdk 9, excludes Facebook and FirebaseUI libraries.
-        minSdkGingerbread {
-            minSdkVersion 9
+        // Build variant with minSdk 14, excludes Facebook and FirebaseUI libraries.
+        minSdkIcs {
+            minSdkVersion 14
         }
 
     }
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:24.2.1'
+    resolutionStrategy.force 'com.android.support:support-annotations:25.0.1'
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
 
     // Firebase Authentication
-    compile 'com.google.firebase:firebase-auth:9.8.0'
+    compile 'com.google.firebase:firebase-auth:10.0.0'
 
     // Google Sign In SDK (only required for Google Sign In)
-    compile 'com.google.android.gms:play-services-auth:9.8.0'
+    compile 'com.google.android.gms:play-services-auth:10.0.0'
 
     // Firebase UI
     // Used in FirebaseUIActivity. The FirebaseUI-Android library has a minSdk level of 16
     // so this library is only included in the minSdkJellybean variant.
-    minSdkJellybeanCompile 'com.firebaseui:firebase-ui-auth:0.6.2'
+    minSdkJellybeanCompile 'com.firebaseui:firebase-ui-auth:1.0.0'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity. This is only compiled into the minSdkJellybean variant of this
