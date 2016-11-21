@@ -20,6 +20,10 @@ android {
         }
     }
 
+    lintOptions {
+      abortOnError false
+    }
+
     productFlavors {
 
         // Build variant with minSdk 16 to include Facebook and FirebaseUI libraries.
