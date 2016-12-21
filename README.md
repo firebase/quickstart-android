@@ -8,7 +8,7 @@ A collection of quickstart samples demonstrating the Firebase APIs on Android. F
 - [Analytics](analytics)
 - [App-Indexing](app-indexing)
 - [Auth](auth)
-- [Configuration](config)
+- [Config](config)
 - [Crash](crash)
 - [Database](database)
 - [Dynamic Links](dynamiclinks)
