@@ -43,7 +43,7 @@ public abstract class MyBaseTaskService extends Service {
      * Show notification with a progress bar.
      */
     protected void showProgressNotification(String caption, long completedUnits, long totalUnits) {
-        int percentComplete = 50;
+        int percentComplete = 0;
         if (totalUnits > 0) {
             percentComplete = (int) (100 * completedUnits / totalUnits);
         }
