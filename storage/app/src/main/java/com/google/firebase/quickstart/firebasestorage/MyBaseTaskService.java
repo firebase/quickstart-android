@@ -13,7 +13,9 @@ import android.util.Log;
  * count is zero.
  */
 public abstract class MyBaseTaskService extends Service {
-    static final int NOTIFY_ID = 0;
+
+    static final int PROGRESS_NOTIFICATION_ID = 0;
+    static final int FINISHED_NOTIFICATION_ID = 1;
 
     private static final String TAG = "MyBaseTaskService";
     private int mNumTasks = 0;
@@ -40,19 +42,24 @@ public abstract class MyBaseTaskService extends Service {
     /**
      * Show notification with a progress bar.
      */
-    protected void showProgressNotification(String caption, int completedUnits, int totalUnits) {
+    protected void showProgressNotification(String caption, long completedUnits, long totalUnits) {
+        int percentComplete = 50;
+        if (totalUnits > 0) {
+            percentComplete = (int) (100 * completedUnits / totalUnits);
+        }
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_file_upload_white_24dp)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(caption)
-                .setProgress(totalUnits, completedUnits, false)
+                .setProgress(100, percentComplete, false)
                 .setOngoing(true)
                 .setAutoCancel(false);
 
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        manager.notify(NOTIFY_ID, builder.build());
+        manager.notify(PROGRESS_NOTIFICATION_ID, builder.build());
     }
 
     /**
@@ -75,6 +82,16 @@ public abstract class MyBaseTaskService extends Service {
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        manager.notify(NOTIFY_ID, builder.build());
+        manager.notify(FINISHED_NOTIFICATION_ID, builder.build());
+    }
+
+    /**
+     * Dismiss the progress notification.
+     */
+    protected void dismissProgressNotification() {
+        NotificationManager manager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        manager.cancel(PROGRESS_NOTIFICATION_ID);
     }
 }

@@ -83,7 +83,7 @@ public class MyDownloadService extends MyBaseTaskService {
 
         // Mark task started
         taskStarted();
-        showProgressNotification("Downloading...", 0, 0);
+        showProgressNotification(getString(R.string.progress_downloading), 0, 0);
 
         // Download and get total bytes
         mStorageRef.child(downloadPath).getStream(
@@ -99,7 +99,8 @@ public class MyDownloadService extends MyBaseTaskService {
 
                         while ((size = inputStream.read(buffer)) != -1) {
                             bytesDownloaded += size;
-                            showProgressNotification("Downloading...", (int)bytesDownloaded, (int)totalBytes);
+                            showProgressNotification(getString(R.string.progress_downloading),
+                                    bytesDownloaded, totalBytes);
                         }
 
                         // Close the stream at the end of the Task
@@ -112,8 +113,8 @@ public class MyDownloadService extends MyBaseTaskService {
                         Log.d(TAG, "download:SUCCESS");
 
                         // Send success broadcast with number of bytes downloaded
-                        broadcastDownloadFinished(downloadPath, (int)taskSnapshot.getTotalByteCount());
-                        showDownloadFinishedNotification(downloadPath, (int)taskSnapshot.getTotalByteCount());
+                        broadcastDownloadFinished(downloadPath, taskSnapshot.getTotalByteCount());
+                        showDownloadFinishedNotification(downloadPath, (int) taskSnapshot.getTotalByteCount());
 
                         // Mark task completed
                         taskCompleted();
@@ -138,7 +139,7 @@ public class MyDownloadService extends MyBaseTaskService {
      * Broadcast finished download (success or failure).
      * @return true if a running receiver received the broadcast.
      */
-    private boolean broadcastDownloadFinished(String downloadPath, int bytesDownloaded) {
+    private boolean broadcastDownloadFinished(String downloadPath, long bytesDownloaded) {
         boolean success = bytesDownloaded != -1;
         String action = success ? DOWNLOAD_COMPLETED : DOWNLOAD_ERROR;
 
@@ -153,6 +154,9 @@ public class MyDownloadService extends MyBaseTaskService {
      * Show a notification for a finished download.
      */
     private void showDownloadFinishedNotification(String downloadPath, int bytesDownloaded) {
+        // Hide the progress notification
+        dismissProgressNotification();
+
         // Make Intent to MainActivity
         Intent intent = new Intent(this, MainActivity.class)
                 .putExtra(EXTRA_DOWNLOAD_PATH, downloadPath)
@@ -160,7 +164,7 @@ public class MyDownloadService extends MyBaseTaskService {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         boolean success = bytesDownloaded != -1;
-        String caption = success ? "Download finished" : "Download failed";
+        String caption = success ? getString(R.string.download_success) : getString(R.string.download_failure);
         showFinishedNotification(caption, intent, true);
     }
 

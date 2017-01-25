@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setAction(MyUploadService.ACTION_UPLOAD));
 
         // Show loading spinner
-        showProgressDialog("Uploading...");
+        showProgressDialog(getString(R.string.progress_uploading));
     }
 
     private void beginDownload() {
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startService(intent);
 
         // Show loading spinner
-        showProgressDialog("Downloading...");
+        showProgressDialog(getString(R.string.progress_downloading));
     }
 
     private void launchCamera() {
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void signInAnonymously() {
         // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
-        showProgressDialog("Signing in...");
+        showProgressDialog(getString(R.string.progress_auth));
         mAuth.signInAnonymously()
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override

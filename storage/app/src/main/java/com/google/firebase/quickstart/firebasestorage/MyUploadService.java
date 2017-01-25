@@ -68,7 +68,7 @@ public class MyUploadService extends MyBaseTaskService {
 
         // [START_EXCLUDE]
         taskStarted();
-        showProgressNotification("Uploading...", 0, 0);
+        showProgressNotification(getString(R.string.progress_uploading), 0, 0);
         // [END_EXCLUDE]
 
         // [START get_child_ref]
@@ -83,9 +83,9 @@ public class MyUploadService extends MyBaseTaskService {
                 addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        showProgressNotification("Uploading...",
-                                (int)taskSnapshot.getBytesTransferred(),
-                                (int)taskSnapshot.getTotalByteCount());
+                        showProgressNotification(getString(R.string.progress_uploading),
+                                taskSnapshot.getBytesTransferred(),
+                                taskSnapshot.getTotalByteCount());
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -140,6 +140,9 @@ public class MyUploadService extends MyBaseTaskService {
      * Show a notification for a finished upload.
      */
     private void showUploadFinishedNotification(@Nullable Uri downloadUrl, @Nullable Uri fileUri) {
+        // Hide the progress notification
+        dismissProgressNotification();
+
         // Make Intent to MainActivity
         Intent intent = new Intent(this, MainActivity.class)
                 .putExtra(EXTRA_DOWNLOAD_URL, downloadUrl)
@@ -147,7 +150,7 @@ public class MyUploadService extends MyBaseTaskService {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         boolean success = downloadUrl != null;
-        String caption = success ? "Upload finished" : "Upload failed";
+        String caption = success ? getString(R.string.upload_success) : getString(R.string.upload_failure);
         showFinishedNotification(caption, intent, success);
     }
 
