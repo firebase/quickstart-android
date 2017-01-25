@@ -83,6 +83,7 @@ public class MyDownloadService extends MyBaseTaskService {
 
         // Mark task started
         taskStarted();
+        showProgressNotification(getString(R.string.progress_downloading), 0, 0);
 
         // Download and get total bytes
         mStorageRef.child(downloadPath).getStream(
@@ -90,6 +91,18 @@ public class MyDownloadService extends MyBaseTaskService {
                     @Override
                     public void doInBackground(StreamDownloadTask.TaskSnapshot taskSnapshot,
                                                InputStream inputStream) throws IOException {
+                        long totalBytes = taskSnapshot.getTotalByteCount();
+                        long bytesDownloaded = 0;
+
+                        byte[] buffer = new byte[1024];
+                        int size;
+
+                        while ((size = inputStream.read(buffer)) != -1) {
+                            bytesDownloaded += size;
+                            showProgressNotification(getString(R.string.progress_downloading),
+                                    bytesDownloaded, totalBytes);
+                        }
+
                         // Close the stream at the end of the Task
                         inputStream.close();
                     }
@@ -100,11 +113,8 @@ public class MyDownloadService extends MyBaseTaskService {
                         Log.d(TAG, "download:SUCCESS");
 
                         // Send success broadcast with number of bytes downloaded
-                        Intent broadcast = new Intent(DOWNLOAD_COMPLETED);
-                        broadcast.putExtra(EXTRA_DOWNLOAD_PATH, downloadPath);
-                        broadcast.putExtra(EXTRA_BYTES_DOWNLOADED, taskSnapshot.getTotalByteCount());
-                        LocalBroadcastManager.getInstance(getApplicationContext())
-                                .sendBroadcast(broadcast);
+                        broadcastDownloadFinished(downloadPath, taskSnapshot.getTotalByteCount());
+                        showDownloadFinishedNotification(downloadPath, (int) taskSnapshot.getTotalByteCount());
 
                         // Mark task completed
                         taskCompleted();
@@ -116,16 +126,48 @@ public class MyDownloadService extends MyBaseTaskService {
                         Log.w(TAG, "download:FAILURE", exception);
 
                         // Send failure broadcast
-                        Intent broadcast = new Intent(DOWNLOAD_ERROR);
-                        broadcast.putExtra(EXTRA_DOWNLOAD_PATH, downloadPath);
-                        LocalBroadcastManager.getInstance(getApplicationContext())
-                                .sendBroadcast(broadcast);
+                        broadcastDownloadFinished(downloadPath, -1);
+                        showDownloadFinishedNotification(downloadPath, -1);
 
                         // Mark task completed
                         taskCompleted();
                     }
                 });
     }
+
+    /**
+     * Broadcast finished download (success or failure).
+     * @return true if a running receiver received the broadcast.
+     */
+    private boolean broadcastDownloadFinished(String downloadPath, long bytesDownloaded) {
+        boolean success = bytesDownloaded != -1;
+        String action = success ? DOWNLOAD_COMPLETED : DOWNLOAD_ERROR;
+
+        Intent broadcast = new Intent(action)
+                .putExtra(EXTRA_DOWNLOAD_PATH, downloadPath)
+                .putExtra(EXTRA_BYTES_DOWNLOADED, bytesDownloaded);
+        return LocalBroadcastManager.getInstance(getApplicationContext())
+                .sendBroadcast(broadcast);
+    }
+
+    /**
+     * Show a notification for a finished download.
+     */
+    private void showDownloadFinishedNotification(String downloadPath, int bytesDownloaded) {
+        // Hide the progress notification
+        dismissProgressNotification();
+
+        // Make Intent to MainActivity
+        Intent intent = new Intent(this, MainActivity.class)
+                .putExtra(EXTRA_DOWNLOAD_PATH, downloadPath)
+                .putExtra(EXTRA_BYTES_DOWNLOADED, bytesDownloaded)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        boolean success = bytesDownloaded != -1;
+        String caption = success ? getString(R.string.download_success) : getString(R.string.download_failure);
+        showFinishedNotification(caption, intent, true);
+    }
+
 
     public static IntentFilter getIntentFilter() {
         IntentFilter filter = new IntentFilter();

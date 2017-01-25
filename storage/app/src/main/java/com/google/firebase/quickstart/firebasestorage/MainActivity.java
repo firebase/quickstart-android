@@ -180,14 +180,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         updateUI(mAuth.getCurrentUser());
         mDownloadUrl = null;
 
-        // Toast message in case the user does not see the notificatio
-        Toast.makeText(this, "Uploading...", Toast.LENGTH_SHORT).show();
-
         // Start MyUploadService to upload the file, so that the file is uploaded
         // even if this Activity is killed or put in the background
         startService(new Intent(this, MyUploadService.class)
                 .putExtra(MyUploadService.EXTRA_FILE_URI, fileUri)
                 .setAction(MyUploadService.ACTION_UPLOAD));
+
+        // Show loading spinner
+        showProgressDialog(getString(R.string.progress_uploading));
     }
 
     private void beginDownload() {
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startService(intent);
 
         // Show loading spinner
-        showProgressDialog();
+        showProgressDialog(getString(R.string.progress_downloading));
     }
 
     private void launchCamera() {
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void signInAnonymously() {
         // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
-        showProgressDialog();
+        showProgressDialog(getString(R.string.progress_auth));
         mAuth.signInAnonymously()
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
@@ -273,13 +273,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ad.show();
     }
 
-    private void showProgressDialog() {
+    private void showProgressDialog(String caption) {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage("Loading...");
             mProgressDialog.setIndeterminate(true);
         }
 
+        mProgressDialog.setMessage(caption);
         mProgressDialog.show();
     }
 

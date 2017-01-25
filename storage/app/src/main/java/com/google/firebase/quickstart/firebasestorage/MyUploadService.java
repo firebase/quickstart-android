@@ -1,21 +1,18 @@
 package com.google.firebase.quickstart.firebasestorage;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -25,7 +22,6 @@ import com.google.firebase.storage.UploadTask;
 public class MyUploadService extends MyBaseTaskService {
 
     private static final String TAG = "MyUploadService";
-    private static final int NOTIF_ID_DOWNLOAD = 0;
 
     /** Intent Actions **/
     public static final String ACTION_UPLOAD = "action_upload";
@@ -72,7 +68,7 @@ public class MyUploadService extends MyBaseTaskService {
 
         // [START_EXCLUDE]
         taskStarted();
-        showUploadProgressNotification();
+        showProgressNotification(getString(R.string.progress_uploading), 0, 0);
         // [END_EXCLUDE]
 
         // [START get_child_ref]
@@ -83,7 +79,15 @@ public class MyUploadService extends MyBaseTaskService {
 
         // Upload file to Firebase Storage
         Log.d(TAG, "uploadFromUri:dst:" + photoRef.getPath());
-        photoRef.putFile(fileUri)
+        photoRef.putFile(fileUri).
+                addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        showProgressNotification(getString(R.string.progress_uploading),
+                                taskSnapshot.getBytesTransferred(),
+                                taskSnapshot.getTotalByteCount());
+                    }
+                })
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -136,50 +140,18 @@ public class MyUploadService extends MyBaseTaskService {
      * Show a notification for a finished upload.
      */
     private void showUploadFinishedNotification(@Nullable Uri downloadUrl, @Nullable Uri fileUri) {
+        // Hide the progress notification
+        dismissProgressNotification();
+
         // Make Intent to MainActivity
         Intent intent = new Intent(this, MainActivity.class)
                 .putExtra(EXTRA_DOWNLOAD_URL, downloadUrl)
                 .putExtra(EXTRA_FILE_URI, fileUri)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        // Make PendingIntent for notification
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* requestCode */, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Set message and icon based on success or failure
         boolean success = downloadUrl != null;
-        String message = success ? "Upload finished" : "Upload failed";
-        int icon = success ? R.drawable.ic_check_white_24 : R.drawable.ic_error_white_24dp;
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(icon)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager manager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        manager.notify(NOTIF_ID_DOWNLOAD, builder.build());
-    }
-
-    /**
-     * Show notification with an indeterminate upload progress bar.
-     */
-    private void showUploadProgressNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_file_upload_white_24dp)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText("Uploading...")
-                .setProgress(0, 0, true)
-                .setOngoing(true)
-                .setAutoCancel(false);
-
-        NotificationManager manager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        manager.notify(NOTIF_ID_DOWNLOAD, builder.build());
+        String caption = success ? getString(R.string.upload_success) : getString(R.string.upload_failure);
+        showFinishedNotification(caption, intent, success);
     }
 
     public static IntentFilter getIntentFilter() {
