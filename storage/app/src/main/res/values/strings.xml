@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Firebase Storage</string>
+    <string name="app_name">Cloud Storage for Firebase</string>
     <string name="camera_button_text">Upload</string>
     <string name="sign_in_prompt">Sign In to begin</string>
     <string name="take_photo_prompt">Upload a Photo</string>
