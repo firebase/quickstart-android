@@ -14,7 +14,7 @@ each app.
 To add a sample app to a Firebase project, use the `applicationId` value specified
 in the `app/build.gradle` file of the app as the Android package name. Download
 the generated `google-services.json` file, and copy it to the `app/` directory of
-the sample you with to run.
+the sample you wish to run.
 
 - [Admob](admob)
 - [Analytics](analytics)
