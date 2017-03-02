@@ -14,7 +14,17 @@ Getting Started
 
 Result
 -----------
+After running the app you should see a screen like this:
+
 <img src="app/src/screen.png" height="534" width="300"/>
+
+The first time you run the app you will be asked what your
+favorite food is. This choice will be logged to Firebase
+Analytics as a [User Property][user-props].
+
+As you swipe between tabs in the app, `SELECT_CONTENT` events 
+are logged to Firebase Analytics. You can see these events in
+real time using [Debug View][debug-view].
 
 Support
 -------
@@ -41,3 +51,6 @@ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 License for the specific language governing permissions and limitations under
 the License.
+
+[user-props]: https://firebase.google.com/docs/analytics/android/properties
+[debug-view]: https://firebase.google.com/docs/analytics/debugview
