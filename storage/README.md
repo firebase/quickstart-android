@@ -1,10 +1,10 @@
-Firebase Storage Quickstart
+Cloud Storage for Firebase Quickstart
 ==============================
 
 Introduction
 ------------
 
-- [Read more about Firebase Storage](https://firebase.google.com/docs/storage)
+- [Read more about Cloud Storage for Firebase](https://firebase.google.com/docs/storage)
 
 Getting Started
 ---------------
@@ -12,7 +12,7 @@ Getting Started
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 The package name you'll use is `com.google.firebase.quickstart.firebasestorage`.
 - Run the Android application on your Android device or emulator. The app prompts you to
-sign in, so make sure to [enable anonymous authentication](https://console.firebase.google.com/project/_/authentication/providers) 
+sign in, so make sure to [enable anonymous authentication](https://console.firebase.google.com/project/_/authentication/providers)
 for your project.
 
 Screenshots
