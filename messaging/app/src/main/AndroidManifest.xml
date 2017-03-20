@@ -44,6 +44,12 @@
             </intent-filter>
         </service>
         <!-- [END firebase_iid_service] -->
+        <service android:name=".MyJobService"
+                 android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
