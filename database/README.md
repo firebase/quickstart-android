@@ -39,7 +39,7 @@ The database has four "root" nodes:
       This data nesting makes it easy to tell if a specific user has already
       starred a specific post, but would not scale to large numbers of stars
       per post as it would make loading the Post data more expensive.
-  * `user-posts` - a list of lists of posts.  `/user-posts/<USER-ID>` is a list
+  * `user-posts` - a list of posts by the user.  `/user-posts/<USER-ID>` is a list
      of all posts made by a specific user, keyed by the same push ID used in
      the `posts` tree. This makes it easy to query "all posts by a specific
      user" without filtering through all Post objects.
@@ -72,7 +72,7 @@ Below are some samples rules that limit access and validate data:
       ".write": "auth.uid != null",
 
       "$POSTID": {
-        // UID must matched logged in user and is fixed once set
+        // UID must match logged in user and is fixed once set
         "uid": {
           ".validate": "(data.exists() && data.val() == newData.val()) || newData.val() == auth.uid"
         },
@@ -107,7 +107,7 @@ Below are some samples rules that limit access and validate data:
 
       "$POSTID": {
         "$COMMENTID": {
-          // UID must matched logged in user and is fixed once set
+          // UID must match logged in user and is fixed once set
           "uid": {
               ".validate": "(data.exists() && data.val() == newData.val()) || newData.val() == auth.uid"
           }
