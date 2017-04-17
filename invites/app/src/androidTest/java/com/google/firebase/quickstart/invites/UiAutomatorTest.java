@@ -18,6 +18,7 @@ package com.google.firebase.quickstart.invites;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.By;
@@ -25,7 +26,8 @@ import android.support.test.uiautomator.BySelector;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.Until;
 
-import com.google.android.gms.appinvite.AppInviteReferral;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -113,21 +115,24 @@ public class UiAutomatorTest {
     @Test
     public void testDeepLink() {
         // Create intent to MainActivity
-        Intent deepLinkIntent = new Intent()
+        Intent deepLinkIntent = new Intent(Intent.ACTION_VIEW)
             .setClassName(APP_PACKAGE, APP_PACKAGE + ".MainActivity")
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        // Load it with AppInvite information
-        String invitationId = "12345";
+
+        // Load it with link information
         String deepLink = "http://example.com/12345";
-        AppInviteReferral.addReferralDataToIntent(invitationId, deepLink, deepLinkIntent);
+        String dlDomain = mContext.getString(R.string.app_code) + ".app.goo.gl";
+
+        DynamicLink link = FirebaseDynamicLinks.getInstance()
+                .createDynamicLink()
+                .setDynamicLinkDomain(dlDomain)
+                .setLink(Uri.parse(deepLink))
+                .buildDynamicLink();
+        deepLinkIntent.setData(link.getUri());
 
         // Start activity
         mContext.startActivity(deepLinkIntent);
-
-        // Check that invitation ID is displayed
-        String invitationIdText = mContext.getString(R.string.invitation_id_fmt, invitationId);
-        assertTrue(mDevice.wait(Until.hasObject(By.text(invitationIdText)), UI_TIMEOUT));
 
         // Check that deep link is displayed
         String deepLinkText = mContext.getString(R.string.deep_link_fmt, deepLink);

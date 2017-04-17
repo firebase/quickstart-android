@@ -19,9 +19,7 @@
     <string name="invitation_cta">Install!</string>
 
     <string name="deep_link_fmt" formatted="false">Deep Link: %s</string>
-    <string name="invitation_id_fmt" formatted="false">Invitation ID: %s</string>
 
-    <string name="sent_invitations_fmt" formatted="false">Sent %d invitations</string>
     <string name="send_failed">Sending invitations failed</string>
     <string name="invite_dialog_title">You got an invitation!</string>
 
