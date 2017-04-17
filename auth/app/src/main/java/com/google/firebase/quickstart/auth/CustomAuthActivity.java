@@ -41,10 +41,6 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
-    // [START declare_auth_listener]
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    // [END declare_auth_listener]
-
     private String mCustomToken;
     private TokenBroadcastReceiver mTokenReceiver;
 
@@ -68,50 +64,30 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
-
-        // [START auth_state_listener]
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                // [START_EXCLUDE]
-                updateUI(user);
-                // [END_EXCLUDE]
-            }
-        };
-        // [END auth_state_listener]
     }
 
-    // [START on_start_add_listener]
+    // [START on_start_check_user]
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-        // [START_EXCLUDE]
-        registerReceiver(mTokenReceiver, TokenBroadcastReceiver.getFilter());
-        // [END_EXCLUDE]
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
     }
-    // [END on_start_add_listener]
+    // [END on_start_check_user]
 
-    // [START on_stop_remove_listener]
     @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-        // [START_EXCLUDE]
-        unregisterReceiver(mTokenReceiver);
-        // [END_EXCLUDE]
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(mTokenReceiver, TokenBroadcastReceiver.getFilter());
     }
-    // [END on_stop_remove_listener]
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mTokenReceiver);
+    }
 
     private void startSignIn() {
         // Initiate sign in with custom token
@@ -120,15 +96,17 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithCustomToken:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCustomToken", task.getException());
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCustomToken:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCustomToken:failure", task.getException());
                             Toast.makeText(CustomAuthActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            updateUI(null);
                         }
                     }
                 });
