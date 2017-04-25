@@ -61,7 +61,7 @@ public class AnonymousTest {
 
         // Make sure userID and email look right
         String idString = mActivityTestRule.getActivity().getString(R.string.id_fmt, "");
-        String emailString = mActivityTestRule.getActivity().getString(R.string.email_fmt, null);
+        String emailString = mActivityTestRule.getActivity().getString(R.string.email_fmt, "");
 
         onView(withText(startsWith(idString)))
                 .check(matches(isDisplayed()));
