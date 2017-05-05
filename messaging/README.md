@@ -51,6 +51,22 @@ Use Firebase console to send FCM messages to device or emulator.
 Best Practices
 --------------
 
+## Android notification channels
+
+### Set default channel
+
+If incoming FCM messages do not specify an Android notification channel, you can indicate
+to FCM what channel should be used as the default by adding a metadata element to your
+application manifest. In the metadata element specify the ID of the channel that should
+be used by default by FCM.
+
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_channel"
+        android:value="default_channel_id"/>
+
+Note: You are still required to create a notification channel in code with an ID that
+matches the one defined in the manifest. See the Android [docs](https://goo.gl/x9fh5X) for more.
+
 ## Customize default notification
 
 ### Custom default icon
