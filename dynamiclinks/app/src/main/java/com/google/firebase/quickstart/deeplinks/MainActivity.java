@@ -114,23 +114,25 @@ public class MainActivity extends AppCompatActivity {
      */
     @VisibleForTesting
     public Uri buildDeepLink(@NonNull Uri deepLink, int minVersion) {
-        DynamicLink.Builder builder = FirebaseDynamicLinks.getInstance()
-                .createDynamicLink();
-
-        // Set domain (required)
         String domain = getString(R.string.app_code) + ".app.goo.gl";
-        builder = builder.setDynamicLinkDomain(domain);
 
-        // Add deep link
-        builder = builder.setLink(deepLink);
-
-        if (minVersion > 0) {
-            builder = builder.setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
-                    .setMinimumVersion(minVersion)
-                    .build());
-        }
+        // Set dynamic link parameters:
+        //  * Domain (required)
+        //  * Android Parameters (required)
+        //  * Deep link
+        // [START build_dynamic_link]
+        DynamicLink.Builder builder = FirebaseDynamicLinks.getInstance()
+                .createDynamicLink()
+                .setDynamicLinkDomain(domain)
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
+                        .setMinimumVersion(minVersion)
+                        .build())
+                .setLink(deepLink);
 
         DynamicLink link = builder.buildDynamicLink();
+        // [END build_dynamic_link]
+
+        // Return the dynamic link as a URI
         return link.getUri();
     }
 
