@@ -69,7 +69,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
                         // Get deep link from result (may be null if no link is found)
-                        Uri deepLink = pendingDynamicLinkData.getLink();
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                        }
+
 
                         // Handle the deep link. For example, open the linked
                         // content, or apply promotional credit to the user's
@@ -129,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                         .build())
                 .setLink(deepLink);
 
+        // Build the dynamic link
         DynamicLink link = builder.buildDynamicLink();
         // [END build_dynamic_link]
 
