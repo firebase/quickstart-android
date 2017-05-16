@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Performance Monitoring Sample</string>
+    <string name="generate_random_text">Add Random Text</string>
+    <string name="text_read_error">Error reading text file</string>
+</resources>
