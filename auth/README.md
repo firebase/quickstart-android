@@ -71,6 +71,14 @@ Getting Started
     - Select **EmailPasswordActivity** from the main screen.
     - Fill in your desired email and password and click **Create Account** to begin.
 
+### Phone Authentication Setup
+
+- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+  - Select the **Auth** panel and then click the **Sign In Method** tab.
+  - Click **Phone** and turn on the **Enable** switch, then click **Save**.
+- Run the app on your device or emulator.
+    - Select **PhoneAuthActivity** from the main screen.
+    - Enter your phone numeber and click **Verify** to begin.
 
 ### Custom Authentication Setup
 
