@@ -1,10 +1,10 @@
-Firebase Analytics Quickstart
-==============================
+Google Analytics for Firebase Quickstart
+========================================
 
 Introduction
 ------------
 
-- [Read more about Firebase Analytics](https://firebase.google.com/docs/analytics)
+- [Read more about Google Analytics for Firebase](https://firebase.google.com/docs/analytics)
 
 Getting Started
 ---------------
@@ -23,7 +23,7 @@ favorite food is. This choice will be logged to Firebase
 Analytics as a [User Property][user-props].
 
 As you swipe between tabs in the app, `SELECT_CONTENT` events 
-are logged to Firebase Analytics. You can see these events in
+are logged to Analytics. You can see these events in
 real time using [Debug View][debug-view].
 
 Support
