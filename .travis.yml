@@ -34,7 +34,8 @@ env:
   - SAMPLE=crash 
   - SAMPLE=database 
   - SAMPLE=dynamiclinks 
-  - SAMPLE=invites 
+  - SAMPLE=invites
+  - SAMPLE=perf
   - SAMPLE=messaging 
   - SAMPLE=storage
 
