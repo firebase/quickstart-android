@@ -26,6 +26,7 @@ the sample you wish to run.
 - [Dynamic Links](dynamiclinks)
 - [Invites](invites)
 - [Messaging](messaging)
+- [Performance Monitoring](perf)
 - [Storage](storage)
 
 ## How to make contributions?
