@@ -1,17 +1,21 @@
 buildscript {
+    ext.kotlin_version = '1.1.2-4'
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' }
         mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha1'
         classpath 'com.google.gms:google-services:3.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.google.com' }
         maven { url 'https://maven.fabric.io/public' }
         mavenLocal()
     }

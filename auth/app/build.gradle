@@ -24,15 +24,19 @@ android {
       abortOnError false
     }
 
+    flavorDimensions "apiLevel"
+
     productFlavors {
 
         // Build variant with minSdk 16 to include Facebook and FirebaseUI libraries.
         minSdkJellybean {
+            dimension "apiLevel"
             minSdkVersion 16
         }
 
         // Build variant with minSdk 14, excludes Facebook and FirebaseUI libraries.
         minSdkIcs {
+            dimension "apiLevel"
             minSdkVersion 14
         }
 
