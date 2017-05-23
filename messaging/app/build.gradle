@@ -31,7 +31,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
 
     compile 'com.google.firebase:firebase-messaging:10.2.6'
-    compile 'com.firebase:firebase-jobdispatcher:0.5.2'
+    compile 'com.firebase:firebase-jobdispatcher:0.6.0'
 
     // Testing dependencies
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
