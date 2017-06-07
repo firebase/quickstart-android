@@ -21,28 +21,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.appinvite.AppInvite;
-import com.google.android.gms.appinvite.AppInviteInvitationResult;
-import com.google.android.gms.appinvite.AppInviteReferral;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final String DEEP_LINK_URL = "https://example.com/deeplinks";
-
-    // [START define_variables]
-    private GoogleApiClient mGoogleApiClient;
-    // [END define_variables]
 
     // [START on_create]
     @Override
@@ -55,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         validateAppCode();
 
         // Create a deep link and display it in the UI
-        final Uri deepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0, false);
+        final Uri deepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0);
         ((TextView) findViewById(R.id.link_view_send)).setText(deepLink.toString());
 
         // Share button click listener
@@ -67,41 +62,44 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         });
         // [END_EXCLUDE]
 
-        // [START build_api_client]
-        // Build GoogleApiClient with AppInvite API for receiving deep links
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(AppInvite.API)
-                .build();
-        // [END build_api_client]
-
         // [START get_deep_link]
-        // Check if this app was launched from a deep link. Setting autoLaunchDeepLink to true
-        // would automatically launch the deep link if one is found.
-        boolean autoLaunchDeepLink = false;
-        AppInvite.AppInviteApi.getInvitation(mGoogleApiClient, this, autoLaunchDeepLink)
-                .setResultCallback(
-                        new ResultCallback<AppInviteInvitationResult>() {
-                            @Override
-                            public void onResult(@NonNull AppInviteInvitationResult result) {
-                                if (result.getStatus().isSuccess()) {
-                                    // Extract deep link from Intent
-                                    Intent intent = result.getInvitationIntent();
-                                    String deepLink = AppInviteReferral.getDeepLink(intent);
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                        }
 
-                                    // Handle the deep link. For example, open the linked
-                                    // content, or apply promotional credit to the user's
-                                    // account.
 
-                                    // [START_EXCLUDE]
-                                    // Display deep link in the UI
-                                    ((TextView) findViewById(R.id.link_view_receive)).setText(deepLink);
-                                    // [END_EXCLUDE]
-                                } else {
-                                    Log.d(TAG, "getInvitation: no deep link found.");
-                                }
-                            }
-                        });
+                        // Handle the deep link. For example, open the linked
+                        // content, or apply promotional credit to the user's
+                        // account.
+                        // ...
+
+                        // [START_EXCLUDE]
+                        // Display deep link in the UI
+                        if (deepLink != null) {
+                            Snackbar.make(findViewById(android.R.id.content),
+                                    "Found deep link!", Snackbar.LENGTH_LONG).show();
+
+                            ((TextView) findViewById(R.id.link_view_receive))
+                                    .setText(deepLink.toString());
+                        } else {
+                            Log.d(TAG, "getDynamicLink: no link found");
+                        }
+                        // [END_EXCLUDE]
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "getDynamicLink:onFailure", e);
+                    }
+                });
         // [END get_deep_link]
     }
     // [END on_create]
@@ -116,37 +114,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
      *                   the deep link. If the installed app is an older version, the user is taken
      *                   to the Play store to upgrade the app. Pass 0 if you do not
      *                   require a minimum version.
-     * @param isAd true if the dynamic link is used in an advertisement, false otherwise.
      * @return a {@link Uri} representing a properly formed deep link.
      */
     @VisibleForTesting
-    public Uri buildDeepLink(@NonNull Uri deepLink, int minVersion, boolean isAd) {
-        // Get the unique appcode for this app.
-        String appCode = getString(R.string.app_code);
+    public Uri buildDeepLink(@NonNull Uri deepLink, int minVersion) {
+        String domain = getString(R.string.app_code) + ".app.goo.gl";
 
-        // Get this app's package name.
-        String packageName = getApplicationContext().getPackageName();
+        // Set dynamic link parameters:
+        //  * Domain (required)
+        //  * Android Parameters (required)
+        //  * Deep link
+        // [START build_dynamic_link]
+        DynamicLink.Builder builder = FirebaseDynamicLinks.getInstance()
+                .createDynamicLink()
+                .setDynamicLinkDomain(domain)
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
+                        .setMinimumVersion(minVersion)
+                        .build())
+                .setLink(deepLink);
 
-        // Build the link with all required parameters
-        Uri.Builder builder = new Uri.Builder()
-                .scheme("https")
-                .authority(appCode + ".app.goo.gl")
-                .path("/")
-                .appendQueryParameter("link", deepLink.toString())
-                .appendQueryParameter("apn", packageName);
+        // Build the dynamic link
+        DynamicLink link = builder.buildDynamicLink();
+        // [END build_dynamic_link]
 
-        // If the deep link is used in an advertisement, this value must be set to 1.
-        if (isAd) {
-            builder.appendQueryParameter("ad", "1");
-        }
-
-        // Minimum version is optional.
-        if (minVersion > 0) {
-            builder.appendQueryParameter("amv", Integer.toString(minVersion));
-        }
-
-        // Return the completed deep link.
-        return builder.build();
+        // Return the dynamic link as a URI
+        return link.getUri();
     }
 
     private void shareDeepLink(String deepLink) {
@@ -163,16 +155,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (appCode.contains("YOUR_APP_CODE")) {
             new AlertDialog.Builder(this)
                     .setTitle("Invalid Configuration")
-                    .setMessage("Please set your app code in res/values/strings.xml")
+                    .setMessage("Please set your app code in app/build.gradle")
                     .setPositiveButton(android.R.string.ok, null)
                     .create().show();
         }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.w(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google Play Services Error: " + connectionResult.getErrorCode(),
-                Toast.LENGTH_SHORT).show();
     }
 }
