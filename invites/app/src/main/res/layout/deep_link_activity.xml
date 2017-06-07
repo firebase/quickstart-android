@@ -43,16 +43,6 @@
             android:text="@string/deep_link_default"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
-        <TextView
-            android:id="@+id/invitation_id_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:text="@string/invitation_id_default"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="@dimen/subtitle_text_size" />
-
         <Button
             android:id="@+id/button_ok"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"

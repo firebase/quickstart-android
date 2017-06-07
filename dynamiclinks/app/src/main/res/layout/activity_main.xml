@@ -43,7 +43,6 @@
         android:id="@+id/link_view_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoLink="web"
         tools:text="https://abc.xyz/foo"/>
 
     <Button
