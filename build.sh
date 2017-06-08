@@ -26,8 +26,8 @@ if [ ! -f ./app/google-services.json ]; then
 fi
 
 # Install preview deps
-${ANDROID_HOME}tools/bin/sdkmanager --channel=3 \
-  "tools" "platform-tools" "build-tools;26.0.0-rc2" "platforms;android-O"
+${ANDROID_HOME}/tools/bin/sdkmanager --channel=3 \
+  "tools" "platform-tools" "build-tools;26.0.0-rc2" "platforms;android-26"
 
 # Build
 if [ $TRAVIS_PULL_REQUEST = false ] ; then
