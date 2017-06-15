@@ -27,7 +27,7 @@ configurations.all {
 
 dependencies {
     // [START app_indexing_gradle_dep]
-    compile 'com.google.firebase:firebase-appindexing:11.0.0'
+    compile 'com.google.firebase:firebase-appindexing:11.0.1'
     // [END app_indexing_gradle_dep]
 
     compile 'com.android.support:support-v4:25.3.1'
