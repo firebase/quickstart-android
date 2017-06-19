@@ -31,16 +31,15 @@ configurations.all {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    // AppCompat
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:25.3.1'
 
     // [START gradle_play_config]
-    compile 'com.google.firebase:firebase-ads:11.0.1'
+    implementation 'com.google.firebase:firebase-ads:11.0.1'
     // [END gradle_play_config]
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestImplementation 'com.android.support.test:runner:0.5'
 }
 
 apply plugin: 'com.google.gms.google-services'

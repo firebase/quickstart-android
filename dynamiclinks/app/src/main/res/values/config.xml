@@ -1,0 +1,7 @@
+<resources>
+    <!--
+    TODO(developer): Replace this with your app code
+    https://firebase.google.com/docs/dynamic-links/android/create#create-a-dynamic-link-from-parameters
+    -->
+    <string name="app_code" translatable="false">CHANGE-ME</string>
+</resources>

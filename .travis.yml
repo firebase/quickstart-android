@@ -1,16 +1,15 @@
 language: android
-jdk:
-    - oraclejdk8
+jdk: oraclejdk8
+sudo: required # For faster internet speeds and more memory
+before_install:
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 android:
   components:
     # https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943
     - tools
     - tools
-  licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
-
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -20,27 +19,6 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 
-env:
-  - SAMPLE=admob
-  - SAMPLE=analytics
-  - SAMPLE=app-indexing
-  - SAMPLE=auth
-  - SAMPLE=config
-  - SAMPLE=crash
-  - SAMPLE=database
-  - SAMPLE=dynamiclinks
-  - SAMPLE=invites
-  - SAMPLE=perf
-  - SAMPLE=messaging
-  - SAMPLE=storage
-
-before_install:
-  - mkdir "$ANDROID_HOME/licenses" || true
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-
 before_script:
-  - ${ANDROID_HOME}tools/bin/sdkmanager --channel=3 "tools" "platform-tools" "build-tools;25.0.3" "platforms;android-25" "extras;google;m2repository" "extras;android;m2repository"
-
-script:
-  - ./build.sh
+  - ${ANDROID_HOME}tools/bin/sdkmanager --channel=3 "tools" "platform-tools" "build-tools;25.0.3" "platforms;android-25" "extras;google;m2repository"
+script: ./build.sh
