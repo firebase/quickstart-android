@@ -19,7 +19,7 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.containsString;
 
 /**
- * NOTE: This test will fail if R.string.app_code is not set in the config.xml file
+ * NOTE: This test will fail if R.string.app_code is not set in the build.gradle file
  */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {

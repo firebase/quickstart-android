@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void validateAppCode() {
         String appCode = getString(R.string.app_code);
-        if (appCode.contains("CHANGE-ME")) {
+        if (appCode.contains("YOUR_APP_CODE")) {
             new AlertDialog.Builder(this)
                     .setTitle("Invalid Configuration")
                     .setMessage("Please set your app code in app/build.gradle")
