@@ -38,5 +38,5 @@ if [ $TRAVIS_PULL_REQUEST = false ] ; then
 else
   # On a pull request, just build debug which is much faster and catches
   # obvious errors.
-  ./gradlew clean assembleDebug
+  ./gradlew clean assembleDebug check
 fi
