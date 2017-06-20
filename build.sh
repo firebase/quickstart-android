@@ -32,6 +32,7 @@ ${ANDROID_HOME}/tools/bin/sdkmanager --channel=3 \
 
 # Build
 if [ $TRAVIS_PULL_REQUEST = false ] ; then
+  echo "Building full project"
   # For a merged commit, build all configurations.
   ./gradlew clean build
 else
