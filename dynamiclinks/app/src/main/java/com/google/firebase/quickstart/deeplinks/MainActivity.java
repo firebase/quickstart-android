@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Build a Firebase Dynamic Link.
-     * https://firebase.google.com/docs/dynamic-links/android#create-a-dynamic-link
+     * https://firebase.google.com/docs/dynamic-links/android/create#create-a-dynamic-link-from-parameters
      *
      * @param deepLink the deep link your app will open. This link must be a valid URL and use the
      *                 HTTP or HTTPS scheme.

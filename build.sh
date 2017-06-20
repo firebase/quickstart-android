@@ -3,9 +3,6 @@
 # Exit on error
 set -e
 
-# Limit memory usage
-OPTS='-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
-
 # Work off travis
 if [[ ! -z TRAVIS_PULL_REQUEST ]]; then
   echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
@@ -14,16 +11,20 @@ else
   TRAVIS_PULL_REQUEST=false
 fi
 
-echo "Building ${SAMPLE}"
-
-# Go to sample directory
-cd $SAMPLE
-
-# Copy mock google-services file if necessary
-if [ ! -f ./app/google-services.json ]; then
-  echo "Using mock google-services.json"
-  cp ../mock-google-services.json ./app/google-services.json
-fi
+# Copy mock google-services file
+echo "Using mock google-services.json"
+cp mock-google-services.json admob/app/google-services.json
+cp mock-google-services.json analytics/app/google-services.json
+cp mock-google-services.json app-indexing/app/google-services.json
+cp mock-google-services.json auth/app/google-services.json
+cp mock-google-services.json config/app/google-services.json
+cp mock-google-services.json crash/app/google-services.json
+cp mock-google-services.json database/app/google-services.json
+cp mock-google-services.json dynamiclinks/app/google-services.json
+cp mock-google-services.json invites/app/google-services.json
+cp mock-google-services.json perf/app/google-services.json
+cp mock-google-services.json messaging/app/google-services.json
+cp mock-google-services.json storage/app/google-services.json
 
 # Install preview deps
 ${ANDROID_HOME}/tools/bin/sdkmanager --channel=3 \
@@ -31,13 +32,11 @@ ${ANDROID_HOME}/tools/bin/sdkmanager --channel=3 \
 
 # Build
 if [ $TRAVIS_PULL_REQUEST = false ] ; then
+  echo "Building full project"
   # For a merged commit, build all configurations.
-  GRADLE_OPTS=$OPTS ./gradlew clean build
+  ./gradlew clean build
 else
   # On a pull request, just build debug which is much faster and catches
   # obvious errors.
-  GRADLE_OPTS=$OPTS ./gradlew clean :app:assembleDebug
+  ./gradlew clean assembleDebug check
 fi
-
-# Back to parent directory.
-cd -

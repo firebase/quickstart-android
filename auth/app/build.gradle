@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
+check.dependsOn 'assembleMinSdkJellybeanDebugAndroidTest', 'assembleMinSdkIcsDebugAndroidTest'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
+    flavorDimensions "minSdkVersion"
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.auth"
@@ -21,18 +23,20 @@ android {
     }
 
     lintOptions {
-      abortOnError false
+        abortOnError false
     }
 
     productFlavors {
 
         // Build variant with minSdk 16 to include Facebook and FirebaseUI libraries.
         minSdkJellybean {
+            dimension "minSdkVersion"
             minSdkVersion 16
         }
 
         // Build variant with minSdk 14, excludes Facebook and FirebaseUI libraries.
         minSdkIcs {
+            dimension "minSdkVersion"
             minSdkVersion 14
         }
 
@@ -71,7 +75,7 @@ dependencies {
         transitive = true
     }
     compile('com.twitter.sdk.android:twitter:1.13.1@aar') {
-        transitive = true;
+        transitive = true
     }
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'

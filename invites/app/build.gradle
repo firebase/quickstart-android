@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
+check.dependsOn 'assembleMainDebugAndroidTest'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
+    flavorDimensions "irrelevant"
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.invites"
@@ -24,7 +26,7 @@ android {
     productFlavors {
         main {
             // TODO(developer): Replace this with your app code
-            //                  See: https://firebase.google.com/docs/dynamic-links/android
+            //                  See: https://firebase.google.com/docs/dynamic-links/android/create#set-up-firebase-and-the-dynamic-links-sdk
             resValue "string", "app_code", "YOUR_APP_CODE"
         }
     }
