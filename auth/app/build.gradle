@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-check.dependsOn 'assembleDebugAndroidTest'
+check.dependsOn 'assembleMinSdkJellybeanDebugAndroidTest', 'assembleMinSdkIcsDebugAndroidTest'
 
 android {
     compileSdkVersion 25
