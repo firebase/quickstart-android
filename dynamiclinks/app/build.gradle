@@ -27,7 +27,7 @@ android {
 
     productFlavors {
         main {
-            flavorDimension "all"
+            dimension "all"
 
             // TODO(developer): Replace this with your app code
             //                  See: https://firebase.google.com/docs/dynamic-links/android/create#set-up-firebase-and-the-dynamic-links-sdk
