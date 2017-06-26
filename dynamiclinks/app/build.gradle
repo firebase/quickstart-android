@@ -23,8 +23,12 @@ android {
         }
     }
 
+    flavorDimensions "all"
+
     productFlavors {
         main {
+            flavorDimension "all"
+
             // TODO(developer): Replace this with your app code
             //                  See: https://firebase.google.com/docs/dynamic-links/android/create#set-up-firebase-and-the-dynamic-links-sdk
             resValue "string", "app_code", "YOUR_APP_CODE"
