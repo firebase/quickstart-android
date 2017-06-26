@@ -6,7 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha4'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath('com.google.firebase:firebase-plugins:1.1.0') {
             // TODO This shouldn't be necessary with the next update
             exclude group: 'com.google.guava', module: 'guava-jdk5'
