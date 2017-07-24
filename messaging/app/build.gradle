@@ -32,7 +32,7 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:26.0.0-beta2'
+    resolutionStrategy.force 'com.android.support:support-annotations:26.0.0'
 }
 
 repositories {
@@ -41,17 +41,17 @@ repositories {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:26.0.0-beta2'
-    compile 'com.android.support:animated-vector-drawable:26.0.0-beta2'
-    compile 'com.android.support:support-compat:26.0.0-beta2'
+    compile 'com.android.support:appcompat-v7:26.0.0'
+    compile 'com.android.support:animated-vector-drawable:26.0.0'
+    compile 'com.android.support:support-compat:26.0.0'
 
-    compile 'com.google.firebase:firebase-messaging:11.0.1'
+    compile 'com.google.firebase:firebase-messaging:11.0.2'
     compile 'com.firebase:firebase-jobdispatcher:0.6.0'
 
     // Testing dependencies
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support:support-annotations:25.3.1'
+    androidTestCompile 'com.android.support:support-annotations:26.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
