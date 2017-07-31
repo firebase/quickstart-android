@@ -7,7 +7,7 @@ activities in your application.
 Introduction
 ------------
 
-- [Read more about Firebase Performance](https://firebase.google.com/docs/performance)
+- [Read more about Firebase Performance](https://firebase.google.com/docs/perf-mon/)
 
 Getting Started
 ---------------
