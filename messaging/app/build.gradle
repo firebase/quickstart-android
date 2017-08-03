@@ -45,7 +45,7 @@ dependencies {
     compile 'com.android.support:animated-vector-drawable:26.0.0'
     compile 'com.android.support:support-compat:26.0.0'
 
-    compile 'com.google.firebase:firebase-messaging:11.0.2'
+    compile 'com.google.firebase:firebase-messaging:11.0.4'
     compile 'com.firebase:firebase-jobdispatcher:0.6.0'
 
     // Testing dependencies
