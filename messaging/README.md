@@ -41,8 +41,8 @@ Use Firebase console to send FCM messages to device or emulator.
 - Enter the text of your message in the Message Text field.
 - Click on the **SUBSCRIBE TO NEWS** button to subscribe to the news topic.
 - Set the target to **Topic**.
-- Select the news topic from the list of topics. You must subscribe from the device or emulator
-  before the topic will will be visible in the console.
+- Select the news topic from the list of topics ("news" in this sample). 
+  You must subscribe from the device or emulator before the topic will will be visible in the console.
 - Click on the **Send Message** button.
 - If your application is in the foreground you should see the incoming
   message printed in the logs. If it is in the background, a system notification should be
