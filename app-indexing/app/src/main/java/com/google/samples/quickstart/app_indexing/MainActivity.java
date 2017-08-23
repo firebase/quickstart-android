@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,6 +49,23 @@ public class MainActivity extends AppCompatActivity {
         // [START_EXCLUDE]
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final FirebaseAppIndex firebaseAppIndex = FirebaseAppIndex.getInstance();
+
+        Button addStickersBtn = findViewById(R.id.addStickersBtn);
+        addStickersBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startService(new Intent(MainActivity.this, AppIndexingService.class));
+            }
+        });
+        Button clearStickersBtn = findViewById(R.id.clearStickersBtn);
+        clearStickersBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppIndexingUtil.clearStickers(MainActivity.this, firebaseAppIndex);
+            }
+        });
         // [END_EXCLUDE]
         onNewIntent(getIntent());
     }
@@ -56,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         Uri data = intent.getData();
         if (Intent.ACTION_VIEW.equals(action) && data != null) {
             articleId = data.getLastPathSegment();
-            TextView linkText = (TextView)findViewById(R.id.link);
+            TextView linkText = findViewById(R.id.link);
             linkText.setText(data.toString());
         }
     }

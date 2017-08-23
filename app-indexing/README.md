@@ -15,6 +15,7 @@ Getting Started
 - Open the App Indexing project in Android Studio.
 - Run the sample on your Android device or emulator by issuing the following command using **adb** tool:  
 `adb shell am start -a android.intent.action.VIEW -d "https://www.example.com/articles/test" com.google.samples.quickstart.app_indexing`
+- Use ADD STICKERS and CLEAR STICKERS buttons to add and remove stickers from the index.
 
 Result
 -----------

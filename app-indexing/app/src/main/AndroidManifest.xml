@@ -34,8 +34,31 @@
                     android:pathPrefix="/articles/" />
             </intent-filter>
 
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="mystickers" />
+                <data android:host="sticker" />
+            </intent-filter>
+
         </activity>
         <!-- [END intent_filter] -->
+
+        <provider
+            android:name="com.google.samples.quickstart.app_indexing.StickerProvider"
+            android:authorities="com.google.samples.quickstart.app_indexing.StickerProvider"
+            android:exported="true"
+            android:grantUriPermissions="true">
+        </provider>
+
+        <service android:name=".AppIndexingService"
+                 android:exported="true"
+                 android:permission="com.google.android.gms.permission.APPINDEXING">
+            <intent-filter>
+                <action android:name="com.google.firebase.appindexing.UPDATE_INDEX" />
+            </intent-filter>
+        </service>
 
     </application>
 

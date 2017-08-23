@@ -3,4 +3,6 @@
     <string name="app_name">Firebase App Indexing</string>
     <string name="link_label">Link:</string>
     <string name="none">None</string>
+    <string name="content_label">Content:</string>
+    <string name="stickers_label">Stickers:</string>
 </resources>
