@@ -61,7 +61,7 @@ application manifest. In the metadata element specify the ID of the channel that
 be used by default by FCM.
 
     <meta-data
-        android:name="com.google.firebase.messaging.default_notification_channel"
+        android:name="com.google.firebase.messaging.default_notification_channel_id"
         android:value="default_channel_id"/>
 
 Note: You are still required to create a notification channel in code with an ID that
