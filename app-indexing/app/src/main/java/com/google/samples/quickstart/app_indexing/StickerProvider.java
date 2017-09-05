@@ -38,7 +38,7 @@ public class StickerProvider extends ContentProvider {
     public String getType(@NonNull Uri uri) {
         final File file = uriToFile(uri);
         if (!isFileInRoot(file)) {
-            throw new SecurityException("File is not is root: " + file);
+            throw new SecurityException("File is not in root: " + file);
         }
         return getMimeType(file);
     }
@@ -49,7 +49,7 @@ public class StickerProvider extends ContentProvider {
             throws FileNotFoundException {
         final File file = uriToFile(uri);
         if (!isFileInRoot(file)) {
-            throw new SecurityException("File is not is root: " + file);
+            throw new SecurityException("File is not in root: " + file);
         }
         return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY);
     }
