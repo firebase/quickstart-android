@@ -11,6 +11,8 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Arrays;
+
 /**
  * Demonstrate authentication using the FirebaseUI-Android library. This activity demonstrates
  * using FirebaseUI for basic email/password sign in.
@@ -33,8 +35,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
         mAuth = FirebaseAuth.getInstance();
 
-        mStatusView = (TextView) findViewById(R.id.status);
-        mDetailView = (TextView) findViewById(R.id.detail);
+        mStatusView = findViewById(R.id.status);
+        mDetailView = findViewById(R.id.detail);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
@@ -67,7 +69,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         // possible customization see: https://github.com/firebase/firebaseui-android
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG)
-                .setProviders(AuthUI.EMAIL_PROVIDER)
+                .setAvailableProviders(Arrays.asList(
+                        new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
                 .setLogo(R.mipmap.ic_launcher)
                 .build();
 

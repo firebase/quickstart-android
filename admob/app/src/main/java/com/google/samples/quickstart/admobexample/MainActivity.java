@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAdView = (AdView) findViewById(R.id.adView);
+        mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
         // [END load_banner_ad]
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         // [END create_interstitial_ad_listener]
 
         // [START display_interstitial_ad]
-        mLoadInterstitialButton = (Button) findViewById(R.id.load_interstitial_button);
+        mLoadInterstitialButton = findViewById(R.id.load_interstitial_button);
         mLoadInterstitialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

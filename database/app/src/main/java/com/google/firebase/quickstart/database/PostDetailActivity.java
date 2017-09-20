@@ -63,12 +63,12 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 .child("post-comments").child(mPostKey);
 
         // Initialize Views
-        mAuthorView = (TextView) findViewById(R.id.post_author);
-        mTitleView = (TextView) findViewById(R.id.post_title);
-        mBodyView = (TextView) findViewById(R.id.post_body);
-        mCommentField = (EditText) findViewById(R.id.field_comment_text);
-        mCommentButton = (Button) findViewById(R.id.button_post_comment);
-        mCommentsRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
+        mAuthorView = findViewById(R.id.post_author);
+        mTitleView = findViewById(R.id.post_title);
+        mBodyView = findViewById(R.id.post_body);
+        mCommentField = findViewById(R.id.field_comment_text);
+        mCommentButton = findViewById(R.id.button_post_comment);
+        mCommentsRecycler = findViewById(R.id.recycler_comments);
 
         mCommentButton.setOnClickListener(this);
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -171,8 +171,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         public CommentViewHolder(View itemView) {
             super(itemView);
 
-            authorView = (TextView) itemView.findViewById(R.id.comment_author);
-            bodyView = (TextView) itemView.findViewById(R.id.comment_body);
+            authorView = itemView.findViewById(R.id.comment_author);
+            bodyView = itemView.findViewById(R.id.comment_body);
         }
     }
 

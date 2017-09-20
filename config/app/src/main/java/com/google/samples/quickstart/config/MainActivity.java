@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mWelcomeTextView = (TextView) findViewById(R.id.welcomeTextView);
+        mWelcomeTextView = findViewById(R.id.welcomeTextView);
 
-        Button fetchButton = (Button) findViewById(R.id.fetchButton);
+        Button fetchButton = findViewById(R.id.fetchButton);
         fetchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
