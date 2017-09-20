@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.provider.TwitterProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -21,6 +20,7 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
@@ -143,7 +143,7 @@ public class TwitterLoginActivity extends BaseActivity
 
     private void signOut() {
         mAuth.signOut();
-        TwitterProvider.signOut(this);
+        TwitterCore.getInstance().getSessionManager().clearActiveSession();
 
         updateUI(null);
     }
