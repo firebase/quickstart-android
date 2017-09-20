@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onSaveInstanceState(Bundle out) {
+        super.onSaveInstanceState(out);
         out.putParcelable(KEY_FILE_URI, mFileUri);
         out.putParcelable(KEY_DOWNLOAD_URL, mDownloadUrl);
     }

@@ -58,8 +58,8 @@ public class AnonymousAuthActivity extends BaseActivity implements
         // [END initialize_auth]
 
         // Fields
-        mEmailField = (EditText) findViewById(R.id.field_email);
-        mPasswordField = (EditText) findViewById(R.id.field_password);
+        mEmailField = findViewById(R.id.field_email);
+        mPasswordField = findViewById(R.id.field_password);
 
         // Click listeners
         findViewById(R.id.button_anonymous_sign_in).setOnClickListener(this);
@@ -175,8 +175,8 @@ public class AnonymousAuthActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
 
-        TextView idView = (TextView) findViewById(R.id.anonymous_status_id);
-        TextView emailView = (TextView) findViewById(R.id.anonymous_status_email);
+        TextView idView = findViewById(R.id.anonymous_status_id);
+        TextView emailView = findViewById(R.id.anonymous_status_email);
         boolean isSignedIn = (user != null);
 
         // Status text

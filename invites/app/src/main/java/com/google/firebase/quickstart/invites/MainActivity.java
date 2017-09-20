@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements
     // [END on_activity_result]
 
     private void showMessage(String msg) {
-        ViewGroup container = (ViewGroup) findViewById(R.id.snackbar_layout);
+        ViewGroup container = findViewById(R.id.snackbar_layout);
         Snackbar.make(container, msg, Snackbar.LENGTH_SHORT).show();
     }
 

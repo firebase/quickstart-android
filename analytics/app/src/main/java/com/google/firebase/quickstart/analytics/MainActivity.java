@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         mImagePagerAdapter = new ImagePagerAdapter(getSupportFragmentManager(), IMAGE_INFOS);
 
         // Set up the ViewPager with the pattern adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = findViewById(R.id.pager);
         mViewPager.setAdapter(mImagePagerAdapter);
 
         // Workaround for AppCompat issue not showing ViewPager titles

@@ -65,8 +65,8 @@ public class FacebookLoginActivity extends BaseActivity implements
         setContentView(R.layout.activity_facebook);
 
         // Views
-        mStatusTextView = (TextView) findViewById(R.id.status);
-        mDetailTextView = (TextView) findViewById(R.id.detail);
+        mStatusTextView = findViewById(R.id.status);
+        mDetailTextView = findViewById(R.id.detail);
         findViewById(R.id.button_facebook_signout).setOnClickListener(this);
 
         // [START initialize_auth]
@@ -77,7 +77,7 @@ public class FacebookLoginActivity extends BaseActivity implements
         // [START initialize_fblogin]
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.button_facebook_login);
+        LoginButton loginButton = findViewById(R.id.button_facebook_login);
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override

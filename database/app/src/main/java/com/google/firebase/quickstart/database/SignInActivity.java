@@ -40,10 +40,10 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         mAuth = FirebaseAuth.getInstance();
 
         // Views
-        mEmailField = (EditText) findViewById(R.id.field_email);
-        mPasswordField = (EditText) findViewById(R.id.field_password);
-        mSignInButton = (Button) findViewById(R.id.button_sign_in);
-        mSignUpButton = (Button) findViewById(R.id.button_sign_up);
+        mEmailField = findViewById(R.id.field_email);
+        mPasswordField = findViewById(R.id.field_password);
+        mSignInButton = findViewById(R.id.button_sign_in);
+        mSignUpButton = findViewById(R.id.button_sign_up);
 
         // Click listeners
         mSignInButton.setOnClickListener(this);

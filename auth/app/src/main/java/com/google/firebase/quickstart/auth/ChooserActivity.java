@@ -70,7 +70,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_chooser);
 
         // Set up ListView and Adapter
-        ListView listView = (ListView) findViewById(R.id.list_view);
+        ListView listView = findViewById(R.id.list_view);
 
         MyArrayAdapter adapter = new MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
         adapter.setDescriptionIds(DESCRIPTION_IDS);

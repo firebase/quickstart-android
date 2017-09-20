@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         }
         // [END handle_data_extras]
 
-        Button subscribeButton = (Button) findViewById(R.id.subscribeButton);
+        Button subscribeButton = findViewById(R.id.subscribeButton);
         subscribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button logTokenButton = (Button) findViewById(R.id.logTokenButton);
+        Button logTokenButton = findViewById(R.id.logTokenButton);
         logTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

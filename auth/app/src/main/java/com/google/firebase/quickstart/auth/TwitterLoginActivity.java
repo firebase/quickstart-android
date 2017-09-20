@@ -15,15 +15,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.TwitterAuthProvider;
-import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
-
-import io.fabric.sdk.android.Fabric;
 
 public class TwitterLoginActivity extends BaseActivity
         implements View.OnClickListener {
@@ -47,14 +47,19 @@ public class TwitterLoginActivity extends BaseActivity
         TwitterAuthConfig authConfig =  new TwitterAuthConfig(
                 getString(R.string.twitter_consumer_key),
                 getString(R.string.twitter_consumer_secret));
-        Fabric.with(this, new Twitter(authConfig));
+
+        TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
+                .twitterAuthConfig(authConfig)
+                .build();
+
+        Twitter.initialize(twitterConfig);
 
         // Inflate layout (must be done after Twitter is configured)
         setContentView(R.layout.activity_twitter);
 
         // Views
-        mStatusTextView = (TextView) findViewById(R.id.status);
-        mDetailTextView = (TextView) findViewById(R.id.detail);
+        mStatusTextView = findViewById(R.id.status);
+        mDetailTextView = findViewById(R.id.detail);
         findViewById(R.id.button_twitter_signout).setOnClickListener(this);
 
         // [START initialize_auth]
@@ -63,7 +68,7 @@ public class TwitterLoginActivity extends BaseActivity
         // [END initialize_auth]
 
         // [START initialize_twitter_login]
-        mLoginButton = (TwitterLoginButton) findViewById(R.id.button_twitter_login);
+        mLoginButton = findViewById(R.id.button_twitter_login);
         mLoginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
@@ -138,7 +143,7 @@ public class TwitterLoginActivity extends BaseActivity
 
     private void signOut() {
         mAuth.signOut();
-        Twitter.logOut();
+        TwitterCore.getInstance().getSessionManager().clearActiveSession();
 
         updateUI(null);
     }
