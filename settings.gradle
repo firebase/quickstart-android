@@ -1,1 +1,1 @@
-include ':admob:app', ':analytics:app', ':app-indexing:app', ':auth:app', ':config:app', ':crash:app', ':database:app', ':dynamiclinks:app', ':invites:app', ':messaging:app', ':storage:app'
+include ':admob:app', ':analytics:app', ':app-indexing:app', ':auth:app', ':config:app', ':crash:app', ':database:app', ':dynamiclinks:app', ':firestore:app', ':invites:app', ':messaging:app', ':storage:app'
