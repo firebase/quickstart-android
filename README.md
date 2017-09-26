@@ -23,6 +23,7 @@ the sample you wish to run.
 - [Config](config)
 - [Crash](crash)
 - [Database](database)
+- [Firestore](firestore)
 - [Dynamic Links](dynamiclinks)
 - [Invites](invites)
 - [Messaging](messaging)
