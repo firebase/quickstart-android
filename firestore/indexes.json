@@ -3,57 +3,57 @@
     {
       "collectionId": "restaurants",
       "fields": [
-        { "fieldPath": "city", "direction": "ASCENDING" },
-        { "fieldPath": "avgRating", "direction": "DESCENDING" }
+        { "fieldPath": "city", "mode": "ASCENDING" },
+        { "fieldPath": "avgRating", "mode": "DESCENDING" }
       ]
     },
     {
       "collectionId": "restaurants",
       "fields": [
-        { "fieldPath": "category", "direction": "ASCENDING" },
-        { "fieldPath": "avgRating", "direction": "DESCENDING" }
+        { "fieldPath": "category", "mode": "ASCENDING" },
+        { "fieldPath": "avgRating", "mode": "DESCENDING" }
       ]
     },
     {
       "collectionId": "restaurants",
       "fields": [
-        { "fieldPath": "price", "direction": "ASCENDING" },
-        { "fieldPath": "avgRating", "direction": "DESCENDING" }
+        { "fieldPath": "price", "mode": "ASCENDING" },
+        { "fieldPath": "avgRating", "mode": "DESCENDING" }
       ]
     },
     {
       "collectionId": "restaurants",
       "fields": [
-        { "fieldPath": "city", "direction": "ASCENDING" },
-        { "fieldPath": "numRatings", "direction": "DESCENDING" }
+        { "fieldPath": "city", "mode": "ASCENDING" },
+        { "fieldPath": "numRatings", "mode": "DESCENDING" }
       ]
     },
     {
       "collectionId": "restaurants",
       "fields": [
-        { "fieldPath": "category", "direction": "ASCENDING" },
-        { "fieldPath": "numRatings", "direction": "DESCENDING" }
+        { "fieldPath": "category", "mode": "ASCENDING" },
+        { "fieldPath": "numRatings", "mode": "DESCENDING" }
       ]
     },
     {
       "collectionId": "restaurants",
       "fields": [
-        { "fieldPath": "price", "direction": "ASCENDING" },
-        { "fieldPath": "numRatings", "direction": "DESCENDING" }
+        { "fieldPath": "price", "mode": "ASCENDING" },
+        { "fieldPath": "numRatings", "mode": "DESCENDING" }
       ]
     },
     {
       "collectionId": "restaurants",
       "fields": [
-        { "fieldPath": "city", "direction": "ASCENDING" },
-        { "fieldPath": "price", "direction": "ASCENDING" }
+        { "fieldPath": "city", "mode": "ASCENDING" },
+        { "fieldPath": "price", "mode": "ASCENDING" }
       ]
     },
     {
       "collectionId": "restaurants",
       "fields": [
-        { "fieldPath": "category", "direction": "ASCENDING" },
-        { "fieldPath": "price", "direction": "ASCENDING" }
+        { "fieldPath": "category", "mode": "ASCENDING" },
+        { "fieldPath": "price", "mode": "ASCENDING" }
       ]
     }
   ]
