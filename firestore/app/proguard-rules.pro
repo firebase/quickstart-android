@@ -24,20 +24,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# See:
-# https://github.com/grpc/grpc-java/issues/2207
--keep class io.grpc.internal.DnsNameResolverProvider
--keep class io.grpc.okhttp.OkHttpChannelProvider
-
 # Keep custom model classes
 -keep class com.google.firebase.example.fireeats.model.** { *; }
-
-## Android architecture components: ViewModel
--keepclassmembers class * extends android.arch.lifecycle.ViewModel {
-    <init>(...);
-}
-
-## Android architecture components: Lifecycle
--keepclasseswithmembers class * implements android.arch.lifecycle.GenericLifecycleObserver {
-    <init>(...);
-}
