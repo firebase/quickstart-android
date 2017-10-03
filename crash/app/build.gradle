@@ -34,7 +34,7 @@ configurations.all {
 dependencies {
     compile 'com.android.support:appcompat-v7:26.1.0'
 
-    compile 'com.google.firebase:firebase-crash:11.4.0'
+    compile 'com.google.firebase:firebase-crash:11.4.2'
 
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'

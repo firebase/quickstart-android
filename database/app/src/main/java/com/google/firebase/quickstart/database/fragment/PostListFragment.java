@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -66,10 +67,21 @@ public abstract class PostListFragment extends Fragment {
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(mDatabase);
-        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
-                PostViewHolder.class, postsQuery) {
+
+        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
+                .setQuery(postsQuery, Post.class)
+                .build();
+
+        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(options) {
+
             @Override
-            protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
+            public PostViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+                return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false));
+            }
+
+            @Override
+            protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
                 final DatabaseReference postRef = getRef(position);
 
                 // Set click listener for the whole post view
@@ -144,13 +156,23 @@ public abstract class PostListFragment extends Fragment {
     }
     // [END post_stars_transaction]
 
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStart() {
+        super.onStart();
         if (mAdapter != null) {
-            mAdapter.cleanup();
+            mAdapter.startListening();
         }
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAdapter != null) {
+            mAdapter.stopListening();
+        }
+    }
+
 
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
