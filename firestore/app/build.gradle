@@ -12,6 +12,10 @@ android {
         versionName "1.0"
 
         vectorDrawables.useSupportLibrary true
+
+        lintOptions {
+          disable 'InvalidPackage'
+        }
     }
 
     buildTypes {
