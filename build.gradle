@@ -13,8 +13,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven { url 'https://maven.google.com'  }
         mavenLocal()
+        maven { url 'https://maven.google.com'  }
         maven { url 'https://maven.fabric.io/public' }
     }
 }
