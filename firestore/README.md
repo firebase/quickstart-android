@@ -24,18 +24,18 @@ service cloud.firestore {
   match /databases/{database}/documents {
     // Anyone can read a restaurant, only authorized
     // users can create, update, or delete them.
-  	match /restaurants/{restaurantId} {
-    	allow read: if true;
-    	allow create, update, delete: if request.auth.uid != null;
+  	 match /restaurants/{restaurantId} {
+    	 allow read: if true;
+    	 allow create, update, delete: if request.auth.uid != null;
     }
     
     // Anyone can read a rating. Only the user who made the rating
     // can delete it. Ratings can never be updated.
     match /restaurants/{restaurantId}/ratings/{ratingId} {
-    	allow read: if true;
+    	 allow read: if true;
       allow create: if request.auth.uid != null;
-    	allow delete: if request.resource.userId == request.auth.uid;
-    	allow update: if false;
+    	 allow delete: if request.resource.data.userId == request.auth.uid;
+    	 allow update: if false;
     }
   }
 }
