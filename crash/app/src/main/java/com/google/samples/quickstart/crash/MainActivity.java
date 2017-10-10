@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         // Checkbox to indicate when to catch the thrown exception.
         final CheckBox catchCrashCheckBox = findViewById(R.id.catchCrashCheckBox);
 
-        // Button that causes the NullPointerException to be thrown.
+        // Button that causes NullPointerException to be thrown.
         Button crashButton = findViewById(R.id.crashButton);
         crashButton.setOnClickListener(new View.OnClickListener() {
             @Override
