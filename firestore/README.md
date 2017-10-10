@@ -72,11 +72,10 @@ with the correct paramters filled in:
 
 This app also provides an index specification file in `indexes.json`
 which specifies all indexes required to run the application. You can
-add all of these indexes programatically using the `firestore-index-client`
-CLI from [`firestore-tools`][firestore-tools].
+add all of these indexes programatically using the [Firebase CLI][firebase-cli].
 
 [firestore-docs]: https://firebase.google.com/docs/firestore/
 [setup-android]: https://firebase.google.com/docs/firestore/client/setup-android
 [auth-providers]: https://console.firebase.google.com/project/_/authentication/providers
 [firebaseui]: https://github.com/firebase/FirebaseUI-Android
-[firestore-tools]: TODO
+[firebase-cli]: https://firebase.google.com/docs/firestore/query-data/indexing#use_the_firebase_cli
