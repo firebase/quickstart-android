@@ -3,7 +3,6 @@ package com.google.samples.quickstart.app_indexing;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,6 +12,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.appindexing.FirebaseAppIndex;
 import com.google.firebase.appindexing.FirebaseAppIndexingInvalidArgumentException;
 import com.google.firebase.appindexing.Indexable;
+import com.google.firebase.appindexing.builders.Indexables;
+import com.google.firebase.appindexing.builders.StickerBuilder;
+import com.google.firebase.appindexing.builders.StickerPackBuilder;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +33,7 @@ public class AppIndexingUtil {
             String.format("content://%s/", StickerProvider.class.getName());
     private static final String STICKER_URL_PATTERN = "mystickers://sticker/%s";
     private static final String STICKER_PACK_URL_PATTERN = "mystickers://sticker/pack/%s";
-    private static final String CONTENT_PROVIDER_STICKER_PACK_NAME = "Local Content Pack";
+    private static final String STICKER_PACK_NAME = "Local Content Pack";
     private static final String TAG = "AppIndexingUtil";
     public static final String FAILED_TO_CLEAR_STICKERS = "Failed to clear stickers";
     public static final String FAILED_TO_INSTALL_STICKERS = "Failed to install stickers";
@@ -56,7 +59,7 @@ public class AppIndexingUtil {
     public static void setStickers(final Context context, FirebaseAppIndex firebaseAppIndex) {
         try {
             List<Indexable> stickers = getIndexableStickers(context);
-            Indexable stickerPack = getIndexableStickerPack(context, stickers);
+            Indexable stickerPack = getIndexableStickerPack(context);
 
             List<Indexable> indexables = new ArrayList<>(stickers);
             indexables.add(stickerPack);
@@ -85,85 +88,109 @@ public class AppIndexingUtil {
         }
     }
 
-    private static Indexable getIndexableStickerPack(Context context, List<Indexable> stickers)
+    private static Indexable getIndexableStickerPack(Context context)
             throws IOException, FirebaseAppIndexingInvalidArgumentException {
-        Indexable.Builder indexableBuilder = getIndexableBuilder(context, Color.CYAN,
-                STICKER_PACK_URL_PATTERN, stickers.size());
-        indexableBuilder.put("hasSticker", stickers.toArray(new Indexable[stickers.size()]));
-        return indexableBuilder.build();
-    }
-
-    private static List<Indexable> getIndexableStickers(Context context) throws IOException,
-            FirebaseAppIndexingInvalidArgumentException {
-        List<Indexable> indexableStickers = new ArrayList<>();
-        int[] stickerColors = new int[] {Color.GREEN, Color.RED, Color.BLUE,
-                Color.YELLOW, Color.MAGENTA};
-
-        for (int i = 0; i < stickerColors.length; i++) {
-            Indexable.Builder indexableStickerBuilder = getIndexableBuilder(context,
-                    stickerColors[i], STICKER_URL_PATTERN, i);
-            indexableStickerBuilder.put("keywords", "tag1_" + i, "tag2_" + i)
-                    // StickerPack object that the sticker is part of.
-                    .put("partOf", new Indexable.Builder("StickerPack")
-                            .setName(CONTENT_PROVIDER_STICKER_PACK_NAME)
-                            .build());
-            indexableStickers.add(indexableStickerBuilder.build());
-        }
-
-        return indexableStickers;
-    }
-
-    private static Indexable.Builder getIndexableBuilder(Context context, int color,
-                                                         String urlPattern, int index)
-            throws IOException {
+        List<StickerBuilder> stickerBuilders = getStickerBuilders(context);
         File stickersDir = new File(context.getFilesDir(), "stickers");
 
         if (!stickersDir.exists() && !stickersDir.mkdirs()) {
             throw new IOException("Stickers directory does not exist");
         }
 
-        String filename = String.format(STICKER_FILENAME_PATTERN, index);
-        File stickerFile = new File(stickersDir, filename);
+        // Use the last sticker for category image for the sticker pack.
+        final int lastIndex = stickerBuilders.size() - 1;
+        final String stickerName = getStickerFilename(lastIndex);
+        final String imageUrl = getStickerUrl(stickerName);
 
-        writeSolidColorBitmapToFile(stickerFile, color);
+        StickerPackBuilder stickerPackBuilder = Indexables.stickerPackBuilder()
+                .setName(STICKER_PACK_NAME)
+                // Firebase App Indexing unique key that must match an intent-filter.
+                // (e.g. mystickers://sticker/pack/0)
+                .setUrl(String.format(STICKER_PACK_URL_PATTERN, lastIndex))
+                // Defaults to the first sticker in "hasSticker". Used to select between sticker
+                // packs so should be representative of the sticker pack.
+                .setImage(imageUrl)
+                .setHasSticker(stickerBuilders.toArray(new StickerBuilder[stickerBuilders.size()]))
+                .setDescription("content description");
+        return stickerPackBuilder.build();
+    }
 
-        Uri contentUri = Uri.parse(CONTENT_URI_ROOT + filename);
-        String url = String.format(urlPattern, index);
+    private static List<Indexable> getIndexableStickers(Context context) throws IOException,
+            FirebaseAppIndexingInvalidArgumentException {
+        List<Indexable> indexableStickers = new ArrayList<>();
+        List<StickerBuilder> stickerBuilders = getStickerBuilders(context);
 
-        Indexable.Builder indexableBuilder = new Indexable.Builder("StickerPack")
-                // name of the sticker pack
-                .setName(CONTENT_PROVIDER_STICKER_PACK_NAME)
-                // Firebase App Indexing unique key that must match an intent-filter
-                // (e.g. mystickers://stickers/pack/0)
-                .setUrl(url)
-                // (Optional) - Defaults to the first sticker in "hasSticker"
-                // displayed as a category image to select between sticker packs that should
-                // be representative of the sticker pack
-                .setImage(contentUri.toString())
-                // (Optional) - Defaults to a generic phrase
-                // content description of the image that is used for accessibility
-                // (e.g. TalkBack)
-                .setDescription("Indexable description");
+        for (StickerBuilder stickerBuilder : stickerBuilders) {
+            stickerBuilder
+                    .setIsPartOf(Indexables.stickerPackBuilder()
+                            .setName(STICKER_PACK_NAME))
+                    .put("keywords", "tag1", "tag2");
+            indexableStickers.add(stickerBuilder.build());
+        }
 
-        return indexableBuilder;
+        return indexableStickers;
+    }
+
+    private static List<StickerBuilder> getStickerBuilders(Context context) throws IOException {
+        List<StickerBuilder> stickerBuilders = new ArrayList<>();
+        int[] stickerColors = new int[] {Color.GREEN, Color.RED, Color.BLUE,
+                Color.YELLOW, Color.MAGENTA};
+
+        File stickersDir = new File(context.getFilesDir(), "stickers");
+
+        if (!stickersDir.exists() && !stickersDir.mkdirs()) {
+            throw new IOException("Stickers directory does not exist");
+        }
+
+        for (int i = 0; i < stickerColors.length; i++) {
+            String stickerFilename = getStickerFilename(i);
+            File stickerFile = new File(stickersDir, stickerFilename);
+            String imageUrl = getStickerUrl(stickerFilename);
+            writeSolidColorBitmapToFile(stickerFile, stickerColors[i]);
+
+            StickerBuilder stickerBuilder = Indexables.stickerBuilder()
+                    .setName(getStickerFilename(i))
+                    // Firebase App Indexing unique key that must match an intent-filter
+                    // (e.g. mystickers://sticker/0)
+                    .setUrl(String.format(STICKER_URL_PATTERN, i))
+                    // http url or content uri that resolves to the sticker
+                    // (e.g. http://www.google.com/sticker.png or content://some/path/0)
+                    .setImage(imageUrl)
+                    .setDescription("content description")
+                    .setIsPartOf(Indexables.stickerPackBuilder()
+                            .setName(STICKER_PACK_NAME))
+                    .put("keywords", "tag1", "tag2");
+            stickerBuilders.add(stickerBuilder);
+        }
+
+        return stickerBuilders;
+    }
+
+    private static String getStickerFilename(int index) {
+        return String.format(STICKER_FILENAME_PATTERN, index);
+    }
+
+    private static String getStickerUrl(String filename) {
+        return CONTENT_URI_ROOT + filename;
     }
 
     /**
      * Writes a simple bitmap to local storage. The image is a solid color with size 400x400
      */
     private static void writeSolidColorBitmapToFile(File file, int color) throws IOException {
-        Bitmap bitmap = Bitmap.createBitmap(400, 400, Bitmap.Config.ARGB_8888);
-        bitmap.eraseColor(color);
+        if (!file.exists()) {
+            Bitmap bitmap = Bitmap.createBitmap(400, 400, Bitmap.Config.ARGB_8888);
+            bitmap.eraseColor(color);
 
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } finally {
-            if (fos != null) {
-                fos.close();
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            } finally {
+                if (fos != null) {
+                    fos.close();
+                }
             }
         }
-
     }
 }
