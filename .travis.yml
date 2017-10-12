@@ -9,13 +9,8 @@ android:
   components:
     # https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943
     - tools
-    - platform-tools
     - tools
 
-    - build-tools-26.0.1
-    - android-26
-    - extra-google-m2repository
-    - extra-android-m2repository
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -26,5 +21,5 @@ cache:
     - $HOME/.android/build-cache
 
 before_script:
-  - ${ANDROID_HOME}tools/bin/sdkmanager --channel=3 "tools" "platform-tools" "build-tools;26.0.1" "platforms;android-26" "extras;google;m2repository"
+  - echo y | ${ANDROID_HOME}tools/bin/sdkmanager --channel=3 "tools" "platform-tools" "build-tools;26.0.1" "platforms;android-26" "extras;google;m2repository"
 script: ./build.sh
