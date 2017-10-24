@@ -24,14 +24,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -44,7 +41,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
 public class GoogleSignInActivity extends BaseActivity implements
-        GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
     private static final String TAG = "GoogleActivity";
@@ -54,7 +50,7 @@ public class GoogleSignInActivity extends BaseActivity implements
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
 
@@ -80,10 +76,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 .build();
         // [END config_signin]
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
@@ -107,13 +100,14 @@ public class GoogleSignInActivity extends BaseActivity implements
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if (result.isSuccess()) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
                 // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = result.getSignInAccount();
+                GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-            } else {
+            } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e);
                 // [START_EXCLUDE]
                 updateUI(null);
                 // [END_EXCLUDE]
@@ -157,7 +151,7 @@ public class GoogleSignInActivity extends BaseActivity implements
 
     // [START signin]
     private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     // [END signin]
@@ -167,10 +161,10 @@ public class GoogleSignInActivity extends BaseActivity implements
         mAuth.signOut();
 
         // Google sign out
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
                     @Override
-                    public void onResult(@NonNull Status status) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         updateUI(null);
                     }
                 });
@@ -181,10 +175,10 @@ public class GoogleSignInActivity extends BaseActivity implements
         mAuth.signOut();
 
         // Google revoke access
-        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
+        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
                     @Override
-                    public void onResult(@NonNull Status status) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         updateUI(null);
                     }
                 });
@@ -205,14 +199,6 @@ public class GoogleSignInActivity extends BaseActivity implements
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
-        Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
