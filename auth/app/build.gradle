@@ -3,7 +3,7 @@ check.dependsOn 'assembleMinSdkJellybeanDebugAndroidTest', 'assembleMinSdkIcsDeb
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     flavorDimensions "minSdkVersion"
 
     defaultConfig {
