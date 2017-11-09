@@ -48,6 +48,8 @@ configurations.all {
 }
 
 dependencies {
+    compile 'com.android.support:multidex:1.0.2'
+
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:animated-vector-drawable:26.1.0'
     compile 'com.android.support:cardview-v7:26.1.0'

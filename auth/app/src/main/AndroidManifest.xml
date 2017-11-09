@@ -8,6 +8,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name="android.support.multidex.MultiDexApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ChooserActivity">
@@ -32,7 +33,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".PhoneAuthActivity"
-            android:label="@string/label_phone_auth"></activity>
+            android:label="@string/label_phone_auth" />
         <activity
             android:name=".AnonymousAuthActivity"
             android:label="@string/label_anonymous_auth" />
