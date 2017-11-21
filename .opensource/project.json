@@ -1,0 +1,42 @@
+
+{
+    "name": "Firebase Quickstarts for Android",
+    "parent": "quickstarts",
+    "type": "sample",
+
+    "platforms": [
+      "Android"
+    ],
+
+    "content": "README.md",
+
+    // These are relative paths in the same repo,
+    // each of these paths must have a .opensource/project.json
+    "subprojects": [],
+
+    // Other markdown pages that should be rendered nicely
+    "pages" : [
+      "admob/README.md",
+      "analytics/README.md",
+      "app-indexing/README.md",
+      "auth/README.md",
+      "config/README.md",
+      "crash/README.md",
+      "database/README.md",
+      "dynamiclinks/README.md",
+      "firestore/README.md",
+      "invites/README.md",
+      "messaging/README.md",
+      "perf/README.md",
+      "storage/README.md"
+    ],
+
+    // Related projects on Github, in the format $owner/$repo[/$subproject]
+    // where subproject is optional.
+    "related": [
+      "firebase/quickstart-android",
+      "firebase/quickstart-js"
+    ],
+
+    "tags": []
+  }
