@@ -16,25 +16,21 @@ in the `app/build.gradle` file of the app as the Android package name. Download
 the generated `google-services.json` file, and copy it to the `app/` directory of
 the sample you wish to run.
 
-- [Admob](admob)
-- [Analytics](analytics)
-- [App-Indexing](app-indexing)
-- [Auth](auth)
-- [Config](config)
-- [Crash](crash)
-- [Database](database)
-- [Firestore](firestore)
-- [Dynamic Links](dynamiclinks)
-- [Invites](invites)
-- [Messaging](messaging)
-- [Performance Monitoring](perf)
-- [Storage](storage)
+- [Admob](admob/README.md)
+- [Analytics](analytics/README.md)
+- [App-Indexing](app-indexing/README.md)
+- [Auth](auth/README.md)
+- [Config](config/README.md)
+- [Crash](crash/README.md)
+- [Database](database/README.md)
+- [Firestore](firestore/README.md)
+- [Dynamic Links](dynamiclinks/README.md)
+- [Invites](invites/README.md)
+- [Messaging](messaging/README.md)
+- [Performance Monitoring](perf/README.md)
+- [Storage](storage/README.md)
 
 ## How to make contributions?
 Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
 
-## License
-See [LICENSE](LICENSE)
-
-## Build Status
 [![Build Status](https://travis-ci.org/firebase/quickstart-android.svg?branch=master)](https://travis-ci.org/firebase/quickstart-android)
