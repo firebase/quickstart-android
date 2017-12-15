@@ -136,8 +136,9 @@ public class GoogleSignInActivity extends BaseActivity implements
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                                Snackbar snackbarAuthFailed= Snackbar.make(findViewById(R.id.main_layout), "Authentication failed.",
+                                                                           Snackbar.LENGTH_SHORT);
+                                snackbarAuthFailed.show;
                             updateUI(null);
                         }
 
