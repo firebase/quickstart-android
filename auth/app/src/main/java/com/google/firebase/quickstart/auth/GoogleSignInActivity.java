@@ -138,7 +138,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                                 Snackbar snackbarAuthFailed= Snackbar.make(findViewById(R.id.main_layout), "Authentication failed.",
                                                                            Snackbar.LENGTH_SHORT);
-                                snackbarAuthFailed.show;
+                                snackbarAuthFailed.show();
                             updateUI(null);
                         }
 
