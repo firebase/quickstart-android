@@ -107,7 +107,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
                 // 1 - Instant verification. In some cases the phone number can be instantly
                 //     verified without needing to send or enter a verification code.
                 // 2 - Auto-retrieval. On some devices Google Play services can automatically
-                //     detect the incoming verification SMS and perform verificaiton without
+                //     detect the incoming verification SMS and perform verification without
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:" + credential);
                 // [START_EXCLUDE silent]
