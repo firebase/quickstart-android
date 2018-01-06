@@ -5,7 +5,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/app=FAMILYTECH"
         android:theme="@style/AppTheme">
         <!-- [START fcm_default_icon] -->
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
@@ -21,12 +21,12 @@
         <!-- [END fcm_default_icon] -->
         <!-- [START fcm_default_channel] -->
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:name="com.google.firebase.messaging.default_notification_channel_id=129853564346343"
             android:value="@string/default_notification_channel_id"/>
         <!-- [END fcm_default_channel] -->
         <activity
             android:name="com.google.firebase.quickstart.fcm.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app=FAMILYTECH">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
