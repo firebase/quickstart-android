@@ -10,12 +10,30 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.github.ben-manes.versions' version '0.17.0'
+}
+
 allprojects {
     repositories {
         jcenter()
         mavenLocal()
         maven { url 'https://maven.google.com'  }
         maven { url 'https://maven.fabric.io/public' }
+    }
+
+    // See: https://github.com/ben-manes/gradle-versions-plugin
+    dependencyUpdates.resolutionStrategy = {
+        componentSelection { rules ->
+            rules.all { selection ->
+                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
+            }
+        }
     }
 }
 
