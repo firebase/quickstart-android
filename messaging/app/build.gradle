@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.fcm"
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -32,7 +32,7 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:26.1.0'
+    resolutionStrategy.force 'com.android.support:support-annotations:27.0.2'
 }
 
 repositories {
@@ -40,17 +40,17 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:animated-vector-drawable:26.1.0'
-    compile 'com.android.support:support-compat:26.1.0'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:animated-vector-drawable:27.0.2'
+    compile 'com.android.support:support-compat:27.0.2'
 
     compile 'com.google.firebase:firebase-messaging:11.8.0'
-    compile 'com.firebase:firebase-jobdispatcher:0.6.0'
+    compile 'com.firebase:firebase-jobdispatcher:0.8.5'
 
     // Testing dependencies
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support:support-annotations:26.1.0'
+    androidTestCompile 'com.android.support:support-annotations:27.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

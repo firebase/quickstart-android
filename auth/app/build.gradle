@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 check.dependsOn 'assembleMinSdkJellybeanDebugAndroidTest', 'assembleMinSdkIcsDebugAndroidTest'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
     flavorDimensions "minSdkVersion"
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.auth"
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
@@ -44,16 +44,16 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:26.1.0'
+    resolutionStrategy.force 'com.android.support:support-annotations:27.0.2'
 }
 
 dependencies {
     compile 'com.android.support:multidex:1.0.2'
 
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:animated-vector-drawable:26.1.0'
-    compile 'com.android.support:cardview-v7:26.1.0'
-    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:animated-vector-drawable:27.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
+    compile 'com.android.support:design:27.0.2'
 
     // Firebase Authentication
     compile 'com.google.firebase:firebase-auth:11.8.0'
@@ -64,19 +64,19 @@ dependencies {
     // Firebase UI
     // Used in FirebaseUIActivity. The FirebaseUI-Android library has a minSdk level of 16
     // so this library is only included in the minSdkJellybean variant.
-    minSdkJellybeanCompile 'com.firebaseui:firebase-ui-auth:3.1.2'
+    minSdkJellybeanCompile 'com.firebaseui:firebase-ui-auth:3.1.3'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity. This is only compiled into the minSdkJellybean variant of this
     // app. You can build a 'minSdkGingerbread' variant to test on devices with 9 <= SDK <= 15.
-    minSdkJellybeanCompile 'com.facebook.android:facebook-login:4.27.0'
-    minSdkJellybeanCompile 'com.android.support:customtabs:26.1.0'
+    minSdkJellybeanCompile 'com.facebook.android:facebook-login:4.29.0'
+    minSdkJellybeanCompile 'com.android.support:customtabs:27.0.2'
 
     // Twitter Android SDK (only required for Twitter Login)
-    compile('com.twitter.sdk.android:twitter-core:3.0.0@aar') {
+    compile('com.twitter.sdk.android:twitter-core:3.2.0@aar') {
         transitive = true
     }
-    compile('com.twitter.sdk.android:twitter:3.1.1@aar') {
+    compile('com.twitter.sdk.android:twitter:3.2.0@aar') {
         transitive = true
     }
 

@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
 
     defaultConfig {
         applicationId "com.google.firebase.example.fireeats"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -39,8 +39,8 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-auth:2.3.0'
 
     // ButterKnife (for sample code brevity)
-    compile 'com.jakewharton:butterknife:8.7.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // Support Libs
     compile "com.android.support:appcompat-v7:26.0.0"
@@ -51,12 +51,12 @@ dependencies {
     compile "com.android.support:recyclerview-v7:26.0.0"
 
     // Android architecture components
-    compile "android.arch.lifecycle:runtime:1.0.0-alpha9"
-    compile "android.arch.lifecycle:extensions:1.0.0-alpha9"
-    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-alpha9"
+    compile "android.arch.lifecycle:runtime:1.0.3"
+    compile "android.arch.lifecycle:extensions:1.0.0"
+    annotationProcessor "android.arch.lifecycle:compiler:1.0.0"
     
     // Third-party libraries
-    compile 'me.zhanghai.android.materialratingbar:library:1.0.2'
+    compile 'me.zhanghai.android.materialratingbar:library:1.2.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
 }
 

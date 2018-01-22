@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.analytics"
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
@@ -23,12 +23,12 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:26.1.0'
+    resolutionStrategy.force 'com.android.support:support-annotations:27.0.2'
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:support-v4:27.0.2'
 
     compile 'com.google.firebase:firebase-analytics:11.8.0'
 
