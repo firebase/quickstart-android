@@ -12,7 +12,7 @@ buildscript {
             // TODO This shouldn't be necessary with the next update
             exclude group: 'com.google.guava', module: 'guava-jdk5'
         }
-        classpath 'com.google.gms:google-services:3.1.1'
+        classpath 'com.google.gms:google-services:3.1.2'
     }
 }
 

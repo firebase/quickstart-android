@@ -14,7 +14,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tabs" />
+        android:layout_below="@+id/tabs" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_new_post"
