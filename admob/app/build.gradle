@@ -34,13 +34,14 @@ configurations.all {
 dependencies {
     compile 'com.android.support:appcompat-v7:27.0.2'
     compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.android.support:customtabs:27.0.2'
 
     // [START gradle_play_config]
     compile 'com.google.firebase:firebase-ads:11.8.0'
     // [END gradle_play_config]
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestCompile 'com.android.support.test:runner:1.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

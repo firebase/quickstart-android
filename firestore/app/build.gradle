@@ -43,12 +43,12 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // Support Libs
-    compile "com.android.support:appcompat-v7:26.0.0"
-    compile "com.android.support:animated-vector-drawable:26.0.0"
-    compile "com.android.support:cardview-v7:26.0.0"
-    compile "com.android.support:customtabs:26.0.0"
-    compile "com.android.support:design:26.0.0"
-    compile "com.android.support:recyclerview-v7:26.0.0"
+    compile "com.android.support:appcompat-v7:27.0.2"
+    compile "com.android.support:animated-vector-drawable:27.0.2"
+    compile "com.android.support:cardview-v7:27.0.2"
+    compile "com.android.support:customtabs:27.0.2"
+    compile "com.android.support:design:27.0.2"
+    compile "com.android.support:recyclerview-v7:27.0.2"
 
     // Android architecture components
     compile "android.arch.lifecycle:runtime:1.0.3"

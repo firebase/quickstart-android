@@ -85,8 +85,8 @@ dependencies {
         transitive = true
     }
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestCompile 'com.android.support.test:runner:1.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
