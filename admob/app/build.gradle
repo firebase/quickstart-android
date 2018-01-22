@@ -33,6 +33,7 @@ configurations.all {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:support-v4:27.0.2'
 
     // [START gradle_play_config]
     compile 'com.google.firebase:firebase-ads:11.8.0'
