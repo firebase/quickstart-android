@@ -10,8 +10,4 @@
         android:id="@+id/menu_add_items"
         android:title="@string/add_random_items" />
 
-    <item
-        android:id="@+id/menu_delete"
-        android:title="@string/delete_all" />
-
 </menu>
