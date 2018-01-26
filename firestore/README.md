@@ -23,10 +23,10 @@ Add the following security rules to your project in the:
 service cloud.firestore {  
   match /databases/{database}/documents {
     // Anyone can read a restaurant, only authorized
-    // users can create, update, or delete them.
+    // users can create or update. Deletes are not allowed.
   	 match /restaurants/{restaurantId} {
     	 allow read: if true;
-    	 allow create, update, delete: if request.auth.uid != null;
+    	 allow create, update: if request.auth.uid != null;
     }
     
     // Anyone can read a rating. Only the user who made the rating

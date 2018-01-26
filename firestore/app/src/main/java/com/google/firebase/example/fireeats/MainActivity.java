@@ -167,9 +167,6 @@ public class MainActivity extends AppCompatActivity implements
                 AuthUI.getInstance().signOut(this);
                 startSignIn();
                 break;
-            case R.id.menu_delete:
-                RestaurantUtil.deleteAll();
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
