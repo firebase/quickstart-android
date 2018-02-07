@@ -1,10 +1,13 @@
 package com.google.firebase.example.fireeats;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -175,10 +180,18 @@ public class MainActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
             mViewModel.setIsSigningIn(false);
 
-            if (resultCode != RESULT_OK && shouldStartSignIn()) {
-                startSignIn();
+            if (resultCode != RESULT_OK) {
+                if (response == null) {
+                    // User pressed the back button.
+                    finish();
+                } else if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                    showSignInErrorDialog(R.string.message_no_network);
+                } else {
+                    showSignInErrorDialog(R.string.message_unknown);
+                }
             }
         }
     }
@@ -291,5 +304,26 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
         });
+    }
+
+    private void showSignInErrorDialog(@StringRes int message) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.title_sign_in_error)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(R.string.option_retry, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                      startSignIn();
+                    }
+                })
+                .setNegativeButton(R.string.option_exit, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                }).create();
+
+        dialog.show();
     }
 }
