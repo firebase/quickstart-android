@@ -33,6 +33,7 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".PhoneAuthActivity"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/label_phone_auth" />
         <activity
             android:name=".AnonymousAuthActivity"
