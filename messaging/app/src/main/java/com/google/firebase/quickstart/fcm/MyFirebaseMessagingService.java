@@ -16,6 +16,7 @@
 
 package com.google.firebase.quickstart.fcm;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
