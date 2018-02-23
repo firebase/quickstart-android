@@ -13,6 +13,9 @@
     <string name="label_emailpassword">Email/Password Authentication</string>
     <string name="desc_emailpassword">Use an email and password to authenticate with Firebase.</string>
 
+    <string name="label_passwordless">Passwordless Authentication</string>
+    <string name="desc_passwordless">Use only an email to authenticate with Firebase.</string>
+
     <string name="label_phone_auth">Phone Number Authentication</string>
     <string name="desc_phone_auth">Use a phone number to authenticate with Firebase.</string>
 
@@ -29,6 +32,7 @@
     <string name="get_custom_token">Get Token</string>
     <string name="sign_in">Sign In</string>
     <string name="create_account">Create Account</string>
+    <string name="send_link">Send Link</string>
     <string name="sign_out">Sign Out</string>
     <string name="verify_email">Verify Email</string>
     <string name="disconnect">Disconnect</string>
@@ -63,6 +67,12 @@
 
     <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
     <string name="emailpassword_title_text">Email and Password</string>
+
+    <string name="passwordless_status_fmt">Email User: %1$s (verified: %2$b)</string>
+    <string name="passwordless_title_text">Passwordless Sign In</string>
+    <string name="status_email_not_sent">Send link to your email to get started.</string>
+    <string name="status_email_sent">Link sent, check your email to continue.</string>
+    <string name="status_link_found">Link received, enter email to sign in.</string>
 
     <string name="phone_title_text">Phone Number</string>
 

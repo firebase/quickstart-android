@@ -6,10 +6,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="android.support.multidex.MultiDexApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ChooserActivity">
@@ -33,9 +33,23 @@
             android:label="@string/label_emailpassword"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
+            android:name=".PasswordlessActivity"
+            android:label="@string/label_passwordless"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:scheme="https"
+                    android:host="auth.example.com"
+                    android:pathPrefix="/emailSignInLink" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".PhoneAuthActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:label="@string/label_phone_auth" />
+            android:label="@string/label_phone_auth"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".AnonymousAuthActivity"
             android:label="@string/label_anonymous_auth" />
