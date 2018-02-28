@@ -49,16 +49,16 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:27.0.2'
+    resolutionStrategy.force 'com.android.support:support-annotations:27.1.0'
 }
 
 dependencies {
-    compile 'com.android.support:multidex:1.0.2'
+    compile 'com.android.support:multidex:1.0.3'
 
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:animated-vector-drawable:27.0.2'
-    compile 'com.android.support:cardview-v7:27.0.2'
-    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.1.0'
+    compile 'com.android.support:animated-vector-drawable:27.1.0'
+    compile 'com.android.support:cardview-v7:27.1.0'
+    compile 'com.android.support:design:27.1.0'
 
     // Firebase Authentication
     compile 'com.google.firebase:firebase-auth:11.8.0'
@@ -69,13 +69,13 @@ dependencies {
     // Firebase UI
     // Used in FirebaseUIActivity. The FirebaseUI-Android library has a minSdk level of 16
     // so this library is only included in the minSdkJellybean variant.
-    minSdkJellybeanCompile 'com.firebaseui:firebase-ui-auth:3.2.1'
+    minSdkJellybeanCompile 'com.firebaseui:firebase-ui-auth:3.2.2'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity. This is only compiled into the minSdkJellybean variant of this
     // app. You can build a 'minSdkGingerbread' variant to test on devices with 9 <= SDK <= 15.
     minSdkJellybeanCompile 'com.facebook.android:facebook-login:4.30.0'
-    minSdkJellybeanCompile 'com.android.support:customtabs:27.0.2'
+    minSdkJellybeanCompile 'com.android.support:customtabs:27.1.0'
 
     // Twitter Android SDK (only required for Twitter Login)
     compile('com.twitter.sdk.android:twitter-core:3.2.0@aar') {

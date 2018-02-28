@@ -28,13 +28,13 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:27.0.2'
+    resolutionStrategy.force 'com.android.support:support-annotations:27.1.0'
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support:customtabs:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.1.0'
+    compile 'com.android.support:support-v4:27.1.0'
+    compile 'com.android.support:customtabs:27.1.0'
 
     // [START gradle_play_config]
     compile 'com.google.firebase:firebase-ads:11.8.0'
