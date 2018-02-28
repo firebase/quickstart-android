@@ -36,19 +36,19 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:11.8.0'
 
     // FirebaseUI (for authentication)
-    compile 'com.firebaseui:firebase-ui-auth:3.2.1'
+    compile 'com.firebaseui:firebase-ui-auth:3.2.2'
 
     // ButterKnife (for sample code brevity)
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // Support Libs
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:animated-vector-drawable:27.0.2'
-    compile 'com.android.support:cardview-v7:27.0.2'
-    compile 'com.android.support:customtabs:27.0.2'
-    compile 'com.android.support:design:27.0.2'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.1.0'
+    compile 'com.android.support:animated-vector-drawable:27.1.0'
+    compile 'com.android.support:cardview-v7:27.1.0'
+    compile 'com.android.support:customtabs:27.1.0'
+    compile 'com.android.support:design:27.1.0'
+    compile 'com.android.support:recyclerview-v7:27.1.0'
 
     // Android architecture components
     compile 'android.arch.lifecycle:runtime:1.1.0'

@@ -23,7 +23,7 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:27.0.2'
+    resolutionStrategy.force 'com.android.support:support-annotations:27.1.0'
 }
 
 dependencies {
@@ -31,8 +31,8 @@ dependencies {
     compile 'com.google.firebase:firebase-appindexing:11.8.0'
     // [END app_indexing_gradle_dep]
 
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:support-v4:27.1.0'
+    compile 'com.android.support:appcompat-v7:27.1.0'
 
     // Testing
     androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'

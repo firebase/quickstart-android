@@ -33,16 +33,16 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:27.0.2'
+    resolutionStrategy.force 'com.android.support:support-annotations:27.1.0'
 }
 
 dependencies {
-    compile 'com.android.support:multidex:1.0.2'
+    compile 'com.android.support:multidex:1.0.3'
 
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:animated-vector-drawable:27.0.2'
-    compile 'com.android.support:cardview-v7:27.0.2'
-    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.1.0'
+    compile 'com.android.support:animated-vector-drawable:27.1.0'
+    compile 'com.android.support:cardview-v7:27.1.0'
+    compile 'com.android.support:design:27.1.0'
 
     // Firebase Authentication
     compile 'com.google.firebase:firebase-auth:11.8.0'
@@ -52,12 +52,12 @@ dependencies {
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    compile 'com.firebaseui:firebase-ui-auth:3.2.1'
+    compile 'com.firebaseui:firebase-ui-auth:3.2.2'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
     compile 'com.facebook.android:facebook-login:4.30.0'
-    compile'com.android.support:customtabs:27.0.2'
+    compile'com.android.support:customtabs:27.1.0'
 
     // Twitter Android SDK (only required for Twitter Login)
     compile('com.twitter.sdk.android:twitter-core:3.2.0@aar') {
