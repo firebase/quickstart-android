@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-check.dependsOn 'assembleMinSdkJellybeanDebugAndroidTest', 'assembleMinSdkIcsDebugAndroidTest'
+check.dependsOn 'assembleDebugAndroidTest'
 
 android {
     compileSdkVersion 27
@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.auth"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -29,22 +29,6 @@ android {
 
     lintOptions {
         abortOnError false
-    }
-
-    productFlavors {
-
-        // Build variant with minSdk 16 to include Facebook and FirebaseUI libraries.
-        minSdkJellybean {
-            dimension "minSdkVersion"
-            minSdkVersion 16
-        }
-
-        // Build variant with minSdk 14, excludes Facebook and FirebaseUI libraries.
-        minSdkIcs {
-            dimension "minSdkVersion"
-            minSdkVersion 14
-        }
-
     }
 }
 
@@ -67,15 +51,13 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:11.8.0'
 
     // Firebase UI
-    // Used in FirebaseUIActivity. The FirebaseUI-Android library has a minSdk level of 16
-    // so this library is only included in the minSdkJellybean variant.
-    minSdkJellybeanCompile 'com.firebaseui:firebase-ui-auth:3.2.1'
+    // Used in FirebaseUIActivity.
+    compile 'com.firebaseui:firebase-ui-auth:3.2.1'
 
     // Facebook Android SDK (only required for Facebook Login)
-    // Used in FacebookLoginActivity. This is only compiled into the minSdkJellybean variant of this
-    // app. You can build a 'minSdkGingerbread' variant to test on devices with 9 <= SDK <= 15.
-    minSdkJellybeanCompile 'com.facebook.android:facebook-login:4.30.0'
-    minSdkJellybeanCompile 'com.android.support:customtabs:27.0.2'
+    // Used in FacebookLoginActivity.
+    compile 'com.facebook.android:facebook-login:4.30.0'
+    compile'com.android.support:customtabs:27.0.2'
 
     // Twitter Android SDK (only required for Twitter Login)
     compile('com.twitter.sdk.android:twitter-core:3.2.0@aar') {
