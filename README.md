@@ -24,6 +24,7 @@ the sample you wish to run.
 - [Crash](crash/README.md)
 - [Database](database/README.md)
 - [Firestore](firestore/README.md)
+- [Functions](functions/README.md)
 - [Dynamic Links](dynamiclinks/README.md)
 - [Invites](invites/README.md)
 - [Messaging](messaging/README.md)
