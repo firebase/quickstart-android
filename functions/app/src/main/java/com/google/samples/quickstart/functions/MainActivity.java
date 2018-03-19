@@ -163,7 +163,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Exception e = task.getException();
                             if (e instanceof FirebaseFunctionsException) {
                                 FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+
+                                // Function error code, will be INTERNAL if the failure
+                                // was not handled properly in the function call.
                                 FirebaseFunctionsException.Code code = ffe.getCode();
+
+                                // Arbitrary error details passed back from the function,
+                                // usually a Map<String, Object>.
                                 Object details = ffe.getDetails();
                             }
 
@@ -217,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // [END_EXCLUDE]
                     }
                 });
-        // [END_add_message]
+        // [END call_add_message]
     }
 
     private void onSignInClicked() {
@@ -226,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        signIn();;
+        signIn();
     }
 
     private void showSnackbar(String message) {
