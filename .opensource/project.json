@@ -25,6 +25,7 @@
       "database/README.md",
       "dynamiclinks/README.md",
       "firestore/README.md",
+      "functions/README.md",
       "invites/README.md",
       "messaging/README.md",
       "perf/README.md",
