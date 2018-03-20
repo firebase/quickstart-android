@@ -19,7 +19,5 @@
 -keepattributes EnclosingMethod
 -keepattributes InnerClasses
 
--dontwarn org.xmlpull.v1.**
--dontnote org.xmlpull.v1.**
--keep class org.xmlpull.** { *; }
--keepclassmembers class org.xmlpull.** { *; }
+# https://github.com/firebase/FirebaseUI-Android/issues/1175
+-dontwarn com.firebase.ui.auth.provider.**
