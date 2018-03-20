@@ -36,6 +36,7 @@ import android.widget.TextView;
  *     {@link FacebookLoginActivity}
  *     {@link TwitterLoginActivity}
  *     {@link EmailPasswordActivity}
+ *     {@link PasswordlessActivity}
  *     {@link PhoneAuthActivity}
  *     {@link AnonymousAuthActivity}
  *     {@link CustomAuthActivity}
@@ -47,6 +48,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             FacebookLoginActivity.class,
             TwitterLoginActivity.class,
             EmailPasswordActivity.class,
+            PasswordlessActivity.class,
             PhoneAuthActivity.class,
             AnonymousAuthActivity.class,
             FirebaseUIActivity.class,
@@ -58,6 +60,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             R.string.desc_facebook_login,
             R.string.desc_twitter_login,
             R.string.desc_emailpassword,
+            R.string.desc_passwordless,
             R.string.desc_phone_auth,
             R.string.desc_anonymous_auth,
             R.string.desc_firebase_ui,

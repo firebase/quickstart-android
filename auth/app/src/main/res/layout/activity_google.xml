@@ -70,6 +70,7 @@
 
             <Button
                 android:id="@+id/sign_out_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -78,6 +79,7 @@
 
             <Button
                 android:id="@+id/disconnect_button"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
