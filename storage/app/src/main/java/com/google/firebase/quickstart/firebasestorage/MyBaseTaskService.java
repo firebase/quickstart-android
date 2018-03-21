@@ -1,10 +1,12 @@
 package com.google.firebase.quickstart.firebasestorage;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -13,6 +15,8 @@ import android.util.Log;
  * count is zero.
  */
 public abstract class MyBaseTaskService extends Service {
+
+    private static final String CHANNEL_ID_DEFAULT = "default";
 
     static final int PROGRESS_NOTIFICATION_ID = 0;
     static final int FINISHED_NOTIFICATION_ID = 1;
@@ -39,6 +43,18 @@ public abstract class MyBaseTaskService extends Service {
         }
     }
 
+    private void createDefaultChannel() {
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID_DEFAULT,
+                    "Default",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            nm.createNotificationChannel(channel);
+        }
+    }
+
     /**
      * Show notification with a progress bar.
      */
@@ -48,7 +64,8 @@ public abstract class MyBaseTaskService extends Service {
             percentComplete = (int) (100 * completedUnits / totalUnits);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        createDefaultChannel();
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID_DEFAULT)
                 .setSmallIcon(R.drawable.ic_file_upload_white_24dp)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(caption)
@@ -72,7 +89,8 @@ public abstract class MyBaseTaskService extends Service {
 
         int icon = success ? R.drawable.ic_check_white_24 : R.drawable.ic_error_white_24dp;
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        createDefaultChannel();
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID_DEFAULT)
                 .setSmallIcon(icon)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(caption)
