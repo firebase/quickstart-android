@@ -46,7 +46,7 @@ dependencies {
 
     // This dependency is only needed due to
     //  https://github.com/firebase/FirebaseUI-Android/issues/1175
-    compile 'com.twitter.sdk.android:twitter-core:3.1.0'
+    compile 'com.twitter.sdk.android:twitter-core:3.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
