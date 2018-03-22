@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    // Changes the test build type for instrumented tests to "release".
+    // Changes the test build type for instrumented tests to "stage".
     testBuildType "release"
     compileSdkVersion 27
     buildToolsVersion '27.0.2'
