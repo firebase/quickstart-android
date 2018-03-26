@@ -63,7 +63,7 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
         // Restore the "pending" email address
         if (savedInstanceState != null) {
             mPendingEmail = savedInstanceState.getString(KEY_PENDING_EMAIL, null);
-            mEmailField.setText(KEY_PENDING_EMAIL);
+            mEmailField.setText(mPendingEmail);
         }
 
         // Check if the Intent that started the Activity contains an email sign-in link.
