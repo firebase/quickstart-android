@@ -19,5 +19,5 @@
 -keepattributes EnclosingMethod
 -keepattributes InnerClasses
 
-# https://github.com/firebase/FirebaseUI-Android/issues/1175
--dontwarn com.firebase.ui.auth.provider.**
+# https://github.com/firebase/FirebaseUI-Android/issues/1227
+-dontwarn com.firebase.ui.auth.data.remote.**
