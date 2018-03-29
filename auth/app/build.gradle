@@ -3,7 +3,6 @@ check.dependsOn 'assembleDebugAndroidTest'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.2'
     flavorDimensions "minSdkVersion"
 
     defaultConfig {
@@ -37,38 +36,34 @@ configurations.all {
 }
 
 dependencies {
-    compile 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.support:multidex:1.0.3'
 
-    compile 'com.android.support:appcompat-v7:27.1.0'
-    compile 'com.android.support:animated-vector-drawable:27.1.0'
-    compile 'com.android.support:cardview-v7:27.1.0'
-    compile 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:animated-vector-drawable:27.1.0'
+    implementation 'com.android.support:cardview-v7:27.1.0'
+    implementation 'com.android.support:design:27.1.0'
 
     // Firebase Authentication
-    compile 'com.google.firebase:firebase-auth:12.0.1'
+    implementation 'com.google.firebase:firebase-auth:12.0.1'
 
     // Google Sign In SDK (only required for Google Sign In)
-    compile 'com.google.android.gms:play-services-auth:12.0.1'
+    implementation 'com.google.android.gms:play-services-auth:12.0.1'
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    compile 'com.firebaseui:firebase-ui-auth:3.3.0'
+    implementation 'com.firebaseui:firebase-ui-auth:3.3.0'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    compile 'com.facebook.android:facebook-login:4.31.0'
-    compile'com.android.support:customtabs:27.1.0'
+    implementation 'com.facebook.android:facebook-login:4.31.0'
+    implementation 'com.android.support:customtabs:27.1.0'
 
     // Twitter Android SDK (only required for Twitter Login)
-    compile('com.twitter.sdk.android:twitter-core:3.2.0@aar') {
-        transitive = true
-    }
-    compile('com.twitter.sdk.android:twitter:3.2.0@aar') {
-        transitive = true
-    }
+    implementation 'com.twitter.sdk.android:twitter-core:3.2.0'
+    implementation 'com.twitter.sdk.android:twitter:3.2.0'
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
-    androidTestCompile 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
