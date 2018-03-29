@@ -3,7 +3,6 @@ check.dependsOn 'assembleDebugAndroidTest'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.2'
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.firebasestorage"
