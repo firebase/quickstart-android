@@ -39,18 +39,18 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:27.1.0'
-    compile 'com.android.support:animated-vector-drawable:27.1.0'
-    compile 'com.android.support:support-v4:27.1.0'
-    compile 'com.android.support:support-compat:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:animated-vector-drawable:27.1.0'
+    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.android.support:support-compat:27.1.0'
 
-    compile 'com.google.firebase:firebase-messaging:12.0.1'
-    compile 'com.firebase:firebase-jobdispatcher:0.8.5'
+    implementation 'com.google.firebase:firebase-messaging:12.0.1'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 
     // Testing dependencies
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
-    androidTestCompile 'com.android.support.test:runner:1.0.1'
-    androidTestCompile 'com.android.support:support-annotations:27.1.0'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support:support-annotations:27.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
