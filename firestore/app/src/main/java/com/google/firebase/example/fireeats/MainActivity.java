@@ -187,7 +187,8 @@ public class MainActivity extends AppCompatActivity implements
                 if (response == null) {
                     // User pressed the back button.
                     finish();
-                } else if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                } else if (response.getError() != null
+                        && response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
                     showSignInErrorDialog(R.string.message_no_network);
                 } else {
                     showSignInErrorDialog(R.string.message_unknown);
@@ -266,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements
         // Sign in with FirebaseUI
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(Collections.singletonList(
-                        new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
+                        new AuthUI.IdpConfig.EmailBuilder().build()))
                 .setIsSmartLockEnabled(false)
                 .build();
 
