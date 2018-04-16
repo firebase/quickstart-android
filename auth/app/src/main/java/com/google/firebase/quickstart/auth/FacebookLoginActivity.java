@@ -17,7 +17,6 @@
 package com.google.firebase.quickstart.auth;
 
 import android.content.Intent;
-import android.hardware.camera2.params.Face;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -29,7 +28,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -61,7 +59,6 @@ public class FacebookLoginActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_facebook);
 
         // Views
