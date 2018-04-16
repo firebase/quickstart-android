@@ -9,8 +9,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -88,14 +90,25 @@ public class MyUploadService extends MyBaseTaskService {
                                 taskSnapshot.getTotalByteCount());
                     }
                 })
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Upload succeeded
-                        Log.d(TAG, "uploadFromUri:onSuccess");
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        // Forward any exceptions
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
 
-                        // Get the public download URL
-                        Uri downloadUri = taskSnapshot.getMetadata().getDownloadUrl();
+                        Log.d(TAG, "uploadFromUri: upload success");
+
+                        // Request the public download URL
+                        return photoRef.getDownloadUrl();
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(@NonNull Uri downloadUri) {
+                        // Upload succeeded
+                        Log.d(TAG, "uploadFromUri: getDownloadUri success");
 
                         // [START_EXCLUDE]
                         broadcastUploadFinished(downloadUri, fileUri);
