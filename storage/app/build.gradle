@@ -22,12 +22,12 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:27.1.0'
+    resolutionStrategy.force 'com.android.support:support-annotations:27.1.1'
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.1.0'
-    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
 
     implementation 'com.google.firebase:firebase-auth:15.0.0'
     implementation 'com.google.firebase:firebase-storage:15.0.0'

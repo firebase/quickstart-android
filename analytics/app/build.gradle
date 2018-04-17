@@ -22,14 +22,14 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:27.1.0'
+    resolutionStrategy.force 'com.android.support:support-annotations:27.1.1'
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.1.0'
-    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
 
-    implementation 'com.google.firebase:firebase-analytics:12.0.1'
+    implementation 'com.google.firebase:firebase-analytics:15.0.0'
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
