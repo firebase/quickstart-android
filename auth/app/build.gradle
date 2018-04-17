@@ -32,31 +32,31 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:27.1.0'
+    resolutionStrategy.force 'com.android.support:support-annotations:27.1.1'
 }
 
 dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
-    implementation 'com.android.support:appcompat-v7:27.1.0'
-    implementation 'com.android.support:animated-vector-drawable:27.1.0'
-    implementation 'com.android.support:cardview-v7:27.1.0'
-    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:animated-vector-drawable:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
 
     // Firebase Authentication
-    implementation 'com.google.firebase:firebase-auth:12.0.1'
+    implementation 'com.google.firebase:firebase-auth:15.0.0'
 
     // Google Sign In SDK (only required for Google Sign In)
-    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+    implementation 'com.google.android.gms:play-services-auth:15.0.0'
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    implementation 'com.firebaseui:firebase-ui-auth:3.3.0'
+    implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    implementation 'com.facebook.android:facebook-login:4.31.0'
-    implementation 'com.android.support:customtabs:27.1.0'
+    implementation 'com.facebook.android:facebook-login:4.32.0'
+    implementation 'com.android.support:customtabs:27.1.1'
 
     // Twitter Android SDK (only required for Twitter Login)
     implementation 'com.twitter.sdk.android:twitter-core:3.2.0'

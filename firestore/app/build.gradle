@@ -28,26 +28,26 @@ android {
 
 dependencies {
     // Firestore
-    implementation 'com.google.firebase:firebase-firestore:12.0.1'
+    implementation 'com.google.firebase:firebase-firestore:15.0.0'
 
     // Other Firebase/Play services deps
-    implementation 'com.google.firebase:firebase-auth:12.0.1'
-    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+    implementation 'com.google.firebase:firebase-auth:15.0.0'
+    implementation 'com.google.android.gms:play-services-auth:15.0.0'
 
     // FirebaseUI (for authentication)
-    implementation 'com.firebaseui:firebase-ui-auth:3.3.0'
+    implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
 
     // ButterKnife (for sample code brevity)
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // Support Libs
-    implementation 'com.android.support:appcompat-v7:27.1.0'
-    implementation 'com.android.support:animated-vector-drawable:27.1.0'
-    implementation 'com.android.support:cardview-v7:27.1.0'
-    implementation 'com.android.support:customtabs:27.1.0'
-    implementation 'com.android.support:design:27.1.0'
-    implementation 'com.android.support:recyclerview-v7:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:animated-vector-drawable:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:customtabs:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 
     // Android architecture components
     implementation 'android.arch.lifecycle:runtime:1.1.1'
