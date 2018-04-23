@@ -1,0 +1,8 @@
+{
+	// We create a test account test@mailinator.com with password password.
+	"users": [{
+		"localId": "1",
+		"email": "test@mailinator.com",
+		"passwordHash": "XohImNooBHFR0OVvjcYpJ3NgPQ1qq73WKhHvch0VQtg=",
+	}]
+}
