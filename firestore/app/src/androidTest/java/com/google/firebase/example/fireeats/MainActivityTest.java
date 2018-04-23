@@ -33,17 +33,22 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
-@LargeTest @RunWith(AndroidJUnit4.class) public class MainActivityTest {
+@LargeTest
+@RunWith(AndroidJUnit4.class)
+public class MainActivityTest {
 
-  @Rule public ActivityTestRule<MainActivity> mActivityTestRule =
+  @Rule
+  public ActivityTestRule<MainActivity> mActivityTestRule =
       new ActivityTestRule<>(MainActivity.class, false, false);
 
-  @Before public void before() {
+  @Before
+  public void before() {
     // Sign out of any existing sessions
     FirebaseAuth.getInstance().signOut();
   }
 
-  @Test public void testAddItemsAndReview() throws InterruptedException {
+  @Test
+  public void testAddItemsAndReview() throws InterruptedException {
     mActivityTestRule.launchActivity(new Intent());
     Thread.sleep(2000);
 
@@ -109,12 +114,14 @@ import static org.hamcrest.Matchers.is;
       final int position) {
 
     return new TypeSafeMatcher<View>() {
-      @Override public void describeTo(Description description) {
+      @Override
+      public void describeTo(Description description) {
         description.appendText("Child at position " + position + " in parent ");
         parentMatcher.describeTo(description);
       }
 
-      @Override public boolean matchesSafely(View view) {
+      @Override
+      public boolean matchesSafely(View view) {
         ViewParent parent = view.getParent();
         return parent instanceof ViewGroup && parentMatcher.matches(parent) && view.equals(
             ((ViewGroup) parent).getChildAt(position));
