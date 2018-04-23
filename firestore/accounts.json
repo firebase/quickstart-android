@@ -1,5 +1,4 @@
 {
-	// We create a test account test@mailinator.com with password password.
 	"users": [{
 		"localId": "1",
 		"email": "test@mailinator.com",
