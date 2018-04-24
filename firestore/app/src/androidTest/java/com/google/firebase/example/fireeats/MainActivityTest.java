@@ -2,6 +2,8 @@ package com.google.firebase.example.fireeats;
 
 import android.content.Intent;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.example.fireeats.model.Rating;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -18,19 +21,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
@@ -54,16 +59,16 @@ public class MainActivityTest {
 
     // Input email for account created in the setup.sh
     ViewInteraction textInputEditText = onView(withId(R.id.email));
-    textInputEditText.perform(scrollTo(), replaceText("test@mailinator.com"), closeSoftKeyboard());
+    textInputEditText.perform(click()).perform(replaceText("test@mailinator.com"));
     ViewInteraction appCompatButton = onView(withId(R.id.button_next));
-    appCompatButton.perform(scrollTo(), click());
+    appCompatButton.perform(click());
     Thread.sleep(2000);
 
     //Input password
     ViewInteraction textInputEditText4 = onView(withId(R.id.password));
-    textInputEditText4.perform(scrollTo(), replaceText("password"), closeSoftKeyboard());
+    textInputEditText4.perform(replaceText("password"));
     ViewInteraction appCompatButton2 = onView(withId(R.id.button_done));
-    appCompatButton2.perform(scrollTo(), click());
+    appCompatButton2.perform(click());
     Thread.sleep(2000);
 
     // Add random items
@@ -76,32 +81,24 @@ public class MainActivityTest {
     Thread.sleep(5000);
 
     // Click on the first restaurant
-    ViewInteraction recyclerView = onView(allOf(withId(R.id.recycler_restaurants),
-        childAtPosition(withClassName(is("android.widget.RelativeLayout")), 2)));
-    recyclerView.perform(actionOnItemAtPosition(0, click()));
+    ViewInteraction recyclerView = onView(withId(R.id.recycler_restaurants));
+    recyclerView.perform(click());
     Thread.sleep(2000);
 
     // Click add review
-    ViewInteraction floatingActionButton = onView(allOf(withId(R.id.fab_show_rating_dialog),
-        childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
+    ViewInteraction floatingActionButton = onView(withId(R.id.fab_show_rating_dialog));
     floatingActionButton.perform(click());
     Thread.sleep(2000);
 
     //Write a review
-    ViewInteraction appCompatEditText = onView(allOf(withId(R.id.restaurant_form_text),
-        childAtPosition(childAtPosition(withId(android.R.id.content), 0), 2), isDisplayed()));
-    appCompatEditText.perform(click());
-    ViewInteraction appCompatEditText2 = onView(allOf(withId(R.id.restaurant_form_text),
-        childAtPosition(childAtPosition(withId(android.R.id.content), 0), 2), isDisplayed()));
+    ViewInteraction appCompatEditText2 = onView(withId(R.id.restaurant_form_text));
     appCompatEditText2.perform(replaceText("\uD83D\uDE0E\uD83D\uDE00"), closeSoftKeyboard());
 
     //Submit the review
-    ViewInteraction appCompatButton3 = onView(
-        allOf(withId(R.id.restaurant_form_button), withText("Submit"),
-            childAtPosition(childAtPosition(withClassName(is("android.widget.LinearLayout")), 3),
-                2), isDisplayed()));
+    ViewInteraction appCompatButton3 = onView(withId(R.id.restaurant_form_button));
     appCompatButton3.perform(click());
-    Thread.sleep(2000);
+    Thread.sleep(5000);
+
 
     // Assert that the review exists
     ViewInteraction textView = onView(
