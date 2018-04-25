@@ -57,6 +57,12 @@ dependencies {
     // Third-party libraries
     implementation 'me.zhanghai.android.materialratingbar:library:1.2.0'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
+
+    // Testing
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
