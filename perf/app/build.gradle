@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:3.7.0'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 }
