@@ -63,7 +63,7 @@ public class RestaurantUtil {
         restaurant.setCategory(getRandomString(categories, random));
         restaurant.setPhoto(getRandomImageUrl(random));
         restaurant.setPrice(getRandomInt(prices, random));
-        restaurant.setNumRatings(4);
+        restaurant.setNumRatings(random.nextInt(20));
 
         // Note: average rating intentionally not set
 

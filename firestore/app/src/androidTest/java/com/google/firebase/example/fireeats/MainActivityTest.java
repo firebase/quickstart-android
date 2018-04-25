@@ -2,6 +2,7 @@ package com.google.firebase.example.fireeats;
 
 import android.content.Intent;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -24,6 +25,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -68,8 +70,8 @@ import static org.hamcrest.Matchers.is;
     Thread.sleep(5000);
 
     // Click on the first restaurant
-    ViewInteraction recyclerView = onView(withId(R.id.recycler_restaurants));
-    recyclerView.perform(click());
+    onView(withId(R.id.recycler_restaurants)).perform(
+        RecyclerViewActions.actionOnItemAtPosition(0, click()));
     Thread.sleep(2000);
 
     // Click add review
@@ -87,10 +89,12 @@ import static org.hamcrest.Matchers.is;
     Thread.sleep(5000);
 
     // Assert that the review exists
-    ViewInteraction textView = onView(
-        allOf(withId(R.id.rating_item_text), withText("\uD83D\uDE0E\uD83D\uDE00"),
-            childAtPosition(childAtPosition(withId(R.id.recycler_ratings), 0), 4), isDisplayed()));
-    textView.check(matches(withText("\uD83D\uDE0E\uD83D\uDE00")));
+    onView(withRecyclerView(R.id.recycler_ratings).atPosition(0)).check(
+        matches(hasDescendant(withText("\uD83D\uDE0E\uD83D\uDE00"))));
+  }
+
+  public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
+    return new RecyclerViewMatcher(recyclerViewId);
   }
 
   private static Matcher<View> childAtPosition(final Matcher<View> parentMatcher,
