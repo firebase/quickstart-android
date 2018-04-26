@@ -2,6 +2,7 @@ package com.google.firebase.example.fireeats;
 
 import android.content.Intent;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -23,9 +24,8 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -33,37 +33,32 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
-@LargeTest
-@RunWith(AndroidJUnit4.class)
-public class MainActivityTest {
+@LargeTest @RunWith(AndroidJUnit4.class) public class MainActivityTest {
 
-  @Rule
-  public ActivityTestRule<MainActivity> mActivityTestRule =
+  @Rule public ActivityTestRule<MainActivity> mActivityTestRule =
       new ActivityTestRule<>(MainActivity.class, false, false);
 
-  @Before
-  public void before() {
+  @Before public void before() {
     // Sign out of any existing sessions
     FirebaseAuth.getInstance().signOut();
   }
 
-  @Test
-  public void testAddItemsAndReview() throws InterruptedException {
+  @Test public void testAddItemsAndReview() throws InterruptedException {
     mActivityTestRule.launchActivity(new Intent());
     Thread.sleep(2000);
 
     // Input email for account created in the setup.sh
-    ViewInteraction textInputEditText = onView(withId(R.id.email));
-    textInputEditText.perform(scrollTo(), replaceText("test@mailinator.com"), closeSoftKeyboard());
+    ViewInteraction emailEditText = onView(withId(R.id.email));
+    emailEditText.perform(click()).perform(replaceText("test@mailinator.com"));
     ViewInteraction appCompatButton = onView(withId(R.id.button_next));
-    appCompatButton.perform(scrollTo(), click());
+    appCompatButton.perform(click());
     Thread.sleep(2000);
 
     //Input password
-    ViewInteraction textInputEditText4 = onView(withId(R.id.password));
-    textInputEditText4.perform(scrollTo(), replaceText("password"), closeSoftKeyboard());
+    ViewInteraction passwordEditText = onView(withId(R.id.password));
+    passwordEditText.perform(replaceText("password"));
     ViewInteraction appCompatButton2 = onView(withId(R.id.button_done));
-    appCompatButton2.perform(scrollTo(), click());
+    appCompatButton2.perform(click());
     Thread.sleep(2000);
 
     // Add random items
@@ -76,52 +71,39 @@ public class MainActivityTest {
     Thread.sleep(5000);
 
     // Click on the first restaurant
-    ViewInteraction recyclerView = onView(allOf(withId(R.id.recycler_restaurants),
-        childAtPosition(withClassName(is("android.widget.RelativeLayout")), 2)));
-    recyclerView.perform(actionOnItemAtPosition(0, click()));
+    onView(withId(R.id.recycler_restaurants)).perform(
+        RecyclerViewActions.actionOnItemAtPosition(0, click()));
     Thread.sleep(2000);
 
     // Click add review
-    ViewInteraction floatingActionButton = onView(allOf(withId(R.id.fab_show_rating_dialog),
-        childAtPosition(childAtPosition(withId(android.R.id.content), 0), 1), isDisplayed()));
+    ViewInteraction floatingActionButton = onView(withId(R.id.fab_show_rating_dialog));
     floatingActionButton.perform(click());
     Thread.sleep(2000);
 
     //Write a review
-    ViewInteraction appCompatEditText = onView(allOf(withId(R.id.restaurant_form_text),
-        childAtPosition(childAtPosition(withId(android.R.id.content), 0), 2), isDisplayed()));
-    appCompatEditText.perform(click());
-    ViewInteraction appCompatEditText2 = onView(allOf(withId(R.id.restaurant_form_text),
-        childAtPosition(childAtPosition(withId(android.R.id.content), 0), 2), isDisplayed()));
-    appCompatEditText2.perform(replaceText("\uD83D\uDE0E\uD83D\uDE00"), closeSoftKeyboard());
+    ViewInteraction reviewEditText = onView(withId(R.id.restaurant_form_text));
+    reviewEditText.perform(replaceText("\uD83D\uDE0E\uD83D\uDE00"), closeSoftKeyboard());
 
     //Submit the review
-    ViewInteraction appCompatButton3 = onView(
-        allOf(withId(R.id.restaurant_form_button), withText("Submit"),
-            childAtPosition(childAtPosition(withClassName(is("android.widget.LinearLayout")), 3),
-                2), isDisplayed()));
-    appCompatButton3.perform(click());
-    Thread.sleep(2000);
+    ViewInteraction submitButton = onView(withId(R.id.restaurant_form_button));
+    submitButton.perform(click());
+    Thread.sleep(5000);
 
     // Assert that the review exists
-    ViewInteraction textView = onView(
-        allOf(withId(R.id.rating_item_text), withText("\uD83D\uDE0E\uD83D\uDE00"),
-            childAtPosition(childAtPosition(withId(R.id.recycler_ratings), 0), 4), isDisplayed()));
-    textView.check(matches(withText("\uD83D\uDE0E\uD83D\uDE00")));
+    onView(withId(R.id.recycler_ratings)).perform(RecyclerViewActions.scrollToPosition(0))
+        .check(matches(hasDescendant(withText("\uD83D\uDE0E\uD83D\uDE00"))));
   }
 
   private static Matcher<View> childAtPosition(final Matcher<View> parentMatcher,
       final int position) {
 
     return new TypeSafeMatcher<View>() {
-      @Override
-      public void describeTo(Description description) {
+      @Override public void describeTo(Description description) {
         description.appendText("Child at position " + position + " in parent ");
         parentMatcher.describeTo(description);
       }
 
-      @Override
-      public boolean matchesSafely(View view) {
+      @Override public boolean matchesSafely(View view) {
         ViewParent parent = view.getParent();
         return parent instanceof ViewGroup && parentMatcher.matches(parent) && view.equals(
             ((ViewGroup) parent).getChildAt(position));

@@ -31,3 +31,4 @@
 -dontwarn okio.**
 -dontwarn retrofit2.Call
 -dontnote retrofit2.Platform$IOS$MainThreadExecutor
+-keep class android.support.v7.widget.RecyclerView { *; }
