@@ -28,6 +28,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -89,12 +90,8 @@ import static org.hamcrest.Matchers.is;
     Thread.sleep(5000);
 
     // Assert that the review exists
-    onView(withRecyclerView(R.id.recycler_ratings).atPosition(0)).check(
-        matches(hasDescendant(withText("\uD83D\uDE0E\uD83D\uDE00"))));
-  }
-
-  public static RecyclerViewMatcher withRecyclerView(final int recyclerViewId) {
-    return new RecyclerViewMatcher(recyclerViewId);
+    onView(withId(R.id.recycler_ratings)).perform(RecyclerViewActions.scrollToPosition(0))
+        .check(matches(hasDescendant(withText("\uD83D\uDE0E\uD83D\uDE00"))));
   }
 
   private static Matcher<View> childAtPosition(final Matcher<View> parentMatcher,
