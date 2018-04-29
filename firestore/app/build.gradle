@@ -72,16 +72,4 @@ dependencies {
 
 }
 
-configurations {
-    lol
-}
-
-dependencies {
-    lol 'com.google.firebase:firebase-firestore:15.0.0'
-}
-
-task printLocations << {
-    configurations.lol.files.each { println it }
-}
-
 apply plugin: 'com.google.gms.google-services'
