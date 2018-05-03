@@ -27,7 +27,7 @@ configurations.all {
 
 dependencies {
     // [START app_indexing_gradle_dep]
-    implementation 'com.google.firebase:firebase-appindexing:15.0.0'
+    implementation 'com.google.firebase:firebase-appindexing:15.0.1'
     // [END app_indexing_gradle_dep]
     implementation 'com.google.firebase:firebase-core:15.0.2'
 

@@ -48,7 +48,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:15.0.2'
 
     // Google Sign In SDK (only required for Google Sign In)
-    implementation 'com.google.android.gms:play-services-auth:15.0.0'
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
 
     // Firebase UI
     // Used in FirebaseUIActivity.
