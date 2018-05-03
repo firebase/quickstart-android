@@ -28,7 +28,7 @@ android.applicationVariants.all {
 }
 
 dependencies {
-    implementation 'com.google.firebase:firebase-core:15.0.0'
+    implementation 'com.google.firebase:firebase-core:15.0.2'
     implementation 'com.google.firebase:firebase-perf:11.8.0'
 
     implementation 'com.android.support:support-v4:27.1.1'
