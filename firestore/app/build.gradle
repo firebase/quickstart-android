@@ -10,6 +10,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         vectorDrawables.useSupportLibrary true
 
@@ -31,11 +32,11 @@ android {
 
 dependencies {
     // Firestore
-    implementation 'com.google.firebase:firebase-firestore:15.0.0'
+    implementation 'com.google.firebase:firebase-firestore:16.0.0'
 
     // Other Firebase/Play services deps
-    implementation 'com.google.firebase:firebase-core:15.0.0'
-    implementation 'com.google.firebase:firebase-auth:15.0.0'
+    implementation 'com.google.firebase:firebase-core:15.0.2'
+    implementation 'com.google.firebase:firebase-auth:15.1.0'
     implementation 'com.google.android.gms:play-services-auth:15.0.0'
 
     // FirebaseUI (for authentication)
@@ -52,6 +53,7 @@ dependencies {
     implementation 'com.android.support:customtabs:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:multidex:1.0.3'
 
     // Android architecture components
     implementation 'android.arch.lifecycle:runtime:1.1.1'
@@ -68,7 +70,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
-    androidTestImplementation "com.google.firebase:firebase-auth:15.0.0"
+    androidTestImplementation "com.google.firebase:firebase-auth:15.1.0"
 
 }
 
