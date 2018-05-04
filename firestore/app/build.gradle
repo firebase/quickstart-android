@@ -69,7 +69,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'junit:junit:4.12'
-    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:1.4-atlassian-1'
     androidTestImplementation "com.google.firebase:firebase-auth:15.1.0"
 
 }
