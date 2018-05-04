@@ -27,11 +27,9 @@ allprojects {
     dependencyUpdates.resolutionStrategy = {
         componentSelection { rules ->
             rules.all { selection ->
-                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
-                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-                }
-                if (rejected) {
-                    selection.reject('Release candidate')
+                boolean numbersOnly = (/^[\d.]+$/ ==~ selection.candidate.version)
+                if (!numbersOnly) {
+                    selection.reject("Rejecting: ${selection.candidate.version}")
                 }
             }
         }
