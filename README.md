@@ -28,6 +28,7 @@ the sample you wish to run.
 - [Dynamic Links](dynamiclinks/README.md)
 - [Invites](invites/README.md)
 - [Messaging](messaging/README.md)
+- [ML Kit](ML Kit/README.md)
 - [Performance Monitoring](perf/README.md)
 - [Storage](storage/README.md)
 

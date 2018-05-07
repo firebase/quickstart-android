@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This is an example InsetDrawable. It should be manually reviewed. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_switch_camera_white_48dp_inset"
+    android:insetTop="3.666666746dp"
+    android:insetLeft="3.666666746dp"
+    android:insetBottom="7.666666985dp"
+    android:insetRight="3.666666746dp"
+    android:visible="true" />

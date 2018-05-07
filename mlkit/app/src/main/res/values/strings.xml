@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ML Kit Demo</string>
+    <string name="picture">Picture</string>
+    <string name="help_text">
+      <b>HDR Viewfinder Demo:</b>\n\n
+
+      Tap viewfinder to switch modes.\n\n
+
+      <b>Normal:</b> Standard camera preview\n
+      <b>Split:</b> Manual exposure control\n
+      <b>HDR:</b> Fused HDR viewfinder\n\n
+
+      Swipe up/down in Split/HDR modes to change manual exposure
+      values.\n\n
+
+      The left half of the viewfinder controls exposure time for
+      even-numbered frames, and the right half of the viewfinder
+      controls exposure time for odd-numbered frames
+    </string>
+
+    <string name="info">Info</string>
+
+    <string name="camera_permission_rationale">This sample app requires camera access in order to
+        demo the API.</string>
+    <string name="camera_no_good">No back-facing sufficiently capable camera available!</string>
+    <string name="camera_disabled">Camera is disabled by device policy</string>
+    <string name="camera_disconnected">Camera was disconnected before it was opened</string>
+    <string name="camera_error">Camera service reported an error</string>
+    <string name="camera_unknown">Unknown camera error: %s</string>
+    <string name="camera_permission_denied_explanation">You\'ve denied a permission that the app
+        needs for core functionality. If you selected &quot;don\'t ask again&quot; in the past then
+        you need to use Settings to re-enable the permission.</string>
+
+    <string name="ok">OK</string>
+    <string name="settings">Settings</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="toggle_turn_on">Front</string>
+    <string name="toggle_turn_off">Back</string>
+    <string name="desc_camera_source_activity">Vision detectors demo with live camera preview</string>
+    <string name="desc_still_image_activity">Vision detectors demo with a still image</string>
+</resources>
