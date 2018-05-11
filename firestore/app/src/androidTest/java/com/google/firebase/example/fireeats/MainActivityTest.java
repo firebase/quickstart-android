@@ -49,14 +49,14 @@ import static org.hamcrest.Matchers.is;
 
     // Input email for account created in the setup.sh
     ViewInteraction emailEditText = onView(withId(R.id.email));
-    emailEditText.perform(click()).perform(replaceText("test@mailinator.com"));
+    emailEditText.perform(click()).perform(replaceText("test@mailinator.com"), closeSoftKeyboard());
     ViewInteraction appCompatButton = onView(withId(R.id.button_next));
     appCompatButton.perform(click());
     Thread.sleep(2000);
 
     //Input password
     ViewInteraction passwordEditText = onView(withId(R.id.password));
-    passwordEditText.perform(replaceText("password"));
+    passwordEditText.perform(replaceText("password"), closeSoftKeyboard());
     ViewInteraction appCompatButton2 = onView(withId(R.id.button_done));
     appCompatButton2.perform(click());
     Thread.sleep(2000);
