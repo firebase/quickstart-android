@@ -32,7 +32,7 @@ import java.util.List;
 /** Cloud Label Detector Demo. */
 public class CloudImageLabelingProcessor
     extends VisionProcessorBase<List<FirebaseVisionCloudLabel>> {
-  private static final String TAG = "CloudImageLabelingProcessor";
+  private static final String TAG = "CloudImgLabelProc";
 
   private final FirebaseVisionCloudLabelDetector detector;
 

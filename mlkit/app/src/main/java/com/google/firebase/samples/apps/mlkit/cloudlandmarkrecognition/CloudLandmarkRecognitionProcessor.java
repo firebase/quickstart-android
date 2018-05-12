@@ -31,7 +31,7 @@ import java.util.List;
 /** Cloud Landmark Detector Demo. */
 public class CloudLandmarkRecognitionProcessor
     extends VisionProcessorBase<List<FirebaseVisionCloudLandmark>> {
-  private static final String TAG = "CloudLandmarkRecognitionProcessor";
+  private static final String TAG = "CloudLmkRecProc";
 
   private final FirebaseVisionCloudLandmarkDetector detector;
 
