@@ -44,6 +44,7 @@ import java.util.Map;
  * displaying extra information). This receives preview frames from the camera at a specified rate,
  * sending those frames to child classes' detectors / classifiers as fast as it is able to process.
  */
+@SuppressLint("MissingPermission")
 public class CameraSource {
   @SuppressLint("InlinedApi")
   public static final int CAMERA_FACING_BACK = CameraInfo.CAMERA_FACING_BACK;
@@ -154,6 +155,7 @@ public class CameraSource {
    *
    * @throws IOException if the camera's preview texture or display could not be initialized
    */
+  @SuppressLint("MissingPermission")
   @RequiresPermission(Manifest.permission.CAMERA)
   public synchronized CameraSource start() throws IOException {
     if (camera != null) {

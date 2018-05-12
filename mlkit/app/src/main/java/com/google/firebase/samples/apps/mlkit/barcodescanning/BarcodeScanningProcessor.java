@@ -31,7 +31,7 @@ import java.util.List;
 /** Barcode Detector Demo. */
 public class BarcodeScanningProcessor extends VisionProcessorBase<List<FirebaseVisionBarcode>> {
 
-  private static final String TAG = "BarcodeScanningProcessor";
+  private static final String TAG = "BarcodeScanProc";
 
   private final FirebaseVisionBarcodeDetector detector;
 

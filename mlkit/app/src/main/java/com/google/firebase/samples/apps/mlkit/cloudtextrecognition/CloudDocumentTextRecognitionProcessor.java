@@ -29,7 +29,7 @@ import com.google.firebase.samples.apps.mlkit.VisionProcessorBase;
 public class CloudDocumentTextRecognitionProcessor
     extends VisionProcessorBase<FirebaseVisionCloudText> {
 
-  private static final String TAG = "CloudDocumentTextRecognitionProcessor";
+  private static final String TAG = "CloudDocTextRecProc";
 
   private final FirebaseVisionCloudDocumentTextDetector detector;
 
