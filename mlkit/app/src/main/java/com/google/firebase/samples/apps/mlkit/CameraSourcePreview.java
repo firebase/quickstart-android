@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.google.firebase.samples.apps.mlkit;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
@@ -79,6 +80,7 @@ public class CameraSourcePreview extends ViewGroup {
     }
   }
 
+  @SuppressLint("MissingPermission")
   private void startIfReady() throws IOException {
     if (startRequested && surfaceAvailable) {
       cameraSource.start(surfaceView.getHolder());

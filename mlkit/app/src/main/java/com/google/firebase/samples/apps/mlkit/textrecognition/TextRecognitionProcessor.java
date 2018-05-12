@@ -31,7 +31,7 @@ import java.util.List;
 /** Processor for the text recognition demo. */
 public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVisionText> {
 
-  private static final String TAG = "TextRecognitionProcessor";
+  private static final String TAG = "TextRecProc";
 
   private final FirebaseVisionTextDetector detector;
 
