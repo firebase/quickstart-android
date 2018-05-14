@@ -126,5 +126,28 @@ public class FaceGraphic extends Graphic {
     float right = x + xOffset;
     float bottom = y + yOffset;
     canvas.drawRect(left, top, right, bottom, boxPaint);
+
+    // draw landmarks
+    drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.BOTTOM_MOUTH);
+    drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.LEFT_CHEEK);
+    drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.LEFT_EAR);
+    drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.LEFT_MOUTH);
+    drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.LEFT_EYE);
+    drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.NOSE_BASE);
+    drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_CHEEK);
+    drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_EAR);
+    drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_EYE);
+    drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_MOUTH);
+  }
+
+  private void drawLandmarkPosition(Canvas canvas, FirebaseVisionFace face, int landmarkID) {
+    FirebaseVisionFaceLandmark landmark = face.getLandmark(landmarkID);
+    if (landmark != null) {
+      FirebaseVisionPoint point = landmark.getPosition();
+      canvas.drawCircle(
+              translateX(point.getX()),
+              translateY(point.getY()),
+              10f, idPaint);
+    }
   }
 }
