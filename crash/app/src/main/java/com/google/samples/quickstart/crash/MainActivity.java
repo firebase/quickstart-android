@@ -23,19 +23,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import com.google.firebase.crash.FirebaseCrash;
+import com.crashlytics.android.Crashlytics;
 
 /**
  * This Activity shows the different ways of reporting application crashes.
- * - Report caught crashes with Crash.report().
+ * - Report non-fatal exceptions that are caught by your app.
  * - Automatically Report uncaught crashes.
  *
- * It also shows how to add log messages to crash reports using Crash.log().
+ * It also shows how to add log messages to crash reports using log().
  *
  * Check https://console.firebase.google.com to view and analyze your crash reports.
  *
- * Check https://firebase.google.com/docs/crash/android for more on
- * Firebase Crash on Android.
+ * Check https://firebase.google.com/docs/crashlytics for more information on Firebase Crashlytics.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -54,9 +53,8 @@ public class MainActivity extends AppCompatActivity {
         crashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Log that crash button was clicked. This version of Crash.log() will include the
-                // message in the crash report as well as show the message in logcat.
-                FirebaseCrash.logcat(Log.INFO, TAG, "Crash button clicked");
+                // Log that crash button was clicked.
+                Crashlytics.log(Log.INFO, TAG, "Crash button clicked.");
 
                 // If catchCrashCheckBox is checked catch the exception and report is using
                 // Crash.report(). Otherwise throw the exception and let Firebase Crash automatically
@@ -65,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         throw new NullPointerException();
                     } catch (NullPointerException ex) {
-                        // [START log_and_report]
-                        FirebaseCrash.logcat(Log.ERROR, TAG, "NPE caught");
-                        FirebaseCrash.report(ex);
-                        // [END log_and_report]
+                        // [START crashlytics_log_and_report]
+                        Crashlytics.log(Log.ERROR, TAG, "NPE caught!");
+                        Crashlytics.logException(ex);
+                        // [START crashlytics_log_and_report]
                     }
                 } else {
                     throw new NullPointerException();
@@ -76,10 +74,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Log that the Activity was created. This version of Crash.log() will include the message
-        // in the crash report but will not be shown in logcat.
-        // [START log_event]
-        FirebaseCrash.log("Activity created");
-        // [END log_event]
+        // Log that the Activity was created.
+        // [START crashlytics_log_event]
+        Crashlytics.log("Activity created");
+        // [END crashlyticslog_event]
     }
 }
