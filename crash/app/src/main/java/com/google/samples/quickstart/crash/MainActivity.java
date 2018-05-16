@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 Crashlytics.log(Log.INFO, TAG, "Crash button clicked.");
 
                 // If catchCrashCheckBox is checked catch the exception and report is using
-                // Crash.report(). Otherwise throw the exception and let Firebase Crash automatically
+                // logException(), Otherwise throw the exception and let Crashlytics automatically
                 // report the crash.
                 if (catchCrashCheckBox.isChecked()) {
                     try {
