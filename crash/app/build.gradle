@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
@@ -35,7 +37,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
 
     implementation 'com.google.firebase:firebase-core:15.0.2'
-    implementation 'com.google.firebase:firebase-crash:15.0.2'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

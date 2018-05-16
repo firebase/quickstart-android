@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Firebase Crash</string>
+    <string name="app_name">Firebase Crashlytics</string>
     <string name="crash_button_label">Cause Crash</string>
     <string name="catch_crash_checkbox_label">Catch Crash</string>
 </resources>
