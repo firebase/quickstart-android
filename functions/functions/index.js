@@ -90,6 +90,14 @@ exports.addMessage = functions.https.onCall((data, context) => {
     text: sanitizedMessage,
     author: { uid, name, picture, email },
   }).then(() => {
+    // Optionally send a push notification with the message.
+    if (data.push && context.instanceIdToken) {
+      return admin.messaging().send({
+        token: context.instanceIdToken,
+        data: { text: sanitizedMessage },
+      });
+    }
+  }).then(() => {
     console.log('New Message written');
     return sanitizedMessage;
   }).catch((error) => {

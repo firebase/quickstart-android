@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Create the arguments to the callable function, which is just one string
         Map<String, Object> data = new HashMap<>();
         data.put("text", text);
+        data.put("push", true);
 
         return mFunctions
                 .getHttpsCallable("addMessage")
