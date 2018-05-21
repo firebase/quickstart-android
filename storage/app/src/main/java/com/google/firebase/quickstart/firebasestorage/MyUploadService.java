@@ -3,6 +3,7 @@ package com.google.firebase.quickstart.firebasestorage;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -58,6 +59,14 @@ public class MyUploadService extends MyBaseTaskService {
         Log.d(TAG, "onStartCommand:" + intent + ":" + startId);
         if (ACTION_UPLOAD.equals(intent.getAction())) {
             Uri fileUri = intent.getParcelableExtra(EXTRA_FILE_URI);
+
+            // Make sure we have permission to read the data
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                getContentResolver().takePersistableUriPermission(
+                        fileUri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+
             uploadFromUri(fileUri);
         }
 
