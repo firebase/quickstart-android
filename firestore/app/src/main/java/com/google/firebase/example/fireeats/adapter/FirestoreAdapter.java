@@ -123,7 +123,9 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         notifyItemRemoved(change.getOldIndex());
     }
 
-    protected void onError(FirebaseFirestoreException e) {};
+    protected void onError(FirebaseFirestoreException e) {
+        Log.w(TAG, "onError", e);
+    };
 
     protected void onDataChanged() {}
 }
