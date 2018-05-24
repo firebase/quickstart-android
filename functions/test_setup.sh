@@ -1,3 +1,4 @@
+#!/bin/bash
 set -o nounset
 set -e
 
