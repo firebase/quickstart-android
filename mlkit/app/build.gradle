@@ -28,8 +28,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     // ML Kit dependencies
-    implementation 'com.google.firebase:firebase-ml-vision:15.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision:16.0.0'
     implementation 'com.google.firebase:firebase-ml-vision-image-label-model:15.0.0'
-    implementation 'com.google.firebase:firebase-ml-model-interpreter:15.0.0'
+    implementation 'com.google.firebase:firebase-ml-model-interpreter:16.0.0'
 }
 apply plugin: 'com.google.gms.google-services'
