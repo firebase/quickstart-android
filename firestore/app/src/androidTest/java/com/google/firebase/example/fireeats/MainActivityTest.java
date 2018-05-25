@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -86,9 +87,14 @@ import static org.hamcrest.Matchers.is;
     //Submit the review
     getById("restaurant_form_button").clickAndWaitForNewWindow(TIMEOUT);
 
-    // Assert that the review exists (getChildByText() throws on failure)
-    new UiScrollable(getIdSelector("recycler_ratings"))
-        .getChildByText(new UiSelector(), "\uD83D\uDE0E\uD83D\uDE00");
+    // Assert that the review exists
+    UiScrollable ratingsList = new UiScrollable(getIdSelector("recycler_ratings"));
+    ratingsList.waitForExists(TIMEOUT);
+    ratingsList.scrollToBeginning(100);
+    Assert.assertTrue(
+        getById("recycler_ratings")
+            .getChild(new UiSelector().text("\uD83D\uDE0E\uD83D\uDE00"))
+            .waitForExists(TIMEOUT));
   }
 
   private UiObject getById(String id) {

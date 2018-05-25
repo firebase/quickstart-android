@@ -36,7 +36,6 @@ public class TestAddNumber {
     ViewInteraction firstNumber = onView(withId(R.id.field_first_number));
     ViewInteraction secondNumber = onView(withId(R.id.field_second_number));
     ViewInteraction addButton = onView(withId(R.id.button_calculate));
-    ViewInteraction sumResult = onView(withId(R.id.field_add_result));
 
     firstNumber.perform(replaceText("32"));
     secondNumber.perform(replaceText("16"));
