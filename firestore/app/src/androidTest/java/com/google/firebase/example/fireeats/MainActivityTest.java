@@ -42,7 +42,7 @@ import static org.hamcrest.Matchers.is;
       new ActivityTestRule<>(MainActivity.class, false, false);
 
   UiDevice device;
-  final long TIMEOUT = 30000;
+  final long TIMEOUT = 300000;  // Five minute timeout because our CI is slooow.
 
   @Before public void before() {
     // Sign out of any existing sessions
