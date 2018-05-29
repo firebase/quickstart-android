@@ -47,6 +47,7 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
     getById("button_done").clickAndWaitForNewWindow(TIMEOUT);
 
     // Add random items
+    device.waitForIdle(TIMEOUT);
     openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
     UiObject addItems = device.findObject(new UiSelector().textContains("Add Random Items"));
     addItems.waitForExists(TIMEOUT);
