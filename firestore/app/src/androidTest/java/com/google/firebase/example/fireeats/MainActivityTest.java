@@ -47,11 +47,7 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
     getById("button_done").clickAndWaitForNewWindow(TIMEOUT);
 
     // Add random items
-    device.waitForIdle(TIMEOUT);
-    openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-    UiObject addItems = device.findObject(new UiSelector().textContains("Add Random Items"));
-    addItems.waitForExists(TIMEOUT);
-    addItems.click();
+    getActionBarItem(new UiSelector().textContains("Add Random Items"), TIMEOUT).click();
     device.waitForIdle(TIMEOUT);
 
     // Click on the first restaurant
@@ -95,5 +91,20 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
         return;
       }
     }
+  }
+
+  private UiObject getActionBarItem(UiSelector selector, long timeout) throws InterruptedException {
+    final long STEP_TIMEOUT = 5000;
+    UiObject item = device.findObject(selector);
+
+    for (long i = 0; i < timeout; i += STEP_TIMEOUT) {
+      openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+
+      if (item.waitForExists(STEP_TIMEOUT)) {
+        break;
+      }
+    }
+
+    return item;
   }
 }
