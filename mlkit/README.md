@@ -20,6 +20,10 @@ Getting Started
   - Barcode scanning
   - Image labeling (on-device)
   - Landmark recognition
+  - Custom model (Labeled "Classification"). The custom model used in this
+    sample, MobileNet_v1, is already included as a local asset in the project.
+    To use this sample with a hosted model, follow the directions under the
+    "Hosting a Custom Model" section of this readme.
 - Choose StillImageActivity to see a demo of the following:
   - Image labeling (Cloud)
   - Landmark recognition (Cloud)
@@ -29,6 +33,19 @@ Getting Started
 Result
 -----------
 <img src="app/src/screen.png" height="534" width="300"/>
+
+Hosting a Custom Model
+-----------
+- [Download](http://download.tensorflow.org/models/mobilenet_v1_2018_02_22/mobilenet_v1_1.0_224_quant.tgz)
+  the TensorFlow Lite custom model we are using in this sample.
+- Go to the Firebase console.
+- Select your project.
+- Select ML Kit under the DEVELOP section in the left hand navigation.
+- Click on the CUSTOM tab.
+- Click on Add another model and use "mobilenet_v1" as the name.
+- Click BROWSE and upload the mobilenet_v1_1.0_224_quant.tflite file you
+  downloaded earlier.
+- Click PUBLISH.
 
 Support
 -------
