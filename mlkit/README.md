@@ -42,7 +42,7 @@ Hosting a Custom Model
 - Select your project.
 - Select ML Kit under the DEVELOP section in the left hand navigation.
 - Click on the CUSTOM tab.
-- Click on Add another model and use "mobilenet_v1_224_quant" as the name.
+- Click on Add another model and use "mobilenet_v1" as the name.
 - Click BROWSE and upload the mobilenet_v1_1.0_224_quant.tflite file you
   downloaded earlier.
 - Click PUBLISH.
