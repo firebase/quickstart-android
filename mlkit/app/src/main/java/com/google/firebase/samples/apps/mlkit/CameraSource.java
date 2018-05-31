@@ -110,7 +110,6 @@ public class CameraSource {
   private final FrameProcessingRunnable processingRunnable;
 
   private final Object processorLock = new Object();
-  // TODO(b/74400062) Re-enable the annotaion
   // @GuardedBy("processorLock")
   private VisionImageProcessor frameProcessor;
 
