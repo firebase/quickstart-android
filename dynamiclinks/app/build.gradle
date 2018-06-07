@@ -28,9 +28,9 @@ android {
         main {
             dimension "all"
 
-            // TODO(developer): Replace this with your app code
+            // TODO(developer): Replace this with your Dynamic Links domain
             //                  See: https://firebase.google.com/docs/dynamic-links/android/create#set-up-firebase-and-the-dynamic-links-sdk
-            resValue "string", "app_code", "YOUR_APP_CODE"
+            resValue "string", "dynamic_links_domain", "YOUR_APP.page.link"
         }
     }
 }

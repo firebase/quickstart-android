@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @VisibleForTesting
     public Uri buildDeepLink(@NonNull Uri deepLink, int minVersion) {
-        String domain = getString(R.string.app_code) + ".app.goo.gl";
+        String domain = getString(R.string.dynamic_links_domain);
 
         // Set dynamic link parameters:
         //  * Domain (required)
@@ -151,11 +151,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void validateAppCode() {
-        String appCode = getString(R.string.app_code);
-        if (appCode.contains("YOUR_APP_CODE")) {
+        String domain = getString(R.string.dynamic_links_domain);
+        if (domain.contains("YOUR_APP")) {
             new AlertDialog.Builder(this)
                     .setTitle("Invalid Configuration")
-                    .setMessage("Please set your app code in app/build.gradle")
+                    .setMessage("Please set your Dynamic Links domain in app/build.gradle")
                     .setPositiveButton(android.R.string.ok, null)
                     .create().show();
         }
