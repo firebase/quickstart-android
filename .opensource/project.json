@@ -36,7 +36,7 @@
     // Related projects on Github, in the format $owner/$repo[/$subproject]
     // where subproject is optional.
     "related": [
-      "firebase/quickstart-android",
+      "firebase/quickstart-ios",
       "firebase/quickstart-js"
     ],
 
