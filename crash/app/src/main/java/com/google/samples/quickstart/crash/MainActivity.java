@@ -45,6 +45,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Log the onCreate event, this will also be printed in logcat
+        Crashlytics.log(Log.VERBOSE, TAG, "onCreate");
+
+        // Add some custom values and identifiers to be included in crash reports
+        Crashlytics.setInt("MeaningOfLife", 42);
+        Crashlytics.setString("LastUIAction", "Test value");
+        Crashlytics.setUserIdentifier("123456789");
+
+        // Report a non-fatal exception, for demonstration purposes
+        Crashlytics.logException(new Exception("Non-fatal exception: something went wrong!"));
+
         // Checkbox to indicate when to catch the thrown exception.
         final CheckBox catchCrashCheckBox = findViewById(R.id.catchCrashCheckBox);
 
