@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-// apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 check.dependsOn 'assembleDebugAndroidTest'
 
@@ -21,12 +21,12 @@ android {
     }
 }
 
-//android.applicationVariants.all {
-//    // Set this to false to disable Firebase Performance Monitoring at compile time
-//    FirebasePerformance {
-//        instrumentationEnabled true
-//    }
-//}
+android.applicationVariants.all {
+    // Set this to false to disable Firebase Performance Monitoring at compile time
+    FirebasePerformance {
+        instrumentationEnabled true
+    }
+}
 
 dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'

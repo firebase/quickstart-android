@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-// apply plugin: 'io.fabric'
+apply plugin: 'io.fabric'
 
 check.dependsOn 'assembleDebugAndroidTest'
 
