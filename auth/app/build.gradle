@@ -44,19 +44,19 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
 
     // Firebase Authentication
-    implementation 'com.google.firebase:firebase-auth:16.0.1'
-    implementation 'com.google.firebase:firebase-core:16.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.2'
 
     // Google Sign In SDK (only required for Google Sign In)
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    implementation 'com.firebaseui:firebase-ui-auth:4.0.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.0.1'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    implementation 'com.facebook.android:facebook-login:4.32.0'
+    implementation 'com.facebook.android:facebook-login:4.33.0'
     implementation 'com.android.support:customtabs:27.1.1'
 
     // Twitter Android SDK (only required for Twitter Login)

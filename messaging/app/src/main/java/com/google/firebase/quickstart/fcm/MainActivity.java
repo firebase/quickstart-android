@@ -18,7 +18,6 @@ package com.google.firebase.quickstart.fcm;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -31,6 +30,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,16 +77,16 @@ public class MainActivity extends AppCompatActivity {
                 // [START subscribe_topics]
                 FirebaseMessaging.getInstance().subscribeToTopic("news")
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = getString(R.string.msg_subscribed);
-                        if (!task.isSuccessful()) {
-                            msg = getString(R.string.msg_subscribe_failed);
-                        }
-                        Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                String msg = getString(R.string.msg_subscribed);
+                                if (!task.isSuccessful()) {
+                                    msg = getString(R.string.msg_subscribe_failed);
+                                }
+                                Log.d(TAG, msg);
+                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                 // [END subscribe_topics]
             }
         });
@@ -96,12 +96,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get token
-                String token = FirebaseInstanceId.getInstance().getToken();
+                FirebaseInstanceId.getInstance().getInstanceId()
+                        .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.w(TAG, "getInstanceId failed", task.getException());
+                                    return;
+                                }
 
-                // Log and toast
-                String msg = getString(R.string.msg_token_fmt, token);
-                Log.d(TAG, msg);
-                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                // Get new Instance ID token
+                                String token = task.getResult().getToken();
+
+                                // Log and toast
+                                String msg = getString(R.string.msg_token_fmt, token);
+                                Log.d(TAG, msg);
+                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
             }
         });
     }
