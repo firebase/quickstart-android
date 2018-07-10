@@ -27,7 +27,7 @@ allprojects {
     dependencyUpdates.resolutionStrategy = {
         componentSelection { rules ->
             rules.all { selection ->
-                boolean numbersOnly = (/^[\d.]+$/ ==~ selection.candidate.version)
+                boolean numbersOnly = (selection.candidate.version ==~ /^[\d.]+$/)
                 if (!numbersOnly) {
                     selection.reject("Rejecting: ${selection.candidate.version}")
                 }
