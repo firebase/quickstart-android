@@ -92,7 +92,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      */
     @Override
     public void onNewToken(String token) {
-        super.onNewToken(token);
         Log.d(TAG, "Refreshed token: " + token);
 
         // If you want to send messages to this application instance or
