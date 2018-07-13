@@ -32,10 +32,10 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
 
-    implementation 'com.firebaseui:firebase-ui-database:4.0.0'
+    implementation 'com.firebaseui:firebase-ui-database:4.1.0'
 
-    implementation 'com.google.firebase:firebase-core:16.0.0'
-    implementation 'com.google.firebase:firebase-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.firebase:firebase-database:16.0.1'
 
     // Needed to fix a dependency conflict with FirebaseUI'
