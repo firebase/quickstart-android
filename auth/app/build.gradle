@@ -56,12 +56,12 @@ dependencies {
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    implementation 'com.facebook.android:facebook-login:4.33.0'
+    implementation 'com.facebook.android:facebook-login:4.34.0'
     implementation 'com.android.support:customtabs:27.1.1'
 
     // Twitter Android SDK (only required for Twitter Login)
-    implementation 'com.twitter.sdk.android:twitter-core:3.2.0'
-    implementation 'com.twitter.sdk.android:twitter:3.2.0'
+    implementation 'com.twitter.sdk.android:twitter-core:3.3.0'
+    implementation 'com.twitter.sdk.android:twitter:3.3.0'
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
