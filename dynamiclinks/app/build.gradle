@@ -28,9 +28,9 @@ android {
         main {
             dimension "all"
 
-            // TODO(developer): Replace this with your app code
+            // TODO(developer): Replace this with your Dynamic Links domain
             //                  See: https://firebase.google.com/docs/dynamic-links/android/create#set-up-firebase-and-the-dynamic-links-sdk
-            resValue "string", "app_code", "YOUR_APP_CODE"
+            resValue "string", "dynamic_links_domain", "YOUR_APP.page.link"
         }
     }
 }
@@ -43,8 +43,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
 
-    implementation 'com.google.firebase:firebase-core:15.0.2'
-    implementation 'com.google.firebase:firebase-invites:15.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-invites:16.0.1'
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'

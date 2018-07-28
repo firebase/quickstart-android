@@ -35,7 +35,7 @@ configurations.all {
 }
 
 repositories {
-    maven { url 'https://maven.google.com' }
+    google()
 }
 
 dependencies {
@@ -44,8 +44,9 @@ dependencies {
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:support-compat:27.1.1'
 
-    implementation 'com.google.firebase:firebase-core:15.0.2'
-    implementation 'com.google.firebase:firebase-messaging:15.0.2'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-iid:16.2.0'
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 
     // Testing dependencies

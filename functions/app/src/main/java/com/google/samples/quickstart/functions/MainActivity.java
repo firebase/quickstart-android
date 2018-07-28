@@ -120,9 +120,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     // [START function_add_message]
     private Task<String> addMessage(String text) {
-        // Create the arguments to the callable function, which is just one string
+        // Create the arguments to the callable function.
         Map<String, Object> data = new HashMap<>();
         data.put("text", text);
+        data.put("push", true);
 
         return mFunctions
                 .getHttpsCallable("addMessage")
