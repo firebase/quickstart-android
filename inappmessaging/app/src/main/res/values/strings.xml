@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FIAM Quickstart</string>
+    <string name="textview_text">Welcome to the Firebase In-App Messaging Quickstart app. Press the button to trigger an analytics event!</string>
+    <string name="warning_fresh_install">You may need to background and then re-foreground the app after a fresh install.</string>
+    <string name="button_text">Trigger \'engagement_party\' event</string>
+
+    <string name="instance_id_fmt">Device Instance ID: %s</string>
+</resources>
