@@ -16,9 +16,8 @@ package com.google.firebase.samples.apps.mlkit.cloudtextrecognition;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 
-import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.cloud.text.FirebaseVisionCloudText;
 import com.google.firebase.samples.apps.mlkit.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.GraphicOverlay.Graphic;
 
@@ -33,13 +32,13 @@ public class CloudTextGraphic extends Graphic {
 
   private final Paint rectPaint;
   private final Paint textPaint;
-  private final FirebaseVisionText.Element element;
+  private final FirebaseVisionCloudText text;
   private final GraphicOverlay overlay;
 
-  CloudTextGraphic(GraphicOverlay overlay, FirebaseVisionText.Element element) {
+  CloudTextGraphic(GraphicOverlay overlay, FirebaseVisionCloudText text) {
     super(overlay);
 
-    this.element = element;
+    this.text = text;
     this.overlay = overlay;
 
     rectPaint = new Paint();
@@ -57,12 +56,13 @@ public class CloudTextGraphic extends Graphic {
   /** Draws the text block annotations for position, size, and raw value on the supplied canvas. */
   @Override
   public void draw(Canvas canvas) {
-    if (element == null) {
+    if (text == null) {
       throw new IllegalStateException("Attempting to draw a null text.");
     }
 
-        Rect rect = element.getBoundingBox();
-        canvas.drawRect(rect, rectPaint);
-        canvas.drawText(element.getText(), rect.left, rect.bottom, textPaint);
+    float x = overlay.getWidth() / 4.0f;
+    float y = overlay.getHeight() / 4.0f;
+
+    canvas.drawText(text.getText(), x, y, textPaint);
   }
 }
