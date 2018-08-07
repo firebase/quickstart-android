@@ -18,59 +18,43 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.google.firebase.ml.vision.cloud.text.FirebaseVisionCloudText;
+import com.google.firebase.ml.vision.cloud.text.FirebaseVisionCloudTextDetector;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.samples.apps.mlkit.FrameMetadata;
 import com.google.firebase.samples.apps.mlkit.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.VisionProcessorBase;
 
-import java.util.List;
+/** Processor for the cloud text detector demo. */
+public class CloudTextRecognitionProcessor extends VisionProcessorBase<FirebaseVisionCloudText> {
 
-/**
- * Processor for the cloud text detector demo.
- */
-public class CloudTextRecognitionProcessor extends VisionProcessorBase<FirebaseVisionText> {
+  private static final String TAG = "CloudTextRecProc";
 
-    private static final String TAG = "CloudTextRecProc";
+  private final FirebaseVisionCloudTextDetector detector;
 
-    private final FirebaseVisionTextRecognizer detector;
+  public CloudTextRecognitionProcessor() {
+    super();
+    detector = FirebaseVision.getInstance().getVisionCloudTextDetector();
+  }
 
-    public CloudTextRecognitionProcessor() {
-        super();
-        detector = FirebaseVision.getInstance().getCloudTextRecognizer();
-    }
+  @Override
+  protected Task<FirebaseVisionCloudText> detectInImage(FirebaseVisionImage image) {
+    return detector.detectInImage(image);
+  }
 
-    @Override
-    protected Task<FirebaseVisionText> detectInImage(FirebaseVisionImage image) {
-        return detector.processImage(image);
-    }
+  @Override
+  protected void onSuccess(
+      @NonNull FirebaseVisionCloudText text,
+      @NonNull FrameMetadata frameMetadata,
+      @NonNull GraphicOverlay graphicOverlay) {
+    graphicOverlay.clear();
+      Log.d(TAG, "detected text is: " + text.getText());
+      CloudTextGraphic textGraphic = new CloudTextGraphic(graphicOverlay, text);
+      graphicOverlay.add(textGraphic);
+  }
 
-    @Override
-    protected void onSuccess(
-            @NonNull FirebaseVisionText text,
-            @NonNull FrameMetadata frameMetadata,
-            @NonNull GraphicOverlay graphicOverlay) {
-        graphicOverlay.clear();
-        if (text == null) {
-            return; // TODO: investigate why this is needed
-        }
-        List<FirebaseVisionText.TextBlock> blocks = text.getTextBlocks();
-        for (int i = 0; i < blocks.size(); i++) {
-            List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
-            for (int j = 0; j < lines.size(); j++) {
-                List<FirebaseVisionText.Element> elements = lines.get(j).getElements();
-                for (int l = 0; l < elements.size(); l++) {
-                    CloudTextGraphic cloudTextGraphic = new CloudTextGraphic(graphicOverlay,
-                            elements.get(l));
-                    graphicOverlay.add(cloudTextGraphic);
-                }
-            }
-        }
-    }
-
-    @Override
-    protected void onFailure(@NonNull Exception e) {
-        Log.w(TAG, "Cloud Text detection failed." + e);
-    }
+  @Override
+  protected void onFailure(@NonNull Exception e) {
+    Log.w(TAG, "Cloud Text detection failed." + e);
+  }
 }
