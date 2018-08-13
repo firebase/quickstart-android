@@ -20,7 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.ml.vision.text.FirebaseVisionTextDetector;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.google.firebase.samples.apps.mlkit.FrameMetadata;
 import com.google.firebase.samples.apps.mlkit.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.VisionProcessorBase;
@@ -33,10 +33,10 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
 
   private static final String TAG = "TextRecProc";
 
-  private final FirebaseVisionTextDetector detector;
+  private final FirebaseVisionTextRecognizer detector;
 
   public TextRecognitionProcessor() {
-    detector = FirebaseVision.getInstance().getVisionTextDetector();
+    detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
   }
 
   @Override
@@ -50,7 +50,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
 
   @Override
   protected Task<FirebaseVisionText> detectInImage(FirebaseVisionImage image) {
-    return detector.detectInImage(image);
+    return detector.processImage(image);
   }
 
   @Override
@@ -59,7 +59,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
       @NonNull FrameMetadata frameMetadata,
       @NonNull GraphicOverlay graphicOverlay) {
     graphicOverlay.clear();
-    List<FirebaseVisionText.Block> blocks = results.getBlocks();
+    List<FirebaseVisionText.TextBlock> blocks = results.getTextBlocks();
     for (int i = 0; i < blocks.size(); i++) {
       List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
       for (int j = 0; j < lines.size(); j++) {
