@@ -8,6 +8,8 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -22,6 +24,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.google.firebase:firebase-inappmessaging-display:17.0.0'
     implementation 'com.google.firebase:firebase-core:16.0.1'

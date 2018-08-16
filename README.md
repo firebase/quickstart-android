@@ -26,6 +26,7 @@ the sample you wish to run.
 - [Firestore](firestore/README.md)
 - [Functions](functions/README.md)
 - [Dynamic Links](dynamiclinks/README.md)
+- [In-App Messaging](inappmessaging/README.md)
 - [Invites](invites/README.md)
 - [Messaging](messaging/README.md)
 - [ML Kit](mlkit/README.md)
