@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
 
     // Firebase Authentication
-    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-auth:16.0.3'
 
     // Google Sign In SDK (only required for Google Sign In)
