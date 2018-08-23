@@ -30,7 +30,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     // ML Kit dependencies
-    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-ml-common:16.1.2'
     implementation 'com.google.firebase:firebase-ml-vision:17.0.0'
     implementation 'com.google.firebase:firebase-ml-vision-image-label-model:15.0.0'
