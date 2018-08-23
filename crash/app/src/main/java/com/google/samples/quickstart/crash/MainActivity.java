@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         // [START crashlytics_log_and_report]
                         Crashlytics.log(Log.ERROR, TAG, "NPE caught!");
                         Crashlytics.logException(ex);
-                        // [START crashlytics_log_and_report]
+                        // [END crashlytics_log_and_report]
                     }
                 } else {
                     throw new NullPointerException();
@@ -88,6 +88,6 @@ public class MainActivity extends AppCompatActivity {
         // Log that the Activity was created.
         // [START crashlytics_log_event]
         Crashlytics.log("Activity created");
-        // [END crashlyticslog_event]
+        // [END crashlytics_log_event]
     }
 }
