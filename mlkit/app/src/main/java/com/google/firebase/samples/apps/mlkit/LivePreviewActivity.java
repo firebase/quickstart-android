@@ -34,6 +34,7 @@ import com.google.android.gms.common.annotation.KeepName;
 import com.google.firebase.ml.common.FirebaseMLException;
 import com.google.firebase.samples.apps.mlkit.barcodescanning.BarcodeScanningProcessor;
 import com.google.firebase.samples.apps.mlkit.custommodel.CustomImageClassifierProcessor;
+import com.google.firebase.samples.apps.mlkit.facedetection.FaceContourDetectorProcessor;
 import com.google.firebase.samples.apps.mlkit.facedetection.FaceDetectionProcessor;
 import com.google.firebase.samples.apps.mlkit.imagelabeling.ImageLabelingProcessor;
 import com.google.firebase.samples.apps.mlkit.textrecognition.TextRecognitionProcessor;
@@ -54,13 +55,14 @@ public final class LivePreviewActivity extends AppCompatActivity
   private static final String BARCODE_DETECTION = "Barcode Detection";
   private static final String IMAGE_LABEL_DETECTION = "Label Detection";
   private static final String CLASSIFICATION = "Classification";
+  private static final String FACE_CONTOUR = "Face Contour";
   private static final String TAG = "LivePreviewActivity";
   private static final int PERMISSION_REQUESTS = 1;
 
   private CameraSource cameraSource = null;
   private CameraSourcePreview preview;
   private GraphicOverlay graphicOverlay;
-  private String selectedModel = FACE_DETECTION;
+  private String selectedModel = FACE_CONTOUR;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,7 @@ public final class LivePreviewActivity extends AppCompatActivity
 
     Spinner spinner = (Spinner) findViewById(R.id.spinner);
     List<String> options = new ArrayList<>();
+    options.add(FACE_CONTOUR);
     options.add(FACE_DETECTION);
     options.add(TEXT_DETECTION);
     options.add(BARCODE_DETECTION);
@@ -164,6 +167,10 @@ public final class LivePreviewActivity extends AppCompatActivity
         case IMAGE_LABEL_DETECTION:
           Log.i(TAG, "Using Image Label Detector Processor");
           cameraSource.setMachineLearningFrameProcessor(new ImageLabelingProcessor());
+          break;
+        case FACE_CONTOUR:
+          Log.i(TAG, "Using Face Contour Detector Processor");
+          cameraSource.setMachineLearningFrameProcessor(new FaceContourDetectorProcessor());
           break;
         default:
           Log.e(TAG, "Unknown model: " + model);
