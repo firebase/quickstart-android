@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
-        android:id="@+id/instance_id_text"
+        android:id="@+id/instanceIdText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -66,7 +66,7 @@
         tools:text="Device Instance ID: 1234" />
 
     <Button
-        android:id="@+id/event_trigger_button"
+        android:id="@+id/eventTriggerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
