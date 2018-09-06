@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     mInAppMessaging = FirebaseInAppMessaging.getInstance();
 
-    mInAppMessaging.isAutomaticDataCollectionEnabled();
     mInAppMessaging.setAutomaticDataCollectionEnabled(true);
     mInAppMessaging.setMessagesSuppressed(false);
 
