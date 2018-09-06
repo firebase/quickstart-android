@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme"
         android:name="android.support.multidex.MultiDexApplication">
         <activity
-            android:name=".MainActivity"
+            android:name=".java.MainActivity"
             android:theme="@style/AppTheme.Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,7 @@
         </activity>
 
         <activity
-            android:name=".RestaurantDetailActivity"
+            android:name=".java.RestaurantDetailActivity"
             android:theme="@style/AppTheme.Activity" />
     </application>
 

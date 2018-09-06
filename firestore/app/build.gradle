@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     testBuildType "release"
@@ -31,6 +33,9 @@ android {
 }
 
 dependencies {
+    implementation project(':internal')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.50"
+
     // Firestore
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-firestore:17.1.0'

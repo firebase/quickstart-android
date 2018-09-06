@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats;
+package com.google.firebase.example.fireeats.java;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.example.fireeats.model.Rating;
+import com.google.firebase.example.fireeats.R;
+import com.google.firebase.example.fireeats.java.model.Rating;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

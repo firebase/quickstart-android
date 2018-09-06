@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats.adapter;
+package com.google.firebase.example.fireeats.java.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.example.fireeats.R;
-import com.google.firebase.example.fireeats.model.Rating;
+import com.google.firebase.example.fireeats.java.model.Rating;
 import com.google.firebase.firestore.Query;
 
 import java.text.SimpleDateFormat;
