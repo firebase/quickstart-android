@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     mInAppMessaging.setAutomaticDataCollectionEnabled(true);
     mInAppMessaging.setMessagesSuppressed(false);
 
-    findViewById(R.id.event_trigger_button)
+    findViewById(R.id.eventTriggerButton)
         .setOnClickListener(
             new View.OnClickListener() {
               @Override
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
     // Get and display/log the Instance ID
-    final TextView textView = findViewById(R.id.instance_id_text);
+    final TextView textView = findViewById(R.id.instanceIdText);
     FirebaseInstanceId.getInstance().getInstanceId()
             .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
               @Override
