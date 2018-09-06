@@ -14,7 +14,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -59,7 +58,7 @@ public class InstrumentedTest {
 
   @Test
   public void testFiamDisplaysContextualTriggerCampaign() {
-    onView(withId(R.id.event_trigger_button)).perform(click());
+    onView(withId(R.id.eventTriggerButton)).perform(click());
     getView(R.id.modal_root).check(matches(isDisplayed()));
   }
 
