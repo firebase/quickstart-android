@@ -3,6 +3,10 @@ package com.google.firebase.quickstart.auth;
 import android.app.ProgressDialog;
 import android.support.test.espresso.IdlingResource;
 
+import com.google.firebase.quickstart.auth.java.AnonymousAuthActivity;
+import com.google.firebase.quickstart.auth.java.BaseActivity;
+import com.google.firebase.quickstart.auth.java.EmailPasswordActivity;
+
 /**
  * Monitor Activity idle status by watching ProgressDialog.
  */
@@ -11,7 +15,11 @@ public class BaseActivityIdlingResource implements IdlingResource {
     private BaseActivity mActivity;
     private ResourceCallback mCallback;
 
-    public BaseActivityIdlingResource(BaseActivity activity) {
+    public BaseActivityIdlingResource(AnonymousAuthActivity activity) {
+        mActivity = activity;
+    }
+
+    public BaseActivityIdlingResource(EmailPasswordActivity activity) {
         mActivity = activity;
     }
 

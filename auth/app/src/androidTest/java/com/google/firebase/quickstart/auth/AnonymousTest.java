@@ -7,6 +7,8 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
+import com.google.firebase.quickstart.auth.java.AnonymousAuthActivity;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
