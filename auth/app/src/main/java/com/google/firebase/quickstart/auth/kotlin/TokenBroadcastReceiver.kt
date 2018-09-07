@@ -13,11 +13,6 @@ import android.util.Log
  */
 abstract class TokenBroadcastReceiver : BroadcastReceiver() {
 
-    private val TAG = "TokenBroadcastReceiver"
-
-
-    val EXTRA_KEY_TOKEN = "key_token"
-
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG, "onReceive:$intent")
 
@@ -33,6 +28,8 @@ abstract class TokenBroadcastReceiver : BroadcastReceiver() {
         val ACTION_TOKEN = "com.google.example.ACTION_TOKEN"
         val filter: IntentFilter
             get() = IntentFilter(ACTION_TOKEN)
+        private val TAG = "TokenBroadcastReceiver"
+        val EXTRA_KEY_TOKEN = "key_token"
     }
 
 }

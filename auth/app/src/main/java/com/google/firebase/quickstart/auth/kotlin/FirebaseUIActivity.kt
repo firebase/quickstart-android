@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_firebase_ui.*
  */
 class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
 
-    private val RC_SIGN_IN = 9001
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,8 +72,8 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
             status.text = getString(R.string.firebaseui_status_fmt, user.email)
             detail.text = getString(R.string.id_fmt, user.uid)
 
-            findViewById<View>(R.id.signInButton).visibility = View.GONE
-            findViewById<View>(R.id.signOutButton).visibility = View.VISIBLE
+            signInButton.visibility = View.GONE
+            signOutButton.visibility = View.VISIBLE
         } else {
             // Signed out
             status.setText(R.string.signed_out)
@@ -95,6 +94,10 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
             R.id.signInButton -> startSignIn()
             R.id.signOutButton -> signOut()
         }
+    }
+
+    companion object {
+        private val RC_SIGN_IN = 9001
     }
 
 }

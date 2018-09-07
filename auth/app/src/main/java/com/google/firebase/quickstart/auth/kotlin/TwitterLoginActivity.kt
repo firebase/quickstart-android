@@ -16,8 +16,6 @@ import kotlinx.android.synthetic.main.activity_twitter.*
 
 class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
 
-    private val TAG = "TwitterLogin"
-
     // [START declare_auth]
     private lateinit var mAuth: FirebaseAuth
     // [END declare_auth]
@@ -144,6 +142,10 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
         if (i == R.id.buttonTwitterSignout) {
             signOut()
         }
+    }
+
+    companion object {
+        private val TAG = "TwitterLogin"
     }
 
 }

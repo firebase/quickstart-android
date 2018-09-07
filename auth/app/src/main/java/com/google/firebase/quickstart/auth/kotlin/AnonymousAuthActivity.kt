@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_anonymous_auth.*
  * Activity to demonstrate anonymous login and account linking (with an email/password account).
  */
 class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
-    private val TAG = "AnonymousAuth"
 
     // [START declare_auth]
     private lateinit var mAuth: FirebaseAuth
@@ -52,7 +51,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInAnonymously:success")
-                        val user = mAuth!!.currentUser
+                        val user = mAuth.currentUser
                         updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
@@ -85,7 +84,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         val password = fieldPassword.text.toString()
 
         // Create EmailAuthCredential with email and password
-        val credential = EmailAuthProvider.getCredential(email.toString(), password.toString())
+        val credential = EmailAuthProvider.getCredential(email, password)
 
         // Link the anonymous user to the email credential
         showProgressDialog()
@@ -159,5 +158,9 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
             R.id.buttonAnonymousSignOut -> signOut()
             R.id.buttonLinkAccount -> linkAccount()
         }
+    }
+
+    companion object {
+        private val TAG = "AnonymousAuth"
     }
 }

@@ -17,9 +17,6 @@ import kotlinx.android.synthetic.main.activity_passwordless.*
  */
 class PasswordlessActivity : BaseActivity(), View.OnClickListener {
 
-    private val TAG = "PasswordlessSignIn"
-    private val KEY_PENDING_EMAIL = "key_pending_email"
-
     private var mPendingEmail: String = ""
     private var mEmailLink: String = ""
     private lateinit var mAuth: FirebaseAuth
@@ -101,7 +98,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
                         packageName,
                         false, null/* minimum app version */)/* install if not available? */
                 .setHandleCodeInApp(true)
-                .setUrl("https://auth.example.com/emailSignInLink")
+                .setUrl("https://kotlin.auth.example.com/emailSignInLink")
                 .build()
 
         hideKeyboard(fieldEmail)
@@ -210,5 +207,10 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
             R.id.passwordlessSignInButton -> onSignInClicked()
             R.id.signOutButton -> onSignOutClicked()
         }
+    }
+
+    companion object {
+        private val TAG = "PasswordlessSignIn"
+        private val KEY_PENDING_EMAIL = "key_pending_email"
     }
 }

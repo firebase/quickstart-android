@@ -11,7 +11,6 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -23,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_facebook.*
  */
 class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
 
-    private val TAG = "FacebookLogin"
     // [START declare_auth]
     private lateinit var mAuth: FirebaseAuth
     // [END declare_auth]
@@ -44,9 +42,9 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
         // [START initialize_fblogin]
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create()
-        val loginButton = findViewById<LoginButton>(R.id.buttonFacebookLogin)
-        loginButton.setReadPermissions("email", "public_profile")
-        loginButton.registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
+
+        buttonFacebookLogin.setReadPermissions("email", "public_profile")
+        buttonFacebookLogin.registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.d(TAG, "facebook:onSuccess:$loginResult")
                 handleFacebookAccessToken(loginResult.accessToken)
@@ -130,8 +128,8 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
             status.text = getString(R.string.facebook_status_fmt, user.displayName)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
-            findViewById<View>(R.id.buttonFacebookLogin).visibility = View.GONE
-            findViewById<View>(R.id.buttonFacebookSignout).visibility = View.VISIBLE
+            buttonFacebookLogin.visibility = View.GONE
+            buttonFacebookSignout.visibility = View.VISIBLE
         } else {
             status.setText(R.string.signed_out)
             detail.text = null
@@ -146,5 +144,9 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
         if (i == R.id.buttonFacebookSignout) {
             signOut()
         }
+    }
+
+    companion object {
+        private val TAG = "FacebookLogin"
     }
 }

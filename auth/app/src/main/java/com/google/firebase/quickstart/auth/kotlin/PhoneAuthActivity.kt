@@ -16,17 +16,6 @@ import java.util.concurrent.TimeUnit
 
 class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
-    private val TAG = "PhoneAuthActivity"
-
-    private val KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress"
-
-    private val STATE_INITIALIZED = 1
-    private val STATE_CODE_SENT = 2
-    private val STATE_VERIFY_FAILED = 3
-    private val STATE_VERIFY_SUCCESS = 4
-    private val STATE_SIGNIN_FAILED = 5
-    private val STATE_SIGNIN_SUCCESS = 6
-
     // [START declare_auth]
     private lateinit var mAuth: FirebaseAuth
     // [END declare_auth]
@@ -285,8 +274,8 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
             signedInButtons.visibility = View.VISIBLE
 
             enableViews(fieldPhoneNumber, fieldVerificationCode)
-            fieldPhoneNumber.setText(null)
-            fieldVerificationCode.setText(null)
+            fieldPhoneNumber.text = null
+            fieldVerificationCode.text = null
 
             status.setText(R.string.signed_in)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)
@@ -336,5 +325,16 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
             R.id.buttonResend -> resendVerificationCode(fieldPhoneNumber.text.toString(), mResendToken)
             R.id.signOutButton -> signOut()
         }
+    }
+
+    companion object {
+        private val TAG = "PhoneAuthActivity"
+        private val KEY_VERIFY_IN_PROGRESS = "key_verify_in_progress"
+        private val STATE_INITIALIZED = 1
+        private val STATE_VERIFY_FAILED = 3
+        private val STATE_VERIFY_SUCCESS = 4
+        private val STATE_CODE_SENT = 2
+        private val STATE_SIGNIN_FAILED = 5
+        private val STATE_SIGNIN_SUCCESS = 6
     }
 }

@@ -17,13 +17,11 @@ import kotlinx.android.synthetic.main.activity_custom.*
  */
 class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
-    private val TAG = "CustomAuthActivity"
-
     // [START declare_auth]
     private lateinit var mAuth: FirebaseAuth
     // [END declare_auth]
 
-    private lateinit var mCustomToken: String
+    private var mCustomToken: String? = null
     private lateinit var mTokenReceiver: TokenBroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +34,7 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
         // Create token receiver (for demo purposes only)
         mTokenReceiver = object : TokenBroadcastReceiver() {
             override fun onNewToken(token: String?) {
-                Log.d(TAG, "onNewToken:$token")
+                Log.d(CustomAuthActivity.TAG, "onNewToken:$token")
                 setCustomToken(token.toString())
             }
         }
@@ -69,21 +67,23 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
     private fun startSignIn() {
         // Initiate sign in with custom token
         // [START sign_in_custom]
-        mAuth.signInWithCustomToken(mCustomToken)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCustomToken:success")
-                        val user = mAuth.currentUser
-                        updateUI(user)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithCustomToken:failure", task.exception)
-                        Toast.makeText(baseContext, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show()
-                        updateUI(null)
+        mCustomToken?.let {
+            mAuth.signInWithCustomToken(it)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCustomToken:success")
+                            val user = mAuth.currentUser
+                            updateUI(user)
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCustomToken:failure", task.exception)
+                            Toast.makeText(baseContext, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show()
+                            updateUI(null)
+                        }
                     }
-                }
+        }
         // [END sign_in_custom]
     }
 
@@ -91,14 +91,14 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
         if (user != null) {
             textSignInStatus.text = "User ID: $user.uid"
         } else {
-            textSignInStatus.text = "Error: sign in failed."
+            textSignInStatus.text = "Error: sign in failed"
         }
     }
 
     private fun setCustomToken(token: String) {
         mCustomToken = token
 
-        val status: String = "Token:" + mCustomToken
+        val status = "Token:$mCustomToken"
 
         // Enable/disable sign-in button and show the token
         buttonSignIn.isEnabled = true
@@ -111,6 +111,10 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
             startSignIn()
 
         }
+    }
+
+    companion object {
+        private val TAG = "CustomAuthActivity"
     }
 
 }

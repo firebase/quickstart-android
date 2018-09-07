@@ -12,8 +12,6 @@ import kotlinx.android.synthetic.main.activity_emailpassword.*
 
 class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
-    private val TAG = "EmailPassword"
-
     // [START declare_auth]
     lateinit var mAuth: FirebaseAuth
     // [END declare_auth]
@@ -56,7 +54,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success")
-                        val user = mAuth!!.currentUser
+                        val user = mAuth.currentUser
                         updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
@@ -123,7 +121,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                 ?.addOnCompleteListener(this) { task ->
                     // [START_EXCLUDE]
                     // Re-enable button
-                    findViewById<View>(R.id.verifyEmailButton).isEnabled = true
+                    verifyEmailButton.isEnabled = true
 
                     if (task.isSuccessful) {
                         Toast.makeText(baseContext,
@@ -186,14 +184,15 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         val i = v.id
-        if (i == R.id.emailCreateAccountButton) {
-            createAccount(fieldEmail.text.toString(), fieldPassword.text.toString())
-        } else if (i == R.id.emailSignInButton) {
-            signIn(fieldEmail.text.toString(), fieldPassword.text.toString())
-        } else if (i == R.id.signOutButton) {
-            signOut()
-        } else if (i == R.id.verifyEmailButton) {
-            sendEmailVerification()
+        when (i) {
+            R.id.emailCreateAccountButton -> createAccount(fieldEmail.text.toString(), fieldPassword.text.toString())
+            R.id.emailSignInButton -> signIn(fieldEmail.text.toString(), fieldPassword.text.toString())
+            R.id.signOutButton -> signOut()
+            R.id.verifyEmailButton -> sendEmailVerification()
         }
+    }
+
+    companion object {
+        private val TAG = "EmailPassword"
     }
 }

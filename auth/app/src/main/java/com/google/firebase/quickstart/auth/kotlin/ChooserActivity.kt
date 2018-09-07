@@ -27,17 +27,6 @@ import kotlinx.android.synthetic.main.activity_chooser.*
  *     {@link CustomAuthActivity}
  */
 class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
-    private val CLASSES = arrayOf(GoogleSignInActivity::class.java,
-            FacebookLoginActivity::class.java, TwitterLoginActivity::class.java,
-            EmailPasswordActivity::class.java, PasswordlessActivity::class.java,
-            PhoneAuthActivity::class.java, AnonymousAuthActivity::class.java,
-            FirebaseUIActivity::class.java, CustomAuthActivity::class.java)
-
-    private val DESCRIPTION_IDS = intArrayOf(R.string.desc_google_sign_in,
-            R.string.desc_facebook_login, R.string.desc_twitter_login,
-            R.string.desc_emailpassword, R.string.desc_passwordless,
-            R.string.desc_phone_auth, R.string.desc_anonymous_auth,
-            R.string.desc_firebase_ui, R.string.desc_custom_auth)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,5 +67,18 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         fun setDescriptionIds(descriptionIds: IntArray) {
             mDescriptionIds = descriptionIds
         }
+    }
+
+    companion object {
+        private val CLASSES = arrayOf(GoogleSignInActivity::class.java,
+                FacebookLoginActivity::class.java, TwitterLoginActivity::class.java,
+                EmailPasswordActivity::class.java, PasswordlessActivity::class.java,
+                PhoneAuthActivity::class.java, AnonymousAuthActivity::class.java,
+                FirebaseUIActivity::class.java, CustomAuthActivity::class.java)
+        private val DESCRIPTION_IDS = intArrayOf(R.string.desc_google_sign_in,
+                R.string.desc_facebook_login, R.string.desc_twitter_login,
+                R.string.desc_emailpassword, R.string.desc_passwordless,
+                R.string.desc_phone_auth, R.string.desc_anonymous_auth,
+                R.string.desc_firebase_ui, R.string.desc_custom_auth)
     }
 }

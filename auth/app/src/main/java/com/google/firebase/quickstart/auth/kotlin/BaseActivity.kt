@@ -22,7 +22,7 @@ open class BaseActivity : AppCompatActivity() {
         mProgressDialog.show()
     }
 
-    public fun hideProgressDialog() {
+    fun hideProgressDialog() {
         if (mProgressDialog.isShowing) {
             mProgressDialog.dismiss()
         }

@@ -22,9 +22,6 @@ import kotlinx.android.synthetic.main.activity_google.*
  */
 class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
 
-    private val TAG = "GoogleActivity"
-    private val RC_SIGN_IN = 9001
-
     // [START declare_auth]
     private lateinit var mAuth: FirebaseAuth
     // [END declare_auth]
@@ -105,7 +102,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(main_layout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                         updateUI(null)
                     }
 
@@ -165,5 +162,10 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
             R.id.signOutButton -> signOut()
             R.id.disconnectButton -> revokeAccess()
         }
+    }
+
+    companion object {
+        private val TAG = "GoogleActivity"
+        private val RC_SIGN_IN = 9001
     }
 }
