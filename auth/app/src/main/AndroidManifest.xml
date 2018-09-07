@@ -84,7 +84,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data
-                    android:host="auth.example.com"
+                    android:host="kotlin.auth.example.com"
                     android:pathPrefix="/emailSignInLink"
                     android:scheme="https" />
 
