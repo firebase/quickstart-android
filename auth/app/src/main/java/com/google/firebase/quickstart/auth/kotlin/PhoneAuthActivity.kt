@@ -46,10 +46,10 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // Assign click listeners
-        button_start_verification.setOnClickListener(this)
-        button_verify_phone.setOnClickListener(this)
-        button_resend.setOnClickListener(this)
-        sign_out_button.setOnClickListener(this)
+        buttonStartVerification.setOnClickListener(this)
+        buttonVerifyPhone.setOnClickListener(this)
+        buttonResend.setOnClickListener(this)
+        signOutButton.setOnClickListener(this)
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance()
@@ -89,7 +89,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
                     // [START_EXCLUDE]
-                    field_phone_number.error = "Invalid phone number."
+                    fieldPhoneNumber.error = "Invalid phone number."
                     // [END_EXCLUDE]
                 } else if (e is FirebaseTooManyRequestsException) {
                     // The SMS quota for the project has been exceeded
@@ -134,7 +134,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
         // [START_EXCLUDE]
         if (mVerificationInProgress && validatePhoneNumber()) {
-            startPhoneNumberVerification(field_phone_number.text.toString())
+            startPhoneNumberVerification(fieldPhoneNumber.text.toString())
         }
         // [END_EXCLUDE]
     }
@@ -202,7 +202,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                         if (task.exception is FirebaseAuthInvalidCredentialsException) {
                             // The verification code entered was invalid
                             // [START_EXCLUDE silent]
-                            field_verification_code.error = "Invalid code."
+                            fieldVerificationCode.error = "Invalid code."
                             // [END_EXCLUDE]
                         }
                         // [START_EXCLUDE silent]
@@ -235,34 +235,34 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         when (uiState) {
             STATE_INITIALIZED -> {
                 // Initialized state, show only the phone number field and start button
-                enableViews(button_start_verification, field_phone_number)
-                disableViews(button_verify_phone, button_resend, field_verification_code)
+                enableViews(buttonStartVerification, fieldPhoneNumber)
+                disableViews(buttonVerifyPhone, buttonResend, fieldVerificationCode)
                 detail.text = null
             }
             STATE_CODE_SENT -> {
                 // Code sent state, show the verification field, the
-                enableViews(button_verify_phone, button_resend, field_phone_number, field_verification_code)
-                disableViews(button_start_verification)
+                enableViews(buttonVerifyPhone, buttonResend, fieldPhoneNumber, fieldVerificationCode)
+                disableViews(buttonStartVerification)
                 detail.setText(R.string.status_code_sent)
             }
             STATE_VERIFY_FAILED -> {
                 // Verification has failed, show all options
-                enableViews(button_start_verification, button_verify_phone, button_resend, field_phone_number,
-                        field_verification_code)
+                enableViews(buttonStartVerification, buttonVerifyPhone, buttonResend, fieldPhoneNumber,
+                        fieldVerificationCode)
                 detail.setText(R.string.status_verification_failed)
             }
             STATE_VERIFY_SUCCESS -> {
                 // Verification has succeeded, proceed to firebase sign in
-                disableViews(button_start_verification, button_verify_phone, button_resend, field_phone_number,
-                        field_verification_code)
+                disableViews(buttonStartVerification, buttonVerifyPhone, buttonResend, fieldPhoneNumber,
+                        fieldVerificationCode)
                 detail.setText(R.string.status_verification_succeeded)
 
                 // Set the verification text based on the credential
                 if (cred != null) {
                     if (cred.smsCode != null) {
-                        field_verification_code.setText(cred.smsCode)
+                        fieldVerificationCode.setText(cred.smsCode)
                     } else {
-                        field_verification_code.setText(R.string.instant_validation)
+                        fieldVerificationCode.setText(R.string.instant_validation)
                     }
                 }
             }
@@ -275,18 +275,18 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
         if (user == null) {
             // Signed out
-            phone_auth_fields.visibility = View.VISIBLE
-            signed_in_buttons.visibility = View.GONE
+            phoneAuthFields.visibility = View.VISIBLE
+            signedInButtons.visibility = View.GONE
 
             status.setText(R.string.signed_out)
         } else {
             // Signed in
-            phone_auth_fields.visibility = View.GONE
-            signed_in_buttons.visibility = View.VISIBLE
+            phoneAuthFields.visibility = View.GONE
+            signedInButtons.visibility = View.VISIBLE
 
-            enableViews(field_phone_number, field_verification_code)
-            field_phone_number.setText(null)
-            field_verification_code.setText(null)
+            enableViews(fieldPhoneNumber, fieldVerificationCode)
+            fieldPhoneNumber.setText(null)
+            fieldVerificationCode.setText(null)
 
             status.setText(R.string.signed_in)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)
@@ -294,9 +294,9 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun validatePhoneNumber(): Boolean {
-        val phoneNumber = field_phone_number.text.toString()
+        val phoneNumber = fieldPhoneNumber.text.toString()
         if (TextUtils.isEmpty(phoneNumber)) {
-            field_phone_number.error = "Invalid phone number."
+            fieldPhoneNumber.error = "Invalid phone number."
             return false
         }
 
@@ -317,24 +317,24 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.button_start_verification -> {
+            R.id.buttonStartVerification -> {
                 if (!validatePhoneNumber()) {
                     return
                 }
 
-                startPhoneNumberVerification(field_phone_number.text.toString())
+                startPhoneNumberVerification(fieldPhoneNumber.text.toString())
             }
-            R.id.button_verify_phone -> {
-                val code = field_verification_code.text.toString()
+            R.id.buttonVerifyPhone -> {
+                val code = fieldVerificationCode.text.toString()
                 if (TextUtils.isEmpty(code)) {
-                    field_verification_code.error = "Cannot be empty."
+                    fieldVerificationCode.error = "Cannot be empty."
                     return
                 }
 
                 verifyPhoneNumberWithCode(mVerificationId, code)
             }
-            R.id.button_resend -> resendVerificationCode(field_phone_number.text.toString(), mResendToken)
-            R.id.sign_out_button -> signOut()
+            R.id.buttonResend -> resendVerificationCode(fieldPhoneNumber.text.toString(), mResendToken)
+            R.id.signOutButton -> signOut()
         }
     }
 }

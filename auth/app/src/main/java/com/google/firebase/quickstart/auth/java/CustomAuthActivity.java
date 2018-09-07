@@ -51,7 +51,7 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_custom);
 
         // Button click listeners
-        findViewById(R.id.button_sign_in).setOnClickListener(this);
+        findViewById(R.id.buttonSignIn).setOnClickListener(this);
 
         // Create token receiver (for demo purposes only)
         mTokenReceiver = new TokenBroadcastReceiver() {
@@ -116,10 +116,10 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+            ((TextView) findViewById(R.id.textSignInStatus)).setText(
                     "User ID: " + user.getUid());
         } else {
-            ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+            ((TextView) findViewById(R.id.textSignInStatus)).setText(
                     "Error: sign in failed.");
         }
     }
@@ -135,14 +135,14 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         }
 
         // Enable/disable sign-in button and show the token
-        findViewById(R.id.button_sign_in).setEnabled((mCustomToken != null));
-        ((TextView) findViewById(R.id.text_token_status)).setText(status);
+        findViewById(R.id.buttonSignIn).setEnabled((mCustomToken != null));
+        ((TextView) findViewById(R.id.textTokenStatus)).setText(status);
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.button_sign_in) {
+        if (i == R.id.buttonSignIn) {
             startSignIn();
 
         }

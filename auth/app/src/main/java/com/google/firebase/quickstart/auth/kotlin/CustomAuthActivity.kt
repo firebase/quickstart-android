@@ -32,7 +32,7 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_custom)
 
         // Button click listeners
-        button_sign_in.setOnClickListener(this)
+        buttonSignIn.setOnClickListener(this)
 
         // Create token receiver (for demo purposes only)
         mTokenReceiver = object : TokenBroadcastReceiver() {
@@ -90,9 +90,9 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            text_sign_in_status.text = "User ID: $user.uid"
+            textSignInStatus.text = "User ID: $user.uid"
         } else {
-            text_sign_in_status.text = "Error: sign in failed."
+            textSignInStatus.text = "Error: sign in failed."
         }
     }
 
@@ -107,13 +107,13 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // Enable/disable sign-in button and show the token
-        button_sign_in.isEnabled = mCustomToken != null
-        text_token_status.text = status
+        buttonSignIn.isEnabled = mCustomToken != null
+        textTokenStatus.text = status
     }
 
     override fun onClick(v: View) {
         val i = v.id
-        if (i == R.id.button_sign_in) {
+        if (i == R.id.buttonSignIn) {
             startSignIn()
 
         }

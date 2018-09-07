@@ -59,13 +59,13 @@ public class AnonymousAuthActivity extends BaseActivity implements
         // [END initialize_auth]
 
         // Fields
-        mEmailField = findViewById(R.id.field_email);
-        mPasswordField = findViewById(R.id.field_password);
+        mEmailField = findViewById(R.id.fieldEmail);
+        mPasswordField = findViewById(R.id.fieldPassword);
 
         // Click listeners
-        findViewById(R.id.button_anonymous_sign_in).setOnClickListener(this);
-        findViewById(R.id.button_anonymous_sign_out).setOnClickListener(this);
-        findViewById(R.id.button_link_account).setOnClickListener(this);
+        findViewById(R.id.buttonAnonymousSignIn).setOnClickListener(this);
+        findViewById(R.id.buttonAnonymousSignOut).setOnClickListener(this);
+        findViewById(R.id.buttonLinkAccount).setOnClickListener(this);
     }
 
     // [START on_start_check_user]
@@ -176,8 +176,8 @@ public class AnonymousAuthActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
 
-        TextView idView = findViewById(R.id.anonymous_status_id);
-        TextView emailView = findViewById(R.id.anonymous_status_email);
+        TextView idView = findViewById(R.id.anonymousStatusId);
+        TextView emailView = findViewById(R.id.anonymousStatusEmail);
         boolean isSignedIn = (user != null);
 
         // Status text
@@ -190,19 +190,19 @@ public class AnonymousAuthActivity extends BaseActivity implements
         }
 
         // Button visibility
-        findViewById(R.id.button_anonymous_sign_in).setEnabled(!isSignedIn);
-        findViewById(R.id.button_anonymous_sign_out).setEnabled(isSignedIn);
-        findViewById(R.id.button_link_account).setEnabled(isSignedIn);
+        findViewById(R.id.buttonAnonymousSignIn).setEnabled(!isSignedIn);
+        findViewById(R.id.buttonAnonymousSignOut).setEnabled(isSignedIn);
+        findViewById(R.id.buttonLinkAccount).setEnabled(isSignedIn);
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.button_anonymous_sign_in) {
+        if (i == R.id.buttonAnonymousSignIn) {
             signInAnonymously();
-        } else if (i == R.id.button_anonymous_sign_out) {
+        } else if (i == R.id.buttonAnonymousSignOut) {
             signOut();
-        } else if (i == R.id.button_link_account) {
+        } else if (i == R.id.buttonLinkAccount) {
             linkAccount();
         }
     }

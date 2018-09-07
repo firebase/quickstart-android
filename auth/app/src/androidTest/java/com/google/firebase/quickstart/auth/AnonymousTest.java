@@ -58,7 +58,7 @@ public class AnonymousTest {
         signOutIfPossible();
 
         // Click sign in
-        onView(allOf(withId(R.id.button_anonymous_sign_in),
+        onView(allOf(withId(R.id.buttonAnonymousSignIn),
                 withText(R.string.sign_in), isDisplayed())).perform(click());
 
         // Make sure userID and email look right
@@ -74,7 +74,7 @@ public class AnonymousTest {
 
     private void signOutIfPossible() {
         try {
-            onView(allOf(withId(R.id.button_anonymous_sign_out), isDisplayed()))
+            onView(allOf(withId(R.id.buttonAnonymousSignOut), isDisplayed()))
                     .perform(click());
         } catch (NoMatchingViewException e) {
             // Ignore

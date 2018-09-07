@@ -4,12 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
@@ -29,10 +24,10 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_emailpassword)
 
         // Buttons
-        email_sign_in_button.setOnClickListener(this)
-        email_create_account_button.setOnClickListener(this)
-        sign_out_button.setOnClickListener(this)
-        verify_email_button.setOnClickListener(this)
+        emailSignInButton.setOnClickListener(this)
+        emailCreateAccountButton.setOnClickListener(this)
+        signOutButton.setOnClickListener(this)
+        verifyEmailButton.setOnClickListener(this)
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance()
@@ -120,7 +115,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
     private fun sendEmailVerification() {
         // Disable button
-        verify_email_button.isEnabled = false
+        verifyEmailButton.isEnabled = false
 
         // Send verification email
         // [START send_email_verification]
@@ -129,7 +124,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                 ?.addOnCompleteListener(this) { task ->
                     // [START_EXCLUDE]
                     // Re-enable button
-                    findViewById<View>(R.id.verify_email_button).isEnabled = true
+                    findViewById<View>(R.id.verifyEmailButton).isEnabled = true
 
                     if (task.isSuccessful) {
                         Toast.makeText(baseContext,
@@ -149,20 +144,20 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     private fun validateForm(): Boolean {
         var valid = true
 
-        val email = field_email.text.toString()
+        val email = fieldEmail.text.toString()
         if (TextUtils.isEmpty(email)) {
-            field_email.error = "Required."
+            fieldEmail.error = "Required."
             valid = false
         } else {
-            field_email.error = null
+            fieldEmail.error = null
         }
 
-        val password = field_password.text.toString()
+        val password = fieldPassword.text.toString()
         if (TextUtils.isEmpty(password)) {
-            field_password.error = "Required."
+            fieldPassword.error = "Required."
             valid = false
         } else {
-            field_password.error = null
+            fieldPassword.error = null
         }
 
         return valid
@@ -175,30 +170,30 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                     user.email, user.isEmailVerified)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
-            email_password_buttons.visibility = View.GONE
-            email_password_fields.visibility = View.GONE
-            signed_in_buttons.visibility = View.VISIBLE
+            emailPasswordButtons.visibility = View.GONE
+            emailPasswordFields.visibility = View.GONE
+            signedInButtons.visibility = View.VISIBLE
 
-            verify_email_button.isEnabled = !user.isEmailVerified
+            verifyEmailButton.isEnabled = !user.isEmailVerified
         } else {
             status.setText(R.string.signed_out)
             detail.text = null
 
-            email_password_buttons.visibility = View.VISIBLE
-            email_password_fields.visibility = View.VISIBLE
-            signed_in_buttons.visibility = View.GONE
+            emailPasswordButtons.visibility = View.VISIBLE
+            emailPasswordFields.visibility = View.VISIBLE
+            signedInButtons.visibility = View.GONE
         }
     }
 
     override fun onClick(v: View) {
         val i = v.id
-        if (i == R.id.email_create_account_button) {
-            createAccount(field_email.text.toString(), field_password.text.toString())
-        } else if (i == R.id.email_sign_in_button) {
-            signIn(field_email.text.toString(), field_password.text.toString())
-        } else if (i == R.id.sign_out_button) {
+        if (i == R.id.emailCreateAccountButton) {
+            createAccount(fieldEmail.text.toString(), fieldPassword.text.toString())
+        } else if (i == R.id.emailSignInButton) {
+            signIn(fieldEmail.text.toString(), fieldPassword.text.toString())
+        } else if (i == R.id.signOutButton) {
             signOut()
-        } else if (i == R.id.verify_email_button) {
+        } else if (i == R.id.verifyEmailButton) {
             sendEmailVerification()
         }
     }

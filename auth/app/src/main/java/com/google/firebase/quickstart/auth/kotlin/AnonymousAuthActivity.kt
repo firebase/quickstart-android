@@ -5,11 +5,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -38,13 +34,13 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         // [END initialize_auth]
 
         // Fields
-        mEmailField = findViewById(R.id.field_email)
-        mPasswordField = findViewById(R.id.field_password)
+        mEmailField = findViewById(R.id.fieldEmail)
+        mPasswordField = findViewById(R.id.fieldPassword)
 
         // Click listeners
-        button_anonymous_sign_in.setOnClickListener(this)
-        button_anonymous_sign_out.setOnClickListener(this)
-        button_link_account.setOnClickListener(this)
+        buttonAnonymousSignIn.setOnClickListener(this)
+        buttonAnonymousSignOut.setOnClickListener(this)
+        buttonLinkAccount.setOnClickListener(this)
     }
 
     // [START on_start_check_user]
@@ -151,25 +147,25 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
 
         // Status text
         if (isSignedIn) {
-            anonymous_status_id.text = getString(R.string.id_fmt, user!!.uid)
-            anonymous_status_email.text = getString(R.string.email_fmt, user.email)
+            anonymousStatusId.text = getString(R.string.id_fmt, user!!.uid)
+            anonymousStatusEmail.text = getString(R.string.email_fmt, user.email)
         } else {
-            anonymous_status_id.setText(R.string.signed_out)
-            anonymous_status_email.text = null
+            anonymousStatusId.setText(R.string.signed_out)
+            anonymousStatusEmail.text = null
         }
 
         // Button visibility
-        button_anonymous_sign_in.isEnabled = !isSignedIn
-        button_anonymous_sign_out.isEnabled = isSignedIn
-        button_link_account.isEnabled = isSignedIn
+        buttonAnonymousSignIn.isEnabled = !isSignedIn
+        buttonAnonymousSignOut.isEnabled = isSignedIn
+        buttonLinkAccount.isEnabled = isSignedIn
     }
 
     override fun onClick(v: View) {
         val i = v.id
         when (i) {
-            R.id.button_anonymous_sign_in -> signInAnonymously()
-            R.id.button_anonymous_sign_out -> signOut()
-            R.id.button_link_account -> linkAccount()
+            R.id.buttonAnonymousSignIn -> signInAnonymously()
+            R.id.buttonAnonymousSignOut -> signOut()
+            R.id.buttonLinkAccount -> linkAccount()
         }
     }
 

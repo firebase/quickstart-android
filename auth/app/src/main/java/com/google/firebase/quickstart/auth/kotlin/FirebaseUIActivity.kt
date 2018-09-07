@@ -31,8 +31,8 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
 
         mAuth = FirebaseAuth.getInstance()
 
-        sign_in_button.setOnClickListener(this)
-        sign_out_button.setOnClickListener(this)
+        signInButton.setOnClickListener(this)
+        signOutButton.setOnClickListener(this)
     }
 
     override fun onStart() {
@@ -73,15 +73,15 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
             status.text = getString(R.string.firebaseui_status_fmt, user.email)
             detail.text = getString(R.string.id_fmt, user.uid)
 
-            findViewById<View>(R.id.sign_in_button).visibility = View.GONE
-            findViewById<View>(R.id.sign_out_button).visibility = View.VISIBLE
+            findViewById<View>(R.id.signInButton).visibility = View.GONE
+            findViewById<View>(R.id.signOutButton).visibility = View.VISIBLE
         } else {
             // Signed out
             status.setText(R.string.signed_out)
             detail.text = null
 
-            sign_in_button.visibility = View.VISIBLE
-            sign_out_button.visibility = View.GONE
+            signInButton.visibility = View.VISIBLE
+            signOutButton.visibility = View.GONE
         }
     }
 
@@ -92,8 +92,8 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.sign_in_button -> startSignIn()
-            R.id.sign_out_button -> signOut()
+            R.id.signInButton -> startSignIn()
+            R.id.signOutButton -> signOut()
         }
     }
 

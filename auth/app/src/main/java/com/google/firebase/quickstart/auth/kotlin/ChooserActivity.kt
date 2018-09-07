@@ -47,8 +47,8 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         val adapter = MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES)
         adapter.setDescriptionIds(DESCRIPTION_IDS)
 
-        list_view.adapter = adapter
-        list_view.onItemClickListener = this
+        listView.adapter = adapter
+        listView.onItemClickListener = this
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {

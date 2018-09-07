@@ -35,7 +35,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_facebook)
 
-        button_facebook_signout.setOnClickListener(this)
+        buttonFacebookSignout.setOnClickListener(this)
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -45,7 +45,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
         // [START initialize_fblogin]
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create()
-        val loginButton = findViewById<LoginButton>(R.id.button_facebook_login)
+        val loginButton = findViewById<LoginButton>(R.id.buttonFacebookLogin)
         loginButton.setReadPermissions("email", "public_profile")
         loginButton.registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
@@ -131,20 +131,20 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
             status.text = getString(R.string.facebook_status_fmt, user.displayName)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
-            findViewById<View>(R.id.button_facebook_login).visibility = View.GONE
-            findViewById<View>(R.id.button_facebook_signout).visibility = View.VISIBLE
+            findViewById<View>(R.id.buttonFacebookLogin).visibility = View.GONE
+            findViewById<View>(R.id.buttonFacebookSignout).visibility = View.VISIBLE
         } else {
             status.setText(R.string.signed_out)
             detail.text = null
 
-            button_facebook_login.visibility = View.VISIBLE
-            button_facebook_signout.visibility = View.GONE
+            buttonFacebookLogin.visibility = View.VISIBLE
+            buttonFacebookSignout.visibility = View.GONE
         }
     }
 
     override fun onClick(v: View) {
         val i = v.id
-        if (i == R.id.button_facebook_signout) {
+        if (i == R.id.buttonFacebookSignout) {
             signOut()
         }
     }

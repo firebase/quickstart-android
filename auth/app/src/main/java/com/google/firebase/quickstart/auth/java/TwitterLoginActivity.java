@@ -61,7 +61,7 @@ public class TwitterLoginActivity extends BaseActivity
         // Views
         mStatusTextView = findViewById(R.id.status);
         mDetailTextView = findViewById(R.id.detail);
-        findViewById(R.id.button_twitter_signout).setOnClickListener(this);
+        findViewById(R.id.buttonTwitterSignout).setOnClickListener(this);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -69,7 +69,7 @@ public class TwitterLoginActivity extends BaseActivity
         // [END initialize_auth]
 
         // [START initialize_twitter_login]
-        mLoginButton = findViewById(R.id.button_twitter_login);
+        mLoginButton = findViewById(R.id.buttonTwitterLogin);
         mLoginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
@@ -155,21 +155,21 @@ public class TwitterLoginActivity extends BaseActivity
             mStatusTextView.setText(getString(R.string.twitter_status_fmt, user.getDisplayName()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
-            findViewById(R.id.button_twitter_login).setVisibility(View.GONE);
-            findViewById(R.id.button_twitter_signout).setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonTwitterLogin).setVisibility(View.GONE);
+            findViewById(R.id.buttonTwitterSignout).setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
 
-            findViewById(R.id.button_twitter_login).setVisibility(View.VISIBLE);
-            findViewById(R.id.button_twitter_signout).setVisibility(View.GONE);
+            findViewById(R.id.buttonTwitterLogin).setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonTwitterSignout).setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.button_twitter_signout) {
+        if (i == R.id.buttonTwitterSignout) {
             signOut();
         }
     }

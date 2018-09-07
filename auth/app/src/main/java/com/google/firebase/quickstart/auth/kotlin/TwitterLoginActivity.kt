@@ -42,7 +42,7 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
         // Inflate layout (must be done after Twitter is configured)
         setContentView(R.layout.activity_twitter)
 
-        button_twitter_signout.setOnClickListener(this)
+        buttonTwitterSignout.setOnClickListener(this)
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -51,7 +51,7 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
 
         // [START initialize_twitter_login]
 
-        button_twitter_login?.callback = object : Callback<TwitterSession>() {
+        buttonTwitterLogin?.callback = object : Callback<TwitterSession>() {
             override fun success(result: Result<TwitterSession>) {
                 Log.d(TAG, "twitterLogin:success$result")
                 handleTwitterSession(result.data)
@@ -129,20 +129,20 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
             status.text = getString(R.string.twitter_status_fmt, user.displayName)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
-            button_twitter_login.visibility = View.GONE
-            button_twitter_signout.visibility = View.VISIBLE
+            buttonTwitterLogin.visibility = View.GONE
+            buttonTwitterSignout.visibility = View.VISIBLE
         } else {
             status.setText(R.string.signed_out)
             detail.text = null
 
-            button_twitter_login.visibility = View.VISIBLE
-            button_twitter_signout.visibility = View.GONE
+            buttonTwitterLogin.visibility = View.VISIBLE
+            buttonTwitterSignout.visibility = View.GONE
         }
     }
 
     override fun onClick(v: View) {
         val i = v.id
-        if (i == R.id.button_twitter_signout) {
+        if (i == R.id.buttonTwitterSignout) {
             signOut()
         }
     }
