@@ -14,7 +14,7 @@ import com.google.samples.quickstart.admobexample.java.SecondActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class KotlinMainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity"
     // [END add_lifecycle_methods]

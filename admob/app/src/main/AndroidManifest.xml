@@ -41,9 +41,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".java.MainActivity" />
         </activity>
-        <activity android:name=".kotlin.KotlinMainActivity" />
+        <activity android:name=".kotlin.MainActivity" />
         <activity
-            android:name=".kotlin.KotlinSecondActivity"
+            android:name=".kotlin.SecondActivity"
             android:label="@string/second_activity_title"
             android:parentActivityName=".java.MainActivity">
             <meta-data
