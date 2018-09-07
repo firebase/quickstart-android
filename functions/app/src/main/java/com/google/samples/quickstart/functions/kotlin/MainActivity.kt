@@ -21,6 +21,7 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.FirebaseFunctionsException
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import com.google.samples.quickstart.functions.R
 
 /**
  * This activity demonstrates the Android SDK for Callable Functions.

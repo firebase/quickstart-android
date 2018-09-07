@@ -8,6 +8,7 @@ import android.support.v4.app.NotificationManagerCompat
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.samples.quickstart.functions.R
 
 
 class FunctionsMessagingService : FirebaseMessagingService() {
