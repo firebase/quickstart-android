@@ -53,12 +53,15 @@ class RatingDialogFragment : DialogFragment() {
     }
 
     fun onSubmitClicked() {
-        val rating = Rating(
-                FirebaseAuth.getInstance().currentUser!!,
-                restaurantFormRating.rating.toDouble(),
-                restaurantFormText.text.toString())
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            val rating = Rating(
+                    user,
+                    restaurantFormRating.rating.toDouble(),
+                    restaurantFormText.text.toString())
 
-        ratingListener?.onRating(rating)
+            ratingListener?.onRating(rating)
+        }
 
         dismiss()
     }

@@ -33,7 +33,7 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
         setContentView(R.layout.activity_restaurant_detail)
 
         // Get restaurant ID from extras
-        val restaurantId = intent.extras!!.getString(KEY_RESTAURANT_ID)
+        val restaurantId = intent.extras?.getString(KEY_RESTAURANT_ID)
                 ?: throw IllegalArgumentException("Must pass extra $KEY_RESTAURANT_ID")
 
         // Initialize Firestore
@@ -81,10 +81,8 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
 
         ratingAdapter.stopListening()
 
-        if (restaurantRegistration != null) {
-            restaurantRegistration!!.remove()
-            restaurantRegistration = null
-        }
+        restaurantRegistration?.remove()
+        restaurantRegistration = null
     }
 
     override fun finish() {
@@ -101,7 +99,12 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
             return
         }
 
-        onRestaurantLoaded(snapshot!!.toObject(Restaurant::class.java)!!)
+        snapshot?.let{
+            val restaurant = snapshot.toObject(Restaurant::class.java)
+            if (restaurant != null) {
+                onRestaurantLoaded(restaurant)
+            }
+        }
     }
 
     private fun onRestaurantLoaded(restaurant: Restaurant) {
@@ -123,7 +126,7 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
     }
 
     private fun onAddRatingClicked() {
-        ratingDialog!!.show(supportFragmentManager, RatingDialogFragment.TAG)
+        ratingDialog?.show(supportFragmentManager, RatingDialogFragment.TAG)
     }
 
     override fun onRating(rating: Rating) {
@@ -153,9 +156,12 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
         // In a transaction, add the new rating and update the aggregate totals
         return firestore.runTransaction { transaction ->
             val restaurant = transaction.get(restaurantRef).toObject(Restaurant::class.java)
+            if (restaurant == null) {
+                throw Exception("Resraurant not found at ${restaurantRef.path}")
+            }
 
             // Compute new number of ratings
-            val newNumRatings = restaurant!!.numRatings + 1
+            val newNumRatings = restaurant.numRatings + 1
 
             // Compute new average rating
             val oldRatingTotal = restaurant.avgRating * restaurant.numRatings

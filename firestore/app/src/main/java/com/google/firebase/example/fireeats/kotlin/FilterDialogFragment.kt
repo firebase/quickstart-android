@@ -67,7 +67,7 @@ class FilterDialogFragment : DialogFragment() {
 
         }
 
-    private val sortDirection: Query.Direction?
+    private val sortDirection: Query.Direction
         get() {
             val selected = spinnerSort.selectedItem as String
             if (getString(R.string.sort_by_rating) == selected) {
@@ -78,7 +78,7 @@ class FilterDialogFragment : DialogFragment() {
             }
             return if (getString(R.string.sort_by_popularity) == selected) {
                 Query.Direction.DESCENDING
-            } else null
+            } else Query.Direction.DESCENDING
 
         }
 
@@ -122,7 +122,7 @@ class FilterDialogFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        dialog.window!!.setLayout(
+        dialog.window?.setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
     }

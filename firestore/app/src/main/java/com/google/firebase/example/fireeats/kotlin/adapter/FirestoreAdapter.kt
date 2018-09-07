@@ -26,8 +26,12 @@ abstract class FirestoreAdapter<VH : RecyclerView.ViewHolder>(private var query:
             return
         }
 
+        if (documentSnapshots == null) {
+            return
+        }
+
         // Dispatch the event
-        Log.d(TAG, "onEvent:numChanges:" + documentSnapshots!!.documentChanges.size)
+        Log.d(TAG, "onEvent:numChanges:" + documentSnapshots.documentChanges.size)
         for (change in documentSnapshots.documentChanges) {
             when (change.type) {
                 DocumentChange.Type.ADDED -> onDocumentAdded(change)
@@ -46,10 +50,8 @@ abstract class FirestoreAdapter<VH : RecyclerView.ViewHolder>(private var query:
     }
 
     fun stopListening() {
-        if (registration != null) {
-            registration!!.remove()
-            registration = null
-        }
+        registration?.remove()
+        registration = null
 
         snapshots.clear()
         notifyDataSetChanged()

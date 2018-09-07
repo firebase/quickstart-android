@@ -28,7 +28,11 @@ open class RatingAdapter(query: Query) : FirestoreAdapter<RatingAdapter.ViewHold
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(rating: Rating?) {
-            itemView.ratingItemName.text = rating!!.userName
+            if (rating == null) {
+                return
+            }
+
+            itemView.ratingItemName.text = rating.userName
             itemView.ratingItemRating.rating = rating.rating.toFloat()
             itemView.ratingItemText.text = rating.text
 

@@ -38,11 +38,15 @@ open class RestaurantAdapter(query: Query, val mListener: OnRestaurantSelectedLi
                  listener: OnRestaurantSelectedListener?) {
 
             val restaurant = snapshot.toObject(Restaurant::class.java)
+            if (restaurant == null) {
+                return
+            }
+
             val resources = itemView.resources
 
             // Load image
             Glide.with(itemView.restaurantItemImage.context)
-                    .load(restaurant!!.photo)
+                    .load(restaurant.photo)
                     .into(itemView.restaurantItemImage)
 
             val numRatings: Int = restaurant.numRatings
