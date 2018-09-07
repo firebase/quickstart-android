@@ -5,16 +5,18 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.google.android.gms.ads.AdListener
+// [SNIPPET load_banner_ad]
+// Load an ad into the AdView.
+// [START load_banner_ad]
 import com.google.android.gms.ads.AdRequest
+// [START_EXCLUDE]
 import com.google.android.gms.ads.InterstitialAd
 import com.google.samples.quickstart.admobexample.R
 import kotlinx.android.synthetic.main.activity_main.*
 
+// [END_EXCLUDE]
 
 class MainActivity : AppCompatActivity() {
-
-    private val TAG = "MainActivity"
-    // [END add_lifecycle_methods]
 
     // [START_EXCLUDE]
     private lateinit var mInterstitialAd: InterstitialAd
@@ -58,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onAdFailedToLoad(i: Int) {
                 // See https://goo.gl/sCZj0H for possible error codes.
-                Log.w(TAG, "onAdFailedToLoad:$i")
+                Log.w(Companion.TAG, "onAdFailedToLoad:$i")
             }
         }
         // [END create_interstitial_ad_listener]
@@ -114,6 +116,11 @@ class MainActivity : AppCompatActivity() {
     public override fun onDestroy() {
         adView.destroy()
         super.onDestroy()
+    }
+
+    // [END add_lifecycle_methods]
+    companion object {
+        private val TAG = "MainActivity"
     }
 
 }

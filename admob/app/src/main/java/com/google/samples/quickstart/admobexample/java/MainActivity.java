@@ -28,7 +28,7 @@ import com.google.android.gms.ads.AdListener;
 // [START load_banner_ad]
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-// [START_EXCLUDE]
+
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.samples.quickstart.admobexample.R;
 // [END_EXCLUDE]
