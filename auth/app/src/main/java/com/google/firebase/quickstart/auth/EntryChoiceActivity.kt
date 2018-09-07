@@ -3,6 +3,8 @@ package com.google.firebase.quickstart.auth
 import android.content.Intent
 import com.firebase.example.internal.BaseEntryChoiceActivity
 import com.firebase.example.internal.Choice
+import com.google.android.gms.common.util.CollectionUtils.listOf
+import com.google.firebase.quickstart.auth.java.ChooserActivity
 
 class EntryChoiceActivity : BaseEntryChoiceActivity() {
 
@@ -15,7 +17,7 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                 Choice(
                         "Kotlin",
                         "Run the Firebase Auth quickstart written in Kotlin.",
-                        Intent(this, ChooserActivity::class.java))
+                        Intent(this, com.google.firebase.quickstart.auth.kotlin.ChooserActivity::class.java))
         )
     }
 
