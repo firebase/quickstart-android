@@ -79,9 +79,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // Restore instance state
-        if (savedInstanceState != null) {
-            fileUri1 = savedInstanceState.getParcelable(KEY_FILE_URI)
-            downloadUrl = savedInstanceState.getParcelable(KEY_DOWNLOAD_URL)
+        savedInstanceState?.let {
+            fileUri1 = it.getParcelable(KEY_FILE_URI)
+            downloadUrl = it.getParcelable(KEY_DOWNLOAD_URL)
         }
         onNewIntent(intent)
     }
