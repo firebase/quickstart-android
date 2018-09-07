@@ -14,13 +14,11 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.firebasestorage.R
-import com.google.firebase.quickstart.firebasestorage.java.MyDownloadService
-import com.google.firebase.quickstart.firebasestorage.java.MyUploadService
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 /**
@@ -31,34 +29,30 @@ import java.util.*
  */
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    private var mBroadcastReceiver: BroadcastReceiver? = null
-    private var mProgressDialog: ProgressDialog? = null
-    private var mAuth: FirebaseAuth? = null
+    private lateinit var broadcastReceiver: BroadcastReceiver
+    private lateinit var auth: FirebaseAuth
+    private lateinit var progressDialog: ProgressDialog
 
-    private var mDownloadUrl: Uri? = null
-    private var mFileUri: Uri? = null
+    private var downloadUrl: Uri? = null
+    private var fileUri1: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         // Click listeners
-        findViewById<View>(R.id.button_camera).setOnClickListener(this)
-        findViewById<View>(R.id.button_sign_in).setOnClickListener(this)
-        findViewById<View>(R.id.button_download).setOnClickListener(this)
+        buttonCamera.setOnClickListener(this)
+        buttonSignIn.setOnClickListener(this)
+        buttonDownload.setOnClickListener(this)
 
-        // Restore instance state
-        if (savedInstanceState != null) {
-            mFileUri = savedInstanceState.getParcelable(KEY_FILE_URI)
-            mDownloadUrl = savedInstanceState.getParcelable(KEY_DOWNLOAD_URL)
-        }
-        onNewIntent(intent)
+        progressDialog = ProgressDialog(this)
+        progressDialog.isIndeterminate = true
 
         // Local broadcast receiver
-        mBroadcastReceiver = object : BroadcastReceiver() {
+        broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 Log.d(TAG, "onReceive:$intent")
                 hideProgressDialog()
@@ -83,6 +77,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
+
+        // Restore instance state
+        if (savedInstanceState != null) {
+            fileUri1 = savedInstanceState.getParcelable(KEY_FILE_URI)
+            downloadUrl = savedInstanceState.getParcelable(KEY_DOWNLOAD_URL)
+        }
+        onNewIntent(intent)
     }
 
     public override fun onNewIntent(intent: Intent) {
@@ -97,35 +98,35 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     public override fun onStart() {
         super.onStart()
-        updateUI(mAuth!!.currentUser)
+        updateUI(auth.currentUser)
 
         // Register receiver for uploads and downloads
         val manager = LocalBroadcastManager.getInstance(this)
-        manager.registerReceiver(mBroadcastReceiver!!, MyDownloadService.getIntentFilter())
-        manager.registerReceiver(mBroadcastReceiver!!, MyUploadService.getIntentFilter())
+        manager.registerReceiver(broadcastReceiver, MyDownloadService.intentFilter)
+        manager.registerReceiver(broadcastReceiver, MyUploadService.intentFilter)
     }
 
     public override fun onStop() {
         super.onStop()
 
         // Unregister download receiver
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver!!)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver)
     }
 
     public override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-        out.putParcelable(KEY_FILE_URI, mFileUri)
-        out.putParcelable(KEY_DOWNLOAD_URL, mDownloadUrl)
+        out.putParcelable(KEY_FILE_URI, fileUri1)
+        out.putParcelable(KEY_DOWNLOAD_URL, downloadUrl)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         Log.d(TAG, "onActivityResult:$requestCode:$resultCode:$data")
         if (requestCode == RC_TAKE_PICTURE) {
             if (resultCode == Activity.RESULT_OK) {
-                mFileUri = data.data
+                fileUri1 = data.data
 
-                if (mFileUri != null) {
-                    uploadFromUri(mFileUri!!)
+                if (fileUri1 != null) {
+                    uploadFromUri(fileUri1!!)
                 } else {
                     Log.w(TAG, "File URI is null")
                 }
@@ -139,11 +140,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(TAG, "uploadFromUri:src:" + fileUri.toString())
 
         // Save the File URI
-        mFileUri = fileUri
+        fileUri1 = fileUri
 
         // Clear the last download, if any
-        updateUI(mAuth!!.currentUser)
-        mDownloadUrl = null
+        updateUI(auth.currentUser)
+        downloadUrl = null
 
         // Start MyUploadService to upload the file, so that the file is uploaded
         // even if this Activity is killed or put in the background
@@ -157,7 +158,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun beginDownload() {
         // Get path
-        val path = "photos/" + mFileUri!!.lastPathSegment
+        val path = "photos/" + fileUri1!!.lastPathSegment
 
         // Kick off MyDownloadService to download the file
         val intent = Intent(this, MyDownloadService::class.java)
@@ -181,7 +182,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun signInAnonymously() {
         // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
         showProgressDialog(getString(R.string.progress_auth))
-        mAuth!!.signInAnonymously()
+        auth.signInAnonymously()
                 .addOnSuccessListener(this) { authResult ->
                     Log.d(TAG, "signInAnonymously:SUCCESS")
                     hideProgressDialog()
@@ -196,29 +197,29 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun onUploadResultIntent(intent: Intent) {
         // Got a new intent from MyUploadService with a success or failure
-        mDownloadUrl = intent.getParcelableExtra(MyUploadService.EXTRA_DOWNLOAD_URL)
-        mFileUri = intent.getParcelableExtra(MyUploadService.EXTRA_FILE_URI)
+        downloadUrl = intent.getParcelableExtra(MyUploadService.EXTRA_DOWNLOAD_URL)
+        fileUri1 = intent.getParcelableExtra(MyUploadService.EXTRA_FILE_URI)
 
-        updateUI(mAuth!!.currentUser)
+        updateUI(auth.currentUser)
     }
 
     private fun updateUI(user: FirebaseUser?) {
         // Signed in or Signed out
         if (user != null) {
-            findViewById<View>(R.id.layout_signin).visibility = View.GONE
-            findViewById<View>(R.id.layout_storage).visibility = View.VISIBLE
+            layoutSignin.visibility = View.GONE
+            layoutStorage.visibility = View.VISIBLE
         } else {
-            findViewById<View>(R.id.layout_signin).visibility = View.VISIBLE
-            findViewById<View>(R.id.layout_storage).visibility = View.GONE
+            layoutSignin.visibility = View.VISIBLE
+            layoutStorage.visibility = View.GONE
         }
 
         // Download URL and Download button
-        if (mDownloadUrl != null) {
-            (findViewById<View>(R.id.picture_download_uri) as TextView).text = mDownloadUrl!!.toString()
-            findViewById<View>(R.id.layout_download).visibility = View.VISIBLE
+        if (downloadUrl != null) {
+            pictureDownloadUri.text = downloadUrl!!.toString()
+            layoutDownload.visibility = View.VISIBLE
         } else {
-            (findViewById<View>(R.id.picture_download_uri) as TextView).text = null
-            findViewById<View>(R.id.layout_download).visibility = View.GONE
+            pictureDownloadUri.text = null
+            layoutDownload.visibility = View.GONE
         }
     }
 
@@ -231,18 +232,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showProgressDialog(caption: String) {
-        if (mProgressDialog == null) {
-            mProgressDialog = ProgressDialog(this)
-            mProgressDialog!!.isIndeterminate = true
-        }
-
-        mProgressDialog!!.setMessage(caption)
-        mProgressDialog!!.show()
+        progressDialog.setMessage(caption)
+        progressDialog.show()
     }
 
     private fun hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog!!.isShowing) {
-            mProgressDialog!!.dismiss()
+        if (progressDialog.isShowing) {
+            progressDialog.dismiss()
         }
     }
 
@@ -264,22 +260,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         val i = v.id
-        if (i == R.id.button_camera) {
-            launchCamera()
-        } else if (i == R.id.button_sign_in) {
-            signInAnonymously()
-        } else if (i == R.id.button_download) {
-            beginDownload()
+        when (i) {
+            R.id.buttonCamera -> launchCamera()
+            R.id.buttonSignIn -> signInAnonymously()
+            R.id.buttonDownload -> beginDownload()
         }
     }
 
     companion object {
 
-        private val TAG = "Storage#MainActivity"
+        private const val TAG = "Storage#MainActivity"
 
-        private val RC_TAKE_PICTURE = 101
+        private const val RC_TAKE_PICTURE = 101
 
-        private val KEY_FILE_URI = "key_file_uri"
-        private val KEY_DOWNLOAD_URL = "key_download_url"
+        private const val KEY_FILE_URI = "key_file_uri"
+        private const val KEY_DOWNLOAD_URL = "key_download_url"
     }
 }

@@ -9,8 +9,6 @@ import android.os.IBinder
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.google.firebase.quickstart.firebasestorage.R
-import com.google.firebase.quickstart.firebasestorage.java.MainActivity
-import com.google.firebase.quickstart.firebasestorage.java.MyBaseTaskService
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -20,14 +18,14 @@ import com.google.firebase.storage.StorageReference
 class MyUploadService : MyBaseTaskService() {
 
     // [START declare_ref]
-    private var mStorageRef: StorageReference? = null
+    private lateinit var storageRef: StorageReference
     // [END declare_ref]
 
     override fun onCreate() {
         super.onCreate()
 
         // [START get_storage_ref]
-        mStorageRef = FirebaseStorage.getInstance().reference
+        storageRef = FirebaseStorage.getInstance().reference
         // [END get_storage_ref]
     }
 
@@ -64,7 +62,7 @@ class MyUploadService : MyBaseTaskService() {
 
         // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
-        val photoRef = mStorageRef!!.child("photos")
+        val photoRef = storageRef!!.child("photos")
                 .child(fileUri.lastPathSegment)
         // [END get_child_ref]
 
@@ -74,38 +72,35 @@ class MyUploadService : MyBaseTaskService() {
             showProgressNotification(getString(R.string.progress_uploading),
                     taskSnapshot.bytesTransferred,
                     taskSnapshot.totalByteCount)
+        }.continueWithTask { task ->
+            // Forward any exceptions
+            if (!task.isSuccessful) {
+                throw task.exception!!
+            }
+
+            Log.d(TAG, "uploadFromUri: upload success")
+
+            // Request the public download URL
+            photoRef.downloadUrl
+        }.addOnSuccessListener { downloadUri ->
+            // Upload succeeded
+            Log.d(TAG, "uploadFromUri: getDownloadUri success")
+
+            // [START_EXCLUDE]
+            broadcastUploadFinished(downloadUri, fileUri)
+            showUploadFinishedNotification(downloadUri, fileUri)
+            taskCompleted()
+            // [END_EXCLUDE]
+        }.addOnFailureListener { exception ->
+            // Upload failed
+            Log.w(TAG, "uploadFromUri:onFailure", exception)
+
+            // [START_EXCLUDE]
+            broadcastUploadFinished(null, fileUri)
+            showUploadFinishedNotification(null, fileUri)
+            taskCompleted()
+            // [END_EXCLUDE]
         }
-                .continueWithTask { task ->
-                    // Forward any exceptions
-                    if (!task.isSuccessful) {
-                        throw task.exception!!
-                    }
-
-                    Log.d(TAG, "uploadFromUri: upload success")
-
-                    // Request the public download URL
-                    photoRef.downloadUrl
-                }
-                .addOnSuccessListener { downloadUri ->
-                    // Upload succeeded
-                    Log.d(TAG, "uploadFromUri: getDownloadUri success")
-
-                    // [START_EXCLUDE]
-                    broadcastUploadFinished(downloadUri, fileUri)
-                    showUploadFinishedNotification(downloadUri, fileUri)
-                    taskCompleted()
-                    // [END_EXCLUDE]
-                }
-                .addOnFailureListener { exception ->
-                    // Upload failed
-                    Log.w(TAG, "uploadFromUri:onFailure", exception)
-
-                    // [START_EXCLUDE]
-                    broadcastUploadFinished(null, fileUri)
-                    showUploadFinishedNotification(null, fileUri)
-                    taskCompleted()
-                    // [END_EXCLUDE]
-                }
     }
     // [END upload_from_uri]
 
@@ -145,16 +140,16 @@ class MyUploadService : MyBaseTaskService() {
 
     companion object {
 
-        private val TAG = "MyUploadService"
+        private const val TAG = "MyUploadService"
 
         /** Intent Actions  */
-        val ACTION_UPLOAD = "action_upload"
-        val UPLOAD_COMPLETED = "upload_completed"
-        val UPLOAD_ERROR = "upload_error"
+        const val ACTION_UPLOAD = "action_upload"
+        const val UPLOAD_COMPLETED = "upload_completed"
+        const val UPLOAD_ERROR = "upload_error"
 
         /** Intent Extras  */
-        val EXTRA_FILE_URI = "extra_file_uri"
-        val EXTRA_DOWNLOAD_URL = "extra_download_url"
+        const val EXTRA_FILE_URI = "extra_file_uri"
+        const val EXTRA_DOWNLOAD_URL = "extra_download_url"
 
         val intentFilter: IntentFilter
             get() {

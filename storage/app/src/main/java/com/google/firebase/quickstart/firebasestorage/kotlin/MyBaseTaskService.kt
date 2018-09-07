@@ -16,7 +16,8 @@ import com.google.firebase.quickstart.firebasestorage.R
  * count is zero.
  */
 abstract class MyBaseTaskService : Service() {
-    private var mNumTasks = 0
+
+    private var numTasks = 0
 
     fun taskStarted() {
         changeNumberOfTasks(1)
@@ -28,11 +29,11 @@ abstract class MyBaseTaskService : Service() {
 
     @Synchronized
     private fun changeNumberOfTasks(delta: Int) {
-        Log.d(TAG, "changeNumberOfTasks:$mNumTasks:$delta")
-        mNumTasks += delta
+        Log.d(TAG, "changeNumberOfTasks:$numTasks:$delta")
+        numTasks += delta
 
         // If there are no tasks left, stop the service
-        if (mNumTasks <= 0) {
+        if (numTasks <= 0) {
             Log.d(TAG, "stopping")
             stopSelf()
         }

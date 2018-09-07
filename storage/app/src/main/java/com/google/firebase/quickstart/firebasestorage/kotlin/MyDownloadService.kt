@@ -7,20 +7,18 @@ import android.os.IBinder
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.google.firebase.quickstart.firebasestorage.R
-import com.google.firebase.quickstart.firebasestorage.java.MainActivity
-import com.google.firebase.quickstart.firebasestorage.java.MyBaseTaskService
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 class MyDownloadService : MyBaseTaskService() {
 
-    private var mStorageRef: StorageReference? = null
+    private lateinit var storageRef: StorageReference
 
     override fun onCreate() {
         super.onCreate()
 
         // Initialize Storage
-        mStorageRef = FirebaseStorage.getInstance().reference
+        storageRef = FirebaseStorage.getInstance().reference
     }
 
     override fun onBind(intent: Intent): IBinder? {
@@ -47,7 +45,7 @@ class MyDownloadService : MyBaseTaskService() {
         showProgressNotification(getString(R.string.progress_downloading), 0, 0)
 
         // Download and get total bytes
-        mStorageRef!!.child(downloadPath).getStream { taskSnapshot, inputStream ->
+        storageRef.child(downloadPath).getStream { taskSnapshot, inputStream ->
             val totalBytes = taskSnapshot.totalByteCount
             var bytesDownloaded: Long = 0
 
@@ -64,27 +62,25 @@ class MyDownloadService : MyBaseTaskService() {
 
             // Close the stream at the end of the Task
             inputStream.close()
+        }.addOnSuccessListener { taskSnapshot ->
+            Log.d(TAG, "download:SUCCESS")
+
+            // Send success broadcast with number of bytes downloaded
+            broadcastDownloadFinished(downloadPath, taskSnapshot.totalByteCount)
+            showDownloadFinishedNotification(downloadPath, taskSnapshot.totalByteCount.toInt())
+
+            // Mark task completed
+            taskCompleted()
+        }.addOnFailureListener { exception ->
+            Log.w(TAG, "download:FAILURE", exception)
+
+            // Send failure broadcast
+            broadcastDownloadFinished(downloadPath, -1)
+            showDownloadFinishedNotification(downloadPath, -1)
+
+            // Mark task completed
+            taskCompleted()
         }
-                .addOnSuccessListener { taskSnapshot ->
-                    Log.d(TAG, "download:SUCCESS")
-
-                    // Send success broadcast with number of bytes downloaded
-                    broadcastDownloadFinished(downloadPath, taskSnapshot.totalByteCount)
-                    showDownloadFinishedNotification(downloadPath, taskSnapshot.totalByteCount.toInt())
-
-                    // Mark task completed
-                    taskCompleted()
-                }
-                .addOnFailureListener { exception ->
-                    Log.w(TAG, "download:FAILURE", exception)
-
-                    // Send failure broadcast
-                    broadcastDownloadFinished(downloadPath, -1)
-                    showDownloadFinishedNotification(downloadPath, -1)
-
-                    // Mark task completed
-                    taskCompleted()
-                }
     }
 
     /**
@@ -116,7 +112,12 @@ class MyDownloadService : MyBaseTaskService() {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
         val success = bytesDownloaded != -1
-        val caption = if (success) getString(R.string.download_success) else getString(R.string.download_failure)
+        val caption = if (success) {
+            getString(R.string.download_success)
+        } else {
+            getString(R.string.download_failure)
+        }
+
         showFinishedNotification(caption, intent, true)
     }
 
@@ -125,13 +126,13 @@ class MyDownloadService : MyBaseTaskService() {
         private val TAG = "Storage#DownloadService"
 
         /** Actions  */
-        val ACTION_DOWNLOAD = "action_download"
-        val DOWNLOAD_COMPLETED = "download_completed"
-        val DOWNLOAD_ERROR = "download_error"
+        const val ACTION_DOWNLOAD = "action_download"
+        const val DOWNLOAD_COMPLETED = "download_completed"
+        const val DOWNLOAD_ERROR = "download_error"
 
         /** Extras  */
-        val EXTRA_DOWNLOAD_PATH = "extra_download_path"
-        val EXTRA_BYTES_DOWNLOADED = "extra_bytes_downloaded"
+        const val EXTRA_DOWNLOAD_PATH = "extra_download_path"
+        const val EXTRA_BYTES_DOWNLOADED = "extra_bytes_downloaded"
 
 
         val intentFilter: IntentFilter
