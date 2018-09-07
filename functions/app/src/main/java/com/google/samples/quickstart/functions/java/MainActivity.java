@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
+import com.google.samples.quickstart.functions.R;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -76,16 +77,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mFirstNumberField = findViewById(R.id.field_first_number);
-        mSecondNumberField = findViewById(R.id.field_second_number);
-        mAddResultField = findViewById(R.id.field_add_result);
-        mCalculateButton = findViewById(R.id.button_calculate);
+        mFirstNumberField = findViewById(R.id.fieldFirstNumber);
+        mSecondNumberField = findViewById(R.id.fieldSecondNumber);
+        mAddResultField = findViewById(R.id.fieldAddResult);
+        mCalculateButton = findViewById(R.id.buttonCalculate);
         mCalculateButton.setOnClickListener(this);
 
-        mMessageInputField = findViewById(R.id.field_message_input);
-        mMessageOutputField = findViewById(R.id.field_message_output);
-        mAddMessageButton = findViewById(R.id.button_add_message);
-        mSignInButton = findViewById(R.id.button_sign_in);
+        mMessageInputField = findViewById(R.id.fieldMessageInput);
+        mMessageOutputField = findViewById(R.id.fieldMessageOutput);
+        mAddMessageButton = findViewById(R.id.buttonAddMessage);
+        mSignInButton = findViewById(R.id.buttonSignIn);
         mAddMessageButton.setOnClickListener(this);
         mSignInButton.setOnClickListener(this);
 
@@ -278,13 +279,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button_calculate:
+            case R.id.buttonCalculate:
                 onCalculateClicked();
                 break;
-            case R.id.button_add_message:
+            case R.id.buttonAddMessage:
                 onAddMessageClicked();
                 break;
-            case R.id.button_sign_in:
+            case R.id.buttonSignIn:
                 onSignInClicked();
                 break;
         }

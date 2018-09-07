@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.samples.quickstart.functions.R;
 
 public class FunctionsMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MessagingService";
