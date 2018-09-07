@@ -19,6 +19,10 @@ abstract class MyBaseTaskService : Service() {
 
     private var numTasks = 0
 
+    private val manager by lazy {
+        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
+
     fun taskStarted() {
         changeNumberOfTasks(1)
     }
@@ -42,12 +46,10 @@ abstract class MyBaseTaskService : Service() {
     private fun createDefaultChannel() {
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
             val channel = NotificationChannel(CHANNEL_ID_DEFAULT,
                     "Default",
                     NotificationManager.IMPORTANCE_DEFAULT)
-            nm.createNotificationChannel(channel)
+            manager.createNotificationChannel(channel)
         }
     }
 
@@ -68,8 +70,6 @@ abstract class MyBaseTaskService : Service() {
                 .setProgress(100, percentComplete, false)
                 .setOngoing(true)
                 .setAutoCancel(false)
-
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         manager.notify(PROGRESS_NOTIFICATION_ID, builder.build())
     }
@@ -92,8 +92,6 @@ abstract class MyBaseTaskService : Service() {
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
 
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         manager.notify(FINISHED_NOTIFICATION_ID, builder.build())
     }
 
@@ -101,8 +99,6 @@ abstract class MyBaseTaskService : Service() {
      * Dismiss the progress notification.
      */
     protected fun dismissProgressNotification() {
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         manager.cancel(PROGRESS_NOTIFICATION_ID)
     }
 

@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var progressDialog: ProgressDialog
 
     private var downloadUrl: Uri? = null
-    private var fileUri1: Uri? = null
+    private var fileUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         // Restore instance state
         savedInstanceState?.let {
-            fileUri1 = it.getParcelable(KEY_FILE_URI)
+            fileUri = it.getParcelable(KEY_FILE_URI)
             downloadUrl = it.getParcelable(KEY_DOWNLOAD_URL)
         }
         onNewIntent(intent)
@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     public override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-        out.putParcelable(KEY_FILE_URI, fileUri1)
+        out.putParcelable(KEY_FILE_URI, fileUri)
         out.putParcelable(KEY_DOWNLOAD_URL, downloadUrl)
     }
 
@@ -123,10 +123,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(TAG, "onActivityResult:$requestCode:$resultCode:$data")
         if (requestCode == RC_TAKE_PICTURE) {
             if (resultCode == Activity.RESULT_OK) {
-                fileUri1 = data.data
+                fileUri = data.data
 
-                if (fileUri1 != null) {
-                    uploadFromUri(fileUri1!!)
+                if (fileUri != null) {
+                    uploadFromUri(fileUri!!)
                 } else {
                     Log.w(TAG, "File URI is null")
                 }
@@ -136,11 +136,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun uploadFromUri(fileUri: Uri) {
-        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString())
+    private fun uploadFromUri(uploadUri: Uri) {
+        Log.d(TAG, "uploadFromUri:src: $uploadUri")
 
         // Save the File URI
-        fileUri1 = fileUri
+        fileUri = uploadUri
 
         // Clear the last download, if any
         updateUI(auth.currentUser)
@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // Start MyUploadService to upload the file, so that the file is uploaded
         // even if this Activity is killed or put in the background
         startService(Intent(this, MyUploadService::class.java)
-                .putExtra(MyUploadService.EXTRA_FILE_URI, fileUri)
+                .putExtra(MyUploadService.EXTRA_FILE_URI, uploadUri)
                 .setAction(MyUploadService.ACTION_UPLOAD))
 
         // Show loading spinner
@@ -157,8 +157,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun beginDownload() {
+        if (fileUri == null) {
+            return;
+        }
+
         // Get path
-        val path = "photos/" + fileUri1!!.lastPathSegment
+        val path = "photos/" + fileUri!!.lastPathSegment
 
         // Kick off MyDownloadService to download the file
         val intent = Intent(this, MyDownloadService::class.java)
@@ -198,7 +202,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun onUploadResultIntent(intent: Intent) {
         // Got a new intent from MyUploadService with a success or failure
         downloadUrl = intent.getParcelableExtra(MyUploadService.EXTRA_DOWNLOAD_URL)
-        fileUri1 = intent.getParcelableExtra(MyUploadService.EXTRA_FILE_URI)
+        fileUri = intent.getParcelableExtra(MyUploadService.EXTRA_FILE_URI)
 
         updateUI(auth.currentUser)
     }
@@ -215,7 +219,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         // Download URL and Download button
         if (downloadUrl != null) {
-            pictureDownloadUri.text = downloadUrl!!.toString()
+            pictureDownloadUri.text = downloadUrl.toString()
             layoutDownload.visibility = View.VISIBLE
         } else {
             pictureDownloadUri.text = null
