@@ -36,9 +36,9 @@ public class TestAddNumber {
 
   @Test
   public void testAddNumber() {
-    ViewInteraction firstNumber = onView(withId(R.id.field_first_number));
-    ViewInteraction secondNumber = onView(withId(R.id.field_second_number));
-    ViewInteraction addButton = onView(withId(R.id.button_calculate));
+    ViewInteraction firstNumber = onView(withId(R.id.fieldFirstNumber));
+    ViewInteraction secondNumber = onView(withId(R.id.fieldSecondNumber));
+    ViewInteraction addButton = onView(withId(R.id.buttonCalculate));
 
     firstNumber.perform(replaceText("32"));
     secondNumber.perform(replaceText("16"));
@@ -47,7 +47,7 @@ public class TestAddNumber {
 
     Assert.assertTrue(
         new UiObject(new UiSelector()
-          .resourceId("com.google.samples.quickstart.functions:id/field_add_result").text("48"))
+          .resourceId("com.google.samples.quickstart.functions:id/fieldAddResult").text("48"))
         .waitForExists(60000));
   }
 }
