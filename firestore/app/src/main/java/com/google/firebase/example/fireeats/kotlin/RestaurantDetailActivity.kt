@@ -20,13 +20,13 @@ import kotlinx.android.synthetic.main.activity_restaurant_detail.*
 
 class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnapshot>, RatingDialogFragment.RatingListener {
 
-    private var mRatingDialog: RatingDialogFragment? = null
+    private var ratingDialog: RatingDialogFragment? = null
 
-    private var mFirestore: FirebaseFirestore? = null
-    private var mRestaurantRef: DocumentReference? = null
-    private var mRestaurantRegistration: ListenerRegistration? = null
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var restaurantRef: DocumentReference
+    private lateinit var ratingAdapter: RatingAdapter
 
-    private var mRatingAdapter: RatingAdapter? = null
+    private var restaurantRegistration: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,19 +37,19 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
                 ?: throw IllegalArgumentException("Must pass extra $KEY_RESTAURANT_ID")
 
         // Initialize Firestore
-        mFirestore = FirebaseFirestore.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         // Get reference to the restaurant
-        mRestaurantRef = mFirestore!!.collection("restaurants").document(restaurantId)
+        restaurantRef = firestore.collection("restaurants").document(restaurantId)
 
         // Get ratings
-        val ratingsQuery = mRestaurantRef!!
+        val ratingsQuery = restaurantRef
                 .collection("ratings")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .limit(50)
 
         // RecyclerView
-        mRatingAdapter = object : RatingAdapter(ratingsQuery) {
+        ratingAdapter = object : RatingAdapter(ratingsQuery) {
             override fun onDataChanged() {
                 if (itemCount == 0) {
                     recyclerRatings.visibility = View.GONE
@@ -61,9 +61,9 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
             }
         }
         recyclerRatings.layoutManager = LinearLayoutManager(this)
-        recyclerRatings.adapter = mRatingAdapter
+        recyclerRatings.adapter = ratingAdapter
 
-        mRatingDialog = RatingDialogFragment()
+        ratingDialog = RatingDialogFragment()
 
         restaurantButtonBack.setOnClickListener { onBackArrowClicked() }
         fabShowRatingDialog.setOnClickListener { onAddRatingClicked() }
@@ -72,18 +72,18 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
     public override fun onStart() {
         super.onStart()
 
-        mRatingAdapter!!.startListening()
-        mRestaurantRegistration = mRestaurantRef!!.addSnapshotListener(this)
+        ratingAdapter.startListening()
+        restaurantRegistration = restaurantRef.addSnapshotListener(this)
     }
 
     public override fun onStop() {
         super.onStop()
 
-        mRatingAdapter!!.stopListening()
+        ratingAdapter.stopListening()
 
-        if (mRestaurantRegistration != null) {
-            mRestaurantRegistration!!.remove()
-            mRestaurantRegistration = null
+        if (restaurantRegistration != null) {
+            restaurantRegistration!!.remove()
+            restaurantRegistration = null
         }
     }
 
@@ -93,7 +93,7 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
     }
 
     /**
-     * Listener for the Restaurant document ([.mRestaurantRef]).
+     * Listener for the Restaurant document ([.restaurantRef]).
      */
     override fun onEvent(snapshot: DocumentSnapshot?, e: FirebaseFirestoreException?) {
         if (e != null) {
@@ -118,17 +118,17 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
                 .into(restaurantImage)
     }
 
-    fun onBackArrowClicked() {
+    private fun onBackArrowClicked() {
         onBackPressed()
     }
 
-    fun onAddRatingClicked() {
-        mRatingDialog!!.show(supportFragmentManager, RatingDialogFragment.TAG)
+    private fun onAddRatingClicked() {
+        ratingDialog!!.show(supportFragmentManager, RatingDialogFragment.TAG)
     }
 
     override fun onRating(rating: Rating) {
         // In a transaction, add the new rating and update the aggregate totals
-        addRating(mRestaurantRef!!, rating)
+        addRating(restaurantRef, rating)
                 .addOnSuccessListener(this) {
                     Log.d(TAG, "Rating added")
 
@@ -151,7 +151,7 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
         val ratingRef = restaurantRef.collection("ratings").document()
 
         // In a transaction, add the new rating and update the aggregate totals
-        return mFirestore!!.runTransaction { transaction ->
+        return firestore.runTransaction { transaction ->
             val restaurant = transaction.get(restaurantRef).toObject(Restaurant::class.java)
 
             // Compute new number of ratings
@@ -183,8 +183,8 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
 
     companion object {
 
-        private val TAG = "RestaurantDetail"
+        private const val TAG = "RestaurantDetail"
 
-        val KEY_RESTAURANT_ID = "key_restaurant_id"
+        const val KEY_RESTAURANT_ID = "key_restaurant_id"
     }
 }

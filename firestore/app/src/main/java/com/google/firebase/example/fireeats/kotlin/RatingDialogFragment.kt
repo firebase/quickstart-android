@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.dialog_rating.view.*
  */
 class RatingDialogFragment : DialogFragment() {
 
-    private var mRatingListener: RatingListener? = null
+    private var ratingListener: RatingListener? = null
 
     internal interface RatingListener {
 
@@ -40,7 +40,7 @@ class RatingDialogFragment : DialogFragment() {
         super.onAttach(context)
 
         if (context is RatingListener) {
-            mRatingListener = context
+            ratingListener = context
         }
     }
 
@@ -58,8 +58,8 @@ class RatingDialogFragment : DialogFragment() {
                 restaurantFormRating.rating.toDouble(),
                 restaurantFormText.text.toString())
 
-        if (mRatingListener != null) {
-            mRatingListener!!.onRating(rating)
+        if (ratingListener != null) {
+            ratingListener!!.onRating(rating)
         }
 
         dismiss()

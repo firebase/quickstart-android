@@ -17,9 +17,9 @@ import kotlinx.android.synthetic.main.dialog_filters.view.*
  */
 class FilterDialogFragment : DialogFragment() {
 
-    private lateinit var mRootView: View
+    private lateinit var rootView: View
 
-    private var mFilterListener: FilterListener? = null
+    private var filterListener: FilterListener? = null
 
     private val selectedCategory: String?
         get() {
@@ -104,19 +104,19 @@ class FilterDialogFragment : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mRootView = inflater.inflate(R.layout.dialog_filters, container, false)
+        rootView = inflater.inflate(R.layout.dialog_filters, container, false)
 
-        mRootView.buttonSearch.setOnClickListener { onSearchClicked() }
-        mRootView.buttonCancel.setOnClickListener { onCancelClicked() }
+        rootView.buttonSearch.setOnClickListener { onSearchClicked() }
+        rootView.buttonCancel.setOnClickListener { onCancelClicked() }
 
-        return mRootView
+        return rootView
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
         if (context is FilterListener) {
-            mFilterListener = context
+            filterListener = context
         }
     }
 
@@ -128,8 +128,8 @@ class FilterDialogFragment : DialogFragment() {
     }
 
     fun onSearchClicked() {
-        if (mFilterListener != null) {
-            mFilterListener!!.onFilter(filters)
+        if (filterListener != null) {
+            filterListener!!.onFilter(filters)
         }
 
         dismiss()

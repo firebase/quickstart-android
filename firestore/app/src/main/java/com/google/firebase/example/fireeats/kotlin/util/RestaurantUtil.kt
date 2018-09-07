@@ -10,8 +10,6 @@ import java.util.*
  */
 object RestaurantUtil {
 
-    private val TAG = "RestaurantUtil"
-
     private val RESTAURANT_URL_FMT = "https://storage.googleapis.com/firestorequickstarts.appspot.com/food_%d.png"
     private val MAX_IMAGE_NUM = 22
 
