@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_passwordless.*
  * Demonstrate Firebase Authentication without a password, using a link sent to an
  * email address.
  */
-class KotlinPasswordlessActivity : BaseActivity(), View.OnClickListener {
+class PasswordlessActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG = "PasswordlessSignIn"
     private val KEY_PENDING_EMAIL = "key_pending_email"

@@ -5,64 +5,69 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.TwitterAuthProvider
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.java.BaseActivity
-import com.twitter.sdk.android.core.*
-import com.twitter.sdk.android.core.identity.TwitterLoginButton
-import kotlinx.android.synthetic.main.activity_twitter.*
+import kotlinx.android.synthetic.main.activity_facebook.*
 
+/**
+ * Demonstrate Firebase Authentication using a Facebook access token.
+ */
+class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
 
-class KotlinTwitterLoginActivity : BaseActivity(), View.OnClickListener {
-
-    private val TAG = "TwitterLogin"
-
+    private val TAG = "FacebookLogin"
     // [START declare_auth]
     private lateinit var mAuth: FirebaseAuth
     // [END declare_auth]
 
-    private var mLoginButton: TwitterLoginButton? = null
+    private lateinit var mCallbackManager: CallbackManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_facebook)
 
-        // Configure Twitter SDK
-        val authConfig = TwitterAuthConfig(
-                getString(R.string.twitter_consumer_key),
-                getString(R.string.twitter_consumer_secret))
-
-        val twitterConfig = TwitterConfig.Builder(this)
-                .twitterAuthConfig(authConfig)
-                .build()
-
-        Twitter.initialize(twitterConfig)
-
-        // Inflate layout (must be done after Twitter is configured)
-        setContentView(R.layout.activity_twitter)
-
-        button_twitter_signout.setOnClickListener(this)
+        button_facebook_signout.setOnClickListener(this)
 
         // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance()
         // [END initialize_auth]
 
-        // [START initialize_twitter_login]
-
-        button_twitter_login?.callback = object : Callback<TwitterSession>() {
-            override fun success(result: Result<TwitterSession>) {
-                Log.d(TAG, "twitterLogin:success$result")
-                handleTwitterSession(result.data)
+        // [START initialize_fblogin]
+        // Initialize Facebook Login button
+        mCallbackManager = CallbackManager.Factory.create()
+        val loginButton = findViewById<LoginButton>(R.id.button_facebook_login)
+        loginButton.setReadPermissions("email", "public_profile")
+        loginButton.registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+                Log.d(TAG, "facebook:onSuccess:$loginResult")
+                handleFacebookAccessToken(loginResult.accessToken)
             }
 
-            override fun failure(exception: TwitterException) {
-                Log.w(TAG, "twitterLogin:failure", exception)
+            override fun onCancel() {
+                Log.d(TAG, "facebook:onCancel")
+                // [START_EXCLUDE]
                 updateUI(null)
+                // [END_EXCLUDE]
             }
-        }
-        // [END initialize_twitter_login]
+
+            override fun onError(error: FacebookException) {
+                Log.d(TAG, "facebook:onError", error)
+                // [START_EXCLUDE]
+                updateUI(null)
+                // [END_EXCLUDE]
+            }
+        })
+        // [END initialize_fblogin]
     }
 
     // [START on_start_check_user]
@@ -78,22 +83,19 @@ class KotlinTwitterLoginActivity : BaseActivity(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // Pass the activity result to the Twitter login button.
-        mLoginButton!!.onActivityResult(requestCode, resultCode, data)
+        // Pass the activity result back to the Facebook SDK
+        mCallbackManager.onActivityResult(requestCode, resultCode, data)
     }
     // [END on_activity_result]
 
-    // [START auth_with_twitter]
-    private fun handleTwitterSession(session: TwitterSession) {
-        Log.d(TAG, "handleTwitterSession:$session")
+    // [START auth_with_facebook]
+    private fun handleFacebookAccessToken(token: AccessToken) {
+        Log.d(TAG, "handleFacebookAccessToken:$token")
         // [START_EXCLUDE silent]
         showProgressDialog()
         // [END_EXCLUDE]
 
-        val credential = TwitterAuthProvider.getCredential(
-                session.authToken.token,
-                session.authToken.secret)
-
+        val credential = FacebookAuthProvider.getCredential(token.token)
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
@@ -114,11 +116,11 @@ class KotlinTwitterLoginActivity : BaseActivity(), View.OnClickListener {
                     // [END_EXCLUDE]
                 }
     }
-    // [END auth_with_twitter]
+    // [END auth_with_facebook]
 
-    private fun signOut() {
+    fun signOut() {
         mAuth.signOut()
-        TwitterCore.getInstance().sessionManager.clearActiveSession()
+        LoginManager.getInstance().logOut()
 
         updateUI(null)
     }
@@ -126,25 +128,24 @@ class KotlinTwitterLoginActivity : BaseActivity(), View.OnClickListener {
     private fun updateUI(user: FirebaseUser?) {
         hideProgressDialog()
         if (user != null) {
-            status.text = getString(R.string.twitter_status_fmt, user.displayName)
+            status.text = getString(R.string.facebook_status_fmt, user.displayName)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
-            button_twitter_login.visibility = View.GONE
-            button_twitter_signout.visibility = View.VISIBLE
+            findViewById<View>(R.id.button_facebook_login).visibility = View.GONE
+            findViewById<View>(R.id.button_facebook_signout).visibility = View.VISIBLE
         } else {
             status.setText(R.string.signed_out)
             detail.text = null
 
-            button_twitter_login.visibility = View.VISIBLE
-            button_twitter_signout.visibility = View.GONE
+            button_facebook_login.visibility = View.VISIBLE
+            button_facebook_signout.visibility = View.GONE
         }
     }
 
     override fun onClick(v: View) {
         val i = v.id
-        if (i == R.id.button_twitter_signout) {
+        if (i == R.id.button_facebook_signout) {
             signOut()
         }
     }
-
 }

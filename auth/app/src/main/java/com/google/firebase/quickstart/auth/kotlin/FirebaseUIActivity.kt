@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_firebase_ui.*
  *
  * For more information, visit https://github.com/firebase/firebaseui-android
  */
-class KotlinFirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
+class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
 
     private val RC_SIGN_IN = 9001
     private lateinit var mAuth: FirebaseAuth

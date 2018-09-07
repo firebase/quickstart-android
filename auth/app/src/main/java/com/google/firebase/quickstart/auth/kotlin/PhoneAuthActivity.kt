@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_phone_auth.*
 import java.util.concurrent.TimeUnit
 
 
-class KotlinPhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
+class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     private val TAG = "PhoneAuthActivity"
 

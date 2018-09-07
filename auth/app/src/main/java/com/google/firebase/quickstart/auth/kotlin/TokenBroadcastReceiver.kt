@@ -12,7 +12,7 @@ import com.google.firebase.quickstart.auth.java.TokenBroadcastReceiver.ACTION_TO
  * Receiver to capture tokens broadcast via ADB and insert them into the
  * running application to facilitate easy testing of custom authentication.
  */
-abstract class KotlinTokenBroadcastReceiver : BroadcastReceiver() {
+abstract class TokenBroadcastReceiver : BroadcastReceiver() {
 
     private val TAG = "TokenBroadcastReceiver"
 

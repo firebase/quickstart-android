@@ -62,23 +62,23 @@
             android:name=".java.FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
 
-        <activity android:name=".kotlin.KotlinChooserActivity" />
+        <activity android:name=".kotlin.ChooserActivity" />
 
         <activity
-            android:name=".kotlin.KotlinCustomAuthActivity"
+            android:name=".kotlin.CustomAuthActivity"
             android:label="@string/label_custom_auth" />
         <activity
-            android:name=".kotlin.KotlinGoogleSignInActivity"
+            android:name=".kotlin.GoogleSignInActivity"
             android:label="@string/label_google_sign_in" />
         <activity
-            android:name=".kotlin.KotlinFacebookLoginActivity"
+            android:name=".kotlin.FacebookLoginActivity"
             android:label="@string/label_facebook_login" />
         <activity
-            android:name=".kotlin.KotlinEmailPasswordActivity"
+            android:name=".kotlin.EmailPasswordActivity"
             android:label="@string/label_emailpassword"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".kotlin.KotlinPasswordlessActivity"
+            android:name=".kotlin.PasswordlessActivity"
             android:label="@string/label_passwordless"
             android:launchMode="singleTop">
             <intent-filter>
@@ -93,17 +93,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".kotlin.KotlinPhoneAuthActivity"
+            android:name=".kotlin.PhoneAuthActivity"
             android:label="@string/label_phone_auth"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".kotlin.KotlinAnonymousAuthActivity"
+            android:name=".kotlin.AnonymousAuthActivity"
             android:label="@string/label_anonymous_auth" />
         <activity
-            android:name=".kotlin.KotlinTwitterLoginActivity"
+            android:name=".kotlin.TwitterLoginActivity"
             android:label="@string/label_twitter_login" />
         <activity
-            android:name=".kotlin.KotlinFirebaseUIActivity"
+            android:name=".kotlin.FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
 
         <!-- Facebook Configuration -->

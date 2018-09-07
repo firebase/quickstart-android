@@ -9,12 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.TextView
 import com.google.firebase.quickstart.auth.R
-import com.google.firebase.quickstart.auth.java.*
 import kotlinx.android.synthetic.main.activity_chooser.*
-import org.w3c.dom.Text
 
 /**
  * Simple list-based Activity to redirect to one of the other Activities. This Activity does not
@@ -27,12 +24,20 @@ import org.w3c.dom.Text
  *     {@link PasswordlessActivity}
  *     {@link PhoneAuthActivity}
  *     {@link AnonymousAuthActivity}
- *     {@link KotlinCustomAuthActivity}
+ *     {@link CustomAuthActivity}
  */
-class KotlinChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
-    private val CLASSES = arrayOf(GoogleSignInActivity::class.java, FacebookLoginActivity::class.java, TwitterLoginActivity::class.java, EmailPasswordActivity::class.java, PasswordlessActivity::class.java, PhoneAuthActivity::class.java, AnonymousAuthActivity::class.java, FirebaseUIActivity::class.java, CustomAuthActivity::class.java)
+class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
+    private val CLASSES = arrayOf(GoogleSignInActivity::class.java,
+            FacebookLoginActivity::class.java, TwitterLoginActivity::class.java,
+            EmailPasswordActivity::class.java, PasswordlessActivity::class.java,
+            PhoneAuthActivity::class.java, AnonymousAuthActivity::class.java,
+            FirebaseUIActivity::class.java, CustomAuthActivity::class.java)
 
-    private val DESCRIPTION_IDS = intArrayOf(R.string.desc_google_sign_in, R.string.desc_facebook_login, R.string.desc_twitter_login, R.string.desc_emailpassword, R.string.desc_passwordless, R.string.desc_phone_auth, R.string.desc_anonymous_auth, R.string.desc_firebase_ui, R.string.desc_custom_auth)
+    private val DESCRIPTION_IDS = intArrayOf(R.string.desc_google_sign_in,
+            R.string.desc_facebook_login, R.string.desc_twitter_login,
+            R.string.desc_emailpassword, R.string.desc_passwordless,
+            R.string.desc_phone_auth, R.string.desc_anonymous_auth,
+            R.string.desc_firebase_ui, R.string.desc_custom_auth)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +56,8 @@ class KotlinChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListen
         startActivity(Intent(this, clicked))
     }
 
-    class MyArrayAdapter(private val mContext: Context, resource: Int, private val mClasses: Array<Class<*>>) : ArrayAdapter<Class<*>>(mContext, resource, mClasses) {
+    class MyArrayAdapter(private val mContext: Context, resource: Int, private val mClasses: Array<Class<*>>)
+        : ArrayAdapter<Class<*>>(mContext, resource, mClasses) {
         private var mDescriptionIds: IntArray? = null
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {

@@ -16,7 +16,7 @@ import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.java.BaseActivity
 import kotlinx.android.synthetic.main.activity_emailpassword.*
 
-class KotlinEmailPasswordActivity : BaseActivity(), View.OnClickListener {
+class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG = "EmailPassword"
 

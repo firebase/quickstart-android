@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import com.google.firebase.quickstart.auth.R
 
 
-open class KotlinBaseActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
     @VisibleForTesting
     val mProgressDialog by lazy {

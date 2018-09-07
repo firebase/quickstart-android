@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_custom.*
  * Demonstrate Firebase Authentication using a custom minted token. For more information, see:
  * https://firebase.google.com/docs/auth/android/custom-auth
  */
-class KotlinCustomAuthActivity : AppCompatActivity(), View.OnClickListener {
+class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     private val TAG = "CustomAuthActivity"
 

@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_google.*
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
-class KotlinGoogleSignInActivity : BaseActivity(), View.OnClickListener {
+class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
 
     private val TAG = "GoogleActivity"
     private val RC_SIGN_IN = 9001

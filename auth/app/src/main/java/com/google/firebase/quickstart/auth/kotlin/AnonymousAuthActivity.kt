@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_anonymous_auth.*
 /**
  * Activity to demonstrate anonymous login and account linking (with an email/password account).
  */
-class KotlinAnonymousAuthActivity : BaseActivity(), View.OnClickListener {
+class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
 
     // [START declare_auth]
     private var mAuth: FirebaseAuth? = null
