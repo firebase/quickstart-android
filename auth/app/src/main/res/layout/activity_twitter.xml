@@ -24,7 +24,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/title_text"
+            android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/title_bottom_margin"
@@ -44,19 +44,19 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/grey_300">
 
         <com.twitter.sdk.android.core.identity.TwitterLoginButton
-            android:id="@+id/button_twitter_login"
+            android:id="@+id/buttonTwitterLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
 
         <Button
-            android:id="@+id/button_twitter_signout"
+            android:id="@+id/buttonTwitterSignout"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

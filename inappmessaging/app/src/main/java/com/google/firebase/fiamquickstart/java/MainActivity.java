@@ -1,4 +1,4 @@
-package com.google.firebase.fiamquickstart;
+package com.google.firebase.fiamquickstart.java;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.fiamquickstart.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;

@@ -12,52 +12,98 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChooserActivity">
+        <activity android:name=".EntryChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".java.ChooserActivity" />
         <activity
-            android:name=".CustomAuthActivity"
+            android:name=".java.CustomAuthActivity"
             android:label="@string/label_custom_auth" />
         <activity
-            android:name=".GoogleSignInActivity"
+            android:name=".java.GoogleSignInActivity"
             android:label="@string/label_google_sign_in" />
         <activity
-            android:name=".FacebookLoginActivity"
+            android:name=".java.FacebookLoginActivity"
             android:label="@string/label_facebook_login" />
         <activity
-            android:name=".EmailPasswordActivity"
+            android:name=".java.EmailPasswordActivity"
             android:label="@string/label_emailpassword"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".PasswordlessActivity"
+            android:name=".java.PasswordlessActivity"
             android:label="@string/label_passwordless"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data
-                    android:scheme="https"
                     android:host="auth.example.com"
-                    android:pathPrefix="/emailSignInLink" />
+                    android:pathPrefix="/emailSignInLink"
+                    android:scheme="https" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".PhoneAuthActivity"
+            android:name=".java.PhoneAuthActivity"
             android:label="@string/label_phone_auth"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".AnonymousAuthActivity"
+            android:name=".java.AnonymousAuthActivity"
             android:label="@string/label_anonymous_auth" />
         <activity
-            android:name=".TwitterLoginActivity"
+            android:name=".java.TwitterLoginActivity"
             android:label="@string/label_twitter_login" />
         <activity
-            android:name=".FirebaseUIActivity"
+            android:name=".java.FirebaseUIActivity"
+            android:label="@string/label_firebase_ui" />
+
+        <activity android:name=".kotlin.ChooserActivity" />
+
+        <activity
+            android:name=".kotlin.CustomAuthActivity"
+            android:label="@string/label_custom_auth" />
+        <activity
+            android:name=".kotlin.GoogleSignInActivity"
+            android:label="@string/label_google_sign_in" />
+        <activity
+            android:name=".kotlin.FacebookLoginActivity"
+            android:label="@string/label_facebook_login" />
+        <activity
+            android:name=".kotlin.EmailPasswordActivity"
+            android:label="@string/label_emailpassword"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".kotlin.PasswordlessActivity"
+            android:label="@string/label_passwordless"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:host="kotlin.auth.example.com"
+                    android:pathPrefix="/emailSignInLink"
+                    android:scheme="https" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".kotlin.PhoneAuthActivity"
+            android:label="@string/label_phone_auth"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".kotlin.AnonymousAuthActivity"
+            android:label="@string/label_anonymous_auth" />
+        <activity
+            android:name=".kotlin.TwitterLoginActivity"
+            android:label="@string/label_twitter_login" />
+        <activity
+            android:name=".kotlin.FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
 
         <!-- Facebook Configuration -->
