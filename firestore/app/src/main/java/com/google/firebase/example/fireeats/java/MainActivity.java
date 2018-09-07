@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats;
+package com.google.firebase.example.fireeats.java;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
@@ -26,12 +26,13 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.example.fireeats.adapter.RestaurantAdapter;
-import com.google.firebase.example.fireeats.model.Rating;
-import com.google.firebase.example.fireeats.model.Restaurant;
-import com.google.firebase.example.fireeats.util.RatingUtil;
-import com.google.firebase.example.fireeats.util.RestaurantUtil;
-import com.google.firebase.example.fireeats.viewmodel.MainActivityViewModel;
+import com.google.firebase.example.fireeats.R;
+import com.google.firebase.example.fireeats.java.adapter.RestaurantAdapter;
+import com.google.firebase.example.fireeats.java.model.Rating;
+import com.google.firebase.example.fireeats.java.model.Restaurant;
+import com.google.firebase.example.fireeats.java.util.RatingUtil;
+import com.google.firebase.example.fireeats.java.util.RestaurantUtil;
+import com.google.firebase.example.fireeats.java.viewmodel.MainActivityViewModel;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -59,16 +60,16 @@ public class MainActivity extends AppCompatActivity implements
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.text_current_search)
+    @BindView(R.id.textCurrentSearch)
     TextView mCurrentSearchView;
 
-    @BindView(R.id.text_current_sort_by)
+    @BindView(R.id.textCurrentSortBy)
     TextView mCurrentSortByView;
 
-    @BindView(R.id.recycler_restaurants)
+    @BindView(R.id.recyclerRestaurants)
     RecyclerView mRestaurantsRecycler;
 
-    @BindView(R.id.view_empty)
+    @BindView(R.id.viewEmpty)
     ViewGroup mEmptyView;
 
     private FirebaseFirestore mFirestore;
@@ -197,13 +198,13 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @OnClick(R.id.filter_bar)
+    @OnClick(R.id.filterBar)
     public void onFilterClicked() {
         // Show the dialog containing filter options
         mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
     }
 
-    @OnClick(R.id.button_clear_filter)
+    @OnClick(R.id.buttonClearFilter)
     public void onClearFilterClicked() {
         mFilterDialog.resetFilters();
 

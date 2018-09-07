@@ -1,10 +1,11 @@
-package com.google.firebase.example.fireeats;
+package com.google.firebase.example.fireeats.java;
 
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.google.firebase.example.fireeats.model.Restaurant;
-import com.google.firebase.example.fireeats.util.RestaurantUtil;
+import com.google.firebase.example.fireeats.R;
+import com.google.firebase.example.fireeats.java.model.Restaurant;
+import com.google.firebase.example.fireeats.java.util.RestaurantUtil;
 import com.google.firebase.firestore.Query;
 
 /**

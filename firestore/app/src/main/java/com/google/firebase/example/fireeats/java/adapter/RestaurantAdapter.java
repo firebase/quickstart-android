@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats.adapter;
+package com.google.firebase.example.fireeats.java.adapter;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.example.fireeats.R;
-import com.google.firebase.example.fireeats.model.Restaurant;
-import com.google.firebase.example.fireeats.util.RestaurantUtil;
+import com.google.firebase.example.fireeats.java.model.Restaurant;
+import com.google.firebase.example.fireeats.java.util.RestaurantUtil;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
@@ -50,25 +50,25 @@ public class RestaurantAdapter extends FirestoreAdapter<RestaurantAdapter.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.restaurant_item_image)
+        @BindView(R.id.restaurantItemImage)
         ImageView imageView;
 
-        @BindView(R.id.restaurant_item_name)
+        @BindView(R.id.restaurantItemName)
         TextView nameView;
 
-        @BindView(R.id.restaurant_item_rating)
+        @BindView(R.id.restaurantItemRating)
         MaterialRatingBar ratingBar;
 
-        @BindView(R.id.restaurant_item_num_ratings)
+        @BindView(R.id.restaurantItemNumRatings)
         TextView numRatingsView;
 
-        @BindView(R.id.restaurant_item_price)
+        @BindView(R.id.restaurantItemPrice)
         TextView priceView;
 
-        @BindView(R.id.restaurant_item_category)
+        @BindView(R.id.restaurantItemCategory)
         TextView categoryView;
 
-        @BindView(R.id.restaurant_item_city)
+        @BindView(R.id.restaurantItemCity)
         TextView cityView;
 
         public ViewHolder(View itemView) {

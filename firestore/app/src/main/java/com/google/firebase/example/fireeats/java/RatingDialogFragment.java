@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats;
+package com.google.firebase.example.fireeats.java;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.example.fireeats.model.Rating;
+import com.google.firebase.example.fireeats.R;
+import com.google.firebase.example.fireeats.java.model.Rating;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,10 +25,10 @@ public class RatingDialogFragment extends DialogFragment {
 
     public static final String TAG = "RatingDialog";
 
-    @BindView(R.id.restaurant_form_rating)
+    @BindView(R.id.restaurantFormRating)
     MaterialRatingBar mRatingBar;
 
-    @BindView(R.id.restaurant_form_text)
+    @BindView(R.id.restaurantFormText)
     EditText mRatingText;
 
     interface RatingListener {
@@ -67,7 +68,7 @@ public class RatingDialogFragment extends DialogFragment {
 
     }
 
-    @OnClick(R.id.restaurant_form_button)
+    @OnClick(R.id.restaurantFormButton)
     public void onSubmitClicked(View view) {
         Rating rating = new Rating(
                 FirebaseAuth.getInstance().getCurrentUser(),
@@ -81,7 +82,7 @@ public class RatingDialogFragment extends DialogFragment {
         dismiss();
     }
 
-    @OnClick(R.id.restaurant_form_cancel)
+    @OnClick(R.id.restaurantFormCancel)
     public void onCancelClicked(View view) {
         dismiss();
     }

@@ -1,6 +1,6 @@
-package com.google.firebase.example.fireeats.util;
+package com.google.firebase.example.fireeats.java.util;
 
-import com.google.firebase.example.fireeats.model.Rating;
+import com.google.firebase.example.fireeats.java.model.Rating;
 
 import java.util.ArrayList;
 import java.util.List;

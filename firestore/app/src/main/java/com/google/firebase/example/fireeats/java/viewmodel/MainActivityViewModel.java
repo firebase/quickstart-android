@@ -1,8 +1,8 @@
-package com.google.firebase.example.fireeats.viewmodel;
+package com.google.firebase.example.fireeats.java.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 
-import com.google.firebase.example.fireeats.Filters;
+import com.google.firebase.example.fireeats.java.Filters;
 
 /**
  * ViewModel for {@link com.google.firebase.example.fireeats.MainActivity}.

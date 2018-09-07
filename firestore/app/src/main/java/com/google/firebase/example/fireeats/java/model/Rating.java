@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats.model;
+package com.google.firebase.example.fireeats.java.model;
 
 import android.text.TextUtils;
 
