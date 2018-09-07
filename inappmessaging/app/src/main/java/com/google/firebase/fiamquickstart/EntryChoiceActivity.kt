@@ -3,6 +3,8 @@ package com.google.firebase.fiamquickstart
 import android.content.Intent
 import com.firebase.example.internal.BaseEntryChoiceActivity
 import com.firebase.example.internal.Choice
+import com.google.firebase.fiamquickstart.java.MainActivity
+import com.google.firebase.fiamquickstart.kotlin.KotlinMainActivity
 
 class EntryChoiceActivity : BaseEntryChoiceActivity() {
 

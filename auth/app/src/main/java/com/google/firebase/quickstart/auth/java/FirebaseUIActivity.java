@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.auth;
+package com.google.firebase.quickstart.auth.java;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.quickstart.auth.BuildConfig;
+import com.google.firebase.quickstart.auth.R;
 
 import java.util.Collections;
 

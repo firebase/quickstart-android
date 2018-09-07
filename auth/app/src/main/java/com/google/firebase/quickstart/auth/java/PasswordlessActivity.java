@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.auth;
+package com.google.firebase.quickstart.auth.java;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthActionCodeException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.quickstart.auth.R;
 
 /**
  * Demonstrate Firebase Authentication without a password, using a link sent to an
