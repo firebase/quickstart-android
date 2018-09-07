@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.functions;
+package com.google.samples.quickstart.functions.java;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.samples.quickstart.functions.R;
 
 public class FunctionsMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MessagingService";
