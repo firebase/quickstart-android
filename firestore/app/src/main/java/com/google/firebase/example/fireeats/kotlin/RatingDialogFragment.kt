@@ -46,7 +46,7 @@ class RatingDialogFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        dialog.window!!.setLayout(
+        dialog.window?.setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
 
@@ -58,9 +58,7 @@ class RatingDialogFragment : DialogFragment() {
                 restaurantFormRating.rating.toDouble(),
                 restaurantFormText.text.toString())
 
-        if (ratingListener != null) {
-            ratingListener!!.onRating(rating)
-        }
+        ratingListener?.onRating(rating)
 
         dismiss()
     }

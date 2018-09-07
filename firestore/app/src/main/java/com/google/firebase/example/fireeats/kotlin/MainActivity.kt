@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
 
         // Sort by (orderBy with direction)
         if (filters.hasSortBy()) {
-            query = query.orderBy(filters.sortBy!!, filters.sortDirection!!)
+            query = query.orderBy(filters.sortBy.toString(), filters.sortDirection)
         }
 
         // Limit items

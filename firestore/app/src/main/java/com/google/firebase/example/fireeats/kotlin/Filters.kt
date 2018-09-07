@@ -16,7 +16,7 @@ class Filters {
     var city: String? = null
     var price = -1
     var sortBy: String? = null
-    var sortDirection: Query.Direction? = null
+    var sortDirection: Query.Direction = Query.Direction.DESCENDING
 
     fun hasCategory(): Boolean {
         return !TextUtils.isEmpty(category)

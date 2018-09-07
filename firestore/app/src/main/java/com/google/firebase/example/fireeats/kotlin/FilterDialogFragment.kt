@@ -128,10 +128,7 @@ class FilterDialogFragment : DialogFragment() {
     }
 
     fun onSearchClicked() {
-        if (filterListener != null) {
-            filterListener!!.onFilter(filters)
-        }
-
+        filterListener?.onFilter(filters)
         dismiss()
     }
 
