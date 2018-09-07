@@ -49,9 +49,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // [START function_add_numbers]
     private fun addNumbers(a: Int, b: Int): Task<Int> {
         // Create the arguments to the callable function, which are two integers
-        val data = HashMap<String, Any>()
-        data["firstNumber"] = a
-        data["secondNumber"] = b
+        val data = hashMapOf(
+            "firstNumber" to a,
+            "secondNumber" to b
+        )
 
         // Call the function and extract the operation from the result
         return mFunctions
@@ -70,9 +71,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // [START function_add_message]
     private fun addMessage(text: String): Task<String> {
         // Create the arguments to the callable function.
-        val data = HashMap<String, Any>()
-        data["text"] = text
-        data["push"] = true
+        val data = hashMapOf(
+            "text" to text,
+            "push" to true
+        )
 
         return mFunctions
                 .getHttpsCallable("addMessage")
@@ -206,7 +208,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 showSnackbar("Error signing in.")
 
                 val response = IdpResponse.fromResultIntent(data)
-                Log.w(TAG, "signIn", response!!.error)
+                Log.w(TAG, "signIn", response?.error)
             }
         }
     }

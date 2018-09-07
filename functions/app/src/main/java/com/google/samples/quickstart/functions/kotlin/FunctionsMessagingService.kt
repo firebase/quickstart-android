@@ -23,15 +23,15 @@ class FunctionsMessagingService : FirebaseMessagingService() {
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager!!.createNotificationChannel(channel)
+            notificationManager?.createNotificationChannel(channel)
         }
     }
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
         createNotificationChannel()
 
         // Check if message contains a data payload.
-        if (remoteMessage!!.data.isNotEmpty()) {
+        if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
             val manager = NotificationManagerCompat.from(this)
             val notification = NotificationCompat.Builder(this, "Messages")
