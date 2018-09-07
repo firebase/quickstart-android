@@ -21,11 +21,11 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
     private val TAG = "CustomAuthActivity"
 
     // [START declare_auth]
-    private var mAuth: FirebaseAuth? = null
+    private lateinit var mAuth: FirebaseAuth
     // [END declare_auth]
 
-    private var mCustomToken: String? = null
-    private var mTokenReceiver: TokenBroadcastReceiver? = null
+    private lateinit var mCustomToken: String
+    private lateinit var mTokenReceiver: TokenBroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,7 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth!!.currentUser
+        val currentUser = mAuth.currentUser
         updateUI(currentUser)
     }
     // [END on_start_check_user]
@@ -70,12 +70,12 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
     private fun startSignIn() {
         // Initiate sign in with custom token
         // [START sign_in_custom]
-        mAuth!!.signInWithCustomToken(mCustomToken!!)
+        mAuth.signInWithCustomToken(mCustomToken)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCustomToken:success")
-                        val user = mAuth!!.currentUser
+                        val user = mAuth.currentUser
                         updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
@@ -99,15 +99,10 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
     private fun setCustomToken(token: String) {
         mCustomToken = token
 
-        val status: String
-        if (mCustomToken != null) {
-            status = "Token:" + mCustomToken!!
-        } else {
-            status = "Token: null"
-        }
+        val status: String = "Token:" + mCustomToken
 
         // Enable/disable sign-in button and show the token
-        buttonSignIn.isEnabled = mCustomToken != null
+        buttonSignIn.isEnabled = true
         textTokenStatus.text = status
     }
 

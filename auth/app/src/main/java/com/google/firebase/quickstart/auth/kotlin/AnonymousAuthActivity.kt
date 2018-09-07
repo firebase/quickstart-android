@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -17,13 +16,11 @@ import kotlinx.android.synthetic.main.activity_anonymous_auth.*
  * Activity to demonstrate anonymous login and account linking (with an email/password account).
  */
 class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
+    private val TAG = "AnonymousAuth"
 
     // [START declare_auth]
-    private var mAuth: FirebaseAuth? = null
+    private lateinit var mAuth: FirebaseAuth
     // [END declare_auth]
-
-    private var mEmailField: EditText? = null
-    private var mPasswordField: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +29,6 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance()
         // [END initialize_auth]
-
-        // Fields
-        mEmailField = findViewById(R.id.fieldEmail)
-        mPasswordField = findViewById(R.id.fieldPassword)
 
         // Click listeners
         buttonAnonymousSignIn.setOnClickListener(this)
@@ -47,7 +40,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth!!.currentUser
+        val currentUser = mAuth.currentUser
         updateUI(currentUser)
     }
     // [END on_start_check_user]
@@ -55,7 +48,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     private fun signInAnonymously() {
         showProgressDialog()
         // [START signin_anonymously]
-        mAuth!!.signInAnonymously()
+        mAuth.signInAnonymously()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
@@ -78,7 +71,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun signOut() {
-        mAuth?.signOut()
+        mAuth.signOut()
         updateUI(null)
     }
 
@@ -89,8 +82,8 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         }
 
         // Get email and password from the form
-        val email = mEmailField?.text.toString()
-        val password = mPasswordField?.text.toString()
+        val email = fieldEmail.text.toString()
+        val password = fieldPassword.text.toString()
 
         // Create EmailAuthCredential with email and password
         val credential = EmailAuthProvider.getCredential(email.toString(), password.toString())
@@ -99,8 +92,8 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         showProgressDialog()
 
         // [START link_credential]
-        mAuth!!.currentUser!!.linkWithCredential(credential)
-                .addOnCompleteListener(this) { task ->
+        mAuth.currentUser?.linkWithCredential(credential)
+                ?.addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "linkWithCredential:success")
                         val user = task.result.user
@@ -122,20 +115,20 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     private fun validateLinkForm(): Boolean {
         var valid = true
 
-        val email = mEmailField?.text?.toString()
+        val email = fieldEmail.text.toString()
         if (TextUtils.isEmpty(email)) {
-            mEmailField?.error = "Required."
+            fieldEmail.error = "Required."
             valid = false
         } else {
-            mEmailField?.error = null
+            fieldEmail.error = null
         }
 
-        val password = mPasswordField?.text.toString()
+        val password = fieldPassword.text.toString()
         if (TextUtils.isEmpty(password)) {
-            mPasswordField?.error = "Required."
+            fieldPassword.error = "Required."
             valid = false
         } else {
-            mPasswordField?.error = null
+            fieldPassword.error = null
         }
 
         return valid
@@ -167,10 +160,5 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
             R.id.buttonAnonymousSignOut -> signOut()
             R.id.buttonLinkAccount -> linkAccount()
         }
-    }
-
-    companion object {
-
-        private val TAG = "AnonymousAuth"
     }
 }
