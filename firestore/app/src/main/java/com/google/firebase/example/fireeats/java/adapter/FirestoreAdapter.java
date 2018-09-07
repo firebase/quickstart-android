@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats.adapter;
+package com.google.firebase.example.fireeats.java.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;

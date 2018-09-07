@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats.model;
+package com.google.firebase.example.fireeats.java.model;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
@@ -29,6 +29,7 @@ public class Restaurant {
         this.name = name;
         this.city = city;
         this.category = category;
+        this.photo = photo;
         this.price = price;
         this.numRatings = numRatings;
         this.avgRating = avgRating;

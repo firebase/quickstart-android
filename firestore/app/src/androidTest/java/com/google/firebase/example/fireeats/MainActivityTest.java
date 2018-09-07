@@ -5,11 +5,14 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiSelector;
 import android.support.test.uiautomator.UiScrollable;
+import android.support.test.uiautomator.UiSelector;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.accessibility.AccessibilityWindowInfo;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.example.fireeats.java.MainActivity;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -55,7 +58,7 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
         .clickAndWaitForNewWindow(TIMEOUT);
 
     // Click add review
-    getById("fab_show_rating_dialog").click();
+    getById("fabShowRatingDialog").click();
 
     //Write a review
     getById("restaurant_form_text").setText("\uD83D\uDE0E\uD83D\uDE00");
@@ -65,11 +68,11 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
     getById("restaurant_form_button").clickAndWaitForNewWindow(TIMEOUT);
 
     // Assert that the review exists
-    UiScrollable ratingsList = new UiScrollable(getIdSelector("recycler_ratings"));
+    UiScrollable ratingsList = new UiScrollable(getIdSelector("recyclerRatings"));
     ratingsList.waitForExists(TIMEOUT);
     ratingsList.scrollToBeginning(100);
     Assert.assertTrue(
-        getById("recycler_ratings")
+        getById("recyclerRatings")
             .getChild(new UiSelector().text("\uD83D\uDE0E\uD83D\uDE00"))
             .waitForExists(TIMEOUT));
   }

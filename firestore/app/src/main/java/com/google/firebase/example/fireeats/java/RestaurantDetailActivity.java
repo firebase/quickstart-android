@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats;
+package com.google.firebase.example.fireeats.java;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,10 +18,11 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.example.fireeats.adapter.RatingAdapter;
-import com.google.firebase.example.fireeats.model.Rating;
-import com.google.firebase.example.fireeats.model.Restaurant;
-import com.google.firebase.example.fireeats.util.RestaurantUtil;
+import com.google.firebase.example.fireeats.R;
+import com.google.firebase.example.fireeats.java.adapter.RatingAdapter;
+import com.google.firebase.example.fireeats.java.model.Rating;
+import com.google.firebase.example.fireeats.java.model.Restaurant;
+import com.google.firebase.example.fireeats.java.util.RestaurantUtil;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -43,31 +44,31 @@ public class RestaurantDetailActivity extends AppCompatActivity
 
     public static final String KEY_RESTAURANT_ID = "key_restaurant_id";
 
-    @BindView(R.id.restaurant_image)
+    @BindView(R.id.restaurantImage)
     ImageView mImageView;
 
-    @BindView(R.id.restaurant_name)
+    @BindView(R.id.restaurantName)
     TextView mNameView;
 
-    @BindView(R.id.restaurant_rating)
+    @BindView(R.id.restaurantRating)
     MaterialRatingBar mRatingIndicator;
 
-    @BindView(R.id.restaurant_num_ratings)
+    @BindView(R.id.restaurantNumRatings)
     TextView mNumRatingsView;
 
-    @BindView(R.id.restaurant_city)
+    @BindView(R.id.restaurantCity)
     TextView mCityView;
 
-    @BindView(R.id.restaurant_category)
+    @BindView(R.id.restaurantCategory)
     TextView mCategoryView;
 
-    @BindView(R.id.restaurant_price)
+    @BindView(R.id.restaurantPrice)
     TextView mPriceView;
 
-    @BindView(R.id.view_empty_ratings)
+    @BindView(R.id.viewEmptyRatings)
     ViewGroup mEmptyView;
 
-    @BindView(R.id.recycler_ratings)
+    @BindView(R.id.recyclerRatings)
     RecyclerView mRatingsRecycler;
 
     private RatingDialogFragment mRatingDialog;
@@ -174,12 +175,12 @@ public class RestaurantDetailActivity extends AppCompatActivity
                 .into(mImageView);
     }
 
-    @OnClick(R.id.restaurant_button_back)
+    @OnClick(R.id.restaurantButtonBack)
     public void onBackArrowClicked(View view) {
         onBackPressed();
     }
 
-    @OnClick(R.id.fab_show_rating_dialog)
+    @OnClick(R.id.fabShowRatingDialog)
     public void onAddRatingClicked(View view) {
         mRatingDialog.show(getSupportFragmentManager(), RatingDialogFragment.TAG);
     }

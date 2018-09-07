@@ -1,4 +1,4 @@
-package com.google.firebase.example.fireeats.adapter;
+package com.google.firebase.example.fireeats.java.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.example.fireeats.R;
-import com.google.firebase.example.fireeats.model.Rating;
+import com.google.firebase.example.fireeats.java.model.Rating;
 import com.google.firebase.firestore.Query;
 
 import java.text.SimpleDateFormat;
@@ -42,16 +42,16 @@ public class RatingAdapter extends FirestoreAdapter<RatingAdapter.ViewHolder> {
         private static final SimpleDateFormat FORMAT  = new SimpleDateFormat(
                 "MM/dd/yyyy", Locale.US);
 
-        @BindView(R.id.rating_item_name)
+        @BindView(R.id.ratingItemName)
         TextView nameView;
 
-        @BindView(R.id.rating_item_rating)
+        @BindView(R.id.ratingItemRating)
         MaterialRatingBar ratingBar;
 
-        @BindView(R.id.rating_item_text)
+        @BindView(R.id.ratingItemText)
         TextView textView;
 
-        @BindView(R.id.rating_item_date)
+        @BindView(R.id.ratingItemDate)
         TextView dateView;
 
         public ViewHolder(View itemView) {
