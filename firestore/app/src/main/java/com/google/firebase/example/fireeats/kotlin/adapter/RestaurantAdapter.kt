@@ -45,12 +45,15 @@ open class RestaurantAdapter(query: Query, val mListener: OnRestaurantSelectedLi
                     .load(restaurant!!.photo)
                     .into(itemView.restaurantItemImage)
 
+            val numRatings: Int = restaurant.numRatings
+
             itemView.restaurantItemName.text = restaurant.name
             itemView.restaurantItemRating.rating = restaurant.avgRating.toFloat()
             itemView.restaurantItemCity.text = restaurant.city
             itemView.restaurantItemCategory.text = restaurant.category
-            itemView.restaurantItemNumRatings.text = resources.getString(R.string.fmt_num_ratings,
-                    restaurant.numRatings)
+            itemView.restaurantItemNumRatings.text = resources.getString(
+                    R.string.fmt_num_ratings,
+                    numRatings)
             itemView.restaurantItemPrice.text = RestaurantUtil.getPriceString(restaurant)
 
             // Click listener
