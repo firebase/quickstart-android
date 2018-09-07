@@ -17,6 +17,7 @@
 package com.google.firebase.quickstart.auth.java;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +25,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -78,23 +82,26 @@ public class AnonymousAuthActivity extends BaseActivity implements
         showProgressDialog();
         // [START signin_anonymously]
         mAuth.signInAnonymously()
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInAnonymously:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user);
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInAnonymously:failure", task.getException());
-                        Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                        updateUI(null);
-                    }
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInAnonymously:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInAnonymously:failure", task.getException());
+                            Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
 
-                    // [START_EXCLUDE]
-                    hideProgressDialog();
-                    // [END_EXCLUDE]
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        // [END_EXCLUDE]
+                    }
                 });
         // [END signin_anonymously]
     }
@@ -122,21 +129,24 @@ public class AnonymousAuthActivity extends BaseActivity implements
 
         // [START link_credential]
         mAuth.getCurrentUser().linkWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "linkWithCredential:success");
-                        FirebaseUser user = task.getResult().getUser();
-                        updateUI(user);
-                    } else {
-                        Log.w(TAG, "linkWithCredential:failure", task.getException());
-                        Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                        updateUI(null);
-                    }
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "linkWithCredential:success");
+                            FirebaseUser user = task.getResult().getUser();
+                            updateUI(user);
+                        } else {
+                            Log.w(TAG, "linkWithCredential:failure", task.getException());
+                            Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
 
-                    // [START_EXCLUDE]
-                    hideProgressDialog();
-                    // [END_EXCLUDE]
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        // [END_EXCLUDE]
+                    }
                 });
         // [END link_credential]
     }
