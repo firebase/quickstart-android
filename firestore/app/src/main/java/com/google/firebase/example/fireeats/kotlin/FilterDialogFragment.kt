@@ -63,7 +63,9 @@ class FilterDialogFragment : DialogFragment() {
             }
             return if (getString(R.string.sort_by_popularity) == selected) {
                 Restaurant.FIELD_POPULARITY
-            } else null
+            } else {
+                null
+            }
 
         }
 
@@ -78,7 +80,9 @@ class FilterDialogFragment : DialogFragment() {
             }
             return if (getString(R.string.sort_by_popularity) == selected) {
                 Query.Direction.DESCENDING
-            } else Query.Direction.DESCENDING
+            } else {
+                Query.Direction.DESCENDING
+            }
 
         }
 
