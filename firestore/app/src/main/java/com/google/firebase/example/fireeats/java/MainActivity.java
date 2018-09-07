@@ -60,16 +60,16 @@ public class MainActivity extends AppCompatActivity implements
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @BindView(R.id.text_current_search)
+    @BindView(R.id.textCurrentSearch)
     TextView mCurrentSearchView;
 
-    @BindView(R.id.text_current_sort_by)
+    @BindView(R.id.textCurrentSortBy)
     TextView mCurrentSortByView;
 
-    @BindView(R.id.recycler_restaurants)
+    @BindView(R.id.recyclerRestaurants)
     RecyclerView mRestaurantsRecycler;
 
-    @BindView(R.id.view_empty)
+    @BindView(R.id.viewEmpty)
     ViewGroup mEmptyView;
 
     private FirebaseFirestore mFirestore;
@@ -198,13 +198,13 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @OnClick(R.id.filter_bar)
+    @OnClick(R.id.filterBar)
     public void onFilterClicked() {
         // Show the dialog containing filter options
         mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
     }
 
-    @OnClick(R.id.button_clear_filter)
+    @OnClick(R.id.buttonClearFilter)
     public void onClearFilterClicked() {
         mFilterDialog.resetFilters();
 

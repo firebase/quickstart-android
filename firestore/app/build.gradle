@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
 android {
     testBuildType "release"
@@ -30,6 +31,10 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+}
+
+androidExtensions {
+    experimental = true
 }
 
 dependencies {

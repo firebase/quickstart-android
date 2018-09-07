@@ -29,6 +29,7 @@ public class Restaurant {
         this.name = name;
         this.city = city;
         this.category = category;
+        this.photo = photo;
         this.price = price;
         this.numRatings = numRatings;
         this.avgRating = avgRating;

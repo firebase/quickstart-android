@@ -9,18 +9,11 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.text.Html
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
@@ -35,23 +28,9 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, RestaurantAdapter.OnRestaurantSelectedListener {
-
-    @BindView(R.id.toolbar)
-    lateinit var mToolbar: Toolbar
-
-    @BindView(R.id.text_current_search)
-    lateinit var mCurrentSearchView: TextView
-
-    @BindView(R.id.text_current_sort_by)
-    lateinit var mCurrentSortByView: TextView
-
-    @BindView(R.id.recycler_restaurants)
-    lateinit var mRestaurantsRecycler: RecyclerView
-
-    @BindView(R.id.view_empty)
-    lateinit var mEmptyView: ViewGroup
 
     lateinit var mFirestore: FirebaseFirestore
     lateinit var mQuery: Query
@@ -64,8 +43,7 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ButterKnife.bind(this)
-        setSupportActionBar(mToolbar)
+        setSupportActionBar(toolbar)
 
         // View model
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
@@ -86,11 +64,11 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
             override fun onDataChanged() {
                 // Show/hide content if the query returns empty.
                 if (itemCount == 0) {
-                    mRestaurantsRecycler.visibility = View.GONE
-                    mEmptyView.visibility = View.VISIBLE
+                    recyclerRestaurants.visibility = View.GONE
+                    viewEmpty.visibility = View.VISIBLE
                 } else {
-                    mRestaurantsRecycler.visibility = View.VISIBLE
-                    mEmptyView.visibility = View.GONE
+                    recyclerRestaurants.visibility = View.VISIBLE
+                    viewEmpty.visibility = View.GONE
                 }
             }
 
@@ -101,11 +79,14 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
             }
         }
 
-        mRestaurantsRecycler.layoutManager = LinearLayoutManager(this)
-        mRestaurantsRecycler.adapter = mAdapter
+        recyclerRestaurants.layoutManager = LinearLayoutManager(this)
+        recyclerRestaurants.adapter = mAdapter
 
         // Filter Dialog
         mFilterDialog = FilterDialogFragment()
+
+        filterBar.setOnClickListener { onFilterClicked() }
+        buttonClearFilter.setOnClickListener { onClearFilterClicked() }
     }
 
     public override fun onStart() {
@@ -118,7 +99,7 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
         }
 
         // Apply filters
-        onFilter(mViewModel!!.filters)
+        onFilter(mViewModel.filters)
 
         // Start listening for Firestore updates
         mAdapter.startListening()
@@ -164,13 +145,11 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
         }
     }
 
-    @OnClick(R.id.filter_bar)
     fun onFilterClicked() {
         // Show the dialog containing filter options
         mFilterDialog.show(supportFragmentManager, FilterDialogFragment.TAG)
     }
 
-    @OnClick(R.id.button_clear_filter)
     fun onClearFilterClicked() {
         mFilterDialog.resetFilters()
 
@@ -217,8 +196,8 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
         mAdapter.setQuery(query)
 
         // Set header
-        mCurrentSearchView.text = Html.fromHtml(filters.getSearchDescription(this))
-        mCurrentSortByView.text = filters.getOrderDescription(this)
+        textCurrentSearch.text = Html.fromHtml(filters.getSearchDescription(this))
+        textCurrentSortBy.text = filters.getOrderDescription(this)
 
         // Save filters
         mViewModel.filters = filters
@@ -273,8 +252,8 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
                 .setTitle(R.string.title_sign_in_error)
                 .setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton(R.string.option_retry) { dialogInterface, i -> startSignIn() }
-                .setNegativeButton(R.string.option_exit) { dialogInterface, i -> finish() }.create()
+                .setPositiveButton(R.string.option_retry) { _, _ -> startSignIn() }
+                .setNegativeButton(R.string.option_exit) { _, _ -> finish() }.create()
 
         dialog.show()
     }

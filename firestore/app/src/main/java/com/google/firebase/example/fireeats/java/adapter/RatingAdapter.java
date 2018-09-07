@@ -42,16 +42,16 @@ public class RatingAdapter extends FirestoreAdapter<RatingAdapter.ViewHolder> {
         private static final SimpleDateFormat FORMAT  = new SimpleDateFormat(
                 "MM/dd/yyyy", Locale.US);
 
-        @BindView(R.id.rating_item_name)
+        @BindView(R.id.ratingItemName)
         TextView nameView;
 
-        @BindView(R.id.rating_item_rating)
+        @BindView(R.id.ratingItemRating)
         MaterialRatingBar ratingBar;
 
-        @BindView(R.id.rating_item_text)
+        @BindView(R.id.ratingItemText)
         TextView textView;
 
-        @BindView(R.id.rating_item_date)
+        @BindView(R.id.ratingItemDate)
         TextView dateView;
 
         public ViewHolder(View itemView) {

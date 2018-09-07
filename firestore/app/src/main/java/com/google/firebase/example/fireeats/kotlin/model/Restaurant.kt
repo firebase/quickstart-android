@@ -22,6 +22,7 @@ class Restaurant {
                 price: Int, numRatings: Int, avgRating: Double) {
         this.name = name
         this.city = city
+        this.photo = photo
         this.category = category
         this.price = price
         this.numRatings = numRatings

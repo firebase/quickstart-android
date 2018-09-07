@@ -8,7 +8,7 @@
     android:paddingRight="16dp">
 
     <TextView
-        android:id="@+id/rating_item_name"
+        android:id="@+id/ratingItemName"
         style="@style/AppTheme.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,36 +20,36 @@
         tools:text="John Doe" />
 
     <TextView
-        android:id="@+id/rating_item_divider"
+        android:id="@+id/ratingItemDivider"
         style="@style/AppTheme.TextDivider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/rating_item_name"
+        android:layout_toRightOf="@+id/ratingItemName"
         android:text="@string/divider_bullet" />
 
     <TextView
-        android:id="@+id/rating_item_date"
+        android:id="@+id/ratingItemDate"
         style="@style/AppTheme.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/greySecondary"
-        android:layout_toLeftOf="@+id/rating_item_rating"
-        android:layout_toRightOf="@+id/rating_item_divider"
+        android:layout_toLeftOf="@+id/ratingItemRating"
+        android:layout_toRightOf="@+id/ratingItemDivider"
         tools:text="9/27/2017" />
 
     <me.zhanghai.android.materialratingbar.MaterialRatingBar
-        android:id="@+id/rating_item_rating"
+        android:id="@+id/ratingItemRating"
         style="@style/Widget.MaterialRatingBar.RatingBar.Indicator.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
 
     <TextView
-        android:id="@+id/rating_item_text"
+        android:id="@+id/ratingItemText"
         style="@style/AppTheme.Subheader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rating_item_name"
+        android:layout_below="@+id/ratingItemName"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
         android:textColor="@color/greyPrimary"
@@ -57,7 +57,7 @@
 
     <View
         style="@style/AppTheme.Divider"
-        android:layout_below="@id/rating_item_text"
+        android:layout_below="@id/ratingItemText"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"/>
 </RelativeLayout>

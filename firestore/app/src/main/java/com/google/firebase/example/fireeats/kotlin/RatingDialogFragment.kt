@@ -6,25 +6,16 @@ import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.example.fireeats.R
 import com.google.firebase.example.fireeats.kotlin.model.Rating
-import me.zhanghai.android.materialratingbar.MaterialRatingBar
+import kotlinx.android.synthetic.main.dialog_rating.*
+import kotlinx.android.synthetic.main.dialog_rating.view.*
 
 /**
  * Dialog Fragment containing rating form.
  */
 class RatingDialogFragment : DialogFragment() {
-
-    @BindView(R.id.restaurant_form_rating)
-    internal var mRatingBar: MaterialRatingBar? = null
-
-    @BindView(R.id.restaurant_form_text)
-    internal var mRatingText: EditText? = null
 
     private var mRatingListener: RatingListener? = null
 
@@ -38,7 +29,9 @@ class RatingDialogFragment : DialogFragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.dialog_rating, container, false)
-        ButterKnife.bind(this, v)
+
+        v.restaurantFormButton.setOnClickListener { onSubmitClicked() }
+        v.restaurantFormCancel.setOnClickListener { onCancelClicked() }
 
         return v
     }
@@ -59,12 +52,11 @@ class RatingDialogFragment : DialogFragment() {
 
     }
 
-    @OnClick(R.id.restaurant_form_button)
-    fun onSubmitClicked(view: View) {
+    fun onSubmitClicked() {
         val rating = Rating(
                 FirebaseAuth.getInstance().currentUser!!,
-                mRatingBar!!.rating.toDouble(),
-                mRatingText!!.text.toString())
+                restaurantFormRating.rating.toDouble(),
+                restaurantFormText.text.toString())
 
         if (mRatingListener != null) {
             mRatingListener!!.onRating(rating)
@@ -73,8 +65,7 @@ class RatingDialogFragment : DialogFragment() {
         dismiss()
     }
 
-    @OnClick(R.id.restaurant_form_cancel)
-    fun onCancelClicked(view: View) {
+    fun onCancelClicked() {
         dismiss()
     }
 

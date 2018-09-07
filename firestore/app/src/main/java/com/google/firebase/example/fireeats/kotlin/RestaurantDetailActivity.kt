@@ -5,16 +5,9 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.firebase.example.fireeats.R
@@ -23,36 +16,9 @@ import com.google.firebase.example.fireeats.kotlin.model.Rating
 import com.google.firebase.example.fireeats.kotlin.model.Restaurant
 import com.google.firebase.example.fireeats.kotlin.util.RestaurantUtil
 import com.google.firebase.firestore.*
-import me.zhanghai.android.materialratingbar.MaterialRatingBar
+import kotlinx.android.synthetic.main.activity_restaurant_detail.*
 
 class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnapshot>, RatingDialogFragment.RatingListener {
-
-    @BindView(R.id.restaurant_image)
-    internal var mImageView: ImageView? = null
-
-    @BindView(R.id.restaurant_name)
-    internal var mNameView: TextView? = null
-
-    @BindView(R.id.restaurant_rating)
-    internal var mRatingIndicator: MaterialRatingBar? = null
-
-    @BindView(R.id.restaurant_num_ratings)
-    internal var mNumRatingsView: TextView? = null
-
-    @BindView(R.id.restaurant_city)
-    internal var mCityView: TextView? = null
-
-    @BindView(R.id.restaurant_category)
-    internal var mCategoryView: TextView? = null
-
-    @BindView(R.id.restaurant_price)
-    internal var mPriceView: TextView? = null
-
-    @BindView(R.id.view_empty_ratings)
-    internal var mEmptyView: ViewGroup? = null
-
-    @BindView(R.id.recycler_ratings)
-    internal var mRatingsRecycler: RecyclerView? = null
 
     private var mRatingDialog: RatingDialogFragment? = null
 
@@ -65,7 +31,6 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant_detail)
-        ButterKnife.bind(this)
 
         // Get restaurant ID from extras
         val restaurantId = intent.extras!!.getString(KEY_RESTAURANT_ID)
@@ -87,18 +52,21 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
         mRatingAdapter = object : RatingAdapter(ratingsQuery) {
             override fun onDataChanged() {
                 if (itemCount == 0) {
-                    mRatingsRecycler!!.visibility = View.GONE
-                    mEmptyView!!.visibility = View.VISIBLE
+                    recyclerRatings.visibility = View.GONE
+                    viewEmptyRatings.visibility = View.VISIBLE
                 } else {
-                    mRatingsRecycler!!.visibility = View.VISIBLE
-                    mEmptyView!!.visibility = View.GONE
+                    recyclerRatings.visibility = View.VISIBLE
+                    viewEmptyRatings.visibility = View.GONE
                 }
             }
         }
-        mRatingsRecycler!!.layoutManager = LinearLayoutManager(this)
-        mRatingsRecycler!!.adapter = mRatingAdapter
+        recyclerRatings.layoutManager = LinearLayoutManager(this)
+        recyclerRatings.adapter = mRatingAdapter
 
         mRatingDialog = RatingDialogFragment()
+
+        restaurantButtonBack.setOnClickListener { onBackArrowClicked() }
+        fabShowRatingDialog.setOnClickListener { onAddRatingClicked() }
     }
 
     public override fun onStart() {
@@ -137,26 +105,24 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
     }
 
     private fun onRestaurantLoaded(restaurant: Restaurant) {
-        mNameView!!.text = restaurant.name
-        mRatingIndicator!!.rating = restaurant.avgRating.toFloat()
-        mNumRatingsView!!.text = getString(R.string.fmt_num_ratings, restaurant.numRatings)
-        mCityView!!.text = restaurant.city
-        mCategoryView!!.text = restaurant.category
-        mPriceView!!.text = RestaurantUtil.getPriceString(restaurant)
+        restaurantName.text = restaurant.name
+        restaurantRating.rating = restaurant.avgRating.toFloat()
+        restaurantNumRatings.text = getString(R.string.fmt_num_ratings, restaurant.numRatings)
+        restaurantCity.text = restaurant.city
+        restaurantCategory.text = restaurant.category
+        restaurantPrice.text = RestaurantUtil.getPriceString(restaurant)
 
         // Background image
-        Glide.with(mImageView!!.context)
+        Glide.with(restaurantImage.context)
                 .load(restaurant.photo)
-                .into(mImageView!!)
+                .into(restaurantImage)
     }
 
-    @OnClick(R.id.restaurant_button_back)
-    fun onBackArrowClicked(view: View) {
+    fun onBackArrowClicked() {
         onBackPressed()
     }
 
-    @OnClick(R.id.fab_show_rating_dialog)
-    fun onAddRatingClicked(view: View) {
+    fun onAddRatingClicked() {
         mRatingDialog!!.show(supportFragmentManager, RatingDialogFragment.TAG)
     }
 
@@ -168,7 +134,7 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
 
                     // Hide keyboard and scroll to top
                     hideKeyboard()
-                    mRatingsRecycler!!.smoothScrollToPosition(0)
+                    recyclerRatings.smoothScrollToPosition(0)
                 }
                 .addOnFailureListener(this) { e ->
                     Log.w(TAG, "Add rating failed", e)
