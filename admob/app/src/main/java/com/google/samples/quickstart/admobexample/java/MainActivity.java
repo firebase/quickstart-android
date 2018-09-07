@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         // [END create_interstitial_ad_listener]
 
         // [START display_interstitial_ad]
-        mLoadInterstitialButton = findViewById(R.id.load_interstitial_button);
+        mLoadInterstitialButton = findViewById(R.id.loadInterstitialButton);
         mLoadInterstitialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

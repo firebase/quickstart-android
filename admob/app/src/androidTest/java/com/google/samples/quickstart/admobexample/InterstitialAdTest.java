@@ -55,7 +55,7 @@ public class InterstitialAdTest {
 
         // Click show interstitial button
         ViewInteraction showInterstitialButton = onView(
-                allOf(withId(R.id.load_interstitial_button),
+                allOf(withId(R.id.loadInterstitialButton),
                         withText(R.string.interstitial_button_text),
                         isDisplayed()));
         showInterstitialButton.perform(click());

@@ -2,15 +2,12 @@ package com.google.samples.quickstart.admobexample.kotlin
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.VisibleForTesting
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.InterstitialAd
 import com.google.samples.quickstart.admobexample.R
-import com.google.samples.quickstart.admobexample.java.SecondActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -19,9 +16,6 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
     // [END add_lifecycle_methods]
 
-    @get:VisibleForTesting
-    internal var adView: AdView? = null
-        private set
     // [START_EXCLUDE]
     private lateinit var mInterstitialAd: InterstitialAd
 
@@ -31,9 +25,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        adView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
-        adView!!.loadAd(adRequest)
+
+        adView.loadAd(adRequest)
         // [END load_banner_ad]
 
         // AdMob ad unit IDs are not currently stored inside the google-services.json file.
@@ -58,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             override fun onAdLoaded() {
                 // Ad received, ready to display
                 // [START_EXCLUDE]
-                load_interstitial_button.isEnabled = true
+                loadInterstitialButton.isEnabled = true
                 // [END_EXCLUDE]
             }
 
@@ -70,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         // [END create_interstitial_ad_listener]
 
         // [START display_interstitial_ad]
-        load_interstitial_button.setOnClickListener {
+        loadInterstitialButton.setOnClickListener {
             if (mInterstitialAd.isLoaded) {
                 mInterstitialAd.show()
             } else {
@@ -80,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         // [END display_interstitial_ad]
 
         // Disable button if an interstitial ad is not loaded yet.
-        load_interstitial_button.isEnabled = mInterstitialAd.isLoaded
+        loadInterstitialButton.isEnabled = mInterstitialAd.isLoaded
     }
 
     /**
@@ -103,18 +97,14 @@ class MainActivity : AppCompatActivity() {
     // [START add_lifecycle_methods]
     /** Called when leaving the activity  */
     public override fun onPause() {
-        if (adView != null) {
-            adView!!.pause()
-        }
+        adView.pause()
         super.onPause()
     }
 
     /** Called when returning to the activity  */
     public override fun onResume() {
         super.onResume()
-        if (adView != null) {
-            adView!!.resume()
-        }
+        adView.resume()
         if (!mInterstitialAd.isLoaded) {
             requestNewInterstitial()
         }
@@ -122,9 +112,7 @@ class MainActivity : AppCompatActivity() {
 
     /** Called before the activity is destroyed  */
     public override fun onDestroy() {
-        if (adView != null) {
-            adView!!.destroy()
-        }
+        adView.destroy()
         super.onDestroy()
     }
 

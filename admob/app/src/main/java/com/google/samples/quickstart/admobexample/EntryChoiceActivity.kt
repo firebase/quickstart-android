@@ -17,7 +17,7 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                 Choice(
                         "Kotlin",
                         "Run the Firebase Admob quickstart written in Kotlin.",
-                        Intent(this, MainActivity::class.java))
+                        Intent(this, com.google.samples.quickstart.admobexample.kotlin.MainActivity::class.java))
         )
     }
 
