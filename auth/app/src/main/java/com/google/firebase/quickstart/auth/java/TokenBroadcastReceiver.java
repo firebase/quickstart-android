@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.auth;
+package com.google.firebase.quickstart.auth.java;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

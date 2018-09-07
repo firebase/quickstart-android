@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.auth;
+package com.google.firebase.quickstart.auth.java;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthActionCodeException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.quickstart.auth.R;
 
 /**
  * Demonstrate Firebase Authentication without a password, using a link sent to an
@@ -49,11 +50,11 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
 
         mAuth = FirebaseAuth.getInstance();
 
-        mSendLinkButton = findViewById(R.id.passwordless_send_email_button);
-        mSignInButton = findViewById(R.id.passwordless_sign_in_button);
-        mSignOutButton = findViewById(R.id.sign_out_button);
+        mSendLinkButton = findViewById(R.id.passwordlessSendEmailButton);
+        mSignInButton = findViewById(R.id.passwordlessSignInButton);
+        mSignOutButton = findViewById(R.id.signOutButton);
 
-        mEmailField = findViewById(R.id.field_email);
+        mEmailField = findViewById(R.id.fieldEmail);
         mStatusText = findViewById(R.id.status);
 
         mSendLinkButton.setOnClickListener(this);
@@ -228,13 +229,13 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
             mStatusText.setText(getString(R.string.passwordless_status_fmt,
                     user.getEmail(), user.isEmailVerified()));
 
-            findViewById(R.id.passwordless_fields).setVisibility(View.GONE);
-            findViewById(R.id.passwordless_buttons).setVisibility(View.GONE);
-            findViewById(R.id.signed_in_buttons).setVisibility(View.VISIBLE);
+            findViewById(R.id.passwordlessFields).setVisibility(View.GONE);
+            findViewById(R.id.passwordlessButtons).setVisibility(View.GONE);
+            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.passwordless_fields).setVisibility(View.VISIBLE);
-            findViewById(R.id.passwordless_buttons).setVisibility(View.VISIBLE);
-            findViewById(R.id.signed_in_buttons).setVisibility(View.GONE);
+            findViewById(R.id.passwordlessFields).setVisibility(View.VISIBLE);
+            findViewById(R.id.passwordlessButtons).setVisibility(View.VISIBLE);
+            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
         }
     }
 
@@ -245,13 +246,13 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.passwordless_send_email_button:
+            case R.id.passwordlessSendEmailButton:
                 onSendLinkClicked();
                 break;
-            case R.id.passwordless_sign_in_button:
+            case R.id.passwordlessSignInButton:
                 onSignInClicked();
                 break;
-            case R.id.sign_out_button:
+            case R.id.signOutButton:
                 onSignOutClicked();
                 break;
         }

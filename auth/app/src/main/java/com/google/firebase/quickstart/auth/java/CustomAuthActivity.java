@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.firebase.quickstart.auth;
+package com.google.firebase.quickstart.auth.java;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.quickstart.auth.R;
 
 /**
  * Demonstrate Firebase Authentication using a custom minted token. For more information, see:
@@ -50,7 +51,7 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_custom);
 
         // Button click listeners
-        findViewById(R.id.button_sign_in).setOnClickListener(this);
+        findViewById(R.id.buttonSignIn).setOnClickListener(this);
 
         // Create token receiver (for demo purposes only)
         mTokenReceiver = new TokenBroadcastReceiver() {
@@ -115,10 +116,10 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+            ((TextView) findViewById(R.id.textSignInStatus)).setText(
                     "User ID: " + user.getUid());
         } else {
-            ((TextView) findViewById(R.id.text_sign_in_status)).setText(
+            ((TextView) findViewById(R.id.textSignInStatus)).setText(
                     "Error: sign in failed.");
         }
     }
@@ -134,14 +135,14 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         }
 
         // Enable/disable sign-in button and show the token
-        findViewById(R.id.button_sign_in).setEnabled((mCustomToken != null));
-        ((TextView) findViewById(R.id.text_token_status)).setText(status);
+        findViewById(R.id.buttonSignIn).setEnabled((mCustomToken != null));
+        ((TextView) findViewById(R.id.textTokenStatus)).setText(status);
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.button_sign_in) {
+        if (i == R.id.buttonSignIn) {
             startSignIn();
 
         }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.auth;
+package com.google.firebase.quickstart.auth.java;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +27,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.firebase.quickstart.auth.R;
 
 /**
  * Simple list-based Activity to redirect to one of the other Activities. This Activity does not
@@ -73,7 +75,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_chooser);
 
         // Set up ListView and Adapter
-        ListView listView = findViewById(R.id.list_view);
+        ListView listView = findViewById(R.id.listView);
 
         MyArrayAdapter adapter = new MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
         adapter.setDescriptionIds(DESCRIPTION_IDS);

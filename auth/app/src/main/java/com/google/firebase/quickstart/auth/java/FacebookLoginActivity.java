@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.auth;
+package com.google.firebase.quickstart.auth.java;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +38,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.quickstart.auth.R;
 
 /**
  * Demonstrate Firebase Authentication using a Facebook access token.
@@ -64,7 +65,7 @@ public class FacebookLoginActivity extends BaseActivity implements
         // Views
         mStatusTextView = findViewById(R.id.status);
         mDetailTextView = findViewById(R.id.detail);
-        findViewById(R.id.button_facebook_signout).setOnClickListener(this);
+        findViewById(R.id.buttonFacebookSignout).setOnClickListener(this);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -74,7 +75,7 @@ public class FacebookLoginActivity extends BaseActivity implements
         // [START initialize_fblogin]
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = findViewById(R.id.button_facebook_login);
+        LoginButton loginButton = findViewById(R.id.buttonFacebookLogin);
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -168,21 +169,21 @@ public class FacebookLoginActivity extends BaseActivity implements
             mStatusTextView.setText(getString(R.string.facebook_status_fmt, user.getDisplayName()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
-            findViewById(R.id.button_facebook_login).setVisibility(View.GONE);
-            findViewById(R.id.button_facebook_signout).setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonFacebookLogin).setVisibility(View.GONE);
+            findViewById(R.id.buttonFacebookSignout).setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
 
-            findViewById(R.id.button_facebook_login).setVisibility(View.VISIBLE);
-            findViewById(R.id.button_facebook_signout).setVisibility(View.GONE);
+            findViewById(R.id.buttonFacebookLogin).setVisibility(View.VISIBLE);
+            findViewById(R.id.buttonFacebookSignout).setVisibility(View.GONE);
         }
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.button_facebook_signout) {
+        if (i == R.id.buttonFacebookSignout) {
             signOut();
         }
     }

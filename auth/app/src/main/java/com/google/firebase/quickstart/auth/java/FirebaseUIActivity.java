@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.auth;
+package com.google.firebase.quickstart.auth.java;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.quickstart.auth.BuildConfig;
+import com.google.firebase.quickstart.auth.R;
 
 import java.util.Collections;
 
@@ -38,8 +40,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         mStatusView = findViewById(R.id.status);
         mDetailView = findViewById(R.id.detail);
 
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
+        findViewById(R.id.signInButton).setOnClickListener(this);
+        findViewById(R.id.signOutButton).setOnClickListener(this);
     }
 
     @Override
@@ -83,15 +85,15 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             mStatusView.setText(getString(R.string.firebaseui_status_fmt, user.getEmail()));
             mDetailView.setText(getString(R.string.id_fmt, user.getUid()));
 
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.signInButton).setVisibility(View.GONE);
+            findViewById(R.id.signOutButton).setVisibility(View.VISIBLE);
         } else {
             // Signed out
             mStatusView.setText(R.string.signed_out);
             mDetailView.setText(null);
 
-            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+            findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
+            findViewById(R.id.signOutButton).setVisibility(View.GONE);
         }
     }
 
@@ -103,10 +105,10 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.sign_in_button:
+            case R.id.signInButton:
                 startSignIn();
                 break;
-            case R.id.sign_out_button:
+            case R.id.signOutButton:
                 signOut();
                 break;
         }

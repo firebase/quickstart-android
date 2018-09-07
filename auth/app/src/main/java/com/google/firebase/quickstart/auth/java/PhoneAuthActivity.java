@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.auth;
+package com.google.firebase.quickstart.auth.java;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.quickstart.auth.R;
 
 import java.util.concurrent.TimeUnit;
 
@@ -73,19 +74,19 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         }
 
         // Assign views
-        mPhoneNumberViews = findViewById(R.id.phone_auth_fields);
-        mSignedInViews = findViewById(R.id.signed_in_buttons);
+        mPhoneNumberViews = findViewById(R.id.phoneAuthFields);
+        mSignedInViews = findViewById(R.id.signedInButtons);
 
         mStatusText = findViewById(R.id.status);
         mDetailText = findViewById(R.id.detail);
 
-        mPhoneNumberField = findViewById(R.id.field_phone_number);
-        mVerificationField = findViewById(R.id.field_verification_code);
+        mPhoneNumberField = findViewById(R.id.fieldPhoneNumber);
+        mVerificationField = findViewById(R.id.fieldVerificationCode);
 
-        mStartButton = findViewById(R.id.button_start_verification);
-        mVerifyButton = findViewById(R.id.button_verify_phone);
-        mResendButton = findViewById(R.id.button_resend);
-        mSignOutButton = findViewById(R.id.sign_out_button);
+        mStartButton = findViewById(R.id.buttonStartVerification);
+        mVerifyButton = findViewById(R.id.buttonVerifyPhone);
+        mResendButton = findViewById(R.id.buttonResend);
+        mSignOutButton = findViewById(R.id.signOutButton);
 
         // Assign click listeners
         mStartButton.setOnClickListener(this);
@@ -380,14 +381,14 @@ public class PhoneAuthActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button_start_verification:
+            case R.id.buttonStartVerification:
                 if (!validatePhoneNumber()) {
                     return;
                 }
 
                 startPhoneNumberVerification(mPhoneNumberField.getText().toString());
                 break;
-            case R.id.button_verify_phone:
+            case R.id.buttonVerifyPhone:
                 String code = mVerificationField.getText().toString();
                 if (TextUtils.isEmpty(code)) {
                     mVerificationField.setError("Cannot be empty.");
@@ -396,10 +397,10 @@ public class PhoneAuthActivity extends AppCompatActivity implements
 
                 verifyPhoneNumberWithCode(mVerificationId, code);
                 break;
-            case R.id.button_resend:
+            case R.id.buttonResend:
                 resendVerificationCode(mPhoneNumberField.getText().toString(), mResendToken);
                 break;
-            case R.id.sign_out_button:
+            case R.id.signOutButton:
                 signOut();
                 break;
         }

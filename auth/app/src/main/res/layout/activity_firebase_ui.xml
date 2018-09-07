@@ -23,7 +23,7 @@
             android:src="@drawable/firebase_lockup_400" />
 
         <TextView
-            android:id="@+id/title_text"
+            android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/title_bottom_margin"
@@ -44,14 +44,14 @@
 
 
     <RelativeLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@color/grey_300"
         android:gravity="center_vertical">
 
         <Button
-            android:id="@+id/sign_in_button"
+            android:id="@+id/signInButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             android:visibility="visible" />
 
         <Button
-            android:id="@+id/sign_out_button"
+            android:id="@+id/signOutButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
