@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import com.google.firebase.auth.*
 import com.google.firebase.quickstart.auth.R
-import com.google.firebase.quickstart.auth.java.BaseActivity
 import kotlinx.android.synthetic.main.activity_passwordless.*
 
 

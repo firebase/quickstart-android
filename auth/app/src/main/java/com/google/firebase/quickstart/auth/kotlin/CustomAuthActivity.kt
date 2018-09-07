@@ -8,7 +8,6 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import com.google.firebase.quickstart.auth.java.TokenBroadcastReceiver
 import kotlinx.android.synthetic.main.activity_custom.*
 
 
@@ -36,9 +35,9 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
         // Create token receiver (for demo purposes only)
         mTokenReceiver = object : TokenBroadcastReceiver() {
-            override fun onNewToken(token: String) {
+            override fun onNewToken(token: String?) {
                 Log.d(TAG, "onNewToken:$token")
-                setCustomToken(token)
+                setCustomToken(token.toString())
             }
         }
 
@@ -58,7 +57,7 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        registerReceiver(mTokenReceiver, TokenBroadcastReceiver.getFilter())
+        registerReceiver(mTokenReceiver, TokenBroadcastReceiver.filter)
     }
 
 

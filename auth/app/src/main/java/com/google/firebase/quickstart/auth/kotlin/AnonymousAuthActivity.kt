@@ -9,7 +9,6 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import com.google.firebase.quickstart.auth.java.BaseActivity
 import kotlinx.android.synthetic.main.activity_anonymous_auth.*
 
 /**

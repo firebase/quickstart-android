@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
-import com.google.firebase.quickstart.auth.java.TokenBroadcastReceiver.ACTION_TOKEN
 
 
 /**
@@ -16,7 +15,7 @@ abstract class TokenBroadcastReceiver : BroadcastReceiver() {
 
     private val TAG = "TokenBroadcastReceiver"
 
-    val ACTION_TOKEN = "com.google.example.ACTION_TOKEN"
+
     val EXTRA_KEY_TOKEN = "key_token"
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -31,7 +30,7 @@ abstract class TokenBroadcastReceiver : BroadcastReceiver() {
     abstract fun onNewToken(token: String?)
 
     companion object {
-
+        val ACTION_TOKEN = "com.google.example.ACTION_TOKEN"
         val filter: IntentFilter
             get() = IntentFilter(ACTION_TOKEN)
     }

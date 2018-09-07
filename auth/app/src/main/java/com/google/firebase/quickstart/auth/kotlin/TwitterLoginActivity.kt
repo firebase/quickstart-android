@@ -9,7 +9,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.TwitterAuthProvider
 import com.google.firebase.quickstart.auth.R
-import com.google.firebase.quickstart.auth.java.BaseActivity
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterLoginButton
 import kotlinx.android.synthetic.main.activity_twitter.*
