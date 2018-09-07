@@ -18,7 +18,7 @@ specific language governing permissions and limitations under the License.
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.google.samples.quickstart.functions.MainActivity">
+    tools:context="com.google.samples.quickstart.functions.java.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,7 +63,7 @@ specific language governing permissions and limitations under the License.
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/field_first_number"
+                        android:id="@+id/fieldFirstNumber"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -78,7 +78,7 @@ specific language governing permissions and limitations under the License.
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/field_second_number"
+                        android:id="@+id/fieldSecondNumber"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -93,7 +93,7 @@ specific language governing permissions and limitations under the License.
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/field_add_result"
+                        android:id="@+id/fieldAddResult"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:enabled="false"
@@ -104,7 +104,7 @@ specific language governing permissions and limitations under the License.
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/button_calculate"
+                    android:id="@+id/buttonCalculate"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -147,14 +147,14 @@ specific language governing permissions and limitations under the License.
                     android:orientation="vertical">
 
                     <EditText
-                        android:id="@+id/field_message_input"
+                        android:id="@+id/fieldMessageInput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/input"
                         tools:text="some bad message" />
 
                     <EditText
-                        android:id="@+id/field_message_output"
+                        android:id="@+id/fieldMessageOutput"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
@@ -164,17 +164,17 @@ specific language governing permissions and limitations under the License.
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/button_sign_in"
+                    android:id="@+id/buttonSignIn"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/button_add_message"
-                    android:layout_toLeftOf="@+id/button_add_message"
-                    android:layout_toStartOf="@+id/button_add_message"
+                    android:layout_alignTop="@+id/buttonAddMessage"
+                    android:layout_toLeftOf="@+id/buttonAddMessage"
+                    android:layout_toStartOf="@+id/buttonAddMessage"
                     android:text="@string/sign_in" />
 
                 <Button
-                    android:id="@+id/button_add_message"
+                    android:id="@+id/buttonAddMessage"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
