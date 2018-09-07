@@ -14,6 +14,7 @@ import android.util.Pair
 import android.view.View
 import android.widget.*
 import com.google.android.gms.common.annotation.KeepName
+import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudimagelabeling.CloudImageLabelingProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudlandmarkrecognition.CloudLandmarkRecognitionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition.CloudDocumentTextRecognitionProcessor
@@ -243,7 +244,7 @@ class StillImageActivity: AppCompatActivity() {
             preview!!.setImageBitmap(resizedBitmap)
             bitmapForDetection = resizedBitmap
 
-            imageProcessor!!.process(bitmapForDetection, graphicOverlay)
+            imageProcessor!!.process(bitmapForDetection!!, graphicOverlay!!)
         } catch (e: IOException) {
             Log.e(TAG, "Error retrieving saved image")
         }

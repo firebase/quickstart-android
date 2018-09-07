@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.java.LivePreviewActivity
 import com.google.firebase.samples.apps.mlkit.java.StillImageActivity
 import java.util.ArrayList
