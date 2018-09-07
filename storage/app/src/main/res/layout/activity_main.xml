@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:fillViewport="true"
     android:scrollbars="vertical"
-    tools:context="com.google.firebase.quickstart.firebasestorage.MainActivity">
+    tools:context="com.google.firebase.quickstart.firebasestorage.java.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

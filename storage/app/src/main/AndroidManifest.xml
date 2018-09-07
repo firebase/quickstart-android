@@ -11,9 +11,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:launchMode="singleTask">
+
+        <activity android:name=".EntryChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,12 +20,30 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".java.MainActivity"
+            android:launchMode="singleTask">
+        </activity>
+
+        <activity
+            android:name=".kotlin.MainActivity"
+            android:launchMode="singleTask">
+        </activity>
+
         <service
-            android:name=".MyDownloadService"
+            android:name=".java.MyDownloadService"
             android:exported="false"/>
 
         <service
-            android:name=".MyUploadService"
+            android:name=".java.MyUploadService"
+            android:exported="false" />
+
+        <service
+            android:name=".kotlin.MyDownloadService"
+            android:exported="false"/>
+
+        <service
+            android:name=".kotlin.MyUploadService"
             android:exported="false" />
 
     </application>

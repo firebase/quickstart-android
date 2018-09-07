@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.firebasestorage;
+package com.google.firebase.quickstart.firebasestorage.java;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.quickstart.firebasestorage.R;
 
 import java.util.Locale;
 

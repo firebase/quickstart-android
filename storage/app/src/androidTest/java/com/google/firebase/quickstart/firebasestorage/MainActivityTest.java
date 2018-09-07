@@ -15,6 +15,9 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
 
+import com.google.firebase.quickstart.firebasestorage.java.MainActivity;
+import com.google.firebase.quickstart.firebasestorage.java.MyUploadService;
+
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
