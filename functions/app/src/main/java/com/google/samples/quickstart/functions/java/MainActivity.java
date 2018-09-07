@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.quickstart.functions;
+package com.google.samples.quickstart.functions.java;
 
 import android.content.Context;
 import android.content.Intent;

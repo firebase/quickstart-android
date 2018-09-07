@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.functions;
+package com.google.samples.quickstart.functions.java;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

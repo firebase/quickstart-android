@@ -7,6 +7,9 @@ import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiSelector;
 import android.test.suitebuilder.annotation.LargeTest;
+
+import com.google.samples.quickstart.functions.java.MainActivity;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
