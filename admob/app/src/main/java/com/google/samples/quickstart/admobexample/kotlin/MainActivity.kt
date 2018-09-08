@@ -13,7 +13,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.samples.quickstart.admobexample.R
 import kotlinx.android.synthetic.main.activity_main.*
-
 // [END_EXCLUDE]
 
 class MainActivity : AppCompatActivity() {
