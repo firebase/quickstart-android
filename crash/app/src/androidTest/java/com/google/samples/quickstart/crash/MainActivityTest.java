@@ -7,6 +7,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.CheckBox;
 
+import com.google.samples.quickstart.crash.java.MainActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
