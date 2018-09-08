@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.perfmon;
+package com.google.firebase.quickstart.perfmon.java;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.Trace;
+import com.google.firebase.quickstart.perfmon.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mHeader = findViewById(R.id.icon);
-        mContent = findViewById(R.id.textView);
+        mHeader = findViewById(R.id.headerIcon);
+        mContent = findViewById(R.id.textViewContent);
         Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
