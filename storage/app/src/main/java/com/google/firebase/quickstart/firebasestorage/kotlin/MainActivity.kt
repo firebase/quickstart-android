@@ -157,21 +157,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun beginDownload() {
-        if (fileUri == null) {
-            return;
+        fileUri?.let {
+            // Get path
+            val path = "photos/" + it.lastPathSegment
+
+            // Kick off MyDownloadService to download the file
+            val intent = Intent(this, MyDownloadService::class.java)
+                    .putExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH, path)
+                    .setAction(MyDownloadService.ACTION_DOWNLOAD)
+            startService(intent)
+
+            // Show loading spinner
+            showProgressDialog(getString(R.string.progress_downloading))
         }
-
-        // Get path
-        val path = "photos/" + fileUri!!.lastPathSegment
-
-        // Kick off MyDownloadService to download the file
-        val intent = Intent(this, MyDownloadService::class.java)
-                .putExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH, path)
-                .setAction(MyDownloadService.ACTION_DOWNLOAD)
-        startService(intent)
-
-        // Show loading spinner
-        showProgressDialog(getString(R.string.progress_downloading))
     }
 
     private fun launchCamera() {
