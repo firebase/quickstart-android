@@ -36,11 +36,6 @@ configurations.all {
     resolutionStrategy.force 'com.android.support:support-annotations:27.1.1'
 }
 
-repositories {
-    google()
-    mavenCentral()
-}
-
 dependencies {
     implementation project(':internal')
     implementation 'com.android.support:appcompat-v7:27.1.1'
