@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
@@ -36,9 +38,11 @@ configurations.all {
 
 repositories {
     google()
+    mavenCentral()
 }
 
 dependencies {
+    implementation project(':internal')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:animated-vector-drawable:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
@@ -54,6 +58,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support:support-annotations:27.1.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
