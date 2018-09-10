@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
 import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity() {
 
     private lateinit var pagerAdapter: FragmentPagerAdapter
-    private lateinit var viewPager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +48,7 @@ class MainActivity : BaseActivity() {
 
         // Set up the ViewPager with the sections adapter.
         container.adapter = pagerAdapter
-        tabs.setupWithViewPager(viewPager)
+        tabs.setupWithViewPager(container)
 
         // Button launches NewPostActivity
         fabNewPost.setOnClickListener {
