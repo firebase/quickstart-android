@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.firebasestorage;
+package com.google.firebase.quickstart.firebasestorage.java;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import com.google.firebase.quickstart.firebasestorage.R;
 
 /**
  * Base class for Services that keep track of the number of active jobs and self-stop when the
