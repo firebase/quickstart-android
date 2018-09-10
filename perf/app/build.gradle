@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.firebase.firebase-perf'
 
 check.dependsOn 'assembleDebugAndroidTest'
@@ -29,6 +31,9 @@ android.applicationVariants.all {
 }
 
 dependencies {
+    implementation project(':internal')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61"
+
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-perf:16.1.0'
 
