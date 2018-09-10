@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CustomAuthActivity">
+    tools:context=".java.CustomAuthActivity">
 
     <ImageView
         android:id="@+id/icon"
@@ -26,7 +26,7 @@
         android:text="@string/custom_token" />
 
     <TextView
-        android:id="@+id/text_token_status"
+        android:id="@+id/textTokenStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -43,13 +43,13 @@
         android:text="@string/firebase_user_management" />
 
     <TextView
-        android:id="@+id/text_sign_in_status"
+        android:id="@+id/textSignInStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/signed_out" />
 
     <Button
-        android:id="@+id/button_sign_in"
+        android:id="@+id/buttonSignIn"
         android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
         android:enabled="false"

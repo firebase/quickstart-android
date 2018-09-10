@@ -13,7 +13,7 @@
         android:text="@string/filter_add_review" />
 
     <me.zhanghai.android.materialratingbar.MaterialRatingBar
-        android:id="@+id/restaurant_form_rating"
+        android:id="@+id/restaurantFormRating"
         style="@style/Widget.MaterialRatingBar.RatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         android:minHeight="24dp" />
 
     <EditText
-        android:id="@+id/restaurant_form_text"
+        android:id="@+id/restaurantFormText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -41,7 +41,7 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/restaurant_form_cancel"
+            android:id="@+id/restaurantFormCancel"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
 
 
         <Button
-            android:id="@+id/restaurant_form_button"
+            android:id="@+id/restaurantFormButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

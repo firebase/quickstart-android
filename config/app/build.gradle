@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
@@ -27,6 +29,9 @@ configurations.all {
 }
 
 dependencies {
+    implementation project(':internal')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61"
+
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:appcompat-v7:27.1.1'
 

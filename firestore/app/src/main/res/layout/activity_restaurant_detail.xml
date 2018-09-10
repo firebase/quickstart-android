@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0E0E0"
-    tools:context="com.google.firebase.example.fireeats.RestaurantDetailActivity">
+    android:background="#E0E0E0">
 
     <RelativeLayout
         android:id="@+id/restaurant_top_card"
@@ -14,7 +13,7 @@
         android:elevation="4dp">
 
         <ImageView
-            android:id="@+id/restaurant_image"
+            android:id="@+id/restaurantImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:alpha="1.0"
@@ -28,20 +27,20 @@
 
         <!-- Back button -->
         <ImageView
-            android:id="@+id/restaurant_button_back"
+            android:id="@+id/restaurantButtonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            android:layout_alignLeft="@+id/restaurant_name"
+            android:layout_alignLeft="@+id/restaurantName"
             android:layout_marginTop="16dp"
             app:srcCompat="@drawable/ic_close_white_24px" />
 
         <TextView
-            android:id="@+id/restaurant_name"
+            android:id="@+id/restaurantName"
             style="@style/AppTheme.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/restaurant_rating"
+            android:layout_above="@+id/restaurantRating"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:textColor="@android:color/white"
@@ -49,66 +48,66 @@
             tools:text="Some Restaurant" />
 
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
-            android:id="@+id/restaurant_rating"
+            android:id="@+id/restaurantRating"
             style="@style/Widget.MaterialRatingBar.RatingBar.Indicator"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_above="@+id/restaurant_category"
-            android:layout_alignLeft="@+id/restaurant_name"
+            android:layout_above="@+id/restaurantCategory"
+            android:layout_alignLeft="@+id/restaurantName"
             app:mrb_progressTint="@android:color/white"
             app:mrb_secondaryProgressTint="@android:color/white" />
 
         <TextView
-            android:id="@+id/restaurant_num_ratings"
+            android:id="@+id/restaurantNumRatings"
             style="@style/AppTheme.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/restaurant_rating"
-            android:layout_alignTop="@+id/restaurant_rating"
+            android:layout_alignBottom="@+id/restaurantRating"
+            android:layout_alignTop="@+id/restaurantRating"
             android:layout_marginLeft="4dp"
-            android:layout_toRightOf="@+id/restaurant_rating"
+            android:layout_toRightOf="@+id/restaurantRating"
             android:gravity="center"
             android:textColor="@android:color/white"
             tools:text="(10)" />
 
         <TextView
-            android:id="@+id/restaurant_category"
+            android:id="@+id/restaurantCategory"
             style="@style/AppTheme.Subheader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/restaurant_image"
-            android:layout_alignLeft="@+id/restaurant_name"
+            android:layout_alignBottom="@+id/restaurantImage"
+            android:layout_alignLeft="@+id/restaurantName"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:textColor="@android:color/white"
             tools:text="Italian" />
 
         <TextView
-            android:id="@+id/restaurant_city_divider"
+            android:id="@+id/restaurantCity_divider"
             style="@style/AppTheme.TextDivider"
-            android:layout_alignTop="@+id/restaurant_category"
-            android:layout_toRightOf="@+id/restaurant_category"
+            android:layout_alignTop="@+id/restaurantCategory"
+            android:layout_toRightOf="@+id/restaurantCategory"
             android:text="@string/divider_bullet"
             android:textColor="@android:color/white" />
 
         <TextView
-            android:id="@+id/restaurant_city"
+            android:id="@+id/restaurantCity"
             style="@style/AppTheme.Subheader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/restaurant_category"
-            android:layout_below="@+id/restaurant_category"
-            android:layout_toRightOf="@+id/restaurant_city_divider"
+            android:layout_alignTop="@+id/restaurantCategory"
+            android:layout_below="@+id/restaurantCategory"
+            android:layout_toRightOf="@+id/restaurantCity_divider"
             android:textColor="@android:color/white"
             tools:text="San Francisco" />
 
         <TextView
-            android:id="@+id/restaurant_price"
+            android:id="@+id/restaurantPrice"
             style="@style/AppTheme.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/restaurant_name"
+            android:layout_alignTop="@+id/restaurantName"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:textColor="@android:color/white"
@@ -118,7 +117,7 @@
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_show_rating_dialog"
+        android:id="@+id/fabShowRatingDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/restaurant_top_card"
@@ -129,7 +128,7 @@
 
     <!-- Ratings -->
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_ratings"
+        android:id="@+id/recyclerRatings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/restaurant_top_card"
@@ -142,7 +141,7 @@
 
     <!-- View for empty ratings -->
     <LinearLayout
-        android:id="@+id/view_empty_ratings"
+        android:id="@+id/viewEmptyRatings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
