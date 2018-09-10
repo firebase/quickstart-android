@@ -19,7 +19,7 @@
  * https://firebase.google.com/docs/analytics/android
  */
 
-package com.google.firebase.quickstart.analytics;
+package com.google.firebase.quickstart.analytics.java;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,6 +36,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.quickstart.analytics.R;
 
 import java.util.Locale;
 
@@ -102,12 +103,12 @@ public class MainActivity extends AppCompatActivity {
         mImagePagerAdapter = new ImagePagerAdapter(getSupportFragmentManager(), IMAGE_INFOS);
 
         // Set up the ViewPager with the pattern adapter.
-        mViewPager = findViewById(R.id.pager);
+        mViewPager = findViewById(R.id.viewPager);
         mViewPager.setAdapter(mImagePagerAdapter);
 
         // Workaround for AppCompat issue not showing ViewPager titles
         ViewPager.LayoutParams params = (ViewPager.LayoutParams)
-                findViewById(R.id.pager_tab_strip).getLayoutParams();
+                findViewById(R.id.pagerTabStrip).getLayoutParams();
         params.isDecor = true;
 
         // When the visible image changes, send a screen view hit.
