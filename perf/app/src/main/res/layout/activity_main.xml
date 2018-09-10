@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context="com.google.firebase.quickstart.perfmon.MainActivity">
+    tools:context="com.google.firebase.quickstart.perfmon.java.MainActivity">
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/headerIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -32,10 +32,10 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon">
+        app:layout_constraintTop_toBottomOf="@+id/headerIcon">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textViewContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Loading text from file..."
