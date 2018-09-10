@@ -11,11 +11,11 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
         return kotlin.collections.listOf(
                 Choice(
                         "Java",
-                        "Run the Firebase Messaging quickstart written in Java.",
+                        "Run the Firebase Cloud Messaging quickstart written in Java.",
                         Intent(this, MainActivity::class.java)),
                 Choice(
                         "Kotlin",
-                        "Run the Firebase Messaging written in Kotlin.",
+                        "Run the Firebase Cloud Messaging written in Kotlin.",
                         Intent(this, com.google.firebase.quickstart.fcm.kotlin.MainActivity::class.java))
         )
     }
