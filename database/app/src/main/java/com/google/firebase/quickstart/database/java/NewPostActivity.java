@@ -42,9 +42,9 @@ public class NewPostActivity extends BaseActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END initialize_database_ref]
 
-        mTitleField = findViewById(R.id.field_title);
-        mBodyField = findViewById(R.id.field_body);
-        mSubmitButton = findViewById(R.id.fab_submit_post);
+        mTitleField = findViewById(R.id.fieldTitle);
+        mBodyField = findViewById(R.id.fieldBody);
+        mSubmitButton = findViewById(R.id.fabSubmitPost);
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override

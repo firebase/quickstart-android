@@ -16,7 +16,7 @@
         android:layout_below="@+id/tabs" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_new_post"
+        android:id="@+id/fabNewPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

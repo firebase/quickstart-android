@@ -64,12 +64,12 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 .child("post-comments").child(mPostKey);
 
         // Initialize Views
-        mAuthorView = findViewById(R.id.post_author);
-        mTitleView = findViewById(R.id.post_title);
-        mBodyView = findViewById(R.id.post_body);
-        mCommentField = findViewById(R.id.field_comment_text);
-        mCommentButton = findViewById(R.id.button_post_comment);
-        mCommentsRecycler = findViewById(R.id.recycler_comments);
+        mAuthorView = findViewById(R.id.postAuthor);
+        mTitleView = findViewById(R.id.postTitle);
+        mBodyView = findViewById(R.id.postBody);
+        mCommentField = findViewById(R.id.fieldCommentText);
+        mCommentButton = findViewById(R.id.buttonPostComment);
+        mCommentsRecycler = findViewById(R.id.recyclerPostComments);
 
         mCommentButton.setOnClickListener(this);
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -131,7 +131,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.button_post_comment) {
+        if (i == R.id.buttonPostComment) {
             postComment();
         }
     }

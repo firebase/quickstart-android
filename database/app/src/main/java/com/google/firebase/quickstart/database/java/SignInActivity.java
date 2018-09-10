@@ -41,10 +41,10 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         mAuth = FirebaseAuth.getInstance();
 
         // Views
-        mEmailField = findViewById(R.id.field_email);
-        mPasswordField = findViewById(R.id.field_password);
-        mSignInButton = findViewById(R.id.button_sign_in);
-        mSignUpButton = findViewById(R.id.button_sign_up);
+        mEmailField = findViewById(R.id.fieldEmail);
+        mPasswordField = findViewById(R.id.fieldPassword);
+        mSignInButton = findViewById(R.id.buttonSignIn);
+        mSignUpButton = findViewById(R.id.buttonSignUp);
 
         // Click listeners
         mSignInButton.setOnClickListener(this);
@@ -164,9 +164,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.button_sign_in) {
+        if (i == R.id.buttonSignIn) {
             signIn();
-        } else if (i == R.id.button_sign_up) {
+        } else if (i == R.id.buttonSignUp) {
             signUp();
         }
     }

@@ -76,7 +76,7 @@ public class  MainActivity extends BaseActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         // Button launches NewPostActivity
-        findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.fabNewPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, NewPostActivity.class));
