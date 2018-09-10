@@ -3,7 +3,6 @@ package com.google.firebase.quickstart.auth
 import android.content.Intent
 import com.firebase.example.internal.BaseEntryChoiceActivity
 import com.firebase.example.internal.Choice
-import com.google.android.gms.common.util.CollectionUtils.listOf
 import com.google.firebase.quickstart.auth.java.ChooserActivity
 
 class EntryChoiceActivity : BaseEntryChoiceActivity() {

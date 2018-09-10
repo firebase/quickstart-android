@@ -21,6 +21,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 
+import com.google.firebase.quickstart.fcm.java.MainActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

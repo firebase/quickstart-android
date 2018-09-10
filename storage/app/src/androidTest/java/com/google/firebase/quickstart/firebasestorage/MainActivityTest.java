@@ -15,6 +15,9 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
 
+import com.google.firebase.quickstart.firebasestorage.java.MainActivity;
+import com.google.firebase.quickstart.firebasestorage.java.MyUploadService;
+
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
@@ -99,7 +102,7 @@ public class MainActivityTest {
 
         // Click sign in
         ViewInteraction signInButton = onView(
-                allOf(withId(R.id.button_sign_in), withText(R.string.sign_in_anonymously),
+                allOf(withId(R.id.buttonSignIn), withText(R.string.sign_in_anonymously),
                         isDisplayed()));
         signInButton.perform(click());
 
@@ -108,7 +111,7 @@ public class MainActivityTest {
 
         // Click upload
         ViewInteraction uploadButton = onView(
-                allOf(withId(R.id.button_camera), withText(R.string.camera_button_text),
+                allOf(withId(R.id.buttonCamera), withText(R.string.camera_button_text),
                         isDisplayed()));
         uploadButton.perform(click());
 
@@ -117,12 +120,12 @@ public class MainActivityTest {
                 .check(matches(isDisplayed()));
 
         // Confirm that there is a download link on screen
-        onView(withId(R.id.picture_download_uri))
+        onView(withId(R.id.pictureDownloadUri))
                 .check(matches(withText(startsWith("https://firebasestorage.googleapis.com"))));
 
         // Click download
         ViewInteraction downloadButton = onView(
-                allOf(withId(R.id.button_download), withText(R.string.download),
+                allOf(withId(R.id.buttonDownload), withText(R.string.download),
                         isDisplayed()));
         downloadButton.perform(click());
 

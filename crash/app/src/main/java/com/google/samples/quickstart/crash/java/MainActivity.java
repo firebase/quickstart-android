@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.quickstart.crash;
+package com.google.samples.quickstart.crash.java;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.samples.quickstart.crash.R;
 
 /**
  * This Activity shows the different ways of reporting application crashes.
