@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.samples.quickstart.admobexample;
+package com.google.samples.quickstart.admobexample.java;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +30,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 // [START_EXCLUDE]
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.samples.quickstart.admobexample.R;
 // [END_EXCLUDE]
 
 public class MainActivity extends AppCompatActivity {
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         // [END create_interstitial_ad_listener]
 
         // [START display_interstitial_ad]
-        mLoadInterstitialButton = findViewById(R.id.load_interstitial_button);
+        mLoadInterstitialButton = findViewById(R.id.loadInterstitialButton);
         mLoadInterstitialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     // [END add_lifecycle_methods]
 
     @VisibleForTesting
-    AdView getAdView() {
+    public AdView getAdView() {
         return mAdView;
     }
 }
