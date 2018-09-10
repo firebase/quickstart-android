@@ -15,7 +15,7 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                         Intent(this, MainActivity::class.java)),
                 Choice(
                         "Kotlin",
-                        "Run the Firebase Auth Messaging written in Kotlin.",
+                        "Run the Firebase Messaging written in Kotlin.",
                         Intent(this, com.google.firebase.quickstart.fcm.kotlin.MainActivity::class.java))
         )
     }
