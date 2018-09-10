@@ -19,7 +19,7 @@
  * https://firebase.google.com/docs/remote-config/android
  */
 
-package com.google.samples.quickstart.config;
+package com.google.samples.quickstart.config.java;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,6 +33,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.samples.quickstart.config.BuildConfig;
+import com.google.samples.quickstart.config.R;
 
 public class MainActivity extends AppCompatActivity {
 

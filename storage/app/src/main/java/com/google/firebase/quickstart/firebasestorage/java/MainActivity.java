@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.firebasestorage;
+package com.google.firebase.quickstart.firebasestorage.java;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.quickstart.firebasestorage.R;
 
 import java.util.Locale;
 
@@ -72,9 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAuth = FirebaseAuth.getInstance();
 
         // Click listeners
-        findViewById(R.id.button_camera).setOnClickListener(this);
-        findViewById(R.id.button_sign_in).setOnClickListener(this);
-        findViewById(R.id.button_download).setOnClickListener(this);
+        findViewById(R.id.buttonCamera).setOnClickListener(this);
+        findViewById(R.id.buttonSignIn).setOnClickListener(this);
+        findViewById(R.id.buttonDownload).setOnClickListener(this);
 
         // Restore instance state
         if (savedInstanceState != null) {
@@ -247,22 +248,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void updateUI(FirebaseUser user) {
         // Signed in or Signed out
         if (user != null) {
-            findViewById(R.id.layout_signin).setVisibility(View.GONE);
-            findViewById(R.id.layout_storage).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutSignin).setVisibility(View.GONE);
+            findViewById(R.id.layoutStorage).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.layout_signin).setVisibility(View.VISIBLE);
-            findViewById(R.id.layout_storage).setVisibility(View.GONE);
+            findViewById(R.id.layoutSignin).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutStorage).setVisibility(View.GONE);
         }
 
         // Download URL and Download button
         if (mDownloadUrl != null) {
-            ((TextView) findViewById(R.id.picture_download_uri))
+            ((TextView) findViewById(R.id.pictureDownloadUri))
                     .setText(mDownloadUrl.toString());
-            findViewById(R.id.layout_download).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutDownload).setVisibility(View.VISIBLE);
         } else {
-            ((TextView) findViewById(R.id.picture_download_uri))
+            ((TextView) findViewById(R.id.pictureDownloadUri))
                     .setText(null);
-            findViewById(R.id.layout_download).setVisibility(View.GONE);
+            findViewById(R.id.layoutDownload).setVisibility(View.GONE);
         }
     }
 
@@ -311,11 +312,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.button_camera) {
+        if (i == R.id.buttonCamera) {
             launchCamera();
-        } else if (i == R.id.button_sign_in) {
+        } else if (i == R.id.buttonSignIn) {
             signInAnonymously();
-        } else if (i == R.id.button_download) {
+        } else if (i == R.id.buttonDownload) {
             beginDownload();
         }
     }

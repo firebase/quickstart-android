@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.fcm;
+package com.google.firebase.quickstart.fcm.java;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -32,6 +32,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.quickstart.fcm.R;
 
 public class MainActivity extends AppCompatActivity {
 

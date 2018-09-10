@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:fillViewport="true"
     android:scrollbars="vertical"
-    tools:context="com.google.firebase.quickstart.firebasestorage.MainActivity">
+    tools:context="com.google.firebase.quickstart.firebasestorage.java.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/firebase_logo"
+            android:id="@+id/firebaseLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -25,14 +25,14 @@
             android:src="@drawable/firebase_lockup_400" />
 
         <LinearLayout
-            android:id="@+id/layout_signin"
+            android:id="@+id/layoutSignin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             tools:visibility="gone">
 
             <TextView
-                android:id="@+id/status_sign_in"
+                android:id="@+id/statusSignIn"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:text="@string/sign_in_prompt" />
 
             <Button
-                android:id="@+id/button_sign_in"
+                android:id="@+id/buttonSignIn"
                 android:layout_width="@dimen/standard_field_width"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_in_anonymously" />
@@ -48,7 +48,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_storage"
+            android:id="@+id/layoutStorage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -63,7 +63,7 @@
                 android:text="@string/take_photo_prompt" />
 
             <Button
-                android:id="@+id/button_camera"
+                android:id="@+id/buttonCamera"
                 android:layout_width="@dimen/standard_field_width"
                 android:layout_height="wrap_content"
                 android:text="@string/camera_button_text" />
@@ -71,7 +71,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_download"
+            android:id="@+id/layoutDownload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -87,7 +87,7 @@
                 android:text="@string/label_link" />
 
             <TextView
-                android:id="@+id/picture_download_uri"
+                android:id="@+id/pictureDownloadUri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
@@ -102,7 +102,7 @@
                 android:text="@string/label_download" />
 
             <Button
-                android:id="@+id/button_download"
+                android:id="@+id/buttonDownload"
                 android:layout_width="@dimen/standard_field_width"
                 android:layout_height="wrap_content"
                 android:text="@string/download" />
