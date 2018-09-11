@@ -19,7 +19,7 @@
  * https://firebase.google.com/docs/invites/android
  */
 
-package com.google.firebase.quickstart.invites;
+package com.google.firebase.quickstart.invites.java;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -39,6 +39,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.appinvite.FirebaseAppInvite;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.quickstart.invites.R;
 
 /**
  * Main Activity for sending App Invites and launching the DeepLinkActivity when an
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.main_activity);
 
         // Invite button click listener
-        findViewById(R.id.invite_button).setOnClickListener(this);
+        findViewById(R.id.inviteButton).setOnClickListener(this);
         // [END_EXCLUDE]
 
         // Check for App Invite invitations and launch deep-link activity if possible.
@@ -151,14 +152,14 @@ public class MainActivity extends AppCompatActivity implements
     // [END on_activity_result]
 
     private void showMessage(String msg) {
-        ViewGroup container = findViewById(R.id.snackbar_layout);
+        ViewGroup container = findViewById(R.id.snackbarLayout);
         Snackbar.make(container, msg, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void onClick(View view) {
         int i = view.getId();
-        if (i == R.id.invite_button) {
+        if (i == R.id.inviteButton) {
             onInviteClicked();
         }
     }
