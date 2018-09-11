@@ -2,6 +2,7 @@ package com.firebase.lint
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
+import com.intellij.psi.PsiJavaFile
 import org.jetbrains.uast.UImportStatement
 
 val ISSUE_INVALID_IMPORT = Issue.create(
@@ -27,13 +28,25 @@ class InvalidImportDetector : Detector(), Detector.UastScanner {
     class InvalidImportHandler(private val context: JavaContext) : UElementHandler() {
 
         override fun visitImportStatement(node: UImportStatement) {
+            var importedPackageName = ""
+            val classPackageName = (context.psiFile as PsiJavaFile).packageName
 
-            node.importReference?.let { importReference ->
+            node.importReference?.let {
+                importedPackageName = it.asSourceString()
+            }
 
-                if (importReference.asSourceString().contains(disallowedImports)) {
-                    context.report(ISSUE_INVALID_IMPORT, node, context.getLocation(importReference), "Invalid import")
+            val classPackageSubFolders = classPackageName.split(".")
+            val importedPackageSubFolders = importedPackageName.split(".")
+
+            var i = 0
+            while (i < classPackageSubFolders.size && i < importedPackageSubFolders.size) {
+
+                if (classPackageSubFolders[i] == "java" && importedPackageSubFolders[i] == "kotlin") {
+                    node.importReference?.let {
+                        context.report(ISSUE_INVALID_IMPORT, node, context.getLocation(it), "Invalid import")
+                    }
                 }
-
+                i++
             }
         }
     }
