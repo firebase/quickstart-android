@@ -172,8 +172,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         public CommentViewHolder(View itemView) {
             super(itemView);
 
-            authorView = itemView.findViewById(R.id.comment_author);
-            bodyView = itemView.findViewById(R.id.comment_body);
+            authorView = itemView.findViewById(R.id.commentAuthor);
+            bodyView = itemView.findViewById(R.id.commentBody);
         }
     }
 

@@ -138,16 +138,12 @@ abstract class PostListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        if (adapter != null) {
-            adapter!!.startListening()
-        }
+        adapter?.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        if (adapter != null) {
-            adapter!!.stopListening()
-        }
+        adapter?.stopListening()
     }
 
     abstract fun getQuery(databaseReference: DatabaseReference?): Query

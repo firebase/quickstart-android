@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.google.firebase.quickstart.database.R
@@ -18,6 +17,7 @@ import com.google.firebase.quickstart.database.kotlin.models.User
 import kotlinx.android.synthetic.main.activity_post_detail.*
 import kotlinx.android.synthetic.main.include_post_author.*
 import kotlinx.android.synthetic.main.include_post_text.*
+import kotlinx.android.synthetic.main.item_comment.view.*
 import java.util.*
 
 class PostDetailActivity : BaseActivity(), View.OnClickListener {
@@ -59,9 +59,11 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                 // Get Post object and use the values to update the UI
                 val post = dataSnapshot.getValue(Post::class.java)
                 // [START_EXCLUDE]
-                postAuthor.text = post!!.author
-                postTitle.text = post.title
-                postBody.text = post.body
+                post?.let {
+                    postAuthor.text = it.author
+                    postTitle.text = it.title
+                    postBody.text = it.body
+                }
                 // [END_EXCLUDE]
             }
 
@@ -69,7 +71,7 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
                 // [START_EXCLUDE]
-                Toast.makeText(this@PostDetailActivity, "Failed to load post.",
+                Toast.makeText(baseContext, "Failed to load post.",
                         Toast.LENGTH_SHORT).show()
                 // [END_EXCLUDE]
             }
@@ -111,7 +113,11 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         // Get user information
                         val user = dataSnapshot.getValue(User::class.java)
-                        val authorName = user!!.username
+                        if (user == null) {
+                            return
+                        }
+
+                        val authorName = user.username
 
                         // Create new comment object
                         val commentText = fieldCommentText.text.toString()
@@ -132,13 +138,11 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
 
     private class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var authorView: TextView
-        var bodyView: TextView
-
-        init {
-            authorView = itemView.findViewById(R.id.comment_author)
-            bodyView = itemView.findViewById(R.id.comment_body)
+        fun bind(comment: Comment) {
+            itemView.commentAuthor.text = comment.author
+            itemView.commentBody.text = comment.text
         }
+
     }
 
     private class CommentAdapter(private val context: Context,
@@ -169,7 +173,7 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                    Log.d(TAG, "onChildChanged:" + dataSnapshot.key!!)
+                    Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
 
                     // A comment has changed, use the key to determine if we are displaying this
                     // comment and if so displayed the changed comment.
@@ -178,14 +182,14 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
 
                     // [START_EXCLUDE]
                     val commentIndex = commentIds.indexOf(commentKey)
-                    if (commentIndex > -1) {
+                    if (commentIndex > -1 && newComment != null) {
                         // Replace with the new data
-                        comments.set(commentIndex, newComment!!)
+                        comments.set(commentIndex, newComment)
 
                         // Update the RecyclerView
                         notifyItemChanged(commentIndex)
                     } else {
-                        Log.w(TAG, "onChildChanged:unknown_child:" + commentKey!!)
+                        Log.w(TAG, "onChildChanged:unknown_child: $commentKey")
                     }
                     // [END_EXCLUDE]
                 }
@@ -243,18 +247,14 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
         }
 
         override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-            val comment = comments[position]
-            holder.authorView.text = comment.author
-            holder.bodyView.text = comment.text
+            holder.bind(comments[position])
         }
 
-        override fun getItemCount(): Int {
-            return comments.size
-        }
+        override fun getItemCount(): Int = comments.size
 
         fun cleanupListener() {
-            if (childEventListener != null) {
-                databaseReference.removeEventListener(childEventListener)
+            childEventListener?.let {
+                databaseReference.removeEventListener(it)
             }
         }
 

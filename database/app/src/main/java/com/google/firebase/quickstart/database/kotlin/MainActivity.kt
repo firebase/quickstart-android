@@ -37,9 +37,7 @@ class MainActivity : BaseActivity() {
                 return fragments[position]
             }
 
-            override fun getCount(): Int {
-                return fragments.size
-            }
+            override fun getCount() = fragments.size
 
             override fun getPageTitle(position: Int): CharSequence? {
                 return fragmentNames[position]
@@ -52,7 +50,7 @@ class MainActivity : BaseActivity() {
 
         // Button launches NewPostActivity
         fabNewPost.setOnClickListener {
-            startActivity(Intent(this@MainActivity, NewPostActivity::class.java))
+            startActivity(Intent(this, NewPostActivity::class.java))
         }
     }
 

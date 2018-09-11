@@ -58,7 +58,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                     if (task.isSuccessful) {
                         onAuthSuccess(task.result.user)
                     } else {
-                        Toast.makeText(this@SignInActivity, "Sign In Failed",
+                        Toast.makeText(baseContext, "Sign In Failed",
                                 Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -82,7 +82,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                     if (task.isSuccessful) {
                         onAuthSuccess(task.result.user)
                     } else {
-                        Toast.makeText(this@SignInActivity, "Sign Up Failed",
+                        Toast.makeText(baseContext, "Sign Up Failed",
                                 Toast.LENGTH_SHORT).show()
                     }
                 }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
-        android:id="@+id/comment_photo"
+        android:id="@+id/commentPhoto"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_centerVertical="true"
@@ -17,17 +17,17 @@
         android:orientation="vertical"
         android:layout_marginLeft="10dp"
         android:padding="5dp"
-        android:layout_toRightOf="@+id/comment_photo">
+        android:layout_toRightOf="@+id/commentPhoto">
 
         <TextView
-            android:id="@+id/comment_author"
+            android:id="@+id/commentAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             tools:text="John Doe" />
 
         <TextView
-            android:id="@+id/comment_body"
+            android:id="@+id/commentBody"
             style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -15,7 +15,7 @@ import java.util.*
 class NewPostActivity : BaseActivity() {
 
     // [START declare_database_ref]
-    private lateinit  var database: DatabaseReference
+    private lateinit var database: DatabaseReference
     // [END declare_database_ref]
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,12 +61,12 @@ class NewPostActivity : BaseActivity() {
                         if (user == null) {
                             // User is null, error out
                             Log.e(TAG, "User $userId is unexpectedly null")
-                            Toast.makeText(this@NewPostActivity,
+                            Toast.makeText(baseContext,
                                     "Error: could not fetch user.",
                                     Toast.LENGTH_SHORT).show()
                         } else {
                             // Write new post
-                            writeNewPost(userId, user.username!!, title, body)
+                            writeNewPost(userId, user.username.toString(), title, body)
                         }
 
                         // Finish this Activity, back to the stream
@@ -88,10 +88,10 @@ class NewPostActivity : BaseActivity() {
     private fun setEditingEnabled(enabled: Boolean) {
         fieldTitle.isEnabled = enabled
         fieldBody.isEnabled = enabled
-        if (enabled) {
-            fabSubmitPost.visibility = View.VISIBLE
+        fabSubmitPost.visibility = if (enabled) {
+            View.VISIBLE
         } else {
-            fabSubmitPost.visibility = View.GONE
+            View.GONE
         }
     }
 
@@ -100,15 +100,21 @@ class NewPostActivity : BaseActivity() {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         val key = database.child("posts").push().key
+        if (key == null) {
+            Log.w(TAG, "Couldn't get push key for posts")
+            return
+        }
+
         val post = Post(userId, username, title, body)
         val postValues = post.toMap()
 
         val childUpdates = HashMap<String, Any>()
-        childUpdates["/posts/" + key!!] = postValues
+        childUpdates["/posts/$key"] = postValues
         childUpdates["/user-posts/$userId/$key"] = postValues
 
         database.updateChildren(childUpdates)
     }
+    // [END write_fan_out]
 
     companion object {
 
@@ -116,5 +122,4 @@ class NewPostActivity : BaseActivity() {
         private const val REQUIRED = "Required"
 
     }
-    // [END write_fan_out]
 }
