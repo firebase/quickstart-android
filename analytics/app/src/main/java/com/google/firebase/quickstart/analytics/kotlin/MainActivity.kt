@@ -27,13 +27,12 @@ class MainActivity : AppCompatActivity() {
         private const val KEY_FAVORITE_FOOD = "favorite_food"
 
         private val IMAGE_INFOS = arrayOf(
-                ImageInfo(R.drawable.favorite, R.string.pattern1_title, R.string.pattern1_id),
-                ImageInfo(R.drawable.flash, R.string.pattern2_title, R.string.pattern2_id),
-                ImageInfo(R.drawable.face, R.string.pattern3_title, R.string.pattern3_id),
-                ImageInfo(R.drawable.whitebalance, R.string.pattern4_title, R.string.pattern4_id)
+            ImageInfo(R.drawable.favorite, R.string.pattern1_title, R.string.pattern1_id),
+            ImageInfo(R.drawable.flash, R.string.pattern2_title, R.string.pattern2_id),
+            ImageInfo(R.drawable.face, R.string.pattern3_title, R.string.pattern3_id),
+            ImageInfo(R.drawable.whitebalance, R.string.pattern4_title, R.string.pattern4_id)
         )
     }
-
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide fragments for each image.
@@ -47,11 +46,6 @@ class MainActivity : AppCompatActivity() {
     // [START declare_analytics]
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     // [END declare_analytics]
-
-    /**
-     * The user's favorite food, chosen from a dialog.
-     */
-    private var mFavoriteFood: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,14 +125,13 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setUserFavoriteFood(food: String) {
         Log.d(TAG, "setFavoriteFood: $food")
-        mFavoriteFood = food
 
         PreferenceManager.getDefaultSharedPreferences(this).edit()
                 .putString(KEY_FAVORITE_FOOD, food)
                 .apply()
 
         // [START user_property]
-        mFirebaseAnalytics.setUserProperty("favorite_food", mFavoriteFood)
+        mFirebaseAnalytics.setUserProperty("favorite_food", food)
         // [END user_property]
     }
 
@@ -214,7 +207,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun recordScreenView() {
         // This string must be <= 36 characters long in order for setCurrentScreen to succeed.
-        val screenName = getCurrentImageId() + "-" + getCurrentImageTitle()
+        val screenName = "${getCurrentImageId()}-${getCurrentImageTitle()}"
 
         // [START set_current_screen]
         mFirebaseAnalytics.setCurrentScreen(this, screenName, null /* class override */)
@@ -235,9 +228,7 @@ class MainActivity : AppCompatActivity() {
             return ImageFragment.newInstance(info.image)
         }
 
-        override fun getCount(): Int {
-            return infos.size
-        }
+        override fun getCount() = infos.size
 
         override fun getPageTitle(position: Int): CharSequence? {
             if (position < 0 || position >= infos.size) {
