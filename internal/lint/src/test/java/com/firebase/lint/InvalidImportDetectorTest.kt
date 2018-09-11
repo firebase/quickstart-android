@@ -42,9 +42,9 @@ class InvalidImportDetectorTest {
                 .issues(ISSUE_INVALID_IMPORT)
                 .run()
                 .expect("""
-          |src/com/google/firebase/kotlin/Example.java:3: Warning: Invalid import [SuspiciousImport]
+          |src/com/google/firebase/kotlin/Example.java:3: Error: $SHORT_MESSAGE [SuspiciousImport]
           |import com.google.firebase.java.Hello;
           |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          |0 errors, 1 warnings""".trimMargin())
+          |1 errors, 0 warnings""".trimMargin())
     }
 }

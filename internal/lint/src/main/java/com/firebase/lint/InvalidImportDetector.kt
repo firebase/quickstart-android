@@ -2,10 +2,9 @@ package com.firebase.lint
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
-import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiJavaFile
-import com.intellij.psi.PsiPackageStatement
 import org.jetbrains.uast.UImportStatement
+
+val SHORT_MESSAGE = "Invalid Import: java package imported from kotlin package."
 
 val ISSUE_INVALID_IMPORT = Issue.create(
         "SuspiciousImport",
@@ -14,7 +13,7 @@ val ISSUE_INVALID_IMPORT = Issue.create(
                 "you have classes with the same name in both `java` and `kotlin` package.",
         Category.CORRECTNESS,
         9,
-        Severity.WARNING,
+        Severity.ERROR,
         Implementation(
                 InvalidImportDetector::class.java,
                 Scope.JAVA_FILE_SCOPE))
@@ -38,17 +37,11 @@ class InvalidImportDetector : Detector(), Detector.UastScanner {
             val classPackageSubFolders = classPackageName.split(".")
             val importedPackageSubFolders = importedPackageName.split(".")
 
-            if (importedPackageName.contains(".java")) {
-                context.report(ISSUE_INVALID_IMPORT, node, context.getLocation(node.importReference!!), "Invalid import")
-
-            }
-
             var i = 0
             while (i < classPackageSubFolders.size && i < importedPackageSubFolders.size) {
-
-                if (classPackageSubFolders[i] == "java" && importedPackageSubFolders[i] == "kotlin") {
+                if (classPackageSubFolders[i] == "kotlin" && importedPackageSubFolders[i] == "java") {
                     node.importReference?.let {
-                        context.report(ISSUE_INVALID_IMPORT, node, context.getLocation(it), "Invalid import")
+                        context.report(ISSUE_INVALID_IMPORT, node, context.getLocation(it), SHORT_MESSAGE)
                     }
                 }
                 i++
