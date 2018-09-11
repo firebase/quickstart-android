@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.analytics;
+package com.google.firebase.quickstart.analytics.java;
 
 /**
  * Pair of resource IDs representing an image and its title.
