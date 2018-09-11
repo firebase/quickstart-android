@@ -28,6 +28,7 @@ import android.support.test.uiautomator.Until;
 
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.quickstart.invites.java.MainActivity;
 
 import org.junit.Assert;
 import org.junit.Before;
