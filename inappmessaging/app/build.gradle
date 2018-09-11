@@ -28,7 +28,8 @@ android {
 }
 
 dependencies {
-    implementation project(':internal')
+    implementation project(":internal:lintchecks")
+    implementation project(":internal:chooser")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61"
 
     implementation 'com.android.support:appcompat-v7:27.1.1'

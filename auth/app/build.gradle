@@ -29,8 +29,9 @@ android {
     }
 
     lintOptions {
-        abortOnError false
+        abortOnError true
     }
+
 }
 
 configurations.all {
@@ -38,7 +39,8 @@ configurations.all {
 }
 
 dependencies {
-    implementation project(':internal')
+    implementation project(':internal:chooser')
+    implementation project(':internal:lintchecks')
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
