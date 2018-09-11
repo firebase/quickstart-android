@@ -1,0 +1,9 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+}
+
+dependencies {
+    lintChecks project(":internal:lint")
+}
