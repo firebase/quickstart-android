@@ -144,6 +144,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
 
     companion object {
 
-        private val TAG = "SignInActivity"
+        private const val TAG = "SignInActivity"
+
     }
 }
