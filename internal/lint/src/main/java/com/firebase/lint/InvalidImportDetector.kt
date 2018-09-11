@@ -4,11 +4,8 @@ import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
 import org.jetbrains.uast.UImportStatement
 
-
-const val PRIORITY = 10
-
 val ISSUE_INVALID_IMPORT = Issue.create(
-        "SuspiciousImport", //$NON-NLS-1$
+        "SuspiciousImport",
         "importing files from the `java` package in a kotlin file",
         "Importing files from the java package is usually not intentional; it sometimes happens when " +
                 "you have classes with the same name in both `java` and `kotlin` package.",
