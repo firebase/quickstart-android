@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.analytics;
+package com.google.firebase.quickstart.analytics.java;
 
 
 import android.os.Bundle;
@@ -23,6 +23,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.google.firebase.quickstart.analytics.R;
 
 
 /**
