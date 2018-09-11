@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.invites;
+package com.google.firebase.quickstart.invites.java;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +22,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.firebase.quickstart.invites.R;
 
 /**
  * Activity for displaying information about a receive App Invite invitation.  This activity
@@ -38,7 +40,7 @@ public class DeepLinkActivity extends AppCompatActivity implements
         setContentView(R.layout.deep_link_activity);
 
         // Button click listener
-        findViewById(R.id.button_ok).setOnClickListener(this);
+        findViewById(R.id.buttonOk).setOnClickListener(this);
     }
 
     @Override
@@ -50,7 +52,7 @@ public class DeepLinkActivity extends AppCompatActivity implements
             Uri data = getIntent().getData();
 
             Log.d(TAG, "data:" + data);
-            ((TextView) findViewById(R.id.deep_link_text))
+            ((TextView) findViewById(R.id.deepLinkText))
                     .setText(getString(R.string.deep_link_fmt, data.toString()));
         }
     }
@@ -59,7 +61,7 @@ public class DeepLinkActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.button_ok) {
+        if (i == R.id.buttonOk) {
             finish();
         }
     }
