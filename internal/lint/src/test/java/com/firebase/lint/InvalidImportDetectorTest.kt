@@ -7,23 +7,23 @@ import org.junit.Test
 class InvalidImportDetectorTest {
 
     private val javaPackage = java("""
-      |package com.google.firebase.java;
-      |
-      |public final class Hello {
-      |  public static final class drawable {
-      |  }
-      |}""".trimMargin())
+      package com.google.firebase.java;
+
+      public final class Hello {
+        public static final class drawable {
+        }
+      }""").indented()
 
     @Test
     fun normalRImport() {
         lint()
                 .files(javaPackage, java("""
-          |package com.google.firebase.kotlin;
-          |
-          |import com.google.firebase.Hello;
-          |
-          |class Example {
-          |}""".trimMargin()))
+          package com.google.firebase.kotlin;
+
+          import com.google.firebase.Hello;
+
+          class Example {
+          }""").indented())
                 .issues(ISSUE_INVALID_IMPORT)
                 .run()
                 .expectClean()
@@ -33,12 +33,12 @@ class InvalidImportDetectorTest {
     fun wrongImport() {
         lint()
                 .files(javaPackage, java("""
-          |package com.google.firebase.kotlin;
-          |
-          |import com.google.firebase.java.Hello;
-          |
-          |class Example {
-          |}""".trimMargin()))
+          package com.google.firebase.kotlin;
+
+          import com.google.firebase.java.Hello;
+
+          class Example {
+          }""").indented())
                 .issues(ISSUE_INVALID_IMPORT)
                 .run()
                 .expect("""
