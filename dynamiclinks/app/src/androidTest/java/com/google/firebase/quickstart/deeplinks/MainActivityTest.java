@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.google.firebase.quickstart.deeplinks.java.MainActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,7 +44,7 @@ public class MainActivityTest {
         rule.getActivity().startActivity(intent);
 
         // Confirm the deep link content is displayed
-        onView(withId(R.id.link_view_receive))
+        onView(withId(R.id.linkViewReceive))
                 .check(matches(allOf(
                         withText(containsString(linkUri.toString())),
                         isDisplayed())));

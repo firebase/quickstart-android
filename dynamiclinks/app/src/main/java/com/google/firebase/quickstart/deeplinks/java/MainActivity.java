@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.deeplinks;
+package com.google.firebase.quickstart.deeplinks.java;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.quickstart.deeplinks.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Create a deep link and display it in the UI
         final Uri deepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0);
-        ((TextView) findViewById(R.id.link_view_send)).setText(deepLink.toString());
+        ((TextView) findViewById(R.id.linkViewSend)).setText(deepLink.toString());
 
         // Share button click listener
-        findViewById(R.id.button_share).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.buttonShare).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shareDeepLink(deepLink.toString());
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                             Snackbar.make(findViewById(android.R.id.content),
                                     "Found deep link!", Snackbar.LENGTH_LONG).show();
 
-                            ((TextView) findViewById(R.id.link_view_receive))
+                            ((TextView) findViewById(R.id.linkViewReceive))
                                     .setText(deepLink.toString());
                         } else {
                             Log.d(TAG, "getDynamicLink: no link found");
