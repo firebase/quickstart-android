@@ -2,7 +2,9 @@ package com.firebase.lint
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiJavaFile
+import com.intellij.psi.PsiPackageStatement
 import org.jetbrains.uast.UImportStatement
 
 val ISSUE_INVALID_IMPORT = Issue.create(
@@ -17,8 +19,6 @@ val ISSUE_INVALID_IMPORT = Issue.create(
                 InvalidImportDetector::class.java,
                 Scope.JAVA_FILE_SCOPE))
 
-private const val disallowedImports = ".java."
-
 class InvalidImportDetector : Detector(), Detector.UastScanner {
 
     override fun getApplicableUastTypes() = listOf(UImportStatement::class.java)
@@ -29,7 +29,7 @@ class InvalidImportDetector : Detector(), Detector.UastScanner {
 
         override fun visitImportStatement(node: UImportStatement) {
             var importedPackageName = ""
-            val classPackageName = (context.psiFile as PsiJavaFile).packageName
+            val classPackageName = context.uastFile?.packageName.toString()
 
             node.importReference?.let {
                 importedPackageName = it.asSourceString()
@@ -37,6 +37,11 @@ class InvalidImportDetector : Detector(), Detector.UastScanner {
 
             val classPackageSubFolders = classPackageName.split(".")
             val importedPackageSubFolders = importedPackageName.split(".")
+
+            if (importedPackageName.contains(".java")) {
+                context.report(ISSUE_INVALID_IMPORT, node, context.getLocation(node.importReference!!), "Invalid import")
+
+            }
 
             var i = 0
             while (i < classPackageSubFolders.size && i < importedPackageSubFolders.size) {
