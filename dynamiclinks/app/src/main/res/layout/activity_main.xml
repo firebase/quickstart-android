@@ -7,8 +7,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -25,7 +24,7 @@
         android:text="@string/title_receive"/>
 
     <TextView
-        android:id="@+id/link_view_receive"
+        android:id="@+id/linkViewReceive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoLink="web"
@@ -40,13 +39,13 @@
         android:text="@string/title_send"/>
 
     <TextView
-        android:id="@+id/link_view_send"
+        android:id="@+id/linkViewSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="https://abc.xyz/foo"/>
 
     <Button
-        android:id="@+id/button_share"
+        android:id="@+id/buttonShare"
         android:layout_width="@dimen/standard_field_width"
         android:layout_height="wrap_content"
         android:text="@string/share" />
