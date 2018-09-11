@@ -47,11 +47,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     // [END declare_analytics]
 
-    /**
-     * The user's favorite food, chosen from a dialog.
-     */
-    private lateinit var mFavoriteFood: String
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -130,14 +125,13 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setUserFavoriteFood(food: String) {
         Log.d(TAG, "setFavoriteFood: $food")
-        mFavoriteFood = food
 
         PreferenceManager.getDefaultSharedPreferences(this).edit()
                 .putString(KEY_FAVORITE_FOOD, food)
                 .apply()
 
         // [START user_property]
-        mFirebaseAnalytics.setUserProperty("favorite_food", mFavoriteFood)
+        mFirebaseAnalytics.setUserProperty("favorite_food", food)
         // [END user_property]
     }
 
