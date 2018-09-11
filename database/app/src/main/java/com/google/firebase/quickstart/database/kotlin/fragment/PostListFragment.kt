@@ -17,6 +17,7 @@ import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.PostDetailActivity
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.viewholder.PostViewHolder
+import kotlinx.android.synthetic.main.fragment_all_posts.view.*
 
 
 abstract class PostListFragment : Fragment() {
@@ -41,8 +42,7 @@ abstract class PostListFragment : Fragment() {
         database = FirebaseDatabase.getInstance().reference
         // [END create_database_reference]
 
-        recycler = rootView.findViewById(R.id.messages_list)
-        recycler.setHasFixedSize(true)
+        rootView.messagesList.setHasFixedSize(true)
 
         return rootView
     }
@@ -146,7 +146,7 @@ abstract class PostListFragment : Fragment() {
         adapter?.stopListening()
     }
 
-    abstract fun getQuery(databaseReference: DatabaseReference?): Query
+    abstract fun getQuery(databaseReference: DatabaseReference): Query
 
     companion object {
 

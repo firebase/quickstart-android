@@ -2,8 +2,6 @@ package com.google.firebase.quickstart.database.kotlin.fragment
 
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
-import com.google.firebase.quickstart.database.java.fragment.PostListFragment
-
 
 class RecentPostsFragment : PostListFragment() {
 
