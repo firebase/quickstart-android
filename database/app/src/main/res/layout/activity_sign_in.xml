@@ -6,8 +6,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.google.firebase.quickstart.database.SignInActivity">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
 
     <ImageView
@@ -19,7 +18,7 @@
         android:src="@drawable/firebase_lockup_400" />
 
     <LinearLayout
-        android:id="@+id/layout_email_password"
+        android:id="@+id/layoutEmailPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/icon"
@@ -27,7 +26,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/field_email"
+            android:id="@+id/fieldEmail"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -37,7 +36,7 @@
             android:maxLines="1" />
 
         <EditText
-            android:id="@+id/field_password"
+            android:id="@+id/fieldPassword"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -49,22 +48,22 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layout_buttons"
+        android:id="@+id/layoutButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_email_password"
+        android:layout_below="@+id/layoutEmailPassword"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_sign_in"
+            android:id="@+id/buttonSignIn"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="@string/sign_in" />
 
 
         <Button
-            android:id="@+id/button_sign_up"
+            android:id="@+id/buttonSignUp"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="@string/sign_up" />
