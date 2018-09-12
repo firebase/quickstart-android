@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.database;
+package com.google.firebase.quickstart.database.java;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,9 +27,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.quickstart.database.fragment.MyPostsFragment;
-import com.google.firebase.quickstart.database.fragment.MyTopPostsFragment;
-import com.google.firebase.quickstart.database.fragment.RecentPostsFragment;
+import com.google.firebase.quickstart.database.R;
+import com.google.firebase.quickstart.database.java.fragment.MyPostsFragment;
+import com.google.firebase.quickstart.database.java.fragment.MyTopPostsFragment;
+import com.google.firebase.quickstart.database.java.fragment.RecentPostsFragment;
 
 public class  MainActivity extends BaseActivity {
 
@@ -75,7 +76,7 @@ public class  MainActivity extends BaseActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         // Button launches NewPostActivity
-        findViewById(R.id.fab_new_post).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.fabNewPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, NewPostActivity.class));

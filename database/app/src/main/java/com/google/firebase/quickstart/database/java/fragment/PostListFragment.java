@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.database.fragment;
+package com.google.firebase.quickstart.database.java.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,10 +20,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
-import com.google.firebase.quickstart.database.PostDetailActivity;
+import com.google.firebase.quickstart.database.java.PostDetailActivity;
 import com.google.firebase.quickstart.database.R;
-import com.google.firebase.quickstart.database.models.Post;
-import com.google.firebase.quickstart.database.viewholder.PostViewHolder;
+import com.google.firebase.quickstart.database.java.models.Post;
+import com.google.firebase.quickstart.database.java.viewholder.PostViewHolder;
 
 public abstract class PostListFragment extends Fragment {
 
@@ -49,7 +49,7 @@ public abstract class PostListFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END create_database_reference]
 
-        mRecycler = rootView.findViewById(R.id.messages_list);
+        mRecycler = rootView.findViewById(R.id.messagesList);
         mRecycler.setHasFixedSize(true);
 
         return rootView;

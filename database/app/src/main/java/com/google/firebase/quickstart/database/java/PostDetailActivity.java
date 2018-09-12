@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.database;
+package com.google.firebase.quickstart.database.java;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,9 +19,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.quickstart.database.models.User;
-import com.google.firebase.quickstart.database.models.Comment;
-import com.google.firebase.quickstart.database.models.Post;
+import com.google.firebase.quickstart.database.R;
+import com.google.firebase.quickstart.database.java.models.User;
+import com.google.firebase.quickstart.database.java.models.Comment;
+import com.google.firebase.quickstart.database.java.models.Post;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,12 +64,12 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 .child("post-comments").child(mPostKey);
 
         // Initialize Views
-        mAuthorView = findViewById(R.id.post_author);
-        mTitleView = findViewById(R.id.post_title);
-        mBodyView = findViewById(R.id.post_body);
-        mCommentField = findViewById(R.id.field_comment_text);
-        mCommentButton = findViewById(R.id.button_post_comment);
-        mCommentsRecycler = findViewById(R.id.recycler_comments);
+        mAuthorView = findViewById(R.id.postAuthor);
+        mTitleView = findViewById(R.id.postTitle);
+        mBodyView = findViewById(R.id.postBody);
+        mCommentField = findViewById(R.id.fieldCommentText);
+        mCommentButton = findViewById(R.id.buttonPostComment);
+        mCommentsRecycler = findViewById(R.id.recyclerPostComments);
 
         mCommentButton.setOnClickListener(this);
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -130,7 +131,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.button_post_comment) {
+        if (i == R.id.buttonPostComment) {
             postComment();
         }
     }
@@ -171,8 +172,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         public CommentViewHolder(View itemView) {
             super(itemView);
 
-            authorView = itemView.findViewById(R.id.comment_author);
-            bodyView = itemView.findViewById(R.id.comment_body);
+            authorView = itemView.findViewById(R.id.commentAuthor);
+            bodyView = itemView.findViewById(R.id.commentBody);
         }
     }
 
