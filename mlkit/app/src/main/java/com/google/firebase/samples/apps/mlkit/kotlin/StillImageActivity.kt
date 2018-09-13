@@ -15,7 +15,6 @@ import android.view.View
 import android.widget.*
 import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.samples.apps.mlkit.R
-import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudimagelabeling.CloudImageLabelingProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudlandmarkrecognition.CloudLandmarkRecognitionProcessor
@@ -30,31 +29,32 @@ import kotlinx.android.synthetic.main.activity_still_image.*
 @KeepName
 class StillImageActivity: AppCompatActivity() {
 
-    private val TAG = "StillImageActivity"
+    companion object {
 
-    private val CLOUD_LABEL_DETECTION = "Cloud Label"
-    private val CLOUD_LANDMARK_DETECTION = "Landmark"
-    private val CLOUD_TEXT_DETECTION = "Cloud Text"
-    private val CLOUD_DOCUMENT_TEXT_DETECTION = "Doc Text"
+        private const val TAG = "StillImageActivity"
 
-    private val SIZE_PREVIEW = "w:max" // Available on-screen width.
-    private val SIZE_1024_768 = "w:1024" // ~1024*768 in a normal ratio
-    private val SIZE_640_480 = "w:640" // ~640*480 in a normal ratio
+        private const val CLOUD_LABEL_DETECTION = "Cloud Label"
+        private const val CLOUD_LANDMARK_DETECTION = "Landmark"
+        private const val CLOUD_TEXT_DETECTION = "Cloud Text"
+        private const val CLOUD_DOCUMENT_TEXT_DETECTION = "Doc Text"
 
-    private val KEY_IMAGE_URI = "com.googletest.firebase.ml.demo.KEY_IMAGE_URI"
-    private val KEY_IMAGE_MAX_WIDTH = "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_WIDTH"
-    private val KEY_IMAGE_MAX_HEIGHT = "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_HEIGHT"
-    private val KEY_SELECTED_SIZE = "com.googletest.firebase.ml.demo.KEY_SELECTED_SIZE"
+        private const val SIZE_PREVIEW = "w:max" // Available on-screen width.
+        private const val SIZE_1024_768 = "w:1024" // ~1024*768 in a normal ratio
+        private const val SIZE_640_480 = "w:640" // ~640*480 in a normal ratio
 
-    private val REQUEST_IMAGE_CAPTURE = 1001
-    private val REQUEST_CHOOSE_IMAGE = 1002
+        private const val KEY_IMAGE_URI = "com.googletest.firebase.ml.demo.KEY_IMAGE_URI"
+        private const val KEY_IMAGE_MAX_WIDTH = "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_WIDTH"
+        private const val KEY_IMAGE_MAX_HEIGHT = "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_HEIGHT"
+        private const val KEY_SELECTED_SIZE = "com.googletest.firebase.ml.demo.KEY_SELECTED_SIZE"
 
-    private var preview: ImageView? = null
-    private var graphicOverlay: GraphicOverlay? = null
+        private const val REQUEST_IMAGE_CAPTURE = 1001
+        private const val REQUEST_CHOOSE_IMAGE = 1002
+    }
+
     private var selectedMode = CLOUD_LABEL_DETECTION
     private var selectedSize: String? = SIZE_PREVIEW
 
-    internal var isLandScape: Boolean = false
+    private var isLandScape: Boolean = false
 
     private var imageUri: Uri? = null
     // Max width (portrait mode)
@@ -69,10 +69,9 @@ class StillImageActivity: AppCompatActivity() {
 
         setContentView(R.layout.activity_still_image)
 
-        getImageButton.setOnClickListener(
-                View.OnClickListener { view ->
+        getImageButton.setOnClickListener{ view ->
                     // Menu for selecting either: a) take new photo b) select from existing
-                    val popup = PopupMenu(this@StillImageActivity, view)
+                    val popup = PopupMenu(this, view)
                     popup.setOnMenuItemClickListener { menuItem ->
                         when (menuItem.itemId) {
                             R.id.select_images_from_local -> {
@@ -90,13 +89,11 @@ class StillImageActivity: AppCompatActivity() {
                     val inflater = popup.menuInflater
                     inflater.inflate(R.menu.camera_button_menu, popup.menu)
                     popup.show()
-                })
-        preview = findViewById<View>(R.id.previewPane) as ImageView
-        if (preview == null) {
+                }
+        if (previewPane == null) {
             Log.d(TAG, "Preview is null")
         }
-        graphicOverlay = findViewById<View>(R.id.previewOverlay) as GraphicOverlay
-        if (graphicOverlay == null) {
+        if (previewOverlay == null) {
             Log.d(TAG, "graphicOverlay is null")
         }
 
@@ -107,13 +104,13 @@ class StillImageActivity: AppCompatActivity() {
 
         isLandScape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-        if (savedInstanceState != null) {
-            imageUri = savedInstanceState.getParcelable(KEY_IMAGE_URI)
-            imageMaxWidth = savedInstanceState.getInt(KEY_IMAGE_MAX_WIDTH)
-            imageMaxHeight = savedInstanceState.getInt(KEY_IMAGE_MAX_HEIGHT)
-            selectedSize = savedInstanceState.getString(KEY_SELECTED_SIZE)
+        savedInstanceState?.let {
+            imageUri = it.getParcelable(KEY_IMAGE_URI)
+            imageMaxWidth = it.getInt(KEY_IMAGE_MAX_WIDTH)
+            imageMaxHeight = it.getInt(KEY_IMAGE_MAX_HEIGHT)
+            selectedSize = it.getString(KEY_SELECTED_SIZE)
 
-            if (imageUri != null) {
+            imageUri?.let { _ ->
                 tryReloadAndDetectInImage()
             }
         }
@@ -173,11 +170,11 @@ class StillImageActivity: AppCompatActivity() {
         super.onSaveInstanceState(outState)
 
         outState.putParcelable(KEY_IMAGE_URI, imageUri)
-        if (imageMaxWidth != null) {
-            outState.putInt(KEY_IMAGE_MAX_WIDTH, imageMaxWidth!!)
+        imageMaxWidth?.let {
+            outState.putInt(KEY_IMAGE_MAX_WIDTH, it)
         }
-        if (imageMaxHeight != null) {
-            outState.putInt(KEY_IMAGE_MAX_HEIGHT, imageMaxHeight!!)
+        imageMaxHeight?.let {
+            outState.putInt(KEY_IMAGE_MAX_HEIGHT, it)
         }
         outState.putString(KEY_SELECTED_SIZE, selectedSize)
     }
@@ -185,10 +182,10 @@ class StillImageActivity: AppCompatActivity() {
     private fun startCameraIntentForResult() {
         // Clean up last time's image
         imageUri = null
-        preview?.setImageBitmap(null)
+        previewPane?.setImageBitmap(null)
 
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(packageManager) != null) {
+        takePictureIntent.resolveActivity(packageManager)?.let {
             val values = ContentValues()
             values.put(MediaStore.Images.Media.TITLE, "New Picture")
             values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera")
@@ -222,7 +219,7 @@ class StillImageActivity: AppCompatActivity() {
             }
 
             // Clear the overlay first
-            graphicOverlay!!.clear()
+            previewOverlay?.clear()
 
             val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
 
@@ -243,10 +240,11 @@ class StillImageActivity: AppCompatActivity() {
                     (imageBitmap.height / scaleFactor).toInt(),
                     true)
 
-            preview!!.setImageBitmap(resizedBitmap)
+            previewPane?.setImageBitmap(resizedBitmap)
             bitmapForDetection = resizedBitmap
-
-            imageProcessor!!.process(bitmapForDetection!!, graphicOverlay!!)
+            bitmapForDetection?.let {
+                imageProcessor?.process(it, previewOverlay)
+            }
         } catch (e: IOException) {
             Log.e(TAG, "Error retrieving saved image")
         }
@@ -259,10 +257,10 @@ class StillImageActivity: AppCompatActivity() {
         if (imageMaxWidth == null) {
             // Calculate the max width in portrait mode. This is done lazily since we need to wait for
             // a UI layout pass to get the right values. So delay it to first time image rendering time.
-            if (isLandScape) {
-                imageMaxWidth = (preview!!.parent as View).height - controlPanel.height
+            imageMaxWidth = if (isLandScape) {
+                (previewPane.parent as View).height - controlPanel.height
             } else {
-                imageMaxWidth = (preview!!.parent as View).width
+                (previewPane.parent as View).width
             }
         }
 
@@ -275,10 +273,10 @@ class StillImageActivity: AppCompatActivity() {
         if (imageMaxHeight == null) {
             // Calculate the max width in portrait mode. This is done lazily since we need to wait for
             // a UI layout pass to get the right values. So delay it to first time image rendering time.
-            if (isLandScape) {
-                imageMaxHeight = (preview!!.parent as View).width
+            imageMaxHeight = if (isLandScape) {
+                (previewPane.parent as View).width
             } else {
-                imageMaxHeight = (preview!!.parent as View).height - controlPanel.height
+                (previewPane.parent as View).height - controlPanel.height
             }
         }
 
@@ -287,15 +285,19 @@ class StillImageActivity: AppCompatActivity() {
 
     // Gets the targeted width / height.
     private fun getTargetedWidthHeight(): Pair<Int, Int> {
-        val targetWidth: Int
-        val targetHeight: Int
+        var targetWidth = 0
+        var targetHeight = 0
 
         when (selectedSize) {
             SIZE_PREVIEW -> {
-                val maxWidthForPortraitMode = getImageMaxWidth()!!
-                val maxHeightForPortraitMode = getImageMaxHeight()!!
-                targetWidth = if (isLandScape) maxHeightForPortraitMode else maxWidthForPortraitMode
-                targetHeight = if (isLandScape) maxWidthForPortraitMode else maxHeightForPortraitMode
+                val maxWidthForPortraitMode = getImageMaxWidth()
+                val maxHeightForPortraitMode = getImageMaxHeight()
+                maxWidthForPortraitMode?.let { width ->
+                    maxHeightForPortraitMode?.let { height ->
+                        targetWidth = if (isLandScape) height else width
+                        targetHeight = if (isLandScape) width else height
+                    }
+                }
             }
             SIZE_640_480 -> {
                 targetWidth = if (isLandScape) 640 else 480
@@ -312,11 +314,11 @@ class StillImageActivity: AppCompatActivity() {
     }
 
     private fun createImageProcessor() {
-        when (selectedMode) {
-            CLOUD_LABEL_DETECTION -> imageProcessor = CloudImageLabelingProcessor()
-            CLOUD_LANDMARK_DETECTION -> imageProcessor = CloudLandmarkRecognitionProcessor()
-            CLOUD_TEXT_DETECTION -> imageProcessor = CloudTextRecognitionProcessor()
-            CLOUD_DOCUMENT_TEXT_DETECTION -> imageProcessor = CloudDocumentTextRecognitionProcessor()
+        imageProcessor = when (selectedMode) {
+            CLOUD_LABEL_DETECTION -> CloudImageLabelingProcessor()
+            CLOUD_LANDMARK_DETECTION -> CloudLandmarkRecognitionProcessor()
+            CLOUD_TEXT_DETECTION -> CloudTextRecognitionProcessor()
+            CLOUD_DOCUMENT_TEXT_DETECTION -> CloudDocumentTextRecognitionProcessor()
             else -> throw IllegalStateException("Unknown selectedMode: $selectedMode")
         }
     }

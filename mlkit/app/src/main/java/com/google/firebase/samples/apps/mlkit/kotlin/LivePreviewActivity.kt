@@ -30,8 +30,6 @@ import kotlinx.android.synthetic.main.activity_live_preview.*
 class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     private var cameraSource: CameraSource? = null
-    private var preview: CameraSourcePreview? = null
-    private var graphicOverlay: GraphicOverlay? = null
     private var selectedModel = FACE_DETECTION
 
     private val requiredPermissions: Array<String?>
@@ -57,16 +55,13 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
 
         setContentView(R.layout.activity_live_preview)
 
-        preview = findViewById<View>(R.id.firePreview) as CameraSourcePreview
-        if (preview == null) {
+        if (firePreview == null) {
             Log.d(TAG, "Preview is null")
         }
-        graphicOverlay = findViewById<View>(R.id.fireFaceOverlay) as GraphicOverlay
-        if (graphicOverlay == null) {
+        if (fireFaceOverlay == null) {
             Log.d(TAG, "graphicOverlay is null")
         }
 
-        val spinner = findViewById<View>(R.id.spinner) as Spinner
         val options = ArrayList<String>()
         options.add(FACE_DETECTION)
         options.add(TEXT_DETECTION)
@@ -81,7 +76,6 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
         spinner.adapter = dataAdapter
         spinner.onItemSelectedListener = this
 
-        val facingSwitch = findViewById<View>(R.id.facingSwitch) as ToggleButton
         facingSwitch.setOnCheckedChangeListener(this)
 
         if (allPermissionsGranted()) {
@@ -97,7 +91,7 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
         // parent.getItemAtPosition(pos)
         selectedModel = parent.getItemAtPosition(pos).toString()
         Log.d(TAG, "Selected model: $selectedModel")
-        preview!!.stop()
+        firePreview.stop()
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)
             startCameraSource()
@@ -112,21 +106,21 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
 
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
         Log.d(TAG, "Set facing")
-        if (cameraSource != null) {
+        cameraSource?.let {
             if (isChecked) {
-                cameraSource!!.setFacing(CameraSource.CAMERA_FACING_FRONT)
+                it.setFacing(CameraSource.CAMERA_FACING_FRONT)
             } else {
-                cameraSource!!.setFacing(CameraSource.CAMERA_FACING_BACK)
+                it.setFacing(CameraSource.CAMERA_FACING_BACK)
             }
         }
-        preview!!.stop()
+        firePreview.stop()
         startCameraSource()
     }
 
     private fun createCameraSource(model: String) {
         // If there's no existing cameraSource, create one.
         if (cameraSource == null) {
-            cameraSource = CameraSource(this, graphicOverlay!!)
+            cameraSource = CameraSource(this, fireFaceOverlay)
         }
 
         try {
@@ -165,18 +159,18 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
      * again when the camera source is created.
      */
     private fun startCameraSource() {
-        if (cameraSource != null) {
+        cameraSource.let {
             try {
-                if (preview == null) {
+                if (firePreview == null) {
                     Log.d(TAG, "resume: Preview is null")
                 }
-                if (graphicOverlay == null) {
+                if (fireFaceOverlay == null) {
                     Log.d(TAG, "resume: graphOverlay is null")
                 }
-                preview!!.start(cameraSource!!, graphicOverlay!!)
+                firePreview.start(it, fireFaceOverlay)
             } catch (e: IOException) {
                 Log.e(TAG, "Unable to start camera source.", e)
-                cameraSource!!.release()
+                it?.release()
                 cameraSource = null
             }
 
@@ -192,20 +186,22 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
     /** Stops the camera.  */
     override fun onPause() {
         super.onPause()
-        preview!!.stop()
+        firePreview.stop()
     }
 
     public override fun onDestroy() {
         super.onDestroy()
-        if (cameraSource != null) {
-            cameraSource!!.release()
+        cameraSource?.let {
+            it?.release()
         }
     }
 
     private fun allPermissionsGranted(): Boolean {
         for (permission in requiredPermissions) {
-            if (!isPermissionGranted(this, permission!!)) {
-                return false
+            permission?.let {
+                if (!isPermissionGranted(this, it)) {
+                    return false
+                }
             }
         }
         return true
@@ -214,8 +210,10 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
     private fun getRuntimePermissions() {
         val allNeededPermissions = ArrayList<String>()
         for (permission in requiredPermissions) {
-            if (!isPermissionGranted(this, permission!!)) {
-                allNeededPermissions.add(permission)
+            permission?.let {
+                if (!isPermissionGranted(this, it)) {
+                    allNeededPermissions.add(it)
+                }
             }
         }
 

@@ -15,8 +15,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.google.firebase.samples.apps.mlkit.R
-import com.google.firebase.samples.apps.mlkit.java.LivePreviewActivity
-import com.google.firebase.samples.apps.mlkit.java.StillImageActivity
 import java.util.ArrayList
 import kotlinx.android.synthetic.main.activity_chooser.*
 
@@ -27,12 +25,17 @@ import kotlinx.android.synthetic.main.activity_chooser.*
 class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback,
         AdapterView.OnItemClickListener {
 
-    private val TAG = "ChooserActivity"
-    private val PERMISSION_REQUESTS = 1
+    companion object {
+        private const val TAG = "ChooserActivity"
+        private const val PERMISSION_REQUESTS = 1
 
-    private val CLASSES = arrayOf<Class<*>>(LivePreviewActivity::class.java, StillImageActivity::class.java)
+        private val CLASSES =
+                arrayOf<Class<*>>(LivePreviewActivity::class.java, StillImageActivity::class.java)
 
-    private val DESCRIPTION_IDS = intArrayOf(R.string.desc_camera_source_activity, R.string.desc_still_image_activity)
+        private val DESCRIPTION_IDS =
+                intArrayOf(R.string.desc_camera_source_activity, R.string.desc_still_image_activity)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,8 +79,10 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
 
     private fun allPermissionsGranted(): Boolean {
         for (permission in getRequiredPermissions()) {
-            if (!isPermissionGranted(this, permission!!)) {
-                return false
+            permission?.let {
+                if (!isPermissionGranted(this, it)) {
+                    return false
+                }
             }
         }
         return true
@@ -86,8 +91,10 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
     private fun getRuntimePermissions() {
         val allNeededPermissions = ArrayList<String>()
         for (permission in getRequiredPermissions()) {
-            if (!isPermissionGranted(this, permission!!)) {
-                allNeededPermissions.add(permission)
+            permission?.let {
+                if (!isPermissionGranted(this, it)) {
+                    allNeededPermissions.add(permission)
+                }
             }
         }
 
@@ -121,7 +128,9 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
             }
 
             (view!!.findViewById<View>(android.R.id.text1) as TextView).text = classes[position].simpleName
-            (view.findViewById<View>(android.R.id.text2) as TextView).setText(descriptionIds!![position])
+            descriptionIds?.let {
+                (view.findViewById<View>(android.R.id.text2) as TextView).setText(it[position])
+            }
 
             return view
         }
