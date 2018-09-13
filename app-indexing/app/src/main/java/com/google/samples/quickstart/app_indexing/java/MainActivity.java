@@ -29,14 +29,15 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
+// [START import_classes]
 import com.google.firebase.appindexing.FirebaseAppIndex;
 import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Actions;
 import com.google.samples.quickstart.app_indexing.R;
-
-// [START import_classes]
 // [END import_classes]
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -85,83 +86,81 @@ public class MainActivity extends AppCompatActivity {
 
     // [START app_indexing_view]
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
+        if (articleId == null) return;
+        final Uri BASE_URL = Uri.parse("https://www.example.com/articles/");
+        final String APP_URI = BASE_URL.buildUpon().appendPath(articleId).build().toString();
 
-        if (articleId != null) {
-            final Uri BASE_URL = Uri.parse("https://www.example.com/articles/");
-            final String APP_URI = BASE_URL.buildUpon().appendPath(articleId).build().toString();
+        Indexable articleToIndex = new Indexable.Builder()
+                .setName(TITLE)
+                .setUrl(APP_URI)
+                .build();
 
-            Indexable articleToIndex = new Indexable.Builder()
-                    .setName(TITLE)
-                    .setUrl(APP_URI)
-                    .build();
+        Task<Void> task = FirebaseAppIndex.getInstance().update(articleToIndex);
 
-            Task<Void> task = FirebaseAppIndex.getInstance().update(articleToIndex);
+        // If the Task is already complete, a call to the listener will be immediately
+        // scheduled
+        task.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "App Indexing API: Successfully added " + TITLE + " to index");
+            }
+        });
 
-            // If the Task is already complete, a call to the listener will be immediately
-            // scheduled
-            task.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "App Indexing API: Successfully added " + TITLE + " to index");
-                }
-            });
+        task.addOnFailureListener(MainActivity.this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "App Indexing API: Failed to add " + TITLE + " to index. " + exception
+                        .getMessage());
+            }
+        });
 
-            task.addOnFailureListener(MainActivity.this, new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Log.e(TAG, "App Indexing API: Failed to add " + TITLE + " to index. " + exception.getMessage());
-                }
-            });
+        // log the view action
+        Task<Void> actionTask = FirebaseUserActions.getInstance().start(Actions.newView(TITLE,
+                APP_URI));
 
-            // log the view action
-            Task<Void> actionTask = FirebaseUserActions.getInstance().start(Actions.newView(TITLE,
-                    APP_URI));
+        actionTask.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "App Indexing API: Successfully started view action on " + TITLE);
+            }
+        });
 
-            actionTask.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "App Indexing API: Successfully started view action on " + TITLE);
-                }
-            });
-
-            actionTask.addOnFailureListener(MainActivity.this, new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Log.e(TAG, "App Indexing API: Failed to start view action on " + TITLE + ". "
-                            + exception.getMessage());
-                }
-            });
-        }
+        actionTask.addOnFailureListener(MainActivity.this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "App Indexing API: Failed to start view action on " + TITLE + ". "
+                        + exception.getMessage());
+            }
+        });
     }
 
     @Override
-    public void onStop(){
+    public void onStop() {
         super.onStop();
 
-        if (articleId != null) {
-            final Uri BASE_URL = Uri.parse("https://www.example.com/articles/");
-            final String APP_URI = BASE_URL.buildUpon().appendPath(articleId).build().toString();
+        if (articleId == null) return;
+        final Uri BASE_URL = Uri.parse("https://www.example.com/articles/");
+        final String APP_URI = BASE_URL.buildUpon().appendPath(articleId).build().toString();
 
-            Task<Void> actionTask = FirebaseUserActions.getInstance().end(Actions.newView(TITLE,
-                    APP_URI));
+        Task<Void> actionTask = FirebaseUserActions.getInstance().end(Actions.newView(TITLE,
+                APP_URI));
 
-            actionTask.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "App Indexing API: Successfully ended view action on " + TITLE);
-                }
-            });
+        actionTask.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "App Indexing API: Successfully ended view action on " + TITLE);
+            }
+        });
 
-            actionTask.addOnFailureListener(MainActivity.this, new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Log.e(TAG, "App Indexing API: Failed to end view action on " + TITLE + ". "
-                            + exception.getMessage());
-                }
-            });
-        }
+        actionTask.addOnFailureListener(MainActivity.this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "App Indexing API: Failed to end view action on " + TITLE + ". "
+                        + exception.getMessage());
+            }
+        });
     }
     // [END app_indexing_view]
 }

@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.app_indexing
+package com.google.samples.quickstart.app_indexing.kotlin
 
 import android.content.Intent
 import android.net.Uri
@@ -15,7 +15,7 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class MainActivityKotlinTest {
+class MainActivityTest {
 
     @Rule
     var rule = ActivityTestRule(MainActivity::class.java, true, false /* launchActivity */)
