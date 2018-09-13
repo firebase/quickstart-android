@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.quickstart.app_indexing;
+package com.google.samples.quickstart.app_indexing.java;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -29,11 +29,13 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-// [START import_classes]
 import com.google.firebase.appindexing.FirebaseAppIndex;
 import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Actions;
+import com.google.samples.quickstart.app_indexing.R;
+
+// [START import_classes]
 // [END import_classes]
 
 public class MainActivity extends AppCompatActivity {

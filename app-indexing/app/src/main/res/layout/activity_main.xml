@@ -9,7 +9,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="16dp"
-                tools:context="com.google.samples.quickstart.app_indexing.MainActivity">
+    tools:context="com.google.samples.quickstart.app_indexing.java.MainActivity">
 
     <ImageView
         android:id="@+id/icon"
