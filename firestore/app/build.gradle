@@ -40,7 +40,7 @@ androidExtensions {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooser")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70"
 
     // Firestore
     implementation 'com.google.firebase:firebase-core:16.0.3'
@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:16.0.0'
 
     // FirebaseUI (for authentication)
-    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.2.0'
 
     // ButterKnife (for sample code brevity)
     implementation 'com.jakewharton:butterknife:8.8.1'

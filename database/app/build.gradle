@@ -37,14 +37,14 @@ androidExtensions {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooser")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70"
 
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
 
-    implementation 'com.firebaseui:firebase-ui-database:4.1.0'
+    implementation 'com.firebaseui:firebase-ui-database:4.2.0'
 
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-auth:16.0.3'
