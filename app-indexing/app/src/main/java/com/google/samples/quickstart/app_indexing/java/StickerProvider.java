@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.app_indexing;
+package com.google.samples.quickstart.app_indexing.java;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -9,6 +9,7 @@ import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.webkit.MimeTypeMap;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
