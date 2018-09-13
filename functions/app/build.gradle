@@ -31,8 +31,9 @@ configurations.all {
 }
 
 dependencies {
-    implementation project(':internal')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.61"
+    implementation project(":internal:lintchecks")
+    implementation project(":internal:chooser")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70"
 
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -45,7 +46,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-functions:16.1.0'
     implementation 'com.google.firebase:firebase-messaging:17.3.1'
 
-    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.2.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.0'
 
     testImplementation 'junit:junit:4.12'

@@ -12,7 +12,7 @@
         android:src="@drawable/firebase_lockup_400" />
 
     <Button
-        android:id="@+id/invite_button"
+        android:id="@+id/inviteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -22,7 +22,7 @@
         android:theme="@style/ThemeOverlay.MyBlueButton"/>
 
     <FrameLayout
-        android:id="@+id/snackbar_layout"
+        android:id="@+id/snackbarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

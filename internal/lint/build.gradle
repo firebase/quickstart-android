@@ -1,0 +1,18 @@
+apply plugin: 'java-library'
+apply plugin: "kotlin"
+
+targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_7
+
+dependencies {
+    compileOnly "com.android.tools.lint:lint-api:26.1.4"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.70"
+    testImplementation "com.android.tools.lint:lint:26.1.4"
+    testImplementation "com.android.tools.lint:lint-tests:26.1.4"
+}
+
+jar {
+    manifest {
+        attributes("Lint-Registry-v2": "com.firebase.lint.ImportIssueRegistry")
+    }
+}
