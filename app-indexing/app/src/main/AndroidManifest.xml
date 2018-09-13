@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.samples.quickstart.app_indexing" >
+    package="com.google.samples.quickstart.app_indexing">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/AppTheme"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
 
-        <!-- [START intent_filter] -->
-        <activity
-            android:name="com.google.samples.quickstart.app_indexing.MainActivity"
-            android:label="@string/app_name"
-            android:exported="true"
-            android:launchMode="singleTop">
-
+        <activity android:name=".EntryChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
 
-            <intent-filter android:label="@string/app_name" android:autoVerify="true">
+        <!-- [START intent_filter] -->
+        <activity
+            android:name="com.google.samples.quickstart.app_indexing.java.MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
+
+            <intent-filter
+                android:autoVerify="true"
+                android:label="@string/app_name">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "https://www.example.com/articles/" -->
-                <data android:scheme="https"
+                <data
                     android:host="www.example.com"
-                    android:pathPrefix="/articles/" />
+                    android:pathPrefix="/articles/"
+                    android:scheme="https" />
             </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="mystickers" />
                 <data android:host="sticker" />
             </intent-filter>
@@ -45,16 +52,63 @@
         </activity>
         <!-- [END intent_filter] -->
 
-        <provider
-            android:name="com.google.samples.quickstart.app_indexing.StickerProvider"
-            android:authorities="com.google.samples.quickstart.app_indexing.StickerProvider"
+        <activity
+            android:name="com.google.samples.quickstart.app_indexing.kotlin.MainActivity"
             android:exported="true"
-            android:grantUriPermissions="true">
-        </provider>
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
 
-        <service android:name=".AppIndexingService"
-                 android:exported="true"
-                 android:permission="com.google.android.gms.permission.APPINDEXING">
+            <intent-filter
+                android:autoVerify="true"
+                android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "https://www.example.com/articles/" -->
+                <data
+                    android:host="www.example.com"
+                    android:pathPrefix="/kotlin_articles/"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="mystickers" />
+                <data android:host="sticker" />
+            </intent-filter>
+
+        </activity>
+
+        <provider
+            android:name="com.google.samples.quickstart.app_indexing.java.StickerProvider"
+            android:authorities="com.google.samples.quickstart.app_indexing.java.StickerProvider"
+            android:exported="true"
+            android:grantUriPermissions="true" />
+
+        <provider
+            android:name="com.google.samples.quickstart.app_indexing.kotlin.StickerProvider"
+            android:authorities="com.google.samples.quickstart.app_indexing.kotlin.StickerProvider"
+            android:exported="true"
+            android:grantUriPermissions="true" />
+
+        <service
+            android:name=".java.AppIndexingService"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.APPINDEXING">
+            <intent-filter>
+                <action android:name="com.google.firebase.appindexing.UPDATE_INDEX" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".kotlin.AppIndexingService"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.APPINDEXING">
             <intent-filter>
                 <action android:name="com.google.firebase.appindexing.UPDATE_INDEX" />
             </intent-filter>

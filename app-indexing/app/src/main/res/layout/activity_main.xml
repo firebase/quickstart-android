@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="#fff2f2f2"
-                android:paddingBottom="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="16dp"
-                tools:context="com.google.samples.quickstart.app_indexing.MainActivity">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#fff2f2f2"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp">
 
     <ImageView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/firebase_lockup_400"/>
+        android:src="@drawable/firebase_lockup_400" />
 
     <TextView
         android:id="@+id/contentIndexLabel"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/icon"
-        android:text="@string/content_label"/>
+        android:layout_alignParentStart="true"
+        android:text="@string/content_label" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/contentIndexLabel"
-        android:text="@string/link_label"/>
+        android:layout_alignParentStart="true"
+        android:text="@string/link_label" />
 
     <TextView
         android:id="@+id/link"
@@ -41,33 +39,33 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/contentIndexLabel"
         android:layout_toEndOf="@+id/textView"
-        android:text="@string/none"/>
+        android:text="@string/none" />
 
     <TextView
         android:id="@+id/stickerIndexLabel"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"
-        android:text="@string/stickers_label"/>
+        android:text="@string/stickers_label" />
 
     <Button
         android:id="@+id/addStickersBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/stickerIndexLabel"
         android:layout_alignEnd="@+id/clearStickersBtn"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/stickerIndexLabel"
-        android:text="Add Stickers"/>
+        android:text="Add Stickers" />
 
     <Button
         android:id="@+id/clearStickersBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/addStickersBtn"
-        android:text="Clear Stickers"/>
+        android:layout_alignParentStart="true"
+        android:text="Clear Stickers" />
 
 </RelativeLayout>
