@@ -5,13 +5,15 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
 class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) : GraphicOverlay.Graphic(overlay) {
 
-    private val TEXT_COLOR = Color.WHITE
-    private val TEXT_SIZE = 54.0f
-    private val STROKE_WIDTH = 4.0f
+    companion object {
+        private const val TEXT_COLOR = Color.WHITE
+        private const val TEXT_SIZE = 54.0f
+        private const val STROKE_WIDTH = 4.0f
+    }
 
     private var rectPaint: Paint
     private var barcodePaint: Paint
@@ -49,6 +51,6 @@ class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) : 
         canvas.drawRect(rect, rectPaint)
 
         // Renders the barcode at the bottom of the box.
-        canvas.drawText(barcode.rawValue!!, rect.left, rect.bottom, barcodePaint)
+        canvas.drawText(barcode.rawValue, rect.left, rect.bottom, barcodePaint)
     }
 }

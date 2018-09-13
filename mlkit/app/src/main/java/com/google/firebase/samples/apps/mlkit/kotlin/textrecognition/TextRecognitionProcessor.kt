@@ -6,8 +6,8 @@ import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
-import com.google.firebase.samples.apps.mlkit.kotlin.FrameMetadata
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 import java.io.IOException
 

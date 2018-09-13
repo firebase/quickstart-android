@@ -130,14 +130,15 @@ constructor(activity: Activity) {
         val startTime = SystemClock.uptimeMillis()
         for (i in 0 until DIM_IMG_SIZE_X) {
             for (j in 0 until DIM_IMG_SIZE_Y) {
-                val `val` = intValues[pixel++]
-                imgData.put((`val` shr 16 and 0xFF).toByte())
-                imgData.put((`val` shr 8 and 0xFF).toByte())
-                imgData.put((`val` and 0xFF).toByte())
+                val value = intValues[pixel++]
+                imgData.put((value shr 16 and 0xFF).toByte())
+                imgData.put((value shr 8 and 0xFF).toByte())
+                imgData.put((value and 0xFF).toByte())
             }
         }
         val endTime = SystemClock.uptimeMillis()
-        Log.d(TAG, "Timecost to put values into ByteBuffer: " + (endTime - startTime))
+        val timeCost = endTime - startTime
+        Log.d(TAG, "Timecost to put values into ByteBuffer: $timeCost")
         return imgData
     }
 
@@ -165,7 +166,7 @@ constructor(activity: Activity) {
         val size = sortedLabels.size
         for (i in 0 until size) {
             val label = sortedLabels.poll()
-            result.add(label.key + ":" + label.value)
+            result.add("${label.key}:${label.value}")
         }
         return result
     }

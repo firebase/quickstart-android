@@ -32,6 +32,10 @@ import android.widget.ToggleButton;
 
 import com.google.android.gms.common.annotation.KeepName;
 import com.google.firebase.ml.common.FirebaseMLException;
+import com.google.firebase.samples.apps.mlkit.R;
+import com.google.firebase.samples.apps.mlkit.common.CameraSource;
+import com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.java.barcodescanning.BarcodeScanningProcessor;
 import com.google.firebase.samples.apps.mlkit.java.custommodel.CustomImageClassifierProcessor;
 import com.google.firebase.samples.apps.mlkit.java.facedetection.FaceDetectionProcessor;
@@ -93,7 +97,7 @@ public final class LivePreviewActivity extends AppCompatActivity
     spinner.setAdapter(dataAdapter);
     spinner.setOnItemSelectedListener(this);
 
-    ToggleButton facingSwitch = (ToggleButton) findViewById(R.id.facingswitch);
+    ToggleButton facingSwitch = (ToggleButton) findViewById(R.id.facingSwitch);
     facingSwitch.setOnCheckedChangeListener(this);
 
     if (allPermissionsGranted()) {

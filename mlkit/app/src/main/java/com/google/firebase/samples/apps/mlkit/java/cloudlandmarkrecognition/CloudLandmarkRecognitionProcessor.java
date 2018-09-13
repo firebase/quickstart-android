@@ -22,8 +22,8 @@ import com.google.firebase.ml.vision.cloud.FirebaseVisionCloudDetectorOptions;
 import com.google.firebase.ml.vision.cloud.landmark.FirebaseVisionCloudLandmark;
 import com.google.firebase.ml.vision.cloud.landmark.FirebaseVisionCloudLandmarkDetector;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.samples.apps.mlkit.java.FrameMetadata;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.java.VisionProcessorBase;
 
 import java.util.List;

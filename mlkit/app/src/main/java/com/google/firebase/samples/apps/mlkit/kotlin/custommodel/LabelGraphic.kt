@@ -3,14 +3,14 @@ package com.google.firebase.samples.apps.mlkit.kotlin.custommodel
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
 /** Graphic instance for rendering image labels.  */
 class LabelGraphic(private val overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
 
     private val textPaint: Paint
 
-    private var labels: List<String>? = null
+    private lateinit var labels: List<String>
 
     init {
         textPaint = Paint()
@@ -29,7 +29,7 @@ class LabelGraphic(private val overlay: GraphicOverlay) : GraphicOverlay.Graphic
         val x = overlay.width / 4.0f
         var y = overlay.height / 4.0f
 
-        for (label in labels!!) {
+        for (label in labels) {
             canvas.drawText(label, x, y, textPaint)
             y -= 62.0f
         }

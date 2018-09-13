@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.google.firebase.ml.vision.label.FirebaseVisionLabel
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
 /** Graphic instance for rendering a label within an associated graphic overlay view.  */
 class LabelGraphic (

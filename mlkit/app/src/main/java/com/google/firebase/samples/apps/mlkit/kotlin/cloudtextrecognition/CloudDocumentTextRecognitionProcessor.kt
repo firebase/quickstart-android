@@ -6,8 +6,8 @@ import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.document.FirebaseVisionDocumentText
 import com.google.firebase.ml.vision.document.FirebaseVisionDocumentTextRecognizer
-import com.google.firebase.samples.apps.mlkit.kotlin.FrameMetadata
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 
 /** Processor for the cloud document text detector demo.  */
@@ -28,7 +28,7 @@ class CloudDocumentTextRecognitionProcessor : VisionProcessorBase<FirebaseVision
             frameMetadata: FrameMetadata,
             graphicOverlay: GraphicOverlay) {
         graphicOverlay.clear()
-        Log.d(TAG, "detected text is: " + text.text)
+        Log.d(TAG, "detected text is: ${text.text}")
         val blocks = text.blocks
         for (i in blocks.indices) {
             val paragraphs = blocks[i].paragraphs

@@ -19,8 +19,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay.Graphic;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 
 /** Graphic instance for rendering Barcode position and content information in an overlay view. */
 public class BarcodeGraphic extends Graphic {

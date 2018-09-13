@@ -22,8 +22,8 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.firebase.ml.vision.common.FirebaseVisionPoint;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay.Graphic;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 
 /**
  * Graphic instance for rendering face position, orientation, and landmarks within an associated

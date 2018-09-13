@@ -19,8 +19,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay.Graphic;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 
 /**
  * Graphic instance for rendering TextBlock position, size, and ID within an associated graphic

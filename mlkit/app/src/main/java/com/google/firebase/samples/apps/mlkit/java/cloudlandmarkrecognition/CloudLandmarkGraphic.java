@@ -19,8 +19,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import com.google.firebase.ml.vision.cloud.landmark.FirebaseVisionCloudLandmark;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay.Graphic;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 
 /** Graphic instance for rendering detected landmark. */
 public class CloudLandmarkGraphic extends Graphic {

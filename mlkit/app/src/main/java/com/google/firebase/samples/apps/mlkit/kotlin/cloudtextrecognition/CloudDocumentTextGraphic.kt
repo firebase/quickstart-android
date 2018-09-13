@@ -4,14 +4,14 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.google.firebase.ml.vision.document.FirebaseVisionDocumentText
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
 /**
  * Graphic instance for rendering TextBlock position, size, and ID within an associated graphic
  * overlay view.
  */
 class CloudDocumentTextGraphic(
-    private val overlay: GraphicOverlay,
+    overlay: GraphicOverlay,
     private val symbol: FirebaseVisionDocumentText.Symbol?
 ) : GraphicOverlay.Graphic(overlay) {
 
@@ -39,8 +39,10 @@ class CloudDocumentTextGraphic(
         }
 
         val rect = symbol.boundingBox
-        canvas.drawRect(rect!!, rectPaint)
-        canvas.drawText(symbol.text, rect.left.toFloat(), rect.bottom.toFloat(), textPaint)
+        rect?.let {
+            canvas.drawRect(it, rectPaint)
+            canvas.drawText(symbol.text, it.left.toFloat(), it.bottom.toFloat(), textPaint)
+        }
     }
 
     companion object {

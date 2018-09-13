@@ -7,8 +7,8 @@ import com.google.firebase.ml.vision.cloud.FirebaseVisionCloudDetectorOptions
 import com.google.firebase.ml.vision.cloud.landmark.FirebaseVisionCloudLandmark
 import com.google.firebase.ml.vision.cloud.landmark.FirebaseVisionCloudLandmarkDetector
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.samples.apps.mlkit.kotlin.FrameMetadata
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 
 /** Cloud Landmark Detector Demo.  */
@@ -34,7 +34,7 @@ class CloudLandmarkRecognitionProcessor : VisionProcessorBase<List<FirebaseVisio
             frameMetadata: FrameMetadata,
             graphicOverlay: GraphicOverlay) {
         graphicOverlay.clear()
-        Log.d(TAG, "cloud landmark size: " + landmarks.size)
+        Log.d(TAG, "cloud landmark size: ${landmarks.size}")
         for (i in landmarks.indices) {
             val landmark = landmarks[i]
             Log.d(TAG, "cloud landmark: $landmark")

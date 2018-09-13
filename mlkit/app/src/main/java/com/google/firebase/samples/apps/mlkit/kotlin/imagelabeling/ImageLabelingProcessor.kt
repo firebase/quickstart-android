@@ -6,8 +6,8 @@ import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionLabelDetector
-import com.google.firebase.samples.apps.mlkit.kotlin.FrameMetadata
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 import java.io.IOException
 
@@ -48,6 +48,6 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() 
 
     companion object {
 
-        private val TAG = "ImageLabelingProcessor"
+        private const val TAG = "ImageLabelingProcessor"
     }
 }

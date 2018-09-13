@@ -7,8 +7,8 @@ import com.google.firebase.ml.vision.cloud.FirebaseVisionCloudDetectorOptions
 import com.google.firebase.ml.vision.cloud.label.FirebaseVisionCloudLabel
 import com.google.firebase.ml.vision.cloud.label.FirebaseVisionCloudLabelDetector
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.samples.apps.mlkit.kotlin.FrameMetadata
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 
 /** Cloud Label Detector Demo.  */
@@ -36,7 +36,7 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionCloud
 
         graphicOverlay.clear()
 
-        Log.d(TAG, "cloud label size: " + labels.size)
+        Log.d(TAG, "cloud label size: ${labels.size}")
 
         val labelsStr = ArrayList<String>()
         for (i in labels.indices) {
@@ -44,8 +44,8 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionCloud
 
             Log.d(TAG, "cloud label: $label")
 
-            if (label.label != null) {
-                labelsStr.add(label.label)
+            label.label?.let {
+                labelsStr.add(it)
             }
         }
 

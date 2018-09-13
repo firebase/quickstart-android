@@ -19,9 +19,9 @@ import android.media.Image;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.common.FirebaseMLException;
-import com.google.firebase.samples.apps.mlkit.java.FrameMetadata;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay;
-import com.google.firebase.samples.apps.mlkit.java.VisionImageProcessor;
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor;
 
 import java.nio.ByteBuffer;
 import java.util.List;

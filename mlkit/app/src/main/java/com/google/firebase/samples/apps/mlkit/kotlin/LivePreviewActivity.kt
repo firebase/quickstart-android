@@ -12,11 +12,13 @@ import android.widget.*
 import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.samples.apps.mlkit.R
+import com.google.firebase.samples.apps.mlkit.common.CameraSource
+import com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.barcodescanning.BarcodeScanningProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.custommodel.CustomImageClassifierProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceDetectionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.imagelabeling.ImageLabelingProcessor
-import com.google.firebase.samples.apps.mlkit.kotlin.textrecognition.CameraSourcePreview
 import com.google.firebase.samples.apps.mlkit.kotlin.textrecognition.TextRecognitionProcessor
 import java.io.IOException
 import java.util.*
@@ -79,7 +81,7 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
         spinner.adapter = dataAdapter
         spinner.onItemSelectedListener = this
 
-        val facingSwitch = findViewById<View>(R.id.facingswitch) as ToggleButton
+        val facingSwitch = findViewById<View>(R.id.facingSwitch) as ToggleButton
         facingSwitch.setOnCheckedChangeListener(this)
 
         if (allPermissionsGranted()) {

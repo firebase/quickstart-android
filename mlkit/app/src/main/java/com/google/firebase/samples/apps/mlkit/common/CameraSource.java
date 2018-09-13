@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.firebase.samples.apps.mlkit.java;
+package com.google.firebase.samples.apps.mlkit.common;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -577,7 +577,7 @@ public class CameraSource {
     }
   }
 
-  void setMachineLearningFrameProcessor(VisionImageProcessor processor) {
+  public void setMachineLearningFrameProcessor(VisionImageProcessor processor) {
     synchronized (processorLock) {
       cleanScreen();
       if (frameProcessor != null) {

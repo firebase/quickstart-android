@@ -5,14 +5,14 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import com.google.firebase.ml.vision.cloud.landmark.FirebaseVisionCloudLandmark
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
 /** Graphic instance for rendering detected landmark.  */
 class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
 
     private val rectPaint: Paint
     private val landmarkPaint: Paint
-    private var landmark: FirebaseVisionCloudLandmark? = null
+    private lateinit var landmark: FirebaseVisionCloudLandmark
 
     init {
 
@@ -42,12 +42,12 @@ class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(ove
         if (landmark == null) {
             throw IllegalStateException("Attempting to draw a null landmark.")
         }
-        if (landmark!!.landmark == null || landmark!!.boundingBox == null) {
+        if (landmark.landmark == null || landmark.boundingBox == null) {
             return
         }
 
         // Draws the bounding box around the LandmarkBlock.
-        val rect = RectF(landmark!!.boundingBox)
+        val rect = RectF(landmark.boundingBox)
         rect.left = translateX(rect.left)
         rect.top = translateY(rect.top)
         rect.right = translateX(rect.right)
@@ -55,7 +55,7 @@ class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(ove
         canvas.drawRect(rect, rectPaint)
 
         // Renders the landmark at the bottom of the box.
-        canvas.drawText(landmark!!.landmark, rect.left, rect.bottom, landmarkPaint)
+        canvas.drawText(landmark.landmark, rect.left, rect.bottom, landmarkPaint)
     }
 
     companion object {

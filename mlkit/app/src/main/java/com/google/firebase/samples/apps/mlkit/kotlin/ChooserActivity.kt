@@ -44,8 +44,8 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
         val adapter = MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES)
         adapter.setDescriptionIds(DESCRIPTION_IDS)
 
-        test_activity_list_view.adapter = adapter
-        test_activity_list_view.onItemClickListener = this
+        testActivityListView.adapter = adapter
+        testActivityListView.onItemClickListener = this
 
         if (!allPermissionsGranted()) {
             getRuntimePermissions()

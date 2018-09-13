@@ -6,7 +6,7 @@ import android.graphics.Paint
 import com.google.android.gms.vision.CameraSource
 import com.google.firebase.ml.vision.face.FirebaseVisionFace
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark
-import com.google.firebase.samples.apps.mlkit.kotlin.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
 /**
  * Graphic instance for rendering face position, orientation, and landmarks within an associated
@@ -21,7 +21,7 @@ class FaceGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
     private val boxPaint: Paint
 
     @Volatile
-    private var firebaseVisionFace: FirebaseVisionFace? = null
+    private lateinit var firebaseVisionFace: FirebaseVisionFace
 
     init {
 
@@ -59,31 +59,31 @@ class FaceGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
         val x = translateX(face.boundingBox.centerX().toFloat())
         val y = translateY(face.boundingBox.centerY().toFloat())
         canvas.drawCircle(x, y, FACE_POSITION_RADIUS, facePositionPaint)
-        canvas.drawText("id: " + face.trackingId, x + ID_X_OFFSET, y + ID_Y_OFFSET, idPaint)
+        canvas.drawText("id: ${face.trackingId}" , x + ID_X_OFFSET, y + ID_Y_OFFSET, idPaint)
         canvas.drawText(
-                "happiness: " + String.format("%.2f", face.smilingProbability),
+                "happiness: ${String.format("%.2f", face.smilingProbability)}",
                 x + ID_X_OFFSET * 3,
                 y - ID_Y_OFFSET,
                 idPaint)
         if (facing == CameraSource.CAMERA_FACING_FRONT) {
             canvas.drawText(
-                    "right eye: " + String.format("%.2f", face.rightEyeOpenProbability),
+                    "right eye: ${String.format("%.2f", face.rightEyeOpenProbability)}",
                     x - ID_X_OFFSET,
                     y,
                     idPaint)
             canvas.drawText(
-                    "left eye: " + String.format("%.2f", face.leftEyeOpenProbability),
+                    "left eye: ${String.format("%.2f", face.leftEyeOpenProbability)}",
                     x + ID_X_OFFSET * 6,
                     y,
                     idPaint)
         } else {
             canvas.drawText(
-                    "left eye: " + String.format("%.2f", face.leftEyeOpenProbability),
+                    "left eye: ${String.format("%.2f", face.leftEyeOpenProbability)}",
                     x - ID_X_OFFSET,
                     y,
                     idPaint)
             canvas.drawText(
-                    "right eye: " + String.format("%.2f", face.rightEyeOpenProbability),
+                    "right eye: ${String.format("%.2f", face.rightEyeOpenProbability)}",
                     x + ID_X_OFFSET * 6,
                     y,
                     idPaint)
@@ -113,11 +113,11 @@ class FaceGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
 
     private fun drawLandmarkPosition(canvas: Canvas, face: FirebaseVisionFace, landmarkID: Int) {
         val landmark = face.getLandmark(landmarkID)
-        if (landmark != null) {
+        landmark?.let {
             val point = landmark.position
             canvas.drawCircle(
-                    translateX(point.x!!),
-                    translateY(point.y!!),
+                    translateX(point.x),
+                    translateY(point.y),
                     10f, idPaint)
         }
     }
@@ -129,7 +129,8 @@ class FaceGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
         private const val ID_X_OFFSET = -50.0f
         private const val BOX_STROKE_WIDTH = 5.0f
 
-        private val COLOR_CHOICES = intArrayOf(Color.BLUE, Color.CYAN, Color.GREEN, Color.MAGENTA, Color.RED, Color.WHITE, Color.YELLOW)
+        private val COLOR_CHOICES = intArrayOf(Color.BLUE, Color.CYAN, Color.GREEN, Color.MAGENTA,
+                                                Color.RED, Color.WHITE, Color.YELLOW)
         private var currentColorIndex = 0
     }
 }

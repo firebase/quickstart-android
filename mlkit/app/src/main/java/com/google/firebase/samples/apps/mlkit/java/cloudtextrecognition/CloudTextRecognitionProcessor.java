@@ -21,8 +21,8 @@ import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.samples.apps.mlkit.java.FrameMetadata;
-import com.google.firebase.samples.apps.mlkit.java.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.java.VisionProcessorBase;
 
 import java.util.List;

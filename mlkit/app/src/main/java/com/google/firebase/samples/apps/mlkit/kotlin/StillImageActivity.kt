@@ -15,6 +15,8 @@ import android.view.View
 import android.widget.*
 import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.samples.apps.mlkit.R
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudimagelabeling.CloudImageLabelingProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudlandmarkrecognition.CloudLandmarkRecognitionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition.CloudDocumentTextRecognitionProcessor
