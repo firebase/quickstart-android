@@ -38,10 +38,8 @@ class BarcodeScanningProcessor : VisionProcessorBase<List<FirebaseVisionBarcode>
         return detector.detectInImage(image)
     }
 
-    override fun onSuccess(
-            barcodes: List<FirebaseVisionBarcode>,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+    override fun onSuccess(barcodes: List<FirebaseVisionBarcode>, frameMetadata: FrameMetadata,
+                           graphicOverlay: GraphicOverlay) {
         graphicOverlay.clear()
         for (i in barcodes.indices) {
             val barcode = barcodes[i]

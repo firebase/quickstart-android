@@ -25,17 +25,6 @@ import kotlinx.android.synthetic.main.activity_chooser.*
 class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback,
         AdapterView.OnItemClickListener {
 
-    companion object {
-        private const val TAG = "ChooserActivity"
-        private const val PERMISSION_REQUESTS = 1
-
-        private val CLASSES =
-                arrayOf<Class<*>>(LivePreviewActivity::class.java, StillImageActivity::class.java)
-
-        private val DESCRIPTION_IDS =
-                intArrayOf(R.string.desc_camera_source_activity, R.string.desc_still_image_activity)
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,5 +127,16 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
         fun setDescriptionIds(descriptionIds: IntArray) {
             this.descriptionIds = descriptionIds
         }
+    }
+
+    companion object {
+        private const val TAG = "ChooserActivity"
+        private const val PERMISSION_REQUESTS = 1
+
+        private val CLASSES =
+                arrayOf<Class<*>>(LivePreviewActivity::class.java, StillImageActivity::class.java)
+
+        private val DESCRIPTION_IDS =
+                intArrayOf(R.string.desc_camera_source_activity, R.string.desc_still_image_activity)
     }
 }

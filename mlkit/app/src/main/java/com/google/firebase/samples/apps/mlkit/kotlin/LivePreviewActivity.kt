@@ -62,12 +62,12 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
             Log.d(TAG, "graphicOverlay is null")
         }
 
-        val options = ArrayList<String>()
-        options.add(FACE_DETECTION)
-        options.add(TEXT_DETECTION)
-        options.add(BARCODE_DETECTION)
-        options.add(IMAGE_LABEL_DETECTION)
-        options.add(CLASSIFICATION)
+        val options = arrayListOf(
+                FACE_DETECTION,
+                TEXT_DETECTION,
+                BARCODE_DETECTION,
+                IMAGE_LABEL_DETECTION,
+                CLASSIFICATION)
         // Creating adapter for spinner
         val dataAdapter = ArrayAdapter(this, R.layout.spinner_style, options)
         // Drop down layout style - list view with radio button
@@ -124,28 +124,30 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
         }
 
         try {
-            when (model) {
-                CLASSIFICATION -> {
-                    Log.i(TAG, "Using Custom Image Classifier Processor")
-                    cameraSource!!.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this))
+            cameraSource?.let {
+                when (model) {
+                    CLASSIFICATION -> {
+                        Log.i(TAG, "Using Custom Image Classifier Processor")
+                        it.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this))
+                    }
+                    TEXT_DETECTION -> {
+                        Log.i(TAG, "Using Text Detector Processor")
+                        it.setMachineLearningFrameProcessor(TextRecognitionProcessor())
+                    }
+                    FACE_DETECTION -> {
+                        Log.i(TAG, "Using Face Detector Processor")
+                        it.setMachineLearningFrameProcessor(FaceDetectionProcessor())
+                    }
+                    BARCODE_DETECTION -> {
+                        Log.i(TAG, "Using Barcode Detector Processor")
+                        it.setMachineLearningFrameProcessor(BarcodeScanningProcessor())
+                    }
+                    IMAGE_LABEL_DETECTION -> {
+                        Log.i(TAG, "Using Image Label Detector Processor")
+                        it.setMachineLearningFrameProcessor(ImageLabelingProcessor())
+                    }
+                    else -> Log.e(TAG, "Unknown model: $model")
                 }
-                TEXT_DETECTION -> {
-                    Log.i(TAG, "Using Text Detector Processor")
-                    cameraSource!!.setMachineLearningFrameProcessor(TextRecognitionProcessor())
-                }
-                FACE_DETECTION -> {
-                    Log.i(TAG, "Using Face Detector Processor")
-                    cameraSource!!.setMachineLearningFrameProcessor(FaceDetectionProcessor())
-                }
-                BARCODE_DETECTION -> {
-                    Log.i(TAG, "Using Barcode Detector Processor")
-                    cameraSource!!.setMachineLearningFrameProcessor(BarcodeScanningProcessor())
-                }
-                IMAGE_LABEL_DETECTION -> {
-                    Log.i(TAG, "Using Image Label Detector Processor")
-                    cameraSource!!.setMachineLearningFrameProcessor(ImageLabelingProcessor())
-                }
-                else -> Log.e(TAG, "Unknown model: $model")
             }
         } catch (e: FirebaseMLException) {
             Log.e(TAG, "can not create camera source: $model")

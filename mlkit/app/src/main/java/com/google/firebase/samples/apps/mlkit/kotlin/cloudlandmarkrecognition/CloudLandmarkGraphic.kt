@@ -48,14 +48,17 @@ class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(ove
 
         // Draws the bounding box around the LandmarkBlock.
         val rect = RectF(landmark.boundingBox)
-        rect.left = translateX(rect.left)
-        rect.top = translateY(rect.top)
-        rect.right = translateX(rect.right)
-        rect.bottom = translateY(rect.bottom)
-        canvas.drawRect(rect, rectPaint)
+        with(rect) {
+            left = translateX(left)
+            top = translateY(top)
+            right = translateX(right)
+            bottom = translateY(bottom)
+            canvas.drawRect(this, rectPaint)
 
-        // Renders the landmark at the bottom of the box.
-        canvas.drawText(landmark.landmark, rect.left, rect.bottom, landmarkPaint)
+            // Renders the landmark at the bottom of the box.
+            canvas.drawText(landmark.landmark, left, bottom, landmarkPaint)
+        }
+
     }
 
     companion object {

@@ -29,38 +29,16 @@ import kotlinx.android.synthetic.main.activity_still_image.*
 @KeepName
 class StillImageActivity: AppCompatActivity() {
 
-    companion object {
-
-        private const val TAG = "StillImageActivity"
-
-        private const val CLOUD_LABEL_DETECTION = "Cloud Label"
-        private const val CLOUD_LANDMARK_DETECTION = "Landmark"
-        private const val CLOUD_TEXT_DETECTION = "Cloud Text"
-        private const val CLOUD_DOCUMENT_TEXT_DETECTION = "Doc Text"
-
-        private const val SIZE_PREVIEW = "w:max" // Available on-screen width.
-        private const val SIZE_1024_768 = "w:1024" // ~1024*768 in a normal ratio
-        private const val SIZE_640_480 = "w:640" // ~640*480 in a normal ratio
-
-        private const val KEY_IMAGE_URI = "com.googletest.firebase.ml.demo.KEY_IMAGE_URI"
-        private const val KEY_IMAGE_MAX_WIDTH = "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_WIDTH"
-        private const val KEY_IMAGE_MAX_HEIGHT = "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_HEIGHT"
-        private const val KEY_SELECTED_SIZE = "com.googletest.firebase.ml.demo.KEY_SELECTED_SIZE"
-
-        private const val REQUEST_IMAGE_CAPTURE = 1001
-        private const val REQUEST_CHOOSE_IMAGE = 1002
-    }
-
     private var selectedMode = CLOUD_LABEL_DETECTION
-    private var selectedSize: String? = SIZE_PREVIEW
+    private var selectedSize: String = SIZE_PREVIEW
 
     private var isLandScape: Boolean = false
 
     private var imageUri: Uri? = null
     // Max width (portrait mode)
-    private var imageMaxWidth: Int? = null
+    private var imageMaxWidth = 0
     // Max height (portrait mode)
-    private var imageMaxHeight: Int? = null
+    private var imageMaxHeight = 0
     private var bitmapForDetection: Bitmap? = null
     private var imageProcessor: VisionImageProcessor? = null
 
@@ -169,14 +147,12 @@ class StillImageActivity: AppCompatActivity() {
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putParcelable(KEY_IMAGE_URI, imageUri)
-        imageMaxWidth?.let {
-            outState.putInt(KEY_IMAGE_MAX_WIDTH, it)
+        with(outState) {
+            putParcelable(KEY_IMAGE_URI, imageUri)
+            putInt(KEY_IMAGE_MAX_WIDTH, imageMaxWidth)
+            putInt(KEY_IMAGE_MAX_HEIGHT, imageMaxHeight)
+            putString(KEY_SELECTED_SIZE, selectedSize)
         }
-        imageMaxHeight?.let {
-            outState.putInt(KEY_IMAGE_MAX_HEIGHT, it)
-        }
-        outState.putString(KEY_SELECTED_SIZE, selectedSize)
     }
 
     private fun startCameraIntentForResult() {
@@ -253,8 +229,8 @@ class StillImageActivity: AppCompatActivity() {
 
     // Returns max image width, always for portrait mode. Caller needs to swap width / height for
     // landscape mode.
-    private fun getImageMaxWidth(): Int? {
-        if (imageMaxWidth == null) {
+    private fun getImageMaxWidth(): Int {
+        if (imageMaxWidth == 0) {
             // Calculate the max width in portrait mode. This is done lazily since we need to wait for
             // a UI layout pass to get the right values. So delay it to first time image rendering time.
             imageMaxWidth = if (isLandScape) {
@@ -269,8 +245,8 @@ class StillImageActivity: AppCompatActivity() {
 
     // Returns max image height, always for portrait mode. Caller needs to swap width / height for
     // landscape mode.
-    private fun getImageMaxHeight(): Int? {
-        if (imageMaxHeight == null) {
+    private fun getImageMaxHeight(): Int {
+        if (imageMaxHeight == 0) {
             // Calculate the max width in portrait mode. This is done lazily since we need to wait for
             // a UI layout pass to get the right values. So delay it to first time image rendering time.
             imageMaxHeight = if (isLandScape) {
@@ -292,12 +268,8 @@ class StillImageActivity: AppCompatActivity() {
             SIZE_PREVIEW -> {
                 val maxWidthForPortraitMode = getImageMaxWidth()
                 val maxHeightForPortraitMode = getImageMaxHeight()
-                maxWidthForPortraitMode?.let { width ->
-                    maxHeightForPortraitMode?.let { height ->
-                        targetWidth = if (isLandScape) height else width
-                        targetHeight = if (isLandScape) width else height
-                    }
-                }
+                targetWidth = if (isLandScape) maxHeightForPortraitMode else maxWidthForPortraitMode
+                targetHeight = if (isLandScape) maxWidthForPortraitMode else maxHeightForPortraitMode
             }
             SIZE_640_480 -> {
                 targetWidth = if (isLandScape) 640 else 480
@@ -321,6 +293,28 @@ class StillImageActivity: AppCompatActivity() {
             CLOUD_DOCUMENT_TEXT_DETECTION -> CloudDocumentTextRecognitionProcessor()
             else -> throw IllegalStateException("Unknown selectedMode: $selectedMode")
         }
+    }
+
+    companion object {
+
+        private const val TAG = "StillImageActivity"
+
+        private const val CLOUD_LABEL_DETECTION = "Cloud Label"
+        private const val CLOUD_LANDMARK_DETECTION = "Landmark"
+        private const val CLOUD_TEXT_DETECTION = "Cloud Text"
+        private const val CLOUD_DOCUMENT_TEXT_DETECTION = "Doc Text"
+
+        private const val SIZE_PREVIEW = "w:max" // Available on-screen width.
+        private const val SIZE_1024_768 = "w:1024" // ~1024*768 in a normal ratio
+        private const val SIZE_640_480 = "w:640" // ~640*480 in a normal ratio
+
+        private const val KEY_IMAGE_URI = "com.googletest.firebase.ml.demo.KEY_IMAGE_URI"
+        private const val KEY_IMAGE_MAX_WIDTH = "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_WIDTH"
+        private const val KEY_IMAGE_MAX_HEIGHT = "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_HEIGHT"
+        private const val KEY_SELECTED_SIZE = "com.googletest.firebase.ml.demo.KEY_SELECTED_SIZE"
+
+        private const val REQUEST_IMAGE_CAPTURE = 1001
+        private const val REQUEST_CHOOSE_IMAGE = 1002
     }
 
 }
