@@ -20,7 +20,7 @@
   </ImageView>
 
 
-  <com.google.firebase.samples.apps.mlkit.GraphicOverlay
+  <com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
       android:id="@+id/previewOverlay"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
