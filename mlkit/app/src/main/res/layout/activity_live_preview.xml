@@ -9,21 +9,21 @@
     android:background="#000"
     android:keepScreenOn="true">
 
-  <com.google.firebase.samples.apps.mlkit.CameraSourcePreview
+  <com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview
       android:id="@+id/firePreview"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentStart="true"
       android:layout_alignParentTop="true">
 
-      <com.google.firebase.samples.apps.mlkit.GraphicOverlay
+      <com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
           android:id="@+id/fireFaceOverlay"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:layout_alignParentStart="true"
           android:layout_alignParentTop="true"
           android:layout_alignParentBottom="true"/>
-  </com.google.firebase.samples.apps.mlkit.CameraSourcePreview>
+  </com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview>
 
   <TextView android:id="@+id/text"
       android:layout_width="match_parent"
@@ -49,7 +49,7 @@
           android:layout_gravity="center" />
 
       <ToggleButton
-          android:id="@+id/facingswitch"
+          android:id="@+id/facingSwitch"
           android:layout_width="48dp"
           android:layout_height="48dp"
           android:layout_gravity="center_vertical"

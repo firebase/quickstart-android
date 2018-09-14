@@ -8,17 +8,17 @@
     android:background="#000"
     android:keepScreenOn="true">
 
-  <com.google.firebase.samples.apps.mlkit.CameraSourcePreview
+  <com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview
       android:id="@+id/firePreview"
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-    <com.google.firebase.samples.apps.mlkit.GraphicOverlay
+    <com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
         android:id="@+id/fireFaceOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-  </com.google.firebase.samples.apps.mlkit.CameraSourcePreview>
+  </com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview>
 
   <FrameLayout
       android:id="@+id/control"
@@ -43,7 +43,7 @@
           android:textStyle="bold" />
 
       <ToggleButton
-          android:id="@+id/facingswitch"
+          android:id="@+id/facingSwitch"
           android:layout_width="48dp"
           android:layout_height="48dp"
           android:layout_gravity="bottom|end"
