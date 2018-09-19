@@ -78,6 +78,7 @@ Getting Started
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Email/Password** and turn on the **Enable** switch. 
   - Turn on the **Email Link (passwordless sign-in)** switch, then click **Save**.
+- Replace your-project-id in the AndroidManifest.xml file with your project ID.
 - Run the app on your device or emulator.
     - Select **PasswordlessActivity** from the main screen.
     - Fill in your desired email and click **Send Link** to begin.
