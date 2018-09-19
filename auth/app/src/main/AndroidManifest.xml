@@ -40,10 +40,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data
-                    android:host="auth.example.com"
-                    android:pathPrefix="/emailSignInLink"
+                    android:host="<your-project-id>.firebaseapp.com"
                     android:scheme="https" />
-
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -84,8 +82,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data
-                    android:host="kotlin.auth.example.com"
-                    android:pathPrefix="/emailSignInLink"
+                    android:host="<your-project-id>.firebaseapp.com"
                     android:scheme="https" />
 
                 <category android:name="android.intent.category.BROWSABLE" />
