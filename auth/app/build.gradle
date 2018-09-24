@@ -30,7 +30,7 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:27.1.1'
+    resolutionStrategy.force 'com.android.support:support-annotations:28.0.0'
 }
 
 dependencies {
@@ -39,10 +39,10 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:animated-vector-drawable:27.1.1'
-    implementation 'com.android.support:cardview-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:animated-vector-drawable:28.0.0'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
 
     // Firebase Authentication
     implementation 'com.google.firebase:firebase-core:16.0.3'
@@ -57,8 +57,8 @@ dependencies {
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    implementation 'com.facebook.android:facebook-login:4.36.0'
-    implementation 'com.android.support:customtabs:27.1.1'
+    implementation 'com.facebook.android:facebook-login:4.36.1'
+    implementation 'com.android.support:customtabs:28.0.0'
 
     // Twitter Android SDK (only required for Twitter Login)
     implementation 'com.twitter.sdk.android:twitter-core:3.3.0'

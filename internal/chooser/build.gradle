@@ -23,8 +23,8 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:appcompat-v7:27.1.1'
-    api 'com.android.support:cardview-v7:27.1.1'
-    api 'com.android.support:recyclerview-v7:27.1.1'
+    api 'com.android.support:appcompat-v7:28.0.0'
+    api 'com.android.support:cardview-v7:28.0.0'
+    api 'com.android.support:recyclerview-v7:28.0.0'
     api 'com.android.support.constraint:constraint-layout:1.1.3'
 }
