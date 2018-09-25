@@ -116,9 +116,9 @@ public class NewPostActivity extends BaseActivity {
         mTitleField.setEnabled(enabled);
         mBodyField.setEnabled(enabled);
         if (enabled) {
-            mSubmitButton.setVisibility(View.VISIBLE);
+            mSubmitButton.show();
         } else {
-            mSubmitButton.setVisibility(View.GONE);
+            mSubmitButton.hide();
         }
     }
 

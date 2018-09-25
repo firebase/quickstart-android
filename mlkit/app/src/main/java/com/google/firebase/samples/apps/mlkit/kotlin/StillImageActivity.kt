@@ -178,12 +178,12 @@ class StillImageActivity: AppCompatActivity() {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_CHOOSE_IMAGE)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             tryReloadAndDetectInImage()
         } else if (requestCode == REQUEST_CHOOSE_IMAGE && resultCode == Activity.RESULT_OK) {
             // In this case, imageUri is returned by the chooser, save it.
-            imageUri = data.data
+            imageUri = data!!.data
             tryReloadAndDetectInImage()
         }
     }

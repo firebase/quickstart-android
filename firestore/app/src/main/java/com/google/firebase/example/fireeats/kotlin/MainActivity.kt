@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)

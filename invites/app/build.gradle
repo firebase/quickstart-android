@@ -1,16 +1,17 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-check.dependsOn 'assembleMainDebugAndroidTest'
+
+check.dependsOn 'assembleMainFlavorDebugAndroidTest'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     flavorDimensions "irrelevant"
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.invites"
         minSdkVersion 18
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 2
         versionName "1.0.1"
 
@@ -27,7 +28,7 @@ android {
     flavorDimensions "all"
 
     productFlavors {
-        main {
+        mainFlavor {
             dimension "all"
 
             // TODO(developer): Replace this with your app code
@@ -47,6 +48,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71"
 
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:design:28.0.0'
 
     implementation 'com.google.firebase:firebase-core:16.0.3'
