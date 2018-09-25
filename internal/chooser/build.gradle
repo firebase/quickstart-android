@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -23,8 +23,8 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:appcompat-v7:27.1.1'
-    api 'com.android.support:cardview-v7:27.1.1'
-    api 'com.android.support:recyclerview-v7:27.1.1'
+    api 'com.android.support:appcompat-v7:28.0.0'
+    api 'com.android.support:cardview-v7:28.0.0'
+    api 'com.android.support:recyclerview-v7:28.0.0'
     api 'com.android.support.constraint:constraint-layout:1.1.3'
 }

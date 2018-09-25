@@ -88,10 +88,10 @@ class NewPostActivity : BaseActivity() {
     private fun setEditingEnabled(enabled: Boolean) {
         fieldTitle.isEnabled = enabled
         fieldBody.isEnabled = enabled
-        fabSubmitPost.visibility = if (enabled) {
-            View.VISIBLE
+        if (enabled) {
+            fabSubmitPost.show()
         } else {
-            View.GONE
+            fabSubmitPost.hide()
         }
     }
 

@@ -72,7 +72,7 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
     // [END on_start_check_user]
 
     // [START on_activity_result]
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Pass the activity result to the Twitter login button.
