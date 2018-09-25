@@ -62,7 +62,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
     // [END on_start_check_user]
 
     // [START onactivityresult]
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);

@@ -119,11 +119,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         out.putParcelable(KEY_DOWNLOAD_URL, downloadUrl)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         Log.d(TAG, "onActivityResult:$requestCode:$resultCode:$data")
         if (requestCode == RC_TAKE_PICTURE) {
             if (resultCode == Activity.RESULT_OK) {
-                fileUri = data.data
+                fileUri = data?.data
 
                 if (fileUri != null) {
                     uploadFromUri(fileUri!!)
