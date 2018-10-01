@@ -9,32 +9,25 @@
     ],
 
     "content": "README.md",
+    
+    "pages" : {
+      "admob/README.md": "Admob",
+      "analytics/README.md": "Analytics",
+      "app-indexing/README.md": "App Indexing",
+      "auth/README.md": "Authentication",
+      "config/README.md": "Remote Config",
+      "crash/README.md": "Crashlytics",
+      "database/README.md": "Realtime Database",
+      "dynamiclinks/README.md": "Dynamic Links",
+      "firestore/README.md": "Cloud Firestore",
+      "functions/README.md": "Cloud Functions",
+      "invites/README.md": "App Invites",
+      "messaging/README.md": "Cloud Messaging",
+      "mlkit/README.md": "ML Kit",
+      "perf/README.md": "Performance Monitoring",
+      "storage/README.md": "Cloud Storage"
+    },
 
-    // These are relative paths in the same repo,
-    // each of these paths must have a .opensource/project.json
-    "subprojects": [],
-
-    // Other markdown pages that should be rendered nicely
-    "pages" : [
-      "admob/README.md",
-      "analytics/README.md",
-      "app-indexing/README.md",
-      "auth/README.md",
-      "config/README.md",
-      "crash/README.md",
-      "database/README.md",
-      "dynamiclinks/README.md",
-      "firestore/README.md",
-      "functions/README.md",
-      "invites/README.md",
-      "messaging/README.md",
-      "mlkit/README.md",
-      "perf/README.md",
-      "storage/README.md"
-    ],
-
-    // Related projects on Github, in the format $owner/$repo[/$subproject]
-    // where subproject is optional.
     "related": [
       "firebase/quickstart-ios",
       "firebase/quickstart-js"
