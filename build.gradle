@@ -1,5 +1,4 @@
 buildscript {
-    ext.kotlin_version = '1.2.61'
     repositories {
         google()
         jcenter()
@@ -13,7 +12,6 @@ buildscript {
         classpath 'com.google.gms:google-services:4.1.0'
         classpath 'com.google.firebase:firebase-plugins:1.1.5'
         classpath 'io.fabric.tools:gradle:1.26.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
