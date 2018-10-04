@@ -14,7 +14,7 @@ import java.io.IOException
 /** Barcode Detector Demo.  */
 class BarcodeScanningProcessor : VisionProcessorBase<List<FirebaseVisionBarcode>>() {
 
-    private val detector: FirebaseVisionBarcodeDetector
+    private val detector: FirebaseVisionBarcodeDetector = FirebaseVision.getInstance().visionBarcodeDetector
 
     init {
         // Note that if you know which format of barcode your app is dealing with, detection will be
@@ -22,7 +22,6 @@ class BarcodeScanningProcessor : VisionProcessorBase<List<FirebaseVisionBarcode>
         // FirebaseVisionBarcodeDetectorOptions.Builder()
         //     .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE)
         //     .build()
-        detector = FirebaseVision.getInstance().visionBarcodeDetector
     }
 
     override fun stop() {
