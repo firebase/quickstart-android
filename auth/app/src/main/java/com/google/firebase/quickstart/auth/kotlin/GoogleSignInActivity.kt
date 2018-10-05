@@ -48,6 +48,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
         // [START initialize_auth]
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance()
         // [END initialize_auth]
     }

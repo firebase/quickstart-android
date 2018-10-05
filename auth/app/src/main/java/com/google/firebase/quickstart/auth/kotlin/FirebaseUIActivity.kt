@@ -28,6 +28,7 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_firebase_ui)
 
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance()
 
         signInButton.setOnClickListener(this)

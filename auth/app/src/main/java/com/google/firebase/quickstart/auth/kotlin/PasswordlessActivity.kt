@@ -25,6 +25,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_passwordless)
 
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance()
 
         passwordlessSendEmailButton.setOnClickListener(this)

@@ -40,6 +40,7 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // [START initialize_auth]
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance()
         // [END initialize_auth]
     }
