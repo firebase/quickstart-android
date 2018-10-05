@@ -51,6 +51,8 @@ class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) : 
         canvas.drawRect(rect, rectPaint)
 
         // Renders the barcode at the bottom of the box.
-        canvas.drawText(barcode.rawValue, rect.left, rect.bottom, barcodePaint)
+        barcode.rawValue?.let { value ->
+            canvas.drawText(value, rect.left, rect.bottom, barcodePaint)
+        }
     }
 }
