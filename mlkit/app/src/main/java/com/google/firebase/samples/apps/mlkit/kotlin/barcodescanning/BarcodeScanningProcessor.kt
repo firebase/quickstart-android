@@ -14,15 +14,14 @@ import java.io.IOException
 /** Barcode Detector Demo.  */
 class BarcodeScanningProcessor : VisionProcessorBase<List<FirebaseVisionBarcode>>() {
 
-    private val detector: FirebaseVisionBarcodeDetector
 
-    init {
-        // Note that if you know which format of barcode your app is dealing with, detection will be
-        // faster to specify the supported barcode formats one by one, e.g.
-        // FirebaseVisionBarcodeDetectorOptions.Builder()
-        //     .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE)
-        //     .build()
-        detector = FirebaseVision.getInstance().visionBarcodeDetector
+    // Note that if you know which format of barcode your app is dealing with, detection will be
+    // faster to specify the supported barcode formats one by one, e.g.
+    // FirebaseVisionBarcodeDetectorOptions.Builder()
+    //     .setBarcodeFormats(FirebaseVisionBarcode.FORMAT_QR_CODE)
+    //     .build()
+    private val detector: FirebaseVisionBarcodeDetector by lazy {
+        FirebaseVision.getInstance().visionBarcodeDetector
     }
 
     override fun stop() {

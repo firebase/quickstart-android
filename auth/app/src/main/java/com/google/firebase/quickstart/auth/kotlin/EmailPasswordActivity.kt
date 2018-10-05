@@ -27,6 +27,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
         verifyEmailButton.setOnClickListener(this)
 
         // [START initialize_auth]
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance()
         // [END initialize_auth]
     }

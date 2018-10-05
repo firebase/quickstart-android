@@ -41,6 +41,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         signOutButton.setOnClickListener(this)
 
         // [START initialize_auth]
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance()
         // [END initialize_auth]
 

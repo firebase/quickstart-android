@@ -48,6 +48,7 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passwordless);
 
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         mSendLinkButton = findViewById(R.id.passwordlessSendEmailButton);
