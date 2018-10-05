@@ -143,11 +143,11 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
     private fun startPhoneNumberVerification(phoneNumber: String) {
         // [START start_phone_auth]
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber, // Phone number to verify
-                60, // Timeout duration
+                phoneNumber,      // Phone number to verify
+                60,               // Timeout duration
                 TimeUnit.SECONDS, // Unit of timeout
-                this, // Activity (for callback binding)
-                mCallbacks)        // OnVerificationStateChangedCallbacks
+                this,             // Activity (for callback binding)
+                mCallbacks)       // OnVerificationStateChangedCallbacks
         // [END start_phone_auth]
 
         mVerificationInProgress = true
