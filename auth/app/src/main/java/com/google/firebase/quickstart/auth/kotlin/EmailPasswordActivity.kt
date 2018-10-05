@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_emailpassword.*
 class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
     // [START declare_auth]
-    lateinit var mAuth: FirebaseAuth
+    private lateinit var mAuth: FirebaseAuth
     // [END declare_auth]
 
     public override fun onCreate(savedInstanceState: Bundle?) {
