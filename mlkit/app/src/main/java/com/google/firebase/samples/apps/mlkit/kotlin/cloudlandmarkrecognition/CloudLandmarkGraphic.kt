@@ -10,21 +10,16 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 /** Graphic instance for rendering detected landmark.  */
 class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
 
-    private val rectPaint: Paint
-    private val landmarkPaint: Paint
-    private lateinit var landmark: FirebaseVisionCloudLandmark
-
-    init {
-
-        rectPaint = Paint()
-        rectPaint.color = TEXT_COLOR
-        rectPaint.style = Paint.Style.STROKE
-        rectPaint.strokeWidth = STROKE_WIDTH
-
-        landmarkPaint = Paint()
-        landmarkPaint.color = TEXT_COLOR
-        landmarkPaint.textSize = TEXT_SIZE
+    private val rectPaint = Paint().apply {
+        color = TEXT_COLOR
+        style = Paint.Style.STROKE
+        strokeWidth = STROKE_WIDTH
     }
+    private val landmarkPaint = Paint().apply {
+        color = TEXT_COLOR
+        textSize = TEXT_SIZE
+    }
+    private lateinit var landmark: FirebaseVisionCloudLandmark
 
     /**
      * Updates the landmark instance from the detection of the most recent frame. Invalidates the
@@ -39,9 +34,6 @@ class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(ove
      * Draws the landmark block annotations for position, size, and raw value on the supplied canvas.
      */
     override fun draw(canvas: Canvas) {
-        if (landmark == null) {
-            throw IllegalStateException("Attempting to draw a null landmark.")
-        }
         if (landmark.landmark == null || landmark.boundingBox == null) {
             return
         }
