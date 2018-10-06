@@ -19,7 +19,7 @@ class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(ove
         color = TEXT_COLOR
         textSize = TEXT_SIZE
     }
-    private lateinit var landmark: FirebaseVisionCloudLandmark
+    private var landmark: FirebaseVisionCloudLandmark? = null
 
     /**
      * Updates the landmark instance from the detection of the most recent frame. Invalidates the
@@ -34,23 +34,24 @@ class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(ove
      * Draws the landmark block annotations for position, size, and raw value on the supplied canvas.
      */
     override fun draw(canvas: Canvas) {
-        if (landmark.landmark == null || landmark.boundingBox == null) {
-            return
-        }
+        landmark?.let { lm ->
+            if (lm.landmark == null || lm.boundingBox == null) {
+                return
+            }
 
-        // Draws the bounding box around the LandmarkBlock.
-        val rect = RectF(landmark.boundingBox)
-        with(rect) {
-            left = translateX(left)
-            top = translateY(top)
-            right = translateX(right)
-            bottom = translateY(bottom)
-            canvas.drawRect(this, rectPaint)
+            // Draws the bounding box around the LandmarkBlock.
+            val rect = RectF(lm.boundingBox)
+            with(rect) {
+                left = translateX(left)
+                top = translateY(top)
+                right = translateX(right)
+                bottom = translateY(bottom)
+                canvas.drawRect(this, rectPaint)
 
-            // Renders the landmark at the bottom of the box.
-            canvas.drawText(landmark.landmark, left, bottom, landmarkPaint)
-        }
-
+                // Renders the landmark at the bottom of the box.
+                canvas.drawText(lm.landmark, left, bottom, landmarkPaint)
+            }
+        } ?: kotlin.run { throw IllegalStateException("Attempting to draw a null landmark.") }
     }
 
     companion object {
