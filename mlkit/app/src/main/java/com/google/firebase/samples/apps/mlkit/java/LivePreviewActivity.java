@@ -36,12 +36,12 @@ import com.google.firebase.samples.apps.mlkit.R;
 import com.google.firebase.samples.apps.mlkit.common.CameraSource;
 import com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
-import com.google.firebase.samples.apps.mlkit.barcodescanning.BarcodeScanningProcessor;
-import com.google.firebase.samples.apps.mlkit.custommodel.CustomImageClassifierProcessor;
-import com.google.firebase.samples.apps.mlkit.facedetection.FaceContourDetectorProcessor;
-import com.google.firebase.samples.apps.mlkit.facedetection.FaceDetectionProcessor;
-import com.google.firebase.samples.apps.mlkit.imagelabeling.ImageLabelingProcessor;
-import com.google.firebase.samples.apps.mlkit.textrecognition.TextRecognitionProcessor;
+import com.google.firebase.samples.apps.mlkit.java.barcodescanning.BarcodeScanningProcessor;
+import com.google.firebase.samples.apps.mlkit.java.custommodel.CustomImageClassifierProcessor;
+import com.google.firebase.samples.apps.mlkit.java.facedetection.FaceContourDetectorProcessor;
+import com.google.firebase.samples.apps.mlkit.java.facedetection.FaceDetectionProcessor;
+import com.google.firebase.samples.apps.mlkit.java.imagelabeling.ImageLabelingProcessor;
+import com.google.firebase.samples.apps.mlkit.java.textrecognition.TextRecognitionProcessor;
 
 import java.io.IOException;
 import java.util.ArrayList;

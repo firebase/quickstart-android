@@ -1,4 +1,4 @@
-package com.google.firebase.samples.apps.mlkit.facedetection;
+package com.google.firebase.samples.apps.mlkit.java.facedetection;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -6,8 +6,8 @@ import android.graphics.Paint;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceContour;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark;
-import com.google.firebase.samples.apps.mlkit.GraphicOverlay;
-import com.google.firebase.samples.apps.mlkit.GraphicOverlay.Graphic;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 
 /** Graphic instance for rendering face contours graphic overlay view. */
 public class FaceContourGraphic extends Graphic {

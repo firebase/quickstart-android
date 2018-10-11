@@ -92,8 +92,10 @@ constructor(activity: Activity) {
         return interpreter!!
                 .run(inputs, dataOptions)
                 .continueWith { task ->
-                    val labelProbArray = task.result.getOutput<Array<ByteArray>>(0)
-                    printTopKLabels(labelProbArray)
+                    task.result?.let {result ->
+                        val labelProbArray = result.getOutput<Array<ByteArray>>(0)
+                        printTopKLabels(labelProbArray)
+                    }
                 }
     }
 

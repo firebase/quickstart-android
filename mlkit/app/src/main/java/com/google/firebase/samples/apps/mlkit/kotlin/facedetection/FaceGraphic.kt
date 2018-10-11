@@ -99,16 +99,16 @@ class FaceGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
         canvas.drawRect(left, top, right, bottom, boxPaint)
 
         // draw landmarks
-        drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.BOTTOM_MOUTH)
+        drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.MOUTH_BOTTOM)
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.LEFT_CHEEK)
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.LEFT_EAR)
-        drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.LEFT_MOUTH)
+        drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.MOUTH_LEFT)
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.LEFT_EYE)
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.NOSE_BASE)
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_CHEEK)
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_EAR)
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_EYE)
-        drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_MOUTH)
+        drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.MOUTH_RIGHT)
     }
 
     private fun drawLandmarkPosition(canvas: Canvas, face: FirebaseVisionFace, landmarkID: Int) {

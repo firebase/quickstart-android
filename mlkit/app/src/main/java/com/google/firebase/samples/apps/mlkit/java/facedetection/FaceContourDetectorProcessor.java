@@ -1,4 +1,4 @@
-package com.google.firebase.samples.apps.mlkit.facedetection;
+package com.google.firebase.samples.apps.mlkit.java.facedetection;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -8,9 +8,9 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
-import com.google.firebase.samples.apps.mlkit.FrameMetadata;
-import com.google.firebase.samples.apps.mlkit.GraphicOverlay;
-import com.google.firebase.samples.apps.mlkit.VisionProcessorBase;
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.java.VisionProcessorBase;
 
 import java.io.IOException;
 import java.util.List;

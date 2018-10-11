@@ -19,9 +19,8 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
 
     init {
         val options = FirebaseVisionFaceDetectorOptions.Builder()
-                .setClassificationType(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
-                .setLandmarkType(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
-                .setTrackingEnabled(true)
+                .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+                .enableTracking()
                 .build()
 
         detector = FirebaseVision.getInstance().getVisionFaceDetector(options)
