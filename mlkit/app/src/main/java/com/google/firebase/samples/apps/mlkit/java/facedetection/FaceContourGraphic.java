@@ -12,16 +12,11 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 /** Graphic instance for rendering face contours graphic overlay view. */
 public class FaceContourGraphic extends Graphic {
 
-  private static final float FACE_POSITION_RADIUS = 10.0f;
-  private static final float ID_TEXT_SIZE = 70.0f;
+  private static final float FACE_POSITION_RADIUS = 4.0f;
+  private static final float ID_TEXT_SIZE = 30.0f;
   private static final float ID_Y_OFFSET = 80.0f;
   private static final float ID_X_OFFSET = -70.0f;
   private static final float BOX_STROKE_WIDTH = 5.0f;
-
-  private static final int[] COLOR_CHOICES = {
-    Color.BLUE, Color.CYAN, Color.GREEN, Color.MAGENTA, Color.RED, Color.WHITE, Color.YELLOW
-  };
-  private static int currentColorIndex = 0;
 
   private final Paint facePositionPaint;
   private final Paint idPaint;
@@ -29,11 +24,11 @@ public class FaceContourGraphic extends Graphic {
 
   private volatile FirebaseVisionFace firebaseVisionFace;
 
-  public FaceContourGraphic(GraphicOverlay overlay) {
+  public FaceContourGraphic(GraphicOverlay overlay, FirebaseVisionFace face) {
     super(overlay);
 
-    currentColorIndex = (currentColorIndex + 1) % COLOR_CHOICES.length;
-    final int selectedColor = COLOR_CHOICES[currentColorIndex];
+    this.firebaseVisionFace = face;
+    final int selectedColor = Color.WHITE;
 
     facePositionPaint = new Paint();
     facePositionPaint.setColor(selectedColor);
@@ -46,15 +41,6 @@ public class FaceContourGraphic extends Graphic {
     boxPaint.setColor(selectedColor);
     boxPaint.setStyle(Paint.Style.STROKE);
     boxPaint.setStrokeWidth(BOX_STROKE_WIDTH);
-  }
-
-  /**
-   * Updates the face instance from the detection of the most recent frame. Invalidates the relevant
-   * portions of the overlay to trigger a redraw.
-   */
-  public void updateFace(FirebaseVisionFace face) {
-    firebaseVisionFace = face;
-    postInvalidate();
   }
 
   /** Draws the face annotations for position on the supplied canvas. */

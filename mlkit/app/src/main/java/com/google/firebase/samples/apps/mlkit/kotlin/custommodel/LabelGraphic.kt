@@ -6,21 +6,13 @@ import android.graphics.Paint
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
 /** Graphic instance for rendering image labels.  */
-class LabelGraphic(private val overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
+class LabelGraphic(private val overlay: GraphicOverlay, private val labels: List<String>) : GraphicOverlay.Graphic(overlay) {
 
     private val textPaint: Paint = Paint()
-
-    private lateinit var labels: List<String>
 
     init {
         textPaint.color = Color.WHITE
         textPaint.textSize = 60.0f
-    }
-
-    @Synchronized
-    internal fun updateLabel(labels: List<String>) {
-        this.labels = labels
-        postInvalidate()
     }
 
     @Synchronized

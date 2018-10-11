@@ -30,8 +30,6 @@ class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) : 
         barcodePaint = Paint()
         barcodePaint.color = TEXT_COLOR
         barcodePaint.textSize = TEXT_SIZE
-        // Redraw the overlay, as this graphic has been added.
-        postInvalidate()
     }
 
     /**

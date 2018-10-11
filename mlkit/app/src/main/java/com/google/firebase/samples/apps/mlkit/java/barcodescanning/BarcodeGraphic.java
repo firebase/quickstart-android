@@ -46,8 +46,6 @@ public class BarcodeGraphic extends Graphic {
     barcodePaint = new Paint();
     barcodePaint.setColor(TEXT_COLOR);
     barcodePaint.setTextSize(TEXT_SIZE);
-    // Redraw the overlay, as this graphic has been added.
-    postInvalidate();
   }
 
   /**

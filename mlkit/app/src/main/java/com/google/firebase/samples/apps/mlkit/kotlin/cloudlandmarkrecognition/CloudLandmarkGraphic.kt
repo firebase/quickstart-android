@@ -8,7 +8,8 @@ import com.google.firebase.ml.vision.cloud.landmark.FirebaseVisionCloudLandmark
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
 /** Graphic instance for rendering detected landmark.  */
-class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
+class CloudLandmarkGraphic(overlay: GraphicOverlay, landmark: FirebaseVisionCloudLandmark) :
+    GraphicOverlay.Graphic(overlay) {
 
     private val rectPaint: Paint = Paint()
     private val landmarkPaint: Paint
@@ -23,15 +24,6 @@ class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(ove
         landmarkPaint = Paint()
         landmarkPaint.color = TEXT_COLOR
         landmarkPaint.textSize = TEXT_SIZE
-    }
-
-    /**
-     * Updates the landmark instance from the detection of the most recent frame. Invalidates the
-     * relevant portions of the overlay to trigger a redraw.
-     */
-    internal fun updateLandmark(landmark: FirebaseVisionCloudLandmark) {
-        this.landmark = landmark
-        postInvalidate()
     }
 
     /**

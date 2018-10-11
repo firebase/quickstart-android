@@ -1,5 +1,6 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
@@ -21,6 +22,7 @@ class CloudDocumentTextRecognitionProcessor : VisionProcessorBase<FirebaseVision
     }
 
     override fun onSuccess(
+        originalCameraImage: Bitmap,
         text: FirebaseVisionDocumentText,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
@@ -35,9 +37,12 @@ class CloudDocumentTextRecognitionProcessor : VisionProcessorBase<FirebaseVision
                 for (l in words.indices) {
                     val symbols = words[l].symbols
                     for (m in symbols.indices) {
-                        val cloudDocumentTextGraphic = CloudDocumentTextGraphic(graphicOverlay,
-                                symbols[m])
+                        val cloudDocumentTextGraphic = CloudDocumentTextGraphic(
+                            graphicOverlay,
+                            symbols[m]
+                        )
                         graphicOverlay.add(cloudDocumentTextGraphic)
+                        graphicOverlay.postInvalidate()
                     }
                 }
             }
