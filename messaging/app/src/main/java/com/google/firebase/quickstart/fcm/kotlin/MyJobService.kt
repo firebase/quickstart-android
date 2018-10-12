@@ -20,5 +20,4 @@ class MyJobService : JobService() {
 
         private val TAG = "MyJobService"
     }
-
 }

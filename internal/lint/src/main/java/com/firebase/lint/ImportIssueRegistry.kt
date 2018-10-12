@@ -10,5 +10,4 @@ class ImportIssueRegistry : IssueRegistry() {
 
     override val issues: List<Issue>
         get() = listOf(ISSUE_INVALID_IMPORT)
-
 }

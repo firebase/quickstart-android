@@ -134,7 +134,6 @@ class MyDownloadService : MyBaseTaskService() {
         const val EXTRA_DOWNLOAD_PATH = "extra_download_path"
         const val EXTRA_BYTES_DOWNLOADED = "extra_bytes_downloaded"
 
-
         val intentFilter: IntentFilter
             get() {
                 val filter = IntentFilter()

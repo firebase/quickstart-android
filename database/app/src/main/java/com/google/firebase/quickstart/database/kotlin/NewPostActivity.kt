@@ -3,7 +3,6 @@ package com.google.firebase.quickstart.database.kotlin
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.google.firebase.quickstart.database.R
@@ -120,6 +119,5 @@ class NewPostActivity : BaseActivity() {
 
         private const val TAG = "NewPostActivity"
         private const val REQUIRED = "Required"
-
     }
 }

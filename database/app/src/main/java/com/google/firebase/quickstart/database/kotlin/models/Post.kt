@@ -7,12 +7,13 @@ import java.util.*
 // [START post_class]
 @IgnoreExtraProperties
 data class Post(
-        var uid: String? = "",
-        var author: String? = "",
-        var title: String? = "",
-        var body: String? = "",
-        var starCount: Int = 0,
-        var stars: MutableMap<String, Boolean> = HashMap()) {
+    var uid: String? = "",
+    var author: String? = "",
+    var title: String? = "",
+    var body: String? = "",
+    var starCount: Int = 0,
+    var stars: MutableMap<String, Boolean> = HashMap()
+) {
 
     // [START post_to_map]
     @Exclude
@@ -27,6 +28,5 @@ data class Post(
         )
     }
     // [END post_to_map]
-
 }
 // [END post_class]

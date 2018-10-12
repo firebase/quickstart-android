@@ -13,8 +13,6 @@ import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.CameraSource
-import com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview
-import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.barcodescanning.BarcodeScanningProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.custommodel.CustomImageClassifierProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceDetectionProcessor
@@ -46,7 +44,6 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
             } catch (e: Exception) {
                 arrayOfNulls(0)
             }
-
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,7 +149,6 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
         } catch (e: FirebaseMLException) {
             Log.e(TAG, "can not create camera source: $model")
         }
-
     }
 
     /**
@@ -175,7 +171,6 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
                 it?.release()
                 cameraSource = null
             }
-
         }
     }
 
@@ -226,7 +221,10 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         Log.i(TAG, "Permission granted!")
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)

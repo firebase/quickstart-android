@@ -47,5 +47,4 @@ open class RatingAdapter(query: Query) : FirestoreAdapter<RatingAdapter.ViewHold
                     "MM/dd/yyyy", Locale.US)
         }
     }
-
 }

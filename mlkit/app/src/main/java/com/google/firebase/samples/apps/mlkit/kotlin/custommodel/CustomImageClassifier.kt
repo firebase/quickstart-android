@@ -57,7 +57,7 @@ constructor(activity: Activity) {
         val cloudSource = FirebaseCloudModelSource.Builder(HOSTED_MODEL_NAME)
                 .enableModelUpdates(true)
                 .setInitialDownloadConditions(conditions)
-                .setUpdatesDownloadConditions(conditions)  // You could also specify different
+                .setUpdatesDownloadConditions(conditions) // You could also specify different
                 // conditions for updates.
                 .build()
         val manager = FirebaseModelManager.getInstance()
@@ -118,7 +118,10 @@ constructor(activity: Activity) {
     /** Writes Image data into a `ByteBuffer`.  */
     @Synchronized
     private fun convertBitmapToByteBuffer(
-            buffer: ByteBuffer, width: Int, height: Int): ByteBuffer {
+        buffer: ByteBuffer,
+        width: Int,
+        height: Int
+    ): ByteBuffer {
         val imgData = ByteBuffer.allocateDirect(
                 DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE)
         imgData.order(ByteOrder.nativeOrder())

@@ -20,5 +20,4 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                         Intent(this, com.google.samples.quickstart.admobexample.kotlin.MainActivity::class.java))
         )
     }
-
 }

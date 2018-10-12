@@ -20,5 +20,4 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                         Intent(this, com.google.samples.quickstart.crash.kotlin.MainActivity::class.java))
         )
     }
-
 }

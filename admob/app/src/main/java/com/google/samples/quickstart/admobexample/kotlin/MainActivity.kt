@@ -121,5 +121,4 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private val TAG = "MainActivity"
     }
-
 }

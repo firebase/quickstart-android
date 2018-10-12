@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
                     Crashlytics.logException(ex)
                     // [END crashlytics_log_and_report]
                 }
-
             } else {
                 throw NullPointerException()
             }

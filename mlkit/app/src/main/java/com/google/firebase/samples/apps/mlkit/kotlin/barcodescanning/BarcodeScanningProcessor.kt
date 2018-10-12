@@ -14,7 +14,6 @@ import java.io.IOException
 /** Barcode Detector Demo.  */
 class BarcodeScanningProcessor : VisionProcessorBase<List<FirebaseVisionBarcode>>() {
 
-
     // Note that if you know which format of barcode your app is dealing with, detection will be
     // faster to specify the supported barcode formats one by one, e.g.
     // FirebaseVisionBarcodeDetectorOptions.Builder()
@@ -30,15 +29,17 @@ class BarcodeScanningProcessor : VisionProcessorBase<List<FirebaseVisionBarcode>
         } catch (e: IOException) {
             Log.e(TAG, "Exception thrown while trying to close Barcode Detector: $e")
         }
-
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionBarcode>> {
         return detector.detectInImage(image)
     }
 
-    override fun onSuccess(barcodes: List<FirebaseVisionBarcode>, frameMetadata: FrameMetadata,
-                           graphicOverlay: GraphicOverlay) {
+    override fun onSuccess(
+        barcodes: List<FirebaseVisionBarcode>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         for (i in barcodes.indices) {
             val barcode = barcodes[i]

@@ -33,7 +33,6 @@ class DeepLinkActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
     override fun onClick(v: View) {
         val i = v.id
         if (i == R.id.buttonOk) {

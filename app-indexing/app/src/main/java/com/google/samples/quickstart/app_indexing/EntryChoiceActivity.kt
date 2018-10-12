@@ -19,5 +19,4 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                         Intent(this, com.google.samples.quickstart.app_indexing.kotlin.MainActivity::class.java))
         )
     }
-
 }

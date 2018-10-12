@@ -19,7 +19,6 @@ import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.viewholder.PostViewHolder
 import kotlinx.android.synthetic.main.fragment_all_posts.view.*
 
-
 abstract class PostListFragment : Fragment() {
 
     // [START define_database_reference]
@@ -33,8 +32,11 @@ abstract class PostListFragment : Fragment() {
     val uid: String
         get() = FirebaseAuth.getInstance().currentUser!!.uid
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val rootView = inflater.inflate(R.layout.fragment_all_posts, container, false)
 
@@ -122,15 +124,17 @@ abstract class PostListFragment : Fragment() {
                 return Transaction.success(mutableData)
             }
 
-            override fun onComplete(databaseError: DatabaseError?, b: Boolean,
-                                    dataSnapshot: DataSnapshot?) {
+            override fun onComplete(
+                databaseError: DatabaseError?,
+                b: Boolean,
+                dataSnapshot: DataSnapshot?
+            ) {
                 // Transaction completed
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError!!)
             }
         })
     }
     // [END post_stars_transaction]
-
 
     override fun onStart() {
         super.onStart()
@@ -147,7 +151,5 @@ abstract class PostListFragment : Fragment() {
     companion object {
 
         private const val TAG = "PostListFragment"
-
     }
-
 }

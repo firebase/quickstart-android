@@ -24,9 +24,10 @@ class CloudDocumentTextRecognitionProcessor : VisionProcessorBase<FirebaseVision
     }
 
     override fun onSuccess(
-            text: FirebaseVisionDocumentText,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        text: FirebaseVisionDocumentText,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         Log.d(TAG, "detected text is: ${text.text}")
         val blocks = text.blocks

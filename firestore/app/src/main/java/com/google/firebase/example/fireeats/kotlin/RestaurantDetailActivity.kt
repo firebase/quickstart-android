@@ -99,7 +99,7 @@ class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnap
             return
         }
 
-        snapshot?.let{
+        snapshot?.let {
             val restaurant = snapshot.toObject(Restaurant::class.java)
             if (restaurant != null) {
                 onRestaurantLoaded(restaurant)

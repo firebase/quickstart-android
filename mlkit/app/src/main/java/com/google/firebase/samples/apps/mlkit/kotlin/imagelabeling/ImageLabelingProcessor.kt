@@ -26,7 +26,6 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() 
         } catch (e: IOException) {
             Log.e(TAG, "Exception thrown while trying to close Text Detector: $e")
         }
-
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionLabel>> {
@@ -34,9 +33,10 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() 
     }
 
     override fun onSuccess(
-            labels: List<FirebaseVisionLabel>,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        labels: List<FirebaseVisionLabel>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         val labelGraphic = LabelGraphic(graphicOverlay, labels)
         graphicOverlay.add(labelGraphic)

@@ -34,8 +34,8 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_post_detail)
 
         // Get post key from intent
-        postKey = intent.getStringExtra(EXTRA_POST_KEY) ?:
-                throw IllegalArgumentException("Must pass EXTRA_POST_KEY")
+        postKey = intent.getStringExtra(EXTRA_POST_KEY)
+                ?: throw IllegalArgumentException("Must pass EXTRA_POST_KEY")
 
         // Initialize Database
         postReference = FirebaseDatabase.getInstance().reference
@@ -46,7 +46,6 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
         // Initialize Views
         buttonPostComment.setOnClickListener(this)
         recyclerPostComments.layoutManager = LinearLayoutManager(this)
-
     }
 
     public override fun onStart() {
@@ -131,7 +130,6 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
-
                     }
                 })
     }
@@ -142,11 +140,12 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
             itemView.commentAuthor.text = comment.author
             itemView.commentBody.text = comment.text
         }
-
     }
 
-    private class CommentAdapter(private val context: Context,
-                                 private val databaseReference: DatabaseReference) : RecyclerView.Adapter<CommentViewHolder>() {
+    private class CommentAdapter(
+        private val context: Context,
+        private val databaseReference: DatabaseReference
+    ) : RecyclerView.Adapter<CommentViewHolder>() {
 
         private val childEventListener: ChildEventListener?
 
@@ -257,13 +256,11 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                 databaseReference.removeEventListener(it)
             }
         }
-
     }
 
     companion object {
 
         private const val TAG = "PostDetailActivity"
         const val EXTRA_POST_KEY = "post_key"
-
     }
 }

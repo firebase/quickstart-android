@@ -45,7 +45,11 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         startActivity(Intent(this, clicked))
     }
 
-    class MyArrayAdapter(private val mContext: Context, resource: Int, private val mClasses: Array<Class<*>>)
+    class MyArrayAdapter(
+        private val mContext: Context,
+        resource: Int,
+        private val mClasses: Array<Class<*>>
+    )
         : ArrayAdapter<Class<*>>(mContext, resource, mClasses) {
         private var mDescriptionIds: IntArray? = null
 
@@ -57,7 +61,7 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
                 view = inflater.inflate(android.R.layout.simple_list_item_2, null)
             }
 
-            //Android internal resource hence can't use synthetic binding
+            // Android internal resource hence can't use synthetic binding
             view?.findViewById<TextView>(android.R.id.text1)?.text = mClasses[position].simpleName
             view?.findViewById<TextView>(android.R.id.text2)?.setText(mDescriptionIds!![position])
 

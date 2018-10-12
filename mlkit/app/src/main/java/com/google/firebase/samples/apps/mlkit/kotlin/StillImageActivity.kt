@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_still_image.*
 
 /** Activity demonstrating different image detector features with a still image from camera.  */
 @KeepName
-class StillImageActivity: AppCompatActivity() {
+class StillImageActivity : AppCompatActivity() {
 
     private var selectedMode = CLOUD_LABEL_DETECTION
     private var selectedSize: String = SIZE_PREVIEW
@@ -47,7 +47,7 @@ class StillImageActivity: AppCompatActivity() {
 
         setContentView(R.layout.activity_still_image)
 
-        getImageButton.setOnClickListener{ view ->
+        getImageButton.setOnClickListener { view ->
                     // Menu for selecting either: a) take new photo b) select from existing
                     val popup = PopupMenu(this, view)
                     popup.setOnMenuItemClickListener { menuItem ->
@@ -94,7 +94,6 @@ class StillImageActivity: AppCompatActivity() {
         }
     }
 
-
     private fun populateFeatureSelector() {
         val options = ArrayList<String>()
         options.add(CLOUD_LABEL_DETECTION)
@@ -110,7 +109,11 @@ class StillImageActivity: AppCompatActivity() {
         featureSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(
-                    parentView: AdapterView<*>, selectedItemView: View, pos: Int, id: Long) {
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                pos: Int,
+                id: Long
+            ) {
                 selectedMode = parentView.getItemAtPosition(pos).toString()
                 createImageProcessor()
                 tryReloadAndDetectInImage()
@@ -135,7 +138,11 @@ class StillImageActivity: AppCompatActivity() {
         sizeSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(
-                    parentView: AdapterView<*>, selectedItemView: View, pos: Int, id: Long) {
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                pos: Int,
+                id: Long
+            ) {
                 selectedSize = parentView.getItemAtPosition(pos).toString()
                 tryReloadAndDetectInImage()
             }
@@ -224,7 +231,6 @@ class StillImageActivity: AppCompatActivity() {
         } catch (e: IOException) {
             Log.e(TAG, "Error retrieving saved image")
         }
-
     }
 
     // Returns max image width, always for portrait mode. Caller needs to swap width / height for
@@ -316,5 +322,4 @@ class StillImageActivity: AppCompatActivity() {
         private const val REQUEST_IMAGE_CAPTURE = 1001
         private const val REQUEST_CHOOSE_IMAGE = 1002
     }
-
 }

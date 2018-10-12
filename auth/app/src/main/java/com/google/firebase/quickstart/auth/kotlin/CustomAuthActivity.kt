@@ -10,7 +10,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
 import kotlinx.android.synthetic.main.activity_custom.*
 
-
 /**
  * Demonstrate Firebase Authentication using a custom minted token. For more information, see:
  * https://firebase.google.com/docs/auth/android/custom-auth
@@ -58,7 +57,6 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
         super.onResume()
         registerReceiver(mTokenReceiver, TokenBroadcastReceiver.filter)
     }
-
 
     override fun onPause() {
         super.onPause()
@@ -110,12 +108,10 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
         val i = v.id
         if (i == R.id.buttonSignIn) {
             startSignIn()
-
         }
     }
 
     companion object {
         private val TAG = "CustomAuthActivity"
     }
-
 }

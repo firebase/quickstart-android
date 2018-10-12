@@ -13,7 +13,6 @@ import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterLoginButton
 import kotlinx.android.synthetic.main.activity_twitter.*
 
-
 class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
 
     // [START declare_auth]
@@ -147,5 +146,4 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
     companion object {
         private val TAG = "TwitterLogin"
     }
-
 }

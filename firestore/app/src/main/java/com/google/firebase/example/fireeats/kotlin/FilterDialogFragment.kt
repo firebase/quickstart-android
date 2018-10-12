@@ -66,7 +66,6 @@ class FilterDialogFragment : DialogFragment() {
             } else {
                 null
             }
-
         }
 
     private val sortDirection: Query.Direction
@@ -83,7 +82,6 @@ class FilterDialogFragment : DialogFragment() {
             } else {
                 Query.Direction.DESCENDING
             }
-
         }
 
     val filters: Filters
@@ -102,12 +100,13 @@ class FilterDialogFragment : DialogFragment() {
     interface FilterListener {
 
         fun onFilter(filters: Filters)
-
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         rootView = inflater.inflate(R.layout.dialog_filters, container, false)
 
         rootView.buttonSearch.setOnClickListener { onSearchClicked() }

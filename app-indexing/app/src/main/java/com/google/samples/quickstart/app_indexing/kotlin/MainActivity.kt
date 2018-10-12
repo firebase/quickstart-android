@@ -1,6 +1,5 @@
 package com.google.samples.quickstart.app_indexing.kotlin
 
-
 // [START import_classes]
 import android.content.Intent
 import android.net.Uri

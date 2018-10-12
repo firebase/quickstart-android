@@ -65,7 +65,6 @@ class MainActivity : AppCompatActivity() {
             setUserFavoriteFood(userFavoriteFood)
         }
 
-
         // Create the adapter that will return a fragment for each image.
         mImagePagerAdapter = ImagePagerAdapter(supportFragmentManager, IMAGE_INFOS)
 
@@ -219,8 +218,8 @@ class MainActivity : AppCompatActivity() {
      * one of the sections/tabs/pages.
      */
     inner class ImagePagerAdapter(
-            fm: FragmentManager,
-            private val infos: Array<ImageInfo>
+        fm: FragmentManager,
+        private val infos: Array<ImageInfo>
     ) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {

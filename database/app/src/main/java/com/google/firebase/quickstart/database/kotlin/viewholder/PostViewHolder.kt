@@ -26,5 +26,4 @@ class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemView.star.setImageResource(R.drawable.ic_toggle_star_outline_24)
         }
     }
-
 }

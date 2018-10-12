@@ -48,6 +48,5 @@ class KotlinMainActivity : AppCompatActivity() {
     companion object {
 
         private val TAG = "FIAM-Quickstart"
-
     }
 }

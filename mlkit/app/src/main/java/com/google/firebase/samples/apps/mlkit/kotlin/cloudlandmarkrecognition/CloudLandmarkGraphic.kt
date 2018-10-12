@@ -58,7 +58,6 @@ class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(ove
             // Renders the landmark at the bottom of the box.
             canvas.drawText(landmark.landmark, left, bottom, landmarkPaint)
         }
-
     }
 
     companion object {

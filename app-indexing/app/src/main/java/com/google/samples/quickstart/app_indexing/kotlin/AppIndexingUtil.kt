@@ -15,7 +15,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 
-
 /**
  * See firebase app indexing api code lab
  * https://codelabs.developers.google.com/codelabs/app-indexing/#0
@@ -66,7 +65,6 @@ object AppIndexingUtil {
         } catch (e: FirebaseAppIndexingInvalidArgumentException) {
             Log.e(TAG, "Unable to set stickers", e)
         }
-
     }
 
     @Throws(IOException::class, FirebaseAppIndexingInvalidArgumentException::class)

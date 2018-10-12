@@ -10,7 +10,6 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 
-
 /**
  * Provider that makes the stickers queryable by other applications.
  */
@@ -82,8 +81,13 @@ class StickerProvider : ContentProvider() {
         return extension
     }
 
-    override fun query(uri: Uri, projection: Array<String>?, selection: String?,
-                       selectionArgs: Array<String>?, sortOrder: String?): Cursor? {
+    override fun query(
+        uri: Uri,
+        projection: Array<String>?,
+        selection: String?,
+        selectionArgs: Array<String>?,
+        sortOrder: String?
+    ): Cursor? {
         throw UnsupportedOperationException("no queries")
     }
 
@@ -91,13 +95,20 @@ class StickerProvider : ContentProvider() {
         throw UnsupportedOperationException("no inserts")
     }
 
-    override fun delete(uri: Uri, selection: String?,
-                        selectionArgs: Array<String>?): Int {
+    override fun delete(
+        uri: Uri,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): Int {
         throw UnsupportedOperationException("no deletes")
     }
 
-    override fun update(uri: Uri, values: ContentValues?, selection: String?,
-                        selectionArgs: Array<String>?): Int {
+    override fun update(
+        uri: Uri,
+        values: ContentValues?,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): Int {
         throw UnsupportedOperationException("no updates")
     }
 }

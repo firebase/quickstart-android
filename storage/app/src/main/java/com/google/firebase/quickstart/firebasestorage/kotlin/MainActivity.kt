@@ -93,7 +93,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (intent.hasExtra(MyUploadService.EXTRA_DOWNLOAD_URL)) {
             onUploadResultIntent(intent)
         }
-
     }
 
     public override fun onStart() {

@@ -16,7 +16,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.quickstart.auth.R
 import kotlinx.android.synthetic.main.activity_google.*
 
-
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
@@ -80,7 +79,6 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
                 updateUI(null)
                 // [END_EXCLUDE]
             }
-
         }
     }
     // [END onactivityresult]

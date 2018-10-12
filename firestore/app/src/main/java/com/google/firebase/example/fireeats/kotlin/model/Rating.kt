@@ -9,12 +9,12 @@ import java.util.*
  * Model POJO for a rating.
  */
 data class Rating(
-        var userId: String? = null,
-        var userName: String? = null,
-        var rating: Double = 0.toDouble(),
-        var text: String? = null,
-        @ServerTimestamp var timestamp: Date? = null) {
-
+    var userId: String? = null,
+    var userName: String? = null,
+    var rating: Double = 0.toDouble(),
+    var text: String? = null,
+    @ServerTimestamp var timestamp: Date? = null
+) {
 
     constructor(user: FirebaseUser, rating: Double, text: String) : this() {
         this.userId = user.uid

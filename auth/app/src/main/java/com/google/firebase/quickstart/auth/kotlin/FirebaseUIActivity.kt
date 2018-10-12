@@ -13,7 +13,6 @@ import com.google.firebase.quickstart.auth.BuildConfig
 import com.google.firebase.quickstart.auth.R
 import kotlinx.android.synthetic.main.activity_firebase_ui.*
 
-
 /**
  * Demonstrate authentication using the FirebaseUI-Android library. This activity demonstrates
  * using FirebaseUI for basic email/password sign in.
@@ -100,5 +99,4 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
         private val RC_SIGN_IN = 9001
     }
-
 }

@@ -11,8 +11,9 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
  * Graphic instance for rendering TextBlock position, size, and ID within an associated graphic
  * overlay view.
  */
-class TextGraphic(overlay: GraphicOverlay,
-                  private val text: FirebaseVisionText.Element?
+class TextGraphic(
+    overlay: GraphicOverlay,
+    private val text: FirebaseVisionText.Element?
 ) : GraphicOverlay.Graphic(overlay) {
 
     private val rectPaint: Paint

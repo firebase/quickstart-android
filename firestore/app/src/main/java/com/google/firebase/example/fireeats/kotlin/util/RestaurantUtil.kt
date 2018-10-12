@@ -46,7 +46,6 @@ object RestaurantUtil {
         return restaurant
     }
 
-
     /**
      * Get a random image.
      */
@@ -77,8 +76,8 @@ object RestaurantUtil {
     }
 
     private fun getRandomName(random: Random): String {
-        return (getRandomString(NAME_FIRST_WORDS, random) + " "
-                + getRandomString(NAME_SECOND_WORDS, random))
+        return (getRandomString(NAME_FIRST_WORDS, random) + " " +
+                getRandomString(NAME_SECOND_WORDS, random))
     }
 
     private fun getRandomString(array: Array<String>, random: Random): String {
@@ -90,5 +89,4 @@ object RestaurantUtil {
         val ind = random.nextInt(array.size)
         return array[ind]
     }
-
 }

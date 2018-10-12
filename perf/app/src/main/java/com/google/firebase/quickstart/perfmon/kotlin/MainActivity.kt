@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
@@ -83,15 +82,22 @@ class MainActivity : AppCompatActivity() {
                 .placeholder(ColorDrawable(ContextCompat.getColor(this, R.color.colorAccent)))
                 .listener(object : RequestListener<String, GlideDrawable> {
                     override fun onException(
-                            e: Exception, model: String, target: Target<GlideDrawable>,
-                            isFirstResource: Boolean): Boolean {
+                        e: Exception,
+                        model: String,
+                        target: Target<GlideDrawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
                         mNumStartupTasks.countDown() // Signal end of image load task.
                         return false
                     }
 
                     override fun onResourceReady(
-                            resource: GlideDrawable, model: String, target: Target<GlideDrawable>,
-                            isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                        resource: GlideDrawable,
+                        model: String,
+                        target: Target<GlideDrawable>,
+                        isFromMemoryCache: Boolean,
+                        isFirstResource: Boolean
+                    ): Boolean {
                         mNumStartupTasks.countDown() // Signal end of image load task.
                         return false
                     }

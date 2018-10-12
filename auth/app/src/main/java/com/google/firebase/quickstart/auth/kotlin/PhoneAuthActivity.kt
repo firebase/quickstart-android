@@ -13,7 +13,6 @@ import com.google.firebase.quickstart.auth.R
 import kotlinx.android.synthetic.main.activity_phone_auth.*
 import java.util.concurrent.TimeUnit
 
-
 class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     // [START declare_auth]
@@ -95,8 +94,10 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 // [END_EXCLUDE]
             }
 
-            override fun onCodeSent(verificationId: String?,
-                                    token: PhoneAuthProvider.ForceResendingToken) {
+            override fun onCodeSent(
+                verificationId: String?,
+                token: PhoneAuthProvider.ForceResendingToken
+            ) {
                 // The SMS verification code has been sent to the provided phone number, we
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
@@ -140,7 +141,6 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         mVerificationInProgress = savedInstanceState.getBoolean(KEY_VERIFY_IN_PROGRESS)
     }
 
-
     private fun startPhoneNumberVerification(phoneNumber: String) {
         // [START start_phone_auth]
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -162,15 +162,17 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     // [START resend_verification]
-    private fun resendVerificationCode(phoneNumber: String,
-                                       token: PhoneAuthProvider.ForceResendingToken?) {
+    private fun resendVerificationCode(
+        phoneNumber: String,
+        token: PhoneAuthProvider.ForceResendingToken?
+    ) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber, // Phone number to verify
                 60, // Timeout duration
                 TimeUnit.SECONDS, // Unit of timeout
                 this, // Activity (for callback binding)
                 mCallbacks, // OnVerificationStateChangedCallbacks
-                token)             // ForceResendingToken from callbacks
+                token) // ForceResendingToken from callbacks
     }
     // [END resend_verification]
 
@@ -221,7 +223,11 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         updateUI(uiState, null, cred)
     }
 
-    private fun updateUI(uiState: Int, user: FirebaseUser? = mAuth.currentUser, cred: PhoneAuthCredential? = null) {
+    private fun updateUI(
+        uiState: Int,
+        user: FirebaseUser? = mAuth.currentUser,
+        cred: PhoneAuthCredential? = null
+    ) {
         when (uiState) {
             STATE_INITIALIZED -> {
                 // Initialized state, show only the phone number field and start button
@@ -261,7 +267,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 detail.setText(R.string.status_sign_in_failed)
             STATE_SIGNIN_SUCCESS -> {
             }
-        }// Np-op, handled by sign-in check
+        } // Np-op, handled by sign-in check
 
         if (user == null) {
             // Signed out

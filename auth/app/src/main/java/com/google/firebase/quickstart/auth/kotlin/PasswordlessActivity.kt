@@ -10,7 +10,6 @@ import com.google.firebase.auth.*
 import com.google.firebase.quickstart.auth.R
 import kotlinx.android.synthetic.main.activity_passwordless.*
 
-
 /**
  * Demonstrate Firebase Authentication without a password, using a link sent to an
  * email address.

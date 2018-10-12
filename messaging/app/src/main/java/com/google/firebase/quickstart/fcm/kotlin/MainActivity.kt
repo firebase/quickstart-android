@@ -84,5 +84,4 @@ class MainActivity : AppCompatActivity() {
 
         private val TAG = "MainActivity"
     }
-
 }

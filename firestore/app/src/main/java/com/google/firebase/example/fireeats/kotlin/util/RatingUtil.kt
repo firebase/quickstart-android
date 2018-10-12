@@ -69,5 +69,4 @@ object RatingUtil {
 
         return sum / ratings.size
     }
-
 }

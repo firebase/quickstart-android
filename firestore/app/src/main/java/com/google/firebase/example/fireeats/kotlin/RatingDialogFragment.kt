@@ -22,12 +22,13 @@ class RatingDialogFragment : DialogFragment() {
     internal interface RatingListener {
 
         fun onRating(rating: Rating)
-
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val v = inflater.inflate(R.layout.dialog_rating, container, false)
 
         v.restaurantFormButton.setOnClickListener { onSubmitClicked() }
@@ -49,7 +50,6 @@ class RatingDialogFragment : DialogFragment() {
         dialog.window?.setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
-
     }
 
     fun onSubmitClicked() {

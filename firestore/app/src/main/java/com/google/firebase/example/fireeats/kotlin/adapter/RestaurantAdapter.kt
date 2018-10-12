@@ -20,7 +20,6 @@ open class RestaurantAdapter(query: Query, val mListener: OnRestaurantSelectedLi
     interface OnRestaurantSelectedListener {
 
         fun onRestaurantSelected(restaurant: DocumentSnapshot)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,8 +33,10 @@ open class RestaurantAdapter(query: Query, val mListener: OnRestaurantSelectedLi
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(snapshot: DocumentSnapshot,
-                 listener: OnRestaurantSelectedListener?) {
+        fun bind(
+            snapshot: DocumentSnapshot,
+            listener: OnRestaurantSelectedListener?
+        ) {
 
             val restaurant = snapshot.toObject(Restaurant::class.java)
             if (restaurant == null) {
@@ -65,6 +66,5 @@ open class RestaurantAdapter(query: Query, val mListener: OnRestaurantSelectedLi
                 listener?.onRestaurantSelected(snapshot)
             }
         }
-
     }
 }

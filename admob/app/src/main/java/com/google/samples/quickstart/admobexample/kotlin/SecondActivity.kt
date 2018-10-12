@@ -10,5 +10,4 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.second_activity)
     }
-
 }
