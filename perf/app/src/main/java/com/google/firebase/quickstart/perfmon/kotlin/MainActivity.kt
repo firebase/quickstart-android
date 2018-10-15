@@ -177,7 +177,8 @@ class MainActivity : AppCompatActivity() {
 
         private const val DEFAULT_CONTENT_FILE = "default_content.txt"
         private const val CONTENT_FILE = "content.txt"
-        private const val IMAGE_URL = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+        private const val IMAGE_URL =
+                "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
 
         private const val STARTUP_TRACE_NAME = "startup_trace"
         private const val REQUESTS_COUNTER_NAME = "requests sent"

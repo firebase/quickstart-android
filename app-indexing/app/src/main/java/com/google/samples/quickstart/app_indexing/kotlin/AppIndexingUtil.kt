@@ -33,7 +33,9 @@ object AppIndexingUtil {
     fun clearStickers(context: Context, firebaseAppIndex: FirebaseAppIndex) {
         val task = firebaseAppIndex.removeAll()
 
-        task.addOnSuccessListener { Toast.makeText(context, "Successfully cleared stickers", Toast.LENGTH_SHORT).show() }
+        task.addOnSuccessListener {
+            Toast.makeText(context, "Successfully cleared stickers", Toast.LENGTH_SHORT).show()
+        }
         task.addOnFailureListener { e ->
             Log.w(TAG, FAILED_TO_CLEAR_STICKERS, e)
             Toast.makeText(context, FAILED_TO_CLEAR_STICKERS, Toast.LENGTH_SHORT).show()

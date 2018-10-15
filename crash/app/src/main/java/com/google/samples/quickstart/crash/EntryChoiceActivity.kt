@@ -3,7 +3,6 @@ package com.google.samples.quickstart.crash
 import android.content.Intent
 import com.firebase.example.internal.BaseEntryChoiceActivity
 import com.firebase.example.internal.Choice
-import com.google.android.gms.common.util.CollectionUtils.listOf
 import com.google.samples.quickstart.crash.java.MainActivity
 
 class EntryChoiceActivity : BaseEntryChoiceActivity() {

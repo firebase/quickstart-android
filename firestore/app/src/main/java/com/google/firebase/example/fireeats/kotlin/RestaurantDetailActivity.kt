@@ -18,7 +18,9 @@ import com.google.firebase.example.fireeats.kotlin.util.RestaurantUtil
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_restaurant_detail.*
 
-class RestaurantDetailActivity : AppCompatActivity(), EventListener<DocumentSnapshot>, RatingDialogFragment.RatingListener {
+class RestaurantDetailActivity : AppCompatActivity(),
+        EventListener<DocumentSnapshot>,
+        RatingDialogFragment.RatingListener {
 
     private var ratingDialog: RatingDialogFragment? = null
 

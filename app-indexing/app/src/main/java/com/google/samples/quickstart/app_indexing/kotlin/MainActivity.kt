@@ -63,13 +63,17 @@ class MainActivity : AppCompatActivity() {
         // scheduled
         task.addOnSuccessListener(this) { Log.d(TAG, "App Indexing API: Successfully added $TITLE to index") }
 
-        task.addOnFailureListener(this) { exception -> Log.e(TAG, "App Indexing API: Failed to add $TITLE to index. ${exception.message}") }
+        task.addOnFailureListener(this) { exception ->
+            Log.e(TAG, "App Indexing API: Failed to add $TITLE to index. ${exception.message}")
+        }
 
         // log the view action
         val actionTask = FirebaseUserActions.getInstance().start(Actions.newView(TITLE,
                 APP_URI))
 
-        actionTask.addOnSuccessListener(this) { Log.d(TAG, "App Indexing API: Successfully started view action on $TITLE") }
+        actionTask.addOnSuccessListener(this) {
+            Log.d(TAG, "App Indexing API: Successfully started view action on $TITLE")
+        }
 
         actionTask.addOnFailureListener(this) { exception ->
             Log.e(TAG, "App Indexing API: Failed to start view action on $TITLE. ${exception.message}")
@@ -86,7 +90,9 @@ class MainActivity : AppCompatActivity() {
         val actionTask = FirebaseUserActions.getInstance().end(Actions.newView(TITLE,
                 APP_URI))
 
-        actionTask.addOnSuccessListener(this) { Log.d(TAG, "App Indexing API: Successfully ended view action on $TITLE") }
+        actionTask.addOnSuccessListener(this) {
+            Log.d(TAG, "App Indexing API: Successfully ended view action on $TITLE")
+        }
 
         actionTask.addOnFailureListener(this) { exception ->
             Log.e(TAG, "App Indexing API: Failed to end view action on $TITLE. ${exception.message}")

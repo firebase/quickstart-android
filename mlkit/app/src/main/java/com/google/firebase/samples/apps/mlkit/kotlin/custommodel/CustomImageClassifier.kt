@@ -159,8 +159,8 @@ constructor(activity: Activity) {
     @Synchronized
     private fun printTopKLabels(labelProbArray: Array<ByteArray>): List<String> {
         for (i in labelList.indices) {
-            sortedLabels.add(
-                    AbstractMap.SimpleEntry<String, Float>(labelList[i], (labelProbArray[0][i] and 0xff.toByte()) / 255.0f))
+            sortedLabels.add(AbstractMap.SimpleEntry<String, Float>(
+                    labelList[i], (labelProbArray[0][i] and 0xff.toByte()) / 255.0f))
             if (sortedLabels.size > RESULTS_TO_SHOW) {
                 sortedLabels.poll()
             }

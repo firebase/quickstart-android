@@ -13,9 +13,11 @@ object RestaurantUtil {
     private val RESTAURANT_URL_FMT = "https://storage.googleapis.com/firestorequickstarts.appspot.com/food_%d.png"
     private val MAX_IMAGE_NUM = 22
 
-    private val NAME_FIRST_WORDS = arrayOf("Foo", "Bar", "Baz", "Qux", "Fire", "Sam's", "World Famous", "Google", "The Best")
+    private val NAME_FIRST_WORDS = arrayOf(
+            "Foo", "Bar", "Baz", "Qux", "Fire", "Sam's", "World Famous", "Google", "The Best")
 
-    private val NAME_SECOND_WORDS = arrayOf("Restaurant", "Cafe", "Spot", "Eatin' Place", "Eatery", "Drive Thru", "Diner")
+    private val NAME_SECOND_WORDS = arrayOf(
+            "Restaurant", "Cafe", "Spot", "Eatin' Place", "Eatery", "Drive Thru", "Diner")
 
     /**
      * Create a random Restaurant POJO.

@@ -30,7 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, RestaurantAdapter.OnRestaurantSelectedListener {
+class MainActivity : AppCompatActivity(),
+        FilterDialogFragment.FilterListener,
+        RestaurantAdapter.OnRestaurantSelectedListener {
 
     lateinit var firestore: FirebaseFirestore
     lateinit var query: Query
