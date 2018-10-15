@@ -130,8 +130,9 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
         auth.signOut()
 
         // Google sign out
-        googleSignInClient.signOut().addOnCompleteListener(this
-        ) { updateUI(null) }
+        googleSignInClient.signOut().addOnCompleteListener(this) {
+            updateUI(null)
+        }
     }
 
     private fun revokeAccess() {
@@ -139,8 +140,9 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
         auth.signOut()
 
         // Google revoke access
-        googleSignInClient.revokeAccess().addOnCompleteListener(this
-        ) { updateUI(null) }
+        googleSignInClient.revokeAccess().addOnCompleteListener(this) {
+            updateUI(null)
+        }
     }
 
     private fun updateUI(user: FirebaseUser?) {

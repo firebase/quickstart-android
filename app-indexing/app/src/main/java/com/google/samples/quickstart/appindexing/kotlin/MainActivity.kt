@@ -86,8 +86,10 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onStop() {
         super.onStop()
+        if (articleId == null) {
+            return
+        }
 
-        if (articleId == null) return
         val baseUrl = Uri.parse("https://www.example.com/kotlin_articles/")
         val appUri = baseUrl.buildUpon().appendPath(articleId).build().toString()
 
