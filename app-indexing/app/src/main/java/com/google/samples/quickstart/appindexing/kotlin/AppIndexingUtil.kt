@@ -20,14 +20,14 @@ import java.io.IOException
  */
 
 object AppIndexingUtil {
-    private val STICKER_FILENAME_PATTERN = "sticker%s.png"
+    private const val STICKER_FILENAME_PATTERN = "sticker%s.png"
     private val CONTENT_URI_ROOT = String.format("content://%s/", StickerProvider::class.java.name)
-    private val STICKER_URL_PATTERN = "mystickers://sticker/%s"
-    private val STICKER_PACK_URL_PATTERN = "mystickers://sticker/pack/%s"
-    private val STICKER_PACK_NAME = "Local Content Pack"
-    private val TAG = "AppIndexingUtil"
-    val FAILED_TO_CLEAR_STICKERS = "Failed to clear stickers"
-    val FAILED_TO_INSTALL_STICKERS = "Failed to install stickers"
+    private const val STICKER_URL_PATTERN = "mystickers://sticker/%s"
+    private const val STICKER_PACK_URL_PATTERN = "mystickers://sticker/pack/%s"
+    private const val STICKER_PACK_NAME = "Local Content Pack"
+    private const val TAG = "AppIndexingUtil"
+    private const val FAILED_TO_CLEAR_STICKERS = "Failed to clear stickers"
+    private const val FAILED_TO_INSTALL_STICKERS = "Failed to install stickers"
 
     fun clearStickers(context: Context, firebaseAppIndex: FirebaseAppIndex) {
         val task = firebaseAppIndex.removeAll()

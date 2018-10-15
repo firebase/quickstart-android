@@ -12,10 +12,9 @@ class LabelGraphic(
     private val labels: List<FirebaseVisionLabel>
 ) : GraphicOverlay.Graphic(overlay) {
 
-    private val textPaint: Paint
+    private val textPaint: Paint = Paint()
 
     init {
-        textPaint = Paint()
         textPaint.color = Color.WHITE
         textPaint.textSize = 60.0f
         postInvalidate()

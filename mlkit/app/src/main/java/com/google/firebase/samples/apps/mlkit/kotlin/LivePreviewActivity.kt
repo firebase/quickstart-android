@@ -196,9 +196,7 @@ class LivePreviewActivity : AppCompatActivity(),
 
     public override fun onDestroy() {
         super.onDestroy()
-        cameraSource?.let {
-            it?.release()
-        }
+        cameraSource?.release()
     }
 
     private fun allPermissionsGranted(): Boolean {

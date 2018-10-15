@@ -11,7 +11,9 @@ import com.google.firebase.appindexing.FirebaseUserActions
 import com.google.firebase.appindexing.Indexable
 import com.google.firebase.appindexing.builders.Actions
 import com.google.samples.quickstart.appindexing.R
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.addStickersBtn
+import kotlinx.android.synthetic.main.activity_main.clearStickersBtn
+import kotlinx.android.synthetic.main.activity_main.link
 
 // [END import_classes]
 
@@ -48,13 +50,16 @@ class MainActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
 
-        if (articleId == null) return
-        val BASE_URL = Uri.parse("https://www.example.com/kotlin_articles/")
-        val APP_URI = BASE_URL.buildUpon().appendPath(articleId).build().toString()
+        if (articleId == null) {
+            return
+        }
+
+        val baseUrl = Uri.parse("https://www.example.com/kotlin_articles/")
+        val appUri = baseUrl.buildUpon().appendPath(articleId).build().toString()
 
         val articleToIndex = Indexable.Builder()
                 .setName(TITLE)
-                .setUrl(APP_URI)
+                .setUrl(appUri)
                 .build()
 
         val task = FirebaseAppIndex.getInstance().update(articleToIndex)
@@ -69,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
         // log the view action
         val actionTask = FirebaseUserActions.getInstance().start(Actions.newView(TITLE,
-                APP_URI))
+                appUri))
 
         actionTask.addOnSuccessListener(this) {
             Log.d(TAG, "App Indexing API: Successfully started view action on $TITLE")
@@ -84,11 +89,11 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
 
         if (articleId == null) return
-        val BASE_URL = Uri.parse("https://www.example.com/kotlin_articles/")
-        val APP_URI = BASE_URL.buildUpon().appendPath(articleId).build().toString()
+        val baseUrl = Uri.parse("https://www.example.com/kotlin_articles/")
+        val appUri = baseUrl.buildUpon().appendPath(articleId).build().toString()
 
         val actionTask = FirebaseUserActions.getInstance().end(Actions.newView(TITLE,
-                APP_URI))
+                appUri))
 
         actionTask.addOnSuccessListener(this) {
             Log.d(TAG, "App Indexing API: Successfully ended view action on $TITLE")
@@ -104,6 +109,6 @@ class MainActivity : AppCompatActivity() {
 
         private val TAG = MainActivity::class.java.name
         // Define a title for your current page, shown in autocompletion UI
-        private val TITLE = "Sample Article"
+        private const val TITLE = "Sample Article"
     }
 }

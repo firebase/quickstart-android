@@ -24,10 +24,10 @@ abstract class TokenBroadcastReceiver : BroadcastReceiver() {
     abstract fun onNewToken(token: String?)
 
     companion object {
-        val ACTION_TOKEN = "com.google.example.ACTION_TOKEN"
+        const val ACTION_TOKEN = "com.google.example.ACTION_TOKEN"
         val filter: IntentFilter
             get() = IntentFilter(ACTION_TOKEN)
-        private val TAG = "TokenBroadcastReceiver"
-        val EXTRA_KEY_TOKEN = "key_token"
+        private const val TAG = "TokenBroadcastReceiver"
+        const val EXTRA_KEY_TOKEN = "key_token"
     }
 }

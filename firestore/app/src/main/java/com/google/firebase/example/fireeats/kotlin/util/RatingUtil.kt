@@ -10,7 +10,7 @@ import java.util.UUID
  */
 object RatingUtil {
 
-    val REVIEW_CONTENTS = arrayOf(
+    private val REVIEW_CONTENTS = arrayOf(
             // 0 - 1 stars
             "This was awful! Totally inedible.",
 
@@ -29,7 +29,7 @@ object RatingUtil {
     /**
      * Create a random Rating POJO.
      */
-    val random: Rating
+    private val random: Rating
         get() {
             val rating = Rating()
 

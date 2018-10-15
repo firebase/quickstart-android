@@ -114,6 +114,6 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "CustomAuthActivity"
+        private const val TAG = "CustomAuthActivity"
     }
 }

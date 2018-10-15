@@ -18,10 +18,10 @@ data class Restaurant(
 
     companion object {
 
-        val FIELD_CITY = "city"
-        val FIELD_CATEGORY = "category"
-        val FIELD_PRICE = "price"
-        val FIELD_POPULARITY = "numRatings"
-        val FIELD_AVG_RATING = "avgRating"
+        const val FIELD_CITY = "city"
+        const val FIELD_CATEGORY = "category"
+        const val FIELD_PRICE = "price"
+        const val FIELD_POPULARITY = "numRatings"
+        const val FIELD_AVG_RATING = "avgRating"
     }
 }

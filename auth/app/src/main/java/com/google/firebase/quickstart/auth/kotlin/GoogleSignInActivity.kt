@@ -170,7 +170,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "GoogleActivity"
-        private val RC_SIGN_IN = 9001
+        private const val TAG = "GoogleActivity"
+        private const val RC_SIGN_IN = 9001
     }
 }

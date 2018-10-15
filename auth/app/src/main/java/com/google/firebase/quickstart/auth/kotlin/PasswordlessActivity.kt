@@ -221,7 +221,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "PasswordlessSignIn"
-        private val KEY_PENDING_EMAIL = "key_pending_email"
+        private const val TAG = "PasswordlessSignIn"
+        private const val KEY_PENDING_EMAIL = "key_pending_email"
     }
 }

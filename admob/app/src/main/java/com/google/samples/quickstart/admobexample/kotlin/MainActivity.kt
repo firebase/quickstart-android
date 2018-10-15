@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onAdFailedToLoad(i: Int) {
                 // See https://goo.gl/sCZj0H for possible error codes.
-                Log.w(Companion.TAG, "onAdFailedToLoad:$i")
+                Log.w(TAG, "onAdFailedToLoad:$i")
             }
         }
         // [END create_interstitial_ad_listener]
@@ -121,6 +121,6 @@ class MainActivity : AppCompatActivity() {
 
     // [END add_lifecycle_methods]
     companion object {
-        private val TAG = "MainActivity"
+        private const val TAG = "MainActivity"
     }
 }

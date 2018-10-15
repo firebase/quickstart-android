@@ -134,12 +134,12 @@ class FilterDialogFragment : DialogFragment() {
                 ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    fun onSearchClicked() {
+    private fun onSearchClicked() {
         filterListener?.onFilter(filters)
         dismiss()
     }
 
-    fun onCancelClicked() {
+    private fun onCancelClicked() {
         dismiss()
     }
 
@@ -152,6 +152,6 @@ class FilterDialogFragment : DialogFragment() {
 
     companion object {
 
-        val TAG = "FilterDialog"
+        const val TAG = "FilterDialog"
     }
 }

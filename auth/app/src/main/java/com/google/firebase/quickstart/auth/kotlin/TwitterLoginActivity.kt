@@ -154,6 +154,6 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "TwitterLogin"
+        private const val TAG = "TwitterLogin"
     }
 }

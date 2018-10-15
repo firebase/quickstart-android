@@ -204,6 +204,6 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "EmailPassword"
+        private const val TAG = "EmailPassword"
     }
 }

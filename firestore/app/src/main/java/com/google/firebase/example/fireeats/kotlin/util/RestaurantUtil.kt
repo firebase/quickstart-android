@@ -12,8 +12,8 @@ import java.util.Random
  */
 object RestaurantUtil {
 
-    private val RESTAURANT_URL_FMT = "https://storage.googleapis.com/firestorequickstarts.appspot.com/food_%d.png"
-    private val MAX_IMAGE_NUM = 22
+    private const val RESTAURANT_URL_FMT = "https://storage.googleapis.com/firestorequickstarts.appspot.com/food_%d.png"
+    private const val MAX_IMAGE_NUM = 22
 
     private val NAME_FIRST_WORDS = arrayOf(
             "Foo", "Bar", "Baz", "Qux", "Fire", "Sam's", "World Famous", "Google", "The Best")

@@ -54,6 +54,6 @@ class InvalidImportDetector : Detector(), Detector.UastScanner {
     }
 
     companion object {
-        val SHORT_MESSAGE = "Invalid Import: java package imported from kotlin package."
+        const val SHORT_MESSAGE = "Invalid Import: java package imported from kotlin package."
     }
 }

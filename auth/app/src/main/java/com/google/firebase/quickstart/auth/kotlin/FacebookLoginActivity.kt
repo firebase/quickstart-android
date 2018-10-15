@@ -150,6 +150,6 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "FacebookLogin"
+        private const val TAG = "FacebookLogin"
     }
 }

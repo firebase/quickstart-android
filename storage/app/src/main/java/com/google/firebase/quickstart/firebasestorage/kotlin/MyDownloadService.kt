@@ -123,7 +123,7 @@ class MyDownloadService : MyBaseTaskService() {
 
     companion object {
 
-        private val TAG = "Storage#DownloadService"
+        private const val TAG = "Storage#DownloadService"
 
         /** Actions  */
         const val ACTION_DOWNLOAD = "action_download"

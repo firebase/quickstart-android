@@ -168,6 +168,6 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "AnonymousAuth"
+        private const val TAG = "AnonymousAuth"
     }
 }

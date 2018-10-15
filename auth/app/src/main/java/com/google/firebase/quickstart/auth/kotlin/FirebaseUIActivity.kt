@@ -100,6 +100,6 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val RC_SIGN_IN = 9001
+        private const val RC_SIGN_IN = 9001
     }
 }

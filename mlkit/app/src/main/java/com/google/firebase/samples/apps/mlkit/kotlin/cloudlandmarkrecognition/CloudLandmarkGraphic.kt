@@ -10,13 +10,12 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 /** Graphic instance for rendering detected landmark.  */
 class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
 
-    private val rectPaint: Paint
+    private val rectPaint: Paint = Paint()
     private val landmarkPaint: Paint
     private lateinit var landmark: FirebaseVisionCloudLandmark
 
     init {
 
-        rectPaint = Paint()
         rectPaint.color = TEXT_COLOR
         rectPaint.style = Paint.Style.STROKE
         rectPaint.strokeWidth = STROKE_WIDTH

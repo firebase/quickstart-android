@@ -47,7 +47,7 @@ class HungarianNotationDetector : Detector(), Detector.UastScanner {
     }
 
     companion object {
-        val SHORT_MESSAGE = "Invalid Field Name: hungarian notation in a Kotlin file."
+        const val SHORT_MESSAGE = "Invalid Field Name: hungarian notation in a Kotlin file."
 
         val RE_HUNGARIAN = Regex("^m[A-Z].*")
     }

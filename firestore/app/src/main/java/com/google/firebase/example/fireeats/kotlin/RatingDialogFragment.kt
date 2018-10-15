@@ -54,7 +54,7 @@ class RatingDialogFragment : DialogFragment() {
                 ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    fun onSubmitClicked() {
+    private fun onSubmitClicked() {
         val user = FirebaseAuth.getInstance().currentUser
         user?.let {
             val rating = Rating(
@@ -68,12 +68,12 @@ class RatingDialogFragment : DialogFragment() {
         dismiss()
     }
 
-    fun onCancelClicked() {
+    private fun onCancelClicked() {
         dismiss()
     }
 
     companion object {
 
-        val TAG = "RatingDialog"
+        const val TAG = "RatingDialog"
     }
 }

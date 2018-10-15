@@ -148,6 +148,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     companion object {
 
-        private val TAG = "MyFirebaseMsgService"
+        private const val TAG = "MyFirebaseMsgService"
     }
 }

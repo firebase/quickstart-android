@@ -13,11 +13,7 @@ import java.nio.ByteBuffer
 class CustomImageClassifierProcessor @Throws(FirebaseMLException::class)
 constructor(private val activity: Activity) : VisionImageProcessor {
 
-    private val classifier: CustomImageClassifier
-
-    init {
-        classifier = CustomImageClassifier(activity)
-    }
+    private val classifier: CustomImageClassifier = CustomImageClassifier(activity)
 
     @Throws(FirebaseMLException::class)
     override fun process(

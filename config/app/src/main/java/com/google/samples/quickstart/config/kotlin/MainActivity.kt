@@ -94,11 +94,7 @@ class MainActivity : AppCompatActivity() {
         // [START get_config_values]
         val welcomeMessage = remoteConfig.getString(WELCOME_MESSAGE_KEY)
         // [END get_config_values]
-        if (remoteConfig.getBoolean(WELCOME_MESSAGE_CAPS_KEY)) {
-            welcomeTextView.setAllCaps(true)
-        } else {
-            welcomeTextView.setAllCaps(false)
-        }
+        welcomeTextView.isAllCaps = remoteConfig.getBoolean(WELCOME_MESSAGE_CAPS_KEY)
         welcomeTextView.text = welcomeMessage
     }
 

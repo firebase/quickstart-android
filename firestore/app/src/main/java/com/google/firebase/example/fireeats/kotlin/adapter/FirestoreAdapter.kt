@@ -91,12 +91,12 @@ abstract class FirestoreAdapter<VH : RecyclerView.ViewHolder>(private var query:
         return snapshots[index]
     }
 
-    protected fun onDocumentAdded(change: DocumentChange) {
+    private fun onDocumentAdded(change: DocumentChange) {
         snapshots.add(change.newIndex, change.document)
         notifyItemInserted(change.newIndex)
     }
 
-    protected fun onDocumentModified(change: DocumentChange) {
+    private fun onDocumentModified(change: DocumentChange) {
         if (change.oldIndex == change.newIndex) {
             // Item changed but remained in same position
             snapshots[change.oldIndex] = change.document
@@ -109,13 +109,13 @@ abstract class FirestoreAdapter<VH : RecyclerView.ViewHolder>(private var query:
         }
     }
 
-    protected fun onDocumentRemoved(change: DocumentChange) {
+    private fun onDocumentRemoved(change: DocumentChange) {
         snapshots.removeAt(change.oldIndex)
         notifyItemRemoved(change.oldIndex)
     }
 
     companion object {
 
-        private val TAG = "FirestoreAdapter"
+        private const val TAG = "FirestoreAdapter"
     }
 }

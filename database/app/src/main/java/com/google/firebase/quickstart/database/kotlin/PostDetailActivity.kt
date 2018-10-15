@@ -192,7 +192,7 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                     val commentIndex = commentIds.indexOf(commentKey)
                     if (commentIndex > -1 && newComment != null) {
                         // Replace with the new data
-                        comments.set(commentIndex, newComment)
+                        comments[commentIndex] = newComment
 
                         // Update the RecyclerView
                         notifyItemChanged(commentIndex)
