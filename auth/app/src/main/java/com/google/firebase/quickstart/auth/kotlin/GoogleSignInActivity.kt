@@ -28,10 +28,10 @@ import kotlinx.android.synthetic.main.activity_google.status
 class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
 
     // [START declare_auth]
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +50,11 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
                 .build()
         // [END config_signin]
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         // [END initialize_auth]
     }
 
@@ -62,7 +62,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth.currentUser
+        val currentUser = auth.currentUser
         updateUI(currentUser)
     }
     // [END on_start_check_user]
@@ -97,12 +97,12 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
         // [END_EXCLUDE]
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        mAuth.signInWithCredential(credential)
+        auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
-                        val user = mAuth.currentUser
+                        val user = auth.currentUser
                         updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
@@ -120,26 +120,26 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
 
     // [START signin]
     private fun signIn() {
-        val signInIntent = mGoogleSignInClient.signInIntent
+        val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
     // [END signin]
 
     private fun signOut() {
         // Firebase sign out
-        mAuth.signOut()
+        auth.signOut()
 
         // Google sign out
-        mGoogleSignInClient.signOut().addOnCompleteListener(this
+        googleSignInClient.signOut().addOnCompleteListener(this
         ) { updateUI(null) }
     }
 
     private fun revokeAccess() {
         // Firebase sign out
-        mAuth.signOut()
+        auth.signOut()
 
         // Google revoke access
-        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this
+        googleSignInClient.revokeAccess().addOnCompleteListener(this
         ) { updateUI(null) }
     }
 

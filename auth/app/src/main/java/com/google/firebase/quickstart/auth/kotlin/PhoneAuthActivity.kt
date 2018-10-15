@@ -29,13 +29,13 @@ import java.util.concurrent.TimeUnit
 class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     // [START declare_auth]
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
-    private var mVerificationInProgress = false
-    private var mVerificationId: String? = ""
-    private lateinit var mResendToken: PhoneAuthProvider.ForceResendingToken
-    private lateinit var mCallbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    private var verificationInProgress = false
+    private var storedVerificationId: String? = ""
+    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +54,12 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         // [END initialize_auth]
 
         // Initialize phone auth callbacks
         // [START phone_auth_callbacks]
-        mCallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 // This callback will be invoked in two situations:
@@ -70,7 +70,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:$credential")
                 // [START_EXCLUDE silent]
-                mVerificationInProgress = false
+                verificationInProgress = false
                 // [END_EXCLUDE]
 
                 // [START_EXCLUDE silent]
@@ -85,7 +85,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 // for instance if the the phone number format is not valid.
                 Log.w(TAG, "onVerificationFailed", e)
                 // [START_EXCLUDE silent]
-                mVerificationInProgress = false
+                verificationInProgress = false
                 // [END_EXCLUDE]
 
                 if (e is FirebaseAuthInvalidCredentialsException) {
@@ -117,8 +117,8 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 Log.d(TAG, "onCodeSent:" + verificationId!!)
 
                 // Save verification ID and resending token so we can use them later
-                mVerificationId = verificationId
-                mResendToken = token
+                storedVerificationId = verificationId
+                resendToken = token
 
                 // [START_EXCLUDE]
                 // Update UI
@@ -133,11 +133,11 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth.currentUser
+        val currentUser = auth.currentUser
         updateUI(currentUser)
 
         // [START_EXCLUDE]
-        if (mVerificationInProgress && validatePhoneNumber()) {
+        if (verificationInProgress && validatePhoneNumber()) {
             startPhoneNumberVerification(fieldPhoneNumber.text.toString())
         }
         // [END_EXCLUDE]
@@ -146,12 +146,12 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean(KEY_VERIFY_IN_PROGRESS, mVerificationInProgress)
+        outState.putBoolean(KEY_VERIFY_IN_PROGRESS, verificationInProgress)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        mVerificationInProgress = savedInstanceState.getBoolean(KEY_VERIFY_IN_PROGRESS)
+        verificationInProgress = savedInstanceState.getBoolean(KEY_VERIFY_IN_PROGRESS)
     }
 
     private fun startPhoneNumberVerification(phoneNumber: String) {
@@ -161,10 +161,10 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 60,               // Timeout duration
                 TimeUnit.SECONDS, // Unit of timeout
                 this,             // Activity (for callback binding)
-                mCallbacks)       // OnVerificationStateChangedCallbacks
+                callbacks)       // OnVerificationStateChangedCallbacks
         // [END start_phone_auth]
 
-        mVerificationInProgress = true
+        verificationInProgress = true
     }
 
     private fun verifyPhoneNumberWithCode(verificationId: String?, code: String) {
@@ -184,14 +184,14 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 60, // Timeout duration
                 TimeUnit.SECONDS, // Unit of timeout
                 this, // Activity (for callback binding)
-                mCallbacks, // OnVerificationStateChangedCallbacks
+                callbacks, // OnVerificationStateChangedCallbacks
                 token) // ForceResendingToken from callbacks
     }
     // [END resend_verification]
 
     // [START sign_in_with_phone]
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        mAuth.signInWithCredential(credential)
+        auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
@@ -220,7 +220,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
     // [END sign_in_with_phone]
 
     private fun signOut() {
-        mAuth.signOut()
+        auth.signOut()
         updateUI(STATE_INITIALIZED)
     }
 
@@ -237,9 +237,9 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun updateUI(
-        uiState: Int,
-        user: FirebaseUser? = mAuth.currentUser,
-        cred: PhoneAuthCredential? = null
+            uiState: Int,
+            user: FirebaseUser? = auth.currentUser,
+            cred: PhoneAuthCredential? = null
     ) {
         when (uiState) {
             STATE_INITIALIZED -> {
@@ -340,9 +340,9 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                     return
                 }
 
-                verifyPhoneNumberWithCode(mVerificationId, code)
+                verifyPhoneNumberWithCode(storedVerificationId, code)
             }
-            R.id.buttonResend -> resendVerificationCode(fieldPhoneNumber.text.toString(), mResendToken)
+            R.id.buttonResend -> resendVerificationCode(fieldPhoneNumber.text.toString(), resendToken)
             R.id.signOutButton -> signOut()
         }
     }

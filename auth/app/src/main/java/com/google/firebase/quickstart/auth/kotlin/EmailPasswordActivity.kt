@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_emailpassword.verifyEmailButton
 class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
     // [START declare_auth]
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         // [END initialize_auth]
     }
 
@@ -46,7 +46,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth.currentUser
+        val currentUser = auth.currentUser
         updateUI(currentUser)
     }
     // [END on_start_check_user]
@@ -60,12 +60,12 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
         showProgressDialog()
 
         // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success")
-                        val user = mAuth.currentUser
+                        val user = auth.currentUser
                         updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
@@ -91,12 +91,12 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
         showProgressDialog()
 
         // [START sign_in_with_email]
-        mAuth.signInWithEmailAndPassword(email, password)
+        auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
-                        val user = mAuth.currentUser
+                        val user = auth.currentUser
                         updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
@@ -117,7 +117,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun signOut() {
-        mAuth.signOut()
+        auth.signOut()
         updateUI(null)
     }
 
@@ -127,7 +127,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
         // Send verification email
         // [START send_email_verification]
-        val user = mAuth.currentUser
+        val user = auth.currentUser
         user?.sendEmailVerification()
                 ?.addOnCompleteListener(this) { task ->
                     // [START_EXCLUDE]

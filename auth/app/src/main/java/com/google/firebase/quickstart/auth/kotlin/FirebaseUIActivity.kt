@@ -24,14 +24,14 @@ import kotlinx.android.synthetic.main.activity_firebase_ui.status
  */
 class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_firebase_ui)
 
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         signInButton.setOnClickListener(this)
         signOutButton.setOnClickListener(this)
@@ -39,7 +39,7 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        updateUI(mAuth.currentUser)
+        updateUI(auth.currentUser)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -48,7 +48,7 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 // Sign in succeeded
-                updateUI(mAuth.currentUser)
+                updateUI(auth.currentUser)
             } else {
                 // Sign in failed
                 Toast.makeText(this, "Sign In Failed", Toast.LENGTH_SHORT).show()

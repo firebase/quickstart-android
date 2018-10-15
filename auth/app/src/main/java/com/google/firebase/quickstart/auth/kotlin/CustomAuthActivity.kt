@@ -19,11 +19,11 @@ import kotlinx.android.synthetic.main.activity_custom.textTokenStatus
 class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     // [START declare_auth]
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
-    private var mCustomToken: String? = null
-    private lateinit var mTokenReceiver: TokenBroadcastReceiver
+    private var customToken: String? = null
+    private lateinit var tokenReceiver: TokenBroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +33,7 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
         buttonSignIn.setOnClickListener(this)
 
         // Create token receiver (for demo purposes only)
-        mTokenReceiver = object : TokenBroadcastReceiver() {
+        tokenReceiver = object : TokenBroadcastReceiver() {
             override fun onNewToken(token: String?) {
                 Log.d(CustomAuthActivity.TAG, "onNewToken:$token")
                 setCustomToken(token.toString())
@@ -42,7 +42,7 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         // [END initialize_auth]
     }
 
@@ -50,31 +50,31 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth.currentUser
+        val currentUser = auth.currentUser
         updateUI(currentUser)
     }
     // [END on_start_check_user]
 
     override fun onResume() {
         super.onResume()
-        registerReceiver(mTokenReceiver, TokenBroadcastReceiver.filter)
+        registerReceiver(tokenReceiver, TokenBroadcastReceiver.filter)
     }
 
     override fun onPause() {
         super.onPause()
-        unregisterReceiver(mTokenReceiver)
+        unregisterReceiver(tokenReceiver)
     }
 
     private fun startSignIn() {
         // Initiate sign in with custom token
         // [START sign_in_custom]
-        mCustomToken?.let {
-            mAuth.signInWithCustomToken(it)
+        customToken?.let {
+            auth.signInWithCustomToken(it)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCustomToken:success")
-                            val user = mAuth.currentUser
+                            val user = auth.currentUser
                             updateUI(user)
                         } else {
                             // If sign in fails, display a message to the user.
@@ -97,9 +97,9 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setCustomToken(token: String) {
-        mCustomToken = token
+        customToken = token
 
-        val status = "Token:$mCustomToken"
+        val status = "Token:$customToken"
 
         // Enable/disable sign-in button and show the token
         buttonSignIn.isEnabled = true
