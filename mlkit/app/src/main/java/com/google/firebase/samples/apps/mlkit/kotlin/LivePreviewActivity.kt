@@ -8,26 +8,32 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.CompoundButton
 import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.CameraSource
-import com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview
-import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.barcodescanning.BarcodeScanningProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.custommodel.CustomImageClassifierProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceDetectionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.imagelabeling.ImageLabelingProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.textrecognition.TextRecognitionProcessor
+import kotlinx.android.synthetic.main.activity_live_preview.facingSwitch
+import kotlinx.android.synthetic.main.activity_live_preview.fireFaceOverlay
+import kotlinx.android.synthetic.main.activity_live_preview.firePreview
+import kotlinx.android.synthetic.main.activity_live_preview.spinner
 import java.io.IOException
-import java.util.*
-import kotlinx.android.synthetic.main.activity_live_preview.*
+import java.util.ArrayList
 
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to
  * set up continuous frame processing on frames from a camera source.  */
 @KeepName
-class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback, AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
+class LivePreviewActivity : AppCompatActivity(),
+        ActivityCompat.OnRequestPermissionsResultCallback,
+        AdapterView.OnItemSelectedListener,
+        CompoundButton.OnCheckedChangeListener {
 
     private var cameraSource: CameraSource? = null
     private var selectedModel = FACE_DETECTION
@@ -46,7 +52,6 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
             } catch (e: Exception) {
                 arrayOfNulls(0)
             }
-
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -152,7 +157,6 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
         } catch (e: FirebaseMLException) {
             Log.e(TAG, "can not create camera source: $model")
         }
-
     }
 
     /**
@@ -175,7 +179,6 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
                 it?.release()
                 cameraSource = null
             }
-
         }
     }
 
@@ -193,9 +196,7 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
 
     public override fun onDestroy() {
         super.onDestroy()
-        cameraSource?.let {
-            it?.release()
-        }
+        cameraSource?.release()
     }
 
     private fun allPermissionsGranted(): Boolean {
@@ -226,7 +227,10 @@ class LivePreviewActivity : AppCompatActivity(), ActivityCompat.OnRequestPermiss
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         Log.i(TAG, "Permission granted!")
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)

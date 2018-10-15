@@ -11,7 +11,9 @@ import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.fragment.MyPostsFragment
 import com.google.firebase.quickstart.database.kotlin.fragment.MyTopPostsFragment
 import com.google.firebase.quickstart.database.kotlin.fragment.RecentPostsFragment
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.container
+import kotlinx.android.synthetic.main.activity_main.fabNewPost
+import kotlinx.android.synthetic.main.activity_main.tabs
 
 class MainActivity : BaseActivity() {
 
@@ -74,7 +76,5 @@ class MainActivity : BaseActivity() {
     companion object {
 
         private const val TAG = "MainActivity"
-
     }
-
 }

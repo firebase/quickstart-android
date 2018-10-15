@@ -7,21 +7,21 @@ import com.google.firebase.firestore.IgnoreExtraProperties
  */
 @IgnoreExtraProperties
 data class Restaurant(
-        var name: String? = null,
-        var city: String? = null,
-        var category: String? = null,
-        var photo: String? = null,
-        var price: Int = 0,
-        var numRatings: Int = 0,
-        var avgRating: Double = 0.toDouble()) {
+    var name: String? = null,
+    var city: String? = null,
+    var category: String? = null,
+    var photo: String? = null,
+    var price: Int = 0,
+    var numRatings: Int = 0,
+    var avgRating: Double = 0.toDouble()
+) {
 
     companion object {
 
-        val FIELD_CITY = "city"
-        val FIELD_CATEGORY = "category"
-        val FIELD_PRICE = "price"
-        val FIELD_POPULARITY = "numRatings"
-        val FIELD_AVG_RATING = "avgRating"
-
+        const val FIELD_CITY = "city"
+        const val FIELD_CATEGORY = "category"
+        const val FIELD_PRICE = "price"
+        const val FIELD_POPULARITY = "numRatings"
+        const val FIELD_AVG_RATING = "avgRating"
     }
 }

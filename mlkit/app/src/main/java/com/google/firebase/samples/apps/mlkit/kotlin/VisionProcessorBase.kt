@@ -25,7 +25,10 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
     private val shouldThrottle = AtomicBoolean(false)
 
     override fun process(
-            data: ByteBuffer, frameMetadata: FrameMetadata, graphicOverlay: GraphicOverlay) {
+        data: ByteBuffer,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         if (shouldThrottle.get()) {
             return
         }
@@ -53,7 +56,7 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
      *
      * @return created FirebaseVisionImage
      */
-    override fun process(image: Image, rotation:Int, graphicOverlay: GraphicOverlay) {
+    override fun process(image: Image, rotation: Int, graphicOverlay: GraphicOverlay) {
         if (shouldThrottle.get()) {
             return
         }
@@ -67,9 +70,10 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
     }
 
     private fun detectInVisionImage(
-            image: FirebaseVisionImage,
-            metadata: FrameMetadata?,
-            graphicOverlay: GraphicOverlay) {
+        image: FirebaseVisionImage,
+        metadata: FrameMetadata?,
+        graphicOverlay: GraphicOverlay
+    ) {
         detectInImage(image)
                 .addOnSuccessListener { results ->
                     shouldThrottle.set(false)
@@ -91,10 +95,10 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
     protected abstract fun detectInImage(image: FirebaseVisionImage): Task<T>
 
     protected abstract fun onSuccess(
-            results:T,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay)
+        results: T,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    )
 
-    protected abstract fun onFailure(e:Exception)
-
+    protected abstract fun onFailure(e: Exception)
 }

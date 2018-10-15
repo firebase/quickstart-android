@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
 
-
 /**
  * Receiver to capture tokens broadcast via ADB and insert them into the
  * running application to facilitate easy testing of custom authentication.
@@ -25,11 +24,10 @@ abstract class TokenBroadcastReceiver : BroadcastReceiver() {
     abstract fun onNewToken(token: String?)
 
     companion object {
-        val ACTION_TOKEN = "com.google.example.ACTION_TOKEN"
+        const val ACTION_TOKEN = "com.google.example.ACTION_TOKEN"
         val filter: IntentFilter
             get() = IntentFilter(ACTION_TOKEN)
-        private val TAG = "TokenBroadcastReceiver"
-        val EXTRA_KEY_TOKEN = "key_token"
+        private const val TAG = "TokenBroadcastReceiver"
+        const val EXTRA_KEY_TOKEN = "key_token"
     }
-
 }

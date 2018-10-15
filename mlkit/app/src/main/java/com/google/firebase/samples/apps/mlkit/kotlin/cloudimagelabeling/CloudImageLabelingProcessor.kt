@@ -23,15 +23,15 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionCloud
             }
     }
 
-
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionCloudLabel>> {
         return detector.detectInImage(image)
     }
 
     override fun onSuccess(
-            results: List<FirebaseVisionCloudLabel>,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        results: List<FirebaseVisionCloudLabel>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
 
         graphicOverlay.clear()
 

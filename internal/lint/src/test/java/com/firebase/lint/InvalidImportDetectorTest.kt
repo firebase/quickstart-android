@@ -2,6 +2,7 @@ package com.firebase.lint
 
 import com.android.tools.lint.checks.infrastructure.LintDetectorTest.java
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
+import com.firebase.lint.InvalidImportDetector.Companion.SHORT_MESSAGE
 import org.junit.Test
 
 class InvalidImportDetectorTest {

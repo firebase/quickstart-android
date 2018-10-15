@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.example.fireeats.R
 import com.google.firebase.example.fireeats.kotlin.model.Rating
-import kotlinx.android.synthetic.main.dialog_rating.*
-import kotlinx.android.synthetic.main.dialog_rating.view.*
+import kotlinx.android.synthetic.main.dialog_rating.restaurantFormRating
+import kotlinx.android.synthetic.main.dialog_rating.restaurantFormText
+import kotlinx.android.synthetic.main.dialog_rating.view.restaurantFormButton
+import kotlinx.android.synthetic.main.dialog_rating.view.restaurantFormCancel
 
 /**
  * Dialog Fragment containing rating form.
@@ -22,12 +24,13 @@ class RatingDialogFragment : DialogFragment() {
     internal interface RatingListener {
 
         fun onRating(rating: Rating)
-
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val v = inflater.inflate(R.layout.dialog_rating, container, false)
 
         v.restaurantFormButton.setOnClickListener { onSubmitClicked() }
@@ -49,10 +52,9 @@ class RatingDialogFragment : DialogFragment() {
         dialog.window?.setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
-
     }
 
-    fun onSubmitClicked() {
+    private fun onSubmitClicked() {
         val user = FirebaseAuth.getInstance().currentUser
         user?.let {
             val rating = Rating(
@@ -66,12 +68,12 @@ class RatingDialogFragment : DialogFragment() {
         dismiss()
     }
 
-    fun onCancelClicked() {
+    private fun onCancelClicked() {
         dismiss()
     }
 
     companion object {
 
-        val TAG = "RatingDialog"
+        const val TAG = "RatingDialog"
     }
 }

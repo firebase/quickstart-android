@@ -22,5 +22,4 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                                 com.google.firebase.quickstart.invites.kotlin.MainActivity::class.java))
         )
     }
-
 }

@@ -14,8 +14,9 @@ import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.quickstart.analytics.R
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import kotlinx.android.synthetic.main.activity_main.pagerTabStrip
+import kotlinx.android.synthetic.main.activity_main.viewPager
+import java.util.Locale
 
 /**
  * Activity which displays numerous background images that may be viewed. These background images
@@ -38,13 +39,13 @@ class MainActivity : AppCompatActivity() {
      * The [android.support.v4.view.PagerAdapter] that will provide fragments for each image.
      * This uses a [FragmentPagerAdapter], which keeps every loaded fragment in memory.
      */
-    private lateinit var mImagePagerAdapter: ImagePagerAdapter
+    private lateinit var imagePagerAdapter: ImagePagerAdapter
 
     /**
      * The `FirebaseAnalytics` used to record screen views.
      */
     // [START declare_analytics]
-    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     // [END declare_analytics]
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         // [START shared_app_measurement]
         // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         // [END shared_app_measurement]
 
         // On first app open, ask the user his/her favorite food. Then set this as a user property
@@ -65,12 +66,11 @@ class MainActivity : AppCompatActivity() {
             setUserFavoriteFood(userFavoriteFood)
         }
 
-
         // Create the adapter that will return a fragment for each image.
-        mImagePagerAdapter = ImagePagerAdapter(supportFragmentManager, IMAGE_INFOS)
+        imagePagerAdapter = ImagePagerAdapter(supportFragmentManager, IMAGE_INFOS)
 
         // Set up the ViewPager with the pattern adapter.
-        viewPager.adapter = mImagePagerAdapter
+        viewPager.adapter = imagePagerAdapter
 
         // Workaround for AppCompat issue not showing ViewPager titles
         val params = pagerTabStrip.layoutParams as ViewPager.LayoutParams
@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                 .apply()
 
         // [START user_property]
-        mFirebaseAnalytics.setUserProperty("favorite_food", food)
+        firebaseAnalytics.setUserProperty("favorite_food", food)
         // [END user_property]
     }
 
@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
             val params = Bundle()
             params.putString("image_name", name)
             params.putString("full_text", text)
-            mFirebaseAnalytics.logEvent("share_image", params)
+            firebaseAnalytics.logEvent("share_image", params)
             // [END custom_event]
         }
         return false
@@ -197,7 +197,7 @@ class MainActivity : AppCompatActivity() {
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id)
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name)
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
         // [END image_view_event]
     }
 
@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity() {
         val screenName = "${getCurrentImageId()}-${getCurrentImageTitle()}"
 
         // [START set_current_screen]
-        mFirebaseAnalytics.setCurrentScreen(this, screenName, null /* class override */)
+        firebaseAnalytics.setCurrentScreen(this, screenName, null /* class override */)
         // [END set_current_screen]
     }
 
@@ -219,8 +219,8 @@ class MainActivity : AppCompatActivity() {
      * one of the sections/tabs/pages.
      */
     inner class ImagePagerAdapter(
-            fm: FragmentManager,
-            private val infos: Array<ImageInfo>
+        fm: FragmentManager,
+        private val infos: Array<ImageInfo>
     ) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {

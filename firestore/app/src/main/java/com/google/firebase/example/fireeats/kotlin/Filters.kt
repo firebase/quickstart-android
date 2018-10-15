@@ -70,12 +70,10 @@ class Filters {
     }
 
     fun getOrderDescription(context: Context): String {
-        return if (Restaurant.FIELD_PRICE == sortBy) {
-            context.getString(R.string.sorted_by_price)
-        } else if (Restaurant.FIELD_POPULARITY == sortBy) {
-            context.getString(R.string.sorted_by_popularity)
-        } else {
-            context.getString(R.string.sorted_by_rating)
+        return when (sortBy) {
+            Restaurant.FIELD_PRICE -> context.getString(R.string.sorted_by_price)
+            Restaurant.FIELD_POPULARITY -> context.getString(R.string.sorted_by_popularity)
+            else -> context.getString(R.string.sorted_by_rating)
         }
     }
 

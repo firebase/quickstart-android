@@ -18,5 +18,4 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                         Intent(this, com.google.firebase.quickstart.firebasestorage.kotlin.MainActivity::class.java))
         )
     }
-
 }

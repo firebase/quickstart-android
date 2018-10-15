@@ -15,12 +15,11 @@ class CloudDocumentTextGraphic(
     private val symbol: FirebaseVisionDocumentText.Symbol?
 ) : GraphicOverlay.Graphic(overlay) {
 
-    private val rectPaint: Paint
+    private val rectPaint: Paint = Paint()
     private val textPaint: Paint
 
     init {
 
-        rectPaint = Paint()
         rectPaint.color = TEXT_COLOR
         rectPaint.style = Paint.Style.STROKE
         rectPaint.strokeWidth = STROKE_WIDTH

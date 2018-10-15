@@ -10,7 +10,6 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.samples.quickstart.functions.R
 
-
 class FunctionsMessagingService : FirebaseMessagingService() {
 
     private fun createNotificationChannel() {

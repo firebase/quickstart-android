@@ -1,13 +1,22 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.custommodel
 
 import android.app.Activity
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageFormat
+import android.graphics.Rect
+import android.graphics.YuvImage
 import android.os.SystemClock
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.ml.common.FirebaseMLException
-import com.google.firebase.ml.custom.*
+import com.google.firebase.ml.custom.FirebaseModelDataType
+import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions
+import com.google.firebase.ml.custom.FirebaseModelInputs
+import com.google.firebase.ml.custom.FirebaseModelInterpreter
+import com.google.firebase.ml.custom.FirebaseModelManager
+import com.google.firebase.ml.custom.FirebaseModelOptions
 import com.google.firebase.ml.custom.model.FirebaseCloudModelSource
 import com.google.firebase.ml.custom.model.FirebaseLocalModelSource
 import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions
@@ -17,7 +26,10 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.util.*
+import java.util.AbstractMap
+import java.util.ArrayList
+import java.util.Comparator
+import java.util.PriorityQueue
 import kotlin.experimental.and
 
 /** A `FirebaseModelInterpreter` based image classifier.  */
@@ -57,7 +69,7 @@ constructor(activity: Activity) {
         val cloudSource = FirebaseCloudModelSource.Builder(HOSTED_MODEL_NAME)
                 .enableModelUpdates(true)
                 .setInitialDownloadConditions(conditions)
-                .setUpdatesDownloadConditions(conditions)  // You could also specify different
+                .setUpdatesDownloadConditions(conditions) // You could also specify different
                 // conditions for updates.
                 .build()
         val manager = FirebaseModelManager.getInstance()
@@ -120,7 +132,10 @@ constructor(activity: Activity) {
     /** Writes Image data into a `ByteBuffer`.  */
     @Synchronized
     private fun convertBitmapToByteBuffer(
-            buffer: ByteBuffer, width: Int, height: Int): ByteBuffer {
+        buffer: ByteBuffer,
+        width: Int,
+        height: Int
+    ): ByteBuffer {
         val imgData = ByteBuffer.allocateDirect(
                 DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE)
         imgData.order(ByteOrder.nativeOrder())
@@ -158,8 +173,8 @@ constructor(activity: Activity) {
     @Synchronized
     private fun printTopKLabels(labelProbArray: Array<ByteArray>): List<String> {
         for (i in labelList.indices) {
-            sortedLabels.add(
-                    AbstractMap.SimpleEntry<String, Float>(labelList[i], (labelProbArray[0][i] and 0xff.toByte()) / 255.0f))
+            sortedLabels.add(AbstractMap.SimpleEntry<String, Float>(
+                    labelList[i], (labelProbArray[0][i] and 0xff.toByte()) / 255.0f))
             if (sortedLabels.size > RESULTS_TO_SHOW) {
                 sortedLabels.poll()
             }

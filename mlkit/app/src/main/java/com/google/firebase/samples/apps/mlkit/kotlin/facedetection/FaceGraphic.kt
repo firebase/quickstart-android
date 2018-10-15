@@ -53,13 +53,13 @@ class FaceGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
 
     /** Draws the face annotations for position on the supplied canvas.  */
     override fun draw(canvas: Canvas) {
-        val face = firebaseVisionFace ?: return
+        val face = firebaseVisionFace
 
         // Draws a circle at the position of the detected face, with the face's track id below.
         val x = translateX(face.boundingBox.centerX().toFloat())
         val y = translateY(face.boundingBox.centerY().toFloat())
         canvas.drawCircle(x, y, FACE_POSITION_RADIUS, facePositionPaint)
-        canvas.drawText("id: ${face.trackingId}" , x + ID_X_OFFSET, y + ID_Y_OFFSET, idPaint)
+        canvas.drawText("id: ${face.trackingId}", x + ID_X_OFFSET, y + ID_Y_OFFSET, idPaint)
         canvas.drawText(
                 "happiness: ${String.format("%.2f", face.smilingProbability)}",
                 x + ID_X_OFFSET * 3,

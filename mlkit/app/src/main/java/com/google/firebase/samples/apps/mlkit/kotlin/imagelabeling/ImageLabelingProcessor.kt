@@ -14,11 +14,7 @@ import java.io.IOException
 /** Custom Image Classifier Demo.  */
 class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() {
 
-    private val detector: FirebaseVisionLabelDetector
-
-    init {
-        detector = FirebaseVision.getInstance().visionLabelDetector
-    }
+    private val detector: FirebaseVisionLabelDetector = FirebaseVision.getInstance().visionLabelDetector
 
     override fun stop() {
         try {
@@ -26,7 +22,6 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() 
         } catch (e: IOException) {
             Log.e(TAG, "Exception thrown while trying to close Text Detector: $e")
         }
-
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionLabel>> {
@@ -34,9 +29,10 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() 
     }
 
     override fun onSuccess(
-            labels: List<FirebaseVisionLabel>,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        labels: List<FirebaseVisionLabel>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         val labelGraphic = LabelGraphic(graphicOverlay, labels)
         graphicOverlay.add(labelGraphic)

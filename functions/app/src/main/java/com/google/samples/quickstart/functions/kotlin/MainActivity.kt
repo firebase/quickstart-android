@@ -18,8 +18,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.FirebaseFunctionsException
 import com.google.samples.quickstart.functions.R
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import kotlinx.android.synthetic.main.activity_main.buttonAddMessage
+import kotlinx.android.synthetic.main.activity_main.buttonCalculate
+import kotlinx.android.synthetic.main.activity_main.buttonSignIn
+import kotlinx.android.synthetic.main.activity_main.fieldAddResult
+import kotlinx.android.synthetic.main.activity_main.fieldFirstNumber
+import kotlinx.android.synthetic.main.activity_main.fieldMessageInput
+import kotlinx.android.synthetic.main.activity_main.fieldMessageOutput
+import kotlinx.android.synthetic.main.activity_main.fieldSecondNumber
 
 /**
  * This activity demonstrates the Android SDK for Callable Functions.
@@ -30,7 +36,7 @@ import java.util.*
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // [START define_functions_instance]
-    private lateinit var mFunctions: FirebaseFunctions
+    private lateinit var functions: FirebaseFunctions
     // [END define_functions_instance]
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonSignIn.setOnClickListener(this)
 
         // [START initialize_functions_instance]
-        mFunctions = FirebaseFunctions.getInstance()
+        functions = FirebaseFunctions.getInstance()
         // [END initialize_functions_instance]
     }
 
@@ -55,7 +61,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         )
 
         // Call the function and extract the operation from the result
-        return mFunctions
+        return functions
                 .getHttpsCallable("addNumbers")
                 .call(data)
                 .continueWith { task ->
@@ -76,7 +82,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             "push" to true
         )
 
-        return mFunctions
+        return functions
                 .getHttpsCallable("addMessage")
                 .call(data)
                 .continueWith { task ->
