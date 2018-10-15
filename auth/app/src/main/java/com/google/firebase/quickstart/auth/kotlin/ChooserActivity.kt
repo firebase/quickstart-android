@@ -46,9 +46,9 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     }
 
     class MyArrayAdapter(
-            private val ctx: Context,
-            resource: Int,
-            private val classes: Array<Class<*>>
+        private val ctx: Context,
+        resource: Int,
+        private val classes: Array<Class<*>>
     )
         : ArrayAdapter<Class<*>>(ctx, resource, classes) {
         private var descriptionIds: IntArray? = null

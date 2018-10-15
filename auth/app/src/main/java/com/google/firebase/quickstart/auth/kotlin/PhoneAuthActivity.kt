@@ -161,7 +161,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 60,               // Timeout duration
                 TimeUnit.SECONDS, // Unit of timeout
                 this,             // Activity (for callback binding)
-                callbacks)       // OnVerificationStateChangedCallbacks
+                callbacks) // OnVerificationStateChangedCallbacks
         // [END start_phone_auth]
 
         verificationInProgress = true
@@ -237,9 +237,9 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun updateUI(
-            uiState: Int,
-            user: FirebaseUser? = auth.currentUser,
-            cred: PhoneAuthCredential? = null
+        uiState: Int,
+        user: FirebaseUser? = auth.currentUser,
+        cred: PhoneAuthCredential? = null
     ) {
         when (uiState) {
             STATE_INITIALIZED -> {

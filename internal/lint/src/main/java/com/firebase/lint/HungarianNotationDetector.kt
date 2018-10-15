@@ -13,7 +13,7 @@ import org.jetbrains.uast.UField
 val ISSUE_HUNGARIAN_NOTATION = Issue.create(
         "HungarianNotation",
         "Using mHungarianNotation in a Kotlin file!",
-        "Don't do it, Jake Wharton says it's bad.",
+        "mFriends don’t let sFriends use Hungarian notation! -Jake Wharton",
         Category.MESSAGES,
         9,
         Severity.ERROR,
@@ -38,7 +38,6 @@ class HungarianNotationDetector : Detector(), Detector.UastScanner {
                 node.uastAnchor?.let {
                     context.report(ISSUE_HUNGARIAN_NOTATION, node, context.getLocation(it), SHORT_MESSAGE)
                 }
-
             }
         }
     }
