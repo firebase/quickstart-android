@@ -10,8 +10,6 @@ import com.android.tools.lint.detector.api.Scope
 import com.android.tools.lint.detector.api.Severity
 import org.jetbrains.uast.UImportStatement
 
-val SHORT_MESSAGE = "Invalid Import: java package imported from kotlin package."
-
 val ISSUE_INVALID_IMPORT = Issue.create(
         "SuspiciousImport",
         "importing files from the `java` package in a kotlin file",
@@ -53,5 +51,9 @@ class InvalidImportDetector : Detector(), Detector.UastScanner {
                 i++
             }
         }
+    }
+
+    companion object {
+        val SHORT_MESSAGE = "Invalid Import: java package imported from kotlin package."
     }
 }
