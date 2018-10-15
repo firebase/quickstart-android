@@ -10,17 +10,23 @@ import com.google.firebase.example.fireeats.kotlin.model.Restaurant
 import com.google.firebase.example.fireeats.kotlin.util.RestaurantUtil
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.item_restaurant.view.*
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemCategory
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemCity
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemImage
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemName
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemNumRatings
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemPrice
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemRating
 
 /**
  * RecyclerView adapter for a list of Restaurants.
  */
-open class RestaurantAdapter(query: Query, val mListener: OnRestaurantSelectedListener) : FirestoreAdapter<RestaurantAdapter.ViewHolder>(query) {
+open class RestaurantAdapter(query: Query, private val listener: OnRestaurantSelectedListener) :
+        FirestoreAdapter<RestaurantAdapter.ViewHolder>(query) {
 
     interface OnRestaurantSelectedListener {
 
         fun onRestaurantSelected(restaurant: DocumentSnapshot)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,13 +35,15 @@ open class RestaurantAdapter(query: Query, val mListener: OnRestaurantSelectedLi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getSnapshot(position), mListener)
+        holder.bind(getSnapshot(position), listener)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(snapshot: DocumentSnapshot,
-                 listener: OnRestaurantSelectedListener?) {
+        fun bind(
+            snapshot: DocumentSnapshot,
+            listener: OnRestaurantSelectedListener?
+        ) {
 
             val restaurant = snapshot.toObject(Restaurant::class.java)
             if (restaurant == null) {
@@ -65,6 +73,5 @@ open class RestaurantAdapter(query: Query, val mListener: OnRestaurantSelectedLi
                 listener?.onRestaurantSelected(snapshot)
             }
         }
-
     }
 }

@@ -121,10 +121,10 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:123456789000:android:f1bf012572b04063",
-        "client_id": "android:com.google.samples.quickstart.app_indexing",
+        "client_id": "android:com.google.samples.quickstart.appindexing",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "com.google.samples.quickstart.app_indexing",
+          "package_name": "com.google.samples.quickstart.appindexing",
           "certificate_hash": []
         }
       },
@@ -133,7 +133,7 @@
           "client_id": "123456789000-hjugbg6ud799v4c49dim8ce2usclthar.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.google.samples.quickstart.app_indexing",
+            "package_name": "com.google.samples.quickstart.appindexing",
             "certificate_hash": "4C20644DE36B8F89D25650C7D1FF9FBAE650FDF7"
           }
         },

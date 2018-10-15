@@ -11,16 +11,16 @@ import java.nio.ByteBuffer
 
 /** Custom Image Classifier Demo.  */
 class CustomImageClassifierProcessor @Throws(FirebaseMLException::class)
-constructor(private val activity: Activity): VisionImageProcessor {
+constructor(private val activity: Activity) : VisionImageProcessor {
 
-    private val classifier: CustomImageClassifier
-
-    init{
-        classifier = CustomImageClassifier(activity)
-    }
+    private val classifier: CustomImageClassifier = CustomImageClassifier(activity)
 
     @Throws(FirebaseMLException::class)
-    override fun process(data: ByteBuffer, frameMetadata: FrameMetadata, graphicOverlay: GraphicOverlay) {
+    override fun process(
+        data: ByteBuffer,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         classifier
                 .classifyFrame(data, frameMetadata.width, frameMetadata.height)
                 .addOnSuccessListener(
@@ -37,9 +37,8 @@ constructor(private val activity: Activity): VisionImageProcessor {
         // nop
     }
 
-    override fun process(bitmap: Image, rotation:Int, graphicOverlay: GraphicOverlay) {
+    override fun process(bitmap: Image, rotation: Int, graphicOverlay: GraphicOverlay) {
         // nop
-
     }
 
     override fun stop() {}

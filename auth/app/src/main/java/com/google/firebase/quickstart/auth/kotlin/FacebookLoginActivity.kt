@@ -15,7 +15,10 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_facebook.*
+import kotlinx.android.synthetic.main.activity_facebook.buttonFacebookLogin
+import kotlinx.android.synthetic.main.activity_facebook.buttonFacebookSignout
+import kotlinx.android.synthetic.main.activity_facebook.detail
+import kotlinx.android.synthetic.main.activity_facebook.status
 
 /**
  * Demonstrate Firebase Authentication using a Facebook access token.
@@ -23,10 +26,10 @@ import kotlinx.android.synthetic.main.activity_facebook.*
 class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
 
     // [START declare_auth]
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
-    private lateinit var mCallbackManager: CallbackManager
+    private lateinit var callbackManager: CallbackManager
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,15 +39,15 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         // [END initialize_auth]
 
         // [START initialize_fblogin]
         // Initialize Facebook Login button
-        mCallbackManager = CallbackManager.Factory.create()
+        callbackManager = CallbackManager.Factory.create()
 
         buttonFacebookLogin.setReadPermissions("email", "public_profile")
-        buttonFacebookLogin.registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
+        buttonFacebookLogin.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.d(TAG, "facebook:onSuccess:$loginResult")
                 handleFacebookAccessToken(loginResult.accessToken)
@@ -71,7 +74,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth.currentUser
+        val currentUser = auth.currentUser
         updateUI(currentUser)
     }
     // [END on_start_check_user]
@@ -81,7 +84,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Pass the activity result back to the Facebook SDK
-        mCallbackManager.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
     // [END on_activity_result]
 
@@ -93,12 +96,12 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
         // [END_EXCLUDE]
 
         val credential = FacebookAuthProvider.getCredential(token.token)
-        mAuth.signInWithCredential(credential)
+        auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
-                        val user = mAuth.currentUser
+                        val user = auth.currentUser
                         updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
@@ -116,7 +119,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
     // [END auth_with_facebook]
 
     fun signOut() {
-        mAuth.signOut()
+        auth.signOut()
         LoginManager.getInstance().logOut()
 
         updateUI(null)
@@ -147,6 +150,6 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "FacebookLogin"
+        private const val TAG = "FacebookLogin"
     }
 }

@@ -6,10 +6,20 @@ import android.support.design.widget.Snackbar
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import com.google.firebase.auth.*
+import com.google.firebase.auth.ActionCodeSettings
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthActionCodeException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_passwordless.*
-
+import kotlinx.android.synthetic.main.activity_passwordless.fieldEmail
+import kotlinx.android.synthetic.main.activity_passwordless.passwordlessButtons
+import kotlinx.android.synthetic.main.activity_passwordless.passwordlessFields
+import kotlinx.android.synthetic.main.activity_passwordless.passwordlessSendEmailButton
+import kotlinx.android.synthetic.main.activity_passwordless.passwordlessSignInButton
+import kotlinx.android.synthetic.main.activity_passwordless.signOutButton
+import kotlinx.android.synthetic.main.activity_passwordless.signedInButtons
+import kotlinx.android.synthetic.main.activity_passwordless.status
 
 /**
  * Demonstrate Firebase Authentication without a password, using a link sent to an
@@ -17,16 +27,16 @@ import kotlinx.android.synthetic.main.activity_passwordless.*
  */
 class PasswordlessActivity : BaseActivity(), View.OnClickListener {
 
-    private var mPendingEmail: String = ""
-    private var mEmailLink: String = ""
-    private lateinit var mAuth: FirebaseAuth
+    private var pendingEmail: String = ""
+    private var emailLink: String = ""
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_passwordless)
 
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         passwordlessSendEmailButton.setOnClickListener(this)
         passwordlessSignInButton.setOnClickListener(this)
@@ -34,8 +44,8 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
 
         // Restore the "pending" email address
         if (savedInstanceState != null) {
-            mPendingEmail = savedInstanceState.getString(KEY_PENDING_EMAIL, null)
-            fieldEmail.setText(mPendingEmail)
+            pendingEmail = savedInstanceState.getString(KEY_PENDING_EMAIL, null)
+            fieldEmail.setText(pendingEmail)
         }
 
         // Check if the Intent that started the Activity contains an email sign-in link.
@@ -44,7 +54,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        updateUI(mAuth.currentUser)
+        updateUI(auth.currentUser)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -54,7 +64,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(KEY_PENDING_EMAIL, mPendingEmail)
+        outState.putString(KEY_PENDING_EMAIL, pendingEmail)
     }
 
     /**
@@ -64,7 +74,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
      */
     private fun checkIntent(intent: Intent?) {
         if (intentHasEmailLink(intent)) {
-            mEmailLink = intent!!.data!!.toString()
+            emailLink = intent!!.data!!.toString()
 
             status.setText(R.string.status_link_found)
             passwordlessSendEmailButton.isEnabled = false
@@ -82,7 +92,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
     private fun intentHasEmailLink(intent: Intent?): Boolean {
         if (intent != null && intent.data != null) {
             val intentData = intent.data!!.toString()
-            if (mAuth.isSignInWithEmailLink(intentData)) {
+            if (auth.isSignInWithEmailLink(intentData)) {
                 return true
             }
         }
@@ -105,7 +115,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         hideKeyboard(fieldEmail)
         showProgressDialog()
 
-        mAuth.sendSignInLinkToEmail(email, settings)
+        auth.sendSignInLinkToEmail(email, settings)
                 .addOnCompleteListener { task ->
                     hideProgressDialog()
 
@@ -113,7 +123,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
                         Log.d(TAG, "Link sent")
                         showSnackbar("Sign-in link sent!")
 
-                        mPendingEmail = email
+                        pendingEmail = email
                         status.setText(R.string.status_email_sent)
                     } else {
                         val e = task.exception
@@ -137,7 +147,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         hideKeyboard(fieldEmail)
         showProgressDialog()
 
-        mAuth.signInWithEmailLink(email, link)
+        auth.signInWithEmailLink(email, link)
                 .addOnCompleteListener { task ->
                     hideProgressDialog()
                     if (task.isSuccessful) {
@@ -173,11 +183,11 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        signInWithEmailLink(email, mEmailLink)
+        signInWithEmailLink(email, emailLink)
     }
 
     private fun onSignOutClicked() {
-        mAuth.signOut()
+        auth.signOut()
 
         updateUI(null)
         status.setText(R.string.status_email_not_sent)
@@ -211,7 +221,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "PasswordlessSignIn"
-        private val KEY_PENDING_EMAIL = "key_pending_email"
+        private const val TAG = "PasswordlessSignIn"
+        private const val KEY_PENDING_EMAIL = "key_pending_email"
     }
 }

@@ -22,9 +22,11 @@ class ImageFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_main, null)
         val imageView = view.findViewById<ImageView>(R.id.imageView)
         imageView.setImageResource(resId)
@@ -49,5 +51,4 @@ class ImageFragment : Fragment() {
             return fragment
         }
     }
-
 }

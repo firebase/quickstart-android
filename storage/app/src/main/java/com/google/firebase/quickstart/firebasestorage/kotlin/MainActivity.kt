@@ -18,8 +18,14 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.firebasestorage.R
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import kotlinx.android.synthetic.main.activity_main.buttonCamera
+import kotlinx.android.synthetic.main.activity_main.buttonDownload
+import kotlinx.android.synthetic.main.activity_main.buttonSignIn
+import kotlinx.android.synthetic.main.activity_main.layoutDownload
+import kotlinx.android.synthetic.main.activity_main.layoutSignin
+import kotlinx.android.synthetic.main.activity_main.layoutStorage
+import kotlinx.android.synthetic.main.activity_main.pictureDownloadUri
+import java.util.Locale
 
 /**
  * Activity to upload and download photos from Firebase Storage.
@@ -93,7 +99,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         if (intent.hasExtra(MyUploadService.EXTRA_DOWNLOAD_URL)) {
             onUploadResultIntent(intent)
         }
-
     }
 
     public override fun onStart() {

@@ -18,7 +18,6 @@ class MyJobService : JobService() {
 
     companion object {
 
-        private val TAG = "MyJobService"
+        private const val TAG = "MyJobService"
     }
-
 }

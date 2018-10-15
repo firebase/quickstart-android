@@ -104,11 +104,11 @@ abstract class MyBaseTaskService : Service() {
 
     companion object {
 
-        private val CHANNEL_ID_DEFAULT = "default"
+        private const val CHANNEL_ID_DEFAULT = "default"
 
-        internal val PROGRESS_NOTIFICATION_ID = 0
-        internal val FINISHED_NOTIFICATION_ID = 1
+        internal const val PROGRESS_NOTIFICATION_ID = 0
+        internal const val FINISHED_NOTIFICATION_ID = 1
 
-        private val TAG = "MyBaseTaskService"
+        private const val TAG = "MyBaseTaskService"
     }
 }

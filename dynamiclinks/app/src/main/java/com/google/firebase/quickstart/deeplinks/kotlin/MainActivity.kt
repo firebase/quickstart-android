@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
                         deepLink = pendingDynamicLinkData.link
                     }
 
-
                     // Handle the deep link. For example, open the linked
                     // content, or apply promotional credit to the user's
                     // account.
@@ -126,6 +125,5 @@ class MainActivity : AppCompatActivity() {
 
         private const val TAG = "MainActivity"
         private const val DEEP_LINK_URL = "https://kotlin.example.com/deeplinks"
-
     }
 }

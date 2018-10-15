@@ -15,8 +15,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.google.firebase.samples.apps.mlkit.R
+import kotlinx.android.synthetic.main.activity_chooser.testActivityListView
 import java.util.ArrayList
-import kotlinx.android.synthetic.main.activity_chooser.*
 
 /**
  * Demo app chooser which takes care of runtime permission requesting and allows you to pick from
@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.activity_chooser.*
  */
 class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback,
         AdapterView.OnItemClickListener {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +41,6 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
         if (!allPermissionsGranted()) {
             getRuntimePermissions()
         }
-
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -63,7 +61,6 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
         } catch (e: Exception) {
             arrayOfNulls(0)
         }
-
     }
 
     private fun allPermissionsGranted(): Boolean {
@@ -103,8 +100,9 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
     }
 
     private class MyArrayAdapter(
-            private val ctx: Context, resource: Int,
-            private val classes: Array<Class<*>>
+        private val ctx: Context,
+        resource: Int,
+        private val classes: Array<Class<*>>
     ) : ArrayAdapter<Class<*>>(ctx, resource, classes) {
         private var descriptionIds: IntArray? = null
 

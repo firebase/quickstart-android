@@ -30,9 +30,10 @@ class CloudLandmarkRecognitionProcessor : VisionProcessorBase<List<FirebaseVisio
     }
 
     override fun onSuccess(
-            landmarks: List<FirebaseVisionCloudLandmark>,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        landmarks: List<FirebaseVisionCloudLandmark>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         Log.d(TAG, "cloud landmark size: ${landmarks.size}")
         for (i in landmarks.indices) {

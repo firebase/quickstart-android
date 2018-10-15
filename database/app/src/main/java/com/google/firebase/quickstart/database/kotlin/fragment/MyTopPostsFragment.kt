@@ -3,7 +3,6 @@ package com.google.firebase.quickstart.database.kotlin.fragment
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.Query
 
-
 class MyTopPostsFragment : PostListFragment() {
 
     override fun getQuery(databaseReference: DatabaseReference): Query {

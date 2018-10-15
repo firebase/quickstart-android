@@ -20,9 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.R;
-import com.google.firebase.quickstart.database.java.models.User;
 import com.google.firebase.quickstart.database.java.models.Comment;
 import com.google.firebase.quickstart.database.java.models.Post;
+import com.google.firebase.quickstart.database.java.models.User;
 
 import java.util.ArrayList;
 import java.util.List;

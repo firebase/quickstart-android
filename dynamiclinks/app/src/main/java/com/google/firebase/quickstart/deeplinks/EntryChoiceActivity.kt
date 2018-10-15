@@ -18,5 +18,4 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                         Intent(this, com.google.firebase.quickstart.deeplinks.kotlin.MainActivity::class.java))
         )
     }
-
 }

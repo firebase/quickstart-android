@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.app_indexing;
+package com.google.samples.quickstart.appindexing;
 /*
  * Copyright (C) The Android Open Source Project
  *
@@ -20,7 +20,7 @@ import android.net.Uri;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.google.samples.quickstart.app_indexing.java.MainActivity;
+import com.google.samples.quickstart.appindexing.java.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

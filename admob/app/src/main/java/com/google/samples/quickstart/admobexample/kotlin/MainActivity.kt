@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.google.android.gms.ads.AdListener
+
 // [SNIPPET load_banner_ad]
 // Load an ad into the AdView.
 // [START load_banner_ad]
@@ -12,14 +13,14 @@ import com.google.android.gms.ads.AdRequest
 // [START_EXCLUDE]
 import com.google.android.gms.ads.InterstitialAd
 import com.google.samples.quickstart.admobexample.R
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.adView
+import kotlinx.android.synthetic.main.activity_main.loadInterstitialButton
 // [END_EXCLUDE]
 
 class MainActivity : AppCompatActivity() {
 
     // [START_EXCLUDE]
-    private lateinit var mInterstitialAd: InterstitialAd
-
+    private lateinit var interstitialAd: InterstitialAd
     // [END_EXCLUDE]
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,12 +40,12 @@ class MainActivity : AppCompatActivity() {
         // [START instantiate_interstitial_ad]
         // Create an InterstitialAd object. This same object can be re-used whenever you want to
         // show an interstitial.
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = getString(R.string.interstitial_ad_unit_id)
+        interstitialAd = InterstitialAd(this)
+        interstitialAd.adUnitId = getString(R.string.interstitial_ad_unit_id)
         // [END instantiate_interstitial_ad]
 
         // [START create_interstitial_ad_listener]
-        mInterstitialAd.adListener = object : AdListener() {
+        interstitialAd.adListener = object : AdListener() {
             override fun onAdClosed() {
                 requestNewInterstitial()
                 beginSecondActivity()
@@ -59,15 +60,15 @@ class MainActivity : AppCompatActivity() {
 
             override fun onAdFailedToLoad(i: Int) {
                 // See https://goo.gl/sCZj0H for possible error codes.
-                Log.w(Companion.TAG, "onAdFailedToLoad:$i")
+                Log.w(TAG, "onAdFailedToLoad:$i")
             }
         }
         // [END create_interstitial_ad_listener]
 
         // [START display_interstitial_ad]
         loadInterstitialButton.setOnClickListener {
-            if (mInterstitialAd.isLoaded) {
-                mInterstitialAd.show()
+            if (interstitialAd.isLoaded) {
+                interstitialAd.show()
             } else {
                 beginSecondActivity()
             }
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         // [END display_interstitial_ad]
 
         // Disable button if an interstitial ad is not loaded yet.
-        loadInterstitialButton.isEnabled = mInterstitialAd.isLoaded
+        loadInterstitialButton.isEnabled = interstitialAd.isLoaded
     }
 
     /**
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder()
                 .build()
 
-        mInterstitialAd.loadAd(adRequest)
+        interstitialAd.loadAd(adRequest)
     }
     // [END request_new_interstitial]
 
@@ -106,7 +107,7 @@ class MainActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
         adView.resume()
-        if (!mInterstitialAd.isLoaded) {
+        if (!interstitialAd.isLoaded) {
             requestNewInterstitial()
         }
     }
@@ -119,7 +120,6 @@ class MainActivity : AppCompatActivity() {
 
     // [END add_lifecycle_methods]
     companion object {
-        private val TAG = "MainActivity"
+        private const val TAG = "MainActivity"
     }
-
 }

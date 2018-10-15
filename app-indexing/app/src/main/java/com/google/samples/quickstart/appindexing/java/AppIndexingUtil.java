@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.app_indexing.java;
+package com.google.samples.quickstart.appindexing.java;
 
 import android.content.Context;
 import android.graphics.Bitmap;

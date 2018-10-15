@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.app_indexing.kotlin
+package com.google.samples.quickstart.appindexing.kotlin
 
 import android.content.ContentProvider
 import android.content.ContentValues
@@ -10,18 +10,17 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 
-
 /**
  * Provider that makes the stickers queryable by other applications.
  */
 class StickerProvider : ContentProvider() {
 
-    private lateinit var mRootDir: File
+    private lateinit var rootDir: File
 
     override fun onCreate(): Boolean {
-        mRootDir = File(context.filesDir, "stickers")
+        rootDir = File(context.filesDir, "stickers")
         return try {
-            mRootDir = mRootDir.canonicalFile
+            rootDir = rootDir.canonicalFile
             true
         } catch (e: IOException) {
             false
@@ -46,7 +45,7 @@ class StickerProvider : ContentProvider() {
     }
 
     private fun uriToFile(uri: Uri): File {
-        var file = File(mRootDir, uri.encodedPath)
+        var file = File(rootDir, uri.encodedPath)
         try {
             file = file.canonicalFile
         } catch (e: IOException) {
@@ -57,7 +56,7 @@ class StickerProvider : ContentProvider() {
     }
 
     private fun isFileInRoot(file: File): Boolean {
-        return file.path.startsWith(mRootDir.path)
+        return file.path.startsWith(rootDir.path)
     }
 
     private fun getMimeType(file: File): String {
@@ -82,8 +81,13 @@ class StickerProvider : ContentProvider() {
         return extension
     }
 
-    override fun query(uri: Uri, projection: Array<String>?, selection: String?,
-                       selectionArgs: Array<String>?, sortOrder: String?): Cursor? {
+    override fun query(
+        uri: Uri,
+        projection: Array<String>?,
+        selection: String?,
+        selectionArgs: Array<String>?,
+        sortOrder: String?
+    ): Cursor? {
         throw UnsupportedOperationException("no queries")
     }
 
@@ -91,13 +95,20 @@ class StickerProvider : ContentProvider() {
         throw UnsupportedOperationException("no inserts")
     }
 
-    override fun delete(uri: Uri, selection: String?,
-                        selectionArgs: Array<String>?): Int {
+    override fun delete(
+        uri: Uri,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): Int {
         throw UnsupportedOperationException("no deletes")
     }
 
-    override fun update(uri: Uri, values: ContentValues?, selection: String?,
-                        selectionArgs: Array<String>?): Int {
+    override fun update(
+        uri: Uri,
+        values: ContentValues?,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): Int {
         throw UnsupportedOperationException("no updates")
     }
 }

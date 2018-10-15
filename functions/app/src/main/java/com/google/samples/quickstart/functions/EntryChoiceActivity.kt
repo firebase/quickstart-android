@@ -21,5 +21,4 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                             com.google.samples.quickstart.functions.kotlin.MainActivity::class.java))
         )
     }
-
 }

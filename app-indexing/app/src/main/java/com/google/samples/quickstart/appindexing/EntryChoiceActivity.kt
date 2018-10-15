@@ -1,9 +1,9 @@
-package com.google.samples.quickstart.app_indexing
+package com.google.samples.quickstart.appindexing
 
 import android.content.Intent
 import com.firebase.example.internal.BaseEntryChoiceActivity
 import com.firebase.example.internal.Choice
-import com.google.samples.quickstart.app_indexing.java.MainActivity
+import com.google.samples.quickstart.appindexing.java.MainActivity
 
 class EntryChoiceActivity : BaseEntryChoiceActivity() {
 
@@ -16,8 +16,7 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                 Choice(
                         "Kotlin",
                         "Run the Firebase App Indexing quickstart written in Kotlin.",
-                        Intent(this, com.google.samples.quickstart.app_indexing.kotlin.MainActivity::class.java))
+                        Intent(this, com.google.samples.quickstart.appindexing.kotlin.MainActivity::class.java))
         )
     }
-
 }

@@ -123,7 +123,7 @@ class MyDownloadService : MyBaseTaskService() {
 
     companion object {
 
-        private val TAG = "Storage#DownloadService"
+        private const val TAG = "Storage#DownloadService"
 
         /** Actions  */
         const val ACTION_DOWNLOAD = "action_download"
@@ -133,7 +133,6 @@ class MyDownloadService : MyBaseTaskService() {
         /** Extras  */
         const val EXTRA_DOWNLOAD_PATH = "extra_download_path"
         const val EXTRA_BYTES_DOWNLOADED = "extra_bytes_downloaded"
-
 
         val intentFilter: IntentFilter
             get() {

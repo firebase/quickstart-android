@@ -9,18 +9,27 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.TwitterAuthProvider
 import com.google.firebase.quickstart.auth.R
-import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.Callback
+import com.twitter.sdk.android.core.Result
+import com.twitter.sdk.android.core.Twitter
+import com.twitter.sdk.android.core.TwitterAuthConfig
+import com.twitter.sdk.android.core.TwitterConfig
+import com.twitter.sdk.android.core.TwitterCore
+import com.twitter.sdk.android.core.TwitterException
+import com.twitter.sdk.android.core.TwitterSession
 import com.twitter.sdk.android.core.identity.TwitterLoginButton
-import kotlinx.android.synthetic.main.activity_twitter.*
-
+import kotlinx.android.synthetic.main.activity_twitter.buttonTwitterLogin
+import kotlinx.android.synthetic.main.activity_twitter.buttonTwitterSignout
+import kotlinx.android.synthetic.main.activity_twitter.detail
+import kotlinx.android.synthetic.main.activity_twitter.status
 
 class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
 
     // [START declare_auth]
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
-    private var mLoginButton: TwitterLoginButton? = null
+    private var loginButton: TwitterLoginButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +52,7 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         // [END initialize_auth]
 
         // [START initialize_twitter_login]
@@ -66,7 +75,7 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth.currentUser
+        val currentUser = auth.currentUser
         updateUI(currentUser)
     }
     // [END on_start_check_user]
@@ -76,7 +85,7 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Pass the activity result to the Twitter login button.
-        mLoginButton!!.onActivityResult(requestCode, resultCode, data)
+        loginButton!!.onActivityResult(requestCode, resultCode, data)
     }
     // [END on_activity_result]
 
@@ -91,12 +100,12 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
                 session.authToken.token,
                 session.authToken.secret)
 
-        mAuth.signInWithCredential(credential)
+        auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
-                        val user = mAuth.currentUser
+                        val user = auth.currentUser
                         updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
@@ -114,7 +123,7 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
     // [END auth_with_twitter]
 
     private fun signOut() {
-        mAuth.signOut()
+        auth.signOut()
         TwitterCore.getInstance().sessionManager.clearActiveSession()
 
         updateUI(null)
@@ -145,7 +154,6 @@ class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "TwitterLogin"
+        private const val TAG = "TwitterLogin"
     }
-
 }

@@ -14,11 +14,7 @@ import java.io.IOException
 /** Processor for the text recognition demo.  */
 class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
 
-    private val detector: FirebaseVisionTextRecognizer
-
-    init {
-        detector = FirebaseVision.getInstance().onDeviceTextRecognizer
-    }
+    private val detector: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().onDeviceTextRecognizer
 
     override fun stop() {
         try {
@@ -26,7 +22,6 @@ class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
         } catch (e: IOException) {
             Log.e(TAG, "Exception thrown while trying to close Text Detector: $e")
         }
-
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<FirebaseVisionText> {
@@ -34,9 +29,10 @@ class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
     }
 
     override fun onSuccess(
-            results: FirebaseVisionText,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        results: FirebaseVisionText,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         val blocks = results.textBlocks
         for (i in blocks.indices) {
@@ -46,7 +42,6 @@ class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
                 for (k in elements.indices) {
                     val textGraphic = TextGraphic(graphicOverlay, elements[k])
                     graphicOverlay.add(textGraphic)
-
                 }
             }
         }

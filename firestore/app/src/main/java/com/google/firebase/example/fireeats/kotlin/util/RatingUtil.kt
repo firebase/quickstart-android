@@ -1,14 +1,16 @@
 package com.google.firebase.example.fireeats.kotlin.util
 
 import com.google.firebase.example.fireeats.kotlin.model.Rating
-import java.util.*
+import java.util.ArrayList
+import java.util.Random
+import java.util.UUID
 
 /**
  * Utilities for Ratings.
  */
 object RatingUtil {
 
-    val REVIEW_CONTENTS = arrayOf(
+    private val REVIEW_CONTENTS = arrayOf(
             // 0 - 1 stars
             "This was awful! Totally inedible.",
 
@@ -27,7 +29,7 @@ object RatingUtil {
     /**
      * Create a random Rating POJO.
      */
-    val random: Rating
+    private val random: Rating
         get() {
             val rating = Rating()
 
@@ -69,5 +71,4 @@ object RatingUtil {
 
         return sum / ratings.size
     }
-
 }
