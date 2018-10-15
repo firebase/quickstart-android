@@ -7,7 +7,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.google.samples.quickstart.app_indexing"
+        applicationId "com.google.samples.quickstart.appindexing"
         minSdkVersion 18
         targetSdkVersion 28
         versionCode 2

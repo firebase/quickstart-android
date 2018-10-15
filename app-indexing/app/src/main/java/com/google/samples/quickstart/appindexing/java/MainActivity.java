@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.samples.quickstart.app_indexing.java;
+package com.google.samples.quickstart.appindexing.java;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -35,7 +35,7 @@ import com.google.firebase.appindexing.FirebaseAppIndex;
 import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Actions;
-import com.google.samples.quickstart.app_indexing.R;
+import com.google.samples.quickstart.appindexing.R;
 // [END import_classes]
 
 

@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.app_indexing.kotlin
+package com.google.samples.quickstart.appindexing.kotlin
 
 import android.content.Context
 import android.graphics.Bitmap

@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.app_indexing.kotlin
+package com.google.samples.quickstart.appindexing.kotlin
 
 // [START import_classes]
 import android.content.Intent
@@ -10,7 +10,7 @@ import com.google.firebase.appindexing.FirebaseAppIndex
 import com.google.firebase.appindexing.FirebaseUserActions
 import com.google.firebase.appindexing.Indexable
 import com.google.firebase.appindexing.builders.Actions
-import com.google.samples.quickstart.app_indexing.R
+import com.google.samples.quickstart.appindexing.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 // [END import_classes]

@@ -17,7 +17,7 @@ import com.google.firebase.quickstart.analytics.R
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-/**
+/**So
  * Activity which displays numerous background images that may be viewed. These background images
  * are shown via {@link ImageFragment}.
  */
