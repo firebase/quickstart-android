@@ -20,9 +20,12 @@ import com.google.firebase.samples.apps.mlkit.kotlin.custommodel.CustomImageClas
 import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceDetectionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.imagelabeling.ImageLabelingProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.textrecognition.TextRecognitionProcessor
-import kotlinx.android.synthetic.main.activity_live_preview.*
+import kotlinx.android.synthetic.main.activity_live_preview.facingSwitch
+import kotlinx.android.synthetic.main.activity_live_preview.fireFaceOverlay
+import kotlinx.android.synthetic.main.activity_live_preview.firePreview
+import kotlinx.android.synthetic.main.activity_live_preview.spinner
 import java.io.IOException
-import java.util.*
+import java.util.ArrayList
 
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to
  * set up continuous frame processing on frames from a camera source.  */

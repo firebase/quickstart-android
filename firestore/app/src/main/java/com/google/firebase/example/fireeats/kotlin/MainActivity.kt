@@ -28,7 +28,13 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.buttonClearFilter
+import kotlinx.android.synthetic.main.activity_main.filterBar
+import kotlinx.android.synthetic.main.activity_main.recyclerRestaurants
+import kotlinx.android.synthetic.main.activity_main.textCurrentSearch
+import kotlinx.android.synthetic.main.activity_main.textCurrentSortBy
+import kotlinx.android.synthetic.main.activity_main.toolbar
+import kotlinx.android.synthetic.main.activity_main.viewEmpty
 
 class MainActivity : AppCompatActivity(),
         FilterDialogFragment.FilterListener,

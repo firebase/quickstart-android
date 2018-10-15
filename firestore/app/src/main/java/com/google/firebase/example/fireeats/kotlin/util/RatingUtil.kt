@@ -1,7 +1,9 @@
 package com.google.firebase.example.fireeats.kotlin.util
 
 import com.google.firebase.example.fireeats.kotlin.model.Rating
-import java.util.*
+import java.util.ArrayList
+import java.util.Random
+import java.util.UUID
 
 /**
  * Utilities for Ratings.

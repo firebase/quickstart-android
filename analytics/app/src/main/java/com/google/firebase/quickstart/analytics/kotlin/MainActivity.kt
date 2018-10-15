@@ -14,8 +14,9 @@ import android.view.Menu
 import android.view.MenuItem
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.quickstart.analytics.R
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import kotlinx.android.synthetic.main.activity_main.pagerTabStrip
+import kotlinx.android.synthetic.main.activity_main.viewPager
+import java.util.Locale
 
 /**So
  * Activity which displays numerous background images that may be viewed. These background images

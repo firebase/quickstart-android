@@ -17,12 +17,14 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.perf.FirebasePerformance
 import com.google.firebase.perf.metrics.Trace
 import com.google.firebase.quickstart.perfmon.R
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.button
+import kotlinx.android.synthetic.main.activity_main.headerIcon
+import kotlinx.android.synthetic.main.activity_main.textViewContent
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.util.*
+import java.util.Random
 import java.util.concurrent.Callable
 import java.util.concurrent.CountDownLatch
 

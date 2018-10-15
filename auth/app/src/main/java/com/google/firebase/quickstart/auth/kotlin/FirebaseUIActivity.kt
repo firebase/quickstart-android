@@ -11,7 +11,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.BuildConfig
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_firebase_ui.*
+import kotlinx.android.synthetic.main.activity_firebase_ui.detail
+import kotlinx.android.synthetic.main.activity_firebase_ui.signInButton
+import kotlinx.android.synthetic.main.activity_firebase_ui.signOutButton
+import kotlinx.android.synthetic.main.activity_firebase_ui.status
 
 /**
  * Demonstrate authentication using the FirebaseUI-Android library. This activity demonstrates

@@ -9,16 +9,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.firebase.database.*
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.models.Comment
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.models.User
-import kotlinx.android.synthetic.main.activity_post_detail.*
-import kotlinx.android.synthetic.main.include_post_author.*
-import kotlinx.android.synthetic.main.include_post_text.*
-import kotlinx.android.synthetic.main.item_comment.view.*
-import java.util.*
+import kotlinx.android.synthetic.main.activity_post_detail.buttonPostComment
+import kotlinx.android.synthetic.main.activity_post_detail.fieldCommentText
+import kotlinx.android.synthetic.main.activity_post_detail.recyclerPostComments
+import kotlinx.android.synthetic.main.include_post_author.postAuthor
+import kotlinx.android.synthetic.main.include_post_text.postBody
+import kotlinx.android.synthetic.main.include_post_text.postTitle
+import kotlinx.android.synthetic.main.item_comment.view.commentAuthor
+import kotlinx.android.synthetic.main.item_comment.view.commentBody
+import java.util.ArrayList
 
 class PostDetailActivity : BaseActivity(), View.OnClickListener {
 

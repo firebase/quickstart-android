@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.example.fireeats.R
 import com.google.firebase.example.fireeats.kotlin.model.Rating
-import kotlinx.android.synthetic.main.dialog_rating.*
-import kotlinx.android.synthetic.main.dialog_rating.view.*
+import kotlinx.android.synthetic.main.dialog_rating.restaurantFormRating
+import kotlinx.android.synthetic.main.dialog_rating.restaurantFormText
+import kotlinx.android.synthetic.main.dialog_rating.view.restaurantFormButton
+import kotlinx.android.synthetic.main.dialog_rating.view.restaurantFormCancel
 
 /**
  * Dialog Fragment containing rating form.

@@ -14,7 +14,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_google.*
+import kotlinx.android.synthetic.main.activity_google.detail
+import kotlinx.android.synthetic.main.activity_google.disconnectButton
+import kotlinx.android.synthetic.main.activity_google.main_layout
+import kotlinx.android.synthetic.main.activity_google.signInButton
+import kotlinx.android.synthetic.main.activity_google.signOutAndDisconnect
+import kotlinx.android.synthetic.main.activity_google.signOutButton
+import kotlinx.android.synthetic.main.activity_google.status
 
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.

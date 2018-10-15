@@ -9,7 +9,13 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_anonymous_auth.*
+import kotlinx.android.synthetic.main.activity_anonymous_auth.anonymousStatusEmail
+import kotlinx.android.synthetic.main.activity_anonymous_auth.anonymousStatusId
+import kotlinx.android.synthetic.main.activity_anonymous_auth.buttonAnonymousSignIn
+import kotlinx.android.synthetic.main.activity_anonymous_auth.buttonAnonymousSignOut
+import kotlinx.android.synthetic.main.activity_anonymous_auth.buttonLinkAccount
+import kotlinx.android.synthetic.main.activity_anonymous_auth.fieldEmail
+import kotlinx.android.synthetic.main.activity_anonymous_auth.fieldPassword
 
 /**
  * Activity to demonstrate anonymous login and account linking (with an email/password account).

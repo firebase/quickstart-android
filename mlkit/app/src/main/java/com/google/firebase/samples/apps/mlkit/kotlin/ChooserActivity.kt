@@ -15,8 +15,8 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.google.firebase.samples.apps.mlkit.R
+import kotlinx.android.synthetic.main.activity_chooser.testActivityListView
 import java.util.ArrayList
-import kotlinx.android.synthetic.main.activity_chooser.*
 
 /**
  * Demo app chooser which takes care of runtime permission requesting and allows you to pick from

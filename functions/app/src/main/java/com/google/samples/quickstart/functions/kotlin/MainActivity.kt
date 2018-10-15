@@ -18,8 +18,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.FirebaseFunctionsException
 import com.google.samples.quickstart.functions.R
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
+import kotlinx.android.synthetic.main.activity_main.buttonAddMessage
+import kotlinx.android.synthetic.main.activity_main.buttonCalculate
+import kotlinx.android.synthetic.main.activity_main.buttonSignIn
+import kotlinx.android.synthetic.main.activity_main.fieldAddResult
+import kotlinx.android.synthetic.main.activity_main.fieldFirstNumber
+import kotlinx.android.synthetic.main.activity_main.fieldMessageInput
+import kotlinx.android.synthetic.main.activity_main.fieldMessageOutput
+import kotlinx.android.synthetic.main.activity_main.fieldSecondNumber
 
 /**
  * This activity demonstrates the Android SDK for Callable Functions.

@@ -20,8 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
-import com.google.firebase.quickstart.database.java.PostDetailActivity;
 import com.google.firebase.quickstart.database.R;
+import com.google.firebase.quickstart.database.java.PostDetailActivity;
 import com.google.firebase.quickstart.database.java.models.Post;
 import com.google.firebase.quickstart.database.java.viewholder.PostViewHolder;
 

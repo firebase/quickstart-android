@@ -6,9 +6,20 @@ import android.support.design.widget.Snackbar
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import com.google.firebase.auth.*
+import com.google.firebase.auth.ActionCodeSettings
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthActionCodeException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_passwordless.*
+import kotlinx.android.synthetic.main.activity_passwordless.fieldEmail
+import kotlinx.android.synthetic.main.activity_passwordless.passwordlessButtons
+import kotlinx.android.synthetic.main.activity_passwordless.passwordlessFields
+import kotlinx.android.synthetic.main.activity_passwordless.passwordlessSendEmailButton
+import kotlinx.android.synthetic.main.activity_passwordless.passwordlessSignInButton
+import kotlinx.android.synthetic.main.activity_passwordless.signOutButton
+import kotlinx.android.synthetic.main.activity_passwordless.signedInButtons
+import kotlinx.android.synthetic.main.activity_passwordless.status
 
 /**
  * Demonstrate Firebase Authentication without a password, using a link sent to an

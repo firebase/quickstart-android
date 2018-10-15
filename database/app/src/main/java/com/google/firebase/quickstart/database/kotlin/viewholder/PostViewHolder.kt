@@ -4,9 +4,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.models.Post
-import kotlinx.android.synthetic.main.include_post_author.view.*
-import kotlinx.android.synthetic.main.include_post_text.view.*
-import kotlinx.android.synthetic.main.item_post.view.*
+import kotlinx.android.synthetic.main.include_post_author.view.postAuthor
+import kotlinx.android.synthetic.main.include_post_text.view.postBody
+import kotlinx.android.synthetic.main.include_post_text.view.postTitle
+import kotlinx.android.synthetic.main.item_post.view.postNumStars
+import kotlinx.android.synthetic.main.item_post.view.star
 
 class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

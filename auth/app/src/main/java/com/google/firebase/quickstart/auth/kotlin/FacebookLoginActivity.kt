@@ -15,7 +15,10 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_facebook.*
+import kotlinx.android.synthetic.main.activity_facebook.buttonFacebookLogin
+import kotlinx.android.synthetic.main.activity_facebook.buttonFacebookSignout
+import kotlinx.android.synthetic.main.activity_facebook.detail
+import kotlinx.android.synthetic.main.activity_facebook.status
 
 /**
  * Demonstrate Firebase Authentication using a Facebook access token.

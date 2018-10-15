@@ -3,7 +3,7 @@ package com.google.firebase.example.fireeats.kotlin.model
 import android.text.TextUtils
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ServerTimestamp
-import java.util.*
+import java.util.Date
 
 /**
  * Model POJO for a rating.

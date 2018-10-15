@@ -9,8 +9,12 @@ import android.view.ViewGroup
 import com.google.firebase.example.fireeats.R
 import com.google.firebase.example.fireeats.kotlin.model.Restaurant
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.dialog_filters.*
-import kotlinx.android.synthetic.main.dialog_filters.view.*
+import kotlinx.android.synthetic.main.dialog_filters.spinnerCategory
+import kotlinx.android.synthetic.main.dialog_filters.spinnerCity
+import kotlinx.android.synthetic.main.dialog_filters.spinnerPrice
+import kotlinx.android.synthetic.main.dialog_filters.spinnerSort
+import kotlinx.android.synthetic.main.dialog_filters.view.buttonCancel
+import kotlinx.android.synthetic.main.dialog_filters.view.buttonSearch
 
 /**
  * Dialog Fragment containing filter form.

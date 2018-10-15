@@ -8,9 +8,22 @@ import android.util.Log
 import android.view.View
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_phone_auth.*
+import kotlinx.android.synthetic.main.activity_phone_auth.buttonResend
+import kotlinx.android.synthetic.main.activity_phone_auth.buttonStartVerification
+import kotlinx.android.synthetic.main.activity_phone_auth.buttonVerifyPhone
+import kotlinx.android.synthetic.main.activity_phone_auth.detail
+import kotlinx.android.synthetic.main.activity_phone_auth.fieldPhoneNumber
+import kotlinx.android.synthetic.main.activity_phone_auth.fieldVerificationCode
+import kotlinx.android.synthetic.main.activity_phone_auth.phoneAuthFields
+import kotlinx.android.synthetic.main.activity_phone_auth.signOutButton
+import kotlinx.android.synthetic.main.activity_phone_auth.signedInButtons
+import kotlinx.android.synthetic.main.activity_phone_auth.status
 import java.util.concurrent.TimeUnit
 
 class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {

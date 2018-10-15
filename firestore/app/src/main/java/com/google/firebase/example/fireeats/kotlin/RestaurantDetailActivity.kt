@@ -15,8 +15,24 @@ import com.google.firebase.example.fireeats.kotlin.adapter.RatingAdapter
 import com.google.firebase.example.fireeats.kotlin.model.Rating
 import com.google.firebase.example.fireeats.kotlin.model.Restaurant
 import com.google.firebase.example.fireeats.kotlin.util.RestaurantUtil
-import com.google.firebase.firestore.*
-import kotlinx.android.synthetic.main.activity_restaurant_detail.*
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.activity_restaurant_detail.fabShowRatingDialog
+import kotlinx.android.synthetic.main.activity_restaurant_detail.recyclerRatings
+import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantButtonBack
+import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantCategory
+import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantCity
+import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantImage
+import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantName
+import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantNumRatings
+import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantPrice
+import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantRating
+import kotlinx.android.synthetic.main.activity_restaurant_detail.viewEmptyRatings
 
 class RestaurantDetailActivity : AppCompatActivity(),
         EventListener<DocumentSnapshot>,

@@ -10,7 +10,13 @@ import com.google.firebase.example.fireeats.kotlin.model.Restaurant
 import com.google.firebase.example.fireeats.kotlin.util.RestaurantUtil
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.item_restaurant.view.*
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemCategory
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemCity
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemImage
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemName
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemNumRatings
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemPrice
+import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemRating
 
 /**
  * RecyclerView adapter for a list of Restaurants.

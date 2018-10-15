@@ -8,7 +8,9 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_custom.*
+import kotlinx.android.synthetic.main.activity_custom.buttonSignIn
+import kotlinx.android.synthetic.main.activity_custom.textSignInStatus
+import kotlinx.android.synthetic.main.activity_custom.textTokenStatus
 
 /**
  * Demonstrate Firebase Authentication using a custom minted token. For more information, see:

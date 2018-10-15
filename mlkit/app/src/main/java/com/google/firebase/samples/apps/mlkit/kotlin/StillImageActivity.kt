@@ -12,7 +12,9 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.util.Pair
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.PopupMenu
 import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor
@@ -20,10 +22,14 @@ import com.google.firebase.samples.apps.mlkit.kotlin.cloudimagelabeling.CloudIma
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudlandmarkrecognition.CloudLandmarkRecognitionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition.CloudDocumentTextRecognitionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition.CloudTextRecognitionProcessor
-import java.util.ArrayList
+import kotlinx.android.synthetic.main.activity_still_image.controlPanel
+import kotlinx.android.synthetic.main.activity_still_image.featureSelector
+import kotlinx.android.synthetic.main.activity_still_image.getImageButton
+import kotlinx.android.synthetic.main.activity_still_image.previewOverlay
+import kotlinx.android.synthetic.main.activity_still_image.previewPane
+import kotlinx.android.synthetic.main.activity_still_image.sizeSelector
 import java.io.IOException
-
-import kotlinx.android.synthetic.main.activity_still_image.*
+import java.util.ArrayList
 
 /** Activity demonstrating different image detector features with a still image from camera.  */
 @KeepName

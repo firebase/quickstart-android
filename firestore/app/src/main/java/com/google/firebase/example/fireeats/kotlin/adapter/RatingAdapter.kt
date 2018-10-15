@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import com.google.firebase.example.fireeats.R
 import com.google.firebase.example.fireeats.kotlin.model.Rating
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.item_rating.view.*
+import kotlinx.android.synthetic.main.item_rating.view.ratingItemDate
+import kotlinx.android.synthetic.main.item_rating.view.ratingItemName
+import kotlinx.android.synthetic.main.item_rating.view.ratingItemRating
+import kotlinx.android.synthetic.main.item_rating.view.ratingItemText
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 /**
  * RecyclerView adapter for a list of [Rating].

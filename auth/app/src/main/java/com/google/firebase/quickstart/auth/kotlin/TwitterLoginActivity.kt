@@ -9,9 +9,19 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.TwitterAuthProvider
 import com.google.firebase.quickstart.auth.R
-import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.Callback
+import com.twitter.sdk.android.core.Result
+import com.twitter.sdk.android.core.Twitter
+import com.twitter.sdk.android.core.TwitterAuthConfig
+import com.twitter.sdk.android.core.TwitterConfig
+import com.twitter.sdk.android.core.TwitterCore
+import com.twitter.sdk.android.core.TwitterException
+import com.twitter.sdk.android.core.TwitterSession
 import com.twitter.sdk.android.core.identity.TwitterLoginButton
-import kotlinx.android.synthetic.main.activity_twitter.*
+import kotlinx.android.synthetic.main.activity_twitter.buttonTwitterLogin
+import kotlinx.android.synthetic.main.activity_twitter.buttonTwitterSignout
+import kotlinx.android.synthetic.main.activity_twitter.detail
+import kotlinx.android.synthetic.main.activity_twitter.status
 
 class TwitterLoginActivity : BaseActivity(), View.OnClickListener {
 

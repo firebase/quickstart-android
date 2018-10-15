@@ -2,7 +2,7 @@ package com.google.firebase.quickstart.database.kotlin.models
 
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
-import java.util.*
+import java.util.HashMap
 
 // [START post_class]
 @IgnoreExtraProperties

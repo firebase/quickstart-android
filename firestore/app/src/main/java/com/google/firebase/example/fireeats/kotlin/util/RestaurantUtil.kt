@@ -3,7 +3,9 @@ package com.google.firebase.example.fireeats.kotlin.util
 import android.content.Context
 import com.google.firebase.example.fireeats.R
 import com.google.firebase.example.fireeats.kotlin.model.Restaurant
-import java.util.*
+import java.util.Arrays
+import java.util.Locale
+import java.util.Random
 
 /**
  * Utilities for Restaurants.

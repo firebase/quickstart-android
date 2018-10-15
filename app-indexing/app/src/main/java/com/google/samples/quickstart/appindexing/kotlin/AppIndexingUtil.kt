@@ -13,7 +13,6 @@ import com.google.firebase.appindexing.builders.StickerBuilder
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.*
 
 /**
  * See firebase app indexing api code lab

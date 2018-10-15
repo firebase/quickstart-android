@@ -11,7 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_chooser.*
+import kotlinx.android.synthetic.main.activity_chooser.listView
 
 /**
  * Simple list-based Activity to redirect to one of the other Activities. This Activity does not
