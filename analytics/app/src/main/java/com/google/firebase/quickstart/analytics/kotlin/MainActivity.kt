@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.pagerTabStrip
 import kotlinx.android.synthetic.main.activity_main.viewPager
 import java.util.Locale
 
-/**So
+/**
  * Activity which displays numerous background images that may be viewed. These background images
  * are shown via {@link ImageFragment}.
  */

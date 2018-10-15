@@ -10,9 +10,6 @@ import com.android.tools.lint.detector.api.Scope
 import com.android.tools.lint.detector.api.Severity
 import org.jetbrains.uast.UField
 
-
-
-
 val ISSUE_HUNGARIAN_NOTATION = Issue.create(
         "HungarianNotation",
         "Using mHungarianNotation in a Kotlin file!",
