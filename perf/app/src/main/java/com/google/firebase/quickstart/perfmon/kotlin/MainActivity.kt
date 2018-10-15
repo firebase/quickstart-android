@@ -30,9 +30,9 @@ import java.util.concurrent.CountDownLatch
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mTrace: Trace
+    private lateinit var trace: Trace
 
-    private val mNumStartupTasks = CountDownLatch(2)
+    private val numStartupTasks = CountDownLatch(2)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,23 +54,23 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Begin tracing app startup tasks.
-        mTrace = FirebasePerformance.getInstance().newTrace(STARTUP_TRACE_NAME)
+        trace = FirebasePerformance.getInstance().newTrace(STARTUP_TRACE_NAME)
         Log.d(TAG, "Starting trace")
-        mTrace.start()
+        trace.start()
         loadImageFromWeb()
         // Increment the counter of number of requests sent in the trace.
         Log.d(TAG, "Incrementing number of requests counter in trace")
-        mTrace.incrementMetric(REQUESTS_COUNTER_NAME, 1)
+        trace.incrementMetric(REQUESTS_COUNTER_NAME, 1)
         loadFileFromDisk()
         // Wait for app startup tasks to complete asynchronously and stop the trace.
         Thread(Runnable {
             try {
-                mNumStartupTasks.await()
+                numStartupTasks.await()
             } catch (e: InterruptedException) {
                 Log.e(TAG, "Unable to wait for startup task completion.")
             } finally {
                 Log.d(TAG, "Stopping trace")
-                mTrace.stop()
+                trace.stop()
                 runOnUiThread {
                     Toast.makeText(this, "Trace completed",
                             Toast.LENGTH_SHORT).show()
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                         target: Target<GlideDrawable>,
                         isFirstResource: Boolean
                     ): Boolean {
-                        mNumStartupTasks.countDown() // Signal end of image load task.
+                        numStartupTasks.countDown() // Signal end of image load task.
                         return false
                     }
 
@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                         isFromMemoryCache: Boolean,
                         isFirstResource: Boolean
                     ): Boolean {
-                        mNumStartupTasks.countDown() // Signal end of image load task.
+                        numStartupTasks.countDown() // Signal end of image load task.
                         return false
                     }
                 }).into(headerIcon)
@@ -156,10 +156,10 @@ class MainActivity : AppCompatActivity() {
                     textViewContent.text = task.result
                     // Increment a counter with the file size that was read.
                     Log.d(TAG, "Incrementing file size counter in trace")
-                    mTrace.incrementMetric(
+                    trace.incrementMetric(
                             FILE_SIZE_COUNTER_NAME,
                             fileContent.toByteArray().size.toLong())
-                    mNumStartupTasks.countDown()
+                    numStartupTasks.countDown()
                 })
     }
 

@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemRating
 /**
  * RecyclerView adapter for a list of Restaurants.
  */
-open class RestaurantAdapter(query: Query, val mListener: OnRestaurantSelectedListener) :
+open class RestaurantAdapter(query: Query, val listener: OnRestaurantSelectedListener) :
         FirestoreAdapter<RestaurantAdapter.ViewHolder>(query) {
 
     interface OnRestaurantSelectedListener {
@@ -35,7 +35,7 @@ open class RestaurantAdapter(query: Query, val mListener: OnRestaurantSelectedLi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getSnapshot(position), mListener)
+        holder.bind(getSnapshot(position), listener)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

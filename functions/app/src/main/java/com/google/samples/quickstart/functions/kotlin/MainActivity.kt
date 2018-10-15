@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.activity_main.fieldSecondNumber
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // [START define_functions_instance]
-    private lateinit var mFunctions: FirebaseFunctions
+    private lateinit var functions: FirebaseFunctions
     // [END define_functions_instance]
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonSignIn.setOnClickListener(this)
 
         // [START initialize_functions_instance]
-        mFunctions = FirebaseFunctions.getInstance()
+        functions = FirebaseFunctions.getInstance()
         // [END initialize_functions_instance]
     }
 
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         )
 
         // Call the function and extract the operation from the result
-        return mFunctions
+        return functions
                 .getHttpsCallable("addNumbers")
                 .call(data)
                 .continueWith { task ->
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             "push" to true
         )
 
-        return mFunctions
+        return functions
                 .getHttpsCallable("addMessage")
                 .call(data)
                 .continueWith { task ->

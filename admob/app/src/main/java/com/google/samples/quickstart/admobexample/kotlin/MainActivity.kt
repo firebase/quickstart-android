@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_main.loadInterstitialButton
 class MainActivity : AppCompatActivity() {
 
     // [START_EXCLUDE]
-    private lateinit var mInterstitialAd: InterstitialAd
+    private lateinit var interstitialAd: InterstitialAd
 
     // [END_EXCLUDE]
 
@@ -41,12 +41,12 @@ class MainActivity : AppCompatActivity() {
         // [START instantiate_interstitial_ad]
         // Create an InterstitialAd object. This same object can be re-used whenever you want to
         // show an interstitial.
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = getString(R.string.interstitial_ad_unit_id)
+        interstitialAd = InterstitialAd(this)
+        interstitialAd.adUnitId = getString(R.string.interstitial_ad_unit_id)
         // [END instantiate_interstitial_ad]
 
         // [START create_interstitial_ad_listener]
-        mInterstitialAd.adListener = object : AdListener() {
+        interstitialAd.adListener = object : AdListener() {
             override fun onAdClosed() {
                 requestNewInterstitial()
                 beginSecondActivity()
@@ -68,8 +68,8 @@ class MainActivity : AppCompatActivity() {
 
         // [START display_interstitial_ad]
         loadInterstitialButton.setOnClickListener {
-            if (mInterstitialAd.isLoaded) {
-                mInterstitialAd.show()
+            if (interstitialAd.isLoaded) {
+                interstitialAd.show()
             } else {
                 beginSecondActivity()
             }
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         // [END display_interstitial_ad]
 
         // Disable button if an interstitial ad is not loaded yet.
-        loadInterstitialButton.isEnabled = mInterstitialAd.isLoaded
+        loadInterstitialButton.isEnabled = interstitialAd.isLoaded
     }
 
     /**
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder()
                 .build()
 
-        mInterstitialAd.loadAd(adRequest)
+        interstitialAd.loadAd(adRequest)
     }
     // [END request_new_interstitial]
 
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
         adView.resume()
-        if (!mInterstitialAd.isLoaded) {
+        if (!interstitialAd.isLoaded) {
             requestNewInterstitial()
         }
     }

@@ -15,12 +15,12 @@ import java.io.IOException
  */
 class StickerProvider : ContentProvider() {
 
-    private lateinit var mRootDir: File
+    private lateinit var rootDir: File
 
     override fun onCreate(): Boolean {
-        mRootDir = File(context.filesDir, "stickers")
+        rootDir = File(context.filesDir, "stickers")
         return try {
-            mRootDir = mRootDir.canonicalFile
+            rootDir = rootDir.canonicalFile
             true
         } catch (e: IOException) {
             false
@@ -45,7 +45,7 @@ class StickerProvider : ContentProvider() {
     }
 
     private fun uriToFile(uri: Uri): File {
-        var file = File(mRootDir, uri.encodedPath)
+        var file = File(rootDir, uri.encodedPath)
         try {
             file = file.canonicalFile
         } catch (e: IOException) {
@@ -56,7 +56,7 @@ class StickerProvider : ContentProvider() {
     }
 
     private fun isFileInRoot(file: File): Boolean {
-        return file.path.startsWith(mRootDir.path)
+        return file.path.startsWith(rootDir.path)
     }
 
     private fun getMimeType(file: File): String {
