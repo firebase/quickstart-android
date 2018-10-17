@@ -59,7 +59,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                     hideProgressDialog()
 
                     if (task.isSuccessful) {
-                        onAuthSuccess(task.result.user)
+                        onAuthSuccess(task.result?.user!!)
                     } else {
                         Toast.makeText(baseContext, "Sign In Failed",
                                 Toast.LENGTH_SHORT).show()
@@ -83,7 +83,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                     hideProgressDialog()
 
                     if (task.isSuccessful) {
-                        onAuthSuccess(task.result.user)
+                        onAuthSuccess(task.result?.user!!)
                     } else {
                         Toast.makeText(baseContext, "Sign Up Failed",
                                 Toast.LENGTH_SHORT).show()

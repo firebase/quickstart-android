@@ -5,10 +5,10 @@ targetCompatibility = JavaVersion.VERSION_1_7
 sourceCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
-    compileOnly "com.android.tools.lint:lint-api:26.2.0"
+    compileOnly "com.android.tools.lint:lint-api:26.2.1"
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71"
-    testImplementation "com.android.tools.lint:lint:26.2.0"
-    testImplementation "com.android.tools.lint:lint-tests:26.2.0"
+    testImplementation "com.android.tools.lint:lint:26.2.1"
+    testImplementation "com.android.tools.lint:lint-tests:26.2.1"
 }
 
 jar {

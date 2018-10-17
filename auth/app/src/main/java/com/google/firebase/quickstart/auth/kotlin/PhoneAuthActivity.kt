@@ -197,7 +197,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
 
-                        val user = task.result.user
+                        val user = task.result?.user
                         // [START_EXCLUDE]
                         updateUI(STATE_SIGNIN_SUCCESS, user)
                         // [END_EXCLUDE]
