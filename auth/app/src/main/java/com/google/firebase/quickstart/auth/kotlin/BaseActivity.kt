@@ -8,23 +8,22 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.google.firebase.quickstart.auth.R
 
-
 open class BaseActivity : AppCompatActivity() {
 
     @VisibleForTesting
-    val mProgressDialog by lazy {
+    val progressDialog by lazy {
         ProgressDialog(this)
     }
 
     fun showProgressDialog() {
-        mProgressDialog.setMessage(getString(R.string.loading))
-        mProgressDialog.isIndeterminate = true
-        mProgressDialog.show()
+        progressDialog.setMessage(getString(R.string.loading))
+        progressDialog.isIndeterminate = true
+        progressDialog.show()
     }
 
     fun hideProgressDialog() {
-        if (mProgressDialog.isShowing) {
-            mProgressDialog.dismiss()
+        if (progressDialog.isShowing) {
+            progressDialog.dismiss()
         }
     }
 
@@ -37,5 +36,4 @@ open class BaseActivity : AppCompatActivity() {
         super.onStop()
         hideProgressDialog()
     }
-
 }

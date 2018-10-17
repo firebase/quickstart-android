@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class KotlinMainActivity : AppCompatActivity() {
 
-    lateinit var firebaseAnalytics: FirebaseAnalytics
-    lateinit var firebaseIam: FirebaseInAppMessaging
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private lateinit var firebaseIam: FirebaseInAppMessaging
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +47,6 @@ class KotlinMainActivity : AppCompatActivity() {
 
     companion object {
 
-        private val TAG = "FIAM-Quickstart"
-
+        private const val TAG = "FIAM-Quickstart"
     }
 }

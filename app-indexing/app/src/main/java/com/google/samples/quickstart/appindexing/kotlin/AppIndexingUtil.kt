@@ -1,4 +1,4 @@
-package com.google.samples.quickstart.app_indexing.kotlin
+package com.google.samples.quickstart.appindexing.kotlin
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -13,8 +13,6 @@ import com.google.firebase.appindexing.builders.StickerBuilder
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.*
-
 
 /**
  * See firebase app indexing api code lab
@@ -22,19 +20,21 @@ import java.util.*
  */
 
 object AppIndexingUtil {
-    private val STICKER_FILENAME_PATTERN = "sticker%s.png"
+    private const val STICKER_FILENAME_PATTERN = "sticker%s.png"
     private val CONTENT_URI_ROOT = String.format("content://%s/", StickerProvider::class.java.name)
-    private val STICKER_URL_PATTERN = "mystickers://sticker/%s"
-    private val STICKER_PACK_URL_PATTERN = "mystickers://sticker/pack/%s"
-    private val STICKER_PACK_NAME = "Local Content Pack"
-    private val TAG = "AppIndexingUtil"
-    val FAILED_TO_CLEAR_STICKERS = "Failed to clear stickers"
-    val FAILED_TO_INSTALL_STICKERS = "Failed to install stickers"
+    private const val STICKER_URL_PATTERN = "mystickers://sticker/%s"
+    private const val STICKER_PACK_URL_PATTERN = "mystickers://sticker/pack/%s"
+    private const val STICKER_PACK_NAME = "Local Content Pack"
+    private const val TAG = "AppIndexingUtil"
+    private const val FAILED_TO_CLEAR_STICKERS = "Failed to clear stickers"
+    private const val FAILED_TO_INSTALL_STICKERS = "Failed to install stickers"
 
     fun clearStickers(context: Context, firebaseAppIndex: FirebaseAppIndex) {
         val task = firebaseAppIndex.removeAll()
 
-        task.addOnSuccessListener { Toast.makeText(context, "Successfully cleared stickers", Toast.LENGTH_SHORT).show() }
+        task.addOnSuccessListener {
+            Toast.makeText(context, "Successfully cleared stickers", Toast.LENGTH_SHORT).show()
+        }
         task.addOnFailureListener { e ->
             Log.w(TAG, FAILED_TO_CLEAR_STICKERS, e)
             Toast.makeText(context, FAILED_TO_CLEAR_STICKERS, Toast.LENGTH_SHORT).show()
@@ -66,7 +66,6 @@ object AppIndexingUtil {
         } catch (e: FirebaseAppIndexingInvalidArgumentException) {
             Log.e(TAG, "Unable to set stickers", e)
         }
-
     }
 
     @Throws(IOException::class, FirebaseAppIndexingInvalidArgumentException::class)

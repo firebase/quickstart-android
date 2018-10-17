@@ -6,12 +6,12 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.71'
 
         classpath 'com.google.gms:google-services:4.1.0'
         classpath 'com.google.firebase:firebase-plugins:1.1.5'
-        classpath 'io.fabric.tools:gradle:1.26.0'
+        classpath 'io.fabric.tools:gradle:1.26.1'
     }
 }
 
@@ -39,6 +39,35 @@ allprojects {
             }
         }
     }
+}
+
+configurations {
+    ktlint
+}
+
+dependencies {
+    ktlint "com.github.shyiko:ktlint:0.29.0"
+}
+
+task("ktlint", type: JavaExec, group: "verification") {
+    def outputDir = "${project.buildDir}/reports/ktlint/"
+    def inputFiles = project.fileTree(dir: "src", include: "**/*.kt")
+    def outputFile = "${outputDir}ktlint-checkstyle-report.xml"
+
+    // See:
+    // https://medium.com/@vanniktech/making-your-gradle-tasks-incremental-7f26e4ef09c3
+    inputs.files(inputFiles)
+    outputs.dir(outputDir)
+
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.github.shyiko.ktlint.Main"
+    args = [
+        "--android",
+        "--reporter=plain",
+        "--reporter=checkstyle,output=${outputFile}",
+        "**/*.kt",
+    ]
 }
 
 task clean(type: Delete) {

@@ -22,14 +22,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import com.google.android.gms.ads.AdListener;
+
 // [SNIPPET load_banner_ad]
 // Load an ad into the AdView.
 // [START load_banner_ad]
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-// [START_EXCLUDE]
 import com.google.android.gms.ads.InterstitialAd;
+// [START_EXCLUDE]
 import com.google.samples.quickstart.admobexample.R;
 // [END_EXCLUDE]
 

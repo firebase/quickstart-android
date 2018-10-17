@@ -14,15 +14,13 @@ import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 /** Cloud Label Detector Demo.  */
 class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionCloudLabel>>() {
 
-    private val detector: FirebaseVisionCloudLabelDetector
-
-    init {
-        val options = FirebaseVisionCloudDetectorOptions.Builder()
-                .setMaxResults(10)
-                .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
-                .build()
-
-        detector = FirebaseVision.getInstance().getVisionCloudLabelDetector(options)
+    private val detector: FirebaseVisionCloudLabelDetector by lazy {
+        FirebaseVisionCloudDetectorOptions.Builder()
+            .setMaxResults(10)
+            .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
+            .build().let { options ->
+                FirebaseVision.getInstance().getVisionCloudLabelDetector(options)
+            }
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionCloudLabel>> {
@@ -30,21 +28,22 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionCloud
     }
 
     override fun onSuccess(
-            labels: List<FirebaseVisionCloudLabel>,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        results: List<FirebaseVisionCloudLabel>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
 
         graphicOverlay.clear()
 
-        Log.d(TAG, "cloud label size: ${labels.size}")
+        Log.d(TAG, "cloud label size: ${results.size}")
 
         val labelsStr = ArrayList<String>()
-        for (i in labels.indices) {
-            val label = labels[i]
+        for (i in results.indices) {
+            val result = results[i]
 
-            Log.d(TAG, "cloud label: $label")
+            Log.d(TAG, "cloud label: $result")
 
-            label.label?.let {
+            result.label?.let {
                 labelsStr.add(it)
             }
         }

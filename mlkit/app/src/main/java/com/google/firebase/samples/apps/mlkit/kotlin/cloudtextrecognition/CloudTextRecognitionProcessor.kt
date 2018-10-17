@@ -15,23 +15,20 @@ import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
  */
 class CloudTextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
 
-    private val detector: FirebaseVisionTextRecognizer
-
-    init {
-        detector = FirebaseVision.getInstance().cloudTextRecognizer
-    }
+    private val detector: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().cloudTextRecognizer
 
     override fun detectInImage(image: FirebaseVisionImage): Task<FirebaseVisionText> {
         return detector.processImage(image)
     }
 
     override fun onSuccess(
-            text: FirebaseVisionText,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        text: FirebaseVisionText,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         if (text == null) {
-            return  // TODO: investigate why this is needed
+            return // TODO: investigate why this is needed
         }
         val blocks = text.textBlocks
         for (i in blocks.indices) {

@@ -9,7 +9,13 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_anonymous_auth.*
+import kotlinx.android.synthetic.main.activity_anonymous_auth.anonymousStatusEmail
+import kotlinx.android.synthetic.main.activity_anonymous_auth.anonymousStatusId
+import kotlinx.android.synthetic.main.activity_anonymous_auth.buttonAnonymousSignIn
+import kotlinx.android.synthetic.main.activity_anonymous_auth.buttonAnonymousSignOut
+import kotlinx.android.synthetic.main.activity_anonymous_auth.buttonLinkAccount
+import kotlinx.android.synthetic.main.activity_anonymous_auth.fieldEmail
+import kotlinx.android.synthetic.main.activity_anonymous_auth.fieldPassword
 
 /**
  * Activity to demonstrate anonymous login and account linking (with an email/password account).
@@ -17,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_anonymous_auth.*
 class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
 
     // [START declare_auth]
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +32,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         // [END initialize_auth]
 
         // Click listeners
@@ -39,7 +45,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth.currentUser
+        val currentUser = auth.currentUser
         updateUI(currentUser)
     }
     // [END on_start_check_user]
@@ -47,12 +53,12 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     private fun signInAnonymously() {
         showProgressDialog()
         // [START signin_anonymously]
-        mAuth.signInAnonymously()
+        auth.signInAnonymously()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInAnonymously:success")
-                        val user = mAuth.currentUser
+                        val user = auth.currentUser
                         updateUI(user)
                     } else {
                         // If sign in fails, display a message to the user.
@@ -70,7 +76,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun signOut() {
-        mAuth.signOut()
+        auth.signOut()
         updateUI(null)
     }
 
@@ -91,11 +97,11 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         showProgressDialog()
 
         // [START link_credential]
-        mAuth.currentUser?.linkWithCredential(credential)
+        auth.currentUser?.linkWithCredential(credential)
                 ?.addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "linkWithCredential:success")
-                        val user = task.result.user
+                        val user = task.result?.user
                         updateUI(user)
                     } else {
                         Log.w(TAG, "linkWithCredential:failure", task.exception)
@@ -162,6 +168,6 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val TAG = "AnonymousAuth"
+        private const val TAG = "AnonymousAuth"
     }
 }

@@ -11,8 +11,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.BuildConfig
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_firebase_ui.*
-
+import kotlinx.android.synthetic.main.activity_firebase_ui.detail
+import kotlinx.android.synthetic.main.activity_firebase_ui.signInButton
+import kotlinx.android.synthetic.main.activity_firebase_ui.signOutButton
+import kotlinx.android.synthetic.main.activity_firebase_ui.status
 
 /**
  * Demonstrate authentication using the FirebaseUI-Android library. This activity demonstrates
@@ -22,14 +24,14 @@ import kotlinx.android.synthetic.main.activity_firebase_ui.*
  */
 class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
 
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_firebase_ui)
 
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         signInButton.setOnClickListener(this)
         signOutButton.setOnClickListener(this)
@@ -37,7 +39,7 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        updateUI(mAuth.currentUser)
+        updateUI(auth.currentUser)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -46,7 +48,7 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 // Sign in succeeded
-                updateUI(mAuth.currentUser)
+                updateUI(auth.currentUser)
             } else {
                 // Sign in failed
                 Toast.makeText(this, "Sign In Failed", Toast.LENGTH_SHORT).show()
@@ -98,7 +100,6 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     companion object {
-        private val RC_SIGN_IN = 9001
+        private const val RC_SIGN_IN = 9001
     }
-
 }

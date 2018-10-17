@@ -28,17 +28,25 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.buttonClearFilter
+import kotlinx.android.synthetic.main.activity_main.filterBar
+import kotlinx.android.synthetic.main.activity_main.recyclerRestaurants
+import kotlinx.android.synthetic.main.activity_main.textCurrentSearch
+import kotlinx.android.synthetic.main.activity_main.textCurrentSortBy
+import kotlinx.android.synthetic.main.activity_main.toolbar
+import kotlinx.android.synthetic.main.activity_main.viewEmpty
 
-class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, RestaurantAdapter.OnRestaurantSelectedListener {
+class MainActivity : AppCompatActivity(),
+        FilterDialogFragment.FilterListener,
+        RestaurantAdapter.OnRestaurantSelectedListener {
 
     lateinit var firestore: FirebaseFirestore
     lateinit var query: Query
 
-    lateinit var filterDialog: FilterDialogFragment
+    private lateinit var filterDialog: FilterDialogFragment
     lateinit var adapter: RestaurantAdapter
 
-    lateinit var viewModel: MainActivityViewModel
+    private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,12 +153,12 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
         }
     }
 
-    fun onFilterClicked() {
+    private fun onFilterClicked() {
         // Show the dialog containing filter options
         filterDialog.show(supportFragmentManager, FilterDialogFragment.TAG)
     }
 
-    fun onClearFilterClicked() {
+    private fun onClearFilterClicked() {
         filterDialog.resetFilters()
 
         onFilter(Filters.default)
@@ -260,10 +268,10 @@ class MainActivity : AppCompatActivity(), FilterDialogFragment.FilterListener, R
 
     companion object {
 
-        private val TAG = "MainActivity"
+        private const val TAG = "MainActivity"
 
-        private val RC_SIGN_IN = 9001
+        private const val RC_SIGN_IN = 9001
 
-        private val LIMIT = 50
+        private const val LIMIT = 50
     }
 }

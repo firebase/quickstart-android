@@ -1,9 +1,8 @@
-package com.google.samples.quickstart.app_indexing.kotlin
+package com.google.samples.quickstart.appindexing.kotlin
 
 import android.app.IntentService
 import android.content.Intent
 import com.google.firebase.appindexing.FirebaseAppIndex
-
 
 class AppIndexingService : IntentService("AppIndexingService") {
 

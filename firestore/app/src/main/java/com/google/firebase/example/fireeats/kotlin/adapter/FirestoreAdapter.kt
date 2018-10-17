@@ -2,9 +2,14 @@ package com.google.firebase.example.fireeats.kotlin.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
-import java.util.*
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
+import java.util.ArrayList
 
 /**
  * RecyclerView adapter for displaying the results of a Firestore [Query].
@@ -13,7 +18,9 @@ import java.util.*
  * [DocumentSnapshot.toObject] is not cached so the same object may be deserialized
  * many times as the user scrolls.
  */
-abstract class FirestoreAdapter<VH : RecyclerView.ViewHolder>(private var query: Query?) : RecyclerView.Adapter<VH>(), EventListener<QuerySnapshot> {
+abstract class FirestoreAdapter<VH : RecyclerView.ViewHolder>(private var query: Query?) :
+        RecyclerView.Adapter<VH>(),
+        EventListener<QuerySnapshot> {
 
     private var registration: ListenerRegistration? = null
 
@@ -84,12 +91,12 @@ abstract class FirestoreAdapter<VH : RecyclerView.ViewHolder>(private var query:
         return snapshots[index]
     }
 
-    protected fun onDocumentAdded(change: DocumentChange) {
+    private fun onDocumentAdded(change: DocumentChange) {
         snapshots.add(change.newIndex, change.document)
         notifyItemInserted(change.newIndex)
     }
 
-    protected fun onDocumentModified(change: DocumentChange) {
+    private fun onDocumentModified(change: DocumentChange) {
         if (change.oldIndex == change.newIndex) {
             // Item changed but remained in same position
             snapshots[change.oldIndex] = change.document
@@ -102,13 +109,13 @@ abstract class FirestoreAdapter<VH : RecyclerView.ViewHolder>(private var query:
         }
     }
 
-    protected fun onDocumentRemoved(change: DocumentChange) {
+    private fun onDocumentRemoved(change: DocumentChange) {
         snapshots.removeAt(change.oldIndex)
         notifyItemRemoved(change.oldIndex)
     }
 
     companion object {
 
-        private val TAG = "FirestoreAdapter"
+        private const val TAG = "FirestoreAdapter"
     }
 }

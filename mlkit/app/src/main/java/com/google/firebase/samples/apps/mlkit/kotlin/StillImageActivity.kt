@@ -12,7 +12,9 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.util.Pair
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.PopupMenu
 import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor
@@ -20,14 +22,18 @@ import com.google.firebase.samples.apps.mlkit.kotlin.cloudimagelabeling.CloudIma
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudlandmarkrecognition.CloudLandmarkRecognitionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition.CloudDocumentTextRecognitionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition.CloudTextRecognitionProcessor
-import java.util.ArrayList
+import kotlinx.android.synthetic.main.activity_still_image.controlPanel
+import kotlinx.android.synthetic.main.activity_still_image.featureSelector
+import kotlinx.android.synthetic.main.activity_still_image.getImageButton
+import kotlinx.android.synthetic.main.activity_still_image.previewOverlay
+import kotlinx.android.synthetic.main.activity_still_image.previewPane
+import kotlinx.android.synthetic.main.activity_still_image.sizeSelector
 import java.io.IOException
-
-import kotlinx.android.synthetic.main.activity_still_image.*
+import java.util.ArrayList
 
 /** Activity demonstrating different image detector features with a still image from camera.  */
 @KeepName
-class StillImageActivity: AppCompatActivity() {
+class StillImageActivity : AppCompatActivity() {
 
     private var selectedMode = CLOUD_LABEL_DETECTION
     private var selectedSize: String = SIZE_PREVIEW
@@ -47,7 +53,7 @@ class StillImageActivity: AppCompatActivity() {
 
         setContentView(R.layout.activity_still_image)
 
-        getImageButton.setOnClickListener{ view ->
+        getImageButton.setOnClickListener { view ->
                     // Menu for selecting either: a) take new photo b) select from existing
                     val popup = PopupMenu(this, view)
                     popup.setOnMenuItemClickListener { menuItem ->
@@ -94,7 +100,6 @@ class StillImageActivity: AppCompatActivity() {
         }
     }
 
-
     private fun populateFeatureSelector() {
         val options = ArrayList<String>()
         options.add(CLOUD_LABEL_DETECTION)
@@ -110,7 +115,11 @@ class StillImageActivity: AppCompatActivity() {
         featureSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(
-                    parentView: AdapterView<*>, selectedItemView: View, pos: Int, id: Long) {
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                pos: Int,
+                id: Long
+            ) {
                 selectedMode = parentView.getItemAtPosition(pos).toString()
                 createImageProcessor()
                 tryReloadAndDetectInImage()
@@ -135,7 +144,11 @@ class StillImageActivity: AppCompatActivity() {
         sizeSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(
-                    parentView: AdapterView<*>, selectedItemView: View, pos: Int, id: Long) {
+                parentView: AdapterView<*>,
+                selectedItemView: View,
+                pos: Int,
+                id: Long
+            ) {
                 selectedSize = parentView.getItemAtPosition(pos).toString()
                 tryReloadAndDetectInImage()
             }
@@ -224,7 +237,6 @@ class StillImageActivity: AppCompatActivity() {
         } catch (e: IOException) {
             Log.e(TAG, "Error retrieving saved image")
         }
-
     }
 
     // Returns max image width, always for portrait mode. Caller needs to swap width / height for
@@ -316,5 +328,4 @@ class StillImageActivity: AppCompatActivity() {
         private const val REQUEST_IMAGE_CAPTURE = 1001
         private const val REQUEST_CHOOSE_IMAGE = 1002
     }
-
 }

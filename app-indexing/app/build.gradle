@@ -7,7 +7,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.google.samples.quickstart.app_indexing"
+        applicationId "com.google.samples.quickstart.appindexing"
         minSdkVersion 18
         targetSdkVersion 28
         versionCode 2
@@ -32,9 +32,9 @@ dependencies {
     implementation project(":internal:chooser")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71"
     // [START app_indexing_gradle_dep]
-    implementation 'com.google.firebase:firebase-appindexing:16.0.1'
+    implementation 'com.google.firebase:firebase-appindexing:16.0.2'
     // [END app_indexing_gradle_dep]
-    implementation 'com.google.firebase:firebase-core:16.0.3'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
 
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:appcompat-v7:28.0.0'

@@ -13,20 +13,18 @@ import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 /** Processor for the cloud document text detector demo.  */
 class CloudDocumentTextRecognitionProcessor : VisionProcessorBase<FirebaseVisionDocumentText>() {
 
-    private val detector: FirebaseVisionDocumentTextRecognizer
-
-    init {
-        detector = FirebaseVision.getInstance().cloudDocumentTextRecognizer
-    }
+    private val detector: FirebaseVisionDocumentTextRecognizer =
+            FirebaseVision.getInstance().cloudDocumentTextRecognizer
 
     override fun detectInImage(image: FirebaseVisionImage): Task<FirebaseVisionDocumentText> {
         return detector.processImage(image)
     }
 
     override fun onSuccess(
-            text: FirebaseVisionDocumentText,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        text: FirebaseVisionDocumentText,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         Log.d(TAG, "detected text is: ${text.text}")
         val blocks = text.blocks

@@ -17,7 +17,6 @@ import com.google.firebase.quickstart.fcm.R
 import com.google.firebase.quickstart.fcm.java.MainActivity
 import com.google.firebase.quickstart.fcm.java.MyJobService
 
-
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     /**
@@ -63,7 +62,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // message, here is where that should be initiated. See sendNotification method below.
     }
     // [END receive_message]
-
 
     // [START on_new_token]
     /**
@@ -150,6 +148,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     companion object {
 
-        private val TAG = "MyFirebaseMsgService"
+        private const val TAG = "MyFirebaseMsgService"
     }
 }

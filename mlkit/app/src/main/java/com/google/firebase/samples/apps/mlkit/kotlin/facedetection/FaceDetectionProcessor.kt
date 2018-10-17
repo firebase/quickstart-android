@@ -19,9 +19,9 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
 
     init {
         val options = FirebaseVisionFaceDetectorOptions.Builder()
-                .setClassificationType(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
-                .setLandmarkType(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
-                .setTrackingEnabled(true)
+                .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+                .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
+                .enableTracking()
                 .build()
 
         detector = FirebaseVision.getInstance().getVisionFaceDetector(options)
@@ -33,7 +33,6 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
         } catch (e: IOException) {
             Log.e(TAG, "Exception thrown while trying to close Face Detector: $e")
         }
-
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionFace>> {
@@ -41,9 +40,10 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
     }
 
     override fun onSuccess(
-            faces: List<FirebaseVisionFace>,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        faces: List<FirebaseVisionFace>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         for (i in faces.indices) {
             val face = faces[i]

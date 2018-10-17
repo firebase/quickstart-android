@@ -20,5 +20,4 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                         Intent(this, KotlinMainActivity::class.java))
         )
     }
-
 }

@@ -8,12 +8,11 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 /** Graphic instance for rendering image labels.  */
 class LabelGraphic(private val overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
 
-    private val textPaint: Paint
+    private val textPaint: Paint = Paint()
 
     private lateinit var labels: List<String>
 
     init {
-        textPaint = Paint()
         textPaint.color = Color.WHITE
         textPaint.textSize = 60.0f
     }

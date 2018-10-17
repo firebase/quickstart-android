@@ -11,7 +11,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.quickstart.fcm.R
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.logTokenButton
+import kotlinx.android.synthetic.main.activity_main.subscribeButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         // Get new Instance ID token
-                        val token = task.result.token
+                        val token = task.result?.token
 
                         // Log and toast
                         val msg = getString(R.string.msg_token_fmt, token)
@@ -82,7 +83,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        private val TAG = "MainActivity"
+        private const val TAG = "MainActivity"
     }
-
 }
