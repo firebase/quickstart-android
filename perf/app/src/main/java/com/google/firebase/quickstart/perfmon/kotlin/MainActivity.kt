@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d(TAG, "Incrementing file size counter in trace")
                     trace.incrementMetric(
                             FILE_SIZE_COUNTER_NAME,
-                            fileContent.toByteArray().size.toLong())
+                            fileContent!!.toByteArray().size.toLong())
                     numStartupTasks.countDown()
                 })
     }

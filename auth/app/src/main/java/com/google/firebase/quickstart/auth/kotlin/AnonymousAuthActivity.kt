@@ -101,7 +101,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
                 ?.addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "linkWithCredential:success")
-                        val user = task.result.user
+                        val user = task.result?.user
                         updateUI(user)
                     } else {
                         Log.w(TAG, "linkWithCredential:failure", task.exception)
