@@ -3,7 +3,7 @@
     <string name="quickstart_message">Click the SUBSCRIBE TO NEWS button below to subscribe to the
         news topic. Messages sent to the news topic will be received. The LOG TOKEN button logs the
         InstanceID token to logcat.</string>
-    <string name="subscribe_to_news">Subscribe To News</string>
+    <string name="subscribe_to_weather">Subscribe To Weather</string>
     <string name="log_token">Log Token</string>
 
     <string name="msg_subscribed">Subscribed to news topic</string>
