@@ -3,7 +3,11 @@ package com.google.firebase.samples.apps.mlkit.kotlin.custommodel
 import android.app.Activity
 import android.graphics.Bitmap
 import com.google.firebase.ml.common.FirebaseMLException
-import com.google.firebase.samples.apps.mlkit.common.*
+import com.google.firebase.samples.apps.mlkit.common.BitmapUtils
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor
+import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic
 import java.nio.ByteBuffer
 
 /** Custom Image Classifier Demo.  */
