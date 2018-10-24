@@ -38,7 +38,6 @@ public class LabelGraphic extends Graphic {
     textPaint = new Paint();
     textPaint.setColor(Color.WHITE);
     textPaint.setTextSize(60.0f);
-    postInvalidate();
   }
 
   @Override

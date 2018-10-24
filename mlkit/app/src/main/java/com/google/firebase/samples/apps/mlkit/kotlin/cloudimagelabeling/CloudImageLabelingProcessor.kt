@@ -1,5 +1,6 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.cloudimagelabeling
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
@@ -28,6 +29,7 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionCloud
     }
 
     override fun onSuccess(
+        originalCameraImage: Bitmap,
         results: List<FirebaseVisionCloudLabel>,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
@@ -48,9 +50,9 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionCloud
             }
         }
 
-        val cloudLabelGraphic = CloudLabelGraphic(graphicOverlay)
+        val cloudLabelGraphic = CloudLabelGraphic(graphicOverlay, labelsStr)
         graphicOverlay.add(cloudLabelGraphic)
-        cloudLabelGraphic.updateLabel(labelsStr)
+        graphicOverlay.postInvalidate()
     }
 
     override fun onFailure(e: Exception) {

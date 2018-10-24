@@ -7,7 +7,8 @@ import android.graphics.RectF
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
-class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) : GraphicOverlay.Graphic(overlay) {
+class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) :
+    GraphicOverlay.Graphic(overlay) {
 
     companion object {
         private const val TEXT_COLOR = Color.WHITE
@@ -30,8 +31,6 @@ class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) : 
         barcodePaint = Paint()
         barcodePaint.color = TEXT_COLOR
         barcodePaint.textSize = TEXT_SIZE
-        // Redraw the overlay, as this graphic has been added.
-        postInvalidate()
     }
 
     /**

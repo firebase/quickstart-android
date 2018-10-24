@@ -16,57 +16,76 @@ package com.google.firebase.samples.apps.mlkit.java.custommodel;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.common.FirebaseMLException;
+import com.google.firebase.samples.apps.mlkit.common.BitmapUtils;
+import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic;
 import com.google.firebase.samples.apps.mlkit.common.FrameMetadata;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor;
 
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-/** Custom Image Classifier Demo. */
+/**
+ * Custom Image Classifier Demo.
+ */
 public class CustomImageClassifierProcessor implements VisionImageProcessor {
 
-  private final CustomImageClassifier classifier;
-  private final Activity activity;
+    private static final String TAG = "Custom";
+    private final CustomImageClassifier classifier;
+    private final Activity activity;
 
-  public CustomImageClassifierProcessor(Activity activity) throws FirebaseMLException {
-    this.activity = activity;
-    classifier = new CustomImageClassifier(activity);
-  }
+    public CustomImageClassifierProcessor(Activity activity) throws FirebaseMLException {
+        this.activity = activity;
+        classifier = new CustomImageClassifier(activity);
+    }
 
-  @Override
-  public void process(
-          ByteBuffer data, FrameMetadata frameMetadata, final GraphicOverlay graphicOverlay)
-      throws FirebaseMLException {
-    classifier
-        .classifyFrame(data, frameMetadata.getWidth(), frameMetadata.getHeight())
-        .addOnSuccessListener(
-            activity,
-            new OnSuccessListener<List<String>>() {
-              @Override
-              public void onSuccess(List<String> result) {
-                LabelGraphic labelGraphic = new LabelGraphic(graphicOverlay);
-                graphicOverlay.clear();
-                graphicOverlay.add(labelGraphic);
-                labelGraphic.updateLabel(result);
-              }
-            });
-  }
+    @Override
+    public void process(
+            final ByteBuffer data, final FrameMetadata frameMetadata,
+            final GraphicOverlay graphicOverlay)
+            throws FirebaseMLException {
 
-  @Override
-  public void process(Bitmap bitmap, GraphicOverlay graphicOverlay) {
-    // nop
-  }
+        classifier
+                .classifyFrame(data, frameMetadata.getWidth(), frameMetadata.getHeight())
+                .addOnSuccessListener(
+                        activity,
+                        new OnSuccessListener<List<String>>() {
+                            @Override
+                            public void onSuccess(List<String> result) {
+                                LabelGraphic labelGraphic = new LabelGraphic(graphicOverlay,
+                                        result);
+                                Bitmap bitmap = BitmapUtils.getBitmap(data, frameMetadata);
+                                CameraImageGraphic imageGraphic =
+                                        new CameraImageGraphic(graphicOverlay, bitmap);
+                                graphicOverlay.clear();
+                                graphicOverlay.add(imageGraphic);
+                                graphicOverlay.add(labelGraphic);
+                                graphicOverlay.postInvalidate();
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "Custom classifier failed: " + e);
+                                e.printStackTrace();
+                            }
+                        });
+    }
 
-  @Override
-  public void process(Image bitmap, int rotation, GraphicOverlay graphicOverlay) {
-    // nop
+    @Override
+    public void process(Bitmap bitmap, GraphicOverlay graphicOverlay) {
+        // nop
+    }
 
-  }
-
-  @Override
-  public void stop() {}
+    @Override
+    public void stop() {
+    }
 }
