@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+Copyright Google Inc. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+      http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.google.samples.quickstart.functions.java.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/firebase_lockup_400" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_add_numbers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/header_add_numbers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/heading_add_numbers"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:id="@+id/form_add_numbers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/header_add_numbers"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/fieldFirstNumber"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:inputType="number"
+                        tools:text="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/plus"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/fieldSecondNumber"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:inputType="number"
+                        tools:text="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/equals"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/fieldAddResult"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:inputType="number"
+                        tools:text="2" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonCalculate"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/form_add_numbers"
+                    android:text="@string/calculate" />
+
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_add_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/header_add_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/heading_add_message"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:id="@+id/form_add_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/header_add_message"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/fieldMessageInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/input"
+                        tools:text="some bad message" />
+
+                    <EditText
+                        android:id="@+id/fieldMessageOutput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:hint="@string/output"
+                        tools:text="some clean message" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonSignIn"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/buttonAddMessage"
+                    android:layout_toLeftOf="@+id/buttonAddMessage"
+                    android:layout_toStartOf="@+id/buttonAddMessage"
+                    android:text="@string/sign_in" />
+
+                <Button
+                    android:id="@+id/buttonAddMessage"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/form_add_message"
+                    android:text="@string/add_message" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>

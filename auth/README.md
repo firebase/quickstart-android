@@ -67,10 +67,31 @@ Getting Started
 - Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Email/Password** and turn on the **Enable** switch, then click **Save**.
+  - Under **Authorized Domains** click **Add Domain** and add `auth.example.com`.
 - Run the app on your device or emulator.
     - Select **EmailPasswordActivity** from the main screen.
     - Fill in your desired email and password and click **Create Account** to begin.
 
+### Passwordless Setup
+
+- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+  - Select the **Auth** panel and then click the **Sign In Method** tab.
+  - Click **Email/Password** and turn on the **Enable** switch. 
+  - Turn on the **Email Link (passwordless sign-in)** switch, then click **Save**.
+- Replace your-project-id in the AndroidManifest.xml file with your project ID.
+- Run the app on your device or emulator.
+    - Select **PasswordlessActivity** from the main screen.
+    - Fill in your desired email and click **Send Link** to begin.
+
+
+### Phone Authentication Setup
+
+- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+  - Select the **Auth** panel and then click the **Sign In Method** tab.
+  - Click **Phone** and turn on the **Enable** switch, then click **Save**.
+- Run the app on your device or emulator.
+    - Select **PhoneAuthActivity** from the main screen.
+    - Enter your phone numeber and click **Verify** to begin.
 
 ### Custom Authentication Setup
 

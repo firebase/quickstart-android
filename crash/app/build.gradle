@@ -1,13 +1,17 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'io.fabric'
+
+check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.google.samples.quickstart.crash"
-        minSdkVersion 14
-        targetSdkVersion 25
+        minSdkVersion 16
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
@@ -20,25 +24,30 @@ android {
         }
         debug {
             minifyEnabled true
-            testProguardFile 'test-proguard-rules.pro'
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'test-proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:25.3.1'
+    resolutionStrategy.force 'com.android.support:support-annotations:28.0.0'
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    implementation project(":internal:lintchecks")
+    implementation project(":internal:chooser")
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
 
-    compile 'com.google.firebase:firebase-crash:10.2.6'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.5'
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71"
 }
 
 apply plugin: 'com.google.gms.google-services'

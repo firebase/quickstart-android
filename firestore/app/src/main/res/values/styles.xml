@@ -1,0 +1,105 @@
+<resources>
+
+    <style name="AppTheme.EntryChoice" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:textColorPrimary">@color/greyPrimary</item>
+        <item name="android:textColorSecondary">@color/greySecondary</item>
+
+        <item name="android:actionOverflowButtonStyle">@style/AppTheme.Overflow</item>
+    </style>
+
+    <style name="AppTheme.Activity" parent="AppTheme" />
+
+    <style name="AppTheme.Overflow" parent="Base.Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:padding">0dp</item>
+        <item name="android:tint">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.FormLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="AppTheme.Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:background">#BDBDBD</item>
+    </style>
+
+    <style name="AppTheme.FilterIcon">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+    </style>
+
+    <style name="AppTheme.FilterSpinner" parent="Base.Widget.AppCompat.Spinner.Underlined">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
+    <style name="ThemeOverlay.FilterButton" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.Headline">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="AppTheme.Title">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AppTheme.Subheader">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppTheme.Body1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppTheme.Body2">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppTheme.Caption">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="AppTheme.TextDivider">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:textColor">@color/greySecondary</item>
+    </style>
+
+    <style name="AppTheme.PizzaGuy">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">150dp</item>
+    </style>
+
+</resources>

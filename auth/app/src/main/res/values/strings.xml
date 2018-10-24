@@ -13,6 +13,12 @@
     <string name="label_emailpassword">Email/Password Authentication</string>
     <string name="desc_emailpassword">Use an email and password to authenticate with Firebase.</string>
 
+    <string name="label_passwordless">Passwordless Authentication</string>
+    <string name="desc_passwordless">Use only an email to authenticate with Firebase.</string>
+
+    <string name="label_phone_auth">Phone Number Authentication</string>
+    <string name="desc_phone_auth">Use a phone number to authenticate with Firebase.</string>
+
     <string name="label_anonymous_auth">Anonymous Authentication</string>
     <string name="desc_anonymous_auth">Sign in anonymously and then later upgrade to a full Firebase Auth user.</string>
 
@@ -26,17 +32,29 @@
     <string name="get_custom_token">Get Token</string>
     <string name="sign_in">Sign In</string>
     <string name="create_account">Create Account</string>
+    <string name="send_link">Send Link</string>
     <string name="sign_out">Sign Out</string>
     <string name="verify_email">Verify Email</string>
     <string name="disconnect">Disconnect</string>
     <string name="loading">Loading…</string>
     <string name="custom_token">Custom Token</string>
+    <string name="signed_in">Signed In</string>
     <string name="signed_out">Signed Out</string>
     <string name="token_null">Token: null</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="desc_firebase_lockup">Firebase logo and name</string>
     <string name="auth_failed">Authentication failed</string>
+    <string name="start_phone_auth">Start</string>
+    <string name="verify_phone_auth">Verify</string>
+    <string name="resend_phone_auth">Resend</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="hint_verification_code">Verification Code</string>
+    <string name="status_code_sent">Code Sent</string>
+    <string name="status_verification_failed">Verification failed</string>
+    <string name="status_verification_succeeded">Verification succeeded</string>
+    <string name="status_sign_in_failed">Sign-in failed</string>
+    <string name="instant_validation">(instant validation)</string>
 
     <string name="firebase_status_fmt">Firebase User: %s</string>
     <string name="firebase_user_management">Firebase User Management</string>
@@ -49,6 +67,14 @@
 
     <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
     <string name="emailpassword_title_text">Email and Password</string>
+
+    <string name="passwordless_status_fmt">Email User: %1$s (verified: %2$b)</string>
+    <string name="passwordless_title_text">Passwordless Sign In</string>
+    <string name="status_email_not_sent">Send link to your email to get started.</string>
+    <string name="status_email_sent">Link sent, check your email to continue.</string>
+    <string name="status_link_found">Link received, enter email to sign in.</string>
+
+    <string name="phone_title_text">Phone Number</string>
 
     <string name="twitter_status_fmt">Twitter User: %s</string>
     <string name="twitter_title_text">Twitter Login</string>

@@ -5,7 +5,9 @@ import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
+import android.support.test.filters.LargeTest;
+
+import com.google.firebase.quickstart.auth.java.AnonymousAuthActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -56,12 +58,12 @@ public class AnonymousTest {
         signOutIfPossible();
 
         // Click sign in
-        onView(allOf(withId(R.id.button_anonymous_sign_in),
+        onView(allOf(withId(R.id.buttonAnonymousSignIn),
                 withText(R.string.sign_in), isDisplayed())).perform(click());
 
         // Make sure userID and email look right
         String idString = mActivityTestRule.getActivity().getString(R.string.id_fmt, "");
-        String emailString = mActivityTestRule.getActivity().getString(R.string.email_fmt, null);
+        String emailString = mActivityTestRule.getActivity().getString(R.string.email_fmt, "");
 
         onView(withText(startsWith(idString)))
                 .check(matches(isDisplayed()));
@@ -72,7 +74,7 @@ public class AnonymousTest {
 
     private void signOutIfPossible() {
         try {
-            onView(allOf(withId(R.id.button_anonymous_sign_out), isDisplayed()))
+            onView(allOf(withId(R.id.buttonAnonymousSignOut), isDisplayed()))
                     .perform(click());
         } catch (NoMatchingViewException e) {
             // Ignore

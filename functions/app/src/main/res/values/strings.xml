@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Firebase Functions</string>
+
+    <string name="heading_add_numbers">Add two numbers</string>
+    <string name="plus">+</string>
+    <string name="equals">=</string>
+    <string name="calculate">Calculate</string>
+
+    <string name="heading_add_message">Sanitize a message</string>
+    <string name="input">Input</string>
+    <string name="output">Output</string>
+    <string name="sign_in">Sign In</string>
+    <string name="add_message">Add Message</string>
+</resources>

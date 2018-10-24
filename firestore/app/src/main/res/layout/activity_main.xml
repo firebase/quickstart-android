@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E0E0E0">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme"
+        app:logo="@drawable/ic_restaurant_white_24px"
+        app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
+        app:title="@string/app_name"
+        app:titleMarginStart="24dp"
+        app:titleTextColor="@android:color/white" />
+
+    <FrameLayout
+        android:id="@+id/filterBarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="12dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/filterBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:elevation="12dp"
+            android:foreground="?attr/selectableItemBackground">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/buttonFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:tint="@color/greySecondary"
+                    app:srcCompat="@drawable/ic_filter_list_white_24px" />
+
+                <LinearLayout
+                    android:id="@+id/textCurrentSearchContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/buttonFilter"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
+                    <TextView
+                        android:id="@+id/textCurrentSearch"
+                        style="@style/AppTheme.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/all_restaurants"
+                        android:textColor="@color/greySecondary"
+                        tools:text="Filter" />
+
+                    <TextView
+                        android:id="@+id/textCurrentSortBy"
+                        style="@style/AppTheme.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sorted_by_rating"
+                        android:textColor="@color/greyDisabled" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/buttonClearFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:tint="@color/greySecondary"
+                    app:srcCompat="@drawable/ic_close_white_24px" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </FrameLayout>
+
+    <!-- Main Restaurants recycler -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerRestaurants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/filterBarContainer"
+        android:background="@android:color/white"
+        tools:listitem="@layout/item_restaurant" />
+
+    <!-- Shadow below toolbar -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@+id/filterBarContainer"
+        android:background="@drawable/bg_shadow" />
+
+    <!-- Empty list (pizza guy) view -->
+    <LinearLayout
+        android:id="@+id/viewEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone">
+
+        <ImageView
+            style="@style/AppTheme.PizzaGuy"
+            android:src="@drawable/pizza_monster" />
+
+        <TextView
+            style="@style/AppTheme.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/message_no_results"
+            android:textColor="@color/greyDisabled" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/recyclerRestaurants"
+        android:layout_alignTop="@+id/recyclerRestaurants"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

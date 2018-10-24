@@ -7,8 +7,15 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name="com.google.firebase.quickstart.analytics.MainActivity"
+            android:name="com.google.firebase.quickstart.analytics.java.MainActivity"/>
+
+        <activity
+            android:name="com.google.firebase.quickstart.analytics.kotlin.MainActivity"/>
+
+        <activity
+            android:name="com.google.firebase.quickstart.analytics.EntryChoiceActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -16,5 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
     </application>
 </manifest>

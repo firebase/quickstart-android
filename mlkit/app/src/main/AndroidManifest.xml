@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.google.firebase.samples.apps.mlkit">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/MaterialTheme">
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="barcode,face,ocr,ica" />
+
+        <activity
+            android:name="com.google.firebase.samples.apps.mlkit.java.ChooserActivity"/>
+
+        <activity
+            android:name="com.google.firebase.samples.apps.mlkit.kotlin.ChooserActivity"/>
+
+
+        <activity
+            android:name="com.google.firebase.samples.apps.mlkit.EntryChoiceActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity android:name=".java.LivePreviewActivity" android:exported="true">
+        </activity>
+
+        <activity android:name=".kotlin.LivePreviewActivity" android:exported="true"/>
+
+
+        <activity android:name=".java.StillImageActivity"
+            android:exported="true">
+        </activity>
+
+        <activity android:name=".kotlin.StillImageActivity"
+            android:exported="true"/>
+    </application>
+
+</manifest>

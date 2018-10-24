@@ -6,7 +6,9 @@ import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
+import android.support.test.filters.LargeTest;
+
+import com.google.firebase.quickstart.analytics.java.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,7 +41,7 @@ public class MainActivityTest {
         checkTitleText(R.string.pattern1_title);
 
         // Swipe, make sure we see the right titles
-        ViewInteraction viewPager = onView(withId(R.id.pager));
+        ViewInteraction viewPager = onView(withId(R.id.viewPager));
         viewPager.check(matches(isDisplayed()));
 
         // Swipe left

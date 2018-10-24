@@ -1,44 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.google.firebase.quickstart.auth">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChooserActivity">
+        <activity android:name=".EntryChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".java.ChooserActivity" />
         <activity
-            android:name=".CustomAuthActivity"
+            android:name=".java.CustomAuthActivity"
             android:label="@string/label_custom_auth" />
         <activity
-            android:name=".GoogleSignInActivity"
+            android:name=".java.GoogleSignInActivity"
             android:label="@string/label_google_sign_in" />
         <activity
-            android:name=".FacebookLoginActivity"
+            android:name=".java.FacebookLoginActivity"
             android:label="@string/label_facebook_login" />
         <activity
-            android:name=".EmailPasswordActivity"
+            android:name=".java.EmailPasswordActivity"
             android:label="@string/label_emailpassword"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".AnonymousAuthActivity"
+            android:name=".java.PasswordlessActivity"
+            android:label="@string/label_passwordless"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:host="your-project-id.firebaseapp.com"
+                    android:scheme="https" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".java.PhoneAuthActivity"
+            android:label="@string/label_phone_auth"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".java.AnonymousAuthActivity"
             android:label="@string/label_anonymous_auth" />
         <activity
-            android:name=".TwitterLoginActivity"
+            android:name=".java.TwitterLoginActivity"
             android:label="@string/label_twitter_login" />
         <activity
-            android:name=".FirebaseUIActivity"
-            android:label="@string/label_firebase_ui"/>
+            android:name=".java.FirebaseUIActivity"
+            android:label="@string/label_firebase_ui" />
+
+        <activity android:name=".kotlin.ChooserActivity" />
+
+        <activity
+            android:name=".kotlin.CustomAuthActivity"
+            android:label="@string/label_custom_auth" />
+        <activity
+            android:name=".kotlin.GoogleSignInActivity"
+            android:label="@string/label_google_sign_in" />
+        <activity
+            android:name=".kotlin.FacebookLoginActivity"
+            android:label="@string/label_facebook_login" />
+        <activity
+            android:name=".kotlin.EmailPasswordActivity"
+            android:label="@string/label_emailpassword"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".kotlin.PasswordlessActivity"
+            android:label="@string/label_passwordless"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:host="your-project-id.firebaseapp.com"
+                    android:scheme="https" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".kotlin.PhoneAuthActivity"
+            android:label="@string/label_phone_auth"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".kotlin.AnonymousAuthActivity"
+            android:label="@string/label_anonymous_auth" />
+        <activity
+            android:name=".kotlin.TwitterLoginActivity"
+            android:label="@string/label_twitter_login" />
+        <activity
+            android:name=".kotlin.FirebaseUIActivity"
+            android:label="@string/label_firebase_ui" />
+
+        <!-- Facebook Configuration -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
     </application>
 
 </manifest>

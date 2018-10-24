@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.google.firebase.quickstart.auth.AnonymousAuthActivity">
+    tools:context="com.google.firebase.quickstart.auth.java.AnonymousAuthActivity">
 
     <ImageView
         android:id="@+id/icon"
@@ -18,7 +18,7 @@
         android:src="@drawable/firebase_lockup_400" />
 
     <TextView
-        android:id="@+id/title_anonymous"
+        android:id="@+id/titleAnonymous"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,70 +27,71 @@
         android:text="Anonymous Sign In" />
 
     <TextView
-        android:id="@+id/anonymous_status_id"
+        android:id="@+id/anonymousStatusId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title_anonymous"
+        android:layout_below="@+id/titleAnonymous"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/signed_out" />
 
     <TextView
-        android:id="@+id/anonymous_status_email"
+        android:id="@+id/anonymousStatusEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/anonymous_status_id"
+        android:layout_below="@+id/anonymousStatusId"
         android:layout_marginBottom="8dp"
         tools:text="Email: none" />
 
     <Button
-        android:id="@+id/button_anonymous_sign_in"
+        android:id="@+id/buttonAnonymousSignIn"
         android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/anonymous_status_email"
+        android:layout_below="@+id/anonymousStatusEmail"
         android:text="@string/sign_in" />
 
     <Button
-        android:id="@+id/button_anonymous_sign_out"
+        android:id="@+id/buttonAnonymousSignOut"
         android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/button_anonymous_sign_in"
-        android:layout_toRightOf="@+id/button_anonymous_sign_in"
+        android:layout_alignTop="@+id/buttonAnonymousSignIn"
+        android:layout_toRightOf="@+id/buttonAnonymousSignIn"
         android:enabled="false"
-        android:text="@string/sign_out" />
+        android:text="@string/sign_out"
+        android:layout_toEndOf="@+id/buttonAnonymousSignIn" />
 
     <TextView
-        android:id="@+id/title_linking"
+        android:id="@+id/titleLinking"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button_anonymous_sign_in"
+        android:layout_below="@+id/buttonAnonymousSignIn"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="24dp"
         android:text="Account Linking" />
 
     <EditText
-        android:id="@+id/field_email"
+        android:id="@+id/fieldEmail"
         android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title_linking"
+        android:layout_below="@+id/titleLinking"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress" />
 
     <EditText
-        android:id="@+id/field_password"
+        android:id="@+id/fieldPassword"
         android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/field_email"
-        android:layout_toRightOf="@+id/field_email"
+        android:layout_alignTop="@+id/fieldEmail"
+        android:layout_toRightOf="@+id/fieldEmail"
         android:hint="@string/hint_password"
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/button_link_account"
+        android:id="@+id/buttonLinkAccount"
         android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/field_email"
+        android:layout_below="@+id/fieldEmail"
         android:enabled="false"
         android:text="Link Account" />
 

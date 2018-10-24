@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
+check.dependsOn 'assembleDebugAndroidTest'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.google.samples.quickstart.app_indexing"
+        applicationId "com.google.samples.quickstart.appindexing"
         minSdkVersion 18
-        targetSdkVersion 25
+        targetSdkVersion 28
         versionCode 2
         versionName "1.0"
 
@@ -22,19 +24,25 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:25.3.1'
+    resolutionStrategy.force 'com.android.support:support-annotations:28.0.0'
 }
 
 dependencies {
+    implementation project(":internal:lintchecks")
+    implementation project(":internal:chooser")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71"
     // [START app_indexing_gradle_dep]
-    compile 'com.google.firebase:firebase-appindexing:10.2.6'
+    implementation 'com.google.firebase:firebase-appindexing:16.0.2'
     // [END app_indexing_gradle_dep]
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
 
     // Testing
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

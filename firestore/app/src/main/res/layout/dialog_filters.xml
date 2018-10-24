@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/filters_form"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        style="@style/AppTheme.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/header_filters" />
+
+    <!-- Food Type -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/icon_category"
+            style="@style/AppTheme.FilterIcon"
+            android:layout_centerVertical="true"
+            android:tint="@color/greySecondary"
+            app:srcCompat="@drawable/ic_fastfood_white_24dp" />
+
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/icon_category"
+            android:entries="@array/categories" />
+
+    </RelativeLayout>
+
+    <!-- Location -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/icon_city"
+            style="@style/AppTheme.FilterIcon"
+            android:layout_centerVertical="true"
+            android:tint="@color/greySecondary"
+            app:srcCompat="@drawable/ic_place_white_24px" />
+
+        <Spinner
+            android:id="@+id/spinnerCity"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/icon_city"
+            android:entries="@array/cities" />
+
+    </RelativeLayout>
+
+    <!-- Price -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/icon_price"
+            style="@style/AppTheme.FilterIcon"
+            android:layout_centerVertical="true"
+            android:tint="@color/greySecondary"
+            app:srcCompat="@drawable/ic_monetization_on_white_24px" />
+
+        <Spinner
+            android:id="@+id/spinnerPrice"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/icon_price"
+            android:entries="@array/prices" />
+
+    </RelativeLayout>
+
+    <!-- Sort by -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/icon_sort"
+            style="@style/AppTheme.FilterIcon"
+            android:layout_centerVertical="true"
+            android:tint="@color/greySecondary"
+            app:srcCompat="@drawable/ic_sort_white_24px" />
+
+        <Spinner
+            android:id="@+id/spinnerSort"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/icon_sort"
+            android:entries="@array/sort_by" />
+    </RelativeLayout>
+
+    <!-- Cancel and apply buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/buttonCancel"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel"
+            android:textColor="@color/greySecondary"
+            android:theme="@style/ThemeOverlay.FilterButton" />
+
+
+        <Button
+            android:id="@+id/buttonSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/apply"
+            android:theme="@style/ThemeOverlay.FilterButton" />
+
+    </LinearLayout>
+
+</LinearLayout>
+

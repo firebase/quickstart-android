@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "com.google.samples.quickstart.config"
-        minSdkVersion 15
-        targetSdkVersion 25
+        minSdkVersion 16
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -23,17 +25,23 @@ android {
 }
 
 configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:25.3.1'
+    resolutionStrategy.force 'com.android.support:support-annotations:28.0.0'
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    implementation project(":internal:lintchecks")
+    implementation project(":internal:chooser")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71"
 
-    compile 'com.google.firebase:firebase-config:10.2.6'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
 
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-config:16.1.0'
+
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

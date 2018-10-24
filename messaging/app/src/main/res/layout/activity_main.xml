@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.google.firebase.quickstart.fcm.MainActivity">
+    tools:context="com.google.firebase.quickstart.fcm.java.MainActivity">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:text="@string/subscribe_to_news" />
+        android:text="@string/subscribe_to_weather" />
 
     <Button
         android:id="@+id/logTokenButton"

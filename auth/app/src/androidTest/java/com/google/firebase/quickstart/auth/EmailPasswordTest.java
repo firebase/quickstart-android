@@ -7,7 +7,9 @@ import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
+import android.support.test.filters.LargeTest;
+
+import com.google.firebase.quickstart.auth.java.EmailPasswordActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -71,8 +73,8 @@ public class EmailPasswordTest {
 
         // Click sign in
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.email_sign_in_button), withText(R.string.sign_in),
-                        withParent(withId(R.id.email_password_buttons)),
+                allOf(withId(R.id.emailSignInButton), withText(R.string.sign_in),
+                        withParent(withId(R.id.emailPasswordButtons)),
                         isDisplayed()));
         appCompatButton.perform(click());
 
@@ -97,13 +99,13 @@ public class EmailPasswordTest {
 
         // Click sign up
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.email_create_account_button), withText(R.string.create_account),
-                        withParent(withId(R.id.email_password_buttons)),
+                allOf(withId(R.id.emailCreateAccountButton), withText(R.string.create_account),
+                        withParent(withId(R.id.emailPasswordButtons)),
                         isDisplayed()));
         appCompatButton.perform(click());
 
         // Sign out button shown
-        onView(allOf(withId(R.id.sign_out_button), withText(R.string.sign_out), isDisplayed()));
+        onView(allOf(withId(R.id.signOutButton), withText(R.string.sign_out), isDisplayed()));
 
         // User email shown
         String emailString = mActivityTestRule.getActivity()
@@ -120,8 +122,8 @@ public class EmailPasswordTest {
 
         // Click sign in
         ViewInteraction signInButton = onView(
-                allOf(withId(R.id.email_sign_in_button), withText(R.string.sign_in),
-                        withParent(withId(R.id.email_password_buttons)),
+                allOf(withId(R.id.emailSignInButton), withText(R.string.sign_in),
+                        withParent(withId(R.id.emailPasswordButtons)),
                         isDisplayed()));
         signInButton.perform(click());
 
@@ -132,7 +134,7 @@ public class EmailPasswordTest {
 
     private void signOutIfPossible() {
         try {
-            onView(allOf(withId(R.id.sign_out_button), withText(R.string.sign_out), isDisplayed()))
+            onView(allOf(withId(R.id.signOutButton), withText(R.string.sign_out), isDisplayed()))
                     .perform(click());
         } catch (NoMatchingViewException e) {
             // Ignore
@@ -142,16 +144,16 @@ public class EmailPasswordTest {
 
     private void enterEmail(String email) {
         ViewInteraction emailField = onView(
-                allOf(withId(R.id.field_email),
-                        withParent(withId(R.id.email_password_fields)),
+                allOf(withId(R.id.fieldEmail),
+                        withParent(withId(R.id.emailPasswordFields)),
                         isDisplayed()));
         emailField.perform(replaceText(email));
     }
 
     private void enterPassword(String password) {
         ViewInteraction passwordField = onView(
-                allOf(withId(R.id.field_password),
-                        withParent(withId(R.id.email_password_fields)),
+                allOf(withId(R.id.fieldPassword),
+                        withParent(withId(R.id.emailPasswordFields)),
                         isDisplayed()));
         passwordField.perform(replaceText(password));
     }

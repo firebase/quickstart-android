@@ -1,0 +1,91 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+
+android {
+    testBuildType "release"
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "com.google.firebase.example.fireeats"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+
+        vectorDrawables.useSupportLibrary true
+
+        lintOptions {
+          disable 'InvalidPackage'
+        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'test-proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation project(":internal:lintchecks")
+    implementation project(":internal:chooser")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71"
+
+    // Firestore
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-firestore:17.1.1'
+
+    // Other Firebase/Play services deps
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    // FirebaseUI (for authentication)
+    implementation 'com.firebaseui:firebase-ui-auth:4.2.0'
+
+    // ButterKnife (for sample code brevity)
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    // Support Libs
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:animated-vector-drawable:28.0.0'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.android.support:customtabs:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:support-media-compat:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    // Android architecture components
+    implementation 'android.arch.lifecycle:runtime:1.1.1'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
+
+    // Third-party libraries
+    implementation 'me.zhanghai.android.materialratingbar:library:1.3.1'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
+    androidTestImplementation 'junit:junit:4.12'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+    androidTestImplementation 'com.google.firebase:firebase-auth:16.0.5'
+
+}
+
+apply plugin: 'com.google.gms.google-services'

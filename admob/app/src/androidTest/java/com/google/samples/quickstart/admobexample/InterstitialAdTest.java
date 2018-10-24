@@ -5,7 +5,9 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
+import android.support.test.filters.LargeTest;
+
+import com.google.samples.quickstart.admobexample.java.MainActivity;
 
 import org.junit.After;
 import org.junit.Before;
@@ -53,7 +55,7 @@ public class InterstitialAdTest {
 
         // Click show interstitial button
         ViewInteraction showInterstitialButton = onView(
-                allOf(withId(R.id.load_interstitial_button),
+                allOf(withId(R.id.loadInterstitialButton),
                         withText(R.string.interstitial_button_text),
                         isDisplayed()));
         showInterstitialButton.perform(click());

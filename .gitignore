@@ -8,3 +8,7 @@ build/
 *.aar
 *.zip
 google-services.json
+
+.project
+.settings
+.classpath

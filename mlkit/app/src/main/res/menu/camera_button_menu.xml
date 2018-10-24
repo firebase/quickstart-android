@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item android:id="@+id/select_images_from_local"
+      android:title="Select image from album"
+      android:orderInCategory="100"
+      app:showAsAction="never" />
+  <item android:id="@+id/take_photo_using_camera"
+      android:title="Take photo"
+      android:orderInCategory="100"
+      app:showAsAction="never" />
+</menu>

@@ -49,40 +49,10 @@ See [below](#submit) for some guidelines.
 ### Submitting an Issue
 Before you submit your issue search the archive, maybe your question was already answered.
 
-If your issue appears to be a bug, and hasn't been reported, open a new issue.
-Help us to maximize the effort we can spend fixing issues and adding new
-features, by not reporting duplicate issues.  Providing the following information will increase the
-chances of your issue being dealt with quickly:
-
-* **Overview of the Issue** - if an error is being thrown a non-minified stack trace helps
-* **Motivation for or Use Case** - explain why this is a bug for you
-* **Browsers and Operating System** - is this a problem with all browsers or only IE9?
-* **Reproduce the Error** - provide a live example (using JSBin) or a unambiguous set of steps.
-* **Related Issues** - has a similar issue been reported before?
-* **Suggest a Fix** - if you can't fix the bug yourself, perhaps you can point to what might be
-  causing the problem (line of code or commit)
+If your issue appears to be a bug, and hasn't been reported, open a new issue.  Please fill out
+all information in the issue template to maximize the chance that we can help you.
 
 **If you get help, help others. Good karma rulez!**
-
-Here's a template to get you started:
-
-```
-Browser:
-Browser version:
-Operating system:
-Operating system version:
-
-What steps will reproduce the problem:
-1.
-2.
-3.
-
-What is the expected result?
-
-What happens instead of that?
-
-Please provide any other information below, and attach a screenshot if possible.
-```
 
 ### Submitting a Pull Request
 Before you submit your pull request consider the following guidelines:
@@ -99,8 +69,7 @@ Before you submit your pull request consider the following guidelines:
 
 * Create your patch, **including appropriate test cases**.
 * Follow our [Coding Rules](#rules).
-* Avoid checking in files that shouldn't be tracked (e.g `node_modules`, `gulp-cache`, `.tmp`, `.idea`). We recommend using a [global](#global-gitignore) gitignore for this.
-* Make sure **not** to include a recompiled version of the files found in `/css` and `/js` as part of your PR. We will generate these automatically.
+* Avoid checking in files that shouldn't be tracked (e.g `*.class`, `.idea`, `.tmp`). We recommend using a [global](#global-gitignore) gitignore for this.
 * Commit your changes using a descriptive commit message.
 
      ```shell
@@ -111,7 +80,7 @@ Before you submit your pull request consider the following guidelines:
 * Build your changes locally to ensure all the tests pass:
 
     ```shell
-   gulp
+   ./gradlew build
     ```
 
 * Push your branch to GitHub:
@@ -120,7 +89,7 @@ Before you submit your pull request consider the following guidelines:
     git push origin my-fix-branch
     ```
 
-* In GitHub, send a pull request to `firebase-quickstart-web:master`.
+* In GitHub, send a pull request to `firebase-quickstart-android:master`.
 * If we suggest changes then:
   * Make the required updates.
   * Rebase your branch and force push to your GitHub repository (this will update your Pull Request):
@@ -163,7 +132,7 @@ from the main (upstream) repository:
 
 ## <a name="rules"></a> Coding Rules
 
-We generally follow the [Google JavaScript style guide][js-style-guide].
+Try to follow the same code style you see in the repository.
 
 ## <a name="cla"></a> Signing the CLA
 
@@ -174,8 +143,5 @@ changes to be accepted, the CLA must be signed. It's a quick process, we promise
 
 [github]: https://github.com/firebase/quickstart-android
 [google-cla]: https://cla.developers.google.com
-[js-style-guide]: http://google.github.io/styleguide/javascriptguide.xml
-[py-style-guide]: http://google.github.io/styleguide/pyguide.html
-[jsbin]: http://jsbin.com/
 [stackoverflow]: http://stackoverflow.com/questions/tagged/firebase
 [global-gitignore]: https://help.github.com/articles/ignoring-files/#create-a-global-gitignore

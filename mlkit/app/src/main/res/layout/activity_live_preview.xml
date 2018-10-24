@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fireTopLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    android:keepScreenOn="true">
+
+  <com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview
+      android:id="@+id/firePreview"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentTop="true">
+
+      <com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
+          android:id="@+id/fireFaceOverlay"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_alignParentStart="true"
+          android:layout_alignParentTop="true"
+          android:layout_alignParentBottom="true"/>
+  </com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview>
+
+  <TextView android:id="@+id/text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingLeft="80dp"
+      android:textColor="#FFF"
+      android:textSize="20sp"
+      android:textStyle="bold" />
+
+  <FrameLayout
+      android:id="@+id/control"
+      android:layout_width="match_parent"
+      android:layout_height="60dp"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentStart="true"
+      android:layout_toEndOf="@id/firePreview"
+      android:background="#000">
+
+      <Spinner
+          android:id="@+id/spinner"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center" />
+
+      <ToggleButton
+          android:id="@+id/facingSwitch"
+          android:layout_width="48dp"
+          android:layout_height="48dp"
+          android:layout_gravity="center_vertical"
+          android:background="@layout/toggle_style"
+          android:textOff=""
+          android:textOn=""
+          android:checked="false" />
+
+  </FrameLayout>
+
+</RelativeLayout>

@@ -12,11 +12,12 @@ Getting Started
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 - Follow the [quickstart guide](https://firebase.google.com/docs/android/setup) to set up your project.
 - Configure the sample:
-  - Replace the **app_code** value in `strings.xml` with your personal **app code**. If you don't have an **app code**, email your Google contact to begin the process.
+  - Replace the `app_code` value in `app/build.gradle` with your personal
+    [app code](https://firebase.google.com/docs/dynamic-links/android/create#set-up-firebase-and-the-dynamic-links-sdk).
   - Replace the **applicationId** in `app/build.gradle` with the package name that matches your app code.
 - Run the sample on your Android device or emulator.
 - Using the sample:
-  - When the application is started, a deep link will be generated using your app code. 
+  - When the application is started, a deep link will be generated using your app code.
   - Click **Share**
     to share this deep link to another application.
   - The application checks if it was launched from a deep link. If so, the link data will be displayed under the **Receive** heading.

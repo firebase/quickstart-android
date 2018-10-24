@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fireTopLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    android:keepScreenOn="true">
+
+
+  <ImageView
+      android:id="@+id/previewPane"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentTop="true"
+      android:scaleType="fitStart">
+  </ImageView>
+
+
+  <com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
+      android:id="@+id/previewOverlay"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:layout_alignParentStart="true"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentBottom="true"/>
+
+  <FrameLayout
+      android:id="@+id/controlPanel"
+      android:layout_width="match_parent"
+      android:layout_height="60dp"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentStart="true"
+      android:layout_toEndOf="@id/firePreview"
+      android:background="#000">
+
+    <Spinner
+        android:id="@+id/featureSelector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right" />
+
+    <Spinner
+        android:id="@+id/sizeSelector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/getImageButton"
+        android:text="Take photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"/>
+
+  </FrameLayout>
+
+</RelativeLayout>

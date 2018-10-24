@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E0E0E0">
+
+    <RelativeLayout
+        android:id="@+id/restaurant_top_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/restaurantImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:alpha="1.0"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/food_1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/gradient_up" />
+
+        <!-- Back button -->
+        <ImageView
+            android:id="@+id/restaurantButtonBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:layout_alignLeft="@+id/restaurantName"
+            android:layout_marginTop="16dp"
+            app:srcCompat="@drawable/ic_close_white_24px" />
+
+        <TextView
+            android:id="@+id/restaurantName"
+            style="@style/AppTheme.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/restaurantRating"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            tools:text="Some Restaurant" />
+
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/restaurantRating"
+            style="@style/Widget.MaterialRatingBar.RatingBar.Indicator"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_above="@+id/restaurantCategory"
+            android:layout_alignLeft="@+id/restaurantName"
+            app:mrb_progressTint="@android:color/white"
+            app:mrb_secondaryProgressTint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/restaurantNumRatings"
+            style="@style/AppTheme.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/restaurantRating"
+            android:layout_alignTop="@+id/restaurantRating"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@+id/restaurantRating"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            tools:text="(10)" />
+
+        <TextView
+            android:id="@+id/restaurantCategory"
+            style="@style/AppTheme.Subheader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/restaurantImage"
+            android:layout_alignLeft="@+id/restaurantName"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            tools:text="Italian" />
+
+        <TextView
+            android:id="@+id/restaurantCity_divider"
+            style="@style/AppTheme.TextDivider"
+            android:layout_alignTop="@+id/restaurantCategory"
+            android:layout_toRightOf="@+id/restaurantCategory"
+            android:text="@string/divider_bullet"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/restaurantCity"
+            style="@style/AppTheme.Subheader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/restaurantCategory"
+            android:layout_below="@+id/restaurantCategory"
+            android:layout_toRightOf="@+id/restaurantCity_divider"
+            android:textColor="@android:color/white"
+            tools:text="San Francisco" />
+
+        <TextView
+            android:id="@+id/restaurantPrice"
+            style="@style/AppTheme.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/restaurantName"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            tools:text="$$$" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabShowRatingDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/restaurant_top_card"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-28dp"
+        android:layout_marginRight="16dp"
+        app:srcCompat="@drawable/ic_add_white_24px" />
+
+    <!-- Ratings -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerRatings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/restaurant_top_card"
+        android:background="@android:color/transparent"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        android:paddingTop="28dp"
+        android:visibility="gone"
+        tools:listitem="@layout/item_rating" />
+
+    <!-- View for empty ratings -->
+    <LinearLayout
+        android:id="@+id/viewEmptyRatings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/restaurant_top_card"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:src="@drawable/pizza_monster"
+            style="@style/AppTheme.PizzaGuy" />
+
+        <TextView
+            style="@style/AppTheme.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/message_no_reviews"
+            android:textColor="@color/greyDisabled" />
+
+    </LinearLayout>
+
+</RelativeLayout>

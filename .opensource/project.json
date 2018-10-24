@@ -1,0 +1,38 @@
+
+{
+    "name": "Firebase Quickstarts for Android",
+    "parent": "quickstarts",
+    "type": "sample",
+
+    "platforms": [
+      "Android"
+    ],
+
+    "content": "README.md",
+    
+    "pages" : {
+      "admob/README.md": "Admob",
+      "analytics/README.md": "Analytics",
+      "app-indexing/README.md": "App Indexing",
+      "auth/README.md": "Authentication",
+      "config/README.md": "Remote Config",
+      "crash/README.md": "Crashlytics",
+      "database/README.md": "Realtime Database",
+      "dynamiclinks/README.md": "Dynamic Links",
+      "firestore/README.md": "Cloud Firestore",
+      "functions/README.md": "Cloud Functions",
+      "invites/README.md": "App Invites",
+      "inapmessaging/README.md": "In App Messaging",
+      "messaging/README.md": "Cloud Messaging",
+      "mlkit/README.md": "ML Kit",
+      "perf/README.md": "Performance Monitoring",
+      "storage/README.md": "Cloud Storage"
+    },
+
+    "related": [
+      "firebase/quickstart-ios",
+      "firebase/quickstart-js"
+    ],
+
+    "tags": []
+  }

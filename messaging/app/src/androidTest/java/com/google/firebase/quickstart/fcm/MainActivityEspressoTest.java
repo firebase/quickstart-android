@@ -18,8 +18,10 @@ package com.google.firebase.quickstart.fcm;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
+import android.support.test.filters.LargeTest;
 import android.view.View;
+
+import com.google.firebase.quickstart.fcm.java.MainActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,7 +52,7 @@ public class MainActivityEspressoTest {
         onView(withId(R.id.informationTextView)).check(matches(isDisplayed()));
 
         // Click subscribe button and check toast
-        onView(allOf(withId(R.id.subscribeButton), withText(R.string.subscribe_to_news)))
+        onView(allOf(withId(R.id.subscribeButton), withText(R.string.subscribe_to_weather)))
                 .check(matches(isDisplayed()))
                 .perform(click());
         confirmToastStartsWith(mActivityRule.getActivity().getString(R.string.msg_subscribed));
