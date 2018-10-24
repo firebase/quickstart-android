@@ -2,9 +2,7 @@ package com.google.firebase.samples.apps.mlkit.kotlin.custommodel
 
 import android.app.Activity
 import android.graphics.Bitmap
-import android.media.Image
 import com.google.firebase.ml.common.FirebaseMLException
-import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.samples.apps.mlkit.common.*
 import java.nio.ByteBuffer
 

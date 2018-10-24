@@ -31,9 +31,9 @@ import java.util.ArrayList
  * set up continuous frame processing on frames from a camera source.  */
 @KeepName
 class LivePreviewActivity : AppCompatActivity(),
-        ActivityCompat.OnRequestPermissionsResultCallback,
-        AdapterView.OnItemSelectedListener,
-        CompoundButton.OnCheckedChangeListener {
+    ActivityCompat.OnRequestPermissionsResultCallback,
+    AdapterView.OnItemSelectedListener,
+    CompoundButton.OnCheckedChangeListener {
 
     private var cameraSource: CameraSource? = null
     private var selectedModel = FACE_DETECTION
@@ -42,7 +42,7 @@ class LivePreviewActivity : AppCompatActivity(),
         get() {
             return try {
                 val info = this.packageManager
-                        .getPackageInfo(this.packageName, PackageManager.GET_PERMISSIONS)
+                    .getPackageInfo(this.packageName, PackageManager.GET_PERMISSIONS)
                 val ps = info.requestedPermissions
                 if (ps != null && ps.isNotEmpty()) {
                     ps
@@ -68,11 +68,12 @@ class LivePreviewActivity : AppCompatActivity(),
         }
 
         val options = arrayListOf(
-                FACE_DETECTION,
-                TEXT_DETECTION,
-                BARCODE_DETECTION,
-                IMAGE_LABEL_DETECTION,
-                CLASSIFICATION)
+            FACE_DETECTION,
+            TEXT_DETECTION,
+            BARCODE_DETECTION,
+            IMAGE_LABEL_DETECTION,
+            CLASSIFICATION
+        )
         // Creating adapter for spinner
         val dataAdapter = ArrayAdapter(this, R.layout.spinner_style, options)
         // Drop down layout style - list view with radio button
@@ -222,7 +223,8 @@ class LivePreviewActivity : AppCompatActivity(),
 
         if (!allNeededPermissions.isEmpty()) {
             ActivityCompat.requestPermissions(
-                    this, allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS)
+                this, allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS
+            )
         }
     }
 
@@ -248,7 +250,11 @@ class LivePreviewActivity : AppCompatActivity(),
         private const val PERMISSION_REQUESTS = 1
 
         private fun isPermissionGranted(context: Context, permission: String): Boolean {
-            if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    permission
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 Log.i(TAG, "Permission granted: $permission")
                 return true
             }

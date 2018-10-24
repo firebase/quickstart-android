@@ -16,7 +16,8 @@ import java.io.IOException
 /** Processor for the text recognition demo.  */
 class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
 
-    private val detector: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().onDeviceTextRecognizer
+    private val detector: FirebaseVisionTextRecognizer =
+        FirebaseVision.getInstance().onDeviceTextRecognizer
 
     override fun stop() {
         try {

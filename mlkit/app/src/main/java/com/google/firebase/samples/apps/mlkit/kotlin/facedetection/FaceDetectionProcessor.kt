@@ -13,8 +13,6 @@ import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 import java.io.IOException
-import android.hardware.Camera.CameraInfo
-
 
 
 /** Face Detector Demo.  */
@@ -24,8 +22,8 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
 
     init {
         val options = FirebaseVisionFaceDetectorOptions.Builder()
-                .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
-                .build()
+            .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+            .build()
 
         detector = FirebaseVision.getInstance().getVisionFaceDetector(options)
     }
@@ -56,7 +54,7 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
         }
         for (i in faces.indices) {
             val face = faces[i]
-            val cameraFacing = frameMetadata?.cameraFacing ?: CameraInfo.CAMERA_FACING_BACK
+            val cameraFacing = frameMetadata.cameraFacing
             val faceGraphic = FaceGraphic(graphicOverlay, face, cameraFacing)
             graphicOverlay.add(faceGraphic)
         }

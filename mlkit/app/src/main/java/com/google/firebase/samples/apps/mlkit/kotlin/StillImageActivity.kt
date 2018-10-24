@@ -54,26 +54,26 @@ class StillImageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_still_image)
 
         getImageButton.setOnClickListener { view ->
-                    // Menu for selecting either: a) take new photo b) select from existing
-                    val popup = PopupMenu(this, view)
-                    popup.setOnMenuItemClickListener { menuItem ->
-                        when (menuItem.itemId) {
-                            R.id.select_images_from_local -> {
-                                startChooseImageIntentForResult()
-                                true
-                            }
-                            R.id.take_photo_using_camera -> {
-                                startCameraIntentForResult()
-                                true
-                            }
-                            else -> false
-                        }
+            // Menu for selecting either: a) take new photo b) select from existing
+            val popup = PopupMenu(this, view)
+            popup.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.select_images_from_local -> {
+                        startChooseImageIntentForResult()
+                        true
                     }
-
-                    val inflater = popup.menuInflater
-                    inflater.inflate(R.menu.camera_button_menu, popup.menu)
-                    popup.show()
+                    R.id.take_photo_using_camera -> {
+                        startCameraIntentForResult()
+                        true
+                    }
+                    else -> false
                 }
+            }
+
+            val inflater = popup.menuInflater
+            inflater.inflate(R.menu.camera_button_menu, popup.menu)
+            popup.show()
+        }
         if (previewPane == null) {
             Log.d(TAG, "Preview is null")
         }
@@ -220,14 +220,16 @@ class StillImageActivity : AppCompatActivity() {
 
             // Determine how much to scale down the image
             val scaleFactor = Math.max(
-                    imageBitmap.width.toFloat() / targetWidth.toFloat(),
-                    imageBitmap.height.toFloat() / maxHeight.toFloat())
+                imageBitmap.width.toFloat() / targetWidth.toFloat(),
+                imageBitmap.height.toFloat() / maxHeight.toFloat()
+            )
 
             val resizedBitmap = Bitmap.createScaledBitmap(
-                    imageBitmap,
-                    (imageBitmap.width / scaleFactor).toInt(),
-                    (imageBitmap.height / scaleFactor).toInt(),
-                    true)
+                imageBitmap,
+                (imageBitmap.width / scaleFactor).toInt(),
+                (imageBitmap.height / scaleFactor).toInt(),
+                true
+            )
 
             previewPane?.setImageBitmap(resizedBitmap)
             bitmapForDetection = resizedBitmap
@@ -281,7 +283,8 @@ class StillImageActivity : AppCompatActivity() {
                 val maxWidthForPortraitMode = getImageMaxWidth()
                 val maxHeightForPortraitMode = getImageMaxHeight()
                 targetWidth = if (isLandScape) maxHeightForPortraitMode else maxWidthForPortraitMode
-                targetHeight = if (isLandScape) maxWidthForPortraitMode else maxHeightForPortraitMode
+                targetHeight =
+                        if (isLandScape) maxWidthForPortraitMode else maxHeightForPortraitMode
             }
             SIZE_640_480 -> {
                 targetWidth = if (isLandScape) 640 else 480
@@ -321,8 +324,10 @@ class StillImageActivity : AppCompatActivity() {
         private const val SIZE_640_480 = "w:640" // ~640*480 in a normal ratio
 
         private const val KEY_IMAGE_URI = "com.googletest.firebase.ml.demo.KEY_IMAGE_URI"
-        private const val KEY_IMAGE_MAX_WIDTH = "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_WIDTH"
-        private const val KEY_IMAGE_MAX_HEIGHT = "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_HEIGHT"
+        private const val KEY_IMAGE_MAX_WIDTH =
+            "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_WIDTH"
+        private const val KEY_IMAGE_MAX_HEIGHT =
+            "com.googletest.firebase.ml.demo.KEY_IMAGE_MAX_HEIGHT"
         private const val KEY_SELECTED_SIZE = "com.googletest.firebase.ml.demo.KEY_SELECTED_SIZE"
 
         private const val REQUEST_IMAGE_CAPTURE = 1001

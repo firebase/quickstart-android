@@ -7,7 +7,8 @@ import android.graphics.RectF
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
-class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) : GraphicOverlay.Graphic(overlay) {
+class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) :
+    GraphicOverlay.Graphic(overlay) {
 
     companion object {
         private const val TEXT_COLOR = Color.WHITE
