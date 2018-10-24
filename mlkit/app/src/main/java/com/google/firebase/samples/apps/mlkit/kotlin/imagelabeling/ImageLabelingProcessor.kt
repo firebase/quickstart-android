@@ -1,11 +1,13 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.imagelabeling
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionLabelDetector
+import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic
 import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
@@ -29,13 +31,20 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() 
     }
 
     override fun onSuccess(
+        originalCameraImage: Bitmap,
         labels: List<FirebaseVisionLabel>,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
         graphicOverlay.clear()
+        originalCameraImage.let { image ->
+            val imageGraphic = CameraImageGraphic(graphicOverlay, image)
+            graphicOverlay.add(imageGraphic)
+
+        }
         val labelGraphic = LabelGraphic(graphicOverlay, labels)
         graphicOverlay.add(labelGraphic)
+        graphicOverlay.postInvalidate()
     }
 
     override fun onFailure(e: Exception) {

@@ -17,7 +17,6 @@ class LabelGraphic(
     init {
         textPaint.color = Color.WHITE
         textPaint.textSize = 60.0f
-        postInvalidate()
     }
 
     @Synchronized

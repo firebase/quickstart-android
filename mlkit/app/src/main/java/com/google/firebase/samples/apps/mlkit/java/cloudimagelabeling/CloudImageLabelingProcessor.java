@@ -13,7 +13,9 @@
 // limitations under the License.
 package com.google.firebase.samples.apps.mlkit.java.cloudimagelabeling;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
@@ -29,50 +31,53 @@ import com.google.firebase.samples.apps.mlkit.java.VisionProcessorBase;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Cloud Label Detector Demo. */
+/**
+ * Cloud Label Detector Demo.
+ */
 public class CloudImageLabelingProcessor
-    extends VisionProcessorBase<List<FirebaseVisionCloudLabel>> {
-  private static final String TAG = "CloudImgLabelProc";
+        extends VisionProcessorBase<List<FirebaseVisionCloudLabel>> {
+    private static final String TAG = "CloudImgLabelProc";
 
-  private final FirebaseVisionCloudLabelDetector detector;
+    private final FirebaseVisionCloudLabelDetector detector;
 
-  public CloudImageLabelingProcessor() {
-    FirebaseVisionCloudDetectorOptions options =
-        new FirebaseVisionCloudDetectorOptions.Builder()
-            .setMaxResults(10)
-            .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
-            .build();
+    public CloudImageLabelingProcessor() {
+        FirebaseVisionCloudDetectorOptions options =
+                new FirebaseVisionCloudDetectorOptions.Builder()
+                        .setMaxResults(10)
+                        .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
+                        .build();
 
-    detector = FirebaseVision.getInstance().getVisionCloudLabelDetector(options);
-  }
-
-  @Override
-  protected Task<List<FirebaseVisionCloudLabel>> detectInImage(FirebaseVisionImage image) {
-    return detector.detectInImage(image);
-  }
-
-  @Override
-  protected void onSuccess(
-      @NonNull List<FirebaseVisionCloudLabel> labels,
-      @NonNull FrameMetadata frameMetadata,
-      @NonNull GraphicOverlay graphicOverlay) {
-    graphicOverlay.clear();
-    Log.d(TAG, "cloud label size: " + labels.size());
-    List<String> labelsStr = new ArrayList<>();
-    for (int i = 0; i < labels.size(); ++i) {
-      FirebaseVisionCloudLabel label = labels.get(i);
-      Log.d(TAG, "cloud label: " + label);
-      if (label.getLabel() != null) {
-        labelsStr.add((label.getLabel()));
-      }
+        detector = FirebaseVision.getInstance().getVisionCloudLabelDetector(options);
     }
-    CloudLabelGraphic cloudLabelGraphic = new CloudLabelGraphic(graphicOverlay);
-    graphicOverlay.add(cloudLabelGraphic);
-    cloudLabelGraphic.updateLabel(labelsStr);
-  }
 
-  @Override
-  protected void onFailure(@NonNull Exception e) {
-    Log.e(TAG, "Cloud Label detection failed " + e);
-  }
+    @Override
+    protected Task<List<FirebaseVisionCloudLabel>> detectInImage(FirebaseVisionImage image) {
+        return detector.detectInImage(image);
+    }
+
+    @Override
+    protected void onSuccess(
+            @Nullable Bitmap originalCameraImage,
+            @NonNull List<FirebaseVisionCloudLabel> labels,
+            @NonNull FrameMetadata frameMetadata,
+            @NonNull GraphicOverlay graphicOverlay) {
+        graphicOverlay.clear();
+        Log.d(TAG, "cloud label size: " + labels.size());
+        List<String> labelsStr = new ArrayList<>();
+        for (int i = 0; i < labels.size(); ++i) {
+            FirebaseVisionCloudLabel label = labels.get(i);
+            Log.d(TAG, "cloud label: " + label);
+            if (label.getLabel() != null) {
+                labelsStr.add((label.getLabel()));
+            }
+        }
+        CloudLabelGraphic cloudLabelGraphic = new CloudLabelGraphic(graphicOverlay, labelsStr);
+        graphicOverlay.add(cloudLabelGraphic);
+        graphicOverlay.postInvalidate();
+    }
+
+    @Override
+    protected void onFailure(@NonNull Exception e) {
+        Log.e(TAG, "Cloud Label detection failed " + e);
+    }
 }

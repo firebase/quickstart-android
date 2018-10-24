@@ -13,7 +13,9 @@
 // limitations under the License.
 package com.google.firebase.samples.apps.mlkit.java.cloudtextrecognition;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
@@ -48,6 +50,7 @@ public class CloudTextRecognitionProcessor extends VisionProcessorBase<FirebaseV
 
     @Override
     protected void onSuccess(
+            @Nullable Bitmap originalCameraImage,
             @NonNull FirebaseVisionText text,
             @NonNull FrameMetadata frameMetadata,
             @NonNull GraphicOverlay graphicOverlay) {
@@ -67,6 +70,7 @@ public class CloudTextRecognitionProcessor extends VisionProcessorBase<FirebaseV
                 }
             }
         }
+        graphicOverlay.postInvalidate();
     }
 
     @Override

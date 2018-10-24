@@ -30,17 +30,13 @@ public class LabelGraphic extends Graphic {
 
   private List<String> labels;
 
-  LabelGraphic(GraphicOverlay overlay) {
+  LabelGraphic(GraphicOverlay overlay, List<String> labels) {
     super(overlay);
     this.overlay = overlay;
+    this.labels = labels;
     textPaint = new Paint();
     textPaint.setColor(Color.WHITE);
     textPaint.setTextSize(60.0f);
-  }
-
-  synchronized void updateLabel(List<String> labels) {
-    this.labels = labels;
-    postInvalidate();
   }
 
   @Override

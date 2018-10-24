@@ -27,8 +27,6 @@ class CloudDocumentTextGraphic(
         textPaint = Paint()
         textPaint.color = TEXT_COLOR
         textPaint.textSize = TEXT_SIZE
-        // Redraw the overlay, as this graphic has been added.
-        postInvalidate()
     }
 
     /** Draws the text block annotations for position, size, and raw value on the supplied canvas.  */

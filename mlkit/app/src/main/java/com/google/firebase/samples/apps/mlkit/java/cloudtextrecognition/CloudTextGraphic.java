@@ -50,8 +50,6 @@ public class CloudTextGraphic extends Graphic {
     textPaint = new Paint();
     textPaint.setColor(TEXT_COLOR);
     textPaint.setTextSize(TEXT_SIZE);
-    // Redraw the overlay, as this graphic has been added.
-    postInvalidate();
   }
 
   /** Draws the text block annotations for position, size, and raw value on the supplied canvas. */
