@@ -51,27 +51,27 @@ constructor(activity: Activity) {
     private val labelList: List<String>
 
     private val sortedLabels = PriorityQueue<MutableMap.MutableEntry<String, Float>>(
-            RESULTS_TO_SHOW,
-            Comparator<Map.Entry<String, Float>> { o1, o2 ->
-                o1.value.compareTo(o2.value)
-            })
+        RESULTS_TO_SHOW,
+        Comparator<Map.Entry<String, Float>> { o1, o2 ->
+            o1.value.compareTo(o2.value)
+        })
 
     init {
         val modelOptions = FirebaseModelOptions.Builder()
-                .setCloudModelName(HOSTED_MODEL_NAME)
-                .setLocalModelName(LOCAL_MODEL_NAME)
-                .build()
+            .setCloudModelName(HOSTED_MODEL_NAME)
+            .setLocalModelName(LOCAL_MODEL_NAME)
+            .build()
         val conditions = FirebaseModelDownloadConditions.Builder()
-                .requireWifi()
-                .build()
+            .requireWifi()
+            .build()
         val localModelSource = FirebaseLocalModelSource.Builder(LOCAL_MODEL_NAME)
-                .setAssetFilePath(LOCAL_MODEL_PATH).build()
+            .setAssetFilePath(LOCAL_MODEL_PATH).build()
         val cloudSource = FirebaseCloudModelSource.Builder(HOSTED_MODEL_NAME)
-                .enableModelUpdates(true)
-                .setInitialDownloadConditions(conditions)
-                .setUpdatesDownloadConditions(conditions) // You could also specify different
-                // conditions for updates.
-                .build()
+            .enableModelUpdates(true)
+            .setInitialDownloadConditions(conditions)
+            .setUpdatesDownloadConditions(conditions) // You could also specify different
+            // conditions for updates.
+            .build()
         val manager = FirebaseModelManager.getInstance()
         manager.registerLocalModelSource(localModelSource)
         manager.registerCloudModelSource(cloudSource)
@@ -81,9 +81,9 @@ constructor(activity: Activity) {
         val inputDims = intArrayOf(DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE)
         val outputDims = intArrayOf(1, labelList.size)
         dataOptions = FirebaseModelInputOutputOptions.Builder()
-                .setInputFormat(0, FirebaseModelDataType.BYTE, inputDims)
-                .setOutputFormat(0, FirebaseModelDataType.BYTE, outputDims)
-                .build()
+            .setInputFormat(0, FirebaseModelDataType.BYTE, inputDims)
+            .setOutputFormat(0, FirebaseModelDataType.BYTE, outputDims)
+            .build()
         Log.d(TAG, "Configured input & output data for the custom image classifier.")
     }
 
@@ -102,13 +102,13 @@ constructor(activity: Activity) {
         val inputs = FirebaseModelInputs.Builder().add(imgData).build()
         // Here's where the magic happens!!
         return interpreter!!
-                .run(inputs, dataOptions)
-                .continueWith { task ->
-                    task.result?.let {result ->
-                        val labelProbArray = result.getOutput<Array<ByteArray>>(0)
-                        printTopKLabels(labelProbArray)
-                    }
+            .run(inputs, dataOptions)
+            .continueWith { task ->
+                task.result?.let { result ->
+                    val labelProbArray = result.getOutput<Array<ByteArray>>(0)
+                    printTopKLabels(labelProbArray)
                 }
+            }
     }
 
     /** Reads label list from Assets.  */
@@ -137,7 +137,8 @@ constructor(activity: Activity) {
         height: Int
     ): ByteBuffer {
         val imgData = ByteBuffer.allocateDirect(
-                DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE)
+            DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE
+        )
         imgData.order(ByteOrder.nativeOrder())
         val bitmap = createResizedBitmap(buffer, width, height)
         imgData.rewind()
@@ -173,8 +174,11 @@ constructor(activity: Activity) {
     @Synchronized
     private fun printTopKLabels(labelProbArray: Array<ByteArray>): List<String> {
         for (i in labelList.indices) {
-            sortedLabels.add(AbstractMap.SimpleEntry<String, Float>(
-                    labelList[i], (labelProbArray[0][i] and 0xff.toByte()) / 255.0f))
+            sortedLabels.add(
+                AbstractMap.SimpleEntry<String, Float>(
+                    labelList[i], (labelProbArray[0][i] and 0xff.toByte()) / 255.0f
+                )
+            )
             if (sortedLabels.size > RESULTS_TO_SHOW) {
                 sortedLabels.poll()
             }
