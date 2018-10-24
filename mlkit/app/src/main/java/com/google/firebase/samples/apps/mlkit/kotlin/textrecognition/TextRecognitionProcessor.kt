@@ -16,8 +16,7 @@ import java.io.IOException
 /** Processor for the text recognition demo.  */
 class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
 
-    private val detector: FirebaseVisionTextRecognizer =
-        FirebaseVision.getInstance().onDeviceTextRecognizer
+    private val detector: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().onDeviceTextRecognizer
 
     override fun stop() {
         try {
@@ -41,7 +40,6 @@ class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
         originalCameraImage.let { image ->
             val imageGraphic = CameraImageGraphic(graphicOverlay, image)
             graphicOverlay.add(imageGraphic)
-
         }
         val blocks = results.textBlocks
         for (i in blocks.indices) {

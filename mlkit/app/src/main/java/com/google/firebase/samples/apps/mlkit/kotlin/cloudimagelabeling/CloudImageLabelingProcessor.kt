@@ -32,8 +32,7 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionCloud
         originalCameraImage: Bitmap,
         results: List<FirebaseVisionCloudLabel>,
         frameMetadata: FrameMetadata,
-        graphicOverlay: GraphicOverlay
-    ) {
+        graphicOverlay: GraphicOverlay) {
 
         graphicOverlay.clear()
 

@@ -15,7 +15,7 @@ import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 class CloudDocumentTextRecognitionProcessor : VisionProcessorBase<FirebaseVisionDocumentText>() {
 
     private val detector: FirebaseVisionDocumentTextRecognizer =
-        FirebaseVision.getInstance().cloudDocumentTextRecognizer
+            FirebaseVision.getInstance().cloudDocumentTextRecognizer
 
     override fun detectInImage(image: FirebaseVisionImage): Task<FirebaseVisionDocumentText> {
         return detector.processImage(image)

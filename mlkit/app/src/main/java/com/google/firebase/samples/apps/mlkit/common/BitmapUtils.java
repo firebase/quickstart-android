@@ -59,14 +59,13 @@ public class BitmapUtils {
                 break;
         }
 
-        if (rotationDegree == 0) {
-            return bitmap;
-        }
+        // Rotate the image back to straight.}
         matrix.postRotate(rotationDegree);
         if (facing == CameraInfo.CAMERA_FACING_BACK) {
             return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         } else {
-            matrix.preScale(1.0f, -1.0f);
+            // Mirror the image along X axis for front-facing camera image.
+            matrix.postScale(-1.0f, 1.0f);
             return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         }
     }

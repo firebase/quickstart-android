@@ -23,7 +23,7 @@ import java.util.ArrayList
  * all available testing Activities.
  */
 class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback,
-    AdapterView.OnItemClickListener {
+        AdapterView.OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,7 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
     private fun getRequiredPermissions(): Array<String?> {
         return try {
             val info = this.packageManager
-                .getPackageInfo(this.packageName, PackageManager.GET_PERMISSIONS)
+                    .getPackageInfo(this.packageName, PackageManager.GET_PERMISSIONS)
             val ps = info.requestedPermissions
             if (ps != null && ps.isNotEmpty()) {
                 ps
@@ -86,17 +86,12 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
 
         if (!allNeededPermissions.isEmpty()) {
             ActivityCompat.requestPermissions(
-                this, allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS
-            )
+                    this, allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS)
         }
     }
 
     private fun isPermissionGranted(context: Context, permission: String): Boolean {
-        if (ContextCompat.checkSelfPermission(
-                context,
-                permission
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
             Log.i(TAG, "Permission granted: $permission")
             return true
         }
@@ -115,13 +110,11 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
             var view = convertView
 
             if (convertView == null) {
-                val inflater =
-                    ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val inflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                 view = inflater.inflate(android.R.layout.simple_list_item_2, null)
             }
 
-            (view!!.findViewById<View>(android.R.id.text1) as TextView).text =
-                    classes[position].simpleName
+            (view!!.findViewById<View>(android.R.id.text1) as TextView).text = classes[position].simpleName
             descriptionIds?.let {
                 (view.findViewById<View>(android.R.id.text2) as TextView).setText(it[position])
             }
@@ -139,9 +132,9 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
         private const val PERMISSION_REQUESTS = 1
 
         private val CLASSES =
-            arrayOf<Class<*>>(LivePreviewActivity::class.java, StillImageActivity::class.java)
+                arrayOf<Class<*>>(LivePreviewActivity::class.java, StillImageActivity::class.java)
 
         private val DESCRIPTION_IDS =
-            intArrayOf(R.string.desc_camera_source_activity, R.string.desc_still_image_activity)
+                intArrayOf(R.string.desc_camera_source_activity, R.string.desc_still_image_activity)
     }
 }

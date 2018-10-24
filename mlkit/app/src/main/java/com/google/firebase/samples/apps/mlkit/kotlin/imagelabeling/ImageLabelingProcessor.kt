@@ -16,8 +16,7 @@ import java.io.IOException
 /** Custom Image Classifier Demo.  */
 class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() {
 
-    private val detector: FirebaseVisionLabelDetector =
-        FirebaseVision.getInstance().visionLabelDetector
+    private val detector: FirebaseVisionLabelDetector = FirebaseVision.getInstance().visionLabelDetector
 
     override fun stop() {
         try {
@@ -41,7 +40,6 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() 
         originalCameraImage.let { image ->
             val imageGraphic = CameraImageGraphic(graphicOverlay, image)
             graphicOverlay.add(imageGraphic)
-
         }
         val labelGraphic = LabelGraphic(graphicOverlay, labels)
         graphicOverlay.add(labelGraphic)
