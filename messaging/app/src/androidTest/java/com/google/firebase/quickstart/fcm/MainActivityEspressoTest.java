@@ -52,7 +52,7 @@ public class MainActivityEspressoTest {
         onView(withId(R.id.informationTextView)).check(matches(isDisplayed()));
 
         // Click subscribe button and check toast
-        onView(allOf(withId(R.id.subscribeButton), withText(R.string.subscribe_to_news)))
+        onView(allOf(withId(R.id.subscribeButton), withText(R.string.subscribe_to_weather)))
                 .check(matches(isDisplayed()))
                 .perform(click());
         confirmToastStartsWith(mActivityRule.getActivity().getString(R.string.msg_subscribed));
