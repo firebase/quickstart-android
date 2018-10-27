@@ -54,11 +54,11 @@ dependencies {
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    implementation 'com.firebaseui:firebase-ui-auth:4.2.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    implementation 'com.facebook.android:facebook-login:4.37.0'
+    implementation 'com.facebook.android:facebook-login:4.38.0'
     implementation 'com.android.support:customtabs:28.0.0'
 
     // Twitter Android SDK (only required for Twitter Login)

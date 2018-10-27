@@ -44,14 +44,14 @@ dependencies {
 
     // Firestore
     implementation 'com.google.firebase:firebase-core:16.0.4'
-    implementation 'com.google.firebase:firebase-firestore:17.1.1'
+    implementation 'com.google.firebase:firebase-firestore:17.1.2'
 
     // Other Firebase/Play services deps
     implementation 'com.google.firebase:firebase-auth:16.0.5'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
     // FirebaseUI (for authentication)
-    implementation 'com.firebaseui:firebase-ui-auth:4.2.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
 
     // ButterKnife (for sample code brevity)
     implementation 'com.jakewharton:butterknife:8.8.1'
