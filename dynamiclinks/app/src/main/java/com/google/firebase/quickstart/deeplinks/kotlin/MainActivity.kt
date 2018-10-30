@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         // [START build_dynamic_link]
         val builder = FirebaseDynamicLinks.getInstance()
                 .createDynamicLink()
-                .setDynamicLinkDomain(domain)
+                .setDomainUriPrefix(domain)
                 .setAndroidParameters(DynamicLink.AndroidParameters.Builder()
                         .setMinimumVersion(minVersion)
                         .build())

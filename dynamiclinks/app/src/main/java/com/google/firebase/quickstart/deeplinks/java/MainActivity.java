@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         // [START build_dynamic_link]
         DynamicLink.Builder builder = FirebaseDynamicLinks.getInstance()
                 .createDynamicLink()
-                .setDynamicLinkDomain(domain)
+                .setDomainUriPrefix(domain)
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
                         .setMinimumVersion(minVersion)
                         .build())
