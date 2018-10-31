@@ -41,10 +41,10 @@ public class CustomImageClassifierProcessor implements VisionImageProcessor {
     private final CustomImageClassifier classifier;
     private final Activity activity;
 
-    public CustomImageClassifierProcessor(Activity activity) throws FirebaseMLException {
-        this.activity = activity;
-        classifier = new CustomImageClassifier(activity);
-    }
+  public CustomImageClassifierProcessor(Activity activity, boolean useQuantizedModel) throws FirebaseMLException {
+    this.activity = activity;
+    classifier = new CustomImageClassifier(activity, useQuantizedModel);
+  }
 
     @Override
     public void process(

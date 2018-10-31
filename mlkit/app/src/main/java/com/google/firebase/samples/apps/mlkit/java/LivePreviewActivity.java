@@ -58,7 +58,8 @@ public final class LivePreviewActivity extends AppCompatActivity
   private static final String TEXT_DETECTION = "Text Detection";
   private static final String BARCODE_DETECTION = "Barcode Detection";
   private static final String IMAGE_LABEL_DETECTION = "Label Detection";
-  private static final String CLASSIFICATION = "Classification";
+  private static final String CLASSIFICATION_QUANT = "Classification (quantized)";
+  private static final String CLASSIFICATION_FLOAT = "Classification (float)";
   private static final String FACE_CONTOUR = "Face Contour";
   private static final String TAG = "LivePreviewActivity";
   private static final int PERMISSION_REQUESTS = 1;
@@ -91,7 +92,8 @@ public final class LivePreviewActivity extends AppCompatActivity
     options.add(TEXT_DETECTION);
     options.add(BARCODE_DETECTION);
     options.add(IMAGE_LABEL_DETECTION);
-    options.add(CLASSIFICATION);
+    options.add(CLASSIFICATION_QUANT);
+    options.add(CLASSIFICATION_FLOAT);
     // Creating adapter for spinner
     ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_style, options);
     // Drop down layout style - list view with radio button
@@ -152,9 +154,13 @@ public final class LivePreviewActivity extends AppCompatActivity
 
     try {
       switch (model) {
-        case CLASSIFICATION:
-          Log.i(TAG, "Using Custom Image Classifier Processor");
-          cameraSource.setMachineLearningFrameProcessor(new CustomImageClassifierProcessor(this));
+        case CLASSIFICATION_QUANT:
+          Log.i(TAG, "Using Custom Image Classifier (quant) Processor");
+          cameraSource.setMachineLearningFrameProcessor(new CustomImageClassifierProcessor(this, true));
+          break;
+        case CLASSIFICATION_FLOAT:
+          Log.i(TAG, "Using Custom Image Classifier (float) Processor");
+          cameraSource.setMachineLearningFrameProcessor(new CustomImageClassifierProcessor(this, false));
           break;
         case TEXT_DETECTION:
           Log.i(TAG, "Using Text Detector Processor");

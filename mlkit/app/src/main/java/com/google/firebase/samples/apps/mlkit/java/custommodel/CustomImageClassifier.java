@@ -63,19 +63,34 @@ public class CustomImageClassifier {
     private static final String TAG = "MLKitDemoApp:Classifier";
 
     /**
-     * Name of the model file.
+     * Name of the floating point model file.
      */
-    private static final String LOCAL_MODEL_NAME = "mobilenet_quant_v1";
+    private static final String LOCAL_FLOAT_MODEL_NAME = "mobilenet_float_v2_1.0_299";
 
     /**
-     * Path of the model file stored in Assets.
+     * Path of the floating point model file stored in Assets.
      */
-    private static final String LOCAL_MODEL_PATH = "mobilenet_quant_v1_224.tflite";
+    private static final String LOCAL_FLOAT_MODEL_PATH = "mobilenet_float_v2_1.0_299.tflite";
 
     /**
-     * Name of the model uploaded to the Firebase console.
+     * Name of the floating point model uploaded to the Firebase console.
      */
-    private static final String HOSTED_MODEL_NAME = "mobilenet_v1";
+    private static final String HOSTED_FLOAT_MODEL_NAME = "mobilenet_float_v2_1.0_299";
+
+    /**
+     * Name of the quantized model file.
+     */
+    private static final String LOCAL_QUANT_MODEL_NAME = "mobilenet_quant_v2_1.0_299";
+
+    /**
+     * Path of the quantized model file stored in Assets.
+     */
+    private static final String LOCAL_QUANT_MODEL_PATH = "mobilenet_quant_v2_1.0_299.tflite";
+
+    /**
+     * Name of the quantized model uploaded to the Firebase console.
+     */
+    private static final String HOSTED_QUANT_MODEL_NAME = "mobilenet_quant_v2_1.0_299";
 
     /**
      * Name of the label file stored in Assets.
@@ -94,8 +109,11 @@ public class CustomImageClassifier {
 
     private static final int DIM_PIXEL_SIZE = 3;
 
-    private static final int DIM_IMG_SIZE_X = 224;
-    private static final int DIM_IMG_SIZE_Y = 224;
+    private static final int DIM_IMG_SIZE_X = 299;
+    private static final int DIM_IMG_SIZE_Y = 299;
+    private static final int QUANT_NUM_OF_BYTES_PER_CHANNEL = 1;
+    private static final int FLOAT_NUM_OF_BYTES_PER_CHANNEL = 4;
+    private Boolean mUseQuantizedModel;
 
     /* Preallocated buffers for storing image data in. */
     private final int[] intValues = new int[DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y];
@@ -129,21 +147,28 @@ public class CustomImageClassifier {
     /**
      * Initializes an {@code CustomImageClassifier}.
      */
-    CustomImageClassifier(Activity activity) throws FirebaseMLException {
+    CustomImageClassifier(Activity activity, boolean useQuantizedModel) throws FirebaseMLException {
+        mUseQuantizedModel = useQuantizedModel;
+        String localModelName = mUseQuantizedModel ? LOCAL_QUANT_MODEL_NAME :
+                LOCAL_FLOAT_MODEL_NAME;
+        String hostedModelName = mUseQuantizedModel ? HOSTED_QUANT_MODEL_NAME :
+                HOSTED_FLOAT_MODEL_NAME;
+        String localModelPath = mUseQuantizedModel ? LOCAL_QUANT_MODEL_PATH :
+                LOCAL_FLOAT_MODEL_PATH;
         FirebaseModelOptions modelOptions =
                 new FirebaseModelOptions.Builder()
-                        .setCloudModelName(HOSTED_MODEL_NAME)
-                        .setLocalModelName(LOCAL_MODEL_NAME)
+                        .setCloudModelName(hostedModelName)
+                        .setLocalModelName(localModelName)
                         .build();
         FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions
                 .Builder()
                 .requireWifi()
                 .build();
         FirebaseLocalModelSource localModelSource =
-                new FirebaseLocalModelSource.Builder(LOCAL_MODEL_NAME)
-                        .setAssetFilePath(LOCAL_MODEL_PATH).build();
+                new FirebaseLocalModelSource.Builder(localModelName)
+                        .setAssetFilePath(localModelPath).build();
         FirebaseCloudModelSource cloudSource = new FirebaseCloudModelSource.Builder
-                (HOSTED_MODEL_NAME)
+                (hostedModelName)
                 .enableModelUpdates(true)
                 .setInitialDownloadConditions(conditions)
                 .setUpdatesDownloadConditions(conditions)  // You could also specify different
@@ -157,10 +182,13 @@ public class CustomImageClassifier {
         Log.d(TAG, "Created a Custom Image Classifier.");
         int[] inputDims = {DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE};
         int[] outputDims = {1, labelList.size()};
+
+        int dataType = mUseQuantizedModel ? FirebaseModelDataType.BYTE :
+                FirebaseModelDataType.FLOAT32;
         dataOptions =
                 new FirebaseModelInputOutputOptions.Builder()
-                        .setInputFormat(0, FirebaseModelDataType.BYTE, inputDims)
-                        .setOutputFormat(0, FirebaseModelDataType.BYTE, outputDims)
+                        .setInputFormat(0, dataType, inputDims)
+                        .setOutputFormat(0, dataType, outputDims)
                         .build();
         Log.d(TAG, "Configured input & output data for the custom image classifier.");
     }
@@ -183,20 +211,29 @@ public class CustomImageClassifier {
         // Here's where the magic happens!!
         return interpreter
                 .run(inputs, dataOptions)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Failed to get labels array: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                })
                 .continueWith(
                         new Continuation<FirebaseModelOutputs, List<String>>() {
                             @Override
                             public List<String> then(Task<FirebaseModelOutputs> task) throws Exception {
-                                byte[][] labelProbArray = task.getResult().<byte[][]>getOutput(0);
-                                return printTopKLabels(labelProbArray);
+                                if (mUseQuantizedModel) {
+                                    byte[][] labelProbArray =
+                                            task.getResult().<byte[][]>getOutput(0);
+                                    return getTopLabels(labelProbArray);
+                                } else {
+                                    float[][] labelProbArray =
+                                            task.getResult().<float[][]>getOutput(0);
+                                    return getTopLabels(labelProbArray);
+
+                                }
                             }
-                        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Interpreter failed with: " + e);
-                    }
-                });
+                        });
     }
 
     /**
@@ -221,9 +258,11 @@ public class CustomImageClassifier {
      */
     private synchronized ByteBuffer convertBitmapToByteBuffer(
             ByteBuffer buffer, int width, int height) {
+        int bytesPerChannel = mUseQuantizedModel ? QUANT_NUM_OF_BYTES_PER_CHANNEL :
+                FLOAT_NUM_OF_BYTES_PER_CHANNEL;
         ByteBuffer imgData =
                 ByteBuffer.allocateDirect(
-                        DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
+                        bytesPerChannel * DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
         imgData.order(ByteOrder.nativeOrder());
         Bitmap bitmap = createResizedBitmap(buffer, width, height);
         imgData.rewind();
@@ -235,9 +274,17 @@ public class CustomImageClassifier {
         for (int i = 0; i < DIM_IMG_SIZE_X; ++i) {
             for (int j = 0; j < DIM_IMG_SIZE_Y; ++j) {
                 final int val = intValues[pixel++];
-                imgData.put((byte) ((val >> 16) & 0xFF));
-                imgData.put((byte) ((val >> 8) & 0xFF));
-                imgData.put((byte) (val & 0xFF));
+                // Normalize the values according to the model used:
+                // Quantized model expects a [0, 255] scale while a float model expects [0, 1].
+                if (mUseQuantizedModel) {
+                    imgData.put((byte) ((val >> 16) & 0xFF));
+                    imgData.put((byte) ((val >> 8) & 0xFF));
+                    imgData.put((byte) (val & 0xFF));
+                } else {
+                    imgData.putFloat(((val >> 16) & 0xFF) / 255.0f);
+                    imgData.putFloat(((val >> 8) & 0xFF) / 255.0f);
+                    imgData.putFloat((val & 0xFF) / 255.0f);
+                }
             }
         }
         long endTime = SystemClock.uptimeMillis();
@@ -257,10 +304,7 @@ public class CustomImageClassifier {
         return Bitmap.createScaledBitmap(bitmap, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, true);
     }
 
-    /**
-     * Prints top-K labels, to be shown in UI as the results.
-     */
-    private synchronized List<String> printTopKLabels(byte[][] labelProbArray) {
+    private synchronized List<String> getTopLabels(byte[][] labelProbArray) {
         for (int i = 0; i < labelList.size(); ++i) {
             sortedLabels.add(
                     new AbstractMap.SimpleEntry<>(labelList.get(i),
@@ -269,6 +313,24 @@ public class CustomImageClassifier {
                 sortedLabels.poll();
             }
         }
+        return getTopKLabels();
+    }
+
+    private synchronized List<String> getTopLabels(float[][] labelProbArray) {
+        for (int i = 0; i < labelList.size(); ++i) {
+            sortedLabels.add(
+                    new AbstractMap.SimpleEntry<>(labelList.get(i), labelProbArray[0][i]));
+            if (sortedLabels.size() > RESULTS_TO_SHOW) {
+                sortedLabels.poll();
+            }
+        }
+        return getTopKLabels();
+    }
+
+    /**
+     * Gets the top-K labels, to be shown in UI as the results.
+     */
+    private synchronized List<String> getTopKLabels() {
         List<String> result = new ArrayList<>();
         final int size = sortedLabels.size();
         for (int i = 0; i < size; ++i) {
