@@ -21,7 +21,6 @@ import com.google.firebase.samples.apps.mlkit.kotlin.imagelabeling.ImageLabeling
 import com.google.firebase.samples.apps.mlkit.kotlin.textrecognition.TextRecognitionProcessor
 import kotlinx.android.synthetic.main.activity_live_preview.*
 import java.io.IOException
-import java.util.*
 
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to
  * set up continuous frame processing on frames from a camera source.  */
@@ -135,7 +134,6 @@ class LivePreviewActivity : AppCompatActivity(),
                     CLASSIFICATION_QUANT -> {
                         Log.i(TAG, "Using Custom Image Classifier (quant) Processor")
                         it.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this, true))
-
                     }
                     TEXT_DETECTION -> {
                         Log.i(TAG, "Using Text Detector Processor")
@@ -229,9 +227,9 @@ class LivePreviewActivity : AppCompatActivity(),
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         Log.i(TAG, "Permission granted!")
         if (allPermissionsGranted()) {

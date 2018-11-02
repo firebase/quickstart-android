@@ -14,13 +14,22 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.custommodel
 
 import android.app.Activity
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Rect
+import android.graphics.ImageFormat
+import android.graphics.YuvImage
 import android.os.SystemClock
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.ml.common.FirebaseMLException
-import com.google.firebase.ml.custom.*
+import com.google.firebase.ml.custom.FirebaseModelInterpreter
+import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions
+import com.google.firebase.ml.custom.FirebaseModelOptions
+import com.google.firebase.ml.custom.FirebaseModelManager
+import com.google.firebase.ml.custom.FirebaseModelDataType
+import com.google.firebase.ml.custom.FirebaseModelInputs
 import com.google.firebase.ml.custom.model.FirebaseCloudModelSource
 import com.google.firebase.ml.custom.model.FirebaseLocalModelSource
 import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions
@@ -30,7 +39,8 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.util.*
+import java.util.AbstractMap
+import java.util.PriorityQueue
 import kotlin.experimental.and
 
 /**
@@ -104,7 +114,7 @@ internal constructor(activity: Activity, private val mUseQuantizedModel: Boolean
         val cloudSource = FirebaseCloudModelSource.Builder(hostedModelName)
                 .enableModelUpdates(true)
                 .setInitialDownloadConditions(conditions)
-                .setUpdatesDownloadConditions(conditions)  // You could also specify different
+                .setUpdatesDownloadConditions(conditions) // You could also specify different
                 // conditions for updates.
                 .build()
         val manager = FirebaseModelManager.getInstance()
@@ -156,7 +166,6 @@ internal constructor(activity: Activity, private val mUseQuantizedModel: Boolean
                     } else {
                         val labelProbArray = task.result!!.getOutput<Array<FloatArray>>(0)
                         getTopLabels(labelProbArray)
-
                     }
                 }
     }
@@ -185,8 +194,7 @@ internal constructor(activity: Activity, private val mUseQuantizedModel: Boolean
      * Writes Image data into a `ByteBuffer`.
      */
     @Synchronized
-    private fun convertBitmapToByteBuffer(
-            buffer: ByteBuffer, width: Int, height: Int): ByteBuffer {
+    private fun convertBitmapToByteBuffer(buffer: ByteBuffer, width: Int, height: Int): ByteBuffer {
         val bytesPerChannel = if (mUseQuantizedModel)
             QUANT_NUM_OF_BYTES_PER_CHANNEL
         else

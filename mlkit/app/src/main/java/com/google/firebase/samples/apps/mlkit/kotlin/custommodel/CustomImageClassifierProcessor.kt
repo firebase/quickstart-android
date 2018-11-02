@@ -17,7 +17,11 @@ import android.app.Activity
 import android.graphics.Bitmap
 import android.util.Log
 import com.google.firebase.ml.common.FirebaseMLException
-import com.google.firebase.samples.apps.mlkit.common.*
+import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.BitmapUtils
+import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic
 import java.nio.ByteBuffer
 
 /**
@@ -29,8 +33,10 @@ constructor(private val activity: Activity, useQuantizedModel: Boolean) : Vision
 
     @Throws(FirebaseMLException::class)
     override fun process(
-            data: ByteBuffer, frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        data: ByteBuffer,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
 
         classifier
                 .classifyFrame(data, frameMetadata.width, frameMetadata.height)

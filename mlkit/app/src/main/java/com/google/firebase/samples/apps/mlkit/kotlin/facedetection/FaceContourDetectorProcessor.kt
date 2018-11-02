@@ -39,7 +39,6 @@ class FaceContourDetectorProcessor : VisionProcessorBase<List<FirebaseVisionFace
         } catch (e: IOException) {
             Log.e(TAG, "Exception thrown while trying to close Face Contour Detector: $e")
         }
-
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionFace>> {
@@ -47,10 +46,11 @@ class FaceContourDetectorProcessor : VisionProcessorBase<List<FirebaseVisionFace
     }
 
     override fun onSuccess(
-            originalCameraImage: Bitmap?,
-            faces: List<FirebaseVisionFace>,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        originalCameraImage: Bitmap?,
+        faces: List<FirebaseVisionFace>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         if (originalCameraImage != null) {
             val imageGraphic = CameraImageGraphic(graphicOverlay, originalCameraImage)
