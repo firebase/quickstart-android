@@ -12,8 +12,8 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions
 import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic
 import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
-import com.google.firebase.samples.apps.mlkit.java.VisionProcessorBase
-import com.google.firebase.samples.apps.mlkit.java.facedetection.FaceContourGraphic
+import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
+import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceContourGraphic
 
 import java.io.IOException
 
@@ -21,6 +21,21 @@ import java.io.IOException
  * Face Contour Demo.
  */
 class FaceContourDetectorProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
+
+    override fun onSuccess(originalCameraImage: Bitmap,
+                           results: List<FirebaseVisionFace>,
+                           frameMetadata: FrameMetadata,
+                           graphicOverlay: GraphicOverlay) {
+        graphicOverlay.clear()
+        val imageGraphic = CameraImageGraphic(graphicOverlay, originalCameraImage)
+        graphicOverlay.add(imageGraphic)
+        for (i in results.indices) {
+            val face = results[i]
+            val faceGraphic = FaceContourGraphic(graphicOverlay, face)
+            graphicOverlay.add(faceGraphic)
+        }
+        graphicOverlay.postInvalidate()
+    }
 
     private val detector: FirebaseVisionFaceDetector
 
@@ -43,25 +58,6 @@ class FaceContourDetectorProcessor : VisionProcessorBase<List<FirebaseVisionFace
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionFace>> {
         return detector.detectInImage(image)
-    }
-
-    override fun onSuccess(
-        originalCameraImage: Bitmap?,
-        faces: List<FirebaseVisionFace>,
-        frameMetadata: FrameMetadata,
-        graphicOverlay: GraphicOverlay
-    ) {
-        graphicOverlay.clear()
-        if (originalCameraImage != null) {
-            val imageGraphic = CameraImageGraphic(graphicOverlay, originalCameraImage)
-            graphicOverlay.add(imageGraphic)
-        }
-        for (i in faces.indices) {
-            val face = faces[i]
-            val faceGraphic = FaceContourGraphic(graphicOverlay, face)
-            graphicOverlay.add(faceGraphic)
-        }
-        graphicOverlay.postInvalidate()
     }
 
     override fun onFailure(e: Exception) {

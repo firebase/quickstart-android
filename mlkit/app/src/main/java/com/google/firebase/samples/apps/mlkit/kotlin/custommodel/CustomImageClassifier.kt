@@ -51,7 +51,7 @@ class CustomImageClassifier
  * Initializes an `CustomImageClassifier`.
  */
 @Throws(FirebaseMLException::class)
-internal constructor(activity: Activity, private val mUseQuantizedModel: Boolean) {
+internal constructor(activity: Activity, private val useQuantizedModel: Boolean) {
 
     /* Preallocated buffers for storing image data in. */
     private val intValues = IntArray(DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y)
@@ -90,15 +90,15 @@ internal constructor(activity: Activity, private val mUseQuantizedModel: Boolean
         }
 
     init {
-        val localModelName = if (mUseQuantizedModel)
+        val localModelName = if (useQuantizedModel)
             LOCAL_QUANT_MODEL_NAME
         else
             LOCAL_FLOAT_MODEL_NAME
-        val hostedModelName = if (mUseQuantizedModel)
+        val hostedModelName = if (useQuantizedModel)
             HOSTED_QUANT_MODEL_NAME
         else
             HOSTED_FLOAT_MODEL_NAME
-        val localModelPath = if (mUseQuantizedModel)
+        val localModelPath = if (useQuantizedModel)
             LOCAL_QUANT_MODEL_PATH
         else
             LOCAL_FLOAT_MODEL_PATH
@@ -126,7 +126,7 @@ internal constructor(activity: Activity, private val mUseQuantizedModel: Boolean
         val inputDims = intArrayOf(DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE)
         val outputDims = intArrayOf(1, labelList.size)
 
-        val dataType = if (mUseQuantizedModel)
+        val dataType = if (useQuantizedModel)
             FirebaseModelDataType.BYTE
         else
             FirebaseModelDataType.FLOAT32
@@ -160,7 +160,7 @@ internal constructor(activity: Activity, private val mUseQuantizedModel: Boolean
                     e.printStackTrace()
                 }
                 .continueWith { task ->
-                    if (mUseQuantizedModel) {
+                    if (useQuantizedModel) {
                         val labelProbArray = task.result!!.getOutput<Array<ByteArray>>(0)
                         getTopLabels(labelProbArray)
                     } else {
@@ -195,7 +195,7 @@ internal constructor(activity: Activity, private val mUseQuantizedModel: Boolean
      */
     @Synchronized
     private fun convertBitmapToByteBuffer(buffer: ByteBuffer, width: Int, height: Int): ByteBuffer {
-        val bytesPerChannel = if (mUseQuantizedModel)
+        val bytesPerChannel = if (useQuantizedModel)
             QUANT_NUM_OF_BYTES_PER_CHANNEL
         else
             FLOAT_NUM_OF_BYTES_PER_CHANNEL
@@ -214,7 +214,7 @@ internal constructor(activity: Activity, private val mUseQuantizedModel: Boolean
                 val value = intValues[pixel++]
                 // Normalize the values according to the model used:
                 // Quantized model expects a [0, 255] scale while a float model expects [0, 1].
-                if (mUseQuantizedModel) {
+                if (useQuantizedModel) {
                     imgData.put((value shr 16 and 0xFF).toByte())
                     imgData.put((value shr 8 and 0xFF).toByte())
                     imgData.put((value and 0xFF).toByte())
