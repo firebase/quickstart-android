@@ -2,7 +2,6 @@ package com.google.firebase.samples.apps.mlkit.kotlin.facedetection
 
 import android.graphics.Bitmap
 import android.util.Log
-
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
@@ -13,8 +12,6 @@ import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic
 import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
-import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceContourGraphic
-
 import java.io.IOException
 
 /**
@@ -22,10 +19,12 @@ import java.io.IOException
  */
 class FaceContourDetectorProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
 
-    override fun onSuccess(originalCameraImage: Bitmap,
-                           results: List<FirebaseVisionFace>,
-                           frameMetadata: FrameMetadata,
-                           graphicOverlay: GraphicOverlay) {
+    override fun onSuccess(
+        originalCameraImage: Bitmap,
+        results: List<FirebaseVisionFace>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         val imageGraphic = CameraImageGraphic(graphicOverlay, originalCameraImage)
         graphicOverlay.add(imageGraphic)

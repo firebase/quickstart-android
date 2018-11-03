@@ -13,8 +13,8 @@ import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.ml.common.FirebaseMLException
-import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.CameraSource
+import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceContourDetectorProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.barcodescanning.BarcodeScanningProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.custommodel.CustomImageClassifierProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceDetectionProcessor
@@ -32,7 +32,7 @@ class LivePreviewActivity : AppCompatActivity(),
         CompoundButton.OnCheckedChangeListener {
 
     private var cameraSource: CameraSource? = null
-    private var selectedModel = FACE_DETECTION
+    private var selectedModel = FACE_CONTOUR
 
     private val requiredPermissions: Array<String?>
         get() {
@@ -64,6 +64,7 @@ class LivePreviewActivity : AppCompatActivity(),
         }
 
         val options = arrayListOf(
+                FACE_CONTOUR,
                 FACE_DETECTION,
                 TEXT_DETECTION,
                 BARCODE_DETECTION,
@@ -128,6 +129,10 @@ class LivePreviewActivity : AppCompatActivity(),
         try {
             cameraSource?.let {
                 when (model) {
+                    FACE_CONTOUR -> {
+                        Log.i(TAG, "Using Face Contour Detector Processor")
+                        it.setMachineLearningFrameProcessor(FaceContourDetectorProcessor())
+                    }
                     CLASSIFICATION_FLOAT -> {
                         Log.i(TAG, "Using Custom Image Classifier Processor")
                         it.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this, true))
@@ -240,6 +245,7 @@ class LivePreviewActivity : AppCompatActivity(),
     }
 
     companion object {
+        private val FACE_CONTOUR = "Face Contour"
         private const val FACE_DETECTION = "Face Detection"
         private const val TEXT_DETECTION = "Text Detection"
         private const val BARCODE_DETECTION = "Barcode Detection"
