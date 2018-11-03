@@ -12,74 +12,67 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
  * Graphic instance for rendering face position, orientation, and landmarks within an associated
  * graphic overlay view.
  */
-class FaceGraphic(overlay: GraphicOverlay, face: FirebaseVisionFace, facing: Int) :
-    GraphicOverlay.Graphic(overlay) {
-
-    private var facing: Int = 0
+class FaceGraphic(overlay: GraphicOverlay, private val firebaseVisionFace: FirebaseVisionFace?, private val facing: Int)
+    : GraphicOverlay.Graphic(overlay) {
 
     private val facePositionPaint: Paint
     private val idPaint: Paint
     private val boxPaint: Paint
 
-    @Volatile
-    private lateinit var firebaseVisionFace: FirebaseVisionFace
-
     init {
+        val selectedColor = Color.WHITE
 
         facePositionPaint = Paint()
-        facePositionPaint.color = Color.WHITE
+        facePositionPaint.color = selectedColor
 
         idPaint = Paint()
-        idPaint.color = Color.WHITE
+        idPaint.color = selectedColor
         idPaint.textSize = ID_TEXT_SIZE
 
         boxPaint = Paint()
-        boxPaint.color = Color.WHITE
+        boxPaint.color = selectedColor
         boxPaint.style = Paint.Style.STROKE
         boxPaint.strokeWidth = BOX_STROKE_WIDTH
     }
 
-    /** Draws the face annotations for position on the supplied canvas.  */
+    /**
+     * Draws the face annotations for position on the supplied canvas.
+     */
     override fun draw(canvas: Canvas) {
-        val face = firebaseVisionFace
+        val face = firebaseVisionFace ?: return
 
         // Draws a circle at the position of the detected face, with the face's track id below.
         val x = translateX(face.boundingBox.centerX().toFloat())
         val y = translateY(face.boundingBox.centerY().toFloat())
         canvas.drawCircle(x, y, FACE_POSITION_RADIUS, facePositionPaint)
-        canvas.drawText("id: ${face.trackingId}", x + ID_X_OFFSET, y + ID_Y_OFFSET, idPaint)
+        canvas.drawText("id: " + face.trackingId, x + ID_X_OFFSET, y + ID_Y_OFFSET, idPaint)
         canvas.drawText(
-            "happiness: ${String.format("%.2f", face.smilingProbability)}",
-            x + ID_X_OFFSET * 3,
-            y - ID_Y_OFFSET,
-            idPaint
-        )
+                "happiness: ${String.format("%.2f", face.smilingProbability)}",
+                x + ID_X_OFFSET * 3,
+                y - ID_Y_OFFSET,
+                idPaint)
         if (facing == CameraSource.CAMERA_FACING_FRONT) {
             canvas.drawText(
-                "right eye: ${String.format("%.2f", face.rightEyeOpenProbability)}",
-                x - ID_X_OFFSET,
-                y,
-                idPaint
-            )
+                    "right eye: ${String.format("%.2f", face.rightEyeOpenProbability)}",
+                    x - ID_X_OFFSET,
+                    y,
+                    idPaint)
             canvas.drawText(
-                "left eye: ${String.format("%.2f", face.leftEyeOpenProbability)}",
-                x + ID_X_OFFSET * 6,
-                y,
-                idPaint
-            )
+                    "left eye: ${String.format("%.2f", face.leftEyeOpenProbability)}",
+                    x + ID_X_OFFSET * 6,
+                    y,
+                    idPaint)
         } else {
             canvas.drawText(
-                "left eye: ${String.format("%.2f", face.leftEyeOpenProbability)}",
-                x - ID_X_OFFSET,
-                y,
-                idPaint
-            )
+                    "left eye: ${String.format("%.2f", face.leftEyeOpenProbability)}",
+                    x - ID_X_OFFSET,
+                    y,
+                    idPaint)
             canvas.drawText(
-                "right eye: ${String.format("%.2f", face.rightEyeOpenProbability)}",
-                x + ID_X_OFFSET * 6,
-                y,
-                idPaint
-            )
+                    "right eye: ${String.format("%.2f", face.rightEyeOpenProbability)}",
+                    x + ID_X_OFFSET * 6,
+                    y,
+                    idPaint)
         }
 
         // Draws a bounding box around the face.
@@ -106,13 +99,12 @@ class FaceGraphic(overlay: GraphicOverlay, face: FirebaseVisionFace, facing: Int
 
     private fun drawLandmarkPosition(canvas: Canvas, face: FirebaseVisionFace, landmarkID: Int) {
         val landmark = face.getLandmark(landmarkID)
-        landmark?.let {
+        if (landmark != null) {
             val point = landmark.position
             canvas.drawCircle(
-                translateX(point.x),
-                translateY(point.y),
-                10f, idPaint
-            )
+                    translateX(point.x!!),
+                    translateY(point.y!!),
+                    10f, idPaint)
         }
     }
 
@@ -122,11 +114,5 @@ class FaceGraphic(overlay: GraphicOverlay, face: FirebaseVisionFace, facing: Int
         private const val ID_Y_OFFSET = 50.0f
         private const val ID_X_OFFSET = -50.0f
         private const val BOX_STROKE_WIDTH = 5.0f
-
-        private val COLOR_CHOICES = intArrayOf(
-            Color.BLUE, Color.CYAN, Color.GREEN, Color.MAGENTA,
-            Color.RED, Color.WHITE, Color.YELLOW
-        )
-        private var currentColorIndex = 0
     }
 }
