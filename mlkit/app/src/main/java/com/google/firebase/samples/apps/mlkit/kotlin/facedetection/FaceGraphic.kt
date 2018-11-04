@@ -3,6 +3,7 @@ package com.google.firebase.samples.apps.mlkit.kotlin.facedetection
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Paint.Style
 import com.google.android.gms.vision.CameraSource
 import com.google.firebase.ml.vision.face.FirebaseVisionFace
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark
@@ -17,27 +18,23 @@ class FaceGraphic(overlay: GraphicOverlay, face: FirebaseVisionFace, facing: Int
 
     private var facing: Int = 0
 
-    private val facePositionPaint: Paint
-    private val idPaint: Paint
-    private val boxPaint: Paint
+    private val facePositionPaint = Paint().apply {
+        color = Color.WHITE
+    }
+
+    private val idPaint = Paint().apply {
+        color = Color.WHITE
+        textSize = ID_TEXT_SIZE
+    }
+
+    private val boxPaint = Paint().apply {
+        color = Color.WHITE
+        style = Style.STROKE
+        strokeWidth = BOX_STROKE_WIDTH
+    }
 
     @Volatile
     private lateinit var firebaseVisionFace: FirebaseVisionFace
-
-    init {
-
-        facePositionPaint = Paint()
-        facePositionPaint.color = Color.WHITE
-
-        idPaint = Paint()
-        idPaint.color = Color.WHITE
-        idPaint.textSize = ID_TEXT_SIZE
-
-        boxPaint = Paint()
-        boxPaint.color = Color.WHITE
-        boxPaint.style = Paint.Style.STROKE
-        boxPaint.strokeWidth = BOX_STROKE_WIDTH
-    }
 
     /** Draws the face annotations for position on the supplied canvas.  */
     override fun draw(canvas: Canvas) {
