@@ -82,7 +82,7 @@ class FaceContourGraphic(overlay: GraphicOverlay, private val firebaseVisionFace
                     idPaint)
         }
         val leftEye = face.getLandmark(FirebaseVisionFaceLandmark.LEFT_EYE)
-        if (leftEye != null && leftEye.position != null) {
+        leftEye?.position?.let {
             canvas.drawCircle(
                     translateX(leftEye.position.x),
                     translateY(leftEye.position.y),
@@ -90,24 +90,24 @@ class FaceContourGraphic(overlay: GraphicOverlay, private val firebaseVisionFace
                     facePositionPaint)
         }
         val rightEye = face.getLandmark(FirebaseVisionFaceLandmark.RIGHT_EYE)
-        if (rightEye != null && rightEye.position != null) {
+        rightEye?.position?.let {
             canvas.drawCircle(
                     translateX(rightEye.position.x),
                     translateY(rightEye.position.y),
                     FACE_POSITION_RADIUS,
                     facePositionPaint)
         }
-
         val leftCheek = face.getLandmark(FirebaseVisionFaceLandmark.LEFT_CHEEK)
-        if (leftCheek != null && leftCheek.position != null) {
+        leftCheek?.position?.let {
             canvas.drawCircle(
                     translateX(leftCheek.position.x),
                     translateY(leftCheek.position.y),
                     FACE_POSITION_RADIUS,
                     facePositionPaint)
         }
+
         val rightCheek = face.getLandmark(FirebaseVisionFaceLandmark.RIGHT_CHEEK)
-        if (rightCheek != null && rightCheek.position != null) {
+        rightCheek?.position?.let {
             canvas.drawCircle(
                     translateX(rightCheek.position.x),
                     translateY(rightCheek.position.y),

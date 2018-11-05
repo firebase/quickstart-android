@@ -99,11 +99,11 @@ class FaceGraphic(overlay: GraphicOverlay, private val firebaseVisionFace: Fireb
 
     private fun drawLandmarkPosition(canvas: Canvas, face: FirebaseVisionFace, landmarkID: Int) {
         val landmark = face.getLandmark(landmarkID)
-        if (landmark != null) {
+        landmark?.let {
             val point = landmark.position
             canvas.drawCircle(
-                    translateX(point.x!!),
-                    translateY(point.y!!),
+                    translateX(point.x),
+                    translateY(point.y),
                     10f, idPaint)
         }
     }
