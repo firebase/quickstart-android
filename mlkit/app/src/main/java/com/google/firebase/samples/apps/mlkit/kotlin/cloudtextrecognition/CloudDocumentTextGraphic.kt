@@ -15,31 +15,26 @@ class CloudDocumentTextGraphic(
     private val symbol: FirebaseVisionDocumentText.Symbol?
 ) : GraphicOverlay.Graphic(overlay) {
 
-    private val rectPaint: Paint = Paint()
-    private val textPaint: Paint
+    private val rectPaint = Paint().apply {
+        color = TEXT_COLOR
+        style = Paint.Style.STROKE
+        strokeWidth = STROKE_WIDTH
+    }
 
-    init {
-
-        rectPaint.color = TEXT_COLOR
-        rectPaint.style = Paint.Style.STROKE
-        rectPaint.strokeWidth = STROKE_WIDTH
-
-        textPaint = Paint()
-        textPaint.color = TEXT_COLOR
-        textPaint.textSize = TEXT_SIZE
+    private val textPaint = Paint().apply {
+        color = TEXT_COLOR
+        textSize = TEXT_SIZE
     }
 
     /** Draws the text block annotations for position, size, and raw value on the supplied canvas.  */
     override fun draw(canvas: Canvas) {
-        if (symbol == null) {
-            throw IllegalStateException("Attempting to draw a null text.")
-        }
-
-        val rect = symbol.boundingBox
-        rect?.let {
-            canvas.drawRect(it, rectPaint)
-            canvas.drawText(symbol.text, it.left.toFloat(), it.bottom.toFloat(), textPaint)
-        }
+        symbol?.let { syb ->
+            val rect = syb.boundingBox
+            rect?.let {
+                canvas.drawRect(it, rectPaint)
+                canvas.drawText(syb.text, it.left.toFloat(), it.bottom.toFloat(), textPaint)
+            }
+        } ?: kotlin.run { throw IllegalStateException("Attempting to draw a null text.") }
     }
 
     companion object {
