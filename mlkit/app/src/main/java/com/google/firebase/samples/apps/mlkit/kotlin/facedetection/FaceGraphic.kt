@@ -35,9 +35,6 @@ class FaceGraphic(overlay: GraphicOverlay, private val firebaseVisionFace: Fireb
         strokeWidth = BOX_STROKE_WIDTH
     }
 
-    @Volatile
-    private lateinit var firebaseVisionFace: FirebaseVisionFace
-
     override fun draw(canvas: Canvas) {
         val face = firebaseVisionFace ?: return
 
