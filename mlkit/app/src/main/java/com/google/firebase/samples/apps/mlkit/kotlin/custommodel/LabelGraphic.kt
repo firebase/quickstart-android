@@ -9,11 +9,9 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 class LabelGraphic(private val overlay: GraphicOverlay, private val labels: List<String>) :
     GraphicOverlay.Graphic(overlay) {
 
-    private val textPaint: Paint = Paint()
-
-    init {
-        textPaint.color = Color.WHITE
-        textPaint.textSize = 60.0f
+    private val textPaint = Paint().apply {
+        color = Color.WHITE
+        textSize = 60.0f
     }
 
     @Synchronized
