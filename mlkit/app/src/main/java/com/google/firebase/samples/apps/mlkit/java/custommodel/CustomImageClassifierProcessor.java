@@ -15,7 +15,6 @@ package com.google.firebase.samples.apps.mlkit.java.custommodel;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -28,9 +27,10 @@ import com.google.firebase.samples.apps.mlkit.common.FrameMetadata;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Custom Image Classifier Demo.
@@ -39,18 +39,23 @@ public class CustomImageClassifierProcessor implements VisionImageProcessor {
 
     private static final String TAG = "Custom";
     private final CustomImageClassifier classifier;
-    private final Activity activity;
+    private final Reference<Activity> activityRef;
 
-  public CustomImageClassifierProcessor(Activity activity, boolean useQuantizedModel) throws FirebaseMLException {
-    this.activity = activity;
-    classifier = new CustomImageClassifier(activity, useQuantizedModel);
-  }
+    public CustomImageClassifierProcessor(Activity activity, boolean useQuantizedModel) throws FirebaseMLException {
+        activityRef = new WeakReference<>(activity);
+        classifier = new CustomImageClassifier(activity.getApplicationContext(), useQuantizedModel);
+    }
 
     @Override
     public void process(
             final ByteBuffer data, final FrameMetadata frameMetadata,
             final GraphicOverlay graphicOverlay)
             throws FirebaseMLException {
+
+        final Activity activity = activityRef.get();
+        if (activity == null) {
+            return;
+        }
 
         classifier
                 .classifyFrame(data, frameMetadata.getWidth(), frameMetadata.getHeight())

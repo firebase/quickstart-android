@@ -13,7 +13,7 @@
 // limitations under the License.
 package com.google.firebase.samples.apps.mlkit.java.custommodel;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
@@ -147,7 +147,7 @@ public class CustomImageClassifier {
     /**
      * Initializes an {@code CustomImageClassifier}.
      */
-    CustomImageClassifier(Activity activity, boolean useQuantizedModel) throws FirebaseMLException {
+    CustomImageClassifier(Context context, boolean useQuantizedModel) throws FirebaseMLException {
         mUseQuantizedModel = useQuantizedModel;
         String localModelName = mUseQuantizedModel ? LOCAL_QUANT_MODEL_NAME :
                 LOCAL_FLOAT_MODEL_NAME;
@@ -178,7 +178,7 @@ public class CustomImageClassifier {
         manager.registerLocalModelSource(localModelSource);
         manager.registerCloudModelSource(cloudSource);
         interpreter = FirebaseModelInterpreter.getInstance(modelOptions);
-        labelList = loadLabelList(activity);
+        labelList = loadLabelList(context.getApplicationContext());
         Log.d(TAG, "Created a Custom Image Classifier.");
         int[] inputDims = {DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE};
         int[] outputDims = {1, labelList.size()};
@@ -239,10 +239,10 @@ public class CustomImageClassifier {
     /**
      * Reads label list from Assets.
      */
-    private List<String> loadLabelList(Activity activity) {
+    private List<String> loadLabelList(Context context) {
         List<String> labelList = new ArrayList<>();
         try (BufferedReader reader =
-                     new BufferedReader(new InputStreamReader(activity.getAssets().open(LABEL_PATH)))) {
+                     new BufferedReader(new InputStreamReader(context.getAssets().open(LABEL_PATH)))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 labelList.add(line);
