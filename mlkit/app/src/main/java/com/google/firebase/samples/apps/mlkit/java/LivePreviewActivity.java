@@ -95,7 +95,7 @@ public final class LivePreviewActivity extends AppCompatActivity
     options.add(CLASSIFICATION_QUANT);
     options.add(CLASSIFICATION_FLOAT);
     // Creating adapter for spinner
-    ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_style, options);
+    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style, options);
     // Drop down layout style - list view with radio button
     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     // attaching data adapter to spinner

@@ -15,17 +15,17 @@ import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.CameraSource
+import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceContourDetectorProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.barcodescanning.BarcodeScanningProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.custommodel.CustomImageClassifierProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceDetectionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.imagelabeling.ImageLabelingProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.textrecognition.TextRecognitionProcessor
-import kotlinx.android.synthetic.main.activity_live_preview.facingSwitch
 import kotlinx.android.synthetic.main.activity_live_preview.fireFaceOverlay
 import kotlinx.android.synthetic.main.activity_live_preview.firePreview
 import kotlinx.android.synthetic.main.activity_live_preview.spinner
+import kotlinx.android.synthetic.main.activity_live_preview.facingSwitch
 import java.io.IOException
-import java.util.ArrayList
 
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to
  * set up continuous frame processing on frames from a camera source.  */
@@ -36,7 +36,7 @@ class LivePreviewActivity : AppCompatActivity(),
         CompoundButton.OnCheckedChangeListener {
 
     private var cameraSource: CameraSource? = null
-    private var selectedModel = FACE_DETECTION
+    private var selectedModel = FACE_CONTOUR
 
     private val requiredPermissions: Array<String?>
         get() {
@@ -68,11 +68,13 @@ class LivePreviewActivity : AppCompatActivity(),
         }
 
         val options = arrayListOf(
+                FACE_CONTOUR,
                 FACE_DETECTION,
                 TEXT_DETECTION,
                 BARCODE_DETECTION,
                 IMAGE_LABEL_DETECTION,
-                CLASSIFICATION)
+                CLASSIFICATION_FLOAT,
+                CLASSIFICATION_QUANT)
         // Creating adapter for spinner
         val dataAdapter = ArrayAdapter(this, R.layout.spinner_style, options)
         // Drop down layout style - list view with radio button
@@ -131,9 +133,17 @@ class LivePreviewActivity : AppCompatActivity(),
         try {
             cameraSource?.let {
                 when (model) {
-                    CLASSIFICATION -> {
-                        Log.i(TAG, "Using Custom Image Classifier Processor")
-                        it.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this))
+                    FACE_CONTOUR -> {
+                        Log.i(TAG, "Using Face Contour Detector Processor")
+                        it.setMachineLearningFrameProcessor(FaceContourDetectorProcessor())
+                    }
+                    CLASSIFICATION_FLOAT -> {
+                        Log.i(TAG, "Using Custom Image Classifier (float) Processor")
+                        it.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this, true))
+                    }
+                    CLASSIFICATION_QUANT -> {
+                        Log.i(TAG, "Using Custom Image Classifier (quant) Processor")
+                        it.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this, true))
                     }
                     TEXT_DETECTION -> {
                         Log.i(TAG, "Using Text Detector Processor")
@@ -239,11 +249,13 @@ class LivePreviewActivity : AppCompatActivity(),
     }
 
     companion object {
+        private val FACE_CONTOUR = "Face Contour"
         private const val FACE_DETECTION = "Face Detection"
         private const val TEXT_DETECTION = "Text Detection"
         private const val BARCODE_DETECTION = "Barcode Detection"
         private const val IMAGE_LABEL_DETECTION = "Label Detection"
-        private const val CLASSIFICATION = "Classification"
+        private val CLASSIFICATION_QUANT = "Classification (quantized)"
+        private val CLASSIFICATION_FLOAT = "Classification (float)"
         private const val TAG = "LivePreviewActivity"
         private const val PERMISSION_REQUESTS = 1
 
