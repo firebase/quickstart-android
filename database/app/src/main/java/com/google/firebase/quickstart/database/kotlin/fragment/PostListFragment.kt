@@ -50,6 +50,7 @@ abstract class PostListFragment : Fragment() {
         database = FirebaseDatabase.getInstance().reference
         // [END create_database_reference]
 
+        recycler = rootView.findViewById(R.id.messagesList)
         rootView.messagesList.setHasFixedSize(true)
 
         return rootView
