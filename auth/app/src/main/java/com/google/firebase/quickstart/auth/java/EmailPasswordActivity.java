@@ -49,7 +49,7 @@ public class EmailPasswordActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emailpassword);
+        setContentView(R.layout.activity_emailpasgit pusword);
 
         // Views
         mStatusTextView = findViewById(R.id.status);
