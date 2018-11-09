@@ -14,14 +14,34 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 import java.io.IOException
 
-/** Face Detector Demo.  */
-class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
+/**
+ * Face Contour Demo.
+ */
+class FaceContourDetectorProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
+
+    override fun onSuccess(
+        originalCameraImage: Bitmap,
+        results: List<FirebaseVisionFace>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
+        graphicOverlay.clear()
+        val imageGraphic = CameraImageGraphic(graphicOverlay, originalCameraImage)
+        graphicOverlay.add(imageGraphic)
+        for (i in results.indices) {
+            val face = results[i]
+            val faceGraphic = FaceContourGraphic(graphicOverlay, face)
+            graphicOverlay.add(faceGraphic)
+        }
+        graphicOverlay.postInvalidate()
+    }
 
     private val detector: FirebaseVisionFaceDetector
 
     init {
         val options = FirebaseVisionFaceDetectorOptions.Builder()
-                .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+                .setPerformanceMode(FirebaseVisionFaceDetectorOptions.FAST)
+                .setContourMode(FirebaseVisionFaceDetectorOptions.ALL_CONTOURS)
                 .build()
 
         detector = FirebaseVision.getInstance().getVisionFaceDetector(options)
@@ -31,32 +51,12 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
         try {
             detector.close()
         } catch (e: IOException) {
-            Log.e(TAG, "Exception thrown while trying to close Face Detector: $e")
+            Log.e(TAG, "Exception thrown while trying to close Face Contour Detector: $e")
         }
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionFace>> {
         return detector.detectInImage(image)
-    }
-
-    override fun onSuccess(
-        originalCameraImage: Bitmap,
-        results: List<FirebaseVisionFace>,
-        frameMetadata: FrameMetadata,
-        graphicOverlay: GraphicOverlay
-    ) {
-        graphicOverlay.clear()
-        originalCameraImage.let { image ->
-            val imageGraphic = CameraImageGraphic(graphicOverlay, image)
-            graphicOverlay.add(imageGraphic)
-        }
-        for (i in results.indices) {
-            val face = results[i]
-            val cameraFacing = frameMetadata.cameraFacing
-            val faceGraphic = FaceGraphic(graphicOverlay, face, cameraFacing)
-            graphicOverlay.add(faceGraphic)
-        }
-        graphicOverlay.postInvalidate()
     }
 
     override fun onFailure(e: Exception) {
@@ -65,6 +65,6 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
 
     companion object {
 
-        private const val TAG = "FaceDetectionProcessor"
+        private const val TAG = "FaceContourDetectorProc"
     }
 }

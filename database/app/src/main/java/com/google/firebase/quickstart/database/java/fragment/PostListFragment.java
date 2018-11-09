@@ -173,7 +173,6 @@ public abstract class PostListFragment extends Fragment {
         }
     }
 
-
     public String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
