@@ -22,14 +22,18 @@ import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.common.BitmapUtils
 import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic
+import java.lang.ref.WeakReference
 import java.nio.ByteBuffer
 
 /**
  * Custom Image Classifier Demo.
  */
-class CustomImageClassifierProcessor @Throws(FirebaseMLException::class)
-constructor(private val activity: Activity, useQuantizedModel: Boolean) : VisionImageProcessor {
-    private val classifier: CustomImageClassifier = CustomImageClassifier(activity, useQuantizedModel)
+class CustomImageClassifierProcessor
+@Throws(FirebaseMLException::class)
+constructor(activity: Activity, useQuantizedModel: Boolean) : VisionImageProcessor {
+    private val classifier: CustomImageClassifier =
+        CustomImageClassifier(activity, useQuantizedModel)
+    private val activityRef = WeakReference(activity)
 
     @Throws(FirebaseMLException::class)
     override fun process(
@@ -37,14 +41,16 @@ constructor(private val activity: Activity, useQuantizedModel: Boolean) : Vision
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
-
-        classifier
+        activityRef.get()?.let { activity ->
+            classifier
                 .classifyFrame(data, frameMetadata.width, frameMetadata.height)
                 .addOnSuccessListener(
-                        activity
+                    activity
                 ) { result ->
-                    val labelGraphic = LabelGraphic(graphicOverlay,
-                            result)
+                    val labelGraphic = LabelGraphic(
+                        graphicOverlay,
+                        result
+                    )
                     val bitmap = BitmapUtils.getBitmap(data, frameMetadata)
                     val imageGraphic = CameraImageGraphic(graphicOverlay, bitmap)
                     graphicOverlay.clear()
@@ -56,16 +62,14 @@ constructor(private val activity: Activity, useQuantizedModel: Boolean) : Vision
                     Log.d(TAG, "Custom classifier failed: $e")
                     e.printStackTrace()
                 }
+        }
     }
 
-    override fun process(bitmap: Bitmap, graphicOverlay: GraphicOverlay) {
-        // nop
-    }
+    override fun process(bitmap: Bitmap, graphicOverlay: GraphicOverlay) = Unit
 
-    override fun stop() {}
+    override fun stop() = Unit
 
     companion object {
-
         private const val TAG = "Custom"
     }
 }
