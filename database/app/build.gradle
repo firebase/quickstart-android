@@ -47,9 +47,9 @@ dependencies {
 
     implementation 'com.firebaseui:firebase-ui-database:4.2.1'
 
-    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-core:16.0.5'
     implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.google.firebase:firebase-database:16.0.4'
+    implementation 'com.google.firebase:firebase-database:16.0.5'
 
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation 'android.arch.core:runtime:1.1.1'
