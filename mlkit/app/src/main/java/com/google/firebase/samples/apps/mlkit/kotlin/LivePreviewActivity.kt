@@ -2,6 +2,7 @@ package com.google.firebase.samples.apps.mlkit.kotlin
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.hardware.Camera
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
@@ -84,6 +85,10 @@ class LivePreviewActivity : AppCompatActivity(),
         spinner.onItemSelectedListener = this
 
         facingSwitch.setOnCheckedChangeListener(this)
+        // Hide switch if there is only a single camera
+        if (Camera.getNumberOfCameras() == 1) {
+            facingSwitch.visibility = View.GONE;
+        }
 
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)

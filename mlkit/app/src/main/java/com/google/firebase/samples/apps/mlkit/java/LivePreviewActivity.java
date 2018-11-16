@@ -16,6 +16,7 @@ package com.google.firebase.samples.apps.mlkit.java;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
@@ -104,6 +105,10 @@ public final class LivePreviewActivity extends AppCompatActivity
 
     ToggleButton facingSwitch = (ToggleButton) findViewById(R.id.facingSwitch);
     facingSwitch.setOnCheckedChangeListener(this);
+    // Hide the toggle button if there is only 1 camera
+    if (Camera.getNumberOfCameras() == 1) {
+      facingSwitch.setVisibility(View.GONE);
+    }
 
     if (allPermissionsGranted()) {
       createCameraSource(selectedModel);
