@@ -101,9 +101,10 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
     ) {
         detectInImage(image)
             .addOnSuccessListener { results ->
-                metadata?.let {
-                    onSuccess(originalCameraImage!!, results, it, graphicOverlay)
-                }
+                val notNullOriginalCameraImage = originalCameraImage
+                    ?: Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+                val notNullMetadata = metadata ?: FrameMetadata.Builder().build()
+                onSuccess(notNullOriginalCameraImage, results, notNullMetadata, graphicOverlay)
             }
             .addOnFailureListener { e ->
                 this@VisionProcessorBase.onFailure(e)
