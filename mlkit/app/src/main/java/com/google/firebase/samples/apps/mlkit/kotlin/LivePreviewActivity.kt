@@ -87,7 +87,7 @@ class LivePreviewActivity : AppCompatActivity(),
         facingSwitch.setOnCheckedChangeListener(this)
         // Hide switch if there is only a single camera
         if (Camera.getNumberOfCameras() == 1) {
-            facingSwitch.visibility = View.GONE;
+            facingSwitch.visibility = View.GONE
         }
 
         if (allPermissionsGranted()) {
