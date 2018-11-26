@@ -129,6 +129,12 @@ public class CameraSource {
     graphicOverlay = overlay;
     graphicOverlay.clear();
     processingRunnable = new FrameProcessingRunnable();
+
+    if (Camera.getNumberOfCameras() == 1) {
+      CameraInfo cameraInfo = new CameraInfo();
+      Camera.getCameraInfo(0, cameraInfo);
+      facing = cameraInfo.facing;
+    }
   }
 
   // ==============================================================================================
