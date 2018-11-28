@@ -11,7 +11,8 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.quickstart.fcm.R
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.logTokenButton
+import kotlinx.android.synthetic.main.activity_main.subscribeButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,9 +47,9 @@ class MainActivity : AppCompatActivity() {
         // [END handle_data_extras]
 
         subscribeButton.setOnClickListener {
-            Log.d(TAG, "Subscribing to news topic")
+            Log.d(TAG, "Subscribing to weather topic")
             // [START subscribe_topics]
-            FirebaseMessaging.getInstance().subscribeToTopic("news")
+            FirebaseMessaging.getInstance().subscribeToTopic("weather")
                     .addOnCompleteListener { task ->
                         var msg = getString(R.string.msg_subscribed)
                         if (!task.isSuccessful) {
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         // Get new Instance ID token
-                        val token = task.result.token
+                        val token = task.result?.token
 
                         // Log and toast
                         val msg = getString(R.string.msg_token_fmt, token)

@@ -25,7 +25,6 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
     init {
         val options = FirebaseVisionFaceDetectorOptions.Builder()
                 .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
-                .enableTracking()
                 .build()
 
         detector = FirebaseVision.getInstance().getVisionFaceDetector(options)
@@ -45,7 +44,7 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
 
     override fun onSuccess(
         originalCameraImage: Bitmap,
-        faces: List<FirebaseVisionFace>,
+        results: List<FirebaseVisionFace>,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
@@ -53,11 +52,10 @@ class FaceDetectionProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
         originalCameraImage.let { image ->
             val imageGraphic = CameraImageGraphic(graphicOverlay, image)
             graphicOverlay.add(imageGraphic)
-
         }
-        for (i in faces.indices) {
-            val face = faces[i]
-            val cameraFacing = frameMetadata?.cameraFacing ?: CameraInfo.CAMERA_FACING_BACK
+        for (i in results.indices) {
+            val face = results[i]
+            val cameraFacing = frameMetadata.cameraFacing
             val faceGraphic = FaceGraphic(graphicOverlay, face, cameraFacing)
             graphicOverlay.add(faceGraphic)
         }

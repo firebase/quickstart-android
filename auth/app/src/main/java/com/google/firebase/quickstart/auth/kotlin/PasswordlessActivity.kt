@@ -154,7 +154,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
                         Log.d(TAG, "signInWithEmailLink:success")
 
                         fieldEmail.text = null
-                        updateUI(task.result.user)
+                        updateUI(task.result?.user)
                     } else {
                         Log.w(TAG, "signInWithEmailLink:failure", task.exception)
                         updateUI(null)

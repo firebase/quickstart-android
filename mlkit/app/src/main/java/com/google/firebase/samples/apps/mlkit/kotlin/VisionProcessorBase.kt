@@ -1,7 +1,6 @@
 package com.google.firebase.samples.apps.mlkit.kotlin
 
 import android.graphics.Bitmap
-import android.media.Image
 import android.support.annotation.GuardedBy
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
@@ -11,7 +10,6 @@ import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor
 import java.nio.ByteBuffer
-import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Abstract base class for ML Kit frame processors. Subclasses need to implement {@link
@@ -40,10 +38,10 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
     override fun process(
         data: ByteBuffer, frameMetadata: FrameMetadata, graphicOverlay: GraphicOverlay
     ) {
-        latestImage = data;
-        latestImageMetaData = frameMetadata;
+        latestImage = data
+        latestImageMetaData = frameMetadata
         if (processingImage == null && processingMetaData == null) {
-            processLatestImage(graphicOverlay);
+            processLatestImage(graphicOverlay)
         }
     }
 
@@ -59,36 +57,38 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
 
     @Synchronized
     private fun processLatestImage(graphicOverlay: GraphicOverlay) {
-        processingImage = latestImage;
-        processingMetaData = latestImageMetaData;
-        latestImage = null;
-        latestImageMetaData = null;
+        processingImage = latestImage
+        processingMetaData = latestImageMetaData
+        latestImage = null
+        latestImageMetaData = null
         if (processingImage != null && processingMetaData != null) {
             processImage(
                 processingImage as ByteBuffer,
                 processingMetaData as FrameMetadata,
                 graphicOverlay
-            );
+            )
         }
     }
 
     private fun processImage(
-        data: ByteBuffer, frameMetadata: FrameMetadata, graphicOverlay: GraphicOverlay
+        data: ByteBuffer,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
     ) {
         val metadata = FirebaseVisionImageMetadata.Builder()
             .setFormat(FirebaseVisionImageMetadata.IMAGE_FORMAT_NV21)
             .setWidth(frameMetadata.getWidth())
             .setHeight(frameMetadata.getHeight())
             .setRotation(frameMetadata.getRotation())
-            .build();
+            .build()
 
-        val bitmap = BitmapUtils.getBitmap(data, frameMetadata);
+        val bitmap = BitmapUtils.getBitmap(data, frameMetadata)
         detectInVisionImage(
             bitmap,
             FirebaseVisionImage.fromByteBuffer(data, metadata),
             frameMetadata,
             graphicOverlay
-        );
+        )
     }
 
     private fun detectInVisionImage(

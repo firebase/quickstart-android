@@ -7,39 +7,24 @@ import android.graphics.RectF
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
-class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) : GraphicOverlay.Graphic(overlay) {
+class BarcodeGraphic(overlay: GraphicOverlay, private val barcode: FirebaseVisionBarcode) :
+    GraphicOverlay.Graphic(overlay) {
 
-    companion object {
-        private const val TEXT_COLOR = Color.WHITE
-        private const val TEXT_SIZE = 54.0f
-        private const val STROKE_WIDTH = 4.0f
+    private var rectPaint = Paint().apply {
+        color = TEXT_COLOR
+        style = Paint.Style.STROKE
+        strokeWidth = STROKE_WIDTH
     }
 
-    private var rectPaint: Paint
-    private var barcodePaint: Paint
-    private val barcode: FirebaseVisionBarcode?
-
-    init {
-        this.barcode = barcode
-
-        rectPaint = Paint()
-        rectPaint.color = TEXT_COLOR
-        rectPaint.style = Paint.Style.STROKE
-        rectPaint.strokeWidth = STROKE_WIDTH
-
-        barcodePaint = Paint()
-        barcodePaint.color = TEXT_COLOR
-        barcodePaint.textSize = TEXT_SIZE
+    private var barcodePaint = Paint().apply {
+        color = TEXT_COLOR
+        textSize = TEXT_SIZE
     }
 
     /**
      * Draws the barcode block annotations for position, size, and raw value on the supplied canvas.
      */
     override fun draw(canvas: Canvas) {
-        if (barcode == null) {
-            throw IllegalStateException("Attempting to draw a null barcode.")
-        }
-
         // Draws the bounding box around the BarcodeBlock.
         val rect = RectF(barcode.boundingBox)
         rect.left = translateX(rect.left)
@@ -52,5 +37,11 @@ class BarcodeGraphic(overlay: GraphicOverlay, barcode: FirebaseVisionBarcode) : 
         barcode.rawValue?.let { value ->
             canvas.drawText(value, rect.left, rect.bottom, barcodePaint)
         }
+    }
+
+    companion object {
+        private const val TEXT_COLOR = Color.WHITE
+        private const val TEXT_SIZE = 54.0f
+        private const val STROKE_WIDTH = 4.0f
     }
 }

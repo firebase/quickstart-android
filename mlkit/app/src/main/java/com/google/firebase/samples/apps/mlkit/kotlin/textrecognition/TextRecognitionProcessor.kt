@@ -40,7 +40,6 @@ class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
         originalCameraImage.let { image ->
             val imageGraphic = CameraImageGraphic(graphicOverlay, image)
             graphicOverlay.add(imageGraphic)
-
         }
         val blocks = results.textBlocks
         for (i in blocks.indices) {
