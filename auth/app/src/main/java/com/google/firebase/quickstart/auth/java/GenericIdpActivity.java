@@ -93,14 +93,14 @@ public class GenericIdpActivity extends BaseActivity implements
                             new OnSuccessListener<AuthResult>() {
                                 @Override
                                 public void onSuccess(AuthResult authResult) {
-                                    Log.d(TAG, "pending:" + authResult);
+                                    Log.d(TAG, "checkPending:onSuccess:" + authResult);
                                 }
                             })
                     .addOnFailureListener(
                             new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "pending", e);
+                                    Log.w(TAG, "checkPending:onFailure", e);
                                 }
                             });
         } else {
@@ -123,14 +123,15 @@ public class GenericIdpActivity extends BaseActivity implements
             new OnSuccessListener<AuthResult>() {
               @Override
               public void onSuccess(AuthResult authResult) {
-                Log.d(TAG, "result:" + authResult);
+                Log.d(TAG, "activitySignIn:onSuccess:" + authResult);
+                updateUI(authResult.getUser());
               }
             })
         .addOnFailureListener(
             new OnFailureListener() {
               @Override
               public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "result", e);
+                Log.w(TAG, "activitySignIn:onFailure", e);
               }
             });
   }
