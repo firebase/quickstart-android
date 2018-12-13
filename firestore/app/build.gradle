@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
     // FirebaseUI (for authentication)
-    implementation 'com.firebaseui:firebase-ui-auth:4.2.1'
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.0'
 
     // ButterKnife (for sample code brevity)
     implementation 'com.jakewharton:butterknife:8.8.1'
