@@ -81,20 +81,17 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
         }
 
         graphicOverlay = fireFaceOverlay
-
         if (graphicOverlay == null) {
             Log.d(TAG, "graphicOverlay is null")
         }
 
         val spinner = spinner
-        val options = arrayListOf<String>()
-        options.add(FACE_CONTOUR)
-        options.add(FACE_DETECTION)
-        options.add(TEXT_DETECTION)
-        options.add(BARCODE_DETECTION)
-        options.add(IMAGE_LABEL_DETECTION)
-        options.add(CLASSIFICATION_QUANT)
-        options.add(CLASSIFICATION_FLOAT)
+        val options = arrayListOf(FACE_CONTOUR,
+                FACE_DETECTION,
+                BARCODE_DETECTION,
+                IMAGE_LABEL_DETECTION,
+                CLASSIFICATION_QUANT,
+                CLASSIFICATION_FLOAT)
         // Creating adapter for spinner
         val dataAdapter = ArrayAdapter(this, R.layout.spinner_style, options)
         // Drop down layout style - list view with radio button
