@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/generateHistoryBasic"
+        app:showAsAction="never"
+        android:title="@string/title_generate_basic_history" />
+    <item
+        android:id="@+id/generateHistorySensitive"
+        app:showAsAction="never"
+        android:title="@string/title_generate_sensitive_history" />
+    <item
+        android:id="@+id/clearHistory"
+        app:showAsAction="never"
+        android:title="@string/title_clear_history" />
+</menu>
