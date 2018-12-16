@@ -38,19 +38,20 @@ class BarcodeScanningProcessor : VisionProcessorBase<List<FirebaseVisionBarcode>
     }
 
     override fun onSuccess(
-        originalCameraImage: Bitmap,
+        originalCameraImage: Bitmap?,
         barcodes: List<FirebaseVisionBarcode>,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
         graphicOverlay.clear()
-        originalCameraImage.let { image ->
-            val imageGraphic = CameraImageGraphic(graphicOverlay, image)
+
+        originalCameraImage?.let {
+            val imageGraphic = CameraImageGraphic(graphicOverlay, it)
             graphicOverlay.add(imageGraphic)
         }
-        for (i in barcodes.indices) {
-            val barcode = barcodes[i]
-            val barcodeGraphic = BarcodeGraphic(graphicOverlay, barcode)
+
+        barcodes.forEach {
+            val barcodeGraphic = BarcodeGraphic(graphicOverlay, it)
             graphicOverlay.add(barcodeGraphic)
         }
         graphicOverlay.postInvalidate()
@@ -61,6 +62,7 @@ class BarcodeScanningProcessor : VisionProcessorBase<List<FirebaseVisionBarcode>
     }
 
     companion object {
+
         private const val TAG = "BarcodeScanProc"
     }
 }

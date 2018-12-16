@@ -33,12 +33,12 @@ import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.CameraSource
 import com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
-import com.google.firebase.samples.apps.mlkit.java.barcodescanning.BarcodeScanningProcessor
-import com.google.firebase.samples.apps.mlkit.java.custommodel.CustomImageClassifierProcessor
-import com.google.firebase.samples.apps.mlkit.java.facedetection.FaceContourDetectorProcessor
-import com.google.firebase.samples.apps.mlkit.java.facedetection.FaceDetectionProcessor
-import com.google.firebase.samples.apps.mlkit.java.imagelabeling.ImageLabelingProcessor
-import com.google.firebase.samples.apps.mlkit.java.textrecognition.TextRecognitionProcessor
+import com.google.firebase.samples.apps.mlkit.kotlin.barcodescanning.BarcodeScanningProcessor
+import com.google.firebase.samples.apps.mlkit.kotlin.custommodel.CustomImageClassifierProcessor
+import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceContourDetectorProcessor
+import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceDetectionProcessor
+import com.google.firebase.samples.apps.mlkit.kotlin.imagelabeling.ImageLabelingProcessor
+import com.google.firebase.samples.apps.mlkit.kotlin.textrecognition.TextRecognitionProcessor
 import kotlinx.android.synthetic.main.activity_live_preview.*
 import java.io.IOException
 
