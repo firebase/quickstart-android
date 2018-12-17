@@ -68,6 +68,6 @@ class FaceContourDetectorProcessor : VisionProcessorBase<List<FirebaseVisionFace
     }
 
     companion object {
-        private val TAG = "FaceContourDetectorProc"
+        private const val TAG = "FaceContourDetectorProc"
     }
 }
