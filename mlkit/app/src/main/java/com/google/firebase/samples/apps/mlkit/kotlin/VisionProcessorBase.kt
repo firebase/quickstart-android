@@ -49,8 +49,11 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
 
     // Bitmap version
     override fun process(bitmap: Bitmap, graphicOverlay: GraphicOverlay) {
-        detectInVisionImage(null, FirebaseVisionImage.fromBitmap(bitmap), null,
-                graphicOverlay)/* bitmap */
+        detectInVisionImage(
+                null, /* bitmap */
+                FirebaseVisionImage.fromBitmap(bitmap),
+                null,
+                graphicOverlay)
     }
 
     @Synchronized
@@ -90,12 +93,12 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
     ) {
         detectInImage(image)
                 .addOnSuccessListener { results ->
-                    this@VisionProcessorBase.onSuccess(originalCameraImage, results,
+                    onSuccess(originalCameraImage, results,
                             metadata!!,
                             graphicOverlay)
                     processLatestImage(graphicOverlay)
                 }
-                .addOnFailureListener { e -> this@VisionProcessorBase.onFailure(e) }
+                .addOnFailureListener { e -> onFailure(e) }
     }
 
     override fun stop() {}

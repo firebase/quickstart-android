@@ -31,15 +31,16 @@ import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.CameraSource
-import com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview
-import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.barcodescanning.BarcodeScanningProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.custommodel.CustomImageClassifierProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceContourDetectorProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceDetectionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.imagelabeling.ImageLabelingProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.textrecognition.TextRecognitionProcessor
-import kotlinx.android.synthetic.main.activity_live_preview.*
+import kotlinx.android.synthetic.main.activity_live_preview.facingSwitch
+import kotlinx.android.synthetic.main.activity_live_preview.fireFaceOverlay
+import kotlinx.android.synthetic.main.activity_live_preview.firePreview
+import kotlinx.android.synthetic.main.activity_live_preview.spinner
 import java.io.IOException
 
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to
@@ -49,8 +50,6 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
         OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     private var cameraSource: CameraSource? = null
-    private var preview: CameraSourcePreview? = null
-    private var graphicOverlay: GraphicOverlay? = null
     private var selectedModel = FACE_CONTOUR
 
     private val requiredPermissions: Array<String?>
@@ -75,19 +74,17 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
 
         setContentView(R.layout.activity_live_preview)
 
-        preview = firePreview
-        if (preview == null) {
+        if (firePreview == null) {
             Log.d(TAG, "Preview is null")
         }
 
-        graphicOverlay = fireFaceOverlay
-        if (graphicOverlay == null) {
+        if (fireFaceOverlay == null) {
             Log.d(TAG, "graphicOverlay is null")
         }
 
-        val spinner = spinner
         val options = arrayListOf(FACE_CONTOUR,
                 FACE_DETECTION,
+                TEXT_DETECTION,
                 BARCODE_DETECTION,
                 IMAGE_LABEL_DETECTION,
                 CLASSIFICATION_QUANT,
@@ -120,7 +117,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
         // parent.getItemAtPosition(pos)
         selectedModel = parent.getItemAtPosition(pos).toString()
         Log.d(TAG, "Selected model: $selectedModel")
-        preview?.stop()
+        firePreview?.stop()
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)
             startCameraSource()
@@ -143,14 +140,14 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
                 it.setFacing(CameraSource.CAMERA_FACING_BACK)
             }
         }
-        preview?.stop()
+        firePreview?.stop()
         startCameraSource()
     }
 
     private fun createCameraSource(model: String) {
         // If there's no existing cameraSource, create one.
         if (cameraSource == null) {
-            cameraSource = CameraSource(this, graphicOverlay)
+            cameraSource = CameraSource(this, fireFaceOverlay)
         }
 
         try {
@@ -198,13 +195,13 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
     private fun startCameraSource() {
         cameraSource?.let {
             try {
-                if (preview == null) {
+                if (firePreview == null) {
                     Log.d(TAG, "resume: Preview is null")
                 }
-                if (graphicOverlay == null) {
+                if (fireFaceOverlay == null) {
                     Log.d(TAG, "resume: graphOverlay is null")
                 }
-                preview?.start(cameraSource, graphicOverlay)
+                firePreview?.start(cameraSource, fireFaceOverlay)
             } catch (e: IOException) {
                 Log.e(TAG, "Unable to start camera source.", e)
                 cameraSource?.release()
@@ -222,7 +219,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
     /** Stops the camera.  */
     override fun onPause() {
         super.onPause()
-        preview?.stop()
+        firePreview?.stop()
     }
 
     public override fun onDestroy() {
