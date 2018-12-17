@@ -17,11 +17,11 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionCloud
 
     private val detector: FirebaseVisionCloudLabelDetector by lazy {
         FirebaseVisionCloudDetectorOptions.Builder()
-            .setMaxResults(10)
-            .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
-            .build().let { options ->
-                FirebaseVision.getInstance().getVisionCloudLabelDetector(options)
-            }
+                .setMaxResults(10)
+                .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
+                .build().let { options ->
+                    FirebaseVision.getInstance().getVisionCloudLabelDetector(options)
+                }
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionCloudLabel>> {
@@ -29,24 +29,19 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionCloud
     }
 
     override fun onSuccess(
-        originalCameraImage: Bitmap,
+        originalCameraImage: Bitmap?,
         results: List<FirebaseVisionCloudLabel>,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
-
         graphicOverlay.clear()
-
         Log.d(TAG, "cloud label size: ${results.size}")
-
         val labelsStr = ArrayList<String>()
-        for (i in results.indices) {
-            val result = results[i]
 
-            Log.d(TAG, "cloud label: $result")
-
-            result.label?.let {
-                labelsStr.add(it)
+        results.forEach {
+            Log.d(TAG, "cloud label: $it")
+            it.label?.let { label ->
+                labelsStr.add(label)
             }
         }
 

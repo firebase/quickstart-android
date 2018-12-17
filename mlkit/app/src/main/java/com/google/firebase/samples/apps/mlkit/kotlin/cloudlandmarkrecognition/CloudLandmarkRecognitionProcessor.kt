@@ -19,9 +19,9 @@ class CloudLandmarkRecognitionProcessor : VisionProcessorBase<List<FirebaseVisio
 
     init {
         val options = FirebaseVisionCloudDetectorOptions.Builder()
-            .setMaxResults(10)
-            .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
-            .build()
+                .setMaxResults(10)
+                .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
+                .build()
 
         detector = FirebaseVision.getInstance().getVisionCloudLandmarkDetector(options)
     }
@@ -31,17 +31,17 @@ class CloudLandmarkRecognitionProcessor : VisionProcessorBase<List<FirebaseVisio
     }
 
     override fun onSuccess(
-        originalCameraImage: Bitmap,
-        landmarks: List<FirebaseVisionCloudLandmark>,
+        originalCameraImage: Bitmap?,
+        results: List<FirebaseVisionCloudLandmark>,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
         graphicOverlay.clear()
-        Log.d(TAG, "cloud landmark size: ${landmarks.size}")
-        for (i in landmarks.indices) {
-            val landmark = landmarks[i]
-            Log.d(TAG, "cloud landmark: $landmark")
-            val cloudLandmarkGraphic = CloudLandmarkGraphic(graphicOverlay, landmark)
+        Log.d(TAG, "cloud landmark size: ${results.size}")
+
+        results.forEach {
+            Log.d(TAG, "cloud landmark: $it")
+            val cloudLandmarkGraphic = CloudLandmarkGraphic(graphicOverlay, it)
             graphicOverlay.add(cloudLandmarkGraphic)
         }
         graphicOverlay.postInvalidate()

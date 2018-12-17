@@ -31,7 +31,7 @@ class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
     }
 
     override fun onSuccess(
-        originalCameraImage: Bitmap,
+        originalCameraImage: Bitmap?,
         results: FirebaseVisionText,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay

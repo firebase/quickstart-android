@@ -31,8 +31,8 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() 
     }
 
     override fun onSuccess(
-        originalCameraImage: Bitmap,
-        labels: List<FirebaseVisionLabel>,
+        originalCameraImage: Bitmap?,
+        results: List<FirebaseVisionLabel>,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
@@ -41,7 +41,7 @@ class ImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionLabel>>() 
             val imageGraphic = CameraImageGraphic(graphicOverlay, image)
             graphicOverlay.add(imageGraphic)
         }
-        val labelGraphic = LabelGraphic(graphicOverlay, labels)
+        val labelGraphic = LabelGraphic(graphicOverlay, results)
         graphicOverlay.add(labelGraphic)
         graphicOverlay.postInvalidate()
     }

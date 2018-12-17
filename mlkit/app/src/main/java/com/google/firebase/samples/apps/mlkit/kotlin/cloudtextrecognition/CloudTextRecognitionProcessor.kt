@@ -23,16 +23,16 @@ class CloudTextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() 
     }
 
     override fun onSuccess(
-        originalCameraImage: Bitmap,
-        text: FirebaseVisionText,
+        originalCameraImage: Bitmap?,
+        results: FirebaseVisionText,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
         graphicOverlay.clear()
-        if (text == null) {
+        if (results == null) {
             return // TODO: investigate why this is needed
         }
-        val blocks = text.textBlocks
+        val blocks = results.textBlocks
         for (i in blocks.indices) {
             val lines = blocks[i].lines
             for (j in lines.indices) {
