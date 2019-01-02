@@ -33,7 +33,7 @@ configurations.all {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooser")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.10"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.11"
 
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:appcompat-v7:28.0.0'
