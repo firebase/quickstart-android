@@ -54,7 +54,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support:support-annotations:28.0.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.10"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.11"
 }
 
 apply plugin: 'com.google.gms.google-services'
