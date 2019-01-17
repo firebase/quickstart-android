@@ -25,7 +25,8 @@
 #-renamesourcefileattribute SourceFile
 
 # Keep custom model classes
--keep class com.google.firebase.example.fireeats.model.** { *; }
+-keep class com.google.firebase.example.fireeats.java.model.** { *; }
+-keep class com.google.firebase.example.fireeats.kotlin.model.** { *; }
 
 # https://github.com/firebase/FirebaseUI-Android/issues/1175
 -dontwarn okio.**
