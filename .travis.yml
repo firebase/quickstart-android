@@ -21,4 +21,6 @@ cache:
 
 before_script:
   - echo y | ${ANDROID_HOME}/tools/bin/sdkmanager --channel=3 "tools" "platform-tools" "build-tools;26.0.1" "platforms;android-26" "extras;google;m2repository"
-script: ./build.sh
+script:
+  - python scripts/checksnippets.py
+  - ./build.sh
