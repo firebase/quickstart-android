@@ -34,8 +34,7 @@ class CloudLandmarkRecognitionProcessor : VisionProcessorBase<List<FirebaseVisio
         originalCameraImage: Bitmap?,
         results: List<FirebaseVisionCloudLandmark>,
         frameMetadata: FrameMetadata,
-        graphicOverlay: GraphicOverlay
-    ) {
+        graphicOverlay: GraphicOverlay) {
         graphicOverlay.clear()
         Log.d(TAG, "cloud landmark size: ${results.size}")
 

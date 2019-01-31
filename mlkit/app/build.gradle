@@ -43,10 +43,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     // ML Kit dependencies
-    implementation 'com.google.firebase:firebase-ml-vision:18.0.2'
+    implementation 'com.google.firebase:firebase-ml-vision:19.0.0'
     implementation 'com.google.firebase:firebase-ml-vision-image-label-model:17.0.2'
     implementation 'com.google.firebase:firebase-ml-vision-face-model:17.0.2'
-    implementation 'com.google.firebase:firebase-ml-model-interpreter:16.2.4'
+    implementation 'com.google.firebase:firebase-ml-model-interpreter:17.0.1'
     implementation 'org.tensorflow:tensorflow-lite:1.12.0'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -17,7 +17,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.google.firebase.ml.vision.label.FirebaseVisionLabel;
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 
@@ -29,9 +29,9 @@ public class LabelGraphic extends Graphic {
   private final Paint textPaint;
   private final GraphicOverlay overlay;
 
-  private final List<FirebaseVisionLabel> labels;
+  private final List<FirebaseVisionImageLabel> labels;
 
-  LabelGraphic(GraphicOverlay overlay, List<FirebaseVisionLabel> labels) {
+  LabelGraphic(GraphicOverlay overlay, List<FirebaseVisionImageLabel> labels) {
     super(overlay);
     this.overlay = overlay;
     this.labels = labels;
@@ -45,8 +45,8 @@ public class LabelGraphic extends Graphic {
     float x = overlay.getWidth() / 4.0f;
     float y = overlay.getHeight() / 2.0f;
 
-    for (FirebaseVisionLabel label : labels) {
-      canvas.drawText(label.getLabel(), x, y, textPaint);
+    for (FirebaseVisionImageLabel label : labels) {
+      canvas.drawText(label.getText(), x, y, textPaint);
       y = y - 62.0f;
     }
   }
