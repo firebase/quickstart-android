@@ -27,12 +27,12 @@ import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.ml.custom.FirebaseModelInterpreter
 import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions
 import com.google.firebase.ml.custom.FirebaseModelOptions
-import com.google.firebase.ml.custom.FirebaseModelManager
+import com.google.firebase.ml.common.modeldownload.FirebaseModelManager
 import com.google.firebase.ml.custom.FirebaseModelDataType
 import com.google.firebase.ml.custom.FirebaseModelInputs
-import com.google.firebase.ml.custom.model.FirebaseCloudModelSource
-import com.google.firebase.ml.custom.model.FirebaseLocalModelSource
-import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions
+import com.google.firebase.ml.common.modeldownload.FirebaseCloudModelSource
+import com.google.firebase.ml.common.modeldownload.FirebaseLocalModelSource
+import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
 import java.io.IOException
