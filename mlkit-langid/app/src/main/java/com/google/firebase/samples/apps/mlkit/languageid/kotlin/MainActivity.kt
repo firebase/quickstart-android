@@ -5,16 +5,11 @@ import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
-import com.google.firebase.ml.naturallanguage.languageid.FirebaseLanguageIdentification
-import com.google.firebase.ml.naturallanguage.languageid.IdentifiedLanguage
 import com.google.firebase.samples.apps.mlkit.languageid.R
 
 import java.util.ArrayList

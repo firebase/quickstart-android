@@ -29,6 +29,7 @@ the sample you wish to run.
 - [In-App Messaging](inappmessaging/README.md)
 - [Messaging](messaging/README.md)
 - [ML Kit](mlkit/README.md)
+- [ML Kit LanguageID](mlkit-langid/README.md)
 - [Performance Monitoring](perf/README.md)
 - [Storage](storage/README.md)
 
