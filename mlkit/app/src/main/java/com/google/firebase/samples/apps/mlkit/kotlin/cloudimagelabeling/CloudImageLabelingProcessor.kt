@@ -27,17 +27,19 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionImage
     }
 
     override fun onSuccess(
-        originalCameraImage: Bitmap,
+        originalCameraImage: Bitmap?,
         results: List<FirebaseVisionImageLabel>,
         frameMetadata: FrameMetadata,
-        graphicOverlay: GraphicOverlay) {
-
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         Log.d(TAG, "cloud label size: ${results.size}")
         val labelsStr = ArrayList<String>()
 
-            result.text?.let {
-                labelsStr.add(it)
+        results.forEach {
+            Log.d(TAG, "cloud label: $it")
+            it.text?.let { text ->
+                labelsStr.add(text)
             }
         }
 

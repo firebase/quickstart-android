@@ -19,9 +19,9 @@ class CloudLandmarkRecognitionProcessor : VisionProcessorBase<List<FirebaseVisio
 
     init {
         val options = FirebaseVisionCloudDetectorOptions.Builder()
-                .setMaxResults(10)
-                .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
-                .build()
+            .setMaxResults(10)
+            .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
+            .build()
 
         detector = FirebaseVision.getInstance().getVisionCloudLandmarkDetector(options)
     }
@@ -34,7 +34,8 @@ class CloudLandmarkRecognitionProcessor : VisionProcessorBase<List<FirebaseVisio
         originalCameraImage: Bitmap?,
         results: List<FirebaseVisionCloudLandmark>,
         frameMetadata: FrameMetadata,
-        graphicOverlay: GraphicOverlay) {
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
         Log.d(TAG, "cloud landmark size: ${results.size}")
 
