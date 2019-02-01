@@ -8,7 +8,9 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
 import com.google.firebase.samples.apps.mlkit.languageid.R
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.buttonIdAll
+import kotlinx.android.synthetic.main.activity_main.buttonIdLanguage
+import kotlinx.android.synthetic.main.activity_main.inputText
 import java.util.ArrayList
 import java.util.Locale
 
@@ -19,20 +21,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        outputText = findViewById(R.id.output_text)
+        outputText = findViewById(R.id.outputText)
 
-        button_id_language.setOnClickListener {
-            val input = input_text.text?.toString()
+        buttonIdLanguage.setOnClickListener {
+            val input = inputText.text?.toString()
             input?.let {
-                input_text.text?.clear()
+                inputText.text?.clear()
                 identifyLanguage(it)
             }
         }
 
-        button_id_all.setOnClickListener {
-            val input = input_text.text?.toString()
+        buttonIdAll.setOnClickListener {
+            val input = inputText.text?.toString()
             input?.let {
-                input_text.text?.clear()
+                inputText.text?.clear()
                 identifyPossibleLanguages(input)
             }
         }
