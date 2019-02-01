@@ -1,4 +1,4 @@
-ML Kit for Firebase Quickstart
+ML Kit Language ID for Firebase Quickstart
 ==============================
 
 The ML Kit LanguageID for Firebase Android Quickstart app demonstrates how to
