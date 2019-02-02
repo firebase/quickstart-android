@@ -14,5 +14,6 @@ include ':admob:app',
         ':inappmessaging:app',
         ':messaging:app',
         ':mlkit:app',
+        ':mlkit-langid:app',
         ':perf:app',
         ':storage:app'

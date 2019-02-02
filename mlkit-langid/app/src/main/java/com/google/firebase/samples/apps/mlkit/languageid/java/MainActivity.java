@@ -31,10 +31,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextInputEditText inputText = findViewById(R.id.input_text);
-        Button idLanguageButton = findViewById(R.id.button_id_language);
-        Button findAllButton = findViewById(R.id.button_id_all);
-        outputText = findViewById(R.id.output_text);
+        final TextInputEditText inputText = findViewById(R.id.inputText);
+        Button idLanguageButton = findViewById(R.id.buttonIdLanguage);
+        Button findAllButton = findViewById(R.id.buttonIdAll);
+        outputText = findViewById(R.id.outputText);
 
         idLanguageButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,17 +1,16 @@
 package com.google.firebase.samples.apps.mlkit.languageid.kotlin
 
 import android.os.Bundle
-import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
 import com.google.firebase.samples.apps.mlkit.languageid.R
-
+import kotlinx.android.synthetic.main.activity_main.buttonIdAll
+import kotlinx.android.synthetic.main.activity_main.buttonIdLanguage
+import kotlinx.android.synthetic.main.activity_main.inputText
 import java.util.ArrayList
 import java.util.Locale
 
@@ -22,12 +21,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val inputText = findViewById<TextInputEditText>(R.id.input_text)
-        val idLanguageButton = findViewById<Button>(R.id.button_id_language)
-        val findAllButton = findViewById<Button>(R.id.button_id_all)
-        outputText = findViewById(R.id.output_text)
+        outputText = findViewById(R.id.outputText)
 
-        idLanguageButton.setOnClickListener {
+        buttonIdLanguage.setOnClickListener {
             val input = inputText.text?.toString()
             input?.let {
                 inputText.text?.clear()
@@ -35,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        findAllButton.setOnClickListener {
+        buttonIdAll.setOnClickListener {
             val input = inputText.text?.toString()
             input?.let {
                 inputText.text?.clear()
