@@ -14,9 +14,12 @@
 
 package com.google.firebase.samples.apps.mlkit.java.facedetection;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
+import android.graphics.Rect;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.firebase.ml.vision.common.FirebaseVisionPoint;
@@ -44,11 +47,14 @@ public class FaceGraphic extends Graphic {
 
     private volatile FirebaseVisionFace firebaseVisionFace;
 
-    public FaceGraphic(GraphicOverlay overlay, FirebaseVisionFace face, int facing) {
+    private final Bitmap overlayBitmap;
+
+    public FaceGraphic(GraphicOverlay overlay, FirebaseVisionFace face, int facing, Bitmap overlayBitmap) {
         super(overlay);
 
         firebaseVisionFace = face;
         this.facing = facing;
+        this.overlayBitmap = overlayBitmap;
         final int selectedColor = Color.WHITE;
 
         facePositionPaint = new Paint();
@@ -77,12 +83,12 @@ public class FaceGraphic extends Graphic {
         // Draws a circle at the position of the detected face, with the face's track id below.
         float x = translateX(face.getBoundingBox().centerX());
         float y = translateY(face.getBoundingBox().centerY());
-        canvas.drawCircle(x, y, FACE_POSITION_RADIUS, facePositionPaint);
-        canvas.drawText("id: " + face.getTrackingId(), x + ID_X_OFFSET, y + ID_Y_OFFSET, idPaint);
+        canvas.drawCircle(x, y - 4 * ID_Y_OFFSET, FACE_POSITION_RADIUS, facePositionPaint);
+        canvas.drawText("id: " + face.getTrackingId(), x + ID_X_OFFSET, y - 3 * ID_Y_OFFSET, idPaint);
         canvas.drawText(
                 "happiness: " + String.format("%.2f", face.getSmilingProbability()),
                 x + ID_X_OFFSET * 3,
-                y - ID_Y_OFFSET,
+                y - 2 * ID_Y_OFFSET,
                 idPaint);
         if (facing == CameraSource.CAMERA_FACING_FRONT) {
             canvas.drawText(
@@ -123,7 +129,7 @@ public class FaceGraphic extends Graphic {
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.LEFT_EAR);
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.MOUTH_LEFT);
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.LEFT_EYE);
-        drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.NOSE_BASE);
+        drawBitmapOverLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.NOSE_BASE);
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_CHEEK);
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_EAR);
         drawLandmarkPosition(canvas, face, FirebaseVisionFaceLandmark.RIGHT_EYE);
@@ -138,6 +144,31 @@ public class FaceGraphic extends Graphic {
                     translateX(point.getX()),
                     translateY(point.getY()),
                     10f, idPaint);
+        }
+    }
+
+    private void drawBitmapOverLandmarkPosition(Canvas canvas, FirebaseVisionFace face, int landmarkID) {
+        FirebaseVisionFaceLandmark landmark = face.getLandmark(landmarkID);
+        if (landmark != null) {
+            FirebaseVisionPoint point = landmark.getPosition();
+
+            if (overlayBitmap != null) {
+                PointF pointPosition =
+                        new PointF(translateX(point.getX()), translateY(point.getY()));
+                float imageEdgeSizeBasedOnFaceSize = (face.getBoundingBox().width() / 4.0f);
+                int left = (int) (pointPosition.x - imageEdgeSizeBasedOnFaceSize);
+                int top = (int) (pointPosition.y - imageEdgeSizeBasedOnFaceSize);
+                int right = (int) (pointPosition.x + imageEdgeSizeBasedOnFaceSize);
+                int bottom = (int) (pointPosition.y + imageEdgeSizeBasedOnFaceSize);
+
+                canvas.drawBitmap(overlayBitmap,
+                        null,
+                        new Rect(left, top, right, bottom),
+                        null);
+            } else {
+                drawLandmarkPosition(canvas, face, landmarkID);
+            }
+
         }
     }
 }

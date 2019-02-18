@@ -166,7 +166,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
                 }
                 FACE_DETECTION -> {
                     Log.i(TAG, "Using Face Detector Processor")
-                    cameraSource?.setMachineLearningFrameProcessor(FaceDetectionProcessor())
+                    cameraSource?.setMachineLearningFrameProcessor(FaceDetectionProcessor(resources))
                 }
                 BARCODE_DETECTION -> {
                     Log.i(TAG, "Using Barcode Detector Processor")
