@@ -17,10 +17,11 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
  * graphic overlay view.
  */
 class FaceGraphic(
-        overlay: GraphicOverlay,
-        private val firebaseVisionFace: FirebaseVisionFace?,
-        private val facing: Int,
-        private val overlayBitmap: Bitmap)
+    overlay: GraphicOverlay,
+    private val firebaseVisionFace: FirebaseVisionFace?,
+    private val facing: Int,
+    private val overlayBitmap: Bitmap
+)
     : GraphicOverlay.Graphic(overlay) {
 
     /**
