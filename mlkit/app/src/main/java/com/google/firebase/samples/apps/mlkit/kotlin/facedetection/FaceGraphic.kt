@@ -1,7 +1,12 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.facedetection
 
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Paint.Style
+import android.graphics.PointF
+import android.graphics.Rect
 import com.google.android.gms.vision.CameraSource
 import com.google.firebase.ml.vision.face.FirebaseVisionFace
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark
@@ -11,7 +16,9 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
  * Graphic instance for rendering face position, orientation, and landmarks within an associated
  * graphic overlay view.
  */
-class FaceGraphic(overlay: GraphicOverlay, private val firebaseVisionFace: FirebaseVisionFace?, private val facing: Int,
+class FaceGraphic(overlay: GraphicOverlay,
+                  private val firebaseVisionFace: FirebaseVisionFace?,
+                  private val facing: Int,
                   private val overlayBitmap: Bitmap)
     : GraphicOverlay.Graphic(overlay) {
 

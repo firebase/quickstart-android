@@ -18,7 +18,7 @@ import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 import java.io.IOException
 
 /** Face Detector Demo.  */
-class FaceDetectionProcessor (res: Resources) : VisionProcessorBase<List<FirebaseVisionFace>>() {
+class FaceDetectionProcessor(res: Resources) : VisionProcessorBase<List<FirebaseVisionFace>>() {
 
     private val detector: FirebaseVisionFaceDetector
 
