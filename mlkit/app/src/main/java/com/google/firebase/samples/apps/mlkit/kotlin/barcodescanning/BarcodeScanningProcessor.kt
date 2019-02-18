@@ -1,11 +1,13 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.barcodescanning
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic
 import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
@@ -36,16 +38,23 @@ class BarcodeScanningProcessor : VisionProcessorBase<List<FirebaseVisionBarcode>
     }
 
     override fun onSuccess(
+        originalCameraImage: Bitmap?,
         barcodes: List<FirebaseVisionBarcode>,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
         graphicOverlay.clear()
-        for (i in barcodes.indices) {
-            val barcode = barcodes[i]
-            val barcodeGraphic = BarcodeGraphic(graphicOverlay, barcode)
+
+        originalCameraImage?.let {
+            val imageGraphic = CameraImageGraphic(graphicOverlay, it)
+            graphicOverlay.add(imageGraphic)
+        }
+
+        barcodes.forEach {
+            val barcodeGraphic = BarcodeGraphic(graphicOverlay, it)
             graphicOverlay.add(barcodeGraphic)
         }
+        graphicOverlay.postInvalidate()
     }
 
     override fun onFailure(e: Exception) {
@@ -53,6 +62,7 @@ class BarcodeScanningProcessor : VisionProcessorBase<List<FirebaseVisionBarcode>
     }
 
     companion object {
+
         private const val TAG = "BarcodeScanProc"
     }
 }

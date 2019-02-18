@@ -1,11 +1,13 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.textrecognition
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.text.FirebaseVisionText
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer
+import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic
 import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
@@ -29,11 +31,16 @@ class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
     }
 
     override fun onSuccess(
+        originalCameraImage: Bitmap?,
         results: FirebaseVisionText,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
         graphicOverlay.clear()
+        originalCameraImage.let { image ->
+            val imageGraphic = CameraImageGraphic(graphicOverlay, image)
+            graphicOverlay.add(imageGraphic)
+        }
         val blocks = results.textBlocks
         for (i in blocks.indices) {
             val lines = blocks[i].lines
@@ -45,6 +52,7 @@ class TextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
                 }
             }
         }
+        graphicOverlay.postInvalidate()
     }
 
     override fun onFailure(e: Exception) {

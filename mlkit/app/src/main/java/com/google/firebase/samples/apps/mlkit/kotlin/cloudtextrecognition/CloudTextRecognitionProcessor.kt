@@ -1,5 +1,6 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
@@ -22,23 +23,27 @@ class CloudTextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() 
     }
 
     override fun onSuccess(
-        text: FirebaseVisionText,
+        originalCameraImage: Bitmap?,
+        results: FirebaseVisionText,
         frameMetadata: FrameMetadata,
         graphicOverlay: GraphicOverlay
     ) {
         graphicOverlay.clear()
-        if (text == null) {
+        if (results == null) {
             return // TODO: investigate why this is needed
         }
-        val blocks = text.textBlocks
+        val blocks = results.textBlocks
         for (i in blocks.indices) {
             val lines = blocks[i].lines
             for (j in lines.indices) {
                 val elements = lines[j].elements
                 for (l in elements.indices) {
-                    val cloudTextGraphic = CloudTextGraphic(graphicOverlay,
-                            elements[l])
+                    val cloudTextGraphic = CloudTextGraphic(
+                        graphicOverlay,
+                        elements[l]
+                    )
                     graphicOverlay.add(cloudTextGraphic)
+                    graphicOverlay.postInvalidate()
                 }
             }
         }
