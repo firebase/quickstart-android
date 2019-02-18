@@ -16,10 +16,11 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
  * Graphic instance for rendering face position, orientation, and landmarks within an associated
  * graphic overlay view.
  */
-class FaceGraphic(overlay: GraphicOverlay,
-                  private val firebaseVisionFace: FirebaseVisionFace?,
-                  private val facing: Int,
-                  private val overlayBitmap: Bitmap)
+class FaceGraphic(
+        overlay: GraphicOverlay,
+        private val firebaseVisionFace: FirebaseVisionFace?,
+        private val facing: Int,
+        private val overlayBitmap: Bitmap)
     : GraphicOverlay.Graphic(overlay) {
 
     /**
