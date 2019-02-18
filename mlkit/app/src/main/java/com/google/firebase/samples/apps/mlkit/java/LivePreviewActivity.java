@@ -173,7 +173,7 @@ public final class LivePreviewActivity extends AppCompatActivity
           break;
         case FACE_DETECTION:
           Log.i(TAG, "Using Face Detector Processor");
-          cameraSource.setMachineLearningFrameProcessor(new FaceDetectionProcessor());
+          cameraSource.setMachineLearningFrameProcessor(new FaceDetectionProcessor(getResources()));
           break;
         case BARCODE_DETECTION:
           Log.i(TAG, "Using Barcode Detector Processor");
