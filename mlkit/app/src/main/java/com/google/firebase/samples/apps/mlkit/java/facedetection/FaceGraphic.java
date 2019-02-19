@@ -18,7 +18,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.google.android.gms.vision.CameraSource;
@@ -153,13 +152,12 @@ public class FaceGraphic extends Graphic {
             FirebaseVisionPoint point = landmark.getPosition();
 
             if (overlayBitmap != null) {
-                PointF pointPosition =
-                        new PointF(translateX(point.getX()), translateY(point.getY()));
                 float imageEdgeSizeBasedOnFaceSize = (face.getBoundingBox().width() / 4.0f);
-                int left = (int) (pointPosition.x - imageEdgeSizeBasedOnFaceSize);
-                int top = (int) (pointPosition.y - imageEdgeSizeBasedOnFaceSize);
-                int right = (int) (pointPosition.x + imageEdgeSizeBasedOnFaceSize);
-                int bottom = (int) (pointPosition.y + imageEdgeSizeBasedOnFaceSize);
+
+                int left = (int) (translateX(point.getX()) - imageEdgeSizeBasedOnFaceSize);
+                int top = (int) (translateY(point.getY()) - imageEdgeSizeBasedOnFaceSize);
+                int right = (int) (translateX(point.getX()) + imageEdgeSizeBasedOnFaceSize);
+                int bottom = (int) (translateY(point.getY()) + imageEdgeSizeBasedOnFaceSize);
 
                 canvas.drawBitmap(overlayBitmap,
                         null,

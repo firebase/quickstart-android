@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.Style
-import android.graphics.PointF
 import android.graphics.Rect
 import com.google.android.gms.vision.CameraSource
 import com.google.firebase.ml.vision.face.FirebaseVisionFace
@@ -125,12 +124,12 @@ class FaceGraphic(
             val point = landmark.position
 
             if (overlayBitmap != null) {
-                val pointPosition = PointF(translateX(point.x!!), translateY(point.y!!))
                 val imageEdgeSizeBasedOnFaceSize = face.boundingBox.width() / 4.0f
-                val left = (pointPosition.x - imageEdgeSizeBasedOnFaceSize).toInt()
-                val top = (pointPosition.y - imageEdgeSizeBasedOnFaceSize).toInt()
-                val right = (pointPosition.x + imageEdgeSizeBasedOnFaceSize).toInt()
-                val bottom = (pointPosition.y + imageEdgeSizeBasedOnFaceSize).toInt()
+
+                val left = (translateX(point.x!!) - imageEdgeSizeBasedOnFaceSize).toInt()
+                val top = (translateY(point.y!!) - imageEdgeSizeBasedOnFaceSize).toInt()
+                val right = (translateX(point.x!!) + imageEdgeSizeBasedOnFaceSize).toInt()
+                val bottom = (translateY(point.y!!) + imageEdgeSizeBasedOnFaceSize).toInt()
 
                 canvas.drawBitmap(overlayBitmap, null,
                         Rect(left, top, right, bottom), null)
