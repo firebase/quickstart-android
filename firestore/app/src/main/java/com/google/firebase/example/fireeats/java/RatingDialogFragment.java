@@ -16,6 +16,7 @@ import com.google.firebase.example.fireeats.java.model.Rating;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
@@ -39,13 +40,15 @@ public class RatingDialogFragment extends DialogFragment {
 
     private RatingListener mRatingListener;
 
+    private Unbinder unbinder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dialog_rating, container, false);
-        ButterKnife.bind(this, v);
+        unbinder = ButterKnife.bind(this, v);
 
         return v;
     }
@@ -66,6 +69,15 @@ public class RatingDialogFragment extends DialogFragment {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     @OnClick(R.id.restaurantFormButton)
