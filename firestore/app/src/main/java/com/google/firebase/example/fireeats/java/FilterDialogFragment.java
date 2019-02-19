@@ -16,6 +16,7 @@ import com.google.firebase.firestore.Query;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Dialog Fragment containing filter form.
@@ -46,13 +47,15 @@ public class FilterDialogFragment extends DialogFragment {
 
     private FilterListener mFilterListener;
 
+    private Unbinder unbinder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.dialog_filters, container, false);
-        ButterKnife.bind(this, mRootView);
+        unbinder = ButterKnife.bind(this, mRootView);
 
         return mRootView;
     }
@@ -72,6 +75,15 @@ public class FilterDialogFragment extends DialogFragment {
         getDialog().getWindow().setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     @OnClick(R.id.buttonSearch)
