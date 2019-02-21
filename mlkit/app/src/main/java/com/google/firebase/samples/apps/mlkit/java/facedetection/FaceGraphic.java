@@ -80,6 +80,8 @@ public class FaceGraphic extends Graphic {
         }
 
         // Draws a circle at the position of the detected face, with the face's track id below.
+        // An offset is used on the Y axis in order to draw the circle, face id and happiness level in the top area
+        // of the face's bounding box
         float x = translateX(face.getBoundingBox().centerX());
         float y = translateY(face.getBoundingBox().centerY());
         canvas.drawCircle(x, y - 4 * ID_Y_OFFSET, FACE_POSITION_RADIUS, facePositionPaint);
@@ -166,8 +168,6 @@ public class FaceGraphic extends Graphic {
                     null,
                     new Rect(left, top, right, bottom),
                     null);
-        } else {
-            drawLandmarkPosition(canvas, face, landmarkID);
         }
 
     }

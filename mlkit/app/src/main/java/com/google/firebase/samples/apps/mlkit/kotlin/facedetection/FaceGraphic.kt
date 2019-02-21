@@ -46,6 +46,8 @@ class FaceGraphic(
         val face = firebaseVisionFace ?: return
 
         // Draws a circle at the position of the detected face, with the face's track id below.
+        // An offset is used on the Y axis in order to draw the circle, face id and happiness level in the top area
+        // of the face's bounding box
         val x = translateX(face.boundingBox.centerX().toFloat())
         val y = translateY(face.boundingBox.centerY().toFloat())
         canvas.drawCircle(x, y - 4 * ID_Y_OFFSET, FACE_POSITION_RADIUS, facePositionPaint)
