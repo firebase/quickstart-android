@@ -19,7 +19,7 @@ class FaceGraphic(
     overlay: GraphicOverlay,
     private val firebaseVisionFace: FirebaseVisionFace?,
     private val facing: Int,
-    private val overlayBitmap: Bitmap
+    private val overlayBitmap: Bitmap?
 )
     : GraphicOverlay.Graphic(overlay) {
 
@@ -119,23 +119,20 @@ class FaceGraphic(
     }
 
     private fun drawBitmapOverLandmarkPosition(canvas: Canvas, face: FirebaseVisionFace, landmarkID: Int) {
-        val landmark = face.getLandmark(landmarkID)
-        if (landmark != null) {
-            val point = landmark.position
+        val landmark = face.getLandmark(landmarkID) ?: return
 
-            if (overlayBitmap != null) {
-                val imageEdgeSizeBasedOnFaceSize = face.boundingBox.width() / 4.0f
+        val point = landmark.position
 
-                val left = (translateX(point.x!!) - imageEdgeSizeBasedOnFaceSize).toInt()
-                val top = (translateY(point.y!!) - imageEdgeSizeBasedOnFaceSize).toInt()
-                val right = (translateX(point.x!!) + imageEdgeSizeBasedOnFaceSize).toInt()
-                val bottom = (translateY(point.y!!) + imageEdgeSizeBasedOnFaceSize).toInt()
+        overlayBitmap?.let {
+            val imageEdgeSizeBasedOnFaceSize = face.boundingBox.width() / 4.0f
 
-                canvas.drawBitmap(overlayBitmap, null,
-                        Rect(left, top, right, bottom), null)
-            } else {
-                drawLandmarkPosition(canvas, face, landmarkID)
-            }
+            val left = (translateX(point.x) - imageEdgeSizeBasedOnFaceSize).toInt()
+            val top = (translateY(point.y) - imageEdgeSizeBasedOnFaceSize).toInt()
+            val right = (translateX(point.x) + imageEdgeSizeBasedOnFaceSize).toInt()
+            val bottom = (translateY(point.y) + imageEdgeSizeBasedOnFaceSize).toInt()
+
+            canvas.drawBitmap(it, null,
+                    Rect(left, top, right, bottom), null)
         }
     }
 
