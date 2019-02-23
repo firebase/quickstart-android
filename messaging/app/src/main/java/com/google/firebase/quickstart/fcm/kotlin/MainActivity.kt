@@ -81,6 +81,8 @@ class MainActivity : AppCompatActivity() {
                     })
             // [END retrieve_current_token]
         }
+
+        Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

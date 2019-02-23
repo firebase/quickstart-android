@@ -17,6 +17,17 @@ import com.google.firebase.quickstart.fcm.R
 import com.google.firebase.quickstart.fcm.java.MainActivity
 import com.google.firebase.quickstart.fcm.java.MyJobService
 
+/**
+ * NOTE: There can only be one service in each app that receives FCM messages. If multiple
+ * are declared in the Manifest then the first one will be chosen.
+ *
+ * In order to make this Kotlin sample functional, you must remove the following from the Java messaging
+ * service in the AndroidManifest.xml:
+ *
+ * <intent-filter>
+ *   <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+ * </intent-filter>
+ */
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     /**
