@@ -47,7 +47,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-iid:17.0.4'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
-    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    implementation 'android.arch.work:work-runtime:1.0.0-rc02'
 
     // Testing dependencies
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
