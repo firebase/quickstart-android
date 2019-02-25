@@ -28,7 +28,7 @@ in the `AndroidManifest.xml`:
 
 ```
 <intent-filter>
-  <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+  <action android:name="com.google.firebase.MESSAGING_EVENT" />
 </intent-filter>
 ```
 
