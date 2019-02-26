@@ -13,7 +13,9 @@
 // limitations under the License.
 package com.google.firebase.samples.apps.mlkit.java.facedetection;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +27,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
+import com.google.firebase.samples.apps.mlkit.R;
 import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic;
 import com.google.firebase.samples.apps.mlkit.common.FrameMetadata;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
@@ -42,13 +45,18 @@ public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVis
 
     private final FirebaseVisionFaceDetector detector;
 
-    public FaceDetectionProcessor() {
+    private final Bitmap overlayBitmap;
+
+    public FaceDetectionProcessor(Resources resources) {
         FirebaseVisionFaceDetectorOptions options =
                 new FirebaseVisionFaceDetectorOptions.Builder()
                         .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+                        .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
                         .build();
 
         detector = FirebaseVision.getInstance().getVisionFaceDetector(options);
+
+        overlayBitmap = BitmapFactory.decodeResource(resources, R.drawable.clown_nose);
     }
 
     @Override
@@ -82,7 +90,7 @@ public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVis
             int cameraFacing =
                     frameMetadata != null ? frameMetadata.getCameraFacing() :
                             Camera.CameraInfo.CAMERA_FACING_BACK;
-            FaceGraphic faceGraphic = new FaceGraphic(graphicOverlay, face, cameraFacing);
+            FaceGraphic faceGraphic = new FaceGraphic(graphicOverlay, face, cameraFacing, overlayBitmap);
             graphicOverlay.add(faceGraphic);
         }
         graphicOverlay.postInvalidate();

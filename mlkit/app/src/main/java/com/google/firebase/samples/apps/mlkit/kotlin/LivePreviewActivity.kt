@@ -1,3 +1,16 @@
+// Copyright 2018 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package com.google.firebase.samples.apps.mlkit.kotlin
 
 import android.content.Context
@@ -5,11 +18,13 @@ import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import com.google.android.gms.common.annotation.KeepName
@@ -31,10 +46,8 @@ import java.io.IOException
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to
  * set up continuous frame processing on frames from a camera source.  */
 @KeepName
-class LivePreviewActivity : AppCompatActivity(),
-        ActivityCompat.OnRequestPermissionsResultCallback,
-        AdapterView.OnItemSelectedListener,
-        CompoundButton.OnCheckedChangeListener {
+class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallback,
+        OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     private var cameraSource: CameraSource? = null
     private var selectedModel = FACE_CONTOUR
@@ -64,18 +77,18 @@ class LivePreviewActivity : AppCompatActivity(),
         if (firePreview == null) {
             Log.d(TAG, "Preview is null")
         }
+
         if (fireFaceOverlay == null) {
             Log.d(TAG, "graphicOverlay is null")
         }
 
-        val options = arrayListOf(
-                FACE_CONTOUR,
+        val options = arrayListOf(FACE_CONTOUR,
                 FACE_DETECTION,
                 TEXT_DETECTION,
                 BARCODE_DETECTION,
                 IMAGE_LABEL_DETECTION,
-                CLASSIFICATION_FLOAT,
-                CLASSIFICATION_QUANT)
+                CLASSIFICATION_QUANT,
+                CLASSIFICATION_FLOAT)
         // Creating adapter for spinner
         val dataAdapter = ArrayAdapter(this, R.layout.spinner_style, options)
         // Drop down layout style - list view with radio button
@@ -84,8 +97,9 @@ class LivePreviewActivity : AppCompatActivity(),
         spinner.adapter = dataAdapter
         spinner.onItemSelectedListener = this
 
+        val facingSwitch = facingSwitch
         facingSwitch.setOnCheckedChangeListener(this)
-        // Hide switch if there is only a single camera
+        // Hide the toggle button if there is only 1 camera
         if (Camera.getNumberOfCameras() == 1) {
             facingSwitch.visibility = View.GONE
         }
@@ -103,7 +117,7 @@ class LivePreviewActivity : AppCompatActivity(),
         // parent.getItemAtPosition(pos)
         selectedModel = parent.getItemAtPosition(pos).toString()
         Log.d(TAG, "Selected model: $selectedModel")
-        firePreview.stop()
+        firePreview?.stop()
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)
             startCameraSource()
@@ -118,6 +132,7 @@ class LivePreviewActivity : AppCompatActivity(),
 
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
         Log.d(TAG, "Set facing")
+
         cameraSource?.let {
             if (isChecked) {
                 it.setFacing(CameraSource.CAMERA_FACING_FRONT)
@@ -125,7 +140,7 @@ class LivePreviewActivity : AppCompatActivity(),
                 it.setFacing(CameraSource.CAMERA_FACING_BACK)
             }
         }
-        firePreview.stop()
+        firePreview?.stop()
         startCameraSource()
     }
 
@@ -136,38 +151,36 @@ class LivePreviewActivity : AppCompatActivity(),
         }
 
         try {
-            cameraSource?.let {
-                when (model) {
-                    FACE_CONTOUR -> {
-                        Log.i(TAG, "Using Face Contour Detector Processor")
-                        it.setMachineLearningFrameProcessor(FaceContourDetectorProcessor())
-                    }
-                    CLASSIFICATION_FLOAT -> {
-                        Log.i(TAG, "Using Custom Image Classifier (float) Processor")
-                        it.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this, true))
-                    }
-                    CLASSIFICATION_QUANT -> {
-                        Log.i(TAG, "Using Custom Image Classifier (quant) Processor")
-                        it.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this, true))
-                    }
-                    TEXT_DETECTION -> {
-                        Log.i(TAG, "Using Text Detector Processor")
-                        it.setMachineLearningFrameProcessor(TextRecognitionProcessor())
-                    }
-                    FACE_DETECTION -> {
-                        Log.i(TAG, "Using Face Detector Processor")
-                        it.setMachineLearningFrameProcessor(FaceDetectionProcessor())
-                    }
-                    BARCODE_DETECTION -> {
-                        Log.i(TAG, "Using Barcode Detector Processor")
-                        it.setMachineLearningFrameProcessor(BarcodeScanningProcessor())
-                    }
-                    IMAGE_LABEL_DETECTION -> {
-                        Log.i(TAG, "Using Image Label Detector Processor")
-                        it.setMachineLearningFrameProcessor(ImageLabelingProcessor())
-                    }
-                    else -> Log.e(TAG, "Unknown model: $model")
+            when (model) {
+                CLASSIFICATION_QUANT -> {
+                    Log.i(TAG, "Using Custom Image Classifier (quant) Processor")
+                    cameraSource?.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this, true))
                 }
+                CLASSIFICATION_FLOAT -> {
+                    Log.i(TAG, "Using Custom Image Classifier (float) Processor")
+                    cameraSource?.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this, false))
+                }
+                TEXT_DETECTION -> {
+                    Log.i(TAG, "Using Text Detector Processor")
+                    cameraSource?.setMachineLearningFrameProcessor(TextRecognitionProcessor())
+                }
+                FACE_DETECTION -> {
+                    Log.i(TAG, "Using Face Detector Processor")
+                    cameraSource?.setMachineLearningFrameProcessor(FaceDetectionProcessor(resources))
+                }
+                BARCODE_DETECTION -> {
+                    Log.i(TAG, "Using Barcode Detector Processor")
+                    cameraSource?.setMachineLearningFrameProcessor(BarcodeScanningProcessor())
+                }
+                IMAGE_LABEL_DETECTION -> {
+                    Log.i(TAG, "Using Image Label Detector Processor")
+                    cameraSource?.setMachineLearningFrameProcessor(ImageLabelingProcessor())
+                }
+                FACE_CONTOUR -> {
+                    Log.i(TAG, "Using Face Contour Detector Processor")
+                    cameraSource?.setMachineLearningFrameProcessor(FaceContourDetectorProcessor())
+                }
+                else -> Log.e(TAG, "Unknown model: $model")
             }
         } catch (e: FirebaseMLException) {
             Log.e(TAG, "can not create camera source: $model")
@@ -180,7 +193,7 @@ class LivePreviewActivity : AppCompatActivity(),
      * again when the camera source is created.
      */
     private fun startCameraSource() {
-        cameraSource.let {
+        cameraSource?.let {
             try {
                 if (firePreview == null) {
                     Log.d(TAG, "resume: Preview is null")
@@ -188,10 +201,10 @@ class LivePreviewActivity : AppCompatActivity(),
                 if (fireFaceOverlay == null) {
                     Log.d(TAG, "resume: graphOverlay is null")
                 }
-                firePreview.start(it, fireFaceOverlay)
+                firePreview?.start(cameraSource, fireFaceOverlay)
             } catch (e: IOException) {
                 Log.e(TAG, "Unable to start camera source.", e)
-                it?.release()
+                cameraSource?.release()
                 cameraSource = null
             }
         }
@@ -206,7 +219,7 @@ class LivePreviewActivity : AppCompatActivity(),
     /** Stops the camera.  */
     override fun onPause() {
         super.onPause()
-        firePreview.stop()
+        firePreview?.stop()
     }
 
     public override fun onDestroy() {
@@ -216,22 +229,18 @@ class LivePreviewActivity : AppCompatActivity(),
 
     private fun allPermissionsGranted(): Boolean {
         for (permission in requiredPermissions) {
-            permission?.let {
-                if (!isPermissionGranted(this, it)) {
-                    return false
-                }
+            if (!isPermissionGranted(this, permission!!)) {
+                return false
             }
         }
         return true
     }
 
     private fun getRuntimePermissions() {
-        val allNeededPermissions = ArrayList<String>()
+        val allNeededPermissions = arrayListOf<String>()
         for (permission in requiredPermissions) {
-            permission?.let {
-                if (!isPermissionGranted(this, it)) {
-                    allNeededPermissions.add(it)
-                }
+            if (!isPermissionGranted(this, permission!!)) {
+                allNeededPermissions.add(permission)
             }
         }
 
@@ -254,13 +263,13 @@ class LivePreviewActivity : AppCompatActivity(),
     }
 
     companion object {
-        private val FACE_CONTOUR = "Face Contour"
         private const val FACE_DETECTION = "Face Detection"
         private const val TEXT_DETECTION = "Text Detection"
         private const val BARCODE_DETECTION = "Barcode Detection"
         private const val IMAGE_LABEL_DETECTION = "Label Detection"
-        private val CLASSIFICATION_QUANT = "Classification (quantized)"
-        private val CLASSIFICATION_FLOAT = "Classification (float)"
+        private const val CLASSIFICATION_QUANT = "Classification (quantized)"
+        private const val CLASSIFICATION_FLOAT = "Classification (float)"
+        private const val FACE_CONTOUR = "Face Contour"
         private const val TAG = "LivePreviewActivity"
         private const val PERMISSION_REQUESTS = 1
 

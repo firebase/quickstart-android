@@ -6,12 +6,12 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.11'
+        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21'
 
         classpath 'com.google.gms:google-services:4.2.0'
         classpath 'com.google.firebase:firebase-plugins:1.1.5'
-        classpath 'io.fabric.tools:gradle:1.27.0'
+        classpath 'io.fabric.tools:gradle:1.27.1'
     }
 }
 
@@ -46,7 +46,7 @@ configurations {
 }
 
 dependencies {
-    ktlint "com.github.shyiko:ktlint:0.29.0"
+    ktlint "com.github.shyiko:ktlint:0.30.0"
 }
 
 task("ktlint", type: JavaExec, group: "verification") {

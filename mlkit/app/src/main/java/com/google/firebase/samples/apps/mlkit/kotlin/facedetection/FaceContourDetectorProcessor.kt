@@ -19,23 +19,6 @@ import java.io.IOException
  */
 class FaceContourDetectorProcessor : VisionProcessorBase<List<FirebaseVisionFace>>() {
 
-    override fun onSuccess(
-        originalCameraImage: Bitmap,
-        results: List<FirebaseVisionFace>,
-        frameMetadata: FrameMetadata,
-        graphicOverlay: GraphicOverlay
-    ) {
-        graphicOverlay.clear()
-        val imageGraphic = CameraImageGraphic(graphicOverlay, originalCameraImage)
-        graphicOverlay.add(imageGraphic)
-        for (i in results.indices) {
-            val face = results[i]
-            val faceGraphic = FaceContourGraphic(graphicOverlay, face)
-            graphicOverlay.add(faceGraphic)
-        }
-        graphicOverlay.postInvalidate()
-    }
-
     private val detector: FirebaseVisionFaceDetector
 
     init {
@@ -59,12 +42,32 @@ class FaceContourDetectorProcessor : VisionProcessorBase<List<FirebaseVisionFace
         return detector.detectInImage(image)
     }
 
+    override fun onSuccess(
+        originalCameraImage: Bitmap?,
+        results: List<FirebaseVisionFace>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
+        graphicOverlay.clear()
+
+        originalCameraImage?.let {
+            val imageGraphic = CameraImageGraphic(graphicOverlay, it)
+            graphicOverlay.add(imageGraphic)
+        }
+
+        results.forEach {
+            val faceGraphic = FaceContourGraphic(graphicOverlay, it)
+            graphicOverlay.add(faceGraphic)
+        }
+
+        graphicOverlay.postInvalidate()
+    }
+
     override fun onFailure(e: Exception) {
         Log.e(TAG, "Face detection failed $e")
     }
 
     companion object {
-
         private const val TAG = "FaceContourDetectorProc"
     }
 }

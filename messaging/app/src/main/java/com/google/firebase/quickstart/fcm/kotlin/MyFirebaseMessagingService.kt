@@ -9,14 +9,23 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.util.Log
-import com.firebase.jobdispatcher.FirebaseJobDispatcher
-import com.firebase.jobdispatcher.GooglePlayDriver
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.quickstart.fcm.R
-import com.google.firebase.quickstart.fcm.java.MainActivity
-import com.google.firebase.quickstart.fcm.java.MyJobService
 
+/**
+ * NOTE: There can only be one service in each app that receives FCM messages. If multiple
+ * are declared in the Manifest then the first one will be chosen.
+ *
+ * In order to make this Kotlin sample functional, you must remove the following from the Java messaging
+ * service in the AndroidManifest.xml:
+ *
+ * <intent-filter>
+ *   <action android:name="com.google.firebase.MESSAGING_EVENT" />
+ * </intent-filter>
+ */
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     /**
@@ -45,7 +54,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
 
             if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
+                // For long-running tasks (10 seconds or more) use WorkManager.
                 scheduleJob()
             } else {
                 // Handle message within 10 seconds
@@ -80,16 +89,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     // [END on_new_token]
 
     /**
-     * Schedule a job using FirebaseJobDispatcher.
+     * Schedule async work using WorkManager.
      */
     private fun scheduleJob() {
         // [START dispatch_job]
-        val dispatcher = FirebaseJobDispatcher(GooglePlayDriver(this))
-        val myJob = dispatcher.newJobBuilder()
-                .setService(MyJobService::class.java)
-                .setTag("my-job-tag")
-                .build()
-        dispatcher.schedule(myJob)
+        val work = OneTimeWorkRequest.Builder(MyWorker::class.java).build()
+        WorkManager.getInstance().beginWith(work).enqueue()
         // [END dispatch_job]
     }
 

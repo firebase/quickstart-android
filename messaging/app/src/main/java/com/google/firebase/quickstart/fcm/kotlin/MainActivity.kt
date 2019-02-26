@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
         logTokenButton.setOnClickListener {
             // Get token
+            // [START retrieve_current_token]
             FirebaseInstanceId.getInstance().instanceId
                     .addOnCompleteListener(OnCompleteListener { task ->
                         if (!task.isSuccessful) {
@@ -78,7 +79,10 @@ class MainActivity : AppCompatActivity() {
                         Log.d(TAG, msg)
                         Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     })
+            // [END retrieve_current_token]
         }
+
+        Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
     }
 
     companion object {

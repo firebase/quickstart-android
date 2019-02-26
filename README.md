@@ -27,9 +27,9 @@ the sample you wish to run.
 - [Functions](functions/README.md)
 - [Dynamic Links](dynamiclinks/README.md)
 - [In-App Messaging](inappmessaging/README.md)
-- [Invites](invites/README.md)
 - [Messaging](messaging/README.md)
 - [ML Kit](mlkit/README.md)
+- [ML Kit LanguageID](mlkit-langid/README.md)
 - [Performance Monitoring](perf/README.md)
 - [Storage](storage/README.md)
 
