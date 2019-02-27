@@ -12,7 +12,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".EntryChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,11 +39,9 @@
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <data
                     android:host="your-project-id.firebaseapp.com"
                     android:scheme="https" />
-
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -67,6 +64,7 @@
             android:label="@string/label_generic_idp" />
 
         <activity android:name=".kotlin.ChooserActivity" />
+
         <activity
             android:name=".kotlin.CustomAuthActivity"
             android:label="@string/label_custom_auth" />
@@ -86,7 +84,6 @@
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <data
                     android:host="your-project-id.firebaseapp.com"
                     android:scheme="https" />
@@ -108,9 +105,6 @@
         <activity
             android:name=".kotlin.FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
-        <activity
-            android:name=".kotlin.GenericIdpActivity"
-            android:label="@string/label_generic_idp" />
 
         <!-- Facebook Configuration -->
         <meta-data
