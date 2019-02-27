@@ -18,18 +18,11 @@ package com.google.firebase.quickstart.auth.java;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.quickstart.auth.R;
 
 import java.util.ArrayList;
@@ -86,26 +79,26 @@ public class GenericIdpActivity extends BaseActivity implements
         updateUI(currentUser);
 
         // TODO: Where is auth.getProviderOperationResult?
-        Task<AuthResult> pending = mAuth.getPendingAuthResult();
-        if (pending != null) {
-            pending
-                    .addOnSuccessListener(
-                            new OnSuccessListener<AuthResult>() {
-                                @Override
-                                public void onSuccess(AuthResult authResult) {
-                                    Log.d(TAG, "checkPending:onSuccess:" + authResult);
-                                }
-                            })
-                    .addOnFailureListener(
-                            new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "checkPending:onFailure", e);
-                                }
-                            });
-        } else {
-            Log.d(TAG, "pending: null");
-        }
+//        Task<AuthResult> pending = mAuth.getPendingAuthResult();
+//        if (pending != null) {
+//            pending
+//                    .addOnSuccessListener(
+//                            new OnSuccessListener<AuthResult>() {
+//                                @Override
+//                                public void onSuccess(AuthResult authResult) {
+//                                    Log.d(TAG, "checkPending:onSuccess:" + authResult);
+//                                }
+//                            })
+//                    .addOnFailureListener(
+//                            new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Log.w(TAG, "checkPending:onFailure", e);
+//                                }
+//                            });
+//        } else {
+//            Log.d(TAG, "pending: null");
+//        }
     }
 
   public void signIn() {
@@ -113,27 +106,28 @@ public class GenericIdpActivity extends BaseActivity implements
     ArrayList<String> scopes = new ArrayList<>();
 //    scopes.add("sdps-r");
 
-    mAuth
-        .startActivityForSignInWithProvider(
-                this,
-                OAuthProvider.newBuilder("hotmail.com", mAuth)
-                        .setScopes(scopes)
-                        .build())
-        .addOnSuccessListener(
-            new OnSuccessListener<AuthResult>() {
-              @Override
-              public void onSuccess(AuthResult authResult) {
-                Log.d(TAG, "activitySignIn:onSuccess:" + authResult);
-                updateUI(authResult.getUser());
-              }
-            })
-        .addOnFailureListener(
-            new OnFailureListener() {
-              @Override
-              public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "activitySignIn:onFailure", e);
-              }
-            });
+      // TODO
+//    mAuth
+//        .startActivityForSignInWithProvider(
+//                this,
+//                OAuthProvider.newBuilder("hotmail.com", mAuth)
+//                        .setScopes(scopes)
+//                        .build())
+//        .addOnSuccessListener(
+//            new OnSuccessListener<AuthResult>() {
+//              @Override
+//              public void onSuccess(AuthResult authResult) {
+//                Log.d(TAG, "activitySignIn:onSuccess:" + authResult);
+//                updateUI(authResult.getUser());
+//              }
+//            })
+//        .addOnFailureListener(
+//            new OnFailureListener() {
+//              @Override
+//              public void onFailure(@NonNull Exception e) {
+//                Log.w(TAG, "activitySignIn:onFailure", e);
+//              }
+//            });
   }
 
     @Override

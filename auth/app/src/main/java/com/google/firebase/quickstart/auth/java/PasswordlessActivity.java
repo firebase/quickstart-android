@@ -126,7 +126,7 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
     /**
      * Send an email sign-in link to the specified email.
      */
-    private void sendSignInLink(String email) {
+    private void sendSignInLink(final String email) {
         ActionCodeSettings settings = ActionCodeSettings.newBuilder()
                 .setAndroidPackageName(
                         getPackageName(),
