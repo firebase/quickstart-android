@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/title_bottom_margin"
             android:text="@string/generic_title_text"
+            android:gravity="center"
             android:theme="@style/ThemeOverlay.MyTitleText" />
 
         <TextView

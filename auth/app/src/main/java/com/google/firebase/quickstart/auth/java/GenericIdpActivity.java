@@ -37,6 +37,7 @@ import java.util.ArrayList;
 /**
  * Demonstrate Firebase Authentication using a Generic Identity Provider (IDP).
  */
+@SuppressWarnings("Convert2Lambda")
 public class GenericIdpActivity extends BaseActivity implements
         View.OnClickListener {
 
@@ -61,21 +62,9 @@ public class GenericIdpActivity extends BaseActivity implements
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // TODO: Move this
-        findViewById(R.id.genericSignInButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn();
-            }
-        });
-
-        findViewById(R.id.signOutButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAuth.signOut();
-                updateUI(null);
-            }
-        });
+        // Set up button click listeners
+        findViewById(R.id.genericSignInButton).setOnClickListener(this);
+        findViewById(R.id.signOutButton).setOnClickListener(this);
     }
 
     @Override
@@ -85,66 +74,54 @@ public class GenericIdpActivity extends BaseActivity implements
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
 
-        // TODO: Where is auth.getProviderOperationResult?
+        // Look for a pending auth result
         Task<AuthResult> pending = mAuth.getPendingAuthResult();
         if (pending != null) {
-            pending
-                    .addOnSuccessListener(
-                            new OnSuccessListener<AuthResult>() {
-                                @Override
-                                public void onSuccess(AuthResult authResult) {
-                                    Log.d(TAG, "checkPending:onSuccess:" + authResult);
-                                }
-                            })
-                    .addOnFailureListener(
-                            new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "checkPending:onFailure", e);
-                                }
-                            });
+            pending.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                @Override
+                public void onSuccess(AuthResult authResult) {
+                    Log.d(TAG, "checkPending:onSuccess:" + authResult);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "checkPending:onFailure", e);
+                }
+            });
         } else {
             Log.d(TAG, "pending: null");
         }
     }
 
-  public void signIn() {
-    // TODO: DONT CALL THIS WITH "this"
-    ArrayList<String> scopes = new ArrayList<>();
-//    scopes.add("sdps-r");
+    public void signIn() {
+        // Could add custom scopes here
+        ArrayList<String> scopes = new ArrayList<>();
 
-    mAuth
-        .startActivityForSignInWithProvider(
-                this,
+        mAuth.startActivityForSignInWithProvider(this,
                 OAuthProvider.newBuilder("hotmail.com", mAuth)
                         .setScopes(scopes)
                         .build())
-        .addOnSuccessListener(
-            new OnSuccessListener<AuthResult>() {
-              @Override
-              public void onSuccess(AuthResult authResult) {
-                Log.d(TAG, "activitySignIn:onSuccess:" + authResult);
-                updateUI(authResult.getUser());
-              }
-            })
-        .addOnFailureListener(
-            new OnFailureListener() {
-              @Override
-              public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "activitySignIn:onFailure", e);
-              }
-            });
-  }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+                .addOnSuccessListener(
+                        new OnSuccessListener<AuthResult>() {
+                            @Override
+                            public void onSuccess(AuthResult authResult) {
+                                Log.d(TAG, "activitySignIn:onSuccess:" + authResult.getUser());
+                                updateUI(authResult.getUser());
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "activitySignIn:onFailure", e);
+                            }
+                        });
     }
 
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.facebook_status_fmt, user.getDisplayName()));
+            mStatusTextView.setText(getString(R.string.msft_status_fmt, user.getDisplayName()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
             findViewById(R.id.genericSignInButton).setVisibility(View.GONE);
@@ -160,6 +137,15 @@ public class GenericIdpActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        // TODO
+        switch (v.getId()) {
+            case R.id.genericSignInButton:
+                signIn();
+                break;
+            case R.id.signOutButton:
+                mAuth.signOut();
+                updateUI(null);
+                break;
+        }
+
     }
 }
