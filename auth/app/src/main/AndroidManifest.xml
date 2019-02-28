@@ -105,6 +105,9 @@
         <activity
             android:name=".kotlin.FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
+        <activity
+            android:name=".kotlin.GenericIdpActivity"
+            android:label="@string/label_generic_idp" />
 
         <!-- Facebook Configuration -->
         <meta-data
