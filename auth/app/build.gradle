@@ -46,12 +46,11 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
 
     // Firebase Authentication
-    implementation 'com.google.firebase:firebase-core:16.4.0-SNAPSHOT'
-    implementation 'com.google.firebase:firebase-auth:16.4.0-SNAPSHOT'
+    implementation 'com.google.firebase:firebase-core:16.2.0'
+    implementation 'com.google.firebase:firebase-auth:16.2.0'
 
     // Google Sign In SDK (only required for Google Sign In)
-    implementation 'com.google.android.gms:play-services-auth:16.4.0-SNAPSHOT'
-    api 'com.google.android.gms:play-services-auth-api-phone:16.4.0-SNAPSHOT'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
     // Firebase UI
     // Used in FirebaseUIActivity.

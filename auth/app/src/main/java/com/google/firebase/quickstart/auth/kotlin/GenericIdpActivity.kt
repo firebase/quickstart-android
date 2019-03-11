@@ -62,10 +62,10 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
         // Look for a pending auth result
         val pending = auth.pendingAuthResult
         if (pending != null) {
-            pending.addOnSuccessListener {
-                authResult -> Log.d(TAG, "checkPending:onSuccess:$authResult")
-            }.addOnFailureListener {
-                e -> Log.w(TAG, "checkPending:onFailure", e)
+            pending.addOnSuccessListener { authResult ->
+                Log.d(TAG, "checkPending:onSuccess:$authResult")
+            }.addOnFailureListener { e ->
+                Log.w(TAG, "checkPending:onFailure", e)
             }
         } else {
             Log.d(TAG, "pending: null")
@@ -73,7 +73,7 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    fun signIn() {
+    private fun signIn() {
         // Could add custom scopes here
         val scopes = ArrayList<String>()
 
@@ -82,11 +82,11 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
                         .setScopes(scopes)
                         .build())
                 .addOnSuccessListener { authResult ->
-                    Log.d(TAG, "activitySignIn:onSuccess:" + authResult.user)
+                    Log.d(TAG, "activitySignIn:onSuccess:${authResult.user}")
                     updateUI(authResult.user)
                 }
-                .addOnFailureListener {
-                    e -> Log.w(TAG, "activitySignIn:onFailure", e)
+                .addOnFailureListener { e ->
+                    Log.w(TAG, "activitySignIn:onFailure", e)
                 }
     }
 
