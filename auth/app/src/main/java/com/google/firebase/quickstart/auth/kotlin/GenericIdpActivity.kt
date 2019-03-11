@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.quickstart.auth.R
-import com.google.firebase.quickstart.auth.java.BaseActivity
+import com.google.firebase.quickstart.auth.kotlin.BaseActivity
 import kotlinx.android.synthetic.main.activity_generic_idp.detail
 import kotlinx.android.synthetic.main.activity_generic_idp.genericSignInButton
 import kotlinx.android.synthetic.main.activity_generic_idp.signOutButton
