@@ -70,7 +70,6 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
         } else {
             Log.d(TAG, "pending: null")
         }
-
     }
 
     private fun signIn() {
@@ -115,7 +114,6 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
                 updateUI(null)
             }
         }
-
     }
 
     companion object {
