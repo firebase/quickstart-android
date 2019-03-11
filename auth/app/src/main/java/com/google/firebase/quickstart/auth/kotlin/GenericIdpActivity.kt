@@ -19,17 +19,14 @@ package com.google.firebase.quickstart.auth.kotlin
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.quickstart.auth.R
-import com.google.firebase.quickstart.auth.kotlin.BaseActivity
 import kotlinx.android.synthetic.main.activity_generic_idp.detail
 import kotlinx.android.synthetic.main.activity_generic_idp.genericSignInButton
 import kotlinx.android.synthetic.main.activity_generic_idp.signOutButton
 import kotlinx.android.synthetic.main.activity_generic_idp.status
-
 import java.util.ArrayList
 
 /**
@@ -76,8 +73,8 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
         // Could add custom scopes here
         val scopes = ArrayList<String>()
 
-        auth!!.startActivityForSignInWithProvider(this,
-                OAuthProvider.newBuilder("hotmail.com", auth!!)
+        auth.startActivityForSignInWithProvider(this,
+                OAuthProvider.newBuilder("hotmail.com", auth)
                         .setScopes(scopes)
                         .build())
                 .addOnSuccessListener { authResult ->
