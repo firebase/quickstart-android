@@ -93,7 +93,7 @@ public class GenericIdpActivity extends BaseActivity implements
         }
     }
 
-    public void signIn() {
+    private void signIn() {
         // Could add custom scopes here
         ArrayList<String> scopes = new ArrayList<>();
 
