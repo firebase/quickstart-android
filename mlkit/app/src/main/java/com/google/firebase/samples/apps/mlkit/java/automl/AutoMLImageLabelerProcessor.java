@@ -1,0 +1,95 @@
+package com.google.firebase.samples.apps.mlkit.java.automl;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.ml.common.FirebaseMLException;
+import com.google.firebase.ml.common.modeldownload.FirebaseLocalModel;
+import com.google.firebase.ml.common.modeldownload.FirebaseModelManager;
+import com.google.firebase.ml.common.modeldownload.FirebaseRemoteModel;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
+import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceAutoMLImageLabelerOptions;
+import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic;
+import com.google.firebase.samples.apps.mlkit.common.FrameMetadata;
+import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.java.VisionProcessorBase;
+import com.google.firebase.samples.apps.mlkit.java.labeldetector.LabelGraphic;
+
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * AutoML image labeler Demo.
+ */
+public class AutoMLImageLabelerProcessor
+        extends VisionProcessorBase<List<FirebaseVisionImageLabel>> {
+
+    private static final String TAG = "ODAutoMLILProcessor";
+
+    private static final String LOCAL_MODEL_NAME = "automl_image_labeling_model";
+    private static final String REMOTE_MODEL_NAME = "mlkit_flowers";
+
+    private final FirebaseVisionImageLabeler detector;
+
+    public AutoMLImageLabelerProcessor(Context context) throws FirebaseMLException {
+        FirebaseModelManager.getInstance()
+                .registerRemoteModel(new FirebaseRemoteModel.Builder(REMOTE_MODEL_NAME).build());
+
+        FirebaseModelManager.getInstance()
+                .registerLocalModel(
+                        new FirebaseLocalModel.Builder(LOCAL_MODEL_NAME)
+                                .setAssetFilePath("automl/manifest.json")
+                                .build());
+
+        FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder optionsBuilder =
+                new FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder().setConfidenceThreshold(0.5f);
+
+        optionsBuilder.setLocalModelName(LOCAL_MODEL_NAME).setRemoteModelName(REMOTE_MODEL_NAME);
+
+        detector =
+                FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(optionsBuilder.build());
+    }
+
+    @Override
+    public void stop() {
+        try {
+            detector.close();
+        } catch (IOException e) {
+            Log.e(TAG, "Exception thrown while trying to close the image labeler: " + e);
+        }
+    }
+
+    @Override
+    protected Task<List<FirebaseVisionImageLabel>> detectInImage(FirebaseVisionImage image) {
+        return detector.processImage(image);
+    }
+
+    @Override
+    protected void onSuccess(
+            @Nullable Bitmap originalCameraImage,
+            @NonNull List<FirebaseVisionImageLabel> labels,
+            @NonNull FrameMetadata frameMetadata,
+            @NonNull GraphicOverlay graphicOverlay) {
+        graphicOverlay.clear();
+        if (originalCameraImage != null) {
+            CameraImageGraphic imageGraphic = new CameraImageGraphic(graphicOverlay,
+                    originalCameraImage);
+            graphicOverlay.add(imageGraphic);
+        }
+        LabelGraphic labelGraphic = new LabelGraphic(graphicOverlay, labels);
+        graphicOverlay.add(labelGraphic);
+        graphicOverlay.postInvalidate();
+    }
+
+    @Override
+    protected void onFailure(@NonNull Exception e) {
+        Log.w(TAG, "Label detection failed." + e);
+    }
+}
