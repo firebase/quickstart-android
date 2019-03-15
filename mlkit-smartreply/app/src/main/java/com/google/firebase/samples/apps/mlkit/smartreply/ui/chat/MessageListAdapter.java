@@ -1,9 +1,5 @@
 package com.google.firebase.samples.apps.mlkit.smartreply.ui.chat;
 
-import android.content.Context;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,64 +11,74 @@ import com.google.firebase.samples.apps.mlkit.smartreply.model.Message;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MessageViewHolder> {
-    private Context context;
-    List<Message> messageList = new ArrayList<>();
-    boolean emulatingRemoteUser = false;
 
-    public MessageListAdapter(Context context) {
-        super();
-        this.context = context;
-    }
+    private final List<Message> mMessagesList = new ArrayList<>();
+    private boolean mEmulatingRemoteUser = false;
 
-    // Create new views (invoked by the layout manager)
+    public MessageListAdapter() {}
+
     @Override
-    public MessageListAdapter.MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewGroup v =
-                (ViewGroup)
-                        LayoutInflater.from(parent.getContext())
-                                .inflate(viewType, parent, false);
-        v.setOnClickListener(
-                view -> {
-                });
+    @NonNull
+    public MessageListAdapter.MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ViewGroup v = (ViewGroup) LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
         return new MessageViewHolder(v);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MessageViewHolder holder, int position) {
-        Message message = messageList.get(position);
-        holder.icon.setImageDrawable(message.getIcon(context));
-        // Note we rely on the image holder library CircleImageView to make a deep copy.
-        holder.text.setText(message.text);
+    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
+        Message message = mMessagesList.get(position);
+        holder.bind(message);
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (messageList.get(position).isLocalUser && !emulatingRemoteUser
-                || !messageList.get(position).isLocalUser && emulatingRemoteUser) {
+        if (mMessagesList.get(position).isLocalUser && !mEmulatingRemoteUser
+                || !mMessagesList.get(position).isLocalUser && mEmulatingRemoteUser) {
             return R.layout.item_message_local;
         } else {
             return R.layout.item_message_remote;
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return messageList.size();
+        return mMessagesList.size();
     }
 
-    class MessageViewHolder extends RecyclerView.ViewHolder {
-        public CircleImageView icon;
-        public TextView text;
+    public void setMessages(List<Message> messages) {
+        mMessagesList.clear();
+        mMessagesList.addAll(messages);
+        notifyDataSetChanged();
+    }
+
+    public boolean getEmulatingRemoteUser() {
+        return this.mEmulatingRemoteUser;
+    }
+
+    public void setEmulatingRemoteUser(boolean emulatingRemoteUser) {
+        this.mEmulatingRemoteUser = emulatingRemoteUser;
+        notifyDataSetChanged();
+    }
+
+    static class MessageViewHolder extends RecyclerView.ViewHolder {
+
+        private final CircleImageView icon;
+        private final TextView text;
 
         MessageViewHolder(View itemView) {
             super(itemView);
-            icon = (CircleImageView) itemView.findViewById(R.id.messageAuthor);
-            text = (TextView) itemView.findViewById(R.id.messageText);
+            icon = itemView.findViewById(R.id.messageAuthor);
+            text = itemView.findViewById(R.id.messageText);
+        }
+
+        private void bind(Message message) {
+            icon.setImageDrawable(message.getIcon(icon.getContext()));
+            text.setText(message.text);
         }
     }
 }

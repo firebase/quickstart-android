@@ -17,18 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
-    }
-    // TODO: Remove this because it should not be necessary.
     aaptOptions {
         noCompress "tflite"
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.0.1'
@@ -40,12 +34,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-natural-language:18.2.0'
     implementation 'com.google.firebase:firebase-ml-natural-language-smart-reply-model:18.0.0'
     implementation 'com.google.firebase:firebase-ml-natural-language-language-id-model:18.0.3'
+
     implementation 'com.google.guava:guava:27.0.1-android'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.google.android.material:material:1.0.0'
-
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }
+
 apply plugin: 'com.google.gms.google-services'

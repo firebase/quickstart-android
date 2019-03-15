@@ -16,17 +16,20 @@
         app:layout_constraintBottom_toTopOf="@id/inputTextLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_message_local"/>
 
-    <LinearLayout
-        android:id="@+id/smartRepliesContainer"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/smartRepliesRecycler"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/inputTextLayout"
         app:layout_constraintEnd_toStartOf="@id/switchEmulatedUser"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/smart_reply_chip"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputTextLayout"
@@ -69,7 +72,7 @@
         app:layout_constraintEnd_toStartOf="@id/switchEmulatedUser"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inputTextLayout"
-        android:hint="Chatting as Alice" />
+        tools:text="Chatting as Alice" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/switchEmulatedUser"

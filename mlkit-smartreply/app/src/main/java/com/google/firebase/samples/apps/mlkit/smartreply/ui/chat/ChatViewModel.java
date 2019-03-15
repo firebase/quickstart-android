@@ -1,38 +1,52 @@
 package com.google.firebase.samples.apps.mlkit.smartreply.ui.chat;
 
-import android.util.Log;
-
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
-import com.google.common.collect.EvictingQueue;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
-import com.google.firebase.ml.naturallanguage.smartreply.FirebaseSmartReply;
 import com.google.firebase.ml.naturallanguage.smartreply.FirebaseTextMessage;
 import com.google.firebase.ml.naturallanguage.smartreply.SmartReplySuggestion;
+import com.google.firebase.ml.naturallanguage.smartreply.SmartReplySuggestionResult;
 import com.google.firebase.samples.apps.mlkit.smartreply.model.Message;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 public class ChatViewModel extends ViewModel {
-    MediatorLiveData<List<SmartReplySuggestion>> suggestions = new MediatorLiveData<>();
-    MutableLiveData<List<Message>> messageList = new MutableLiveData<>();
-    MutableLiveData<Boolean> emulatingRemoteUser = new MutableLiveData<>();
+
     private final String REMOTE_USER_ID = UUID.randomUUID().toString();
-    private final int MAX_NUMBER_OF_MESSAGES = 10;
+
+    private MediatorLiveData<List<SmartReplySuggestion>> suggestions = new MediatorLiveData<>();
+    private MutableLiveData<List<Message>> messageList = new MutableLiveData<>();
+    private MutableLiveData<Boolean> emulatingRemoteUser = new MutableLiveData<>();
 
     public ChatViewModel() {
         initSuggestionsGenerator();
         emulatingRemoteUser.postValue(false);
     }
 
-    void setMessages(List messages) {
+    public LiveData<List<SmartReplySuggestion>> getSuggestions() {
+        return suggestions;
+    }
+
+    public LiveData<List<Message>> getMessages() {
+        return messageList;
+    }
+
+    public LiveData<Boolean> getEmulatingRemoteUser() {
+        return emulatingRemoteUser;
+    }
+
+    void setMessages(List<Message> messages) {
         clearSuggestions();
         messageList.postValue(messages);
     }
@@ -43,7 +57,7 @@ public class ChatViewModel extends ViewModel {
     }
 
     private void clearSuggestions() {
-        suggestions.postValue(new ArrayList<>());
+        suggestions.postValue(new ArrayList<SmartReplySuggestion>());
     }
 
     void addMessage(String message) {
@@ -57,48 +71,69 @@ public class ChatViewModel extends ViewModel {
     }
 
     private void initSuggestionsGenerator() {
-        suggestions.addSource(emulatingRemoteUser, isEmulatingRemoteUser -> {
-            List<Message> list = messageList.getValue();
-            if (list == null || list.isEmpty()) {
-                return;
+        suggestions.addSource(emulatingRemoteUser, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isEmulatingRemoteUser) {
+                List<Message> list = messageList.getValue();
+                if (list == null || list.isEmpty()) {
+                    return;
+                }
+
+                generateReplies(list, isEmulatingRemoteUser)
+                        .addOnSuccessListener(new OnSuccessListener<List<SmartReplySuggestion>>() {
+                            @Override
+                            public void onSuccess(List<SmartReplySuggestion> result) {
+                                suggestions.postValue(result);
+                            }
+                        });
             }
-            generateReplies(list, isEmulatingRemoteUser).addOnSuccessListener(result -> suggestions.postValue(result));
         });
-        suggestions.addSource(messageList, list -> {
-            Boolean isEmulatingRemoteUser = emulatingRemoteUser.getValue();
-            if (isEmulatingRemoteUser == null || list.isEmpty()) {
-                return;
+
+        suggestions.addSource(messageList, new Observer<List<Message>>() {
+            @Override
+            public void onChanged(List<Message> list) {
+                Boolean isEmulatingRemoteUser = emulatingRemoteUser.getValue();
+                if (isEmulatingRemoteUser == null || list.isEmpty()) {
+                    return;
+                }
+
+                generateReplies(list, isEmulatingRemoteUser).addOnSuccessListener(new OnSuccessListener<List<SmartReplySuggestion>>() {
+                    @Override
+                    public void onSuccess(List<SmartReplySuggestion> result) {
+                        suggestions.postValue(result);
+                    }
+                });
             }
-            generateReplies(list, isEmulatingRemoteUser).addOnSuccessListener(result -> suggestions.postValue(result));
         });
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     private Task<List<SmartReplySuggestion>> generateReplies(List<Message> messages,
                                                              boolean isEmulatingRemoteUser) {
         Message lastMessage = messages.get(messages.size() - 1);
-        TaskCompletionSource<List<SmartReplySuggestion>> source = new TaskCompletionSource<>();
-        Task<List<SmartReplySuggestion>> result = source.getTask();
+
         // If the last message in the chat thread is not sent by the "other" user, don't generate
         // smart replies.
         if (lastMessage.isLocalUser && !isEmulatingRemoteUser || !lastMessage.isLocalUser && isEmulatingRemoteUser) {
-            source.setException(new Exception("Not running smart reply"));
-        } else {
-            List<FirebaseTextMessage> chatHistory =
-                    new ArrayList<>(MAX_NUMBER_OF_MESSAGES);
-            for (Message message : messages) {
-                if (message.isLocalUser && !isEmulatingRemoteUser || !message.isLocalUser && isEmulatingRemoteUser) {
-                    chatHistory.add(FirebaseTextMessage.createForLocalUser(message.text,
-                            message.timestamp));
-                } else {
-                    chatHistory.add(FirebaseTextMessage.createForRemoteUser(message.text,
-                            message.timestamp, REMOTE_USER_ID));
-                }
-            }
-            FirebaseNaturalLanguage.getInstance().getSmartReply().suggestReplies(chatHistory)
-                    .addOnSuccessListener(smartReplySuggestionResult -> source.setResult(smartReplySuggestionResult.getSuggestions()))
-                    .addOnFailureListener(source::setException);
+            return Tasks.forException(new Exception("Not running smart reply!"));
         }
-        return result;
+
+        List<FirebaseTextMessage> chatHistory = new ArrayList<>();
+        for (Message message : messages) {
+            if (message.isLocalUser && !isEmulatingRemoteUser || !message.isLocalUser && isEmulatingRemoteUser) {
+                chatHistory.add(FirebaseTextMessage.createForLocalUser(message.text,
+                        message.timestamp));
+            } else {
+                chatHistory.add(FirebaseTextMessage.createForRemoteUser(message.text,
+                        message.timestamp, REMOTE_USER_ID));
+            }
+        }
+
+        return FirebaseNaturalLanguage.getInstance().getSmartReply().suggestReplies(chatHistory)
+                .continueWith(new Continuation<SmartReplySuggestionResult, List<SmartReplySuggestion>>() {
+                    @Override
+                    public List<SmartReplySuggestion> then(@NonNull Task<SmartReplySuggestionResult> task) {
+                        return task.getResult().getSuggestions();
+                    }
+                });
     }
 }

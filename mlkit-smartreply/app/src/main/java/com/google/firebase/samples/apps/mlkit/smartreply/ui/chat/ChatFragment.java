@@ -3,6 +3,7 @@ package com.google.firebase.samples.apps.mlkit.smartreply.ui.chat;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,27 +16,36 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.ml.naturallanguage.smartreply.SmartReplySuggestion;
 import com.google.firebase.samples.apps.mlkit.smartreply.R;
 import com.google.firebase.samples.apps.mlkit.smartreply.model.Message;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ChatFragment extends Fragment {
+public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickListener {
+
     private ChatViewModel mViewModel;
     private TextView mInputText;
+    private Button mSendButton;
+    private MaterialButton mSwitchUserButton;
+
+    private RecyclerView mChatRecycler;
     private MessageListAdapter mChatAdapter;
-    private ViewGroup mSmartRepliesContainer;
+
+    private RecyclerView mSmartRepliesRecyler;
+    private ReplyChipAdapter mChipAdapter;
+
+    private TextView mEmulatedUserText;
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
@@ -49,7 +59,8 @@ public class ChatFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.chat_fragment, container, false);
     }
@@ -58,72 +69,90 @@ public class ChatFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MaterialButton switchEmulatedUserButton = view.findViewById(R.id.switchEmulatedUser);
-        RecyclerView mChatRecycler = view.findViewById(R.id.chatHistory);
-        Button mButton = view.findViewById(R.id.button);
-        mSmartRepliesContainer = view.findViewById(R.id.smartRepliesContainer);
+
+        mViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
+
+        mChatRecycler = view.findViewById(R.id.chatHistory);
+        mEmulatedUserText = view.findViewById(R.id.switchText);
+        mSmartRepliesRecyler = view.findViewById(R.id.smartRepliesRecycler);
         mInputText = view.findViewById(R.id.inputText);
-        TextView emulatedUserText = view.findViewById(R.id.switchText);
+        mSendButton = view.findViewById(R.id.button);
+        mSwitchUserButton = view.findViewById(R.id.switchEmulatedUser);
 
         // Set up recycler view for chat messages
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mChatRecycler.setLayoutManager(layoutManager);
-        mChatAdapter = new MessageListAdapter(requireContext());
+        mChatAdapter = new MessageListAdapter();
+
+        // Set up recycler view for smart replies
+        LinearLayoutManager chipManager = new LinearLayoutManager(getContext());
+        chipManager.setOrientation(RecyclerView.HORIZONTAL);
+        mChipAdapter = new ReplyChipAdapter(this);
+        mSmartRepliesRecyler.setLayoutManager(chipManager);
+        mSmartRepliesRecyler.setAdapter(mChipAdapter);
+
         mChatRecycler.setAdapter(mChatAdapter);
-        mChatRecycler.setOnTouchListener((v, event) -> {
-            InputMethodManager imm =
-                    (InputMethodManager) ChatFragment.this.requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(
-                    view.getWindowToken(), 0);
-            return false;
+        mChatRecycler.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                InputMethodManager imm =
+                        (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                return false;
+            }
         });
 
-        switchEmulatedUserButton.setOnClickListener(v -> {
-            mChatAdapter.emulatingRemoteUser = !mChatAdapter.emulatingRemoteUser;
-            mViewModel.switchUser();
-            mChatAdapter.notifyDataSetChanged();
-        });
-        mButton.setOnClickListener(v -> {
-            if (mInputText.getText().length() == 0) {
-                return;
+        mSwitchUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mChatAdapter.setEmulatingRemoteUser(!mChatAdapter.getEmulatingRemoteUser());
+                mViewModel.switchUser();
             }
-            String input = mInputText.getText().toString();
-            mViewModel.addMessage(input);
-            mInputText.setText("");
         });
 
-        mViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
-        mViewModel.suggestions.observe(this, suggestions -> {
-            LayoutInflater inflater =
-                    (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            mSmartRepliesContainer.removeAllViews();
-            for (SmartReplySuggestion suggestion : suggestions) {
-                View smartReplyChip = inflater.inflate(R.layout.smart_reply_chip, null);
-                TextView textView = smartReplyChip.findViewById(R.id.smartReplyText);
-                textView.setText(suggestion.getText());
-                smartReplyChip.setOnClickListener(v -> mInputText.setText(suggestion.getText()));
-                mSmartRepliesContainer.addView(smartReplyChip, -1,
-                        new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String input = mInputText.getText().toString();
+                if (TextUtils.isEmpty(input)) {
+                    return;
+                }
 
-        });
-        mViewModel.messageList.observe(this, messages -> {
-            mChatAdapter.messageList = messages;
-            mChatAdapter.notifyDataSetChanged();
-            if (mChatAdapter.getItemCount() > 0) {
-                mChatRecycler.smoothScrollToPosition(mChatAdapter.getItemCount() - 1);
+                mViewModel.addMessage(input);
+                mInputText.setText("");
             }
         });
-        mViewModel.emulatingRemoteUser.observe(this, isEmulatingRemoteUser -> {
-            if (isEmulatingRemoteUser) {
-                emulatedUserText.setText("Chatting as Red User");
-                emulatedUserText.setTextColor(getResources().getColor(R.color.red));
-            } else {
-                emulatedUserText.setText("Chatting as Blue User");
-                emulatedUserText.setTextColor(getResources().getColor(R.color.blue));
+
+        mViewModel.getSuggestions().observe(this, new Observer<List<SmartReplySuggestion>>() {
+            @Override
+            public void onChanged(List<SmartReplySuggestion> suggestions) {
+               mChipAdapter.setSuggestions(suggestions);
             }
         });
+
+        mViewModel.getMessages().observe(this, new Observer<List<Message>>() {
+            @Override
+            public void onChanged(List<Message> messages) {
+                mChatAdapter.setMessages(messages);
+                if (mChatAdapter.getItemCount() > 0) {
+                    mChatRecycler.smoothScrollToPosition(mChatAdapter.getItemCount() - 1);
+                }
+            }
+        });
+
+        mViewModel.getEmulatingRemoteUser().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isEmulatingRemoteUser) {
+                if (isEmulatingRemoteUser) {
+                    mEmulatedUserText.setText(R.string.chatting_as_red);
+                    mEmulatedUserText.setTextColor(getResources().getColor(R.color.red));
+                } else {
+                    mEmulatedUserText.setText(R.string.chatting_as_blue);
+                    mEmulatedUserText.setTextColor(getResources().getColor(R.color.blue));
+                }
+            }
+        });
+
         ArrayList<Message> messageList = new ArrayList<>();
         messageList.add(new Message("Hello. How are you?", false, System.currentTimeMillis()));
         mViewModel.setMessages(messageList);
@@ -134,7 +163,6 @@ public class ChatFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.chat_fragment_actions, menu);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -147,33 +175,43 @@ public class ChatFragment extends Fragment {
                 generateChatHistoryWithSensitiveContent();
                 return true;
             case R.id.clearHistory:
-                mViewModel.setMessages(new ArrayList());
+                mViewModel.setMessages(new ArrayList<Message>());
                 return true;
         }
         return false;
     }
 
+    @Override
+    public void onChipClick(@NonNull String chipText) {
+        mInputText.setText(chipText);
+    }
+
     private void generateChatHistoryBasic() {
         ArrayList<Message> messageList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
+
         calendar.set(Calendar.DATE, -1);
         messageList.add(new Message("Hello", true, calendar.getTimeInMillis()));
+
         calendar.add(Calendar.MINUTE, 10);
         messageList.add(new Message("Hey", false, calendar.getTimeInMillis()));
+
         mViewModel.setMessages(messageList);
     }
 
     private void generateChatHistoryWithSensitiveContent() {
         ArrayList<Message> messageList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
+
         calendar.set(Calendar.DATE, -1);
         messageList.add(new Message("Hi", false, calendar.getTimeInMillis()));
+
         calendar.add(Calendar.MINUTE, 10);
-        messageList.add(
-                new Message("How are you?", true, calendar.getTimeInMillis()));
+        messageList.add(new Message("How are you?", true, calendar.getTimeInMillis()));
+
         calendar.add(Calendar.MINUTE, 10);
-        messageList.add(
-                new Message("My cat died", false, calendar.getTimeInMillis()));
+        messageList.add(new Message("My cat died", false, calendar.getTimeInMillis()));
+
         mViewModel.setMessages(messageList);
     }
 }

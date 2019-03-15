@@ -15,5 +15,6 @@ include ':admob:app',
         ':messaging:app',
         ':mlkit:app',
         ':mlkit-langid:app',
+        ':mlkit-smartreply:app',
         ':perf:app',
         ':storage:app'
