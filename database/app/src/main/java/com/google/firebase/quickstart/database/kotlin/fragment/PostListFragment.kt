@@ -12,13 +12,18 @@ import android.view.ViewGroup
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Query
+import com.google.firebase.database.Transaction
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.PostDetailActivity
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.viewholder.PostViewHolder
-import kotlinx.android.synthetic.main.fragment_all_posts.view.*
-
+import kotlinx.android.synthetic.main.fragment_all_posts.view.messagesList
 
 abstract class PostListFragment : Fragment() {
 
@@ -33,8 +38,11 @@ abstract class PostListFragment : Fragment() {
     val uid: String
         get() = FirebaseAuth.getInstance().currentUser!!.uid
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val rootView = inflater.inflate(R.layout.fragment_all_posts, container, false)
 
@@ -42,6 +50,7 @@ abstract class PostListFragment : Fragment() {
         database = FirebaseDatabase.getInstance().reference
         // [END create_database_reference]
 
+        recycler = rootView.findViewById(R.id.messagesList)
         rootView.messagesList.setHasFixedSize(true)
 
         return rootView
@@ -122,15 +131,17 @@ abstract class PostListFragment : Fragment() {
                 return Transaction.success(mutableData)
             }
 
-            override fun onComplete(databaseError: DatabaseError?, b: Boolean,
-                                    dataSnapshot: DataSnapshot?) {
+            override fun onComplete(
+                databaseError: DatabaseError?,
+                b: Boolean,
+                dataSnapshot: DataSnapshot?
+            ) {
                 // Transaction completed
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError!!)
             }
         })
     }
     // [END post_stars_transaction]
-
 
     override fun onStart() {
         super.onStart()
@@ -147,7 +158,5 @@ abstract class PostListFragment : Fragment() {
     companion object {
 
         private const val TAG = "PostListFragment"
-
     }
-
 }

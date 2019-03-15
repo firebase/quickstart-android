@@ -63,6 +63,7 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         };
 
         // [START initialize_auth]
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
     }

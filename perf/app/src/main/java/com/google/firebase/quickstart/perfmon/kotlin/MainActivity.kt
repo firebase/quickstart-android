@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
@@ -18,20 +17,22 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.perf.FirebasePerformance
 import com.google.firebase.perf.metrics.Trace
 import com.google.firebase.quickstart.perfmon.R
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.button
+import kotlinx.android.synthetic.main.activity_main.headerIcon
+import kotlinx.android.synthetic.main.activity_main.textViewContent
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStream
-import java.util.*
+import java.util.Random
 import java.util.concurrent.Callable
 import java.util.concurrent.CountDownLatch
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mTrace: Trace
+    private lateinit var trace: Trace
 
-    private val mNumStartupTasks = CountDownLatch(2)
+    private val numStartupTasks = CountDownLatch(2)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,23 +54,23 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Begin tracing app startup tasks.
-        mTrace = FirebasePerformance.getInstance().newTrace(STARTUP_TRACE_NAME)
+        trace = FirebasePerformance.getInstance().newTrace(STARTUP_TRACE_NAME)
         Log.d(TAG, "Starting trace")
-        mTrace.start()
+        trace.start()
         loadImageFromWeb()
         // Increment the counter of number of requests sent in the trace.
         Log.d(TAG, "Incrementing number of requests counter in trace")
-        mTrace.incrementMetric(REQUESTS_COUNTER_NAME, 1)
+        trace.incrementMetric(REQUESTS_COUNTER_NAME, 1)
         loadFileFromDisk()
         // Wait for app startup tasks to complete asynchronously and stop the trace.
         Thread(Runnable {
             try {
-                mNumStartupTasks.await()
+                numStartupTasks.await()
             } catch (e: InterruptedException) {
                 Log.e(TAG, "Unable to wait for startup task completion.")
             } finally {
                 Log.d(TAG, "Stopping trace")
-                mTrace.stop()
+                trace.stop()
                 runOnUiThread {
                     Toast.makeText(this, "Trace completed",
                             Toast.LENGTH_SHORT).show()
@@ -83,16 +84,23 @@ class MainActivity : AppCompatActivity() {
                 .placeholder(ColorDrawable(ContextCompat.getColor(this, R.color.colorAccent)))
                 .listener(object : RequestListener<String, GlideDrawable> {
                     override fun onException(
-                            e: Exception, model: String, target: Target<GlideDrawable>,
-                            isFirstResource: Boolean): Boolean {
-                        mNumStartupTasks.countDown() // Signal end of image load task.
+                        e: Exception,
+                        model: String,
+                        target: Target<GlideDrawable>,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        numStartupTasks.countDown() // Signal end of image load task.
                         return false
                     }
 
                     override fun onResourceReady(
-                            resource: GlideDrawable, model: String, target: Target<GlideDrawable>,
-                            isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
-                        mNumStartupTasks.countDown() // Signal end of image load task.
+                        resource: GlideDrawable,
+                        model: String,
+                        target: Target<GlideDrawable>,
+                        isFromMemoryCache: Boolean,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        numStartupTasks.countDown() // Signal end of image load task.
                         return false
                     }
                 }).into(headerIcon)
@@ -148,10 +156,10 @@ class MainActivity : AppCompatActivity() {
                     textViewContent.text = task.result
                     // Increment a counter with the file size that was read.
                     Log.d(TAG, "Incrementing file size counter in trace")
-                    mTrace.incrementMetric(
+                    trace.incrementMetric(
                             FILE_SIZE_COUNTER_NAME,
-                            fileContent.toByteArray().size.toLong())
-                    mNumStartupTasks.countDown()
+                            fileContent!!.toByteArray().size.toLong())
+                    numStartupTasks.countDown()
                 })
     }
 
@@ -171,7 +179,8 @@ class MainActivity : AppCompatActivity() {
 
         private const val DEFAULT_CONTENT_FILE = "default_content.txt"
         private const val CONTENT_FILE = "content.txt"
-        private const val IMAGE_URL = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+        private const val IMAGE_URL =
+                "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
 
         private const val STARTUP_TRACE_NAME = "startup_trace"
         private const val REQUESTS_COUNTER_NAME = "requests sent"

@@ -18,5 +18,4 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                         Intent(this, com.google.firebase.example.fireeats.kotlin.MainActivity::class.java))
         )
     }
-
 }

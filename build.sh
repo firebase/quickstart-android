@@ -24,10 +24,10 @@ cp mock-google-services.json dynamiclinks/app/google-services.json
 cp mock-google-services.json firestore/app/google-services.json
 cp mock-google-services.json functions/app/google-services.json
 cp mock-google-services.json inappmessaging/app/google-services.json
-cp mock-google-services.json invites/app/google-services.json
 cp mock-google-services.json perf/app/google-services.json
 cp mock-google-services.json messaging/app/google-services.json
 cp mock-google-services.json mlkit/app/google-services.json
+cp mock-google-services.json mlkit-langid/app/google-services.json
 cp mock-google-services.json storage/app/google-services.json
 
 # Install preview deps
@@ -38,9 +38,9 @@ ${ANDROID_HOME}/tools/bin/sdkmanager --channel=3 \
 if [ $TRAVIS_PULL_REQUEST = false ] ; then
   echo "Building full project"
   # For a merged commit, build all configurations.
-  ./gradlew clean build
+  ./gradlew clean ktlint build
 else
   # On a pull request, just build debug which is much faster and catches
   # obvious errors.
-  ./gradlew clean assembleDebug check
+  ./gradlew clean ktlint assembleDebug check
 fi

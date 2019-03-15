@@ -20,8 +20,8 @@ import android.view.View;
 
 import com.google.android.gms.vision.CameraSource;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A view which renders a series of custom graphics to be overlayed on top of an associated preview
@@ -49,7 +49,7 @@ public class GraphicOverlay extends View {
   private int previewHeight;
   private float heightScaleFactor = 1.0f;
   private int facing = CameraSource.CAMERA_FACING_BACK;
-  private Set<Graphic> graphics = new HashSet<>();
+  private final List<Graphic> graphics = new ArrayList<>();
 
   /**
    * Base class for a custom graphics object to be rendered within the graphic overlay. Subclass
@@ -135,7 +135,6 @@ public class GraphicOverlay extends View {
     synchronized (lock) {
       graphics.add(graphic);
     }
-    postInvalidate();
   }
 
   /** Removes a graphic from the overlay. */

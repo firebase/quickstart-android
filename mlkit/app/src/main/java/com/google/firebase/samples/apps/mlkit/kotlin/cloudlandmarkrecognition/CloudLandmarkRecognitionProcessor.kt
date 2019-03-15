@@ -1,5 +1,6 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.cloudlandmarkrecognition
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
@@ -18,9 +19,9 @@ class CloudLandmarkRecognitionProcessor : VisionProcessorBase<List<FirebaseVisio
 
     init {
         val options = FirebaseVisionCloudDetectorOptions.Builder()
-                .setMaxResults(10)
-                .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
-                .build()
+            .setMaxResults(10)
+            .setModelType(FirebaseVisionCloudDetectorOptions.STABLE_MODEL)
+            .build()
 
         detector = FirebaseVision.getInstance().getVisionCloudLandmarkDetector(options)
     }
@@ -30,18 +31,20 @@ class CloudLandmarkRecognitionProcessor : VisionProcessorBase<List<FirebaseVisio
     }
 
     override fun onSuccess(
-            landmarks: List<FirebaseVisionCloudLandmark>,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        originalCameraImage: Bitmap?,
+        results: List<FirebaseVisionCloudLandmark>,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
-        Log.d(TAG, "cloud landmark size: ${landmarks.size}")
-        for (i in landmarks.indices) {
-            val landmark = landmarks[i]
-            Log.d(TAG, "cloud landmark: $landmark")
-            val cloudLandmarkGraphic = CloudLandmarkGraphic(graphicOverlay)
+        Log.d(TAG, "cloud landmark size: ${results.size}")
+
+        results.forEach {
+            Log.d(TAG, "cloud landmark: $it")
+            val cloudLandmarkGraphic = CloudLandmarkGraphic(graphicOverlay, it)
             graphicOverlay.add(cloudLandmarkGraphic)
-            cloudLandmarkGraphic.updateLandmark(landmark)
         }
+        graphicOverlay.postInvalidate()
     }
 
     override fun onFailure(e: Exception) {

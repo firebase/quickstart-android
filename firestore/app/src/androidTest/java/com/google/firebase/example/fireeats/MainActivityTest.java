@@ -1,13 +1,13 @@
 package com.google.firebase.example.fireeats;
 
 import android.content.Intent;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
-import android.support.test.filters.LargeTest;
 import android.view.accessibility.AccessibilityWindowInfo;
 
 import com.google.firebase.auth.FirebaseAuth;

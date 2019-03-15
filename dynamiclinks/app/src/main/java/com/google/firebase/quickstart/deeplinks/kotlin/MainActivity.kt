@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
                         deepLink = pendingDynamicLinkData.link
                     }
 
-
                     // Handle the deep link. For example, open the linked
                     // content, or apply promotional credit to the user's
                     // account.
@@ -79,16 +78,16 @@ class MainActivity : AppCompatActivity() {
      */
     @VisibleForTesting
     fun buildDeepLink(deepLink: Uri, minVersion: Int): Uri {
-        val domain = getString(R.string.dynamic_links_domain)
+        val uriPrefix = getString(R.string.dynamic_links_uri_prefix)
 
         // Set dynamic link parameters:
-        //  * Domain (required)
+        //  * URI prefix (required)
         //  * Android Parameters (required)
         //  * Deep link
         // [START build_dynamic_link]
         val builder = FirebaseDynamicLinks.getInstance()
                 .createDynamicLink()
-                .setDynamicLinkDomain(domain)
+                .setDomainUriPrefix(uriPrefix)
                 .setAndroidParameters(DynamicLink.AndroidParameters.Builder()
                         .setMinimumVersion(minVersion)
                         .build())
@@ -112,8 +111,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun validateAppCode() {
-        val domain = getString(R.string.dynamic_links_domain)
-        if (domain.contains("YOUR_APP")) {
+        val uriPrefix = getString(R.string.dynamic_links_uri_prefix)
+        if (uriPrefix.contains("YOUR_APP")) {
             AlertDialog.Builder(this)
                     .setTitle("Invalid Configuration")
                     .setMessage("Please set your Dynamic Links domain in app/build.gradle")
@@ -126,6 +125,5 @@ class MainActivity : AppCompatActivity() {
 
         private const val TAG = "MainActivity"
         private const val DEEP_LINK_URL = "https://kotlin.example.com/deeplinks"
-
     }
 }

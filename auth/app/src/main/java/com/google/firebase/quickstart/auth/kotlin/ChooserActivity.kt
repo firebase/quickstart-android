@@ -11,7 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_chooser.*
+import kotlinx.android.synthetic.main.activity_chooser.listView
 
 /**
  * Simple list-based Activity to redirect to one of the other Activities. This Activity does not
@@ -45,27 +45,31 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         startActivity(Intent(this, clicked))
     }
 
-    class MyArrayAdapter(private val mContext: Context, resource: Int, private val mClasses: Array<Class<*>>)
-        : ArrayAdapter<Class<*>>(mContext, resource, mClasses) {
-        private var mDescriptionIds: IntArray? = null
+    class MyArrayAdapter(
+        private val ctx: Context,
+        resource: Int,
+        private val classes: Array<Class<*>>
+    )
+        : ArrayAdapter<Class<*>>(ctx, resource, classes) {
+        private var descriptionIds: IntArray? = null
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
             var view = convertView
 
             if (convertView == null) {
-                val inflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val inflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                 view = inflater.inflate(android.R.layout.simple_list_item_2, null)
             }
 
-            //Android internal resource hence can't use synthetic binding
-            view?.findViewById<TextView>(android.R.id.text1)?.text = mClasses[position].simpleName
-            view?.findViewById<TextView>(android.R.id.text2)?.setText(mDescriptionIds!![position])
+            // Android internal resource hence can't use synthetic binding
+            view?.findViewById<TextView>(android.R.id.text1)?.text = classes[position].simpleName
+            view?.findViewById<TextView>(android.R.id.text2)?.setText(descriptionIds!![position])
 
             return view
         }
 
         fun setDescriptionIds(descriptionIds: IntArray) {
-            mDescriptionIds = descriptionIds
+            this.descriptionIds = descriptionIds
         }
     }
 

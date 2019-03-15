@@ -95,6 +95,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         mSignOutButton.setOnClickListener(this);
 
         // [START initialize_auth]
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
 

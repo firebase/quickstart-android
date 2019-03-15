@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.samples.quickstart.app_indexing">
+    package="com.google.samples.quickstart.appindexing">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".EntryChoiceActivity">
+        <activity android:name="com.google.samples.quickstart.appindexing.EntryChoiceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +20,7 @@
 
         <!-- [START intent_filter] -->
         <activity
-            android:name="com.google.samples.quickstart.app_indexing.java.MainActivity"
+            android:name="com.google.samples.quickstart.appindexing.java.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTop">
@@ -53,7 +53,7 @@
         <!-- [END intent_filter] -->
 
         <activity
-            android:name="com.google.samples.quickstart.app_indexing.kotlin.MainActivity"
+            android:name="com.google.samples.quickstart.appindexing.kotlin.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTop">
@@ -85,19 +85,19 @@
         </activity>
 
         <provider
-            android:name="com.google.samples.quickstart.app_indexing.java.StickerProvider"
-            android:authorities="com.google.samples.quickstart.app_indexing.java.StickerProvider"
+            android:name="com.google.samples.quickstart.appindexing.java.StickerProvider"
+            android:authorities="com.google.samples.quickstart.appindexing.java.StickerProvider"
             android:exported="true"
             android:grantUriPermissions="true" />
 
         <provider
-            android:name="com.google.samples.quickstart.app_indexing.kotlin.StickerProvider"
-            android:authorities="com.google.samples.quickstart.app_indexing.kotlin.StickerProvider"
+            android:name="com.google.samples.quickstart.appindexing.kotlin.StickerProvider"
+            android:authorities="com.google.samples.quickstart.appindexing.kotlin.StickerProvider"
             android:exported="true"
             android:grantUriPermissions="true" />
 
         <service
-            android:name=".java.AppIndexingService"
+            android:name="com.google.samples.quickstart.appindexing.java.AppIndexingService"
             android:exported="true"
             android:permission="com.google.android.gms.permission.APPINDEXING">
             <intent-filter>
@@ -106,7 +106,7 @@
         </service>
 
         <service
-            android:name=".kotlin.AppIndexingService"
+            android:name="com.google.samples.quickstart.appindexing.kotlin.AppIndexingService"
             android:exported="true"
             android:permission="com.google.android.gms.permission.APPINDEXING">
             <intent-filter>

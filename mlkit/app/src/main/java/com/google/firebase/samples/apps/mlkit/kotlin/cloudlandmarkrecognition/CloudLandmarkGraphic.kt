@@ -8,57 +8,40 @@ import com.google.firebase.ml.vision.cloud.landmark.FirebaseVisionCloudLandmark
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 
 /** Graphic instance for rendering detected landmark.  */
-class CloudLandmarkGraphic(overlay: GraphicOverlay) : GraphicOverlay.Graphic(overlay) {
+class CloudLandmarkGraphic(overlay: GraphicOverlay, private val landmark: FirebaseVisionCloudLandmark) :
+    GraphicOverlay.Graphic(overlay) {
 
-    private val rectPaint: Paint
-    private val landmarkPaint: Paint
-    private lateinit var landmark: FirebaseVisionCloudLandmark
-
-    init {
-
-        rectPaint = Paint()
-        rectPaint.color = TEXT_COLOR
-        rectPaint.style = Paint.Style.STROKE
-        rectPaint.strokeWidth = STROKE_WIDTH
-
-        landmarkPaint = Paint()
-        landmarkPaint.color = TEXT_COLOR
-        landmarkPaint.textSize = TEXT_SIZE
+    private val rectPaint = Paint().apply {
+        color = TEXT_COLOR
+        style = Paint.Style.STROKE
+        strokeWidth = STROKE_WIDTH
     }
 
-    /**
-     * Updates the landmark instance from the detection of the most recent frame. Invalidates the
-     * relevant portions of the overlay to trigger a redraw.
-     */
-    internal fun updateLandmark(landmark: FirebaseVisionCloudLandmark) {
-        this.landmark = landmark
-        postInvalidate()
+    private val landmarkPaint = Paint().apply {
+        color = TEXT_COLOR
+        textSize = TEXT_SIZE
     }
 
     /**
      * Draws the landmark block annotations for position, size, and raw value on the supplied canvas.
      */
     override fun draw(canvas: Canvas) {
-        if (landmark == null) {
-            throw IllegalStateException("Attempting to draw a null landmark.")
-        }
-        if (landmark.landmark == null || landmark.boundingBox == null) {
-            return
-        }
+        landmark.landmark?.let { lm ->
+            landmark.boundingBox?.let { boundingBox ->
+                // Draws the bounding box around the LandmarkBlock.
+                val rect = RectF(boundingBox)
+                with(rect) {
+                    left = translateX(left)
+                    top = translateY(top)
+                    right = translateX(right)
+                    bottom = translateY(bottom)
+                    canvas.drawRect(this, rectPaint)
 
-        // Draws the bounding box around the LandmarkBlock.
-        val rect = RectF(landmark.boundingBox)
-        with(rect) {
-            left = translateX(left)
-            top = translateY(top)
-            right = translateX(right)
-            bottom = translateY(bottom)
-            canvas.drawRect(this, rectPaint)
-
-            // Renders the landmark at the bottom of the box.
-            canvas.drawText(landmark.landmark, left, bottom, landmarkPaint)
+                    // Renders the landmark at the bottom of the box.
+                    canvas.drawText(lm, left, bottom, landmarkPaint)
+                }
+            }
         }
-
     }
 
     companion object {

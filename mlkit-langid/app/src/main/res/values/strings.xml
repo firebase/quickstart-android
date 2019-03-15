@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MLKit LanguageID</string>
+    <string name="help_text">Enter text and press button to identify language</string>
+    <string name="text_id_language">Identify most likely language</string>
+    <string name="text_find_all_possibilities">Show all possibilities</string>
+    <string name="language_id_error">Failed to identify language</string>
+</resources>

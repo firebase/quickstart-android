@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
         subscribeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Subscribing to news topic");
+                Log.d(TAG, "Subscribing to weather topic");
                 // [START subscribe_topics]
-                FirebaseMessaging.getInstance().subscribeToTopic("news")
+                FirebaseMessaging.getInstance().subscribeToTopic("weather")
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get token
+                // [START retrieve_current_token]
                 FirebaseInstanceId.getInstance().getInstanceId()
                         .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                             @Override
@@ -115,8 +116,7 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                             }
                         });
-
-
+                // [END retrieve_current_token]
             }
         });
     }

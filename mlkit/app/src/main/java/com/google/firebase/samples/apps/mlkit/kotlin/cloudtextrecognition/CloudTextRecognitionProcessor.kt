@@ -1,5 +1,6 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
@@ -15,33 +16,34 @@ import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
  */
 class CloudTextRecognitionProcessor : VisionProcessorBase<FirebaseVisionText>() {
 
-    private val detector: FirebaseVisionTextRecognizer
-
-    init {
-        detector = FirebaseVision.getInstance().cloudTextRecognizer
-    }
+    private val detector: FirebaseVisionTextRecognizer = FirebaseVision.getInstance().cloudTextRecognizer
 
     override fun detectInImage(image: FirebaseVisionImage): Task<FirebaseVisionText> {
         return detector.processImage(image)
     }
 
     override fun onSuccess(
-            text: FirebaseVisionText,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        originalCameraImage: Bitmap?,
+        results: FirebaseVisionText,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
-        if (text == null) {
-            return  // TODO: investigate why this is needed
+        if (results == null) {
+            return // TODO: investigate why this is needed
         }
-        val blocks = text.textBlocks
+        val blocks = results.textBlocks
         for (i in blocks.indices) {
             val lines = blocks[i].lines
             for (j in lines.indices) {
                 val elements = lines[j].elements
                 for (l in elements.indices) {
-                    val cloudTextGraphic = CloudTextGraphic(graphicOverlay,
-                            elements[l])
+                    val cloudTextGraphic = CloudTextGraphic(
+                        graphicOverlay,
+                        elements[l]
+                    )
                     graphicOverlay.add(cloudTextGraphic)
+                    graphicOverlay.postInvalidate()
                 }
             }
         }

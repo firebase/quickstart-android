@@ -32,9 +32,10 @@ public class CloudLandmarkGraphic extends Graphic {
   private final Paint landmarkPaint;
   private FirebaseVisionCloudLandmark landmark;
 
-  CloudLandmarkGraphic(GraphicOverlay overlay) {
+  CloudLandmarkGraphic(GraphicOverlay overlay, FirebaseVisionCloudLandmark landmark) {
     super(overlay);
 
+    this.landmark = landmark;
     rectPaint = new Paint();
     rectPaint.setColor(TEXT_COLOR);
     rectPaint.setStyle(Paint.Style.STROKE);
@@ -43,15 +44,6 @@ public class CloudLandmarkGraphic extends Graphic {
     landmarkPaint = new Paint();
     landmarkPaint.setColor(TEXT_COLOR);
     landmarkPaint.setTextSize(TEXT_SIZE);
-  }
-
-  /**
-   * Updates the landmark instance from the detection of the most recent frame. Invalidates the
-   * relevant portions of the overlay to trigger a redraw.
-   */
-  void updateLandmark(FirebaseVisionCloudLandmark landmark) {
-    this.landmark = landmark;
-    postInvalidate();
   }
 
   /**

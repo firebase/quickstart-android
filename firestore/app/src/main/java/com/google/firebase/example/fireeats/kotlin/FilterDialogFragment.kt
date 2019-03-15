@@ -9,8 +9,12 @@ import android.view.ViewGroup
 import com.google.firebase.example.fireeats.R
 import com.google.firebase.example.fireeats.kotlin.model.Restaurant
 import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.dialog_filters.*
-import kotlinx.android.synthetic.main.dialog_filters.view.*
+import kotlinx.android.synthetic.main.dialog_filters.spinnerCategory
+import kotlinx.android.synthetic.main.dialog_filters.spinnerCity
+import kotlinx.android.synthetic.main.dialog_filters.spinnerPrice
+import kotlinx.android.synthetic.main.dialog_filters.spinnerSort
+import kotlinx.android.synthetic.main.dialog_filters.view.buttonCancel
+import kotlinx.android.synthetic.main.dialog_filters.view.buttonSearch
 
 /**
  * Dialog Fragment containing filter form.
@@ -66,7 +70,6 @@ class FilterDialogFragment : DialogFragment() {
             } else {
                 null
             }
-
         }
 
     private val sortDirection: Query.Direction
@@ -83,7 +86,6 @@ class FilterDialogFragment : DialogFragment() {
             } else {
                 Query.Direction.DESCENDING
             }
-
         }
 
     val filters: Filters
@@ -102,12 +104,13 @@ class FilterDialogFragment : DialogFragment() {
     interface FilterListener {
 
         fun onFilter(filters: Filters)
-
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         rootView = inflater.inflate(R.layout.dialog_filters, container, false)
 
         rootView.buttonSearch.setOnClickListener { onSearchClicked() }
@@ -131,12 +134,12 @@ class FilterDialogFragment : DialogFragment() {
                 ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    fun onSearchClicked() {
+    private fun onSearchClicked() {
         filterListener?.onFilter(filters)
         dismiss()
     }
 
-    fun onCancelClicked() {
+    private fun onCancelClicked() {
         dismiss()
     }
 
@@ -149,6 +152,6 @@ class FilterDialogFragment : DialogFragment() {
 
     companion object {
 
-        val TAG = "FilterDialog"
+        const val TAG = "FilterDialog"
     }
 }

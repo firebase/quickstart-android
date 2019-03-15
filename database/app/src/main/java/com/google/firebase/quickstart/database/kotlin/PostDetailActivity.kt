@@ -9,16 +9,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.firebase.database.*
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.models.Comment
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.models.User
-import kotlinx.android.synthetic.main.activity_post_detail.*
-import kotlinx.android.synthetic.main.include_post_author.*
-import kotlinx.android.synthetic.main.include_post_text.*
-import kotlinx.android.synthetic.main.item_comment.view.*
-import java.util.*
+import kotlinx.android.synthetic.main.activity_post_detail.buttonPostComment
+import kotlinx.android.synthetic.main.activity_post_detail.fieldCommentText
+import kotlinx.android.synthetic.main.activity_post_detail.recyclerPostComments
+import kotlinx.android.synthetic.main.include_post_author.postAuthor
+import kotlinx.android.synthetic.main.include_post_text.postBody
+import kotlinx.android.synthetic.main.include_post_text.postTitle
+import kotlinx.android.synthetic.main.item_comment.view.commentAuthor
+import kotlinx.android.synthetic.main.item_comment.view.commentBody
+import java.util.ArrayList
 
 class PostDetailActivity : BaseActivity(), View.OnClickListener {
 
@@ -34,8 +43,8 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_post_detail)
 
         // Get post key from intent
-        postKey = intent.getStringExtra(EXTRA_POST_KEY) ?:
-                throw IllegalArgumentException("Must pass EXTRA_POST_KEY")
+        postKey = intent.getStringExtra(EXTRA_POST_KEY)
+                ?: throw IllegalArgumentException("Must pass EXTRA_POST_KEY")
 
         // Initialize Database
         postReference = FirebaseDatabase.getInstance().reference
@@ -46,7 +55,6 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
         // Initialize Views
         buttonPostComment.setOnClickListener(this)
         recyclerPostComments.layoutManager = LinearLayoutManager(this)
-
     }
 
     public override fun onStart() {
@@ -131,7 +139,6 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
-
                     }
                 })
     }
@@ -142,11 +149,12 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
             itemView.commentAuthor.text = comment.author
             itemView.commentBody.text = comment.text
         }
-
     }
 
-    private class CommentAdapter(private val context: Context,
-                                 private val databaseReference: DatabaseReference) : RecyclerView.Adapter<CommentViewHolder>() {
+    private class CommentAdapter(
+        private val context: Context,
+        private val databaseReference: DatabaseReference
+    ) : RecyclerView.Adapter<CommentViewHolder>() {
 
         private val childEventListener: ChildEventListener?
 
@@ -184,7 +192,7 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                     val commentIndex = commentIds.indexOf(commentKey)
                     if (commentIndex > -1 && newComment != null) {
                         // Replace with the new data
-                        comments.set(commentIndex, newComment)
+                        comments[commentIndex] = newComment
 
                         // Update the RecyclerView
                         notifyItemChanged(commentIndex)
@@ -257,13 +265,11 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                 databaseReference.removeEventListener(it)
             }
         }
-
     }
 
     companion object {
 
         private const val TAG = "PostDetailActivity"
         const val EXTRA_POST_KEY = "post_key"
-
     }
 }

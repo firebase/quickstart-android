@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
                     Crashlytics.logException(ex)
                     // [END crashlytics_log_and_report]
                 }
-
             } else {
                 throw NullPointerException()
             }
@@ -70,6 +69,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        private val TAG = "MainActivity"
+        private const val TAG = "MainActivity"
     }
 }

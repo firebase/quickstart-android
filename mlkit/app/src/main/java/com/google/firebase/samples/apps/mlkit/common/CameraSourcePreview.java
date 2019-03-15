@@ -83,7 +83,7 @@ public class CameraSourcePreview extends ViewGroup {
   @SuppressLint("MissingPermission")
   private void startIfReady() throws IOException {
     if (startRequested && surfaceAvailable) {
-      cameraSource.start(surfaceView.getHolder());
+      cameraSource.start();
       if (overlay != null) {
         Size size = cameraSource.getPreviewSize();
         int min = Math.min(size.getWidth(), size.getHeight());

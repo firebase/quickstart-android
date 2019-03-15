@@ -12,7 +12,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.models.User
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.android.synthetic.main.activity_sign_in.buttonSignIn
+import kotlinx.android.synthetic.main.activity_sign_in.buttonSignUp
+import kotlinx.android.synthetic.main.activity_sign_in.fieldEmail
+import kotlinx.android.synthetic.main.activity_sign_in.fieldPassword
 
 class SignInActivity : BaseActivity(), View.OnClickListener {
 
@@ -56,7 +59,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                     hideProgressDialog()
 
                     if (task.isSuccessful) {
-                        onAuthSuccess(task.result.user)
+                        onAuthSuccess(task.result?.user!!)
                     } else {
                         Toast.makeText(baseContext, "Sign In Failed",
                                 Toast.LENGTH_SHORT).show()
@@ -80,7 +83,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
                     hideProgressDialog()
 
                     if (task.isSuccessful) {
-                        onAuthSuccess(task.result.user)
+                        onAuthSuccess(task.result?.user!!)
                     } else {
                         Toast.makeText(baseContext, "Sign Up Failed",
                                 Toast.LENGTH_SHORT).show()
@@ -145,6 +148,5 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     companion object {
 
         private const val TAG = "SignInActivity"
-
     }
 }

@@ -31,9 +31,9 @@ android {
         mainFlavor {
             dimension "all"
 
-            // TODO(developer): Replace this with your Dynamic Links domain
+            // TODO(developer): Replace this with your Dynamic Links URI prefix
             //                  See: https://firebase.google.com/docs/dynamic-links/android/create#set-up-firebase-and-the-dynamic-links-sdk
-            resValue "string", "dynamic_links_domain", "YOUR_APP.page.link"
+            resValue "string", "dynamic_links_uri_prefix", "https://YOUR_APP.page.link"
         }
     }
 }
@@ -45,14 +45,14 @@ configurations.all {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooser")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.71"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.21"
 
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:design:28.0.0'
 
-    implementation 'com.google.firebase:firebase-core:16.0.3'
-    implementation 'com.google.firebase:firebase-invites:16.0.3'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-invites:16.1.0'
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'

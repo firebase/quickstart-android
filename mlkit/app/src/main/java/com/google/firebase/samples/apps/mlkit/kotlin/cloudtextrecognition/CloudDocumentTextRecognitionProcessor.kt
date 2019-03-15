@@ -1,5 +1,6 @@
 package com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition
 
+import android.graphics.Bitmap
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.FirebaseVision
@@ -13,23 +14,22 @@ import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 /** Processor for the cloud document text detector demo.  */
 class CloudDocumentTextRecognitionProcessor : VisionProcessorBase<FirebaseVisionDocumentText>() {
 
-    private val detector: FirebaseVisionDocumentTextRecognizer
-
-    init {
-        detector = FirebaseVision.getInstance().cloudDocumentTextRecognizer
-    }
+    private val detector: FirebaseVisionDocumentTextRecognizer =
+            FirebaseVision.getInstance().cloudDocumentTextRecognizer
 
     override fun detectInImage(image: FirebaseVisionImage): Task<FirebaseVisionDocumentText> {
         return detector.processImage(image)
     }
 
     override fun onSuccess(
-            text: FirebaseVisionDocumentText,
-            frameMetadata: FrameMetadata,
-            graphicOverlay: GraphicOverlay) {
+        originalCameraImage: Bitmap?,
+        results: FirebaseVisionDocumentText,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
+    ) {
         graphicOverlay.clear()
-        Log.d(TAG, "detected text is: ${text.text}")
-        val blocks = text.blocks
+        Log.d(TAG, "detected text is: ${results.text}")
+        val blocks = results.blocks
         for (i in blocks.indices) {
             val paragraphs = blocks[i].paragraphs
             for (j in paragraphs.indices) {
@@ -37,9 +37,12 @@ class CloudDocumentTextRecognitionProcessor : VisionProcessorBase<FirebaseVision
                 for (l in words.indices) {
                     val symbols = words[l].symbols
                     for (m in symbols.indices) {
-                        val cloudDocumentTextGraphic = CloudDocumentTextGraphic(graphicOverlay,
-                                symbols[m])
+                        val cloudDocumentTextGraphic = CloudDocumentTextGraphic(
+                            graphicOverlay,
+                            symbols[m]
+                        )
                         graphicOverlay.add(cloudDocumentTextGraphic)
+                        graphicOverlay.postInvalidate()
                     }
                 }
             }

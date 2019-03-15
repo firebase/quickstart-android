@@ -64,6 +64,7 @@ public class EmailPasswordActivity extends BaseActivity implements
         findViewById(R.id.verifyEmailButton).setOnClickListener(this);
 
         // [START initialize_auth]
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
     }

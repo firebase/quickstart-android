@@ -119,16 +119,16 @@ public class MainActivity extends AppCompatActivity {
      */
     @VisibleForTesting
     public Uri buildDeepLink(@NonNull Uri deepLink, int minVersion) {
-        String domain = getString(R.string.dynamic_links_domain);
+        String uriPrefix = getString(R.string.dynamic_links_uri_prefix);
 
         // Set dynamic link parameters:
-        //  * Domain (required)
+        //  * URI prefix (required)
         //  * Android Parameters (required)
         //  * Deep link
         // [START build_dynamic_link]
         DynamicLink.Builder builder = FirebaseDynamicLinks.getInstance()
                 .createDynamicLink()
-                .setDynamicLinkDomain(domain)
+                .setDomainUriPrefix(uriPrefix)
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
                         .setMinimumVersion(minVersion)
                         .build())
@@ -152,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void validateAppCode() {
-        String domain = getString(R.string.dynamic_links_domain);
-        if (domain.contains("YOUR_APP")) {
+        String uriPrefix = getString(R.string.dynamic_links_uri_prefix);
+        if (uriPrefix.contains("YOUR_APP")) {
             new AlertDialog.Builder(this)
                     .setTitle("Invalid Configuration")
                     .setMessage("Please set your Dynamic Links domain in app/build.gradle")

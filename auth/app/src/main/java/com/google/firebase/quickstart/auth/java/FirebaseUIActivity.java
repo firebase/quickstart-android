@@ -35,6 +35,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_ui);
 
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         mStatusView = findViewById(R.id.status);

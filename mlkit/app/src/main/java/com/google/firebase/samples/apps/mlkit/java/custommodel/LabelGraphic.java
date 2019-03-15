@@ -17,7 +17,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 
@@ -31,17 +30,13 @@ public class LabelGraphic extends Graphic {
 
   private List<String> labels;
 
-  LabelGraphic(GraphicOverlay overlay) {
+  LabelGraphic(GraphicOverlay overlay, List<String> labels) {
     super(overlay);
     this.overlay = overlay;
+    this.labels = labels;
     textPaint = new Paint();
     textPaint.setColor(Color.WHITE);
     textPaint.setTextSize(60.0f);
-  }
-
-  synchronized void updateLabel(List<String> labels) {
-    this.labels = labels;
-    postInvalidate();
   }
 
   @Override

@@ -55,6 +55,7 @@ public class AnonymousAuthActivity extends BaseActivity implements
         setContentView(R.layout.activity_anonymous_auth);
 
         // [START initialize_auth]
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
 

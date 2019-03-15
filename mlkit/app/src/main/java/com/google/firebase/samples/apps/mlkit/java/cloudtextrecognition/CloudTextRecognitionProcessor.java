@@ -13,14 +13,16 @@
 // limitations under the License.
 package com.google.firebase.samples.apps.mlkit.java.cloudtextrecognition;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.samples.apps.mlkit.common.FrameMetadata;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.java.VisionProcessorBase;
@@ -48,6 +50,7 @@ public class CloudTextRecognitionProcessor extends VisionProcessorBase<FirebaseV
 
     @Override
     protected void onSuccess(
+            @Nullable Bitmap originalCameraImage,
             @NonNull FirebaseVisionText text,
             @NonNull FrameMetadata frameMetadata,
             @NonNull GraphicOverlay graphicOverlay) {
@@ -67,6 +70,7 @@ public class CloudTextRecognitionProcessor extends VisionProcessorBase<FirebaseV
                 }
             }
         }
+        graphicOverlay.postInvalidate();
     }
 
     @Override

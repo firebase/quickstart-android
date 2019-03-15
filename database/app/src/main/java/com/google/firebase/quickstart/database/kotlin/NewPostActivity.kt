@@ -3,14 +3,19 @@ package com.google.firebase.quickstart.database.kotlin
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
-import android.view.View
 import android.widget.Toast
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.models.User
-import kotlinx.android.synthetic.main.activity_new_post.*
-import java.util.*
+import kotlinx.android.synthetic.main.activity_new_post.fabSubmitPost
+import kotlinx.android.synthetic.main.activity_new_post.fieldBody
+import kotlinx.android.synthetic.main.activity_new_post.fieldTitle
+import java.util.HashMap
 
 class NewPostActivity : BaseActivity() {
 
@@ -120,6 +125,5 @@ class NewPostActivity : BaseActivity() {
 
         private const val TAG = "NewPostActivity"
         private const val REQUIRED = "Required"
-
     }
 }
