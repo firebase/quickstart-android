@@ -1,4 +1,4 @@
-package com.google.firebase.samples.apps.mlkit.smartreply.ui.chat;
+package com.google.firebase.samples.apps.mlkit.smartreply.java.chat;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.firebase.samples.apps.mlkit.smartreply.R;
-import com.google.firebase.samples.apps.mlkit.smartreply.model.Message;
+import com.google.firebase.samples.apps.mlkit.smartreply.java.model.Message;
 
 import java.util.ArrayList;
 import java.util.List;

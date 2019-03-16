@@ -1,4 +1,4 @@
-package com.google.firebase.samples.apps.mlkit.smartreply.ui.chat;
+package com.google.firebase.samples.apps.mlkit.smartreply.java.chat;
 
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.google.firebase.ml.naturallanguage.smartreply.SmartReplySuggestion;
 import com.google.firebase.samples.apps.mlkit.smartreply.R;
-import com.google.firebase.samples.apps.mlkit.smartreply.model.Message;
+import com.google.firebase.samples.apps.mlkit.smartreply.java.model.Message;
 
 import java.util.ArrayList;
 import java.util.Calendar;

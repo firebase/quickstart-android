@@ -1,4 +1,4 @@
-package com.google.firebase.samples.apps.mlkit.smartreply.model;
+package com.google.firebase.samples.apps.mlkit.smartreply.java.model;
 
 import android.content.Context;
 import android.graphics.Color;

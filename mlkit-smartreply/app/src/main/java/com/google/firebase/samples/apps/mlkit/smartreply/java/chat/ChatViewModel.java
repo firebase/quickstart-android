@@ -1,4 +1,4 @@
-package com.google.firebase.samples.apps.mlkit.smartreply.ui.chat;
+package com.google.firebase.samples.apps.mlkit.smartreply.java.chat;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
@@ -15,7 +15,7 @@ import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
 import com.google.firebase.ml.naturallanguage.smartreply.FirebaseTextMessage;
 import com.google.firebase.ml.naturallanguage.smartreply.SmartReplySuggestion;
 import com.google.firebase.ml.naturallanguage.smartreply.SmartReplySuggestionResult;
-import com.google.firebase.samples.apps.mlkit.smartreply.model.Message;
+import com.google.firebase.samples.apps.mlkit.smartreply.java.model.Message;
 
 import java.util.ArrayList;
 import java.util.List;

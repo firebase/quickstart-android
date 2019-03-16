@@ -1,4 +1,4 @@
-package com.google.firebase.samples.apps.mlkit.smartreply.ui.chat;
+package com.google.firebase.samples.apps.mlkit.smartreply.java.chat;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
