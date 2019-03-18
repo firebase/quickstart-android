@@ -2,7 +2,9 @@ package com.google.firebase.samples.apps.mlkit.smartreply.java.model;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -28,10 +30,14 @@ public class Message {
             throw new IllegalStateException("Could not get drawable ic_tag_faces_black_24dp");
         }
 
-        if (isLocalUser) {
-            DrawableCompat.setTint(drawable, Color.BLUE);
+        // See:
+        // https://stackoverflow.com/questions/36731919/drawablecompat-settint-not-working-on-api-19
+        drawable = DrawableCompat.wrap(drawable);
+        int color = isLocalUser ? Color.BLUE : Color.RED;
+        if (Build.VERSION.SDK_INT >= 22) {
+            DrawableCompat.setTint(drawable, color);
         } else {
-            DrawableCompat.setTint(drawable, Color.RED);
+            drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
 
         return drawable;
