@@ -8,11 +8,11 @@
         android:id="@+id/fieldTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:hint="Title"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="5dp"
+        android:hint="pass a time stamp here"
         android:maxLines="1" />
 
     <EditText
@@ -20,11 +20,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fieldTitle"
-        android:layout_marginBottom="5dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginTop="5dp"
-        android:hint="Write your post..."
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="5dp"
+        android:hint="win/lost"
         android:inputType="textMultiLine"
         android:maxLines="10"
         android:scrollHorizontally="false" />
@@ -33,9 +33,14 @@
         android:id="@+id/fabSubmitPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_navigation_check_24"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="211dp"
+        android:layout_marginBottom="510dp"
+        android:src="@drawable/ic_navigation_check_24" />
 
 </RelativeLayout>

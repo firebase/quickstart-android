@@ -21,11 +21,12 @@
             android:id="@+id/starLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/postAuthorLayout"
             android:layout_alignBottom="@+id/postAuthorLayout"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/postAuthorLayout"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/star"

@@ -9,14 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:src="@drawable/firebase_lockup_400" />
-
     <LinearLayout
         android:id="@+id/layoutEmailPassword"
         android:layout_width="wrap_content"

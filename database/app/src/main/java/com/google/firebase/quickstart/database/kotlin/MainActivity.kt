@@ -27,13 +27,13 @@ class MainActivity : BaseActivity() {
         pagerAdapter = object : FragmentPagerAdapter(supportFragmentManager) {
             private val fragments = arrayOf<Fragment>(
                     RecentPostsFragment(),
-                    MyPostsFragment(),
-                    MyTopPostsFragment())
+                    MyPostsFragment()
+            )
 
             private val fragmentNames = arrayOf(
                     getString(R.string.heading_recent),
-                    getString(R.string.heading_my_posts),
-                    getString(R.string.heading_my_top_posts))
+                    getString(R.string.heading_my_posts)
+            )
 
             override fun getItem(position: Int): Fragment {
                 return fragments[position]

@@ -92,7 +92,7 @@ abstract class PostListFragment : Fragment() {
                 }
 
                 // Determine if the current user has liked this post and set UI accordingly
-                viewHolder.setLikedState(model.stars.containsKey(uid))
+
 
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
                 viewHolder.bindToPost(model, View.OnClickListener {

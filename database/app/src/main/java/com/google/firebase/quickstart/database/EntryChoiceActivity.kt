@@ -8,13 +8,10 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
 
     override fun getChoices(): List<Choice> {
         return listOf(
+
                 Choice(
-                        "Java",
-                        "Run the Firebase Realtime Database quickstart written in Java.",
-                        Intent(this, com.google.firebase.quickstart.database.java.SignInActivity::class.java)),
-                Choice(
-                        "Kotlin",
-                        "Run the Firebase Realtime Database quickstart written in Kotlin.",
+                        "Welcome to our blackjacking APP",
+                        "Click here to get started.",
                         Intent(this, com.google.firebase.quickstart.database.kotlin.SignInActivity::class.java))
         )
     }
