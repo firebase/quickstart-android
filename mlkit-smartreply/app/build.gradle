@@ -41,7 +41,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.firebase:firebase-ml-natural-language:18.2.0'
     implementation 'com.google.firebase:firebase-ml-natural-language-smart-reply-model:18.0.0'
-    implementation 'com.google.firebase:firebase-ml-natural-language-language-id-model:18.0.3'
 
     implementation 'com.google.guava:guava:27.0.1-android'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
