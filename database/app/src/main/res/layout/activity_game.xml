@@ -8,6 +8,7 @@
         android:id="@+id/fieldTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
@@ -33,14 +34,13 @@
         android:id="@+id/fabSubmitPost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="211dp"
-        android:layout_marginBottom="510dp"
-        android:src="@drawable/ic_navigation_check_24" />
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="-372dp"
+        android:layout_marginLeft="-372dp"
+        android:layout_marginTop="128dp"
+        android:layout_toEndOf="@+id/fieldBody"
+        android:layout_toRightOf="@+id/fieldBody"
+        android:src="@drawable/ic_navigation_check_24"
+        android:visibility="visible" />
 
 </RelativeLayout>

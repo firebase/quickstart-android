@@ -11,7 +11,7 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
 
                 Choice(
                         "Welcome to our blackjacking APP",
-                        "Click here to get started.",
+                        "Click 'open' to get started.",
                         Intent(this, com.google.firebase.quickstart.database.kotlin.SignInActivity::class.java))
         )
     }

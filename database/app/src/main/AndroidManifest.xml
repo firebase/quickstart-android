@@ -31,7 +31,7 @@
         <activity android:name=".kotlin.SignInActivity" />
 
         <activity android:name=".java.NewPostActivity" />
-        <activity android:name=".kotlin.NewPostActivity" />
+        <activity android:name=".kotlin.GameActivity" />
 
         <activity android:name=".java.PostDetailActivity" />
         <activity android:name=".kotlin.PostDetailActivity" />

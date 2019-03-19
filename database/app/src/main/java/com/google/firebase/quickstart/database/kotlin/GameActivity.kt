@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_game.fieldBody
 import kotlinx.android.synthetic.main.activity_game.fieldTitle
 import java.util.HashMap
 
-class NewPostActivity : BaseActivity() {
+class GameActivity : BaseActivity() {
 
     // [START declare_database_ref]
     private lateinit var database: DatabaseReference
@@ -34,6 +34,8 @@ class NewPostActivity : BaseActivity() {
         fabSubmitPost.setOnClickListener { submitPost() }
     }
 
+
+    //after the game is over, uodate the database
     private fun submitPost() {
         val title = fieldTitle.text.toString()
         val body = fieldBody.text.toString()
@@ -123,7 +125,7 @@ class NewPostActivity : BaseActivity() {
 
     companion object {
 
-        private const val TAG = "NewPostActivity"
+        private const val TAG = "GameActivity"
         private const val REQUIRED = "Required"
     }
 }

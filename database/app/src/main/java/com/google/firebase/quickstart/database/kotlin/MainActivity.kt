@@ -9,7 +9,6 @@ import android.view.MenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.fragment.MyPostsFragment
-import com.google.firebase.quickstart.database.kotlin.fragment.MyTopPostsFragment
 import com.google.firebase.quickstart.database.kotlin.fragment.RecentPostsFragment
 import kotlinx.android.synthetic.main.activity_main.container
 import kotlinx.android.synthetic.main.activity_main.fabNewPost
@@ -50,9 +49,9 @@ class MainActivity : BaseActivity() {
         container.adapter = pagerAdapter
         tabs.setupWithViewPager(container)
 
-        // Button launches NewPostActivity
+        // Button launches GameActivity
         fabNewPost.setOnClickListener {
-            startActivity(Intent(this, NewPostActivity::class.java))
+            startActivity(Intent(this, GameActivity::class.java))
         }
     }
 

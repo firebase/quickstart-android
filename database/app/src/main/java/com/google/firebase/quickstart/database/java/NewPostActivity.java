@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class NewPostActivity extends BaseActivity {
 
-    private static final String TAG = "NewPostActivity";
+    private static final String TAG = "GameActivity";
     private static final String REQUIRED = "Required";
 
     // [START declare_database_ref]
