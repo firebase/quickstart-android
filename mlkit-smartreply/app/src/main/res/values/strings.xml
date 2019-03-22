@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ML Kit Smart Reply</string>
+    <string name="send_message_button_text">Send</string>
+    <string name="empty_input_message">Enter some input text first.</string>
+    <string name="title_switch_user">Switch emulated user</string>
+    <string name="hint_input_text">Enter message text</string>
+    <string name="title_generate_sensitive_history">Generate history with sensitive content</string>
+    <string name="title_generate_basic_history">Generate basic history</string>
+    <string name="switch_user_button">SWITCH</string>
+    <string name="title_clear_history">Clear chat history</string>
+    <string name="chatting_as_red">Chatting as Red User</string>
+    <string name="chatting_as_blue">Chatting as Blue User</string>
+</resources>
