@@ -11,7 +11,7 @@ import com.google.firebase.samples.apps.mlkit.smartreply.R
 
 import java.util.ArrayList
 
-class ReplyChipAdapter(private val mListener: ClickListener) : RecyclerView.Adapter<ReplyChipAdapter.ViewHolder>() {
+class ReplyChipAdapter(private val listener: ClickListener) : RecyclerView.Adapter<ReplyChipAdapter.ViewHolder>() {
 
     private val suggestions = ArrayList<SmartReplySuggestion>()
 
@@ -50,7 +50,7 @@ class ReplyChipAdapter(private val mListener: ClickListener) : RecyclerView.Adap
 
         fun bind(suggestion: SmartReplySuggestion) {
             text.text = suggestion.text
-            itemView.setOnClickListener { mListener.onChipClick(suggestion.text) }
+            itemView.setOnClickListener { listener.onChipClick(suggestion.text) }
         }
     }
 }
