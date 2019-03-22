@@ -31,7 +31,9 @@ internal class MessageListAdapter : RecyclerView.Adapter<MessageListAdapter.Mess
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (messagesList[position].isLocalUser && !emulatingRemoteUser || !messagesList[position].isLocalUser && emulatingRemoteUser) {
+        return if (
+            messagesList[position].isLocalUser && !emulatingRemoteUser ||
+            !messagesList[position].isLocalUser && emulatingRemoteUser) {
             R.layout.item_message_local
         } else {
             R.layout.item_message_remote

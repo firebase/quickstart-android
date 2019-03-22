@@ -18,7 +18,6 @@ class ReplyChipAdapter(private val mListener: ClickListener) : RecyclerView.Adap
     interface ClickListener {
 
         fun onChipClick(chipText: String)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -54,5 +53,4 @@ class ReplyChipAdapter(private val mListener: ClickListener) : RecyclerView.Adap
             itemView.setOnClickListener { mListener.onChipClick(suggestion.text) }
         }
     }
-
 }

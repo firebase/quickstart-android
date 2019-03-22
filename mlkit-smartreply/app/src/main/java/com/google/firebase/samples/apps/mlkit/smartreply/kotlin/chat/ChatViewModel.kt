@@ -81,12 +81,16 @@ class ChatViewModel : ViewModel() {
                 return@Observer
             }
 
-            generateReplies(list, isEmulatingRemoteUser).addOnSuccessListener { result -> suggestions.postValue(result) }
+            generateReplies(list, isEmulatingRemoteUser).addOnSuccessListener { result ->
+                suggestions.postValue(result)
+            }
         })
     }
 
-    private fun generateReplies(messages: List<Message>,
-                                isEmulatingRemoteUser: Boolean): Task<List<SmartReplySuggestion>> {
+    private fun generateReplies(
+        messages: List<Message>,
+        isEmulatingRemoteUser: Boolean
+    ): Task<List<SmartReplySuggestion>> {
         val lastMessage = messages[messages.size - 1]
 
         // If the last message in the chat thread is not sent by the "other" user, don't generate
