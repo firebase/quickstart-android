@@ -63,6 +63,7 @@ task("ktlint", type: JavaExec, group: "verification") {
     classpath = configurations.ktlint
     main = "com.github.shyiko.ktlint.Main"
     args = [
+        "--format",
         "--android",
         "--reporter=plain",
         "--reporter=checkstyle,output=${outputFile}",
