@@ -40,9 +40,9 @@ dependencies {
     implementation 'com.android.support:customtabs:28.0.0'
 
     // [START gradle_play_config]
-    implementation 'com.google.firebase:firebase-ads:17.1.3'
+    implementation 'com.google.firebase:firebase-ads:17.2.0'
     // [END gradle_play_config]
-    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
