@@ -22,8 +22,8 @@ However, there can only be one service in each app that receives FCM
 messages. If multiple are declared in the Manifest then the first
 one will be chosen.
 
-In order to make the Kotlin messaging sample functional, you must
-remove the following from the `.java.MyFirebaseMessagingService` entry
+In order to make the Java messaging sample functional, you must
+remove the following from the `.kotlin.MyFirebaseMessagingService` entry
 in the `AndroidManifest.xml`:
 
 ```
