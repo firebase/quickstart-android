@@ -34,6 +34,17 @@ import com.google.firebase.quickstart.fcm.R;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+/**
+ * NOTE: There can only be one service in each app that receives FCM messages. If multiple
+ * are declared in the Manifest then the first one will be chosen.
+ *
+ * In order to make this Java sample functional, you must remove the following from the Kotlin messaging
+ * service in the AndroidManifest.xml:
+ *
+ * <intent-filter>
+ *   <action android:name="com.google.firebase.MESSAGING_EVENT" />
+ * </intent-filter>
+ */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
