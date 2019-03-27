@@ -98,7 +98,7 @@ public class GenericIdpActivity extends BaseActivity implements
         ArrayList<String> scopes = new ArrayList<>();
 
         mAuth.startActivityForSignInWithProvider(this,
-                OAuthProvider.newBuilder("hotmail.com", mAuth)
+                OAuthProvider.newBuilder("microsoft.com", mAuth)
                         .setScopes(scopes)
                         .build())
                 .addOnSuccessListener(

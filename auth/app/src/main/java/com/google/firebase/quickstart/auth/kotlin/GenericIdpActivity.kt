@@ -74,7 +74,7 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
         val scopes = ArrayList<String>()
 
         auth.startActivityForSignInWithProvider(this,
-                OAuthProvider.newBuilder("hotmail.com", auth)
+                OAuthProvider.newBuilder("microsoft.com", auth)
                         .setScopes(scopes)
                         .build())
                 .addOnSuccessListener { authResult ->
