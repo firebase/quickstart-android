@@ -30,8 +30,8 @@ import com.google.firebase.ml.custom.FirebaseModelOptions
 import com.google.firebase.ml.common.modeldownload.FirebaseModelManager
 import com.google.firebase.ml.custom.FirebaseModelDataType
 import com.google.firebase.ml.custom.FirebaseModelInputs
-import com.google.firebase.ml.common.modeldownload.FirebaseCloudModelSource
-import com.google.firebase.ml.common.modeldownload.FirebaseLocalModelSource
+import com.google.firebase.ml.common.modeldownload.FirebaseRemoteModel
+import com.google.firebase.ml.common.modeldownload.FirebaseLocalModel
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
@@ -103,23 +103,23 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
         else
             LOCAL_FLOAT_MODEL_PATH
         val modelOptions = FirebaseModelOptions.Builder()
-                .setCloudModelName(hostedModelName)
+                .setRemoteModelName(hostedModelName)
                 .setLocalModelName(localModelName)
                 .build()
         val conditions = FirebaseModelDownloadConditions.Builder()
                 .requireWifi()
                 .build()
-        val localModelSource = FirebaseLocalModelSource.Builder(localModelName)
+        val localModelSource = FirebaseLocalModel.Builder(localModelName)
                 .setAssetFilePath(localModelPath).build()
-        val cloudSource = FirebaseCloudModelSource.Builder(hostedModelName)
+        val cloudSource = FirebaseRemoteModel.Builder(hostedModelName)
                 .enableModelUpdates(true)
                 .setInitialDownloadConditions(conditions)
                 .setUpdatesDownloadConditions(conditions) // You could also specify different
                 // conditions for updates.
                 .build()
         val manager = FirebaseModelManager.getInstance()
-        manager.registerLocalModelSource(localModelSource)
-        manager.registerCloudModelSource(cloudSource)
+        manager.registerLocalModel(localModelSource)
+        manager.registerRemoteModel(cloudSource)
         interpreter = FirebaseModelInterpreter.getInstance(modelOptions)
         labelList = loadLabelList(activity)
         Log.d(TAG, "Created a Custom Image Classifier.")
