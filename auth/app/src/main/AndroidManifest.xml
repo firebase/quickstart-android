@@ -59,6 +59,9 @@
         <activity
             android:name=".java.FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
+        <activity
+            android:name=".java.GenericIdpActivity"
+            android:label="@string/label_generic_idp" />
 
         <activity android:name=".kotlin.ChooserActivity" />
 
@@ -102,6 +105,9 @@
         <activity
             android:name=".kotlin.FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
+        <activity
+            android:name=".kotlin.GenericIdpActivity"
+            android:label="@string/label_generic_idp" />
 
         <!-- Facebook Configuration -->
         <meta-data

@@ -14,7 +14,7 @@ Getting Started
 
 ### Google Sign In Setup
 
-- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+- Go to the [Firebase Console][fir-console] and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Google** and turn on the **Enable** switch, then click **Save**.
 - Run the sample app on your device or emulator.
@@ -30,7 +30,7 @@ Getting Started
   `com.google.firebase.quickstart.usermanagement`.
   - When asked for a main class name,
   use `com.google.firebase.quickstart.usermanagement.FacebookLoginActivity`.
-- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+- Go to the [Firebase Console][fir-console] and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Facebook** and turn on the **Enable** switch, then click **Save**.
   - Enter your Facebook **App Id** and **App Secret** and click **Save**.
@@ -47,7 +47,7 @@ Getting Started
 - Go to the [Twitter Developers Site](https://apps.twitter.com) and click **Create New App**
   instructions to set up a new Android app.
   - Go to the **Keys and Access Tokens** tab of your app and copy the **Consumer Key** and **Consumer Secret**.
-- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+- Go to the [Firebase Console][fir-console] and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Twitter** and turn on the **Enable** switch, then click **Save**.
   - Enter your Twitter **Consumer Key** and **Consumer Secret** and click **Save**.
@@ -64,7 +64,7 @@ Getting Started
 
 ### Email/Password Setup
 
-- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+- Go to the [Firebase Console][fir-console] and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Email/Password** and turn on the **Enable** switch, then click **Save**.
   - Under **Authorized Domains** click **Add Domain** and add `auth.example.com`.
@@ -74,7 +74,7 @@ Getting Started
 
 ### Passwordless Setup
 
-- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+- Go to the [Firebase Console][fir-console] and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Email/Password** and turn on the **Enable** switch. 
   - Turn on the **Email Link (passwordless sign-in)** switch, then click **Save**.
@@ -86,7 +86,7 @@ Getting Started
 
 ### Phone Authentication Setup
 
-- Go to the [Firebase Console](https://console.firebase.google.com) and navigate to your project:
+- Go to the [Firebase Console][fir-console] and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Phone** and turn on the **Enable** switch, then click **Save**.
 - Run the app on your device or emulator.
@@ -112,6 +112,19 @@ Getting Started
     - Click **Sign In** to sign in to Firebase User Management with the generated JWT. You should
       see the User ID you entered when generating the token.
 
+### Generic IDP Setup (Microsoft)
+
+- Go to the [Microsoft Developer Console])(https://apps.dev.microsoft.com) and navigate to your app.
+    - Copy your **Application ID**
+    - In the "Application Secrets" section click **Generate New Password** and copy the result.
+- Go to the [Firebase console][fir-console] and navigate to **Authentication** > **Sign-in method**
+    - Make sure Microsoft is enabled
+    - Enter your application ID and application secret (password) from the previous step.
+- Return to the Microsoft console
+    - Add the redirect URL from the Firebase console under **Platforms** > **Web**.
+- Run the Android application on your Android device or emulator.
+    - Select **GenericIdpActivity** from the main screen.
+    - Hit the sign in button and proceed through the login flow.
 
 Result
 -----------
@@ -142,3 +155,5 @@ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
 License for the specific language governing permissions and limitations under
 the License.
+
+[fir-console]: https://console.firebase.google.com

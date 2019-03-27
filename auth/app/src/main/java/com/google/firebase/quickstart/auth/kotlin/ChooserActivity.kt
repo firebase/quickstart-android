@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_chooser.listView
  *     {@link PhoneAuthActivity}
  *     {@link AnonymousAuthActivity}
  *     {@link CustomAuthActivity}
+ *     {@link GenericIdpActivity}
  */
 class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
@@ -78,11 +79,13 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
                 FacebookLoginActivity::class.java, TwitterLoginActivity::class.java,
                 EmailPasswordActivity::class.java, PasswordlessActivity::class.java,
                 PhoneAuthActivity::class.java, AnonymousAuthActivity::class.java,
-                FirebaseUIActivity::class.java, CustomAuthActivity::class.java)
+                FirebaseUIActivity::class.java, CustomAuthActivity::class.java,
+                GenericIdpActivity::class.java)
         private val DESCRIPTION_IDS = intArrayOf(R.string.desc_google_sign_in,
                 R.string.desc_facebook_login, R.string.desc_twitter_login,
                 R.string.desc_emailpassword, R.string.desc_passwordless,
                 R.string.desc_phone_auth, R.string.desc_anonymous_auth,
-                R.string.desc_firebase_ui, R.string.desc_custom_auth)
+                R.string.desc_firebase_ui, R.string.desc_custom_auth,
+                R.string.desc_generic_idp)
     }
 }
