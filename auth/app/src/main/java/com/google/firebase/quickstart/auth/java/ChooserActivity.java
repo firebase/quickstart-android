@@ -42,6 +42,7 @@ import com.google.firebase.quickstart.auth.R;
  *     {@link PhoneAuthActivity}
  *     {@link AnonymousAuthActivity}
  *     {@link CustomAuthActivity}
+ *     {@link GenericIdpActivity}
  */
 public class ChooserActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -54,7 +55,8 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             PhoneAuthActivity.class,
             AnonymousAuthActivity.class,
             FirebaseUIActivity.class,
-            CustomAuthActivity.class
+            CustomAuthActivity.class,
+            GenericIdpActivity.class,
     };
 
     private static final int[] DESCRIPTION_IDS = new int[] {
@@ -67,6 +69,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             R.string.desc_anonymous_auth,
             R.string.desc_firebase_ui,
             R.string.desc_custom_auth,
+            R.string.desc_generic_idp,
     };
 
     @Override
