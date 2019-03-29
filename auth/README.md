@@ -114,7 +114,7 @@ Getting Started
 
 ### Generic IDP Setup (Microsoft)
 
-- Go to the [Microsoft Developer Console])(https://apps.dev.microsoft.com) and navigate to your app.
+- Go to the [Microsoft Developer Console](https://apps.dev.microsoft.com) and navigate to your app.
     - Copy your **Application ID**
     - In the "Application Secrets" section click **Generate New Password** and copy the result.
 - Go to the [Firebase console][fir-console] and navigate to **Authentication** > **Sign-in method**
