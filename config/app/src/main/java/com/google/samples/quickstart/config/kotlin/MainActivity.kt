@@ -2,6 +2,7 @@ package com.google.samples.quickstart.config.kotlin
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.Toast
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
@@ -26,11 +27,12 @@ class MainActivity : AppCompatActivity() {
         // [END get_remote_config_instance]
 
         // Create a Remote Config Setting to enable developer mode, which you can use to increase
-        // the number of fetches available per hour during development. See Best Practices in the
-        // README for more information.
+        // the number of fetches available per hour during development. Also use Remote Config
+        // Setting to set the minimum fetch interval.
         // [START enable_dev_mode]
         val configSettings = FirebaseRemoteConfigSettings.Builder()
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .setMinimumFetchIntervalInSeconds(4200)
                 .build()
         remoteConfig.setConfigSettings(configSettings)
         // [END enable_dev_mode]
@@ -52,32 +54,16 @@ class MainActivity : AppCompatActivity() {
     private fun fetchWelcome() {
         welcomeTextView.text = remoteConfig.getString(LOADING_PHRASE_CONFIG_KEY)
 
-        val isUsingDeveloperMode = remoteConfig.info.configSettings.isDeveloperModeEnabled
-
-        // If your app is using developer mode, cacheExpiration is set to 0, so each fetch will
-        // retrieve values from the service.
-        val cacheExpiration: Long = if (isUsingDeveloperMode) {
-            0
-        } else {
-            3600 // 1 hour in seconds.
-        }
-
         // [START fetch_config_with_callback]
-        // cacheExpirationSeconds is set to cacheExpiration here, indicating the next fetch request
-        // will use fetch data from the Remote Config service, rather than cached parameter values,
-        // if cached parameter values are more than cacheExpiration seconds old.
-        // See Best Practices in the README for more information.
-        remoteConfig.fetch(cacheExpiration)
+        remoteConfig.fetchAndActivate()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Fetch Succeeded",
+                        val updated = task.getResult()
+                        Log.d(TAG, "Config params updated: $updated")
+                        Toast.makeText(this, "Fetch and activate succeeded",
                                 Toast.LENGTH_SHORT).show()
-
-                        // After config data is successfully fetched, it must be activated before newly fetched
-                        // values are returned.
-                        remoteConfig.activateFetched()
                     } else {
-                        Toast.makeText(this, "Fetch Failed",
+                        Toast.makeText(this, "Fetch failed",
                                 Toast.LENGTH_SHORT).show()
                     }
                     displayWelcomeMessage()

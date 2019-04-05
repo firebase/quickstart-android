@@ -44,16 +44,22 @@ values in the Firebase console.
 
 ### Fetch values from the Remote Config service ###
 
-When an app calls `fetch`, cached parameter values are used unless the last
-successful fetch occurred 12 hours ago, or unless a value less than 43200 (the
-number of seconds in 12 hours) is specified for `cacheExpirationSeconds`. If a
-cached value is not used, updated parameter values are fetched from the Remote
-Config service.
+When an app calls `fetch`, locally stored parameter values are used unless the
+minimum fetch interval is reached. The minimal fetch interval is determined by:
 
-Fetched values are cached locally, but not immediately activated. To activate
-fetched values so that they take effect, call the `activateFetched` method. In
-the quickstart sample app, you call this method from the UI by tapping
-**Fetch Remote Config**.
+1. The parameter passed to `fetch(long minFetchInterval)`.
+2. The minimum fetch interval set in Remote Config settings.
+3. The default minimum fetch interval, 12 hours.
+
+Fetched values are immediately activated when retrieved using `fetchAndActivate`.
+`fetchAndActivate` returns true if the final set of key/value pairs now available
+to the application is different to the set before calling `fetchAndActivate`, false
+is returned otherwise. In the quickstart sample app, you call `fetchAndActivate`
+from the UI by tapping **Fetch Remote Config**.
+
+To control when fetched values are activated and available to your app use `fetch`, the
+values are locally stored, but not immediately activated. To activate
+fetched values so that they take effect, call the `activate` method.
 
 You can also create a Remote Config Setting to enable developer mode, but you
 must remove this setting before distributing your app. Fetching Remote Config
