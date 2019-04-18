@@ -34,7 +34,6 @@
       android:layout_height="60dp"
       android:layout_alignParentBottom="true"
       android:layout_alignParentStart="true"
-      android:layout_toEndOf="@id/firePreview"
       android:background="#000">
 
     <Spinner
