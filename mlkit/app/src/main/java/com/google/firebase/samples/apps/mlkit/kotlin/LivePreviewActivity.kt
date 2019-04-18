@@ -43,7 +43,7 @@ import kotlinx.android.synthetic.main.activity_live_preview.firePreview
 import kotlinx.android.synthetic.main.activity_live_preview.spinner
 import java.io.IOException
 import com.google.firebase.samples.apps.mlkit.java.objectdetection.ObjectDetectorProcessor
-import com.google.firebase.ml.vision.`object`.FirebaseVisionObjectDetectorOptions
+import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 import com.google.firebase.samples.apps.mlkit.java.automl.AutoMLImageLabelerProcessor
 
 

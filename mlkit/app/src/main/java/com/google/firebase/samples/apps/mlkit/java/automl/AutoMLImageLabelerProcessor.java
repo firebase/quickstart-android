@@ -65,7 +65,7 @@ public class AutoMLImageLabelerProcessor
     // To track the download and get notified when the download completes, call
     // ensureModelDownloaded. Note that if you don't call ensureModelDownloaded, the model
     // downloading is still triggered implicitly.
-    FirebaseModelManager.getInstance().ensureModelDownloaded(remoteModel).addOnCompleteListener(
+    FirebaseModelManager.getInstance().downloadRemoteModelIfNeeded(remoteModel).addOnCompleteListener(
         new OnCompleteListener<Void>() {
           @Override
           public void onComplete(@NonNull Task<Void> task) {

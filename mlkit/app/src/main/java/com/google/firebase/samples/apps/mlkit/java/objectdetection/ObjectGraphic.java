@@ -5,8 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
-import com.google.firebase.ml.vision.object.FirebaseVisionObject;
-import com.google.firebase.ml.vision.object.FirebaseVisionObject.Category;
+
+import com.google.firebase.ml.vision.objects.FirebaseVisionObject;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 
@@ -71,7 +71,7 @@ public class ObjectGraphic extends Graphic {
     canvas.drawText("eid:" + object.getEntityId(), rect.right, rect.top, labelPaint);
   }
 
-  private static String getLabel(@Category int category) {
+  private static String getLabel(@FirebaseVisionObject.Category int category) {
     switch (category) {
       case FirebaseVisionObject.CATEGORY_UNKNOWN:
         return "Unknown";
@@ -81,8 +81,6 @@ public class ObjectGraphic extends Graphic {
         return "Fashion good";
       case FirebaseVisionObject.CATEGORY_PLACE:
         return "Place";
-      case FirebaseVisionObject.CATEGORY_ANIMAL:
-        return "Animal";
       case FirebaseVisionObject.CATEGORY_PLANT:
         return "Plant";
       case FirebaseVisionObject.CATEGORY_FOOD:
