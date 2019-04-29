@@ -164,10 +164,9 @@ public class CustomImageClassifier {
                 .Builder()
                 .requireWifi()
                 .build();
-        FirebaseLocalModel localModelSource =
-                new FirebaseLocalModel.Builder(localModelName)
-                        .setAssetFilePath(localModelPath).build();
-        FirebaseRemoteModel cloudSource = new FirebaseRemoteModel.Builder
+        FirebaseLocalModel localModel = new FirebaseLocalModel.Builder(localModelName)
+                .setAssetFilePath(localModelPath).build();
+        FirebaseRemoteModel remoteModel = new FirebaseRemoteModel.Builder
                 (hostedModelName)
                 .enableModelUpdates(true)
                 .setInitialDownloadConditions(conditions)
@@ -175,8 +174,8 @@ public class CustomImageClassifier {
                 // conditions for updates.
                 .build();
         FirebaseModelManager manager = FirebaseModelManager.getInstance();
-        manager.registerLocalModel(localModelSource);
-        manager.registerRemoteModel(cloudSource);
+        manager.registerLocalModel(localModel);
+        manager.registerRemoteModel(remoteModel);
         interpreter = FirebaseModelInterpreter.getInstance(modelOptions);
         labelList = loadLabelList(context.getApplicationContext());
         Log.d(TAG, "Created a Custom Image Classifier.");
