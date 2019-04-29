@@ -44,6 +44,10 @@ dependencies {
 
     // ML Kit dependencies
     implementation 'com.google.firebase:firebase-ml-vision:20.0.0'
+    // Image Labeling model.
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:17.0.2'
+    // Face model
+    implementation 'com.google.firebase:firebase-ml-vision-face-model:17.0.2'
     // Custom model
     implementation 'com.google.firebase:firebase-ml-model-interpreter:19.0.0'
     // Object model
