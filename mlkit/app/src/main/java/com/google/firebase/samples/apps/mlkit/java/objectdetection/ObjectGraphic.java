@@ -13,42 +13,26 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 /** Draw the detected object info in preview. */
 public class ObjectGraphic extends Graphic {
 
-  private static final int TEXT_COLOR = Color.WHITE;
   private static final float TEXT_SIZE = 54.0f;
   private static final float STROKE_WIDTH = 4.0f;
 
-  private final Paint rectPaint;
-  private final Paint labelPaint;
-  private final Paint idPaint;
-  private final Paint scorePaint;
-  private final Paint entityIdPaint;
   private final FirebaseVisionObject object;
+  private final Paint boxPaint;
+  private final Paint textPaint;
 
   ObjectGraphic(GraphicOverlay overlay, FirebaseVisionObject object) {
     super(overlay);
 
     this.object = object;
 
-    rectPaint = new Paint();
-    rectPaint.setColor(TEXT_COLOR);
-    rectPaint.setStyle(Style.STROKE);
-    rectPaint.setStrokeWidth(STROKE_WIDTH);
+    boxPaint = new Paint();
+    boxPaint.setColor(Color.WHITE);
+    boxPaint.setStyle(Style.STROKE);
+    boxPaint.setStrokeWidth(STROKE_WIDTH);
 
-    labelPaint = new Paint();
-    labelPaint.setColor(TEXT_COLOR);
-    labelPaint.setTextSize(TEXT_SIZE);
-
-    idPaint = new Paint();
-    idPaint.setColor(TEXT_COLOR);
-    idPaint.setTextSize(TEXT_SIZE);
-
-    scorePaint = new Paint();
-    scorePaint.setColor(TEXT_COLOR);
-    scorePaint.setTextSize(TEXT_SIZE);
-
-    entityIdPaint = new Paint();
-    entityIdPaint.setColor(TEXT_COLOR);
-    entityIdPaint.setTextSize(TEXT_SIZE);
+    textPaint = new Paint();
+    textPaint.setColor(Color.WHITE);
+    textPaint.setTextSize(TEXT_SIZE);
   }
 
   @Override
@@ -59,19 +43,18 @@ public class ObjectGraphic extends Graphic {
     rect.top = translateY(rect.top);
     rect.right = translateX(rect.right);
     rect.bottom = translateY(rect.bottom);
-    canvas.drawRect(rect, rectPaint);
+    canvas.drawRect(rect, boxPaint);
 
-    // Renders the label at the bottom of the box.
-
+    // Draws other object info.
     canvas.drawText(
-        getLabel(object.getClassificationCategory()), rect.left, rect.bottom, labelPaint);
-    canvas.drawText("id: " + object.getTrackingId(), rect.left, rect.top, idPaint);
+        getCategoryName(object.getClassificationCategory()), rect.left, rect.bottom, textPaint);
+    canvas.drawText("trackingId: " + object.getTrackingId(), rect.left, rect.top, textPaint);
     canvas.drawText(
-        "confidence: " + object.getClassificationConfidence(), rect.right, rect.bottom, idPaint);
-    canvas.drawText("eid:" + object.getEntityId(), rect.right, rect.top, labelPaint);
+        "confidence: " + object.getClassificationConfidence(), rect.right, rect.bottom, textPaint);
+    canvas.drawText("eid:" + object.getEntityId(), rect.right, rect.top, textPaint);
   }
 
-  private static String getLabel(@FirebaseVisionObject.Category int category) {
+  private static String getCategoryName(@FirebaseVisionObject.Category int category) {
     switch (category) {
       case FirebaseVisionObject.CATEGORY_UNKNOWN:
         return "Unknown";

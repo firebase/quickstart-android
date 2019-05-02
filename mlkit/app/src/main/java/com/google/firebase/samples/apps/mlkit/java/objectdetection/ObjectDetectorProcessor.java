@@ -36,7 +36,7 @@ public class ObjectDetectorProcessor extends VisionProcessorBase<List<FirebaseVi
     try {
       detector.close();
     } catch (IOException e) {
-      Log.e(TAG, "Exception thrown while trying to close Face Contour Detector: " + e);
+      Log.e(TAG, "Exception thrown while trying to close object detector!", e);
     }
   }
 
@@ -65,7 +65,6 @@ public class ObjectDetectorProcessor extends VisionProcessorBase<List<FirebaseVi
 
   @Override
   protected void onFailure(@NonNull Exception e) {
-    Log.e(TAG, "Object detection failed " + e);
+    Log.e(TAG, "Object detection failed!", e);
   }
 }
-
