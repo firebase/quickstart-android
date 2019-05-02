@@ -30,6 +30,8 @@ the sample you wish to run.
 - [Messaging](messaging/README.md)
 - [ML Kit](mlkit/README.md)
 - [ML Kit LanguageID](mlkit-langid/README.md)
+- [ML Kit Smart Reply](mlkit-smartreply/README.md)
+- [ML Kit Translate](mlkit-translate/README.md)
 - [Performance Monitoring](perf/README.md)
 - [Storage](storage/README.md)
 

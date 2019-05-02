@@ -1,14 +1,14 @@
-ML Kit Language ID for Firebase Quickstart
+ML Kit Smart Reply for Firebase Quickstart
 ==============================
 
-The ML Kit LanguageID for Firebase Android Quickstart app demonstrates how to
-use the Language ID feature of ML Kit to to identify the language
-of text in your application.
+The ML Kit Smart Reply for Firebase Android Quickstart app demonstrates how to
+use the Smart Reply feature of ML Kit to automatically generate replies
+to conversation threads in your application.
 
 Introduction
 ------------
 
-- [Read more about ML Kit LanguageID for Firebase](https://firebase.google.com/docs/ml-kit/android/identify-languages)
+- [Read more about ML Kit Smart Reply for Firebase](https://firebase.google.com/docs/ml-kit/android/generate-smart-replies)
 
 Getting Started
 ---------------
