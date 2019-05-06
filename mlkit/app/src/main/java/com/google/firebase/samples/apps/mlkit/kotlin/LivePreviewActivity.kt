@@ -297,7 +297,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
         private const val FACE_DETECTION = "Face Detection"
         private const val TEXT_DETECTION = "Text Detection"
         private const val OBJECT_DETECTION = "Object Detection"
-        private const val AUTOML_IMAGE_LABELING = "AutoML Image Labeling"
+        private const val AUTOML_IMAGE_LABELING = "AutoML Vision Edge"
         private const val BARCODE_DETECTION = "Barcode Detection"
         private const val IMAGE_LABEL_DETECTION = "Label Detection"
         private const val CLASSIFICATION_QUANT = "Classification (quantized)"

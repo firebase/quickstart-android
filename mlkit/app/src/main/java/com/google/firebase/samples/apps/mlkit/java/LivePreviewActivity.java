@@ -62,7 +62,7 @@ public final class LivePreviewActivity extends AppCompatActivity
         CompoundButton.OnCheckedChangeListener {
     private static final String FACE_DETECTION = "Face Detection";
     private static final String OBJECT_DETECTION = "Object Detection";
-    private static final String AUTOML_IMAGE_LABELING = "AutoML Image Labeler";
+    private static final String AUTOML_IMAGE_LABELING = "AutoML Vision Edge";
     private static final String TEXT_DETECTION = "Text Detection";
     private static final String BARCODE_DETECTION = "Barcode Detection";
     private static final String IMAGE_LABEL_DETECTION = "Label Detection";
