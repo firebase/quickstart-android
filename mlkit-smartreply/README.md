@@ -1,19 +1,22 @@
-ML Kit Smart Reply Quickstart
+ML Kit Smart Reply for Firebase Quickstart
 ==============================
 
-This quickstart app demonstrates how to use the Smart Reply model
-in your application.
+The ML Kit Smart Reply for Firebase Android Quickstart app demonstrates how to
+use the Smart Reply feature of ML Kit to automatically generate replies
+to conversation threads in your application.
 
 Introduction
 ------------
 
-- [Read more about ML Kit](https://firebase.google.com/docs/ml-kit/)
+- [Read more about ML Kit Smart Reply for Firebase](https://firebase.google.com/docs/ml-kit/android/generate-smart-replies)
 
 Getting Started
 ---------------
 
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 - Run the sample on an Android device.
+- Choose the Java or Kotlin version on the initial screen.
+- Type input text and press the buttons to identify languages.
 
 Result
 -----------

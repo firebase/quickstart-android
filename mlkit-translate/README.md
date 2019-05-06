@@ -1,14 +1,14 @@
-ML Kit Language ID for Firebase Quickstart
+ML Kit Translate for Firebase Quickstart
 ==============================
 
-The ML Kit LanguageID for Firebase Android Quickstart app demonstrates how to
-use the Language ID feature of ML Kit to to identify the language
-of text in your application.
+The ML Kit Translate for Firebase Android Quickstart app demonstrates how to
+use the Translate feature of ML Kit to perform translations of text in
+your application.
 
 Introduction
 ------------
 
-- [Read more about ML Kit LanguageID for Firebase](https://firebase.google.com/docs/ml-kit/android/identify-languages)
+- [Read more about ML Kit Translate for Firebase](https://firebase.google.com/docs/ml-kit/android/translate-text)
 
 Getting Started
 ---------------
