@@ -42,9 +42,9 @@ import kotlinx.android.synthetic.main.activity_live_preview.fireFaceOverlay
 import kotlinx.android.synthetic.main.activity_live_preview.firePreview
 import kotlinx.android.synthetic.main.activity_live_preview.spinner
 import java.io.IOException
-import com.google.firebase.samples.apps.mlkit.java.objectdetection.ObjectDetectorProcessor
+import com.google.firebase.samples.apps.mlkit.kotlin.objectdetection.ObjectDetectorProcessor
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
-import com.google.firebase.samples.apps.mlkit.java.automl.AutoMLImageLabelerProcessor
+import com.google.firebase.samples.apps.mlkit.kotlin.automl.AutoMLImageLabelerProcessor
 
 
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to

@@ -63,7 +63,7 @@ public class AutoMLImageLabelerProcessor
     Toast.makeText(context, "Begin downloading the remote AutoML model.", Toast.LENGTH_SHORT)
         .show();
     // To track the download and get notified when the download completes, call
-    // ensureModelDownloaded. Note that if you don't call ensureModelDownloaded, the model
+    // downloadRemoteModelIfNeeded. Note that if you don't call downloadRemoteModelIfNeeded, the model
     // downloading is still triggered implicitly.
     FirebaseModelManager.getInstance().downloadRemoteModelIfNeeded(remoteModel).addOnCompleteListener(
         new OnCompleteListener<Void>() {
@@ -73,7 +73,7 @@ public class AutoMLImageLabelerProcessor
               Toast.makeText(context, "Download remote AutoML model success.", Toast.LENGTH_SHORT)
                   .show();
             } else {
-              String downloadingError = "Error downloading remote model. Fall back to local model.";
+              String downloadingError = "Error downloading remote model.";
               Log.e(TAG, downloadingError, task.getException());
               Toast.makeText(context, downloadingError, Toast.LENGTH_SHORT).show();
             }
