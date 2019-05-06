@@ -42,12 +42,16 @@ import kotlinx.android.synthetic.main.activity_live_preview.fireFaceOverlay
 import kotlinx.android.synthetic.main.activity_live_preview.firePreview
 import kotlinx.android.synthetic.main.activity_live_preview.spinner
 import java.io.IOException
+import com.google.firebase.samples.apps.mlkit.kotlin.objectdetection.ObjectDetectorProcessor
+import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
+import com.google.firebase.samples.apps.mlkit.kotlin.automl.AutoMLImageLabelerProcessor
+
 
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to
  * set up continuous frame processing on frames from a camera source.  */
 @KeepName
 class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallback,
-        OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
+    OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     private var cameraSource: CameraSource? = null
     private var selectedModel = FACE_CONTOUR
@@ -56,7 +60,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
         get() {
             return try {
                 val info = this.packageManager
-                        .getPackageInfo(this.packageName, PackageManager.GET_PERMISSIONS)
+                    .getPackageInfo(this.packageName, PackageManager.GET_PERMISSIONS)
                 val ps = info.requestedPermissions
                 if (ps != null && ps.isNotEmpty()) {
                     ps
@@ -82,13 +86,17 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
             Log.d(TAG, "graphicOverlay is null")
         }
 
-        val options = arrayListOf(FACE_CONTOUR,
-                FACE_DETECTION,
-                TEXT_DETECTION,
-                BARCODE_DETECTION,
-                IMAGE_LABEL_DETECTION,
-                CLASSIFICATION_QUANT,
-                CLASSIFICATION_FLOAT)
+        val options = arrayListOf(
+            FACE_CONTOUR,
+            FACE_DETECTION,
+            OBJECT_DETECTION,
+            AUTOML_IMAGE_LABELING,
+            TEXT_DETECTION,
+            BARCODE_DETECTION,
+            IMAGE_LABEL_DETECTION,
+            CLASSIFICATION_QUANT,
+            CLASSIFICATION_FLOAT
+        )
         // Creating adapter for spinner
         val dataAdapter = ArrayAdapter(this, R.layout.spinner_style, options)
         // Drop down layout style - list view with radio button
@@ -154,11 +162,21 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
             when (model) {
                 CLASSIFICATION_QUANT -> {
                     Log.i(TAG, "Using Custom Image Classifier (quant) Processor")
-                    cameraSource?.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this, true))
+                    cameraSource?.setMachineLearningFrameProcessor(
+                        CustomImageClassifierProcessor(
+                            this,
+                            true
+                        )
+                    )
                 }
                 CLASSIFICATION_FLOAT -> {
                     Log.i(TAG, "Using Custom Image Classifier (float) Processor")
-                    cameraSource?.setMachineLearningFrameProcessor(CustomImageClassifierProcessor(this, false))
+                    cameraSource?.setMachineLearningFrameProcessor(
+                        CustomImageClassifierProcessor(
+                            this,
+                            false
+                        )
+                    )
                 }
                 TEXT_DETECTION -> {
                     Log.i(TAG, "Using Text Detector Processor")
@@ -167,6 +185,18 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
                 FACE_DETECTION -> {
                     Log.i(TAG, "Using Face Detector Processor")
                     cameraSource?.setMachineLearningFrameProcessor(FaceDetectionProcessor(resources))
+                }
+                OBJECT_DETECTION -> {
+                    Log.i(TAG, "Using Object Detector Processor")
+                    val objectDetectorOptions = FirebaseVisionObjectDetectorOptions.Builder()
+                        .setDetectorMode(FirebaseVisionObjectDetectorOptions.STREAM_MODE)
+                        .enableClassification().build()
+                    cameraSource?.setMachineLearningFrameProcessor(
+                        ObjectDetectorProcessor(objectDetectorOptions)
+                    )
+                }
+                AUTOML_IMAGE_LABELING -> {
+                    cameraSource?.setMachineLearningFrameProcessor(AutoMLImageLabelerProcessor(this))
                 }
                 BARCODE_DETECTION -> {
                     Log.i(TAG, "Using Barcode Detector Processor")
@@ -246,7 +276,8 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
 
         if (!allNeededPermissions.isEmpty()) {
             ActivityCompat.requestPermissions(
-                    this, allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS)
+                this, allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS
+            )
         }
     }
 
@@ -265,6 +296,8 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
     companion object {
         private const val FACE_DETECTION = "Face Detection"
         private const val TEXT_DETECTION = "Text Detection"
+        private const val OBJECT_DETECTION = "Object Detection"
+        private const val AUTOML_IMAGE_LABELING = "AutoML Image Labeling"
         private const val BARCODE_DETECTION = "Barcode Detection"
         private const val IMAGE_LABEL_DETECTION = "Label Detection"
         private const val CLASSIFICATION_QUANT = "Classification (quantized)"
@@ -274,7 +307,11 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
         private const val PERMISSION_REQUESTS = 1
 
         private fun isPermissionGranted(context: Context, permission: String): Boolean {
-            if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    permission
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 Log.i(TAG, "Permission granted: $permission")
                 return true
             }
