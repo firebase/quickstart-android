@@ -44,9 +44,9 @@ dependencies {
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:support-compat:28.0.0'
 
-    implementation 'com.google.firebase:firebase-core:16.0.8'
-    implementation 'com.google.firebase:firebase-iid:17.1.2'
-    implementation 'com.google.firebase:firebase-messaging:17.6.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-iid:18.0.0'
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
     implementation 'android.arch.work:work-runtime:1.0.1'
 
     // Testing dependencies
@@ -54,7 +54,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support:support-annotations:28.0.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.30"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.31"
 }
 
 apply plugin: 'com.google.gms.google-services'

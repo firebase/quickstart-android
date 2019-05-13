@@ -37,7 +37,7 @@ androidExtensions {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooser")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.30"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.31"
 
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
@@ -47,9 +47,9 @@ dependencies {
 
     implementation 'com.firebaseui:firebase-ui-database:4.3.2'
 
-    implementation 'com.google.firebase:firebase-core:16.0.8'
-    implementation 'com.google.firebase:firebase-auth:16.2.1'
-    implementation 'com.google.firebase:firebase-database:16.1.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.firebase:firebase-database:17.0.0'
 
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation 'android.arch.core:runtime:1.1.1'
