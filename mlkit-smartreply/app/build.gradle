@@ -39,8 +39,8 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.1.1'
 
     implementation 'com.google.firebase:firebase-core:16.0.9'
-    implementation 'com.google.firebase:firebase-ml-natural-language:19.0.0'
-    implementation 'com.google.firebase:firebase-ml-natural-language-smart-reply-model:19.0.0'
+    implementation 'com.google.firebase:firebase-ml-natural-language:19.0.1'
+    implementation 'com.google.firebase:firebase-ml-natural-language-smart-reply-model:19.0.1'
 
     implementation 'com.google.guava:guava:27.0.1-android'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
