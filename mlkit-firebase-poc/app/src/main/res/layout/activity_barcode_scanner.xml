@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:id="@+id/details_layout"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <TextView
+            android:id="@+id/details_label"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="SCAN RESULTS"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/details_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/scan_layout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        tools:context=".BarcodeScanner.BarcodeScannerActivity">
+
+        <com.droidmentor.mlkitbarcodescan.BarCodeScannerUtil.common.CameraSourcePreview
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.droidmentor.mlkitbarcodescan.BarCodeScannerUtil.common.GraphicOverlay
+                android:id="@+id/barcodeOverlay"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent" />
+
+        </com.droidmentor.mlkitbarcodescan.BarCodeScannerUtil.common.CameraSourcePreview>
+
+        <com.droidmentor.mlkitbarcodescan.BarCodeScannerUtil.OverlayView
+            android:id="@+id/overlayView"
+            android:visibility="visible"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+
+    </RelativeLayout>
+
+</FrameLayout>

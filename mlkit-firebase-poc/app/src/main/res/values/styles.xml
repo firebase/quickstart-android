@@ -1,0 +1,69 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:colorBackground">@color/windowBackground</item>
+    </style>
+
+    <!-- Base application theme without ActionBar. -->
+    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:colorBackground">@color/windowBackground</item>
+    </style>
+
+
+    <style name="cl_parent_text_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/items_inbetween_small</item>
+    </style>
+
+    <style name="cl_name_text_style" parent="cl_parent_text_style">
+        <item name="android:textSize">@dimen/xlarge_text</item>
+        <item name="android:textColor">@color/cl_name_text_color</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
+    </style>
+
+    <style name="cl_number_text_style" parent="cl_parent_text_style">
+        <item name="android:textSize">@dimen/large_text</item>
+        <item name="android:textColor">@color/cl_number_text_color</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+
+    <style name="cl_address_text_style" parent="cl_parent_text_style">
+        <item name="android:textSize">@dimen/medium_text</item>
+        <item name="android:textColor">@color/cl_address_text_color</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
+
+    <style name="cl_mail_text_style" parent="cl_number_text_style">
+        <item name="android:textSize">@dimen/medium_text</item>
+    </style>
+
+    <style name="cl_divider_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/dividerLineColor</item>
+        <item name="android:layout_marginTop">@dimen/items_inbetween_large</item>
+    </style>
+
+    <style name="cl_cta_option">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">@dimen/_12sdp</dimen>
+    <dimen name="activity_vertical_margin">@dimen/_12sdp</dimen>
+
+    <dimen name="cvTBpadding">@dimen/_12sdp</dimen>
+    <dimen name="cvLRpadding">@dimen/_8sdp</dimen>
+
+
+    <!-- Text Size. -->
+
+    <dimen name="xsmall_text">@dimen/_7sdp</dimen>
+    <dimen name="small_text">@dimen/_9sdp</dimen>
+    <dimen name="medium_text">@dimen/_10sdp</dimen>
+    <dimen name="large_text">@dimen/_12sdp</dimen>
+    <dimen name="xlarge_text">@dimen/_14sdp</dimen>
+    <dimen name="xxlarge_text">@dimen/_16sdp</dimen>
+    <dimen name="xxxlarge_text">@dimen/_18sdp</dimen>
+
+    <!-- Common sizes. -->
+
+    <dimen name="items_inbetween_xsmall">@dimen/_3sdp</dimen>
+    <dimen name="items_inbetween_small">@dimen/_6sdp</dimen>
+    <dimen name="items_inbetween_medium">@dimen/_8sdp</dimen>
+    <dimen name="items_inbetween_large">@dimen/_10sdp</dimen>
+</resources>

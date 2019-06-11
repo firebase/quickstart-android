@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#4A4A4A</color>
+    <color name="colorPrimaryDark">#3E3E3E</color>
+    <color name="colorAccent">#4A90E2</color>
+
+    <color name="windowBackground">#FFFFFF</color>
+
+
+    <!--Contacts Listing card(cl)-->
+
+    <color name="cl_name_text_color">#000000</color>
+    <color name="cl_address_text_color">#828282</color>
+    <color name="cl_email_text_color">#4F4F4F</color>
+    <color name="cl_number_text_color">#4F4F4F</color>
+    <color name="cl_delete_drawable_color">#EB5757</color>
+    <color name="cl_icon_drawable_enable_color">#219653</color>
+    <color name="cl_icon_drawable_disable_color">#828282</color>
+    <color name="dividerLineColor">#E0E0E0</color>
+
+
+
+</resources>
