@@ -1,7 +1,7 @@
 package com.google.firebase.quickstart.database.java;
 
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 

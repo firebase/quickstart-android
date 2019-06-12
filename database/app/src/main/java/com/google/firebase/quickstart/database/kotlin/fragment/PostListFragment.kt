@@ -2,9 +2,8 @@ package com.google.firebase.quickstart.database.kotlin.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +31,7 @@ abstract class PostListFragment : Fragment() {
     // [END define_database_reference]
 
     private lateinit var recycler: RecyclerView
-    private lateinit var manager: LinearLayoutManager
+    private lateinit var manager: androidx.recyclerview.widget.LinearLayoutManager
     private var adapter: FirebaseRecyclerAdapter<Post, PostViewHolder>? = null
 
     val uid: String
@@ -60,7 +59,7 @@ abstract class PostListFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         // Set up Layout Manager, reverse layout
-        manager = LinearLayoutManager(activity)
+        manager = androidx.recyclerview.widget.LinearLayoutManager(activity)
         manager.reverseLayout = true
         manager.stackFromEnd = true
         recycler.layoutManager = manager
