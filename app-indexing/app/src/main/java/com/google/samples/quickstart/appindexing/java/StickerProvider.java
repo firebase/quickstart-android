@@ -6,9 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.webkit.MimeTypeMap;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +19,8 @@ import java.io.IOException;
  * Provider that makes the stickers queryable by other applications.
  */
 public class StickerProvider extends ContentProvider {
-    @Nullable private File mRootDir;
+    @Nullable
+    private File mRootDir;
 
     @Override
     public boolean onCreate() {

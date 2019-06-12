@@ -7,4 +7,4 @@ project(':internal:lintchecks').projectDir = file('../internal/lintchecks')
 include ':internal:lint'
 project(':internal:lint').projectDir = file('../internal/lint')
 include ':internal:chooserx'
-project(':internal:chooserx').projectDir = file('../internal/chooserx')
+project(':internal:chooserx').projectDir = file('../internal/chooserxx')

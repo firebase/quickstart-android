@@ -1,7 +1,7 @@
 package com.google.firebase.quickstart.analytics;
 
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;

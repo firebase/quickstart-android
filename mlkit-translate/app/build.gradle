@@ -41,7 +41,7 @@ android {
 }
 
 dependencies {
-    implementation project(':internal:chooser')
+    implementation project(':internal:chooserx')
     implementation project(":internal:lintchecks")
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.31"

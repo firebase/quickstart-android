@@ -1,20 +1,20 @@
 package com.google.samples.quickstart.appindexing.kotlin
 
+// [START import_classes]
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-// [START import_classes]
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.appindexing.FirebaseAppIndex
 import com.google.firebase.appindexing.FirebaseUserActions
 import com.google.firebase.appindexing.Indexable
 import com.google.firebase.appindexing.builders.Actions
-// [END import_classes]
 import com.google.samples.quickstart.appindexing.R
 import kotlinx.android.synthetic.main.activity_main.addStickersBtn
 import kotlinx.android.synthetic.main.activity_main.clearStickersBtn
 import kotlinx.android.synthetic.main.activity_main.link
+// [END import_classes]
 
 class MainActivity : AppCompatActivity() {
 
