@@ -18,10 +18,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +27,11 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.annotation.KeepName;
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions;
@@ -81,7 +82,6 @@ public final class LivePreviewActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
-
         setContentView(R.layout.activity_live_preview);
 
         preview = (CameraSourcePreview) findViewById(R.id.firePreview);

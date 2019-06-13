@@ -1,16 +1,15 @@
 package com.google.samples.quickstart.admobexample.kotlin
 
-import android.content.Intent
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import com.google.android.gms.ads.AdListener
-
 // [SNIPPET load_banner_ad]
 // Load an ad into the AdView.
 // [START load_banner_ad]
-import com.google.android.gms.ads.AdRequest
 // [START_EXCLUDE]
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.samples.quickstart.admobexample.R
 import kotlinx.android.synthetic.main.activity_main.adView

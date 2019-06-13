@@ -1,7 +1,7 @@
 package com.google.firebase.samples.apps.mlkit.smartreply.java;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.samples.apps.mlkit.smartreply.R;
 import com.google.firebase.samples.apps.mlkit.smartreply.java.chat.ChatFragment;

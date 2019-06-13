@@ -69,9 +69,8 @@ class ObjectGraphic internal constructor(
                 FirebaseVisionObject.CATEGORY_PLACE -> return "Place"
                 FirebaseVisionObject.CATEGORY_PLANT -> return "Plant"
                 FirebaseVisionObject.CATEGORY_FOOD -> return "Food"
-            }// fall out
+            } // fall out
             return ""
         }
     }
 }
-

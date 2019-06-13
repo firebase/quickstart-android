@@ -1,6 +1,6 @@
 package com.google.firebase.quickstart.database.kotlin.viewholder
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.models.Post

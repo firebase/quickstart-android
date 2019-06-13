@@ -2,7 +2,7 @@ package com.google.firebase.quickstart.auth.kotlin
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
+import com.google.android.material.snackbar.Snackbar
 import android.text.TextUtils
 import android.util.Log
 import android.view.View

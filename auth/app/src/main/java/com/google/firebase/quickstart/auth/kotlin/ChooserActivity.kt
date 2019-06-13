@@ -3,7 +3,7 @@ package com.google.firebase.quickstart.auth.kotlin
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,8 +50,8 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         private val ctx: Context,
         resource: Int,
         private val classes: Array<Class<*>>
-    )
-        : ArrayAdapter<Class<*>>(ctx, resource, classes) {
+    ) :
+        ArrayAdapter<Class<*>>(ctx, resource, classes) {
         private var descriptionIds: IntArray? = null
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {

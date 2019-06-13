@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#E0E0E0">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:paddingLeft="12dp"
         android:paddingRight="12dp">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/filterBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,12 +92,12 @@
 
             </RelativeLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </FrameLayout>
 
     <!-- Main Restaurants recycler -->
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerRestaurants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

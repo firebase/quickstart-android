@@ -1,6 +1,6 @@
 package com.google.samples.quickstart.admobexample;
 
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.IdlingResource;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdView;

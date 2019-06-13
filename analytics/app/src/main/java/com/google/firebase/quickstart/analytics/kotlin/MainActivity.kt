@@ -3,15 +3,15 @@ package com.google.firebase.quickstart.analytics.kotlin
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.quickstart.analytics.R
 import kotlinx.android.synthetic.main.activity_main.pagerTabStrip
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * The [android.support.v4.view.PagerAdapter] that will provide fragments for each image.
+     * The [androidx.viewpager.widget.PagerAdapter] that will provide fragments for each image.
      * This uses a [FragmentPagerAdapter], which keeps every loaded fragment in memory.
      */
     private lateinit var imagePagerAdapter: ImagePagerAdapter

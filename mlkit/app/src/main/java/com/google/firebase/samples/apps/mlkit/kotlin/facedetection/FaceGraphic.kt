@@ -20,8 +20,8 @@ class FaceGraphic(
     private val firebaseVisionFace: FirebaseVisionFace?,
     private val facing: Int,
     private val overlayBitmap: Bitmap?
-)
-    : GraphicOverlay.Graphic(overlay) {
+) :
+    GraphicOverlay.Graphic(overlay) {
 
     /**
      * Draws the face annotations for position on the supplied canvas.
