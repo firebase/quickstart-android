@@ -30,15 +30,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+// [START import_classes]
 import com.google.firebase.appindexing.FirebaseAppIndex;
 import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Actions;
-import com.google.samples.quickstart.appindexing.R;
-
-// [START import_classes]
 // [END import_classes]
-
+import com.google.samples.quickstart.appindexing.R;
 
 public class MainActivity extends AppCompatActivity {
 
