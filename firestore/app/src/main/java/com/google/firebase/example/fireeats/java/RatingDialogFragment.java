@@ -2,35 +2,29 @@ package com.google.firebase.example.fireeats.java;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.example.fireeats.R;
 import com.google.firebase.example.fireeats.java.model.Rating;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 /**
  * Dialog Fragment containing rating form.
  */
-public class RatingDialogFragment extends DialogFragment {
+public class RatingDialogFragment extends DialogFragment implements View.OnClickListener {
 
     public static final String TAG = "RatingDialog";
 
-    @BindView(R.id.restaurantFormRating)
-    MaterialRatingBar mRatingBar;
-
-    @BindView(R.id.restaurantFormText)
-    EditText mRatingText;
+    private MaterialRatingBar mRatingBar;
+    private EditText mRatingText;
 
     interface RatingListener {
 
@@ -40,15 +34,19 @@ public class RatingDialogFragment extends DialogFragment {
 
     private RatingListener mRatingListener;
 
-    private Unbinder unbinder;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dialog_rating, container, false);
-        unbinder = ButterKnife.bind(this, v);
+        mRatingBar = v.findViewById(R.id.restaurantFormRating);
+        mRatingText = v.findViewById(R.id.restaurantFormText);
+
+
+
+        v.findViewById(R.id.restaurantFormButton).setOnClickListener(this);
+        v.findViewById(R.id.restaurantFormCancel).setOnClickListener(this);
 
         return v;
     }
@@ -71,17 +69,7 @@ public class RatingDialogFragment extends DialogFragment {
 
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        if (unbinder != null) {
-            unbinder.unbind();
-        }
-    }
-
-    @OnClick(R.id.restaurantFormButton)
-    public void onSubmitClicked(View view) {
+    private void onSubmitClicked(View view) {
         Rating rating = new Rating(
                 FirebaseAuth.getInstance().getCurrentUser(),
                 mRatingBar.getRating(),
@@ -94,8 +82,20 @@ public class RatingDialogFragment extends DialogFragment {
         dismiss();
     }
 
-    @OnClick(R.id.restaurantFormCancel)
-    public void onCancelClicked(View view) {
+    private void onCancelClicked(View view) {
         dismiss();
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.restaurantFormButton:
+                onSubmitClicked(v);
+                break;
+            case R.id.restaurantFormCancel:
+                onCancelClicked(v);
+                break;
+        }
+    }
+
 }

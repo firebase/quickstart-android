@@ -1,7 +1,7 @@
 package com.google.samples.quickstart.crash.kotlin
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.google.samples.quickstart.crash.R

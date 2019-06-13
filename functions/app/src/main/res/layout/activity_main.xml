@@ -33,7 +33,7 @@ specific language governing permissions and limitations under the License.
             android:layout_marginBottom="16dp"
             android:src="@drawable/firebase_lockup_400" />
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/card_add_numbers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -116,9 +116,9 @@ specific language governing permissions and limitations under the License.
 
             </RelativeLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/card_add_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -185,7 +185,7 @@ specific language governing permissions and limitations under the License.
 
             </RelativeLayout>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 

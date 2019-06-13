@@ -17,7 +17,7 @@
 package com.google.firebase.samples.apps.mlkit.translate.kotlin
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.samples.apps.mlkit.translate.R
 
 class MainActivity : AppCompatActivity() {

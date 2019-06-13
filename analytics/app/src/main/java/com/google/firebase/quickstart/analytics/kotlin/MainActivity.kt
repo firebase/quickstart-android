@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * The [android.support.v4.view.PagerAdapter] that will provide fragments for each image.
+     * The [androidx.viewpager.widget.PagerAdapter] that will provide fragments for each image.
      * This uses a [FragmentPagerAdapter], which keeps every loaded fragment in memory.
      */
     private lateinit var imagePagerAdapter: ImagePagerAdapter

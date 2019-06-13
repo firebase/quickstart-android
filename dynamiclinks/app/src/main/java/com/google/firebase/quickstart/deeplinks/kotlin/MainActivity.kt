@@ -3,10 +3,10 @@ package com.google.firebase.quickstart.deeplinks.kotlin
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.VisibleForTesting
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.VisibleForTesting
+import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import com.google.firebase.dynamiclinks.DynamicLink
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
