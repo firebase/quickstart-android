@@ -10,8 +10,8 @@ import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic
 
 /** Graphic instance for rendering face contours graphic overlay view.  */
-class FaceContourGraphic(overlay: GraphicOverlay, private val firebaseVisionFace: FirebaseVisionFace?)
-    : Graphic(overlay) {
+class FaceContourGraphic(overlay: GraphicOverlay, private val firebaseVisionFace: FirebaseVisionFace?) :
+    Graphic(overlay) {
 
     private val facePositionPaint: Paint
     private val idPaint: Paint

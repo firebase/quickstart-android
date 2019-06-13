@@ -46,7 +46,6 @@ import com.google.firebase.samples.apps.mlkit.kotlin.objectdetection.ObjectDetec
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 import com.google.firebase.samples.apps.mlkit.kotlin.automl.AutoMLImageLabelerProcessor
 
-
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to
  * set up continuous frame processing on frames from a camera source.  */
 @KeepName

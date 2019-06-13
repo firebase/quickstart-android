@@ -219,8 +219,8 @@ class MainActivity : AppCompatActivity() {
      * one of the sections/tabs/pages.
      */
     inner class ImagePagerAdapter(
-            fm: FragmentManager,
-            private val infos: Array<ImageInfo>
+        fm: FragmentManager,
+        private val infos: Array<ImageInfo>
     ) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {

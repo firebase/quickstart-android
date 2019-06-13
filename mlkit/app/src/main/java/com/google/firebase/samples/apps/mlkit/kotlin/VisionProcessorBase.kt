@@ -36,7 +36,9 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
 
     @Synchronized
     override fun process(
-        data: ByteBuffer, frameMetadata: FrameMetadata, graphicOverlay: GraphicOverlay
+        data: ByteBuffer,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
     ) {
         latestImage = data
         latestImageMetaData = frameMetadata
@@ -121,5 +123,4 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
     )
 
     protected abstract fun onFailure(e: Exception)
-
 }

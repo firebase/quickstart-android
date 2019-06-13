@@ -50,8 +50,8 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         private val ctx: Context,
         resource: Int,
         private val classes: Array<Class<*>>
-    )
-        : ArrayAdapter<Class<*>>(ctx, resource, classes) {
+    ) :
+        ArrayAdapter<Class<*>>(ctx, resource, classes) {
         private var descriptionIds: IntArray? = null
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {

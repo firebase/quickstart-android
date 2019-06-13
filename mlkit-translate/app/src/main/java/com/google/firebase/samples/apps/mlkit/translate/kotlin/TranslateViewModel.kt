@@ -60,8 +60,7 @@ class TranslateViewModel(application: Application) : AndroidViewModel(applicatio
                 fetchDownloadedModels()
             }
         // Start translation if any of the following change: input text, source lang, target lang.
-        translatedText.addSource(sourceText)
-        { translate().addOnCompleteListener(processTranslation) }
+        translatedText.addSource(sourceText) { translate().addOnCompleteListener(processTranslation) }
         val languageObserver =
             Observer<Language> { translate().addOnCompleteListener(processTranslation) }
         translatedText.addSource(sourceLang, languageObserver)
@@ -102,7 +101,7 @@ class TranslateViewModel(application: Application) : AndroidViewModel(applicatio
         val source = sourceLang.value
         val target = targetLang.value
         if (source == null || target == null || text == null || text.isEmpty()) {
-            return Tasks.forResult("");
+            return Tasks.forResult("")
         }
         val sourceLangCode = FirebaseTranslateLanguage.languageForLanguageCode(source.code)!!
         val targetLangCode = FirebaseTranslateLanguage.languageForLanguageCode(target.code)!!

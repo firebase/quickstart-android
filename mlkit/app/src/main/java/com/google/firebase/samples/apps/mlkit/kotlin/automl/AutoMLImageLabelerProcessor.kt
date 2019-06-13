@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Toast
 
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.ml.common.modeldownload.FirebaseLocalModel
@@ -73,7 +72,6 @@ constructor(context: Context) : VisionProcessorBase<List<FirebaseVisionImageLabe
                     Toast.makeText(context, downloadingError, Toast.LENGTH_SHORT).show()
                 }
             }
-
     }
 
     override fun stop() {
@@ -82,7 +80,6 @@ constructor(context: Context) : VisionProcessorBase<List<FirebaseVisionImageLabe
         } catch (e: IOException) {
             Log.e(TAG, "Exception thrown while trying to close the image labeler: $e")
         }
-
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionImageLabel>> {
