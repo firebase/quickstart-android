@@ -32,14 +32,11 @@ android {
     }
 }
 
-configurations.all {
-    resolutionStrategy.force 'com.android.support:support-annotations:28.0.0'
-}
-
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
     implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core:1.0.2'
