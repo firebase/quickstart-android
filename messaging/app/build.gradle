@@ -42,8 +42,8 @@ dependencies {
     implementation 'androidx.core:core:1.0.2'
 
     implementation 'com.google.firebase:firebase-core:17.0.0'
-    implementation 'com.google.firebase:firebase-iid:19.0.0'
-    implementation 'com.google.firebase:firebase-messaging:19.0.0'
+    implementation 'com.google.firebase:firebase-iid:19.0.1'
+    implementation 'com.google.firebase:firebase-messaging:19.0.1'
     implementation 'android.arch.work:work-runtime:1.0.1'
 
     // Testing dependencies
