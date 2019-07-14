@@ -43,8 +43,8 @@ dependencies {
 
     implementation 'com.firebaseui:firebase-ui-database:4.3.2'
 
-    implementation 'com.google.firebase:firebase-core:17.0.0'
-    implementation 'com.google.firebase:firebase-auth:18.0.0'
+    implementation 'com.google.firebase:firebase-core:17.0.1'
+    implementation 'com.google.firebase:firebase-auth:18.1.0'
     implementation 'com.google.firebase:firebase-database:18.0.0'
 
     // Needed to fix a dependency conflict with FirebaseUI'
