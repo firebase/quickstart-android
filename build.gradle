@@ -6,12 +6,12 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.40'
+        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41'
 
         classpath 'com.google.gms:google-services:4.3.0'
-        classpath 'com.google.firebase:perf-plugin:1.2.1'
-        classpath 'io.fabric.tools:gradle:1.29.0'
+        classpath 'com.google.firebase:perf-plugin:1.3.0'
+        classpath 'io.fabric.tools:gradle:1.30.0'
     }
 }
 
