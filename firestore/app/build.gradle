@@ -40,7 +40,7 @@ androidExtensions {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.40"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41"
 
     // Firestore
     implementation 'com.google.firebase:firebase-core:17.0.1'
