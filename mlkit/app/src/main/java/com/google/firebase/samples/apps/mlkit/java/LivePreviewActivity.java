@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
@@ -84,16 +85,16 @@ public final class LivePreviewActivity extends AppCompatActivity
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_live_preview);
 
-        preview = (CameraSourcePreview) findViewById(R.id.firePreview);
+        preview = findViewById(R.id.firePreview);
         if (preview == null) {
             Log.d(TAG, "Preview is null");
         }
-        graphicOverlay = (GraphicOverlay) findViewById(R.id.fireFaceOverlay);
+        graphicOverlay = findViewById(R.id.fireFaceOverlay);
         if (graphicOverlay == null) {
             Log.d(TAG, "graphicOverlay is null");
         }
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner = findViewById(R.id.spinner);
         List<String> options = new ArrayList<>();
         options.add(FACE_CONTOUR);
         options.add(FACE_DETECTION);
@@ -105,7 +106,7 @@ public final class LivePreviewActivity extends AppCompatActivity
         options.add(CLASSIFICATION_QUANT);
         options.add(CLASSIFICATION_FLOAT);
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.spinner_style,
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_style,
                 options);
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -113,7 +114,7 @@ public final class LivePreviewActivity extends AppCompatActivity
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(this);
 
-        ToggleButton facingSwitch = (ToggleButton) findViewById(R.id.facingSwitch);
+        ToggleButton facingSwitch = findViewById(R.id.facingSwitch);
         facingSwitch.setOnCheckedChangeListener(this);
         // Hide the toggle button if there is only 1 camera
         if (Camera.getNumberOfCameras() == 1) {
@@ -310,7 +311,7 @@ public final class LivePreviewActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(
-            int requestCode, String[] permissions, int[] grantResults) {
+            int requestCode, String[] permissions, @NonNull int[] grantResults) {
         Log.i(TAG, "Permission granted!");
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel);

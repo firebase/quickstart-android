@@ -97,7 +97,7 @@ public final class StillImageActivity extends AppCompatActivity {
 
     setContentView(R.layout.activity_still_image);
 
-    getImageButton = (Button) findViewById(R.id.getImageButton);
+    getImageButton = findViewById(R.id.getImageButton);
     getImageButton.setOnClickListener(
         new OnClickListener() {
           @Override
@@ -126,11 +126,11 @@ public final class StillImageActivity extends AppCompatActivity {
             popup.show();
           }
         });
-    preview = (ImageView) findViewById(R.id.previewPane);
+    preview = findViewById(R.id.previewPane);
     if (preview == null) {
       Log.d(TAG, "Preview is null");
     }
-    graphicOverlay = (GraphicOverlay) findViewById(R.id.previewOverlay);
+    graphicOverlay = findViewById(R.id.previewOverlay);
     if (graphicOverlay == null) {
       Log.d(TAG, "graphicOverlay is null");
     }
@@ -156,7 +156,7 @@ public final class StillImageActivity extends AppCompatActivity {
   }
 
   private void populateFeatureSelector() {
-    Spinner featureSpinner = (Spinner) findViewById(R.id.featureSelector);
+    Spinner featureSpinner = findViewById(R.id.featureSelector);
     List<String> options = new ArrayList<>();
     options.add(CLOUD_LABEL_DETECTION);
     options.add(CLOUD_LANDMARK_DETECTION);
@@ -185,7 +185,7 @@ public final class StillImageActivity extends AppCompatActivity {
   }
 
   private void populateSizeSelector() {
-    Spinner sizeSpinner = (Spinner) findViewById(R.id.sizeSelector);
+    Spinner sizeSpinner = findViewById(R.id.sizeSelector);
     List<String> options = new ArrayList<>();
     options.add(SIZE_PREVIEW);
     options.add(SIZE_1024_768);
