@@ -36,7 +36,7 @@ dependencies {
     implementation 'androidx.browser:browser:1.0.0'
 
     // [START gradle_play_config]
-    implementation 'com.google.firebase:firebase-ads:18.1.0'
+    implementation 'com.google.firebase:firebase-ads:18.1.1'
     // [END gradle_play_config]
     implementation 'com.google.firebase:firebase-core:17.0.1'
 
