@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-natural-language-smart-reply-model:20.0.3'
 
     implementation 'com.google.guava:guava:27.0.1-android'
-    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
