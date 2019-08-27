@@ -40,7 +40,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.0'
-    implementation 'com.google.firebase:firebase-core:17.1.0'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.firebase:firebase-iid:20.0.0'
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
