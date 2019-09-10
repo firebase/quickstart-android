@@ -1,12 +1,12 @@
 /**
  * Copyright 2016 Google Inc. All Rights Reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,6 +16,7 @@
 
 package com.google.firebase.quickstart.auth.java;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,8 +31,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthMultiFactorException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.MultiFactorInfo;
+import com.google.firebase.auth.PhoneMultiFactorInfo;
 import com.google.firebase.quickstart.auth.R;
+
+import java.util.List;
 
 public class EmailPasswordActivity extends BaseActivity implements
         View.OnClickListener {
@@ -40,6 +46,8 @@ public class EmailPasswordActivity extends BaseActivity implements
 
     private TextView mStatusTextView;
     private TextView mDetailTextView;
+    private TextView mMfaInfoTextView;
+
     private EditText mEmailField;
     private EditText mPasswordField;
 
@@ -57,12 +65,16 @@ public class EmailPasswordActivity extends BaseActivity implements
         mDetailTextView = findViewById(R.id.detail);
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
+        mMfaInfoTextView = findViewById(R.id.mfaInfo);
 
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
         findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
         findViewById(R.id.verifyEmailButton).setOnClickListener(this);
+        findViewById(R.id.enrollMfa).setOnClickListener(this);
+        findViewById(R.id.unenrollMfa).setOnClickListener(this);
+        findViewById(R.id.reloadButton).setOnClickListener(this);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -133,11 +145,21 @@ public class EmailPasswordActivity extends BaseActivity implements
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            Exception e = task.getException();
+                            if (e instanceof FirebaseAuthMultiFactorException) {
+
+                                Intent intent = new Intent(EmailPasswordActivity.this, MultiFactorSignInActivity.class);
+                                intent.putExtra("EXTRA_MFA_RESOLVER", ((FirebaseAuthMultiFactorException) e).getResolver());
+
+                                startActivityForResult(intent, 5);
+                                return;
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "signInWithEmail:failure", task.getException());
+                                Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+                                updateUI(null);
+                            }
                         }
 
                         // [START_EXCLUDE]
@@ -187,6 +209,25 @@ public class EmailPasswordActivity extends BaseActivity implements
         // [END send_email_verification]
     }
 
+    private void reload() {
+        mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    updateUI(mAuth.getCurrentUser());
+                    Toast.makeText(EmailPasswordActivity.this,
+                            "Reload successful!",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e(TAG, "reload", task.getException());
+                    Toast.makeText(EmailPasswordActivity.this,
+                            "Failed to reload user.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     private boolean validateForm() {
         boolean valid = true;
 
@@ -216,14 +257,40 @@ public class EmailPasswordActivity extends BaseActivity implements
                     user.getEmail(), user.isEmailVerified()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
+            List<MultiFactorInfo> secondFactors = user.getMultiFactor().getEnrolledFactors();
+
+            if (secondFactors.isEmpty()) {
+                findViewById(R.id.unenrollMfa).setVisibility(View.GONE);
+            } else {
+                findViewById(R.id.unenrollMfa).setVisibility(View.VISIBLE);
+
+                StringBuilder sb = new StringBuilder("Second Factors: ");
+                String delimiter = ", ";
+                for (MultiFactorInfo x : secondFactors) {
+                    sb.append(((PhoneMultiFactorInfo) x).getPhoneNumber() + delimiter);
+                }
+                sb.setLength(sb.length() - delimiter.length());
+                mMfaInfoTextView.setText(sb.toString());
+            }
+
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
             findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
 
-            findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());
+            int reloadVisibility = secondFactors.isEmpty() ? View.VISIBLE : View.GONE;
+            findViewById(R.id.reloadButton).setVisibility(reloadVisibility);
+
+            if (user.isEmailVerified()) {
+                findViewById(R.id.verifyEmailButton).setVisibility(View.GONE);
+                findViewById(R.id.enrollMfa).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.verifyEmailButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.enrollMfa).setVisibility(View.GONE);
+            }
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
+            mMfaInfoTextView.setText(null);
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.VISIBLE);
@@ -242,6 +309,12 @@ public class EmailPasswordActivity extends BaseActivity implements
             signOut();
         } else if (i == R.id.verifyEmailButton) {
             sendEmailVerification();
+        } else if (i == R.id.enrollMfa) {
+            startActivity(new Intent(this, MultiFactorEnrollActivity.class));
+        } else if (i == R.id.unenrollMfa) {
+            startActivity(new Intent(this, MultiFactorUnenrollActivity.class));
+        } else if (i == R.id.reloadButton) {
+            reload();
         }
     }
 }
