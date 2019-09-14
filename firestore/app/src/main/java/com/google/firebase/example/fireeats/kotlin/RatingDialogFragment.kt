@@ -39,7 +39,7 @@ class RatingDialogFragment : DialogFragment() {
         return v
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         if (context is RatingListener) {
@@ -49,7 +49,7 @@ class RatingDialogFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        dialog.window?.setLayout(
+        dialog?.window?.setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
     }
