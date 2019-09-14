@@ -25,15 +25,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.quickstart.analytics.R;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each image.
+     * The {@link androidx.core.view.PagerAdapter} that will provide fragments for each image.
      * This uses a {@link FragmentPagerAdapter}, which keeps every loaded fragment in memory.
      */
     private ImagePagerAdapter mImagePagerAdapter;

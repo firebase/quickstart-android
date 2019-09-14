@@ -1,11 +1,11 @@
 package com.google.firebase.samples.apps.mlkit.smartreply.java.chat;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnSuccessListener;

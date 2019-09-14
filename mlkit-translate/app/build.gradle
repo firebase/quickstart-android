@@ -34,30 +34,30 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = '1.7'
-        targetCompatibility = '1.7'
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
     buildToolsVersion = '28.0.3'
 }
 
 dependencies {
-    implementation project(':internal:chooser')
+    implementation project(':internal:chooserx')
     implementation project(":internal:lintchecks")
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.30"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.50"
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:support-media-compat:28.0.0'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    implementation 'org.apache.commons:commons-collections4:4.1'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.media:media:1.0.1'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'org.apache.commons:commons-collections4:4.4'
     implementation 'com.google.guava:guava:27.1-android'
 
-    implementation 'com.google.firebase:firebase-ml-natural-language:19.0.0'
-    implementation 'com.google.firebase:firebase-ml-natural-language-translate-model:19.0.0'
+    implementation 'com.google.firebase:firebase-ml-natural-language:21.0.1'
+    implementation 'com.google.firebase:firebase-ml-natural-language-translate-model:20.0.4'
 
     testImplementation 'junit:junit:4.12'
 }

@@ -9,7 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -23,8 +23,8 @@ android {
 }
 
 dependencies {
-    api 'com.android.support:appcompat-v7:28.0.0'
-    api 'com.android.support:cardview-v7:28.0.0'
-    api 'com.android.support:recyclerview-v7:28.0.0'
-    api 'com.android.support.constraint:constraint-layout:1.1.3'
+    api 'androidx.appcompat:appcompat:1.0.2'
+    api 'androidx.cardview:cardview:1.0.0'
+    api 'androidx.recyclerview:recyclerview:1.0.0'
+    api 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

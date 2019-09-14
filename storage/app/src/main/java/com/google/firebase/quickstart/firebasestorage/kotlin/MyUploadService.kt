@@ -6,8 +6,8 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
-import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.quickstart.firebasestorage.R
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference

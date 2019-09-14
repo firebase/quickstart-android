@@ -18,10 +18,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +63,7 @@ public final class ChooserActivity extends AppCompatActivity
     setContentView(R.layout.activity_chooser);
 
     // Set up ListView and Adapter
-    ListView listView = (ListView) findViewById(R.id.testActivityListView);
+    ListView listView = findViewById(R.id.testActivityListView);
 
     MyArrayAdapter adapter = new MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
     adapter.setDescriptionIds(DESCRIPTION_IDS);

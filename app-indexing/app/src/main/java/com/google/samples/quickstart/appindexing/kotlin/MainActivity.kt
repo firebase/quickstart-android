@@ -3,8 +3,8 @@ package com.google.samples.quickstart.appindexing.kotlin
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 // [START import_classes]
 import com.google.firebase.appindexing.FirebaseAppIndex
 import com.google.firebase.appindexing.FirebaseUserActions
@@ -15,6 +15,7 @@ import com.google.samples.quickstart.appindexing.R
 import kotlinx.android.synthetic.main.activity_main.addStickersBtn
 import kotlinx.android.synthetic.main.activity_main.clearStickersBtn
 import kotlinx.android.synthetic.main.activity_main.link
+
 
 class MainActivity : AppCompatActivity() {
 

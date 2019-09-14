@@ -51,7 +51,6 @@ public class ObjectGraphic extends Graphic {
     canvas.drawText("trackingId: " + object.getTrackingId(), rect.left, rect.top, textPaint);
     canvas.drawText(
         "confidence: " + object.getClassificationConfidence(), rect.right, rect.bottom, textPaint);
-    canvas.drawText("eid:" + object.getEntityId(), rect.right, rect.top, textPaint);
   }
 
   private static String getCategoryName(@FirebaseVisionObject.Category int category) {

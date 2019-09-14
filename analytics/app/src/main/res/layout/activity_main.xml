@@ -12,17 +12,17 @@ under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 -->
-<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.viewpager.widget.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/viewPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.google.firebase.quickstart.analytics.java.MainActivity">
 
-    <android.support.v4.view.PagerTabStrip
+    <androidx.viewpager.widget.PagerTabStrip
         android:id="@+id/pagerTabStrip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top" />
 
-</android.support.v4.view.ViewPager>
+</androidx.viewpager.widget.ViewPager>

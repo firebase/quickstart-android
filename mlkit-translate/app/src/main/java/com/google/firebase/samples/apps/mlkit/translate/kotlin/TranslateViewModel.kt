@@ -17,10 +17,10 @@
 package com.google.firebase.samples.apps.mlkit.translate.kotlin
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MediatorLiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
@@ -60,8 +60,7 @@ class TranslateViewModel(application: Application) : AndroidViewModel(applicatio
                 fetchDownloadedModels()
             }
         // Start translation if any of the following change: input text, source lang, target lang.
-        translatedText.addSource(sourceText)
-        { translate().addOnCompleteListener(processTranslation) }
+        translatedText.addSource(sourceText) { translate().addOnCompleteListener(processTranslation) }
         val languageObserver =
             Observer<Language> { translate().addOnCompleteListener(processTranslation) }
         translatedText.addSource(sourceLang, languageObserver)
@@ -102,7 +101,7 @@ class TranslateViewModel(application: Application) : AndroidViewModel(applicatio
         val source = sourceLang.value
         val target = targetLang.value
         if (source == null || target == null || text == null || text.isEmpty()) {
-            return Tasks.forResult("");
+            return Tasks.forResult("")
         }
         val sourceLangCode = FirebaseTranslateLanguage.languageForLanguageCode(source.code)!!
         val targetLangCode = FirebaseTranslateLanguage.languageForLanguageCode(target.code)!!

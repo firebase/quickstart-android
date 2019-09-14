@@ -1,7 +1,7 @@
 package com.google.samples.quickstart.config.kotlin
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -31,10 +31,9 @@ class MainActivity : AppCompatActivity() {
         // Setting to set the minimum fetch interval.
         // [START enable_dev_mode]
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .setMinimumFetchIntervalInSeconds(4200)
+                .setMinimumFetchIntervalInSeconds(3600)
                 .build()
-        remoteConfig.setConfigSettings(configSettings)
+        remoteConfig.setConfigSettingsAsync(configSettings)
         // [END enable_dev_mode]
 
         // Set default Remote Config parameter values. An app uses the in-app default values, and
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         // want to change in the Firebase console. See Best Practices in the README for more
         // information.
         // [START set_default_values]
-        remoteConfig.setDefaults(R.xml.remote_config_defaults)
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         // [END set_default_values]
 
         fetchWelcome()

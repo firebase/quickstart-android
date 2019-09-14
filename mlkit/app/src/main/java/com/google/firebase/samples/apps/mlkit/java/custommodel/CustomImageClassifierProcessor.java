@@ -15,7 +15,7 @@ package com.google.firebase.samples.apps.mlkit.java.custommodel;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,7 +31,6 @@ import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Custom Image Classifier Demo.

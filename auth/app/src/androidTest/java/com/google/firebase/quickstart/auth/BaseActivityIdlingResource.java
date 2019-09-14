@@ -1,7 +1,7 @@
 package com.google.firebase.quickstart.auth;
 
 import android.app.ProgressDialog;
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.IdlingResource;
 
 import com.google.firebase.quickstart.auth.java.AnonymousAuthActivity;
 import com.google.firebase.quickstart.auth.java.BaseActivity;

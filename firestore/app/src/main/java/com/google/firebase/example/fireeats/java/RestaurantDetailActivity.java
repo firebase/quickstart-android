@@ -2,11 +2,6 @@ package com.google.firebase.example.fireeats.java;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +9,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.example.fireeats.R;
 import com.google.firebase.example.fireeats.java.adapter.RatingAdapter;
 import com.google.firebase.example.fireeats.java.model.Rating;
@@ -32,44 +33,24 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 public class RestaurantDetailActivity extends AppCompatActivity
-        implements EventListener<DocumentSnapshot>, RatingDialogFragment.RatingListener {
+        implements EventListener<DocumentSnapshot>, RatingDialogFragment.RatingListener, View.OnClickListener {
 
     private static final String TAG = "RestaurantDetail";
 
     public static final String KEY_RESTAURANT_ID = "key_restaurant_id";
 
-    @BindView(R.id.restaurantImage)
-    ImageView mImageView;
-
-    @BindView(R.id.restaurantName)
-    TextView mNameView;
-
-    @BindView(R.id.restaurantRating)
-    MaterialRatingBar mRatingIndicator;
-
-    @BindView(R.id.restaurantNumRatings)
-    TextView mNumRatingsView;
-
-    @BindView(R.id.restaurantCity)
-    TextView mCityView;
-
-    @BindView(R.id.restaurantCategory)
-    TextView mCategoryView;
-
-    @BindView(R.id.restaurantPrice)
-    TextView mPriceView;
-
-    @BindView(R.id.viewEmptyRatings)
-    ViewGroup mEmptyView;
-
-    @BindView(R.id.recyclerRatings)
-    RecyclerView mRatingsRecycler;
+    private ImageView mImageView;
+    private TextView mNameView;
+    private MaterialRatingBar mRatingIndicator;
+    private TextView mNumRatingsView;
+    private TextView mCityView;
+    private TextView mCategoryView;
+    private TextView mPriceView;
+    private ViewGroup mEmptyView;
+    private RecyclerView mRatingsRecycler;
 
     private RatingDialogFragment mRatingDialog;
 
@@ -83,7 +64,19 @@ public class RestaurantDetailActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_detail);
-        ButterKnife.bind(this);
+
+        mImageView = findViewById(R.id.restaurantImage);
+        mNameView = findViewById(R.id.restaurantName);
+        mRatingIndicator = findViewById(R.id.restaurantRating);
+        mNumRatingsView = findViewById(R.id.restaurantNumRatings);
+        mCityView = findViewById(R.id.restaurantCity);
+        mCategoryView = findViewById(R.id.restaurantCategory);
+        mPriceView = findViewById(R.id.restaurantPrice);
+        mEmptyView = findViewById(R.id.viewEmptyRatings);
+        mRatingsRecycler = findViewById(R.id.recyclerRatings);
+
+        findViewById(R.id.restaurantButtonBack).setOnClickListener(this);
+        findViewById(R.id.fabShowRatingDialog).setOnClickListener(this);
 
         // Get restaurant ID from extras
         String restaurantId = getIntent().getExtras().getString(KEY_RESTAURANT_ID);
@@ -175,12 +168,10 @@ public class RestaurantDetailActivity extends AppCompatActivity
                 .into(mImageView);
     }
 
-    @OnClick(R.id.restaurantButtonBack)
     public void onBackArrowClicked(View view) {
         onBackPressed();
     }
 
-    @OnClick(R.id.fabShowRatingDialog)
     public void onAddRatingClicked(View view) {
         mRatingDialog.show(getSupportFragmentManager(), RatingDialogFragment.TAG);
     }
@@ -249,4 +240,17 @@ public class RestaurantDetailActivity extends AppCompatActivity
                     .hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.restaurantButtonBack:
+                onBackArrowClicked(v);
+                break;
+            case R.id.fabShowRatingDialog:
+                onAddRatingClicked(v);
+                break;
+        }
+    }
+
 }

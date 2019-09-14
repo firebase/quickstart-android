@@ -52,9 +52,6 @@ class ObjectGraphic internal constructor(
         visionObject.classificationConfidence?.let {
             canvas.drawText("confidence: $it", rect.right, rect.bottom, textPaint)
         }
-        visionObject.entityId?.let {
-            canvas.drawText("eid: $it", rect.right, rect.top, textPaint)
-        }
     }
 
     companion object {
@@ -69,9 +66,8 @@ class ObjectGraphic internal constructor(
                 FirebaseVisionObject.CATEGORY_PLACE -> return "Place"
                 FirebaseVisionObject.CATEGORY_PLANT -> return "Plant"
                 FirebaseVisionObject.CATEGORY_FOOD -> return "Food"
-            }// fall out
+            } // fall out
             return ""
         }
     }
 }
-

@@ -2,7 +2,7 @@ package com.google.firebase.quickstart.firebasestorage;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.IdlingResource;
 
 /**
  * Idling Resource for when service is running.

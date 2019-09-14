@@ -17,10 +17,7 @@
 package com.google.firebase.samples.apps.mlkit.translate.kotlin
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -29,9 +26,19 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.samples.apps.mlkit.translate.R
 import com.google.firebase.samples.apps.mlkit.translate.kotlin.TranslateViewModel.Language
-import kotlinx.android.synthetic.main.translate_fragment.*
+import kotlinx.android.synthetic.main.translate_fragment.buttonSwitchLang
+import kotlinx.android.synthetic.main.translate_fragment.buttonSyncSource
+import kotlinx.android.synthetic.main.translate_fragment.buttonSyncTarget
+import kotlinx.android.synthetic.main.translate_fragment.downloadedModels
+import kotlinx.android.synthetic.main.translate_fragment.sourceLangSelector
+import kotlinx.android.synthetic.main.translate_fragment.sourceText
+import kotlinx.android.synthetic.main.translate_fragment.targetLangSelector
+import kotlinx.android.synthetic.main.translate_fragment.targetText
 
 class TranslateFragment : Fragment() {
 

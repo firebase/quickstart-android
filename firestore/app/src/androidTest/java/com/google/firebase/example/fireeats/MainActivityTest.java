@@ -1,13 +1,13 @@
 package com.google.firebase.example.fireeats;
 
 import android.content.Intent;
-import android.support.test.filters.LargeTest;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiScrollable;
-import android.support.test.uiautomator.UiSelector;
+import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
+import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiScrollable;
+import androidx.test.uiautomator.UiSelector;
 import android.view.accessibility.AccessibilityWindowInfo;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,8 +19,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static androidx.test.InstrumentationRegistry.getInstrumentation;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 
 @LargeTest @RunWith(AndroidJUnit4.class) public class MainActivityTest {
 

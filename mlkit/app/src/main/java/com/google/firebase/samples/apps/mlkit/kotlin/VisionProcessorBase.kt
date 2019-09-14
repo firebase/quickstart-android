@@ -1,7 +1,7 @@
 package com.google.firebase.samples.apps.mlkit.kotlin
 
 import android.graphics.Bitmap
-import android.support.annotation.GuardedBy
+import androidx.annotation.GuardedBy
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
@@ -36,7 +36,9 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
 
     @Synchronized
     override fun process(
-        data: ByteBuffer, frameMetadata: FrameMetadata, graphicOverlay: GraphicOverlay
+        data: ByteBuffer,
+        frameMetadata: FrameMetadata,
+        graphicOverlay: GraphicOverlay
     ) {
         latestImage = data
         latestImageMetaData = frameMetadata
@@ -121,5 +123,4 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
     )
 
     protected abstract fun onFailure(e: Exception)
-
 }

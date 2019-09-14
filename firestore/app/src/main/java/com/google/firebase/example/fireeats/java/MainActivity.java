@@ -1,17 +1,8 @@
 package com.google.firebase.example.fireeats.java;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -20,11 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.example.fireeats.R;
 import com.google.firebase.example.fireeats.java.adapter.RestaurantAdapter;
@@ -43,13 +44,9 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 public class MainActivity extends AppCompatActivity implements
         FilterDialogFragment.FilterListener,
-        RestaurantAdapter.OnRestaurantSelectedListener {
+        RestaurantAdapter.OnRestaurantSelectedListener, View.OnClickListener {
 
     private static final String TAG = "MainActivity";
 
@@ -57,20 +54,11 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final int LIMIT = 50;
 
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-
-    @BindView(R.id.textCurrentSearch)
-    TextView mCurrentSearchView;
-
-    @BindView(R.id.textCurrentSortBy)
-    TextView mCurrentSortByView;
-
-    @BindView(R.id.recyclerRestaurants)
-    RecyclerView mRestaurantsRecycler;
-
-    @BindView(R.id.viewEmpty)
-    ViewGroup mEmptyView;
+    private Toolbar mToolbar;
+    private TextView mCurrentSearchView;
+    private TextView mCurrentSortByView;
+    private RecyclerView mRestaurantsRecycler;
+    private ViewGroup mEmptyView;
 
     private FirebaseFirestore mFirestore;
     private Query mQuery;
@@ -84,8 +72,16 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+
+        mToolbar = findViewById(R.id.toolbar);
+        mCurrentSearchView = findViewById(R.id.textCurrentSearch);
+        mCurrentSortByView = findViewById(R.id.textCurrentSortBy);
+        mRestaurantsRecycler = findViewById(R.id.recyclerRestaurants);
+        mEmptyView = findViewById(R.id.viewEmpty);
         setSupportActionBar(mToolbar);
+
+        findViewById(R.id.filterBar).setOnClickListener(this);
+        findViewById(R.id.buttonClearFilter).setOnClickListener(this);
 
         // View model
         mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
@@ -198,13 +194,11 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @OnClick(R.id.filterBar)
     public void onFilterClicked() {
         // Show the dialog containing filter options
         mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
     }
 
-    @OnClick(R.id.buttonClearFilter)
     public void onClearFilterClicked() {
         mFilterDialog.resetFilters();
 
@@ -327,5 +321,17 @@ public class MainActivity extends AppCompatActivity implements
                 }).create();
 
         dialog.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.filterBar:
+                onFilterClicked();
+                break;
+            case R.id.buttonClearFilter:
+                onClearFilterClicked();
+                break;
+        }
     }
 }

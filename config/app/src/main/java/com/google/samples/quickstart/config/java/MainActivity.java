@@ -22,8 +22,8 @@
 package com.google.samples.quickstart.config.java;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -74,10 +74,9 @@ public class MainActivity extends AppCompatActivity {
         // Setting to set the minimum fetch interval.
         // [START enable_dev_mode]
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .setMinimumFetchIntervalInSeconds(3600)
                 .build();
-        mFirebaseRemoteConfig.setConfigSettings(configSettings);
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
         // [END enable_dev_mode]
 
         // Set default Remote Config parameter values. An app uses the in-app default values, and
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         // want to change in the Firebase console. See Best Practices in the README for more
         // information.
         // [START set_default_values]
-        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
         // [END set_default_values]
 
         fetchWelcome();

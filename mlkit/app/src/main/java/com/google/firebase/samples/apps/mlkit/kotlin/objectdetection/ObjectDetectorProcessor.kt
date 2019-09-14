@@ -33,7 +33,6 @@ class ObjectDetectorProcessor(options: FirebaseVisionObjectDetectorOptions) :
         } catch (e: IOException) {
             Log.e(TAG, "Exception thrown while trying to close object detector: $e")
         }
-
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionObject>> {
@@ -66,4 +65,3 @@ class ObjectDetectorProcessor(options: FirebaseVisionObjectDetectorOptions) :
         private val TAG = "ObjectDetectorProcessor"
     }
 }
-

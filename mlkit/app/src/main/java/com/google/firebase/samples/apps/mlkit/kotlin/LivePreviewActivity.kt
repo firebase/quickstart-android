@@ -17,10 +17,10 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -45,7 +45,6 @@ import java.io.IOException
 import com.google.firebase.samples.apps.mlkit.kotlin.objectdetection.ObjectDetectorProcessor
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 import com.google.firebase.samples.apps.mlkit.kotlin.automl.AutoMLImageLabelerProcessor
-
 
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to
  * set up continuous frame processing on frames from a camera source.  */

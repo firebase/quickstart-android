@@ -1,11 +1,11 @@
 package com.google.firebase.quickstart.auth.kotlin
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuth
@@ -108,15 +108,15 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onCodeSent(
-                verificationId: String?,
+                verificationId: String,
                 token: PhoneAuthProvider.ForceResendingToken
             ) {
                 // The SMS verification code has been sent to the provided phone number, we
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
-                Log.d(TAG, "onCodeSent:" + verificationId!!)
+                Log.d(TAG, "onCodeSent:$verificationId")
 
-                // Save verification ID and resending token so we can use them later
+                // Save verification ID and resending token so we can use them latevr
                 storedVerificationId = verificationId
                 resendToken = token
 
@@ -130,7 +130,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     // [START on_start_check_user]
-    public override fun onStart() {
+    override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
@@ -157,10 +157,10 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
     private fun startPhoneNumberVerification(phoneNumber: String) {
         // [START start_phone_auth]
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,      // Phone number to verify
-                60,               // Timeout duration
+                phoneNumber, // Phone number to verify
+                60, // Timeout duration
                 TimeUnit.SECONDS, // Unit of timeout
-                this,             // Activity (for callback binding)
+                this, // Activity (for callback binding)
                 callbacks) // OnVerificationStateChangedCallbacks
         // [END start_phone_auth]
 

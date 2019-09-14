@@ -19,25 +19,24 @@ package com.google.samples.quickstart.appindexing.java;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
 // [START import_classes]
 import com.google.firebase.appindexing.FirebaseAppIndex;
 import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Actions;
-import com.google.samples.quickstart.appindexing.R;
 // [END import_classes]
-
+import com.google.samples.quickstart.appindexing.R;
 
 public class MainActivity extends AppCompatActivity {
 
