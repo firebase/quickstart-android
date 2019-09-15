@@ -34,7 +34,7 @@ dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
