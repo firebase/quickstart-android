@@ -122,14 +122,14 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
         viewModel.setMessages(messageList)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.chat_fragment_actions, menu)
+        inflater.inflate(R.menu.chat_fragment_actions, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         super.onOptionsItemSelected(item)
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.generateHistoryBasic -> {
                 generateChatHistoryBasic()
                 return true
