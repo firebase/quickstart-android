@@ -73,9 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void onNewIntent(Intent intent) {
-        // [START_EXCLUDE]
         super.onNewIntent(intent);
-        // [END_EXCLUDE]
         String action = intent.getAction();
         Uri data = intent.getData();
         if (Intent.ACTION_VIEW.equals(action) && data != null) {
