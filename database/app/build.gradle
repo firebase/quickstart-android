@@ -41,7 +41,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    implementation 'com.firebaseui:firebase-ui-database:4.3.2'
+    implementation 'com.firebaseui:firebase-ui-database:6.0.2'
 
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.google.firebase:firebase-auth:19.0.0'
