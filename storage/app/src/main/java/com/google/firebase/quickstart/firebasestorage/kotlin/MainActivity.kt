@@ -257,12 +257,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val i = item.itemId
-        if (i == R.id.action_logout) {
+        return if (i == R.id.action_logout) {
             FirebaseAuth.getInstance().signOut()
             updateUI(null)
-            return true
+            true
         } else {
-            return super.onOptionsItemSelected(item)
+            super.onOptionsItemSelected(item)
         }
     }
 

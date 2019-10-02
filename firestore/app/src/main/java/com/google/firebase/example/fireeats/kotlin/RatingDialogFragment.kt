@@ -58,7 +58,7 @@ class RatingDialogFragment : DialogFragment() {
         val user = FirebaseAuth.getInstance().currentUser
         user?.let {
             val rating = Rating(
-                    user,
+                    it,
                     restaurantFormRating.rating.toDouble(),
                     restaurantFormText.text.toString())
 
