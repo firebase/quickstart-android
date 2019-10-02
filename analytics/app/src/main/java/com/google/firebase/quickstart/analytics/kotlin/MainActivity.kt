@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity() {
     inner class ImagePagerAdapter(
         fm: FragmentManager,
         private val infos: Array<ImageInfo>
-    ) : FragmentPagerAdapter(fm) {
+    ) : FragmentPagerAdapter(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
             val info = infos[position]
