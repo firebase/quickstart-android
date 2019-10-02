@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -110,10 +111,10 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
         viewModel.getEmulatingRemoteUser().observe(this, Observer { isEmulatingRemoteUser ->
             if (isEmulatingRemoteUser!!) {
                 emulatedUserText.setText(R.string.chatting_as_red)
-                emulatedUserText.setTextColor(resources.getColor(R.color.red))
+                emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
             } else {
                 emulatedUserText.setText(R.string.chatting_as_blue)
-                emulatedUserText.setTextColor(resources.getColor(R.color.blue))
+                emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(),R.color.blue))
             }
         })
 
