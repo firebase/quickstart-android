@@ -111,9 +111,9 @@ constructor(context: Context) : VisionProcessorBase<List<FirebaseVisionImageLabe
 
     companion object {
 
-        private val TAG = "ODAutoMLILProcessor"
+        private const val TAG = "ODAutoMLILProcessor"
 
-        private val LOCAL_MODEL_NAME = "automl_image_labeling_model"
-        private val REMOTE_MODEL_NAME = "mlkit_flowers"
+        private const val LOCAL_MODEL_NAME = "automl_image_labeling_model"
+        private const val REMOTE_MODEL_NAME = "mlkit_flowers"
     }
 }

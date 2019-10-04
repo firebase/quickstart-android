@@ -62,6 +62,6 @@ class ObjectDetectorProcessor(options: FirebaseVisionObjectDetectorOptions) :
     }
 
     companion object {
-        private val TAG = "ObjectDetectorProcessor"
+        private const val TAG = "ObjectDetectorProcessor"
     }
 }
