@@ -273,7 +273,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
             }
         }
 
-        if (!allNeededPermissions.isEmpty()) {
+        if (allNeededPermissions.isNotEmpty()) {
             ActivityCompat.requestPermissions(
                 this, allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS
             )
