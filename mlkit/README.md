@@ -15,15 +15,17 @@ Getting Started
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 - Run the sample on an Android device.
 - Choose LivePreviewActivity to see a demo of the following APIs:
-  - Face detection
-  - Text recognition (on-device)
-  - Barcode scanning
+  - Face detection (on-device)
+  - Face contour detection (on-device)
+  - Object detection (on-device)
+  - Text detection (on-device)
+  - Barcode detection (on-device)
   - Image labeling (on-device)
-  - Landmark recognition
   - Custom model (Labeled "Classification"). The custom model used in this
     sample, MobileNet_v1, is already included as a local asset in the project.
     To use this sample with a hosted model, follow the directions under the
     "Hosting a Custom Model" section of this readme.
+  - AutoMl Vision Edge
 - Choose StillImageActivity to see a demo of the following:
   - Image labeling (Cloud)
   - Landmark recognition (Cloud)
