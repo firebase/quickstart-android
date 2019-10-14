@@ -92,7 +92,7 @@ class StillImageActivity : AppCompatActivity() {
             imageUri = it.getParcelable(KEY_IMAGE_URI)
             imageMaxWidth = it.getInt(KEY_IMAGE_MAX_WIDTH)
             imageMaxHeight = it.getInt(KEY_IMAGE_MAX_HEIGHT)
-            selectedSize = it.getString(KEY_SELECTED_SIZE)
+            selectedSize = it.getString(KEY_SELECTED_SIZE, "")
 
             imageUri?.let { _ ->
                 tryReloadAndDetectInImage()
@@ -192,6 +192,7 @@ class StillImageActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             tryReloadAndDetectInImage()
         } else if (requestCode == REQUEST_CHOOSE_IMAGE && resultCode == Activity.RESULT_OK) {
@@ -273,8 +274,8 @@ class StillImageActivity : AppCompatActivity() {
 
     // Gets the targeted width / height.
     private fun getTargetedWidthHeight(): Pair<Int, Int> {
-        var targetWidth = 0
-        var targetHeight = 0
+        val targetWidth: Int
+        val targetHeight: Int
 
         when (selectedSize) {
             SIZE_PREVIEW -> {

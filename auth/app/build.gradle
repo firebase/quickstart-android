@@ -36,9 +36,9 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.vectordrawable:vectordrawable-animated:1.0.0'
+    implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
 
@@ -51,7 +51,7 @@ dependencies {
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
+    implementation 'com.firebaseui:firebase-ui-auth:6.0.2'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.

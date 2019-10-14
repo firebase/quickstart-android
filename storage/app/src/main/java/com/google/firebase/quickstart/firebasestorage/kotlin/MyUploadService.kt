@@ -62,44 +62,46 @@ class MyUploadService : MyBaseTaskService() {
 
         // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
-        val photoRef = storageRef.child("photos")
-                .child(fileUri.lastPathSegment)
-        // [END get_child_ref]
+        fileUri.lastPathSegment?.let{
+            val photoRef = storageRef.child("photos")
+                    .child(it)
+            // [END get_child_ref]
 
-        // Upload file to Firebase Storage
-        Log.d(TAG, "uploadFromUri:dst:" + photoRef.path)
-        photoRef.putFile(fileUri).addOnProgressListener { taskSnapshot ->
-            showProgressNotification(getString(R.string.progress_uploading),
-                    taskSnapshot.bytesTransferred,
-                    taskSnapshot.totalByteCount)
-        }.continueWithTask { task ->
-            // Forward any exceptions
-            if (!task.isSuccessful) {
-                throw task.exception!!
+            // Upload file to Firebase Storage
+            Log.d(TAG, "uploadFromUri:dst:" + photoRef.path)
+            photoRef.putFile(fileUri).addOnProgressListener { taskSnapshot ->
+                showProgressNotification(getString(R.string.progress_uploading),
+                        taskSnapshot.bytesTransferred,
+                        taskSnapshot.totalByteCount)
+            }.continueWithTask { task ->
+                // Forward any exceptions
+                if (!task.isSuccessful) {
+                    throw task.exception!!
+                }
+
+                Log.d(TAG, "uploadFromUri: upload success")
+
+                // Request the public download URL
+                photoRef.downloadUrl
+            }.addOnSuccessListener { downloadUri ->
+                // Upload succeeded
+                Log.d(TAG, "uploadFromUri: getDownloadUri success")
+
+                // [START_EXCLUDE]
+                broadcastUploadFinished(downloadUri, fileUri)
+                showUploadFinishedNotification(downloadUri, fileUri)
+                taskCompleted()
+                // [END_EXCLUDE]
+            }.addOnFailureListener { exception ->
+                // Upload failed
+                Log.w(TAG, "uploadFromUri:onFailure", exception)
+
+                // [START_EXCLUDE]
+                broadcastUploadFinished(null, fileUri)
+                showUploadFinishedNotification(null, fileUri)
+                taskCompleted()
+                // [END_EXCLUDE]
             }
-
-            Log.d(TAG, "uploadFromUri: upload success")
-
-            // Request the public download URL
-            photoRef.downloadUrl
-        }.addOnSuccessListener { downloadUri ->
-            // Upload succeeded
-            Log.d(TAG, "uploadFromUri: getDownloadUri success")
-
-            // [START_EXCLUDE]
-            broadcastUploadFinished(downloadUri, fileUri)
-            showUploadFinishedNotification(downloadUri, fileUri)
-            taskCompleted()
-            // [END_EXCLUDE]
-        }.addOnFailureListener { exception ->
-            // Upload failed
-            Log.w(TAG, "uploadFromUri:onFailure", exception)
-
-            // [START_EXCLUDE]
-            broadcastUploadFinished(null, fileUri)
-            showUploadFinishedNotification(null, fileUri)
-            taskCompleted()
-            // [END_EXCLUDE]
         }
     }
     // [END upload_from_uri]

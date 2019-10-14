@@ -251,6 +251,7 @@ public final class StillImageActivity extends AppCompatActivity {
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
       tryReloadAndDetectInImage();
     } else if (requestCode == REQUEST_CHOOSE_IMAGE && resultCode == RESULT_OK) {

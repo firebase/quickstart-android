@@ -125,6 +125,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         Log.d(TAG, "onActivityResult:$requestCode:$resultCode:$data")
         if (requestCode == RC_TAKE_PICTURE) {
             if (resultCode == Activity.RESULT_OK) {
@@ -256,12 +257,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val i = item.itemId
-        if (i == R.id.action_logout) {
+        return if (i == R.id.action_logout) {
             FirebaseAuth.getInstance().signOut()
             updateUI(null)
-            return true
+            true
         } else {
-            return super.onOptionsItemSelected(item)
+            super.onOptionsItemSelected(item)
         }
     }
 

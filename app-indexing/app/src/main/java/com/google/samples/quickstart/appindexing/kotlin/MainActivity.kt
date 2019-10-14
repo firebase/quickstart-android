@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
         val action = intent.action
         val data = intent.data
         if (Intent.ACTION_VIEW == action && data != null) {

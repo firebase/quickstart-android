@@ -71,7 +71,7 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
      */
     private val labelList: List<String>
 
-    private val sortedLabels = PriorityQueue<AbstractMap.SimpleEntry<String, Float>>(
+    private val sortedLabels = PriorityQueue(
             RESULTS_TO_SHOW,
             Comparator<AbstractMap.SimpleEntry<String, Float>> { o1, o2 -> o1.value.compareTo(o2.value) })
 

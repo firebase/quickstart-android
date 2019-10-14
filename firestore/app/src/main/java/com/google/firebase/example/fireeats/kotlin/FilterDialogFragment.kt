@@ -119,7 +119,7 @@ class FilterDialogFragment : DialogFragment() {
         return rootView
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         if (context is FilterListener) {
@@ -129,7 +129,7 @@ class FilterDialogFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        dialog.window?.setLayout(
+        dialog?.window?.setLayout(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
     }
