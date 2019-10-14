@@ -116,7 +116,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 // by combining the code with a verification ID.
                 Log.d(TAG, "onCodeSent:$verificationId")
 
-                // Save verification ID and resending token so we can use them latevr
+                // Save verification ID and resending token so we can use them later
                 storedVerificationId = verificationId
                 resendToken = token
 
