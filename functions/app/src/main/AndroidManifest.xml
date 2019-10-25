@@ -20,10 +20,8 @@ specific language governing permissions and limitations under the License.
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".java.MainActivity"
-            android:theme="@style/MaterialAppTheme"/>
-        <activity android:name=".kotlin.MainActivity"
-            android:theme="@style/MaterialAppTheme"/>
+        <activity android:name=".java.MainActivity"/>
+        <activity android:name=".kotlin.MainActivity"/>
 
         <activity android:name=".EntryChoiceActivity">
             <intent-filter>
