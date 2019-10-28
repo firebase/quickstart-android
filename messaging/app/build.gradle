@@ -41,7 +41,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.core:core:1.1.0'
 
-    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.google.firebase:firebase-iid:20.0.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation 'android.arch.work:work-runtime:1.0.1'
