@@ -28,7 +28,7 @@
     <string name="label_firebase_ui">FirebaseUI Auth</string>
     <string name="desc_firebase_ui">Use the FirebaseUI-Android library to authenticate with Firebase.</string>
 
-    <string name="label_generic_idp">Generic OAuth Auth</string>
+    <string name="label_generic_idp">Generic OAuth</string>
     <string name="desc_generic_idp">Use a generic OAuth identity provider, like Apple, Microsoft, or Yahoo, to authenticate with Firebase.</string>
 
     <string name="hint_user_id">User ID</string>

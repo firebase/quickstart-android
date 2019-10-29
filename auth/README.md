@@ -112,18 +112,33 @@ Getting Started
     - Click **Sign In** to sign in to Firebase User Management with the generated JWT. You should
       see the User ID you entered when generating the token.
 
-### Generic IDP Setup (Microsoft)
+### Generic OAuth Sign In (Mirosoft, Apple, Yahoo, etc)
 
-- Go to the [Microsoft Developer Console](https://apps.dev.microsoft.com) and navigate to your app.
-    - Copy your **Application ID**
-    - In the "Application Secrets" section click **Generate New Password** and copy the result.
-- Go to the [Firebase console][fir-console] and navigate to **Authentication** > **Sign-in method**
-    - Make sure Microsoft is enabled
-    - Enter your application ID and application secret (password) from the previous step.
-- Return to the Microsoft console
-    - Add the redirect URL from the Firebase console under **Platforms** > **Web**.
+#### Microsoft
+
+- Follow the [instructions](https://firebase.google.com/docs/auth/android/microsoft-oauth#before_you_begin)
+  to enable Microsoft authentication in the Firebase console.
 - Run the Android application on your Android device or emulator.
     - Select **GenericIdpActivity** from the main screen.
+    - Select **Microsoft** in the dropdown.
+    - Hit the sign in button and proceed through the login flow.
+
+#### Apple
+
+- Follow the [instructions](https://firebase.google.com/docs/auth/android/apple-oauth#before_you_begin)
+  to enable Apple authentication in the Firebase console.
+- Run the Android application on your Android device or emulator.
+    - Select **GenericIdpActivity** from the main screen.
+    - Select **Apple** in the dropdown.
+    - Hit the sign in button and proceed through the login flow.
+
+#### Yahoo
+
+- Follow the [instructions](https://firebase.google.com/docs/auth/android/yahoo-oauth#before_you_begin)
+  to enable Yahoo authentication in the Firebase console.
+- Run the Android application on your Android device or emulator.
+    - Select **GenericIdpActivity** from the main screen.
+    - Select **Yahoo** in the dropdown.
     - Hit the sign in button and proceed through the login flow.
 
 Result
