@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -115,6 +116,7 @@ public class GenericIdpActivity extends BaseActivity implements
                 @Override
                 public void onSuccess(AuthResult authResult) {
                     Log.d(TAG, "checkPending:onSuccess:" + authResult);
+                    updateUI(authResult.getUser());
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -123,7 +125,7 @@ public class GenericIdpActivity extends BaseActivity implements
                 }
             });
         } else {
-            Log.d(TAG, "pending: null");
+            Log.d(TAG, "checkPending: null");
         }
     }
 
@@ -151,6 +153,7 @@ public class GenericIdpActivity extends BaseActivity implements
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Log.w(TAG, "activitySignIn:onFailure", e);
+                                showToast(getString(R.string.error_sign_in_failed));
                             }
                         });
     }
@@ -163,18 +166,24 @@ public class GenericIdpActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.generic_status_fmt, user.getDisplayName()));
+            mStatusTextView.setText(getString(R.string.generic_status_fmt, user.getDisplayName(), user.getEmail()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
+            findViewById(R.id.spinnerLayout).setVisibility(View.GONE);
             findViewById(R.id.genericSignInButton).setVisibility(View.GONE);
             findViewById(R.id.signOutButton).setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
 
+            findViewById(R.id.spinnerLayout).setVisibility(View.VISIBLE);
             findViewById(R.id.genericSignInButton).setVisibility(View.VISIBLE);
             findViewById(R.id.signOutButton).setVisibility(View.GONE);
         }
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
