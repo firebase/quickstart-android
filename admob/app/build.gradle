@@ -38,7 +38,7 @@ dependencies {
     // [START gradle_play_config]
     implementation 'com.google.firebase:firebase-ads:18.2.0'
     // [END gradle_play_config]
-    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
