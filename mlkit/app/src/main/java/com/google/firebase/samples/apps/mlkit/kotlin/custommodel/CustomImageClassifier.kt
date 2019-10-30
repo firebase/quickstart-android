@@ -109,18 +109,18 @@ internal constructor(context: Context, private val useQuantizedModel: Boolean) {
                 } else {
                     FirebaseModelDownloadConditions.Builder().build(); // Download condition.
                 }
-                firebaseModelManager.download(remoteModel, conditions);
+                firebaseModelManager.download(remoteModel, conditions)
             }
             .addOnSuccessListener {
                 val interpreterOptions =
                     FirebaseModelInterpreterOptions.Builder(
                         FirebaseCustomRemoteModel.Builder(remoteModelName).build()
                     )
-                        .build();
+                        .build()
                 try {
                     interpreter = FirebaseModelInterpreter.getInstance(interpreterOptions)
                 } catch (e: FirebaseMLException) {
-                    Log.e(TAG, "Failed to build FirebaseModelInterpreter. ", e);
+                    Log.e(TAG, "Failed to build FirebaseModelInterpreter. ", e)
                 }
             }
             .addOnFailureListener {

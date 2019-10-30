@@ -127,7 +127,6 @@ class StillImageActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
     private fun populateFeatureSelector() {
         val options = ArrayList<String>()
         options.add(CLOUD_LABEL_DETECTION)

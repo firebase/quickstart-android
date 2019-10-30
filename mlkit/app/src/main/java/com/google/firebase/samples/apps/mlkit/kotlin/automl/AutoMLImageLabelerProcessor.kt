@@ -4,8 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.NonNull
-import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.ml.common.FirebaseMLException
@@ -26,7 +24,7 @@ import com.google.firebase.samples.apps.mlkit.common.preference.PreferenceUtils
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 import com.google.firebase.samples.apps.mlkit.kotlin.labeldetector.LabelGraphic
 import java.io.IOException
-import java.util.*
+import java.util.Collections
 
 /**
  * AutoML image labeler Demo.
@@ -62,7 +60,6 @@ constructor(private val context: Context, private val mode: Mode) :
                             .build()
                     )
             modelDownloadingTask = null
-
         } else {
             Log.d(TAG, "Remote model used.")
             val remoteModelName = PreferenceUtils.getAutoMLRemoteModelName(context)
@@ -139,7 +136,7 @@ constructor(private val context: Context, private val mode: Mode) :
             Log.e(TAG, downloadingError, modelDownloadingTask?.exception)
             Toast.makeText(context, downloadingError, Toast.LENGTH_SHORT).show()
             Tasks.forException(
-                Exception ("Failed to download remote model.",
+                Exception("Failed to download remote model.",
                     modelDownloadingTask?.exception
                 ))
         }

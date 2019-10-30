@@ -167,7 +167,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
             val intent = Intent(this, SettingsActivity::class.java)
             intent.putExtra(SettingsActivity.EXTRA_LAUNCH_SOURCE, LaunchSource.LIVE_PREVIEW)
             startActivity(intent)
-            return true;
+            return true
         }
 
         return super.onOptionsItemSelected(item)
