@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="control_background">#cc4285f4</color>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#7C4DFF</color>
+
+    <color name="blue_grey_400">#78909C</color>
+    <color name="light_grey_400">#E6E6E6</color>
+    <color name="light_green_700">#689F38</color>
+    <color name="gray">#BFBFBF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="blue">#4286f4</color>
+    <color name="red">#f44242</color>
 </resources>

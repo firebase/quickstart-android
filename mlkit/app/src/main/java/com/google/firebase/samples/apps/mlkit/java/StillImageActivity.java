@@ -23,6 +23,7 @@ import android.provider.MediaStore;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,8 @@ import com.google.firebase.samples.apps.mlkit.java.cloudimagelabeling.CloudImage
 import com.google.firebase.samples.apps.mlkit.java.cloudlandmarkrecognition.CloudLandmarkRecognitionProcessor;
 import com.google.firebase.samples.apps.mlkit.java.cloudtextrecognition.CloudDocumentTextRecognitionProcessor;
 import com.google.firebase.samples.apps.mlkit.java.cloudtextrecognition.CloudTextRecognitionProcessor;
+import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity;
+import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity.LaunchSource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -153,6 +156,32 @@ public final class StillImageActivity extends AppCompatActivity {
         tryReloadAndDetectInImage();
       }
     }
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    Log.d(TAG, "onResume");
+    createImageProcessor();
+    tryReloadAndDetectInImage();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.still_image_menu, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == R.id.settings) {
+      Intent intent = new Intent(this, SettingsActivity.class);
+      intent.putExtra(SettingsActivity.EXTRA_LAUNCH_SOURCE, LaunchSource.STILL_IMAGE);
+      startActivity(intent);
+      return true;
+    }
+
+    return super.onOptionsItemSelected(item);
   }
 
   private void populateFeatureSelector() {
