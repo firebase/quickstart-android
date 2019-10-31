@@ -32,7 +32,7 @@ public class LabelGraphic extends GraphicOverlay.Graphic {
     float y = overlay.getHeight() / 2.0f;
 
     for (FirebaseVisionImageLabel label : labels) {
-      canvas.drawText(label.getText(), x, y, textPaint);
+      canvas.drawText(label.getText() + ": " + label.getConfidence(), x, y, textPaint);
       y = y - 72.0f;
     }
   }

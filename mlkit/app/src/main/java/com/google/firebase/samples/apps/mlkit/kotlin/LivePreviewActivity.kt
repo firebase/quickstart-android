@@ -14,6 +14,7 @@
 package com.google.firebase.samples.apps.mlkit.kotlin
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.os.Bundle
@@ -22,6 +23,8 @@ import androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
@@ -44,7 +47,10 @@ import kotlinx.android.synthetic.main.activity_live_preview.spinner
 import java.io.IOException
 import com.google.firebase.samples.apps.mlkit.kotlin.objectdetection.ObjectDetectorProcessor
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
+import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity
+import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity.LaunchSource
 import com.google.firebase.samples.apps.mlkit.kotlin.automl.AutoMLImageLabelerProcessor
+import com.google.firebase.samples.apps.mlkit.kotlin.automl.AutoMLImageLabelerProcessor.Mode
 
 /** Demo app showing the various features of ML Kit for Firebase. This class is used to
  * set up continuous frame processing on frames from a camera source.  */
@@ -151,6 +157,22 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
         startCameraSource()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.live_preview_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.settings) {
+            val intent = Intent(this, SettingsActivity::class.java)
+            intent.putExtra(SettingsActivity.EXTRA_LAUNCH_SOURCE, LaunchSource.LIVE_PREVIEW)
+            startActivity(intent)
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun createCameraSource(model: String) {
         // If there's no existing cameraSource, create one.
         if (cameraSource == null) {
@@ -195,7 +217,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
                     )
                 }
                 AUTOML_IMAGE_LABELING -> {
-                    cameraSource?.setMachineLearningFrameProcessor(AutoMLImageLabelerProcessor(this))
+                    cameraSource?.setMachineLearningFrameProcessor(AutoMLImageLabelerProcessor(this, Mode.LIVE_PREVIEW))
                 }
                 BARCODE_DETECTION -> {
                     Log.i(TAG, "Using Barcode Detector Processor")
