@@ -31,7 +31,7 @@ import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguag
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateRemoteModel
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions
 import com.google.firebase.samples.apps.mlkit.translate.R
-import java.util.*
+import java.util.Locale
 
 class TranslateViewModel(application: Application) : AndroidViewModel(application) {
     private val modelManager: FirebaseModelManager =
