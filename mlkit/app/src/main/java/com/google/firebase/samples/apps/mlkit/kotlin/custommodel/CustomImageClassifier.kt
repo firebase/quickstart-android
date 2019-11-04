@@ -13,7 +13,7 @@
 // limitations under the License.
 package com.google.firebase.samples.apps.mlkit.kotlin.custommodel
 
-import android.app.Activity
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Rect
@@ -21,18 +21,18 @@ import android.graphics.ImageFormat
 import android.graphics.YuvImage
 import android.os.SystemClock
 import android.util.Log
+import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.ml.common.FirebaseMLException
 import com.google.firebase.ml.custom.FirebaseModelInterpreter
 import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions
-import com.google.firebase.ml.custom.FirebaseModelOptions
 import com.google.firebase.ml.common.modeldownload.FirebaseModelManager
 import com.google.firebase.ml.custom.FirebaseModelDataType
 import com.google.firebase.ml.custom.FirebaseModelInputs
-import com.google.firebase.ml.common.modeldownload.FirebaseRemoteModel
-import com.google.firebase.ml.common.modeldownload.FirebaseLocalModel
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions
+import com.google.firebase.ml.custom.FirebaseCustomRemoteModel
+import com.google.firebase.ml.custom.FirebaseModelInterpreterOptions
 import java.io.BufferedReader
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -51,7 +51,7 @@ class CustomImageClassifier
  * Initializes an `CustomImageClassifier`.
  */
 @Throws(FirebaseMLException::class)
-internal constructor(activity: Activity, private val useQuantizedModel: Boolean) {
+internal constructor(context: Context, private val useQuantizedModel: Boolean) {
 
     /* Preallocated buffers for storing image data in. */
     private val intValues = IntArray(DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y)
@@ -59,7 +59,7 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
     /**
      * An instance of the driver class to run model inference with Firebase.
      */
-    private val interpreter: FirebaseModelInterpreter?
+    private var interpreter: FirebaseModelInterpreter? = null
 
     /**
      * Data configuration of input & output data of model.
@@ -72,8 +72,8 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
     private val labelList: List<String>
 
     private val sortedLabels = PriorityQueue(
-            RESULTS_TO_SHOW,
-            Comparator<AbstractMap.SimpleEntry<String, Float>> { o1, o2 -> o1.value.compareTo(o2.value) })
+        RESULTS_TO_SHOW,
+        Comparator<AbstractMap.SimpleEntry<String, Float>> { o1, o2 -> o1.value.compareTo(o2.value) })
 
     /**
      * Gets the top-K labels, to be shown in UI as the results.
@@ -90,38 +90,48 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
         }
 
     init {
-        val localModelName = if (useQuantizedModel)
-            LOCAL_QUANT_MODEL_NAME
+        val remoteModelName = if (useQuantizedModel)
+            REMOTE_QUANT_MODEL_NAME
         else
-            LOCAL_FLOAT_MODEL_NAME
-        val hostedModelName = if (useQuantizedModel)
-            HOSTED_QUANT_MODEL_NAME
-        else
-            HOSTED_FLOAT_MODEL_NAME
-        val localModelPath = if (useQuantizedModel)
-            LOCAL_QUANT_MODEL_PATH
-        else
-            LOCAL_FLOAT_MODEL_PATH
-        val modelOptions = FirebaseModelOptions.Builder()
-                .setRemoteModelName(hostedModelName)
-                .setLocalModelName(localModelName)
-                .build()
-        val conditions = FirebaseModelDownloadConditions.Builder()
-                .requireWifi()
-                .build()
-        val localModel = FirebaseLocalModel.Builder(localModelName)
-                .setAssetFilePath(localModelPath).build()
-        val remoteModel = FirebaseRemoteModel.Builder(hostedModelName)
-                .enableModelUpdates(true)
-                .setInitialDownloadConditions(conditions)
-                .setUpdatesDownloadConditions(conditions) // You could also specify different
-                // conditions for updates.
-                .build()
-        val manager = FirebaseModelManager.getInstance()
-        manager.registerLocalModel(localModel)
-        manager.registerRemoteModel(remoteModel)
-        interpreter = FirebaseModelInterpreter.getInstance(modelOptions)
-        labelList = loadLabelList(activity)
+            REMOTE_FLOAT_MODEL_NAME
+        val remoteModel = FirebaseCustomRemoteModel.Builder(remoteModelName).build()
+        val firebaseModelManager = FirebaseModelManager.getInstance()
+
+        firebaseModelManager
+            .isModelDownloaded(remoteModel)
+            .continueWithTask { task ->
+                // Create update condition if model is already downloaded, otherwise create download
+                // condition.
+                val conditions = if (task.result != null && task.result == true) {
+                    FirebaseModelDownloadConditions.Builder()
+                        .requireWifi()
+                        .build() // Update condition that requires wifi.
+                } else {
+                    FirebaseModelDownloadConditions.Builder().build(); // Download condition.
+                }
+                firebaseModelManager.download(remoteModel, conditions)
+            }
+            .addOnSuccessListener {
+                val interpreterOptions =
+                    FirebaseModelInterpreterOptions.Builder(
+                        FirebaseCustomRemoteModel.Builder(remoteModelName).build()
+                    )
+                        .build()
+                try {
+                    interpreter = FirebaseModelInterpreter.getInstance(interpreterOptions)
+                } catch (e: FirebaseMLException) {
+                    Log.e(TAG, "Failed to build FirebaseModelInterpreter. ", e)
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(
+                    context,
+                    "Model download failed for image classifier, please check your connection.",
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+            }
+        labelList = loadLabelList(context.applicationContext)
         Log.d(TAG, "Created a Custom Image Classifier.")
         val inputDims = intArrayOf(DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE)
         val outputDims = intArrayOf(1, labelList.size)
@@ -131,9 +141,9 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
         else
             FirebaseModelDataType.FLOAT32
         dataOptions = FirebaseModelInputOutputOptions.Builder()
-                .setInputFormat(0, dataType, inputDims)
-                .setOutputFormat(0, dataType, outputDims)
-                .build()
+            .setInputFormat(0, dataType, inputDims)
+            .setOutputFormat(0, dataType, outputDims)
+            .build()
         Log.d(TAG, "Configured input & output data for the custom image classifier.")
     }
 
@@ -154,29 +164,29 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
         val inputs = FirebaseModelInputs.Builder().add(imgData).build()
         // Here's where the magic happens!!
         return interpreter!!
-                .run(inputs, dataOptions)
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Failed to get labels array: ${e.message}")
-                    e.printStackTrace()
+            .run(inputs, dataOptions)
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Failed to get labels array: ${e.message}")
+                e.printStackTrace()
+            }
+            .continueWith { task ->
+                if (useQuantizedModel) {
+                    val labelProbArray = task.result!!.getOutput<Array<ByteArray>>(0)
+                    getTopLabels(labelProbArray)
+                } else {
+                    val labelProbArray = task.result!!.getOutput<Array<FloatArray>>(0)
+                    getTopLabels(labelProbArray)
                 }
-                .continueWith { task ->
-                    if (useQuantizedModel) {
-                        val labelProbArray = task.result!!.getOutput<Array<ByteArray>>(0)
-                        getTopLabels(labelProbArray)
-                    } else {
-                        val labelProbArray = task.result!!.getOutput<Array<FloatArray>>(0)
-                        getTopLabels(labelProbArray)
-                    }
-                }
+            }
     }
 
     /**
      * Reads label list from Assets.
      */
-    private fun loadLabelList(activity: Activity): List<String> {
+    private fun loadLabelList(context: Context): List<String> {
         val labelList = ArrayList<String>()
         try {
-            BufferedReader(InputStreamReader(activity.assets.open(LABEL_PATH))).use { reader ->
+            BufferedReader(InputStreamReader(context.assets.open(LABEL_PATH))).use { reader ->
                 var line = reader.readLine()
                 while (line != null) {
                     labelList.add(line)
@@ -200,12 +210,15 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
         else
             FLOAT_NUM_OF_BYTES_PER_CHANNEL
         val imgData = ByteBuffer.allocateDirect(
-                bytesPerChannel * DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE)
+            bytesPerChannel * DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE
+        )
         imgData.order(ByteOrder.nativeOrder())
         val bitmap = createResizedBitmap(buffer, width, height)
         imgData.rewind()
-        bitmap.getPixels(intValues, 0, bitmap.width, 0, 0, bitmap.width,
-                bitmap.height)
+        bitmap.getPixels(
+            intValues, 0, bitmap.width, 0, 0, bitmap.width,
+            bitmap.height
+        )
         // Convert the image to int points.
         var pixel = 0
         val startTime = SystemClock.uptimeMillis()
@@ -246,8 +259,11 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
     private fun getTopLabels(labelProbArray: Array<ByteArray>): List<String> {
         for (i in labelList.indices) {
             sortedLabels.add(
-                    AbstractMap.SimpleEntry(labelList[i],
-                            (labelProbArray[0][i] and 0xff.toByte()) / 255.0f))
+                AbstractMap.SimpleEntry(
+                    labelList[i],
+                    (labelProbArray[0][i] and 0xff.toByte()) / 255.0f
+                )
+            )
             if (sortedLabels.size > RESULTS_TO_SHOW) {
                 sortedLabels.poll()
             }
@@ -259,7 +275,8 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
     private fun getTopLabels(labelProbArray: Array<FloatArray>): List<String> {
         for (i in labelList.indices) {
             sortedLabels.add(
-                    AbstractMap.SimpleEntry(labelList[i], labelProbArray[0][i]))
+                AbstractMap.SimpleEntry(labelList[i], labelProbArray[0][i])
+            )
             if (sortedLabels.size > RESULTS_TO_SHOW) {
                 sortedLabels.poll()
             }
@@ -275,34 +292,14 @@ internal constructor(activity: Activity, private val useQuantizedModel: Boolean)
         private const val TAG = "MLKitDemoApp:Classifier"
 
         /**
-         * Name of the floating point model file.
-         */
-        private const val LOCAL_FLOAT_MODEL_NAME = "mobilenet_float_v2_1.0_299"
-
-        /**
-         * Path of the floating point model file stored in Assets.
-         */
-        private const val LOCAL_FLOAT_MODEL_PATH = "mobilenet_float_v2_1.0_299.tflite"
-
-        /**
          * Name of the floating point model uploaded to the Firebase console.
          */
-        private const val HOSTED_FLOAT_MODEL_NAME = "mobilenet_float_v2_1.0_299"
-
-        /**
-         * Name of the quantized model file.
-         */
-        private const val LOCAL_QUANT_MODEL_NAME = "mobilenet_quant_v2_1.0_299"
-
-        /**
-         * Path of the quantized model file stored in Assets.
-         */
-        private const val LOCAL_QUANT_MODEL_PATH = "mobilenet_quant_v2_1.0_299.tflite"
+        private const val REMOTE_FLOAT_MODEL_NAME = "mobilenet_float_v2_1.0_299"
 
         /**
          * Name of the quantized model uploaded to the Firebase console.
          */
-        private const val HOSTED_QUANT_MODEL_NAME = "mobilenet_quant_v2_1.0_299"
+        private const val REMOTE_QUANT_MODEL_NAME = "mobilenet_quant_v2_1.0_299"
 
         /**
          * Name of the label file stored in Assets.

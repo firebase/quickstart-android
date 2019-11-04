@@ -4,74 +4,78 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Toast
-
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.ml.common.FirebaseMLException
-import com.google.firebase.ml.common.modeldownload.FirebaseLocalModel
+import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions
 import com.google.firebase.ml.common.modeldownload.FirebaseModelManager
-import com.google.firebase.ml.common.modeldownload.FirebaseRemoteModel
 import com.google.firebase.ml.vision.FirebaseVision
+import com.google.firebase.ml.vision.automl.FirebaseAutoMLLocalModel
+import com.google.firebase.ml.vision.automl.FirebaseAutoMLRemoteModel
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel
 import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler
 import com.google.firebase.ml.vision.label.FirebaseVisionOnDeviceAutoMLImageLabelerOptions
+import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.CameraImageGraphic
 import com.google.firebase.samples.apps.mlkit.common.FrameMetadata
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay
+import com.google.firebase.samples.apps.mlkit.common.preference.PreferenceUtils
 import com.google.firebase.samples.apps.mlkit.kotlin.VisionProcessorBase
 import com.google.firebase.samples.apps.mlkit.kotlin.labeldetector.LabelGraphic
-
 import java.io.IOException
+import java.util.Collections
 
 /**
  * AutoML image labeler Demo.
  */
 class AutoMLImageLabelerProcessor @Throws(FirebaseMLException::class)
-constructor(context: Context) : VisionProcessorBase<List<FirebaseVisionImageLabel>>() {
+constructor(private val context: Context, private val mode: Mode) :
+    VisionProcessorBase<List<FirebaseVisionImageLabel>>() {
 
     private val detector: FirebaseVisionImageLabeler
+    private val modelDownloadingTask: Task<Void>?
+
+    /**
+     * The detection mode of the processor. Different modes will have different behavior on whether or
+     * not waiting for the model download complete.
+     */
+    enum class Mode {
+        STILL_IMAGE,
+        LIVE_PREVIEW
+    }
 
     init {
-        val remoteModel = FirebaseRemoteModel.Builder(REMOTE_MODEL_NAME).build()
-        FirebaseModelManager.getInstance()
-            .registerRemoteModel(remoteModel)
+        val modelChoice = PreferenceUtils.getAutoMLRemoteModelChoice(context)
 
-        FirebaseModelManager.getInstance()
-            .registerLocalModel(
-                FirebaseLocalModel.Builder(LOCAL_MODEL_NAME)
-                    .setAssetFilePath("automl/manifest.json")
-                    .build()
-            )
-
-        val optionsBuilder =
-            FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder().setConfidenceThreshold(0.5f)
-
-        optionsBuilder.setLocalModelName(LOCAL_MODEL_NAME).setRemoteModelName(REMOTE_MODEL_NAME)
-
-        detector =
-            FirebaseVision.getInstance().getOnDeviceAutoMLImageLabeler(optionsBuilder.build())
-
-        Toast.makeText(context, "Begin downloading the remote AutoML model.", Toast.LENGTH_SHORT)
-            .show()
-        // To track the download and get notified when the download completes, call
-        // downloadRemoteModelIfNeeded. Note that if you don't call downloadRemoteModelIfNeeded, the model
-        // downloading is still triggered implicitly.
-        FirebaseModelManager.getInstance().downloadRemoteModelIfNeeded(remoteModel)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(
-                        context,
-                        "Download remote AutoML model success.",
-                        Toast.LENGTH_SHORT
+        if (modelChoice == context.getString(R.string.pref_entries_automl_models_local)) {
+            Log.d(TAG, "Local model used.")
+            val localModel =
+                FirebaseAutoMLLocalModel.Builder().setAssetFilePath("automl/manifest.json").build()
+            detector =
+                FirebaseVision.getInstance()
+                    .getOnDeviceAutoMLImageLabeler(
+                        FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(localModel)
+                            .setConfidenceThreshold(0F)
+                            .build()
                     )
-                        .show()
-                } else {
-                    val downloadingError =
-                        "Error downloading remote model."
-                    Log.e(TAG, downloadingError, task.exception)
-                    Toast.makeText(context, downloadingError, Toast.LENGTH_SHORT).show()
-                }
-            }
+            modelDownloadingTask = null
+        } else {
+            Log.d(TAG, "Remote model used.")
+            val remoteModelName = PreferenceUtils.getAutoMLRemoteModelName(context)
+            val remoteModel = FirebaseAutoMLRemoteModel.Builder(remoteModelName).build()
+
+            val downloadConditions = FirebaseModelDownloadConditions.Builder().requireWifi().build()
+            modelDownloadingTask =
+                FirebaseModelManager.getInstance().download(remoteModel, downloadConditions)
+            detector =
+                FirebaseVision.getInstance()
+                    .getOnDeviceAutoMLImageLabeler(
+                        FirebaseVisionOnDeviceAutoMLImageLabelerOptions.Builder(remoteModel)
+                            .setConfidenceThreshold(0F)
+                            .build()
+                    )
+        }
     }
 
     override fun stop() {
@@ -83,7 +87,22 @@ constructor(context: Context) : VisionProcessorBase<List<FirebaseVisionImageLabe
     }
 
     override fun detectInImage(image: FirebaseVisionImage): Task<List<FirebaseVisionImageLabel>> {
-        return detector.processImage(image)
+        if (modelDownloadingTask == null) {
+            // No download task means only the locally bundled model is used. Model can be used directly.
+            return detector.processImage(image)
+        } else if (!modelDownloadingTask.isComplete) {
+            if (mode == Mode.LIVE_PREVIEW) {
+                Log.i(TAG, "Model download is in progress. Skip detecting image.")
+                return Tasks.forResult(Collections.emptyList())
+            } else {
+                Log.i(TAG, "Model download is in progress. Waiting...")
+                return modelDownloadingTask.continueWithTask {
+                    return@continueWithTask processImageOnDownloadComplete(image)
+                }
+            }
+        } else {
+            return processImageOnDownloadComplete(image)
+        }
     }
 
     override fun onSuccess(
@@ -109,11 +128,21 @@ constructor(context: Context) : VisionProcessorBase<List<FirebaseVisionImageLabe
         Log.w(TAG, "Label detection failed.$e")
     }
 
+    private fun processImageOnDownloadComplete(image: FirebaseVisionImage): Task<List<FirebaseVisionImageLabel>> {
+        return if (modelDownloadingTask != null && modelDownloadingTask.isSuccessful) {
+            detector.processImage(image)
+        } else {
+            val downloadingError = "Error downloading remote model."
+            Log.e(TAG, downloadingError, modelDownloadingTask?.exception)
+            Toast.makeText(context, downloadingError, Toast.LENGTH_SHORT).show()
+            Tasks.forException(
+                Exception("Failed to download remote model.",
+                    modelDownloadingTask?.exception
+                ))
+        }
+    }
+
     companion object {
-
         private const val TAG = "ODAutoMLILProcessor"
-
-        private const val LOCAL_MODEL_NAME = "automl_image_labeling_model"
-        private const val REMOTE_MODEL_NAME = "mlkit_flowers"
     }
 }

@@ -111,10 +111,10 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
         viewModel.getEmulatingRemoteUser().observe(this, Observer { isEmulatingRemoteUser ->
             if (isEmulatingRemoteUser!!) {
                 emulatedUserText.setText(R.string.chatting_as_red)
-                emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+                emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
             } else {
                 emulatedUserText.setText(R.string.chatting_as_blue)
-                emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(),R.color.blue))
+                emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
             }
         })
 

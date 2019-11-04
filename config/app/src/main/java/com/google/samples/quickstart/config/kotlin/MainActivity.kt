@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import com.google.samples.quickstart.config.BuildConfig
 import com.google.samples.quickstart.config.R
 import kotlinx.android.synthetic.main.activity_main.fetchButton
 import kotlinx.android.synthetic.main.activity_main.welcomeTextView

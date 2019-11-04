@@ -23,6 +23,7 @@ import android.view.SurfaceView;
 import android.view.ViewGroup;
 
 import com.google.android.gms.common.images.Size;
+import com.google.firebase.samples.apps.mlkit.common.preference.PreferenceUtils;
 
 import java.io.IOException;
 
@@ -30,8 +31,8 @@ import java.io.IOException;
 public class CameraSourcePreview extends ViewGroup {
   private static final String TAG = "MIDemoApp:Preview";
 
-  private Context context;
-  private SurfaceView surfaceView;
+  private final Context context;
+  private final SurfaceView surfaceView;
   private boolean startRequested;
   private boolean surfaceAvailable;
   private CameraSource cameraSource;
@@ -49,7 +50,7 @@ public class CameraSourcePreview extends ViewGroup {
     addView(surfaceView);
   }
 
-  public void start(CameraSource cameraSource) throws IOException {
+  private void start(CameraSource cameraSource) throws IOException {
     if (cameraSource == null) {
       stop();
     }
@@ -78,12 +79,19 @@ public class CameraSourcePreview extends ViewGroup {
       cameraSource.release();
       cameraSource = null;
     }
+    surfaceView.getHolder().getSurface().release();
   }
 
   @SuppressLint("MissingPermission")
   private void startIfReady() throws IOException {
     if (startRequested && surfaceAvailable) {
-      cameraSource.start();
+      if (PreferenceUtils.isCameraLiveViewportEnabled(context)) {
+        cameraSource.start(surfaceView.getHolder());
+      } else {
+        cameraSource.start();
+      }
+      requestLayout();
+
       if (overlay != null) {
         Size size = cameraSource.getPreviewSize();
         int min = Math.min(size.getWidth(), size.getHeight());

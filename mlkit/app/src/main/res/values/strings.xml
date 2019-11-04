@@ -1,44 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ML Kit Demo</string>
-    <string name="picture">Picture</string>
-    <string name="help_text">
-      <b>HDR Viewfinder Demo:</b>\n\n
+  <string name="app_name">Firebase ML Kit Demo</string>
+  <string name="ok">OK</string>
+  <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+  <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+  <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+  <string name="toggle_turn_on">Front</string>
+  <string name="toggle_turn_off">Back</string>
+  <string name="desc_camera_source_activity">Vision detectors demo with live camera preview</string>
+  <string name="desc_still_image_activity">Vision detectors demo with a still image</string>
+  <string name="desc_image_convert_activity">Image format conversions testing Activity</string>
+  <string name="desc_sdk_doctor_activity">SDK Doctor testing Activity</string>
+  <string name="desc_model_download_activity">Custom Model Download testing Activity</string>
+  <string name="download_error">Download error</string>
+  <string name="start_over">Start over</string>
+  <string name="menu_item_settings">Settings</string>
 
-      Tap viewfinder to switch modes.\n\n
+  <!-- Settings related strings. -->
+  <string name="pref_screen_title_live_preview">Live preview settings</string>
+  <string name="pref_screen_title_still_image">Still image settings</string>
+  <string name="pref_category_face_detection">Face detection</string>
+  <string name="pref_category_object_detection">Object detection</string>
+  <string name="pref_category_automl">AutoML Image Labeling</string>
 
-      <b>Normal:</b> Standard camera preview\n
-      <b>Split:</b> Manual exposure control\n
-      <b>HDR:</b> Fused HDR viewfinder\n\n
+  <!-- Strings for camera settings. -->
+  <string name="pref_category_key_camera" translatable="false">pckc</string>
+  <string name="pref_category_title_camera">Camera</string>
+  <string name="pref_key_rear_camera_preview_size" translatable="false">rcpvs</string>
+  <string name="pref_key_rear_camera_picture_size" translatable="false">rcpts</string>
+  <string name="pref_key_front_camera_preview_size" translatable="false">fcpvs</string>
+  <string name="pref_key_front_camera_picture_size" translatable="false">fcpts</string>
+  <string name="pref_key_camera_live_viewport" translatable="false">clv</string>
+  <string name="pref_title_rear_camera_preview_size">Rear camera preview size</string>
+  <string name="pref_title_front_camera_preview_size">Front camera preview size</string>
+  <string name="pref_title_camera_live_viewport">Enable live viewport</string>
+  <string name="pref_summary_camera_live_viewport">Do not block camera preview drawing on detection</string>
 
-      Swipe up/down in Split/HDR modes to change manual exposure
-      values.\n\n
+  <!-- Strings for object detector enable multiple objects preference. -->
+  <string name="pref_title_object_detector_enable_multiple_objects">Enable multiple objects</string>
+  <string name="pref_key_live_preview_object_detector_enable_multiple_objects" translatable="false">lpodemo</string>
+  <string name="pref_key_still_image_object_detector_enable_multiple_objects" translatable="false">siodemo</string>
 
-      The left half of the viewfinder controls exposure time for
-      even-numbered frames, and the right half of the viewfinder
-      controls exposure time for odd-numbered frames
-    </string>
+  <!-- Strings for object detector enable classification preference. -->
+  <string name="pref_title_object_detector_enable_classification">Enable classification</string>
+  <string name="pref_key_live_preview_object_detector_enable_classification" translatable="false">lpodec</string>
+  <string name="pref_key_still_image_object_detector_enable_classification" translatable="false">siodec</string>
 
-    <string name="info">Info</string>
+  <!-- Strings for face detector landmark mode preference. -->
+  <string name="pref_title_face_detector_landmark_mode">Landmark mode</string>
+  <string name="pref_key_live_preview_face_detection_landmark_mode" translatable="false">lpfdlm</string>
+  <string name="pref_entries_face_detector_landmark_mode_no_landmarks">No landmarks</string>
+  <string name="pref_entries_face_detector_landmark_mode_all_landmarks">All landmarks</string>
+  <!-- The following entry values must match the ones in FirebaseVisionFaceDetectorOptions#LandmarkMode -->
+  <string name="pref_entry_values_face_detector_landmark_mode_no_landmarks" translatable="false">1</string>
+  <string name="pref_entry_values_face_detector_landmark_mode_all_landmarks" translatable="false">2</string>
 
-    <string name="camera_permission_rationale">This sample app requires camera access in order to
-        demo the API.</string>
-    <string name="camera_no_good">No back-facing sufficiently capable camera available!</string>
-    <string name="camera_disabled">Camera is disabled by device policy</string>
-    <string name="camera_disconnected">Camera was disconnected before it was opened</string>
-    <string name="camera_error">Camera service reported an error</string>
-    <string name="camera_unknown">Unknown camera error: %s</string>
-    <string name="camera_permission_denied_explanation">You\'ve denied a permission that the app
-        needs for core functionality. If you selected &quot;don\'t ask again&quot; in the past then
-        you need to use Settings to re-enable the permission.</string>
+  <!-- Strings for face detector contour mode preference. -->
+  <string name="pref_title_face_detector_contour_mode">Contour mode</string>
+  <string name="pref_key_live_preview_face_detection_contour_mode" translatable="false">lpfdcm</string>
+  <string name="pref_entries_face_detector_contour_mode_no_contours">No contours</string>
+  <string name="pref_entries_face_detector_contour_mode_all_contours">All contours</string>
+  <!-- The following entry values must match the ones in FirebaseVisionFaceDetectorOptions#ContourMode -->
+  <string name="pref_entry_values_face_detector_contour_mode_no_contours" translatable="false">1</string>
+  <string name="pref_entry_values_face_detector_contour_mode_all_contours" translatable="false">2</string>
 
-    <string name="ok">OK</string>
-    <string name="settings">Settings</string>
-    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
-    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
-    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
-    <string name="toggle_turn_on">Front</string>
-    <string name="toggle_turn_off">Back</string>
-    <string name="desc_camera_source_activity">Vision detectors demo with live camera preview</string>
-    <string name="desc_still_image_activity">Vision detectors demo with a still image</string>
+  <!-- Strings for face detector classification mode preference. -->
+  <string name="pref_title_face_detector_classification_mode">Classification mode</string>
+  <string name="pref_key_live_preview_face_detection_classification_mode" translatable="false">lpfdcfm</string>
+  <string name="pref_entries_face_detector_classification_mode_no_classifications">No classifications</string>
+  <string name="pref_entries_face_detector_classification_mode_all_classifications">All classifications</string>
+  <!-- The following entry values must match the ones in FirebaseVisionFaceDetectorOptions#ClassificationMode -->
+  <string name="pref_entry_values_face_detector_classification_mode_no_classifications" translatable="false">1</string>
+  <string name="pref_entry_values_face_detector_classification_mode_all_classifications" translatable="false">2</string>
+
+  <!-- Strings for face detector performance mode preference. -->
+  <string name="pref_title_face_detector_performance_mode">Performance mode</string>
+  <string name="pref_key_live_preview_face_detection_performance_mode" translatable="false">lpfdpm</string>
+  <string name="pref_entries_face_detector_performance_mode_fast">Fast</string>
+  <string name="pref_entries_face_detector_performance_mode_accurate">Accurate</string>
+  <!-- The following entry values must match the ones in FirebaseVisionFaceDetectorOptions#PerformanceMode -->
+  <string name="pref_entry_values_face_detector_performance_mode_fast" translatable="false">1</string>
+  <string name="pref_entry_values_face_detector_performance_mode_accurate" translatable="false">2</string>
+
+  <!-- Strings for face detector face tracking preference. -->
+  <string name="pref_title_face_detector_face_tracking">Face tracking</string>
+  <string name="pref_key_live_preview_face_detection_face_tracking" translatable="false">lpfdft</string>
+
+  <!-- Strings for face detector min face size preference. -->
+  <string name="pref_title_face_detector_min_face_size">Minimum face size</string>
+  <string name="pref_key_live_preview_face_detection_min_face_size" translatable="false">lpfdmfs</string>
+  <string name="pref_dialog_message_face_detector_min_face_size">Proportion of the head width to the image width, and the valid value range is [0.0, 1.0]</string>
+  <string name="pref_toast_invalid_min_face_size">Minimum face size must be a float value and in the range [0.0, 1.0]</string>
+
+  <!-- Strings for automl remote model name preference. -->
+  <string name="pref_title_automl_remote_model_name">AutoML Remote Model Name</string>
+  <string name="pref_key_live_preview_automl_remote_model_name" translatable="false">lparmn</string>
+  <string name="pref_dialog_message_automl_remote_model_name">Remote model name in the Firebase Console.</string>
+
+  <!-- Strings for automl model choices preference. -->
+  <string name="pref_title_automl_model_choices">AutoML Model Choices</string>
+  <string name="pref_entries_automl_models_remote">Remote</string>
+  <string name="pref_entries_automl_models_local">Local</string>
+  <string name="pref_key_live_preview_automl_remote_model_choices" translatable="false">lparmc</string>
 </resources>

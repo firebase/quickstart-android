@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_main.addStickersBtn
 import kotlinx.android.synthetic.main.activity_main.clearStickersBtn
 import kotlinx.android.synthetic.main.activity_main.link
 
-
 class MainActivity : AppCompatActivity() {
 
     private var articleId: String? = null

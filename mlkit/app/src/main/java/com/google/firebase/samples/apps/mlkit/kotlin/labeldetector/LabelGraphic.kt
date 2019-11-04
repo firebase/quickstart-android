@@ -27,7 +27,7 @@ class LabelGraphic(
         var y = overlay.height / 2.0f
 
         for (label in labels) {
-            canvas.drawText(label.text, x, y, textPaint)
+            canvas.drawText(label.text + ": " + label.confidence, x, y, textPaint)
             y -= 72.0f
         }
     }

@@ -62,7 +62,7 @@ class MyUploadService : MyBaseTaskService() {
 
         // [START get_child_ref]
         // Get a reference to store file at photos/<FILENAME>.jpg
-        fileUri.lastPathSegment?.let{
+        fileUri.lastPathSegment?.let {
             val photoRef = storageRef.child("photos")
                     .child(it)
             // [END get_child_ref]

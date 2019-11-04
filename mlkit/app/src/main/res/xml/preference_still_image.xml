@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <PreferenceCategory
+      android:title="@string/pref_category_object_detection">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/pref_key_still_image_object_detector_enable_multiple_objects"
+        android:persistent="true"
+        android:title="@string/pref_title_object_detector_enable_multiple_objects"/>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/pref_key_still_image_object_detector_enable_classification"
+        android:persistent="true"
+        android:title="@string/pref_title_object_detector_enable_classification"/>
+
+  </PreferenceCategory>
+
+</PreferenceScreen>
