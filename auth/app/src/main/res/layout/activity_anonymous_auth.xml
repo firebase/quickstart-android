@@ -45,6 +45,8 @@
 
     <Button
         android:id="@+id/buttonAnonymousSignIn"
+        android:layout_marginStart="@dimen/button_horizontal_margin"
+        android:layout_marginEnd="@dimen/button_horizontal_margin"
         android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
         android:layout_below="@+id/anonymousStatusEmail"
@@ -52,6 +54,8 @@
 
     <Button
         android:id="@+id/buttonAnonymousSignOut"
+        android:layout_marginStart="@dimen/button_horizontal_margin"
+        android:layout_marginEnd="@dimen/button_horizontal_margin"
         android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/buttonAnonymousSignIn"
@@ -89,6 +93,8 @@
 
     <Button
         android:id="@+id/buttonLinkAccount"
+        android:layout_marginStart="@dimen/button_horizontal_margin"
+        android:layout_marginEnd="@dimen/button_horizontal_margin"
         android:layout_width="@dimen/field_width_standard"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fieldEmail"

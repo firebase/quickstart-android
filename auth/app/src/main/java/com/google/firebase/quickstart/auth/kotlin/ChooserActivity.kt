@@ -34,7 +34,7 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         setContentView(R.layout.activity_chooser)
 
         // Set up Adapter
-        val adapter = MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES)
+        val adapter = MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES as Array<Class<*>>)
         adapter.setDescriptionIds(DESCRIPTION_IDS)
 
         listView.adapter = adapter

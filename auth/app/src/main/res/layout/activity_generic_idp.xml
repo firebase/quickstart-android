@@ -53,7 +53,6 @@
 
         <Button
             android:id="@+id/genericSignInButton"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sign_in"
@@ -62,7 +61,6 @@
 
         <Button
             android:id="@+id/signOutButton"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/sign_out"

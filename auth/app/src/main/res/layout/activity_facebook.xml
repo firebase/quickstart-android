@@ -57,7 +57,6 @@
 
         <Button
             android:id="@+id/buttonFacebookSignout"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

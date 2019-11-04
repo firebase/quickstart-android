@@ -9,7 +9,7 @@
     android:paddingLeft="8dp"
     android:paddingRight="8dp">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -49,9 +49,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/item_title"
                 tools:text="Choice Description" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/item_launch_button"
-                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -62,6 +62,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

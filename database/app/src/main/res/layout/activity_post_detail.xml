@@ -42,9 +42,9 @@
             android:maxLines="1"
             android:hint="Write a comment..."/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonPostComment"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="0dp"
             android:layout_weight="0.2"
             android:layout_height="wrap_content"
