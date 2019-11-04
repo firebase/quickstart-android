@@ -21,7 +21,6 @@
 
 package com.google.firebase.quickstart.analytics.java;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -267,9 +266,8 @@ public class MainActivity extends AppCompatActivity {
 
         private final ImageInfo[] infos;
 
-        @SuppressLint("WrongConstant")
         public ImagePagerAdapter(FragmentManager fm, ImageInfo[] infos) {
-            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+            super(fm);
             this.infos = infos;
         }
 
