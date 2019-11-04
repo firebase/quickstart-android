@@ -34,8 +34,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.google.firebase:firebase-ml-natural-language:21.0.2'
-    implementation 'com.google.firebase:firebase-ml-natural-language-language-id-model:20.0.5'
+    implementation 'com.google.firebase:firebase-ml-natural-language:22.0.0'
+    implementation 'com.google.firebase:firebase-ml-natural-language-language-id-model:20.0.7'
 }
 apply plugin: 'com.google.gms.google-services'
 
