@@ -57,6 +57,8 @@
 
         <Button
             android:id="@+id/buttonSignIn"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="@string/sign_in" />
@@ -64,6 +66,8 @@
 
         <Button
             android:id="@+id/buttonSignUp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="@string/sign_up" />
