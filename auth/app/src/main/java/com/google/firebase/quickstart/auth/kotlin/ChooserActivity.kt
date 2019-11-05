@@ -54,7 +54,7 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         ArrayAdapter<Class<*>>(ctx, resource, classes) {
         private var descriptionIds: IntArray? = null
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             var view = convertView
 
             if (convertView == null) {
@@ -66,7 +66,7 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             view?.findViewById<TextView>(android.R.id.text1)?.text = classes[position].simpleName
             view?.findViewById<TextView>(android.R.id.text2)?.setText(descriptionIds!![position])
 
-            return view
+            return view!!
         }
 
         fun setDescriptionIds(descriptionIds: IntArray) {

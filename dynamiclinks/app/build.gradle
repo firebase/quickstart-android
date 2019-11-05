@@ -5,13 +5,13 @@ apply plugin: 'kotlin-android-extensions'
 check.dependsOn 'assembleMainFlavorDebugAndroidTest'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     flavorDimensions "irrelevant"
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.deeplinks"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
