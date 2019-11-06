@@ -42,6 +42,8 @@ dependencies {
 
     // ML Kit dependencies
     implementation 'com.google.firebase:firebase-ml-vision:24.0.0'
+    // Barcode detection model.
+    implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.0.1'
     // Image Labeling model.
     implementation 'com.google.firebase:firebase-ml-vision-image-label-model:19.0.0'
     // Face model
