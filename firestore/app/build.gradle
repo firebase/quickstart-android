@@ -44,7 +44,7 @@ dependencies {
 
     // Firestore
     implementation 'com.google.firebase:firebase-core:17.2.1'
-    implementation 'com.google.firebase:firebase-firestore:21.2.1'
+    implementation 'com.google.firebase:firebase-firestore:21.3.0'
 
     // Other Firebase/Play services deps
     implementation 'com.google.firebase:firebase-auth:19.1.0'
