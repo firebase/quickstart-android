@@ -58,7 +58,7 @@ public class AppIndexingUtil {
         });
     }
 
-    public static void setStickers(final Context context, FirebaseAppIndex firebaseAppIndex) {
+    public static Task<Void> setStickers(final Context context, FirebaseAppIndex firebaseAppIndex) {
         try {
             List<Indexable> stickers = getIndexableStickers(context);
             Indexable stickerPack = getIndexableStickerPack(context);
@@ -85,8 +85,11 @@ public class AppIndexingUtil {
                             .show();
                 }
             });
+            
+            return task;
         } catch (IOException | FirebaseAppIndexingInvalidArgumentException e) {
             Log.e(TAG, "Unable to set stickers", e);
+            return null;
         }
     }
 
