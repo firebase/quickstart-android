@@ -17,7 +17,7 @@ public class AppIndexingService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         final Task<Void> setStickersTask = AppIndexingUtil.setStickers(getApplicationContext(), FirebaseAppIndex.getInstance());
-        if (task != null) {
+        if (setStickersTask != null) {
            try {
                Tasks.await(setStickersTask); 
            } catch (ExecutionException e) {
