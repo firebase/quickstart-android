@@ -8,7 +8,7 @@ android {
     flavorDimensions "minSdkVersion"
 
     defaultConfig {
-        applicationId "com.google.firebase.quickstart.auth2"
+        applicationId "com.google.firebase.quickstart.auth"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
