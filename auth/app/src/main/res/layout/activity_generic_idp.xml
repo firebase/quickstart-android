@@ -42,6 +42,30 @@
             style="@style/ThemeOverlay.MyTextDetail"
             tools:text="Firebase User ID: 123456789abc" />
 
+        <RelativeLayout
+            android:id="@+id/spinnerLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/providerSpinnerLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="@string/generic_label_provider"/>
+
+            <Spinner
+                android:id="@+id/providerSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/providerSpinnerLabel"
+                android:layout_toRightOf="@+id/providerSpinnerLabel"
+                android:layout_toEndOf="@+id/providerSpinnerLabel" />
+
+        </RelativeLayout>
+
     </LinearLayout>
 
     <RelativeLayout
