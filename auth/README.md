@@ -91,7 +91,7 @@ Getting Started
     - Click **Sign In** to sign in to Firebase User Management with the generated JWT. You should
       see the User ID you entered when generating the token.
 
-### Generic OAuth Sign In (Mirosoft, Apple, Yahoo, Twitter, etc)
+### Generic OAuth Sign In (Microsoft, Apple, Yahoo, Twitter, etc)
 
 #### Microsoft
 
