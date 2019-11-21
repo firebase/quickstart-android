@@ -155,7 +155,8 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
         private val PROVIDER_MAP = mapOf(
                 "Apple" to "apple,com",
                 "Microsoft" to "microsoft.com",
-                "Yahoo" to "yahoo.com"
+                "Yahoo" to "yahoo.com",
+                "Twitter" to "twitter.com"
         )
     }
 }
