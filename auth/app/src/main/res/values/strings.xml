@@ -7,9 +7,6 @@
     <string name="label_facebook_login">Firebase + Facebook Login</string>
     <string name="desc_facebook_login">Use a Facebook Login credential to authenticate with Firebase.</string>
 
-    <string name="label_twitter_login">Firebase + Twitter Login</string>
-    <string name="desc_twitter_login">Use a Twitter Login credential to authenticate with Firebase.</string>
-
     <string name="label_emailpassword">Email/Password Authentication</string>
     <string name="desc_emailpassword">Use an email and password to authenticate with Firebase.</string>
 
@@ -29,7 +26,7 @@
     <string name="desc_firebase_ui">Use the FirebaseUI-Android library to authenticate with Firebase.</string>
 
     <string name="label_generic_idp">Generic OAuth</string>
-    <string name="desc_generic_idp">Use a generic OAuth identity provider, like Apple, Microsoft, or Yahoo, to authenticate with Firebase.</string>
+    <string name="desc_generic_idp">Use a generic OAuth identity provider, like Apple, Microsoft, Yahoo, or Twitter to authenticate with Firebase.</string>
 
     <string name="hint_user_id">User ID</string>
     <string name="get_custom_token">Get Token</string>

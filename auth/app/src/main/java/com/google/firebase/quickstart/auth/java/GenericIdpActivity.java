@@ -56,6 +56,7 @@ public class GenericIdpActivity extends BaseActivity implements
             put("Apple", "apple.com");
             put("Microsoft", "microsoft.com");
             put("Yahoo", "yahoo.com");
+            put("Twitter", "twitter.com");
         }
     };
 
