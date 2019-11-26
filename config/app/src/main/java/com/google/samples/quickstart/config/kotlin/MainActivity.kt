@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         remoteConfig.fetchAndActivate()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        val updated = task.getResult()
+                        val updated = task.result
                         Log.d(TAG, "Config params updated: $updated")
                         Toast.makeText(this, "Fetch and activate succeeded",
                                 Toast.LENGTH_SHORT).show()
