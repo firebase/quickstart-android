@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         // [START call_add_numbers]
         addNumbers(firstNumber, secondNumber)
-                .addOnCompleteListener(OnCompleteListener { task ->
+                .addOnCompleteListener { task ->
                     if (!task.isSuccessful) {
                         val e = task.exception
                         if (e is FirebaseFunctionsException) {
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         // [START_EXCLUDE]
                         Log.w(TAG, "addNumbers:onFailure", e)
                         showSnackbar("An error occurred.")
-                        return@OnCompleteListener
+                        return@addOnCompleteListener
                         // [END_EXCLUDE]
                     }
 
@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     val result = task.result
                     fieldAddResult.setText(result.toString())
                     // [END_EXCLUDE]
-                })
+                }
         // [END call_add_numbers]
     }
 

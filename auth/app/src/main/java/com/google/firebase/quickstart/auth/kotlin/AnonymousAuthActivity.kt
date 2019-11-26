@@ -159,8 +159,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        val i = v.id
-        when (i) {
+        when (v.id) {
             R.id.buttonAnonymousSignIn -> signInAnonymously()
             R.id.buttonAnonymousSignOut -> signOut()
             R.id.buttonLinkAccount -> linkAccount()
