@@ -54,7 +54,7 @@ class ChatViewModel : ViewModel() {
     }
 
     internal fun addMessage(message: String) {
-        var list: MutableList<Message>? = messageList.getValue()
+        var list: MutableList<Message>? = messageList.value
         if (list == null) {
             list = ArrayList()
         }
