@@ -101,4 +101,13 @@
         android:enabled="false"
         android:text="Link Account" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonLinkAccount"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyleHorizontal"/>
+
 </RelativeLayout>

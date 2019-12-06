@@ -66,6 +66,7 @@ public class FacebookLoginActivity extends BaseActivity implements
         // Views
         mStatusTextView = findViewById(R.id.status);
         mDetailTextView = findViewById(R.id.detail);
+        mProgressBar = findViewById(R.id.progressBar);
         findViewById(R.id.buttonFacebookSignout).setOnClickListener(this);
 
         // [START initialize_auth]
