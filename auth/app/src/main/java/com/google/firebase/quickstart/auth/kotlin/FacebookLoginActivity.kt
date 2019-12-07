@@ -35,7 +35,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_facebook)
 
-        progressBar = findViewById(R.id.progressBar)
+        setProgressBar(R.id.progressBar)
 
         buttonFacebookSignout.setOnClickListener(this)
 

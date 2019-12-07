@@ -37,7 +37,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google)
 
-        progressBar = findViewById(R.id.progressBar)
+        setProgressBar(R.id.progressBar)
 
         // Button listeners
         signInButton.setOnClickListener(this)

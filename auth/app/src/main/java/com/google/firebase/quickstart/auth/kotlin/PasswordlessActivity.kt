@@ -35,7 +35,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_passwordless)
 
-        progressBar = findViewById(R.id.progressBar)
+        setProgressBar(R.id.progressBar)
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()

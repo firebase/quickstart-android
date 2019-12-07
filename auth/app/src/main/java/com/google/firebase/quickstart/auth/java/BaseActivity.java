@@ -13,6 +13,10 @@ public class BaseActivity extends AppCompatActivity {
     @VisibleForTesting
     public ProgressBar mProgressBar;
 
+    public void setProgressBar(int resId) {
+        mProgressBar = findViewById(resId);
+    }
+
     public void showProgressDialog() {
         if (mProgressBar != null) {
             mProgressBar.setVisibility(View.VISIBLE);

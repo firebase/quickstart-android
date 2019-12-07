@@ -8,7 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 
 open class BaseActivity : AppCompatActivity() {
 
-    var progressBar: ProgressBar? = null
+    private var progressBar: ProgressBar? = null
+
+    fun setProgressBar(resId: Int) {
+        progressBar = findViewById(resId)
+    }
 
     fun showProgressDialog() {
         progressBar?.visibility = View.VISIBLE
