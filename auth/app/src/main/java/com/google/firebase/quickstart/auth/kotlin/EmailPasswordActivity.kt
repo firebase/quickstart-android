@@ -30,6 +30,8 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_emailpassword)
 
+        setProgressBar(R.id.progressBar)
+
         // Buttons
         emailSignInButton.setOnClickListener(this)
         emailCreateAccountButton.setOnClickListener(this)

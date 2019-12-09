@@ -63,6 +63,7 @@ public class AnonymousAuthActivity extends BaseActivity implements
         // Fields
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
+        setProgressBar(R.id.progressBar);
 
         // Click listeners
         findViewById(R.id.buttonAnonymousSignIn).setOnClickListener(this);

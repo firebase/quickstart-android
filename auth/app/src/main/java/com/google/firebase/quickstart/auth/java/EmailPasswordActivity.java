@@ -57,6 +57,7 @@ public class EmailPasswordActivity extends BaseActivity implements
         mDetailTextView = findViewById(R.id.detail);
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
+        setProgressBar(R.id.progressBar);
 
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);

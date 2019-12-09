@@ -9,11 +9,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.google.firebase.quickstart.auth.java.AnonymousAuthActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyleHorizontal"/>
+
     <ImageView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_below="@+id/progressBar"
         android:contentDescription="@string/desc_firebase_lockup"
         android:src="@drawable/firebase_lockup_400" />
 
@@ -100,5 +109,7 @@
         android:layout_below="@+id/fieldEmail"
         android:enabled="false"
         android:text="Link Account" />
+
+
 
 </RelativeLayout>

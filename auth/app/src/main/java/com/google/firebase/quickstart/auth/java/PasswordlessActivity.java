@@ -59,6 +59,8 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
         mEmailField = findViewById(R.id.fieldEmail);
         mStatusText = findViewById(R.id.status);
 
+        setProgressBar(R.id.progressBar);
+
         mSendLinkButton.setOnClickListener(this);
         mSignInButton.setOnClickListener(this);
         mSignOutButton.setOnClickListener(this);

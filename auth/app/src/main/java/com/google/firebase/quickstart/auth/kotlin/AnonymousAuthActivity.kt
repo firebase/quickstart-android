@@ -30,6 +30,8 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_anonymous_auth)
 
+        setProgressBar(R.id.progressBar)
+
         // [START initialize_auth]
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()

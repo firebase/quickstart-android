@@ -64,6 +64,7 @@ public class GoogleSignInActivity extends BaseActivity implements
         // Views
         mStatusTextView = findViewById(R.id.status);
         mDetailTextView = findViewById(R.id.detail);
+        setProgressBar(R.id.progressBar);
 
         // Button listeners
         findViewById(R.id.signInButton).setOnClickListener(this);
