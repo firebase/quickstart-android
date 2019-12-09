@@ -38,7 +38,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.2'
     implementation 'com.google.firebase:firebase-core:17.2.1'
-    implementation 'com.google.firebase:firebase-iid:20.0.1'
+    implementation 'com.google.firebase:firebase-iid:20.0.2'
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
