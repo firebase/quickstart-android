@@ -29,6 +29,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         database = FirebaseDatabase.getInstance().reference
         auth = FirebaseAuth.getInstance()
 
+        setProgressBar(R.id.progressBar)
+
         // Click listeners
         buttonSignIn.setOnClickListener(this)
         buttonSignUp.setOnClickListener(this)
@@ -49,14 +51,14 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        showProgressDialog()
+        showProgressBar()
         val email = fieldEmail.text.toString()
         val password = fieldPassword.text.toString()
 
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     Log.d(TAG, "signIn:onComplete:" + task.isSuccessful)
-                    hideProgressDialog()
+                    hideProgressBar()
 
                     if (task.isSuccessful) {
                         onAuthSuccess(task.result?.user!!)
@@ -73,14 +75,14 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        showProgressDialog()
+        showProgressBar()
         val email = fieldEmail.text.toString()
         val password = fieldPassword.text.toString()
 
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     Log.d(TAG, "createUser:onComplete:" + task.isSuccessful)
-                    hideProgressDialog()
+                    hideProgressBar()
 
                     if (task.isSuccessful) {
                         onAuthSuccess(task.result?.user!!)
