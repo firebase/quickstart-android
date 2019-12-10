@@ -4,6 +4,13 @@ ML Kit for Firebase Quickstart
 The ML Kit for Firebase Android Quickstart app demonstrates how to use the
 various features of ML Kit to add machine learning to your application.
 
+**NOTE:** A sample application using the same library, but with a more
+sophisticated UI (it uses [Jetpack
+Libraries](https://developer.android.com/jetpack) and follows the [Material
+Design guidelines for ML](https://material.io/collections/machine-learning/)),
+can be found [here](https://github.com/firebase/mlkit-material-android). This
+may be helpful when integrating ML Kit into real-world applications.
+
 Introduction
 ------------
 
