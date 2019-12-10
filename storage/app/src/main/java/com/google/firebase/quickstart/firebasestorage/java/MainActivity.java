@@ -16,7 +16,6 @@
 
 package com.google.firebase.quickstart.firebasestorage.java;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String KEY_DOWNLOAD_URL = "key_download_url";
 
     private BroadcastReceiver mBroadcastReceiver;
-    private ProgressDialog mProgressDialog;
+    private ProgressBar mProgressBar;
+    private TextView mCaption;
     private FirebaseAuth mAuth;
 
     private Uri mDownloadUrl = null;
@@ -72,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+        mProgressBar = findViewById(R.id.progressBar);
+        mCaption = findViewById(R.id.caption);
 
         // Click listeners
         findViewById(R.id.buttonCamera).setOnClickListener(this);
@@ -278,19 +282,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showProgressDialog(String caption) {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.setMessage(caption);
-        mProgressDialog.show();
+        mCaption.setText(caption);
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
+        mCaption.setText("");
+        mProgressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
