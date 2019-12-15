@@ -2,6 +2,8 @@ package com.google.firebase.quickstart.database.java;
 
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.R;
 import com.google.firebase.quickstart.database.java.models.Comment;
@@ -43,7 +46,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private TextView mTitleView;
     private TextView mBodyView;
     private EditText mCommentField;
-    private Button mCommentButton;
+    private Button mCommentButton, mDeleteButton;
     private RecyclerView mCommentsRecycler;
 
     @Override
@@ -70,8 +73,11 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mCommentField = findViewById(R.id.fieldCommentText);
         mCommentButton = findViewById(R.id.buttonPostComment);
         mCommentsRecycler = findViewById(R.id.recyclerPostComments);
+        mDeleteButton = findViewById(R.id.deleteButton);
 
         mCommentButton.setOnClickListener(this);
+        mDeleteButton.setOnClickListener(this);
+
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
 
     }
@@ -134,6 +140,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         if (i == R.id.buttonPostComment) {
             postComment();
         }
+        else if (i == R.id.deleteButton) {
+            deletePost();
+        }
     }
 
     private void postComment() {
@@ -162,6 +171,12 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
                     }
                 });
+    }
+
+    //delete when you click
+    private void deletePost() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("posts").child(mPostKey).removeValue();
     }
 
     private static class CommentViewHolder extends RecyclerView.ViewHolder {
