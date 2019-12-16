@@ -118,7 +118,7 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        hideProgressDialog()
+        hideProgressBar()
         if (user != null) {
             status.text = getString(R.string.generic_status_fmt, user.displayName, user.email)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)

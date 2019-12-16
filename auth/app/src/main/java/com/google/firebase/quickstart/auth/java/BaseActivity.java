@@ -17,13 +17,13 @@ public class BaseActivity extends AppCompatActivity {
         mProgressBar = findViewById(resId);
     }
 
-    public void showProgressDialog() {
+    public void showProgressBar() {
         if (mProgressBar != null) {
             mProgressBar.setVisibility(View.VISIBLE);
         }
     }
 
-    public void hideProgressDialog() {
+    public void hideProgressBar() {
         if (mProgressBar != null) {
             mProgressBar.setVisibility(View.INVISIBLE);
         }
@@ -39,7 +39,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        hideProgressDialog();
+        hideProgressBar();
     }
 
 }

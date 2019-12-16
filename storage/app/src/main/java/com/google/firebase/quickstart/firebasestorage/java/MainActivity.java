@@ -16,7 +16,6 @@
 
 package com.google.firebase.quickstart.firebasestorage.java;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String KEY_DOWNLOAD_URL = "key_download_url";
 
     private BroadcastReceiver mBroadcastReceiver;
-    private ProgressDialog mProgressDialog;
+    private ProgressBar mProgressBar;
+    private TextView mCaption;
     private FirebaseAuth mAuth;
 
     private Uri mDownloadUrl = null;
@@ -72,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+        mProgressBar = findViewById(R.id.progressBar);
+        mCaption = findViewById(R.id.caption);
 
         // Click listeners
         findViewById(R.id.buttonCamera).setOnClickListener(this);
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.d(TAG, "onReceive:" + intent);
-                hideProgressDialog();
+                hideProgressBar();
 
                 switch (intent.getAction()) {
                     case MyDownloadService.DOWNLOAD_COMPLETED:
@@ -191,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setAction(MyUploadService.ACTION_UPLOAD));
 
         // Show loading spinner
-        showProgressDialog(getString(R.string.progress_uploading));
+        showProgressBar(getString(R.string.progress_uploading));
     }
 
     private void beginDownload() {
@@ -205,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startService(intent);
 
         // Show loading spinner
-        showProgressDialog(getString(R.string.progress_downloading));
+        showProgressBar(getString(R.string.progress_downloading));
     }
 
     private void launchCamera() {
@@ -219,13 +223,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void signInAnonymously() {
         // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
-        showProgressDialog(getString(R.string.progress_auth));
+        showProgressBar(getString(R.string.progress_auth));
         mAuth.signInAnonymously()
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         Log.d(TAG, "signInAnonymously:SUCCESS");
-                        hideProgressDialog();
+                        hideProgressBar();
                         updateUI(authResult.getUser());
                     }
                 })
@@ -233,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         Log.e(TAG, "signInAnonymously:FAILURE", exception);
-                        hideProgressDialog();
+                        hideProgressBar();
                         updateUI(null);
                     }
                 });
@@ -277,20 +281,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ad.show();
     }
 
-    private void showProgressDialog(String caption) {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.setMessage(caption);
-        mProgressDialog.show();
+    private void showProgressBar(String caption) {
+        mCaption.setText(caption);
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
-    private void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
+    private void hideProgressBar() {
+        mCaption.setText("");
+        mProgressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override

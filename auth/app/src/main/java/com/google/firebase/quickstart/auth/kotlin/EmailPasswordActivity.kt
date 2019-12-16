@@ -59,7 +59,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        showProgressDialog()
+        showProgressBar()
 
         // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
@@ -78,7 +78,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     // [START_EXCLUDE]
-                    hideProgressDialog()
+                    hideProgressBar()
                     // [END_EXCLUDE]
                 }
         // [END create_user_with_email]
@@ -90,7 +90,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        showProgressDialog()
+        showProgressBar()
 
         // [START sign_in_with_email]
         auth.signInWithEmailAndPassword(email, password)
@@ -112,7 +112,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                     if (!task.isSuccessful) {
                         status.setText(R.string.auth_failed)
                     }
-                    hideProgressDialog()
+                    hideProgressBar()
                     // [END_EXCLUDE]
                 }
         // [END sign_in_with_email]
@@ -174,7 +174,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        hideProgressDialog()
+        hideProgressBar()
         if (user != null) {
             status.text = getString(R.string.emailpassword_status_fmt,
                     user.email, user.isEmailVerified)
