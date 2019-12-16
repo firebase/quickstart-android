@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 Log.d(TAG, "onReceive:$intent")
-                hideProgressDialog()
+                hideProgressBar()
 
                 when (intent.action) {
                     MyDownloadService.DOWNLOAD_COMPLETED -> {
@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 .setAction(MyUploadService.ACTION_UPLOAD))
 
         // Show loading spinner
-        showProgressDialog(getString(R.string.progress_uploading))
+        showProgressBar(getString(R.string.progress_uploading))
     }
 
     private fun beginDownload() {
@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             startService(intent)
 
             // Show loading spinner
-            showProgressDialog(getString(R.string.progress_downloading))
+            showProgressBar(getString(R.string.progress_downloading))
         }
     }
 
@@ -186,16 +186,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun signInAnonymously() {
         // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
-        showProgressDialog(getString(R.string.progress_auth))
+        showProgressBar(getString(R.string.progress_auth))
         auth.signInAnonymously()
                 .addOnSuccessListener(this) { authResult ->
                     Log.d(TAG, "signInAnonymously:SUCCESS")
-                    hideProgressDialog()
+                    hideProgressBar()
                     updateUI(authResult.user)
                 }
                 .addOnFailureListener(this) { exception ->
                     Log.e(TAG, "signInAnonymously:FAILURE", exception)
-                    hideProgressDialog()
+                    hideProgressBar()
                     updateUI(null)
                 }
     }
@@ -236,12 +236,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ad.show()
     }
 
-    private fun showProgressDialog(progressCaption: String) {
+    private fun showProgressBar(progressCaption: String) {
         caption.setText(progressCaption)
         progressBar.visibility = View.VISIBLE
     }
 
-    private fun hideProgressDialog() {
+    private fun hideProgressBar() {
         caption.setText("")
         progressBar.visibility = View.INVISIBLE
     }
