@@ -82,7 +82,7 @@ public class AnonymousAuthActivity extends BaseActivity implements
     // [END on_start_check_user]
 
     private void signInAnonymously() {
-        showProgressDialog();
+        showProgressBar();
         // [START signin_anonymously]
         mAuth.signInAnonymously()
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -102,7 +102,7 @@ public class AnonymousAuthActivity extends BaseActivity implements
                         }
 
                         // [START_EXCLUDE]
-                        hideProgressDialog();
+                        hideProgressBar();
                         // [END_EXCLUDE]
                     }
                 });
@@ -128,7 +128,7 @@ public class AnonymousAuthActivity extends BaseActivity implements
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
         // Link the anonymous user to the email credential
-        showProgressDialog();
+        showProgressBar();
 
         // [START link_credential]
         mAuth.getCurrentUser().linkWithCredential(credential)
@@ -147,7 +147,7 @@ public class AnonymousAuthActivity extends BaseActivity implements
                         }
 
                         // [START_EXCLUDE]
-                        hideProgressDialog();
+                        hideProgressBar();
                         // [END_EXCLUDE]
                     }
                 });
@@ -177,7 +177,7 @@ public class AnonymousAuthActivity extends BaseActivity implements
     }
 
     private void updateUI(FirebaseUser user) {
-        hideProgressDialog();
+        hideProgressBar();
 
         TextView idView = findViewById(R.id.anonymousStatusId);
         TextView emailView = findViewById(R.id.anonymousStatusEmail);

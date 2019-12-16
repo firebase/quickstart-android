@@ -94,7 +94,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
     private fun handleFacebookAccessToken(token: AccessToken) {
         Log.d(TAG, "handleFacebookAccessToken:$token")
         // [START_EXCLUDE silent]
-        showProgressDialog()
+        showProgressBar()
         // [END_EXCLUDE]
 
         val credential = FacebookAuthProvider.getCredential(token.token)
@@ -114,7 +114,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     // [START_EXCLUDE]
-                    hideProgressDialog()
+                    hideProgressBar()
                     // [END_EXCLUDE]
                 }
     }
@@ -128,7 +128,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        hideProgressDialog()
+        hideProgressBar()
         if (user != null) {
             status.text = getString(R.string.facebook_status_fmt, user.displayName)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)

@@ -14,11 +14,11 @@ open class BaseActivity : AppCompatActivity() {
         progressBar = findViewById(resId)
     }
 
-    fun showProgressDialog() {
+    fun showProgressBar() {
         progressBar?.visibility = View.VISIBLE
     }
 
-    fun hideProgressDialog() {
+    fun hideProgressBar() {
         progressBar?.visibility = View.INVISIBLE
     }
 
@@ -29,6 +29,6 @@ open class BaseActivity : AppCompatActivity() {
 
     public override fun onStop() {
         super.onStop()
-        hideProgressDialog()
+        hideProgressBar()
     }
 }

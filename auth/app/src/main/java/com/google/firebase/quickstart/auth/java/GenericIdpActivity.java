@@ -165,7 +165,7 @@ public class GenericIdpActivity extends BaseActivity implements
     }
 
     private void updateUI(FirebaseUser user) {
-        hideProgressDialog();
+        hideProgressBar();
         if (user != null) {
             mStatusTextView.setText(getString(R.string.generic_status_fmt, user.getDisplayName(), user.getEmail()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
