@@ -33,7 +33,7 @@ dependencies {
     implementation project(":internal:chooserx")
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.browser:browser:1.0.0'
+    implementation 'androidx.browser:browser:1.2.0'
 
     // [START gradle_play_config]
     implementation 'com.google.firebase:firebase-ads:18.3.0'
