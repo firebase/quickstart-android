@@ -7,9 +7,6 @@
     <string name="label_facebook_login">Firebase + Facebook Login</string>
     <string name="desc_facebook_login">Use a Facebook Login credential to authenticate with Firebase.</string>
 
-    <string name="label_twitter_login">Firebase + Twitter Login</string>
-    <string name="desc_twitter_login">Use a Twitter Login credential to authenticate with Firebase.</string>
-
     <string name="label_emailpassword">Email/Password Authentication</string>
     <string name="desc_emailpassword">Use an email and password to authenticate with Firebase.</string>
 
@@ -28,8 +25,8 @@
     <string name="label_firebase_ui">FirebaseUI Auth</string>
     <string name="desc_firebase_ui">Use the FirebaseUI-Android library to authenticate with Firebase.</string>
 
-    <string name="label_generic_idp">Generic IDP Auth</string>
-    <string name="desc_generic_idp">Use a generic identity provider, like Microsoft or Yahoo, to authenticate with Firebase.</string>
+    <string name="label_generic_idp">Generic OAuth</string>
+    <string name="desc_generic_idp">Use a generic OAuth identity provider, like Apple, Microsoft, Yahoo, or Twitter to authenticate with Firebase.</string>
 
     <string name="hint_user_id">User ID</string>
     <string name="get_custom_token">Get Token</string>
@@ -59,7 +56,7 @@
     <string name="status_sign_in_failed">Sign-in failed</string>
     <string name="instant_validation">(instant validation)</string>
 
-    <string name="firebase_status_fmt">Firebase User: %s</string>
+    <string name="firebase_status_fmt">Firebase UID: %s</string>
     <string name="firebase_user_management">Firebase User Management</string>
 
     <string name="google_status_fmt">Google User: %s</string>
@@ -85,12 +82,17 @@
     <string name="firebaseui_status_fmt">Firebase User: %s</string>
     <string name="firebaseui_title_text">FirebaseUI Auth</string>
 
-    <string name="generic_title_text">Generic IDP Sign In\nwith Microsoft</string>
-    <string name="msft_status_fmt">Microsoft User: %s</string>
+    <string name="generic_title_text">OAuth Sign In</string>
+    <string name="generic_signin_fmt">Sign In with %s</string>
+    <string name="generic_status_fmt">User: %s (%s)</string>
+    <string name="generic_label_provider">Provider:</string>
 
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
 
     <string name="custom_auth_signin_status_user">User ID: %s</string>
     <string name="custom_auth_signin_status_failed">Error: sign in failed</string>
+
+    <string name="error_sign_in_failed">Sign in failed, see logs for details.</string>
+
 </resources>

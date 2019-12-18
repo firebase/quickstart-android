@@ -36,13 +36,11 @@ class KotlinMainActivity : AppCompatActivity() {
 
         // Get and display/log the Instance ID
         FirebaseInstanceId.getInstance().instanceId
-                .addOnSuccessListener(object : OnSuccessListener<InstanceIdResult> {
-                    override fun onSuccess(instanceIdResult: InstanceIdResult) {
-                        val instanceId = instanceIdResult.id
-                        instanceIdText.text = getString(R.string.instance_id_fmt, instanceId)
-                        Log.d(TAG, "InstanceId: $instanceId")
-                    }
-                })
+                .addOnSuccessListener { instanceIdResult ->
+                    val instanceId = instanceIdResult.id
+                    instanceIdText.text = getString(R.string.instance_id_fmt, instanceId)
+                    Log.d(TAG, "InstanceId: $instanceId")
+                }
     }
 
     companion object {

@@ -48,9 +48,9 @@ class TranslateFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.translate_fragment, container, false)
     }
@@ -68,15 +68,15 @@ class TranslateFragment : Fragment() {
                 android.R.layout.simple_spinner_dropdown_item, viewModel.availableLanguages
         )
 
-        //SourceLangSelector
+        // SourceLangSelector
         sourceLangSelector.adapter = adapter
         sourceLangSelector.setSelection(adapter.getPosition(Language("en")))
         sourceLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
             ) {
                 setProgressText(targetText)
                 viewModel.sourceLang.value = adapter.getItem(position)
@@ -87,15 +87,15 @@ class TranslateFragment : Fragment() {
             }
         }
 
-        //TargetLangSelector
+        // TargetLangSelector
         targetLangSelector.adapter = adapter
         targetLangSelector.setSelection(adapter.getPosition(Language("es")))
         targetLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
             ) {
                 setProgressText(targetText)
                 viewModel.targetLang.value = adapter.getItem(position)
@@ -106,7 +106,7 @@ class TranslateFragment : Fragment() {
             }
         }
 
-        //Set up Switch Language Button
+        // Set up Switch Language Button
         buttonSwitchLang.setOnClickListener {
             setProgressText(targetText)
             val sourceLangPosition = sourceLangSelector.selectedItemPosition

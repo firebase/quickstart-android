@@ -72,6 +72,6 @@ class FaceDetectionProcessor(res: Resources) : VisionProcessorBase<List<Firebase
 
     companion object {
 
-        private val TAG = "FaceDetectionProcessor"
+        private const val TAG = "FaceDetectionProcessor"
     }
 }

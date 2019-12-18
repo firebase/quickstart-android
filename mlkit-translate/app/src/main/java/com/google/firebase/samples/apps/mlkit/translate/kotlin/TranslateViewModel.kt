@@ -24,23 +24,23 @@ import androidx.lifecycle.Observer
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.FirebaseApp
+import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions
+import com.google.firebase.ml.common.modeldownload.FirebaseModelManager
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage
-import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateModelManager
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateRemoteModel
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions
 import com.google.firebase.samples.apps.mlkit.translate.R
 import java.util.Locale
 
 class TranslateViewModel(application: Application) : AndroidViewModel(application) {
-    private val modelManager: FirebaseTranslateModelManager =
-        FirebaseTranslateModelManager.getInstance()
-    var sourceLang = MutableLiveData<Language>()
-    var targetLang = MutableLiveData<Language>()
-    var sourceText = MutableLiveData<String>()
-    var translatedText = MediatorLiveData<ResultOrError>()
-    var availableModels = MutableLiveData<List<String>>()
+    private val modelManager: FirebaseModelManager =
+        FirebaseModelManager.getInstance()
+    val sourceLang = MutableLiveData<Language>()
+    val targetLang = MutableLiveData<Language>()
+    val sourceText = MutableLiveData<String>()
+    val translatedText = MediatorLiveData<ResultOrError>()
+    val availableModels = MutableLiveData<List<String>>()
 
     // Gets a list of all available translation languages.
     val availableLanguages: List<Language> = FirebaseTranslateLanguage.getAllLanguages()
@@ -76,7 +76,7 @@ class TranslateViewModel(application: Application) : AndroidViewModel(applicatio
 
     // Updates the list of downloaded models available for local translation.
     private fun fetchDownloadedModels() {
-        modelManager.getAvailableModels(FirebaseApp.getInstance())
+        modelManager.getDownloadedModels(FirebaseTranslateRemoteModel::class.java)
             .addOnSuccessListener { remoteModels ->
                 availableModels.value =
                     remoteModels.sortedBy { it.languageCode }.map { it.languageCode }
@@ -86,7 +86,7 @@ class TranslateViewModel(application: Application) : AndroidViewModel(applicatio
     // Starts downloading a remote model for local translation.
     internal fun downloadLanguage(language: Language) {
         val model = getModel(FirebaseTranslateLanguage.languageForLanguageCode(language.code)!!)
-        modelManager.downloadRemoteModelIfNeeded(model)
+        modelManager.download(model, FirebaseModelDownloadConditions.Builder().build())
             .addOnCompleteListener { fetchDownloadedModels() }
     }
 

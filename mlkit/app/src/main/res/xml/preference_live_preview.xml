@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <PreferenceCategory
+      android:key="@string/pref_category_key_camera"
+      android:title="@string/pref_category_title_camera">
+
+    <ListPreference
+        android:key="@string/pref_key_rear_camera_preview_size"
+        android:persistent="true"
+        android:title="@string/pref_title_rear_camera_preview_size"/>
+
+    <ListPreference
+        android:key="@string/pref_key_front_camera_preview_size"
+        android:persistent="true"
+        android:title="@string/pref_title_front_camera_preview_size"/>
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/pref_key_camera_live_viewport"
+        android:persistent="true"
+        android:summary="@string/pref_summary_camera_live_viewport"
+        android:title="@string/pref_title_camera_live_viewport"/>
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
+      android:title="@string/pref_category_object_detection">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/pref_key_live_preview_object_detector_enable_multiple_objects"
+        android:persistent="true"
+        android:title="@string/pref_title_object_detector_enable_multiple_objects"/>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/pref_key_live_preview_object_detector_enable_classification"
+        android:persistent="true"
+        android:title="@string/pref_title_object_detector_enable_classification"/>
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
+      android:title="@string/pref_category_face_detection">
+
+    <ListPreference
+        android:defaultValue="@string/pref_entry_values_face_detector_landmark_mode_no_landmarks"
+        android:entries="@array/pref_entries_face_detector_landmark_mode"
+        android:entryValues="@array/pref_entry_values_face_detector_landmark_mode"
+        android:key="@string/pref_key_live_preview_face_detection_landmark_mode"
+        android:persistent="true"
+        android:title="@string/pref_title_face_detector_landmark_mode"/>
+
+    <ListPreference
+        android:defaultValue="@string/pref_entry_values_face_detector_contour_mode_all_contours"
+        android:entries="@array/pref_entries_face_detector_contour_mode"
+        android:entryValues="@array/pref_entry_values_face_detector_contour_mode"
+        android:key="@string/pref_key_live_preview_face_detection_contour_mode"
+        android:persistent="true"
+        android:title="@string/pref_title_face_detector_contour_mode"/>
+
+    <ListPreference
+        android:defaultValue="@string/pref_entry_values_face_detector_classification_mode_no_classifications"
+        android:entries="@array/pref_entries_face_detector_classification_mode"
+        android:entryValues="@array/pref_entry_values_face_detector_classification_mode"
+        android:key="@string/pref_key_live_preview_face_detection_classification_mode"
+        android:persistent="true"
+        android:title="@string/pref_title_face_detector_classification_mode"/>
+
+    <ListPreference
+        android:defaultValue="@string/pref_entry_values_face_detector_performance_mode_fast"
+        android:entries="@array/pref_entries_face_detector_performance_mode"
+        android:entryValues="@array/pref_entry_values_face_detector_performance_mode"
+        android:key="@string/pref_key_live_preview_face_detection_performance_mode"
+        android:persistent="true"
+        android:title="@string/pref_title_face_detector_performance_mode"/>
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/pref_key_live_preview_face_detection_face_tracking"
+        android:persistent="true"
+        android:title="@string/pref_title_face_detector_face_tracking"/>
+
+    <EditTextPreference
+        android:defaultValue="0.1"
+        android:dialogMessage="@string/pref_dialog_message_face_detector_min_face_size"
+        android:key="@string/pref_key_live_preview_face_detection_min_face_size"
+        android:persistent="true"
+        android:title="@string/pref_title_face_detector_min_face_size"/>
+  </PreferenceCategory>
+
+  <PreferenceCategory android:title="@string/pref_category_automl">
+
+    <EditTextPreference
+        android:defaultValue="mlkit_flowers"
+        android:dialogMessage="@string/pref_dialog_message_automl_remote_model_name"
+        android:key="@string/pref_key_live_preview_automl_remote_model_name"
+        android:persistent="true"
+        android:title="@string/pref_title_automl_remote_model_name"/>
+
+    <ListPreference
+        android:defaultValue="@string/pref_entries_automl_models_remote"
+        android:key="@string/pref_key_live_preview_automl_remote_model_choices"
+        android:entries="@array/pref_entries_automl_model_choice"
+        android:entryValues="@array/pref_entries_automl_model_choice"
+        android:persistent="true"
+        android:title="@string/pref_title_automl_model_choices"/>
+  </PreferenceCategory>
+
+</PreferenceScreen>

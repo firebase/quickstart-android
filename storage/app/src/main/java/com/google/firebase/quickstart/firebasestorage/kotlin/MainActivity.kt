@@ -1,7 +1,6 @@
 package com.google.firebase.quickstart.firebasestorage.kotlin
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -21,10 +20,12 @@ import com.google.firebase.quickstart.firebasestorage.R
 import kotlinx.android.synthetic.main.activity_main.buttonCamera
 import kotlinx.android.synthetic.main.activity_main.buttonDownload
 import kotlinx.android.synthetic.main.activity_main.buttonSignIn
+import kotlinx.android.synthetic.main.activity_main.caption
 import kotlinx.android.synthetic.main.activity_main.layoutDownload
 import kotlinx.android.synthetic.main.activity_main.layoutSignin
 import kotlinx.android.synthetic.main.activity_main.layoutStorage
 import kotlinx.android.synthetic.main.activity_main.pictureDownloadUri
+import kotlinx.android.synthetic.main.activity_main.progressBar
 import java.util.Locale
 
 /**
@@ -37,7 +38,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var broadcastReceiver: BroadcastReceiver
     private lateinit var auth: FirebaseAuth
-    private lateinit var progressDialog: ProgressDialog
 
     private var downloadUrl: Uri? = null
     private var fileUri: Uri? = null
@@ -54,14 +54,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonSignIn.setOnClickListener(this)
         buttonDownload.setOnClickListener(this)
 
-        progressDialog = ProgressDialog(this)
-        progressDialog.isIndeterminate = true
-
         // Local broadcast receiver
         broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 Log.d(TAG, "onReceive:$intent")
-                hideProgressDialog()
+                hideProgressBar()
 
                 when (intent.action) {
                     MyDownloadService.DOWNLOAD_COMPLETED -> {
@@ -159,7 +156,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 .setAction(MyUploadService.ACTION_UPLOAD))
 
         // Show loading spinner
-        showProgressDialog(getString(R.string.progress_uploading))
+        showProgressBar(getString(R.string.progress_uploading))
     }
 
     private fun beginDownload() {
@@ -174,7 +171,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             startService(intent)
 
             // Show loading spinner
-            showProgressDialog(getString(R.string.progress_downloading))
+            showProgressBar(getString(R.string.progress_downloading))
         }
     }
 
@@ -189,16 +186,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun signInAnonymously() {
         // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
-        showProgressDialog(getString(R.string.progress_auth))
+        showProgressBar(getString(R.string.progress_auth))
         auth.signInAnonymously()
                 .addOnSuccessListener(this) { authResult ->
                     Log.d(TAG, "signInAnonymously:SUCCESS")
-                    hideProgressDialog()
+                    hideProgressBar()
                     updateUI(authResult.user)
                 }
                 .addOnFailureListener(this) { exception ->
                     Log.e(TAG, "signInAnonymously:FAILURE", exception)
-                    hideProgressDialog()
+                    hideProgressBar()
                     updateUI(null)
                 }
     }
@@ -239,15 +236,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ad.show()
     }
 
-    private fun showProgressDialog(caption: String) {
-        progressDialog.setMessage(caption)
-        progressDialog.show()
+    private fun showProgressBar(progressCaption: String) {
+        caption.setText(progressCaption)
+        progressBar.visibility = View.VISIBLE
     }
 
-    private fun hideProgressDialog() {
-        if (progressDialog.isShowing) {
-            progressDialog.dismiss()
-        }
+    private fun hideProgressBar() {
+        caption.setText("")
+        progressBar.visibility = View.INVISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

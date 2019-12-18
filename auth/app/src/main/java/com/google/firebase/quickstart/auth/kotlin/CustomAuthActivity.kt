@@ -90,7 +90,7 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            textSignInStatus.text = getString(R.string.custom_auth_signin_status_user,user.uid)
+            textSignInStatus.text = getString(R.string.custom_auth_signin_status_user, user.uid)
         } else {
             textSignInStatus.text = getString(R.string.custom_auth_signin_status_failed)
         }

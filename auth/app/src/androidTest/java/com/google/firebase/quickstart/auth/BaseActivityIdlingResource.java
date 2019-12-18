@@ -1,6 +1,8 @@
 package com.google.firebase.quickstart.auth;
 
-import android.app.ProgressDialog;
+import android.view.View;
+import android.widget.ProgressBar;
+
 import androidx.test.espresso.IdlingResource;
 
 import com.google.firebase.quickstart.auth.java.AnonymousAuthActivity;
@@ -8,7 +10,7 @@ import com.google.firebase.quickstart.auth.java.BaseActivity;
 import com.google.firebase.quickstart.auth.java.EmailPasswordActivity;
 
 /**
- * Monitor Activity idle status by watching ProgressDialog.
+ * Monitor Activity idle status by watching ProgressBar.
  */
 public class BaseActivityIdlingResource implements IdlingResource {
 
@@ -30,8 +32,8 @@ public class BaseActivityIdlingResource implements IdlingResource {
 
     @Override
     public boolean isIdleNow() {
-        ProgressDialog dialog = mActivity.mProgressDialog;
-        boolean idle = (dialog == null || !dialog.isShowing());
+        ProgressBar progressBar = mActivity.mProgressBar;
+        boolean idle = (progressBar == null || progressBar.getVisibility() == View.INVISIBLE);
 
         if (mCallback != null && idle) {
             mCallback.onTransitionToIdle();

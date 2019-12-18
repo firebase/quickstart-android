@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import com.google.samples.quickstart.config.BuildConfig
 import com.google.samples.quickstart.config.R
 import kotlinx.android.synthetic.main.activity_main.fetchButton
 import kotlinx.android.synthetic.main.activity_main.welcomeTextView
@@ -57,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         remoteConfig.fetchAndActivate()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        val updated = task.getResult()
+                        val updated = task.result
                         Log.d(TAG, "Config params updated: $updated")
                         Toast.makeText(this, "Fetch and activate succeeded",
                                 Toast.LENGTH_SHORT).show()

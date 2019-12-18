@@ -45,6 +45,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         mPasswordField = findViewById(R.id.fieldPassword);
         mSignInButton = findViewById(R.id.buttonSignIn);
         mSignUpButton = findViewById(R.id.buttonSignUp);
+        setProgressBar(R.id.progressBar);
 
         // Click listeners
         mSignInButton.setOnClickListener(this);
@@ -67,7 +68,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             return;
         }
 
-        showProgressDialog();
+        showProgressBar();
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
 
@@ -76,7 +77,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signIn:onComplete:" + task.isSuccessful());
-                        hideProgressDialog();
+                        hideProgressBar();
 
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
@@ -94,7 +95,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             return;
         }
 
-        showProgressDialog();
+        showProgressBar();
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
 
@@ -103,7 +104,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
-                        hideProgressDialog();
+                        hideProgressBar();
 
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());

@@ -4,13 +4,13 @@ apply plugin: 'kotlin-android-extensions'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     flavorDimensions "minSdkVersion"
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.auth"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -36,36 +36,29 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
 
     // Firebase Authentication
-    implementation 'com.google.firebase:firebase-core:17.2.0'
-    implementation 'com.google.firebase:firebase-auth:19.0.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
 
     // Google Sign In SDK (only required for Google Sign In)
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    implementation 'com.firebaseui:firebase-ui-auth:6.0.2'
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
     implementation 'com.facebook.android:facebook-login:4.42.0'
     implementation 'androidx.browser:browser:1.0.0'
 
-    // Twitter Android SDK (only required for Twitter Login)
-    implementation 'com.twitter.sdk.android:twitter-core:3.3.0'
-    implementation 'com.twitter.sdk.android:twitter:3.3.0'
-
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61"
 }
 
 apply plugin: 'com.google.gms.google-services'

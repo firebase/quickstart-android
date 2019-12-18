@@ -84,7 +84,7 @@ class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissions
             }
         }
 
-        if (!allNeededPermissions.isEmpty()) {
+        if (allNeededPermissions.isNotEmpty()) {
             ActivityCompat.requestPermissions(
                     this, allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS)
         }

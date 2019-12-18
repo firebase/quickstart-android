@@ -46,7 +46,8 @@ public class  MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         // Create the adapter that will return a fragment for each section
-        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+        mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             private final Fragment[] mFragments = new Fragment[] {
                     new RecentPostsFragment(),
                     new MyPostsFragment(),

@@ -88,28 +88,28 @@
                 android:orientation="horizontal"
                 android:weightSum="3.0">
 
-                <Button
-                    android:theme="@style/ThemeOverlay.MyDarkButton"
-                    style="@style/Widget.AppCompat.Button.Colored"
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonStartVerification"
+                    android:layout_marginStart="@dimen/button_horizontal_margin"
+                    android:layout_marginEnd="@dimen/button_horizontal_margin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="@string/start_phone_auth"/>
 
-                <Button
-                    android:theme="@style/ThemeOverlay.MyDarkButton"
-                    style="@style/Widget.AppCompat.Button.Colored"
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonVerifyPhone"
+                    android:layout_marginStart="@dimen/button_horizontal_margin"
+                    android:layout_marginEnd="@dimen/button_horizontal_margin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:text="@string/verify_phone_auth"/>
 
-                <Button
-                    android:theme="@style/ThemeOverlay.MyDarkButton"
-                    style="@style/Widget.AppCompat.Button.Colored"
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonResend"
+                    android:layout_marginStart="@dimen/button_horizontal_margin"
+                    android:layout_marginEnd="@dimen/button_horizontal_margin"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
@@ -129,9 +129,8 @@
             android:visibility="gone"
             android:weightSum="1.0">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/signOutButton"
-                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"

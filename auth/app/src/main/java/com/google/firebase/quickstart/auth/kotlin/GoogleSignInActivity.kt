@@ -37,6 +37,8 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google)
 
+        setProgressBar(R.id.progressBar)
+
         // Button listeners
         signInButton.setOnClickListener(this)
         signOutButton.setOnClickListener(this)
@@ -93,7 +95,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
         // [START_EXCLUDE silent]
-        showProgressDialog()
+        showProgressBar()
         // [END_EXCLUDE]
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
@@ -112,7 +114,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     // [START_EXCLUDE]
-                    hideProgressDialog()
+                    hideProgressBar()
                     // [END_EXCLUDE]
                 }
     }
@@ -146,7 +148,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        hideProgressDialog()
+        hideProgressBar()
         if (user != null) {
             status.text = getString(R.string.google_status_fmt, user.email)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)
@@ -163,8 +165,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        val i = v.id
-        when (i) {
+        when (v.id) {
             R.id.signInButton -> signIn()
             R.id.signOutButton -> signOut()
             R.id.disconnectButton -> revokeAccess()

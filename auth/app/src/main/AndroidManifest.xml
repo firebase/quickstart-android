@@ -54,9 +54,6 @@
             android:name=".java.AnonymousAuthActivity"
             android:label="@string/label_anonymous_auth" />
         <activity
-            android:name=".java.TwitterLoginActivity"
-            android:label="@string/label_twitter_login" />
-        <activity
             android:name=".java.FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />
         <activity
@@ -99,9 +96,6 @@
         <activity
             android:name=".kotlin.AnonymousAuthActivity"
             android:label="@string/label_anonymous_auth" />
-        <activity
-            android:name=".kotlin.TwitterLoginActivity"
-            android:label="@string/label_twitter_login" />
         <activity
             android:name=".kotlin.FirebaseUIActivity"
             android:label="@string/label_firebase_ui" />

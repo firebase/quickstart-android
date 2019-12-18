@@ -59,6 +59,8 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
         mEmailField = findViewById(R.id.fieldEmail);
         mStatusText = findViewById(R.id.status);
 
+        setProgressBar(R.id.progressBar);
+
         mSendLinkButton.setOnClickListener(this);
         mSignInButton.setOnClickListener(this);
         mSignOutButton.setOnClickListener(this);
@@ -138,13 +140,13 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
                 .build();
 
         hideKeyboard(mEmailField);
-        showProgressDialog();
+        showProgressBar();
 
         mAuth.sendSignInLinkToEmail(email, settings)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        hideProgressDialog();
+                        hideProgressBar();
 
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Link sent");
@@ -173,13 +175,13 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
         Log.d(TAG, "signInWithLink:" + link);
 
         hideKeyboard(mEmailField);
-        showProgressDialog();
+        showProgressBar();
 
         mAuth.signInWithEmailLink(email, link)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        hideProgressDialog();
+                        hideProgressBar();
                         mPendingEmail = null;
 
                         if (task.isSuccessful()) {
