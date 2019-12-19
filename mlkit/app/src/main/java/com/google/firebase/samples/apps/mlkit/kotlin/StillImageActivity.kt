@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.activity_still_image.previewPane
 import kotlinx.android.synthetic.main.activity_still_image.sizeSelector
 import java.io.IOException
 import java.util.ArrayList
+import kotlin.math.max
 
 /** Activity demonstrating different image detector features with a still image from camera.  */
 @KeepName
@@ -247,7 +248,7 @@ class StillImageActivity : AppCompatActivity() {
             val maxHeight = targetedSize.second
 
             // Determine how much to scale down the image
-            val scaleFactor = Math.max(
+            val scaleFactor = max(
                     imageBitmap.width.toFloat() / targetWidth.toFloat(),
                     imageBitmap.height.toFloat() / maxHeight.toFloat())
 
