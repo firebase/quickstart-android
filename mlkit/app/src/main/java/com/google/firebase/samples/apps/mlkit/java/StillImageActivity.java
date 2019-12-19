@@ -17,7 +17,9 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.appcompat.app.AppCompatActivity;
@@ -299,7 +301,13 @@ public final class StillImageActivity extends AppCompatActivity {
       // Clear the overlay first
       graphicOverlay.clear();
 
-      Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+      Bitmap imageBitmap;
+      if (Build.VERSION.SDK_INT < 29) {
+        imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+      } else {
+        ImageDecoder.Source source = ImageDecoder.createSource(getContentResolver(), imageUri);
+        imageBitmap = ImageDecoder.decodeBitmap(source);
+      }
 
       // Get the dimensions of the View
       Pair<Integer, Integer> targetedSize = getTargetedWidthHeight();

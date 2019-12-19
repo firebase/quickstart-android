@@ -5,7 +5,9 @@ import android.content.ContentValues
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
@@ -239,7 +241,12 @@ class StillImageActivity : AppCompatActivity() {
             // Clear the overlay first
             previewOverlay?.clear()
 
-            val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            val imageBitmap = if (Build.VERSION.SDK_INT < 29) {
+                MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            } else {
+                val source = ImageDecoder.createSource(contentResolver, imageUri!!)
+                ImageDecoder.decodeBitmap(source)
+            }
 
             // Get the dimensions of the View
             val targetedSize = getTargetedWidthHeight()
