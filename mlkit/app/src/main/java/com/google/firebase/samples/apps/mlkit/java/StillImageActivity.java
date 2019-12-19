@@ -80,7 +80,6 @@ public final class StillImageActivity extends AppCompatActivity {
   private static final int REQUEST_IMAGE_CAPTURE = 1001;
   private static final int REQUEST_CHOOSE_IMAGE = 1002;
 
-  private Button getImageButton;
   private ImageView preview;
   private GraphicOverlay graphicOverlay;
   private String selectedMode = CLOUD_LABEL_DETECTION;
@@ -102,7 +101,7 @@ public final class StillImageActivity extends AppCompatActivity {
 
     setContentView(R.layout.activity_still_image);
 
-    getImageButton = findViewById(R.id.getImageButton);
+    Button getImageButton = findViewById(R.id.getImageButton);
     getImageButton.setOnClickListener(
         new OnClickListener() {
           @Override
