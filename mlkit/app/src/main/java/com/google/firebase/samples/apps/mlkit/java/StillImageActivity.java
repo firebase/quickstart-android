@@ -92,7 +92,6 @@ public final class StillImageActivity extends AppCompatActivity {
   private Integer imageMaxWidth;
   // Max height (portrait mode)
   private Integer imageMaxHeight;
-  private Bitmap bitmapForDetection;
   private VisionImageProcessor imageProcessor;
 
   @Override
@@ -328,9 +327,8 @@ public final class StillImageActivity extends AppCompatActivity {
               true);
 
       preview.setImageBitmap(resizedBitmap);
-      bitmapForDetection = resizedBitmap;
 
-      imageProcessor.process(bitmapForDetection, graphicOverlay);
+      imageProcessor.process(resizedBitmap, graphicOverlay);
     } catch (IOException e) {
       Log.e(TAG, "Error retrieving saved image");
     }

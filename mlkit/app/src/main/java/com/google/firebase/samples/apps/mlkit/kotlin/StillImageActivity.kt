@@ -52,7 +52,6 @@ class StillImageActivity : AppCompatActivity() {
     private var imageMaxWidth = 0
     // Max height (portrait mode)
     private var imageMaxHeight = 0
-    private var bitmapForDetection: Bitmap? = null
     private var imageProcessor: VisionImageProcessor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -266,8 +265,7 @@ class StillImageActivity : AppCompatActivity() {
                     true)
 
             previewPane?.setImageBitmap(resizedBitmap)
-            bitmapForDetection = resizedBitmap
-            bitmapForDetection?.let {
+            resizedBitmap?.let {
                 imageProcessor?.process(it, previewOverlay)
             }
         } catch (e: IOException) {
