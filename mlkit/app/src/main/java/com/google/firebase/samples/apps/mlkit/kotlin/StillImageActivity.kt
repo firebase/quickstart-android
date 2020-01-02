@@ -5,7 +5,9 @@ import android.content.ContentValues
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +36,7 @@ import kotlinx.android.synthetic.main.activity_still_image.previewPane
 import kotlinx.android.synthetic.main.activity_still_image.sizeSelector
 import java.io.IOException
 import java.util.ArrayList
+import kotlin.math.max
 
 /** Activity demonstrating different image detector features with a still image from camera.  */
 @KeepName
@@ -49,7 +52,6 @@ class StillImageActivity : AppCompatActivity() {
     private var imageMaxWidth = 0
     // Max height (portrait mode)
     private var imageMaxHeight = 0
-    private var bitmapForDetection: Bitmap? = null
     private var imageProcessor: VisionImageProcessor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -238,7 +240,12 @@ class StillImageActivity : AppCompatActivity() {
             // Clear the overlay first
             previewOverlay?.clear()
 
-            val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            val imageBitmap = if (Build.VERSION.SDK_INT < 29) {
+                MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            } else {
+                val source = ImageDecoder.createSource(contentResolver, imageUri!!)
+                ImageDecoder.decodeBitmap(source)
+            }
 
             // Get the dimensions of the View
             val targetedSize = getTargetedWidthHeight()
@@ -247,7 +254,7 @@ class StillImageActivity : AppCompatActivity() {
             val maxHeight = targetedSize.second
 
             // Determine how much to scale down the image
-            val scaleFactor = Math.max(
+            val scaleFactor = max(
                     imageBitmap.width.toFloat() / targetWidth.toFloat(),
                     imageBitmap.height.toFloat() / maxHeight.toFloat())
 
@@ -258,8 +265,7 @@ class StillImageActivity : AppCompatActivity() {
                     true)
 
             previewPane?.setImageBitmap(resizedBitmap)
-            bitmapForDetection = resizedBitmap
-            bitmapForDetection?.let {
+            resizedBitmap?.let {
                 imageProcessor?.process(it, previewOverlay)
             }
         } catch (e: IOException) {

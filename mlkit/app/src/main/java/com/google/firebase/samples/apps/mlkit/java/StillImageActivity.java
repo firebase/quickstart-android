@@ -17,7 +17,9 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.appcompat.app.AppCompatActivity;
@@ -78,7 +80,6 @@ public final class StillImageActivity extends AppCompatActivity {
   private static final int REQUEST_IMAGE_CAPTURE = 1001;
   private static final int REQUEST_CHOOSE_IMAGE = 1002;
 
-  private Button getImageButton;
   private ImageView preview;
   private GraphicOverlay graphicOverlay;
   private String selectedMode = CLOUD_LABEL_DETECTION;
@@ -91,7 +92,6 @@ public final class StillImageActivity extends AppCompatActivity {
   private Integer imageMaxWidth;
   // Max height (portrait mode)
   private Integer imageMaxHeight;
-  private Bitmap bitmapForDetection;
   private VisionImageProcessor imageProcessor;
 
   @Override
@@ -100,7 +100,7 @@ public final class StillImageActivity extends AppCompatActivity {
 
     setContentView(R.layout.activity_still_image);
 
-    getImageButton = findViewById(R.id.getImageButton);
+    Button getImageButton = findViewById(R.id.getImageButton);
     getImageButton.setOnClickListener(
         new OnClickListener() {
           @Override
@@ -299,7 +299,13 @@ public final class StillImageActivity extends AppCompatActivity {
       // Clear the overlay first
       graphicOverlay.clear();
 
-      Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+      Bitmap imageBitmap;
+      if (Build.VERSION.SDK_INT < 29) {
+        imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+      } else {
+        ImageDecoder.Source source = ImageDecoder.createSource(getContentResolver(), imageUri);
+        imageBitmap = ImageDecoder.decodeBitmap(source);
+      }
 
       // Get the dimensions of the View
       Pair<Integer, Integer> targetedSize = getTargetedWidthHeight();
@@ -321,9 +327,8 @@ public final class StillImageActivity extends AppCompatActivity {
               true);
 
       preview.setImageBitmap(resizedBitmap);
-      bitmapForDetection = resizedBitmap;
 
-      imageProcessor.process(bitmapForDetection, graphicOverlay);
+      imageProcessor.process(resizedBitmap, graphicOverlay);
     } catch (IOException e) {
       Log.e(TAG, "Error retrieving saved image");
     }
