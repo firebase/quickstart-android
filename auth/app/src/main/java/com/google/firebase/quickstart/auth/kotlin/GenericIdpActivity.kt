@@ -153,7 +153,7 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
     companion object {
         private val TAG = "GenericIdp"
         private val PROVIDER_MAP = mapOf(
-                "Apple" to "apple,com",
+                "Apple" to "apple.com",
                 "Microsoft" to "microsoft.com",
                 "Yahoo" to "yahoo.com",
                 "Twitter" to "twitter.com"
