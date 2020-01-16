@@ -3,7 +3,6 @@ package com.google.firebase.example.fireeats.java;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +15,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.text.HtmlCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -247,7 +247,8 @@ public class MainActivity extends AppCompatActivity implements
         mAdapter.setQuery(query);
 
         // Set header
-        mCurrentSearchView.setText(Html.fromHtml(filters.getSearchDescription(this)));
+        mCurrentSearchView.setText(HtmlCompat.fromHtml(filters.getSearchDescription(this),
+                HtmlCompat.FROM_HTML_MODE_LEGACY));
         mCurrentSortByView.setText(filters.getOrderDescription(this));
 
         // Save filters
