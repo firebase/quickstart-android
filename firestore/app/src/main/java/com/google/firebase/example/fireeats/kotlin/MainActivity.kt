@@ -3,7 +3,6 @@ package com.google.firebase.example.fireeats.kotlin
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +10,7 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.auth.AuthUI
@@ -204,7 +204,8 @@ class MainActivity : AppCompatActivity(),
         adapter.setQuery(query)
 
         // Set header
-        textCurrentSearch.text = Html.fromHtml(filters.getSearchDescription(this))
+        textCurrentSearch.text = HtmlCompat.fromHtml(filters.getSearchDescription(this),
+                HtmlCompat.FROM_HTML_MODE_LEGACY)
         textCurrentSortBy.text = filters.getOrderDescription(this)
 
         // Save filters
