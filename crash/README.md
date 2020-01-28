@@ -19,7 +19,7 @@ Screenshots
 Support
 -------
 
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/firebase-crash-reporting)
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/crashlytics)
 - [Firebase Support](https://firebase.google.com/support/)
 
 License
