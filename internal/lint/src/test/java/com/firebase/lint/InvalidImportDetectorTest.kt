@@ -18,6 +18,7 @@ class InvalidImportDetectorTest {
     @Test
     fun normalRImport() {
         lint()
+                .allowMissingSdk()
                 .files(javaPackage, java("""
           package com.google.firebase.kotlin;
 
@@ -33,6 +34,7 @@ class InvalidImportDetectorTest {
     @Test
     fun wrongImport() {
         lint()
+                .allowMissingSdk()
                 .files(javaPackage, java("""
           package com.google.firebase.kotlin;
 
