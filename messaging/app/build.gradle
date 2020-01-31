@@ -41,9 +41,13 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.0.0'
 
-    implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.google.firebase:firebase-iid:20.0.2'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
+    // For an optimal experience using FCM, add the Firebase SDK
+    // for Google Analytics. This is recommended, but not required.
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+
     implementation 'android.arch.work:work-runtime:1.0.1'
 
     // Testing dependencies

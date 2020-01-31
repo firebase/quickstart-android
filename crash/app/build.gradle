@@ -35,8 +35,11 @@ dependencies {
     implementation project(":internal:chooserx")
     implementation 'com.google.android.material:material:1.0.0'
 
-    implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+
+    // For an optimal experience using Crashlytics, add the Firebase SDK
+    // for Google Analytics. This is recommended, but not required.
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
