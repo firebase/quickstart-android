@@ -56,6 +56,7 @@ internal constructor(context: Context, private val useQuantizedModel: Boolean) {
     /* Preallocated buffers for storing image data in. */
     private val intValues = IntArray(DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y)
 
+    private var imgData: ByteBuffer? = null
     /**
      * An instance of the driver class to run model inference with Firebase.
      */
@@ -159,9 +160,9 @@ internal constructor(context: Context, private val useQuantizedModel: Boolean) {
             Tasks.forResult<List<String>>(uninitialized)
         }
         // Create input data.
-        val imgData = convertBitmapToByteBuffer(buffer, width, height)
+        convertBitmapToByteBuffer(buffer, width, height)
 
-        val inputs = FirebaseModelInputs.Builder().add(imgData).build()
+        val inputs = FirebaseModelInputs.Builder().add(this.imgData!!).build()
         // Here's where the magic happens!!
         return interpreter!!
             .run(inputs, dataOptions)
@@ -170,6 +171,7 @@ internal constructor(context: Context, private val useQuantizedModel: Boolean) {
                 e.printStackTrace()
             }
             .continueWith { task ->
+
                 if (useQuantizedModel) {
                     val labelProbArray = task.result!!.getOutput<Array<ByteArray>>(0)
                     getTopLabels(labelProbArray)
@@ -204,17 +206,22 @@ internal constructor(context: Context, private val useQuantizedModel: Boolean) {
      * Writes Image data into a `ByteBuffer`.
      */
     @Synchronized
-    private fun convertBitmapToByteBuffer(buffer: ByteBuffer, width: Int, height: Int): ByteBuffer {
+    private fun convertBitmapToByteBuffer(buffer: ByteBuffer, width: Int, height: Int) {
         val bytesPerChannel = if (useQuantizedModel)
             QUANT_NUM_OF_BYTES_PER_CHANNEL
         else
             FLOAT_NUM_OF_BYTES_PER_CHANNEL
-        val imgData = ByteBuffer.allocateDirect(
+        if(this.imgData == null ){
+            imgData = ByteBuffer.allocateDirect(
             bytesPerChannel * DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE
-        )
-        imgData.order(ByteOrder.nativeOrder())
+            )
+        }
+        else
+            imgData!!.clear()
+
+        imgData!!.order(ByteOrder.nativeOrder())
         val bitmap = createResizedBitmap(buffer, width, height)
-        imgData.rewind()
+        imgData!!.rewind()
         bitmap.getPixels(
             intValues, 0, bitmap.width, 0, 0, bitmap.width,
             bitmap.height
@@ -228,19 +235,18 @@ internal constructor(context: Context, private val useQuantizedModel: Boolean) {
                 // Normalize the values according to the model used:
                 // Quantized model expects a [0, 255] scale while a float model expects [0, 1].
                 if (useQuantizedModel) {
-                    imgData.put((value shr 16 and 0xFF).toByte())
-                    imgData.put((value shr 8 and 0xFF).toByte())
-                    imgData.put((value and 0xFF).toByte())
+                    imgData!!.put((value shr 16 and 0xFF).toByte())
+                    imgData!!.put((value shr 8 and 0xFF).toByte())
+                    imgData!!.put((value and 0xFF).toByte())
                 } else {
-                    imgData.putFloat((value shr 16 and 0xFF) / 255.0f)
-                    imgData.putFloat((value shr 8 and 0xFF) / 255.0f)
-                    imgData.putFloat((value and 0xFF) / 255.0f)
+                    imgData!!.putFloat((value shr 16 and 0xFF) / 255.0f)
+                    imgData!!.putFloat((value shr 8 and 0xFF) / 255.0f)
+                    imgData!!.putFloat((value and 0xFF) / 255.0f)
                 }
             }
         }
         val endTime = SystemClock.uptimeMillis()
         Log.d(TAG, "Timecost to put values into ByteBuffer: ${(endTime - startTime)}")
-        return imgData
     }
 
     /**
