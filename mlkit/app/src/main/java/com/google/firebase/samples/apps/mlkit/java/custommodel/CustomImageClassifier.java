@@ -20,7 +20,9 @@ import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.os.SystemClock;
+
 import androidx.annotation.NonNull;
+
 import android.util.Log;
 import android.widget.Toast;
 
@@ -114,6 +116,7 @@ public class CustomImageClassifier {
      */
     private final List<String> labelList;
 
+    private ByteBuffer imgData;
     private final PriorityQueue<Map.Entry<String, Float>> sortedLabels =
             new PriorityQueue<>(
                     RESULTS_TO_SHOW,
@@ -210,9 +213,9 @@ public class CustomImageClassifier {
             Tasks.forResult(uninitialized);
         }
         // Create input data.
-        ByteBuffer imgData = convertBitmapToByteBuffer(buffer, width, height);
+        convertBitmapToByteBuffer(buffer, width, height);
 
-        FirebaseModelInputs inputs = new FirebaseModelInputs.Builder().add(imgData).build();
+        FirebaseModelInputs inputs = new FirebaseModelInputs.Builder().add(this.imgData).build();
         // Here's where the magic happens!!
         return interpreter
                 .run(inputs, dataOptions)
@@ -261,16 +264,18 @@ public class CustomImageClassifier {
     /**
      * Writes Image data into a {@code ByteBuffer}.
      */
-    private synchronized ByteBuffer convertBitmapToByteBuffer(
+    private synchronized void convertBitmapToByteBuffer(
             ByteBuffer buffer, int width, int height) {
         int bytesPerChannel = mUseQuantizedModel ? QUANT_NUM_OF_BYTES_PER_CHANNEL :
                 FLOAT_NUM_OF_BYTES_PER_CHANNEL;
-        ByteBuffer imgData =
-                ByteBuffer.allocateDirect(
-                        bytesPerChannel * DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
-        imgData.order(ByteOrder.nativeOrder());
+        if (this.imgData == null)
+            this.imgData = ByteBuffer.allocateDirect(bytesPerChannel * DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
+        else
+            this.imgData.clear();
+
+        this.imgData.order(ByteOrder.nativeOrder());
         Bitmap bitmap = createResizedBitmap(buffer, width, height);
-        imgData.rewind();
+        this.imgData.rewind();
         bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(),
                 bitmap.getHeight());
         // Convert the image to int points.
@@ -282,19 +287,18 @@ public class CustomImageClassifier {
                 // Normalize the values according to the model used:
                 // Quantized model expects a [0, 255] scale while a float model expects [0, 1].
                 if (mUseQuantizedModel) {
-                    imgData.put((byte) ((val >> 16) & 0xFF));
-                    imgData.put((byte) ((val >> 8) & 0xFF));
-                    imgData.put((byte) (val & 0xFF));
+                    this.imgData.put((byte) ((val >> 16) & 0xFF));
+                    this.imgData.put((byte) ((val >> 8) & 0xFF));
+                    this.imgData.put((byte) (val & 0xFF));
                 } else {
-                    imgData.putFloat(((val >> 16) & 0xFF) / 255.0f);
-                    imgData.putFloat(((val >> 8) & 0xFF) / 255.0f);
-                    imgData.putFloat((val & 0xFF) / 255.0f);
+                    this.imgData.putFloat(((val >> 16) & 0xFF) / 255.0f);
+                    this.imgData.putFloat(((val >> 8) & 0xFF) / 255.0f);
+                    this.imgData.putFloat((val & 0xFF) / 255.0f);
                 }
             }
         }
         long endTime = SystemClock.uptimeMillis();
         Log.d(TAG, "Timecost to put values into ByteBuffer: " + (endTime - startTime));
-        return imgData;
     }
 
     /**
