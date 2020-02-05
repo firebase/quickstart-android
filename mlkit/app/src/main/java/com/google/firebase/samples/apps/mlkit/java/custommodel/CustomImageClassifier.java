@@ -268,10 +268,11 @@ public class CustomImageClassifier {
             ByteBuffer buffer, int width, int height) {
         int bytesPerChannel = mUseQuantizedModel ? QUANT_NUM_OF_BYTES_PER_CHANNEL :
                 FLOAT_NUM_OF_BYTES_PER_CHANNEL;
-        if (this.imgData == null)
+        if (this.imgData == null) {
             this.imgData = ByteBuffer.allocateDirect(bytesPerChannel * DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
-        else
+        } else {
             this.imgData.clear();
+        }
 
         this.imgData.order(ByteOrder.nativeOrder());
         Bitmap bitmap = createResizedBitmap(buffer, width, height);
