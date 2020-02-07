@@ -16,7 +16,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.ben-manes.versions' version '0.17.0'
+    id 'com.github.ben-manes.versions' version '0.27.0'
 }
 
 allprojects {
@@ -28,15 +28,25 @@ allprojects {
         maven { url 'https://maven.fabric.io/public' }
     }
 
-    // See: https://github.com/ben-manes/gradle-versions-plugin
-    dependencyUpdates.resolutionStrategy = {
-        componentSelection { rules ->
-            rules.all { selection ->
-                boolean numbersOnly = (selection.candidate.version ==~ /^[\d.]+$/)
-                if (!numbersOnly) {
-                    selection.reject("Rejecting: ${selection.candidate.version}")
-                }
-            }
+    def isNonStable = { candidate ->
+        return ['alpha', 'beta', 'rc', 'SNAPSHOT'].any { word ->
+            return candidate.version.contains(word)
+        }
+    }
+
+    def isBlackListed = { candidate ->
+        def blacklist = [
+                'androidx.browser:browser',
+                'com.facebook.android:facebook-android-sdk'
+        ]
+        return blacklist.any { word ->
+            return candidate.toString().contains(word)
+        }
+    }
+
+    dependencyUpdates {
+        rejectVersionIf {
+            isNonStable(it.candidate) || isBlackListed(it.candidate)
         }
     }
 }
