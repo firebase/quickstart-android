@@ -1,9 +1,6 @@
 package com.google.samples.quickstart.admobexample.kotlin
 
-// [SNIPPET load_banner_ad]
-// Load an ad into the AdView.
-// [START load_banner_ad]
-// [START_EXCLUDE]
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,11 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.samples.quickstart.admobexample.R
 import kotlinx.android.synthetic.main.activity_main.adView
 import kotlinx.android.synthetic.main.activity_main.loadInterstitialButton
-// [END_EXCLUDE]
 
+// [SNIPPET load_banner_ad]
+// Load an ad into the AdView.
+// [START load_banner_ad]
 class MainActivity : AppCompatActivity() {
 
     // [START_EXCLUDE]
@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        checkIds()
+
+        // Initialize the Google Mobile Ads SDK
+        MobileAds.initialize(this, getString(R.string.admob_app_id))
 
         val adRequest = AdRequest.Builder().build()
 
@@ -116,9 +120,16 @@ class MainActivity : AppCompatActivity() {
         adView.destroy()
         super.onDestroy()
     }
-
     // [END add_lifecycle_methods]
+
+    private fun checkIds() {
+        if (TEST_APP_ID == getString(R.string.admob_app_id)) {
+            Log.w(TAG, "Your admob_app_id is not configured correctly, please see the README")
+        }
+    }
+
     companion object {
         private const val TAG = "MainActivity"
+        private const val TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713";
     }
 }
