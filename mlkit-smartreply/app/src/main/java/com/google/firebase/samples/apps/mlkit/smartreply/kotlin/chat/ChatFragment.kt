@@ -99,16 +99,18 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
             inputText.text = ""
         })
 
-        viewModel.getSuggestions().observe(this, Observer { suggestions -> chipAdapter.setSuggestions(suggestions!!) })
+        viewModel.getSuggestions().observe(viewLifecycleOwner, Observer { suggestions ->
+            chipAdapter.setSuggestions(suggestions!!)
+        })
 
-        viewModel.messages.observe(this, Observer { messages ->
+        viewModel.messages.observe(viewLifecycleOwner, Observer { messages ->
             chatAdapter.setMessages(messages!!)
             if (chatAdapter.itemCount > 0) {
                 chatRecycler.smoothScrollToPosition(chatAdapter.itemCount - 1)
             }
         })
 
-        viewModel.getEmulatingRemoteUser().observe(this, Observer { isEmulatingRemoteUser ->
+        viewModel.getEmulatingRemoteUser().observe(viewLifecycleOwner, Observer { isEmulatingRemoteUser ->
             if (isEmulatingRemoteUser!!) {
                 emulatedUserText.setText(R.string.chatting_as_red)
                 emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))

@@ -148,7 +148,7 @@ class TranslateFragment : Fragment() {
             }
         })
 
-        viewModel.translatedText.observe(this, Observer { resultOrError ->
+        viewModel.translatedText.observe(viewLifecycleOwner, Observer { resultOrError ->
             resultOrError?.let {
                 if (it.error != null) {
                     sourceText.error = resultOrError.error?.localizedMessage
@@ -159,7 +159,7 @@ class TranslateFragment : Fragment() {
         })
 
         // Update sync toggle button states based on downloaded models list.
-        viewModel.availableModels.observe(this, Observer { firebaseTranslateRemoteModels ->
+        viewModel.availableModels.observe(viewLifecycleOwner, Observer { firebaseTranslateRemoteModels ->
             val output = context!!.getString(
                     R.string.downloaded_models_label,
                     firebaseTranslateRemoteModels

@@ -38,7 +38,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.preference:preference:1.1.0'
     implementation 'androidx.media:media:1.1.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
 
     // ML Kit dependencies
     implementation 'com.google.firebase:firebase-ml-vision:24.0.1'
@@ -55,7 +55,7 @@ dependencies {
     // AutoML model
     implementation 'com.google.firebase:firebase-ml-vision-automl:18.0.3'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

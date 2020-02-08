@@ -4,11 +4,9 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.fiamquickstart.R
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import kotlinx.android.synthetic.main.activity_main.*
 
