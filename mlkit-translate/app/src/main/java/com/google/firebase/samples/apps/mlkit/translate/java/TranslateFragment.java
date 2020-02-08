@@ -164,7 +164,7 @@ public class TranslateFragment extends Fragment {
                 viewModel.sourceText.postValue(s.toString());
             }
         });
-        viewModel.translatedText.observe(this, new Observer<ResultOrError>() {
+        viewModel.translatedText.observe(getViewLifecycleOwner(), new Observer<ResultOrError>() {
             @Override
             public void onChanged(TranslateViewModel.ResultOrError resultOrError) {
                 if (resultOrError.error != null) {
@@ -176,7 +176,7 @@ public class TranslateFragment extends Fragment {
         });
 
         // Update sync toggle button states based on downloaded models list.
-        viewModel.availableModels.observe(this, new Observer<List<String>>() {
+        viewModel.availableModels.observe(getViewLifecycleOwner(), new Observer<List<String>>() {
             @Override
             public void onChanged(@Nullable List<String> firebaseTranslateRemoteModels) {
                 String output = getContext().getString(R.string.downloaded_models_label,
