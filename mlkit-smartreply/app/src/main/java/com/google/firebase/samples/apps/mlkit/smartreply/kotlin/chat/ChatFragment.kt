@@ -99,7 +99,9 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
             inputText.text = ""
         })
 
-        viewModel.getSuggestions().observe(viewLifecycleOwner, Observer { suggestions -> chipAdapter.setSuggestions(suggestions!!) })
+        viewModel.getSuggestions().observe(viewLifecycleOwner, Observer { suggestions ->
+            chipAdapter.setSuggestions(suggestions!!)
+        })
 
         viewModel.messages.observe(viewLifecycleOwner, Observer { messages ->
             chatAdapter.setMessages(messages!!)

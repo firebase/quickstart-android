@@ -45,7 +45,6 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var spinnerAdapter: ArrayAdapter<String>
 
-
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_generic_idp)

@@ -211,12 +211,11 @@ internal constructor(context: Context, private val useQuantizedModel: Boolean) {
             QUANT_NUM_OF_BYTES_PER_CHANNEL
         else
             FLOAT_NUM_OF_BYTES_PER_CHANNEL
-        if(this.imgData == null ){
+        if (this.imgData == null) {
             imgData = ByteBuffer.allocateDirect(
             bytesPerChannel * DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE
             )
-        }
-        else
+        } else
             imgData!!.clear()
 
         imgData!!.order(ByteOrder.nativeOrder())
