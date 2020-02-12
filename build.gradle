@@ -39,7 +39,7 @@ allprojects {
                 'androidx.browser:browser',
                 'com.facebook.android',
                 'com.google.guava',
-                'com.bumptech.glide'
+                'com.github.bumptech.glide'
         ]
         return blacklist.any { word ->
             return candidate.toString().contains(word)
