@@ -37,7 +37,9 @@ allprojects {
     def isBlackListed = { candidate ->
         def blacklist = [
                 'androidx.browser:browser',
-                'com.facebook.android:facebook-android-sdk'
+                'com.facebook.android',
+                'com.google.guava',
+                'com.bumptech.glide'
         ]
         return blacklist.any { word ->
             return candidate.toString().contains(word)
