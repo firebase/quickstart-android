@@ -1,12 +1,13 @@
 package com.google.firebase.example.fireeats.kotlin.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.example.fireeats.R
 import com.google.firebase.example.fireeats.kotlin.model.Rating
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.toObject
 import kotlinx.android.synthetic.main.item_rating.view.ratingItemDate
 import kotlinx.android.synthetic.main.item_rating.view.ratingItemName
 import kotlinx.android.synthetic.main.item_rating.view.ratingItemRating
@@ -25,7 +26,7 @@ open class RatingAdapter(query: Query) : FirestoreAdapter<RatingAdapter.ViewHold
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getSnapshot(position).toObject(Rating::class.java))
+        holder.bind(getSnapshot(position).toObject<Rating>())
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

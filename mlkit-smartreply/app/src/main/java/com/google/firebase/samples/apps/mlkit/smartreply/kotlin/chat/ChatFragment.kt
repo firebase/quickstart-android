@@ -56,7 +56,7 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(ChatViewModel::class.java)
+        viewModel = ViewModelProviders(this).get(ChatViewModel::class.java)
 
         chatRecycler = view.findViewById(R.id.chatHistory)
         emulatedUserText = view.findViewById(R.id.switchText)

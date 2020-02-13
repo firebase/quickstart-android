@@ -59,7 +59,7 @@ class TranslateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel = ViewModelProviders.of(this).get(TranslateViewModel::class.java)
+        val viewModel = ViewModelProviders(this).get(TranslateViewModel::class.java)
 
         // Get available language list and set up source and target language spinners
         // with default selections.
