@@ -13,8 +13,10 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.models.Comment
 import com.google.firebase.quickstart.database.kotlin.models.Post
@@ -47,9 +49,9 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                 ?: throw IllegalArgumentException("Must pass EXTRA_POST_KEY")
 
         // Initialize Database
-        postReference = FirebaseDatabase.getInstance().reference
+        postReference = Firebase.database.reference
                 .child("posts").child(postKey)
-        commentsReference = FirebaseDatabase.getInstance().reference
+        commentsReference = Firebase.database.reference
                 .child("post-comments").child(postKey)
 
         // Initialize Views
@@ -65,7 +67,7 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
-                val post = dataSnapshot.getValue(Post::class.java)
+                val post = dataSnapshot.getValue<Post>()
                 // [START_EXCLUDE]
                 post?.let {
                     postAuthor.text = it.author
@@ -116,11 +118,11 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
 
     private fun postComment() {
         val uid = uid
-        FirebaseDatabase.getInstance().reference.child("users").child(uid)
+        Firebase.database.reference.child("users").child(uid)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         // Get user information
-                        val user = dataSnapshot.getValue(User::class.java)
+                        val user = dataSnapshot.getValue<User>()
                         if (user == null) {
                             return
                         }
@@ -170,7 +172,7 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                     Log.d(TAG, "onChildAdded:" + dataSnapshot.key!!)
 
                     // A new comment has been added, add it to the displayed list
-                    val comment = dataSnapshot.getValue(Comment::class.java)
+                    val comment = dataSnapshot.getValue<Comment>()
 
                     // [START_EXCLUDE]
                     // Update RecyclerView
@@ -185,7 +187,7 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
 
                     // A comment has changed, use the key to determine if we are displaying this
                     // comment and if so displayed the changed comment.
-                    val newComment = dataSnapshot.getValue(Comment::class.java)
+                    val newComment = dataSnapshot.getValue<Comment>()
                     val commentKey = dataSnapshot.key
 
                     // [START_EXCLUDE]
@@ -229,7 +231,7 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
 
                     // A comment has changed position, use the key to determine if we are
                     // displaying this comment and if so move it.
-                    val movedComment = dataSnapshot.getValue(Comment::class.java)
+                    val movedComment = dataSnapshot.getValue<Comment>()
                     val commentKey = dataSnapshot.key
 
                     // ...

@@ -39,10 +39,14 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
 
-    implementation 'com.firebaseui:firebase-ui-database:6.2.0'
+    // Database (Java)
+    implementation 'com.google.firebase:firebase-database:19.2.1'
+
+    // Database (Kotlin)
+    implementation 'com.google.firebase:firebase-database-ktx:19.2.1'
 
     implementation 'com.google.firebase:firebase-auth:19.2.0'
-    implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'com.firebaseui:firebase-ui-database:6.2.0'
 
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation 'androidx.arch.core:core-runtime:2.1.0'
