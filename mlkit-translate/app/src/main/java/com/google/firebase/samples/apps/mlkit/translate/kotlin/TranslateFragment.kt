@@ -59,7 +59,7 @@ class TranslateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel = ViewModelProviders(this).get(TranslateViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this).get(TranslateViewModel::class.java)
 
         // Get available language list and set up source and target language spinners
         // with default selections.
@@ -149,8 +149,8 @@ class TranslateFragment : Fragment() {
         })
 
         viewModel.translatedText.observe(viewLifecycleOwner, Observer { resultOrError ->
-            resultOrError?.let {
-                if (it.error != null) {
+            resultOrError.let {
+                if (resultOrError.error != null) {
                     sourceText.error = resultOrError.error?.localizedMessage
                 } else {
                     targetText.text = resultOrError.result
