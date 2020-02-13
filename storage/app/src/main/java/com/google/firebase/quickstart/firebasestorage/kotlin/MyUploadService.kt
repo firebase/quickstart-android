@@ -8,9 +8,10 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.firebasestorage.R
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 
 /**
  * Service to handle uploading files to Firebase Storage.
@@ -25,7 +26,7 @@ class MyUploadService : MyBaseTaskService() {
         super.onCreate()
 
         // [START get_storage_ref]
-        storageRef = FirebaseStorage.getInstance().reference
+        storageRef = Firebase.storage.reference
         // [END get_storage_ref]
     }
 
