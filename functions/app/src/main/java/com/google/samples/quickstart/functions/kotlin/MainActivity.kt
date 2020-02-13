@@ -4,19 +4,21 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.FirebaseFunctionsException
+import com.google.firebase.functions.ktx.functions
+import com.google.firebase.ktx.Firebase
 import com.google.samples.quickstart.functions.R
 import kotlinx.android.synthetic.main.activity_main.buttonAddMessage
 import kotlinx.android.synthetic.main.activity_main.buttonCalculate
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonSignIn.setOnClickListener(this)
 
         // [START initialize_functions_instance]
-        functions = FirebaseFunctions.getInstance()
+        functions = Firebase.functions
         // [END initialize_functions_instance]
     }
 
