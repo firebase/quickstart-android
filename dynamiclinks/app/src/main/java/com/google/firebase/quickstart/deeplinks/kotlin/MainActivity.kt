@@ -8,8 +8,10 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import com.google.firebase.dynamiclinks.DynamicLink
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.dynamiclinks.ktx.androidParameters
+import com.google.firebase.dynamiclinks.ktx.dynamicLink
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.deeplinks.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         // [END_EXCLUDE]
 
         // [START get_deep_link]
-        FirebaseDynamicLinks.getInstance()
+        Firebase.dynamicLinks
                 .getDynamicLink(intent)
                 .addOnSuccessListener(this) { pendingDynamicLinkData ->
                     // Get deep link from result (may be null if no link is found)
@@ -85,16 +87,14 @@ class MainActivity : AppCompatActivity() {
         //  * Android Parameters (required)
         //  * Deep link
         // [START build_dynamic_link]
-        val builder = FirebaseDynamicLinks.getInstance()
-                .createDynamicLink()
-                .setDomainUriPrefix(uriPrefix)
-                .setAndroidParameters(DynamicLink.AndroidParameters.Builder()
-                        .setMinimumVersion(minVersion)
-                        .build())
-                .setLink(deepLink)
-
         // Build the dynamic link
-        val link = builder.buildDynamicLink()
+        val link = Firebase.dynamicLinks.dynamicLink {
+            domainUriPrefix = uriPrefix
+            androidParameters {
+                minimumVersion = minVersion
+            }
+            link = deepLink
+        }
         // [END build_dynamic_link]
 
         // Return the dynamic link as a URI
