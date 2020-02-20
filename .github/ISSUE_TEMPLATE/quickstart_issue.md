@@ -4,6 +4,11 @@ about:
   Are you having issues running the code in this repository?
 ---
 
+<!-- DO NOT DELETE 
+validate_template=true
+template_path=.github/ISSUE_TEMPLATE/quickstart_issue.md
+-->
+
 <!--
 
 Are you in the right place?
