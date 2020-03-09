@@ -6,9 +6,10 @@ import android.content.IntentFilter
 import android.os.IBinder
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.firebasestorage.R
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 
 class MyDownloadService : MyBaseTaskService() {
 
@@ -18,7 +19,7 @@ class MyDownloadService : MyBaseTaskService() {
         super.onCreate()
 
         // Initialize Storage
-        storageRef = FirebaseStorage.getInstance().reference
+        storageRef = Firebase.storage.reference
     }
 
     override fun onBind(intent: Intent): IBinder? {

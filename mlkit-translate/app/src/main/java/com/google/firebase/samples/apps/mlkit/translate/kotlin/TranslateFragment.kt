@@ -149,8 +149,8 @@ class TranslateFragment : Fragment() {
         })
 
         viewModel.translatedText.observe(viewLifecycleOwner, Observer { resultOrError ->
-            resultOrError?.let {
-                if (it.error != null) {
+            resultOrError.let {
+                if (resultOrError.error != null) {
                     sourceText.error = resultOrError.error?.localizedMessage
                 } else {
                     targetText.text = resultOrError.result

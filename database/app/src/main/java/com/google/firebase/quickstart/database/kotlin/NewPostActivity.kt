@@ -7,8 +7,10 @@ import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.models.User
@@ -28,7 +30,7 @@ class NewPostActivity : BaseActivity() {
         setContentView(R.layout.activity_new_post)
 
         // [START initialize_database_ref]
-        database = FirebaseDatabase.getInstance().reference
+        database = Firebase.database.reference
         // [END initialize_database_ref]
 
         fabSubmitPost.setOnClickListener { submitPost() }
@@ -60,7 +62,7 @@ class NewPostActivity : BaseActivity() {
                 object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         // Get user value
-                        val user = dataSnapshot.getValue(User::class.java)
+                        val user = dataSnapshot.getValue<User>()
 
                         // [START_EXCLUDE]
                         if (user == null) {
