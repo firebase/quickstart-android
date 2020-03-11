@@ -11,9 +11,6 @@ import com.google.firebase.auth.FirebaseAuthMultiFactorException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneMultiFactorInfo
 import com.google.firebase.quickstart.auth.R
-import com.google.firebase.quickstart.auth.java.MultiFactorEnrollActivity
-import com.google.firebase.quickstart.auth.java.MultiFactorSignInActivity
-import com.google.firebase.quickstart.auth.java.MultiFactorUnenrollActivity
 import kotlinx.android.synthetic.main.activity_emailpassword.detail
 import kotlinx.android.synthetic.main.activity_emailpassword.emailCreateAccountButton
 import kotlinx.android.synthetic.main.activity_emailpassword.emailPasswordButtons
@@ -275,6 +272,6 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
     companion object {
         private const val TAG = "EmailPassword"
-        private const val RC_MULTI_FACTOR = 9005;
+        private const val RC_MULTI_FACTOR = 9005
     }
 }

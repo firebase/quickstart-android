@@ -45,19 +45,11 @@ public class MultiFactorEnrollActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_auth);
-        setLayoutForEnrollment();
-        initializeViewObjects();
-    }
-
-    private void setLayoutForEnrollment() {
         TextView titleText = findViewById(R.id.titleText);
         titleText.setText("SMS as a Second Factor");
 
         findViewById(R.id.status).setVisibility(View.GONE);
         findViewById(R.id.detail).setVisibility(View.GONE);
-    }
-
-    private void initializeViewObjects() {
         findViewById(R.id.buttonStartVerification).setOnClickListener(this);
         findViewById(R.id.buttonVerifyPhone).setOnClickListener(this);
         mPhoneNumberText = findViewById(R.id.fieldPhoneNumber);
