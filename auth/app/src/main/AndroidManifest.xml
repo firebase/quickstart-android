@@ -105,11 +105,11 @@
 
         <activity
             android:name=".java.MultiFactorEnrollActivity"
-            android:label="MultiFactor Enroll" />
+            android:label="MultiFactor Sign-In" />
 
         <activity
             android:name=".java.MultiFactorSignInActivity"
-            android:label="MultiFactor Enroll" />
+            android:label="MultiFactor Sign-In" />
 
         <activity
             android:name=".java.MultiFactorUnenrollActivity"

@@ -1,23 +1,33 @@
 package com.google.firebase.quickstart.auth.kotlin
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthMultiFactorException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.PhoneMultiFactorInfo
 import com.google.firebase.quickstart.auth.R
+import com.google.firebase.quickstart.auth.java.MultiFactorEnrollActivity
+import com.google.firebase.quickstart.auth.java.MultiFactorSignInActivity
+import com.google.firebase.quickstart.auth.java.MultiFactorUnenrollActivity
 import kotlinx.android.synthetic.main.activity_emailpassword.detail
 import kotlinx.android.synthetic.main.activity_emailpassword.emailCreateAccountButton
 import kotlinx.android.synthetic.main.activity_emailpassword.emailPasswordButtons
 import kotlinx.android.synthetic.main.activity_emailpassword.emailPasswordFields
 import kotlinx.android.synthetic.main.activity_emailpassword.emailSignInButton
+import kotlinx.android.synthetic.main.activity_emailpassword.enrollMfa
 import kotlinx.android.synthetic.main.activity_emailpassword.fieldEmail
 import kotlinx.android.synthetic.main.activity_emailpassword.fieldPassword
+import kotlinx.android.synthetic.main.activity_emailpassword.mfaInfo
+import kotlinx.android.synthetic.main.activity_emailpassword.reloadButton
 import kotlinx.android.synthetic.main.activity_emailpassword.signOutButton
 import kotlinx.android.synthetic.main.activity_emailpassword.signedInButtons
 import kotlinx.android.synthetic.main.activity_emailpassword.status
+import kotlinx.android.synthetic.main.activity_emailpassword.unenrollMfa
 import kotlinx.android.synthetic.main.activity_emailpassword.verifyEmailButton
 
 class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
@@ -29,7 +39,6 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_emailpassword)
-
         setProgressBar(R.id.progressBar)
 
         // Buttons
@@ -37,6 +46,9 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
         emailCreateAccountButton.setOnClickListener(this)
         signOutButton.setOnClickListener(this)
         verifyEmailButton.setOnClickListener(this)
+        enrollMfa.setOnClickListener(this)
+        unenrollMfa.setOnClickListener(this)
+        reloadButton.setOnClickListener(this)
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -101,6 +113,18 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                         val user = auth.currentUser
                         updateUI(user)
                     } else {
+                        val e = task.exception
+                        // [START_EXCLUDE]
+                        // Multi-factor authentication with SMS is currently only available for
+                        // Google Cloud Identity Platform projects. For more information:
+                        // https://cloud.google.com/identity-platform/docs/android/mfa
+                        if (e is FirebaseAuthMultiFactorException) {
+                            val intent = Intent(this@EmailPasswordActivity, MultiFactorSignInActivity::class.java)
+                            intent.putExtra("EXTRA_MFA_RESOLVER", e.resolver)
+                            startActivityForResult(intent, RC_MULTI_FACTOR)
+                            return@addOnCompleteListener
+                        }
+                        // [END_EXCLUDE]
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
                         Toast.makeText(baseContext, "Authentication failed.",
@@ -151,6 +175,22 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
         // [END send_email_verification]
     }
 
+    private fun reload() {
+        auth.currentUser?.reload()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                updateUI(auth.currentUser)
+                Toast.makeText(this@EmailPasswordActivity,
+                        "Reload successful!",
+                        Toast.LENGTH_SHORT).show()
+            } else {
+                Log.e(TAG, "reload", task.exception)
+                Toast.makeText(this@EmailPasswordActivity,
+                        "Failed to reload user.",
+                        Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun validateForm(): Boolean {
         var valid = true
 
@@ -180,14 +220,39 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                     user.email, user.isEmailVerified)
             detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
+            val secondFactors = user.multiFactor.enrolledFactors
+
+            if (secondFactors.isEmpty()) {
+                unenrollMfa.visibility = View.GONE
+            } else {
+                unenrollMfa.visibility = View.VISIBLE
+                val sb = StringBuilder("Second Factors: ")
+                val delimiter = ", "
+                for (x in secondFactors) {
+                    sb.append((x as PhoneMultiFactorInfo).phoneNumber + delimiter)
+                }
+                sb.setLength(sb.length - delimiter.length)
+                mfaInfo.text = sb.toString()
+            }
+
             emailPasswordButtons.visibility = View.GONE
             emailPasswordFields.visibility = View.GONE
             signedInButtons.visibility = View.VISIBLE
 
-            verifyEmailButton.isEnabled = !user.isEmailVerified
+            val reloadVisibility = if (secondFactors.isEmpty()) View.VISIBLE else View.GONE
+            reloadButton.visibility = reloadVisibility
+
+            if (user.isEmailVerified) {
+                verifyEmailButton.visibility = View.GONE
+                enrollMfa.visibility = View.VISIBLE
+            } else {
+                verifyEmailButton.visibility = View.VISIBLE
+                enrollMfa.visibility = View.GONE
+            }
         } else {
             status.setText(R.string.signed_out)
             detail.text = null
+            mfaInfo.text = null
 
             emailPasswordButtons.visibility = View.VISIBLE
             emailPasswordFields.visibility = View.VISIBLE
@@ -202,10 +267,14 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
             R.id.emailSignInButton -> signIn(fieldEmail.text.toString(), fieldPassword.text.toString())
             R.id.signOutButton -> signOut()
             R.id.verifyEmailButton -> sendEmailVerification()
+            R.id.enrollMfa -> startActivity(Intent(this, MultiFactorEnrollActivity::class.java))
+            R.id.unenrollMfa -> startActivity(Intent(this, MultiFactorUnenrollActivity::class.java))
+            R.id.reloadButton -> reload()
         }
     }
 
     companion object {
         private const val TAG = "EmailPassword"
+        private const val RC_MULTI_FACTOR = 9005;
     }
 }

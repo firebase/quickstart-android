@@ -43,6 +43,7 @@ public class EmailPasswordActivity extends BaseActivity implements
         View.OnClickListener {
 
     private static final String TAG = "EmailPassword";
+    private static final int RC_MULTI_FACTOR = 9005;
 
     private TextView mStatusTextView;
     private TextView mDetailTextView;
@@ -59,6 +60,7 @@ public class EmailPasswordActivity extends BaseActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emailpassword);
+        setProgressBar(R.id.progressBar);
 
         // Views
         mStatusTextView = findViewById(R.id.status);
@@ -66,7 +68,6 @@ public class EmailPasswordActivity extends BaseActivity implements
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
         mMfaInfoTextView = findViewById(R.id.mfaInfo);
-        setProgressBar(R.id.progressBar);
 
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
@@ -147,20 +148,22 @@ public class EmailPasswordActivity extends BaseActivity implements
                             updateUI(user);
                         } else {
                             Exception e = task.getException();
+                            // [START_EXCLUDE]
+                            // Multi-factor authentication with SMS is currently only available for
+                            // Google Cloud Identity Platform projects. For more information:
+                            // https://cloud.google.com/identity-platform/docs/android/mfa
                             if (e instanceof FirebaseAuthMultiFactorException) {
-
                                 Intent intent = new Intent(EmailPasswordActivity.this, MultiFactorSignInActivity.class);
                                 intent.putExtra("EXTRA_MFA_RESOLVER", ((FirebaseAuthMultiFactorException) e).getResolver());
-
-                                startActivityForResult(intent, 5);
+                                startActivityForResult(intent, RC_MULTI_FACTOR);
                                 return;
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                                updateUI(null);
                             }
+                            // [END_EXCLUDE]
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
                         }
 
                         // [START_EXCLUDE]
