@@ -17,26 +17,27 @@ package com.google.samples.quickstart.admobexample.java;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.VisibleForTesting;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-// [SNIPPET load_banner_ad]
-// Load an ad into the AdView.
-// [START load_banner_ad]
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
-// [START_EXCLUDE]
+import com.google.android.gms.ads.MobileAds;
 import com.google.samples.quickstart.admobexample.R;
-// [END_EXCLUDE]
 
+// [SNIPPET load_banner_ad]
+// Load an ad into the AdView.
+// [START load_banner_ad]
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final String TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713";
 
     private AdView mAdView;
     // [START_EXCLUDE]
@@ -48,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkIds();
+
+        // Initialize the Google Mobile Ads SDK
+        MobileAds.initialize(this, getString(R.string.admob_app_id));
 
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -162,5 +167,11 @@ public class MainActivity extends AppCompatActivity {
     @VisibleForTesting
     public AdView getAdView() {
         return mAdView;
+    }
+
+    private void checkIds() {
+        if (TEST_APP_ID.equals(getString(R.string.admob_app_id))) {
+            Log.w(TAG, "Your admob_app_id is not configured correctly, please see the README");
+        }
     }
 }

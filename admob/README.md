@@ -14,6 +14,9 @@ Getting Started
 ---------------
 
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
+- Configure your AdMob app id:
+  - In `src/main/res/values/strings.xml` change the `admob_app_id` string to your AdMon app id.
+  - Note that this ID is used in two places: `AndroidManifest.xml` and `MainActivity`
 - Run the sample on your Android device or emulator.
 - The running sample displays a test banner ad and a test interstitial add.
 

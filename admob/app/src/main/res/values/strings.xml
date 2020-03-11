@@ -4,6 +4,12 @@
     <string name="interstitial_button_text">Show Interstitial Ad</string>
     <string name="second_activity_title">SecondActivity</string>
     <string name="second_activity_content">This is the second activity.</string>
+
+    <!--
+        TODO: Replace this with your own Admob App ID! This value is only a sample.
+    -->
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
 </resources>
