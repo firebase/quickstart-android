@@ -4,14 +4,15 @@ apply plugin: 'kotlin-android-extensions'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "com.google.samples.quickstart.admobexample"
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -31,19 +32,22 @@ android {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.browser:browser:1.0.0'
 
     // [START gradle_play_config]
-    implementation 'com.google.firebase:firebase-ads:18.2.0'
+    implementation 'com.google.firebase:firebase-ads:18.3.0'
     // [END gradle_play_config]
-    implementation 'com.google.firebase:firebase-core:17.2.0'
+
+    // For an optimal experience using AdMob, add the Firebase SDK
+    // for Google Analytics. This is recommended, but not required.
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
     androidTestImplementation 'androidx.test:runner:1.2.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61"
 }
 
 apply plugin: 'com.google.gms.google-services'

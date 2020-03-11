@@ -21,10 +21,10 @@
 
 package com.google.firebase.quickstart.analytics.java;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     /**
-     * The {@link androidx.core.view.PagerAdapter} that will provide fragments for each image.
+     * The {@link androidx.viewpager.widget.PagerAdapter} that will provide fragments for each image.
      * This uses a {@link FragmentPagerAdapter}, which keeps every loaded fragment in memory.
      */
     private ImagePagerAdapter mImagePagerAdapter;
@@ -266,8 +267,9 @@ public class MainActivity extends AppCompatActivity {
 
         private final ImageInfo[] infos;
 
+        @SuppressLint("WrongConstant")
         public ImagePagerAdapter(FragmentManager fm, ImageInfo[] infos) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             this.infos = infos;
         }
 

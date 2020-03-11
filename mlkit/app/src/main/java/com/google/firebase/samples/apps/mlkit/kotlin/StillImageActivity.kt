@@ -5,12 +5,16 @@ import android.content.ContentValues
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.util.Pair
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -18,6 +22,8 @@ import android.widget.PopupMenu
 import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor
+import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity
+import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity.LaunchSource
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudimagelabeling.CloudImageLabelingProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudlandmarkrecognition.CloudLandmarkRecognitionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition.CloudDocumentTextRecognitionProcessor
@@ -30,6 +36,7 @@ import kotlinx.android.synthetic.main.activity_still_image.previewPane
 import kotlinx.android.synthetic.main.activity_still_image.sizeSelector
 import java.io.IOException
 import java.util.ArrayList
+import kotlin.math.max
 
 /** Activity demonstrating different image detector features with a still image from camera.  */
 @KeepName
@@ -45,7 +52,6 @@ class StillImageActivity : AppCompatActivity() {
     private var imageMaxWidth = 0
     // Max height (portrait mode)
     private var imageMaxHeight = 0
-    private var bitmapForDetection: Bitmap? = null
     private var imageProcessor: VisionImageProcessor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,12 +98,35 @@ class StillImageActivity : AppCompatActivity() {
             imageUri = it.getParcelable(KEY_IMAGE_URI)
             imageMaxWidth = it.getInt(KEY_IMAGE_MAX_WIDTH)
             imageMaxHeight = it.getInt(KEY_IMAGE_MAX_HEIGHT)
-            selectedSize = it.getString(KEY_SELECTED_SIZE)
+            selectedSize = it.getString(KEY_SELECTED_SIZE, "")
 
             imageUri?.let { _ ->
                 tryReloadAndDetectInImage()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume")
+        createImageProcessor()
+        tryReloadAndDetectInImage()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.still_image_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.settings) {
+            val intent = Intent(this, SettingsActivity::class.java)
+            intent.putExtra(SettingsActivity.EXTRA_LAUNCH_SOURCE, LaunchSource.STILL_IMAGE)
+            startActivity(intent)
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun populateFeatureSelector() {
@@ -192,6 +221,7 @@ class StillImageActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             tryReloadAndDetectInImage()
         } else if (requestCode == REQUEST_CHOOSE_IMAGE && resultCode == Activity.RESULT_OK) {
@@ -210,7 +240,12 @@ class StillImageActivity : AppCompatActivity() {
             // Clear the overlay first
             previewOverlay?.clear()
 
-            val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            val imageBitmap = if (Build.VERSION.SDK_INT < 29) {
+                MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            } else {
+                val source = ImageDecoder.createSource(contentResolver, imageUri!!)
+                ImageDecoder.decodeBitmap(source)
+            }
 
             // Get the dimensions of the View
             val targetedSize = getTargetedWidthHeight()
@@ -219,7 +254,7 @@ class StillImageActivity : AppCompatActivity() {
             val maxHeight = targetedSize.second
 
             // Determine how much to scale down the image
-            val scaleFactor = Math.max(
+            val scaleFactor = max(
                     imageBitmap.width.toFloat() / targetWidth.toFloat(),
                     imageBitmap.height.toFloat() / maxHeight.toFloat())
 
@@ -230,8 +265,7 @@ class StillImageActivity : AppCompatActivity() {
                     true)
 
             previewPane?.setImageBitmap(resizedBitmap)
-            bitmapForDetection = resizedBitmap
-            bitmapForDetection?.let {
+            resizedBitmap?.let {
                 imageProcessor?.process(it, previewOverlay)
             }
         } catch (e: IOException) {
@@ -273,8 +307,8 @@ class StillImageActivity : AppCompatActivity() {
 
     // Gets the targeted width / height.
     private fun getTargetedWidthHeight(): Pair<Int, Int> {
-        var targetWidth = 0
-        var targetHeight = 0
+        val targetWidth: Int
+        val targetHeight: Int
 
         when (selectedSize) {
             SIZE_PREVIEW -> {

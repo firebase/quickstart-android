@@ -15,10 +15,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Query
 import com.google.firebase.database.Transaction
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.PostDetailActivity
 import com.google.firebase.quickstart.database.kotlin.models.Post
@@ -47,7 +48,7 @@ abstract class PostListFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_all_posts, container, false)
 
         // [START create_database_reference]
-        database = FirebaseDatabase.getInstance().reference
+        database = Firebase.database.reference
         // [END create_database_reference]
 
         recycler = rootView.findViewById(R.id.messagesList)

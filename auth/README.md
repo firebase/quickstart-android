@@ -41,27 +41,6 @@ Getting Started
     - If you see text that says Facebook is disabled, make sure you are running
       either the **facebookDebug** or **facebookRelease** variants of this sample.
 
-
-### Twitter Login Setup
-
-- Go to the [Twitter Developers Site](https://apps.twitter.com) and click **Create New App**
-  instructions to set up a new Android app.
-  - Go to the **Keys and Access Tokens** tab of your app and copy the **Consumer Key** and **Consumer Secret**.
-- Go to the [Firebase Console][fir-console] and navigate to your project:
-  - Select the **Auth** panel and then click the **Sign In Method** tab.
-  - Click **Twitter** and turn on the **Enable** switch, then click **Save**.
-  - Enter your Twitter **Consumer Key** and **Consumer Secret** and click **Save**.
-  - Copy the callback URL from the bottom of the panel (Ex.
-    `https://<your-app-id>.firebaseapp.com/__/auth/handler`).
-- Navigate back to your Twitter app settings on [Twitter Developers Site](https://apps.twitter.com). 
-  - Click the **Settings** tab and
-  paste in the callback URL from the Firebase console.
-- Open the file `app/src/main/res/values/ids.xml` and replace the value of the **twitter_consumer_key**
-  and **witter_consumer_secret** with the key and secret you just put into the Firebase console.
-- Run the app on your device or emulator.
-    - Select **TwitterLoginActivity** from the main screen.
-    - Click the **Log In with Twitter** button to begin.
-
 ### Email/Password Setup
 
 - Go to the [Firebase Console][fir-console] and navigate to your project:
@@ -112,19 +91,44 @@ Getting Started
     - Click **Sign In** to sign in to Firebase User Management with the generated JWT. You should
       see the User ID you entered when generating the token.
 
-### Generic IDP Setup (Microsoft)
+### Generic OAuth Sign In (Microsoft, Apple, Yahoo, Twitter, etc)
 
-- Go to the [Microsoft Developer Console](https://apps.dev.microsoft.com) and navigate to your app.
-    - Copy your **Application ID**
-    - In the "Application Secrets" section click **Generate New Password** and copy the result.
-- Go to the [Firebase console][fir-console] and navigate to **Authentication** > **Sign-in method**
-    - Make sure Microsoft is enabled
-    - Enter your application ID and application secret (password) from the previous step.
-- Return to the Microsoft console
-    - Add the redirect URL from the Firebase console under **Platforms** > **Web**.
+#### Microsoft
+
+- Follow the [instructions](https://firebase.google.com/docs/auth/android/microsoft-oauth#before_you_begin)
+  to enable Microsoft authentication in the Firebase console.
 - Run the Android application on your Android device or emulator.
     - Select **GenericIdpActivity** from the main screen.
+    - Select **Microsoft** in the dropdown.
     - Hit the sign in button and proceed through the login flow.
+
+#### Apple
+
+- Follow the [instructions](https://firebase.google.com/docs/auth/android/apple-oauth#before_you_begin)
+  to enable Apple authentication in the Firebase console.
+- Run the Android application on your Android device or emulator.
+    - Select **GenericIdpActivity** from the main screen.
+    - Select **Apple** in the dropdown.
+    - Hit the sign in button and proceed through the login flow.
+
+#### Yahoo
+
+- Follow the [instructions](https://firebase.google.com/docs/auth/android/yahoo-oauth#before_you_begin)
+  to enable Yahoo authentication in the Firebase console.
+- Run the Android application on your Android device or emulator.
+    - Select **GenericIdpActivity** from the main screen.
+    - Select **Yahoo** in the dropdown.
+    - Hit the sign in button and proceed through the login flow.
+
+#### Twitter
+
+- Follow the [instructions](https://firebase.google.com/docs/auth/android/twitter-login#before_you_begin)
+  to enable Twitter authentication in the Firebase console.
+- Run the Android application on your Android device or emulator.
+    - Select **GenericIdpActivity** from the main screen.
+    - Select **Twitter** in the dropdown.
+    - Hit the sign in button and proceed through the login flow.
+
 
 Result
 -----------

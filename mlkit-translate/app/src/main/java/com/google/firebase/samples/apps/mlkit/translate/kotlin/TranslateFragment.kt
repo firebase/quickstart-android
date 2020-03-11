@@ -64,13 +64,13 @@ class TranslateFragment : Fragment() {
         // Get available language list and set up source and target language spinners
         // with default selections.
         val adapter = ArrayAdapter(
-            context!!,
-            android.R.layout.simple_spinner_dropdown_item, viewModel.availableLanguages
+                context!!,
+                android.R.layout.simple_spinner_dropdown_item, viewModel.availableLanguages
         )
+
+        // SourceLangSelector
         sourceLangSelector.adapter = adapter
-        targetLangSelector.adapter = adapter
         sourceLangSelector.setSelection(adapter.getPosition(Language("en")))
-        targetLangSelector.setSelection(adapter.getPosition(Language("es")))
         sourceLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -86,6 +86,10 @@ class TranslateFragment : Fragment() {
                 targetText.text = ""
             }
         }
+
+        // TargetLangSelector
+        targetLangSelector.adapter = adapter
+        targetLangSelector.setSelection(adapter.getPosition(Language("es")))
         targetLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -102,6 +106,7 @@ class TranslateFragment : Fragment() {
             }
         }
 
+        // Set up Switch Language Button
         buttonSwitchLang.setOnClickListener {
             setProgressText(targetText)
             val sourceLangPosition = sourceLangSelector.selectedItemPosition
@@ -142,9 +147,10 @@ class TranslateFragment : Fragment() {
                 viewModel.sourceText.postValue(s.toString())
             }
         })
-        viewModel.translatedText.observe(this, Observer { resultOrError ->
-            resultOrError?.let {
-                if (it.error != null) {
+
+        viewModel.translatedText.observe(viewLifecycleOwner, Observer { resultOrError ->
+            resultOrError.let {
+                if (resultOrError.error != null) {
                     sourceText.error = resultOrError.error?.localizedMessage
                 } else {
                     targetText.text = resultOrError.result
@@ -153,18 +159,18 @@ class TranslateFragment : Fragment() {
         })
 
         // Update sync toggle button states based on downloaded models list.
-        viewModel.availableModels.observe(this, Observer { firebaseTranslateRemoteModels ->
+        viewModel.availableModels.observe(viewLifecycleOwner, Observer { firebaseTranslateRemoteModels ->
             val output = context!!.getString(
-                R.string.downloaded_models_label,
-                firebaseTranslateRemoteModels
+                    R.string.downloaded_models_label,
+                    firebaseTranslateRemoteModels
             )
             downloadedModels.text = output
             firebaseTranslateRemoteModels?.let {
                 buttonSyncSource.isChecked = it.contains(
-                    adapter.getItem(sourceLangSelector.selectedItemPosition)!!.code
+                        adapter.getItem(sourceLangSelector.selectedItemPosition)!!.code
                 )
                 buttonSyncTarget.isChecked = it.contains(
-                    adapter.getItem(targetLangSelector.selectedItemPosition)!!.code
+                        adapter.getItem(targetLangSelector.selectedItemPosition)!!.code
                 )
             }
         })

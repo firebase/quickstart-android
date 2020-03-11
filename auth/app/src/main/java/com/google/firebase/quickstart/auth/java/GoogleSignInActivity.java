@@ -64,6 +64,7 @@ public class GoogleSignInActivity extends BaseActivity implements
         // Views
         mStatusTextView = findViewById(R.id.status);
         mDetailTextView = findViewById(R.id.detail);
+        setProgressBar(R.id.progressBar);
 
         // Button listeners
         findViewById(R.id.signInButton).setOnClickListener(this);
@@ -123,7 +124,7 @@ public class GoogleSignInActivity extends BaseActivity implements
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
-        showProgressDialog();
+        showProgressBar();
         // [END_EXCLUDE]
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -144,7 +145,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                         }
 
                         // [START_EXCLUDE]
-                        hideProgressDialog();
+                        hideProgressBar();
                         // [END_EXCLUDE]
                     }
                 });
@@ -187,7 +188,7 @@ public class GoogleSignInActivity extends BaseActivity implements
     }
 
     private void updateUI(FirebaseUser user) {
-        hideProgressDialog();
+        hideProgressBar();
         if (user != null) {
             mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));

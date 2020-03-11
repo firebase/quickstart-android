@@ -17,12 +17,15 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +47,8 @@ import com.google.firebase.samples.apps.mlkit.java.cloudimagelabeling.CloudImage
 import com.google.firebase.samples.apps.mlkit.java.cloudlandmarkrecognition.CloudLandmarkRecognitionProcessor;
 import com.google.firebase.samples.apps.mlkit.java.cloudtextrecognition.CloudDocumentTextRecognitionProcessor;
 import com.google.firebase.samples.apps.mlkit.java.cloudtextrecognition.CloudTextRecognitionProcessor;
+import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity;
+import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity.LaunchSource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,7 +80,6 @@ public final class StillImageActivity extends AppCompatActivity {
   private static final int REQUEST_IMAGE_CAPTURE = 1001;
   private static final int REQUEST_CHOOSE_IMAGE = 1002;
 
-  private Button getImageButton;
   private ImageView preview;
   private GraphicOverlay graphicOverlay;
   private String selectedMode = CLOUD_LABEL_DETECTION;
@@ -88,7 +92,6 @@ public final class StillImageActivity extends AppCompatActivity {
   private Integer imageMaxWidth;
   // Max height (portrait mode)
   private Integer imageMaxHeight;
-  private Bitmap bitmapForDetection;
   private VisionImageProcessor imageProcessor;
 
   @Override
@@ -97,7 +100,7 @@ public final class StillImageActivity extends AppCompatActivity {
 
     setContentView(R.layout.activity_still_image);
 
-    getImageButton = findViewById(R.id.getImageButton);
+    Button getImageButton = findViewById(R.id.getImageButton);
     getImageButton.setOnClickListener(
         new OnClickListener() {
           @Override
@@ -153,6 +156,32 @@ public final class StillImageActivity extends AppCompatActivity {
         tryReloadAndDetectInImage();
       }
     }
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    Log.d(TAG, "onResume");
+    createImageProcessor();
+    tryReloadAndDetectInImage();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.still_image_menu, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == R.id.settings) {
+      Intent intent = new Intent(this, SettingsActivity.class);
+      intent.putExtra(SettingsActivity.EXTRA_LAUNCH_SOURCE, LaunchSource.STILL_IMAGE);
+      startActivity(intent);
+      return true;
+    }
+
+    return super.onOptionsItemSelected(item);
   }
 
   private void populateFeatureSelector() {
@@ -251,6 +280,7 @@ public final class StillImageActivity extends AppCompatActivity {
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
       tryReloadAndDetectInImage();
     } else if (requestCode == REQUEST_CHOOSE_IMAGE && resultCode == RESULT_OK) {
@@ -269,7 +299,13 @@ public final class StillImageActivity extends AppCompatActivity {
       // Clear the overlay first
       graphicOverlay.clear();
 
-      Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+      Bitmap imageBitmap;
+      if (Build.VERSION.SDK_INT < 29) {
+        imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+      } else {
+        ImageDecoder.Source source = ImageDecoder.createSource(getContentResolver(), imageUri);
+        imageBitmap = ImageDecoder.decodeBitmap(source);
+      }
 
       // Get the dimensions of the View
       Pair<Integer, Integer> targetedSize = getTargetedWidthHeight();
@@ -291,9 +327,8 @@ public final class StillImageActivity extends AppCompatActivity {
               true);
 
       preview.setImageBitmap(resizedBitmap);
-      bitmapForDetection = resizedBitmap;
 
-      imageProcessor.process(bitmapForDetection, graphicOverlay);
+      imageProcessor.process(resizedBitmap, graphicOverlay);
     } catch (IOException e) {
       Log.e(TAG, "Error retrieving saved image");
     }

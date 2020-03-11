@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_main.addStickersBtn
 import kotlinx.android.synthetic.main.activity_main.clearStickersBtn
 import kotlinx.android.synthetic.main.activity_main.link
 
-
 class MainActivity : AppCompatActivity() {
 
     private var articleId: String? = null
@@ -37,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
         val action = intent.action
         val data = intent.data
         if (Intent.ACTION_VIEW == action && data != null) {

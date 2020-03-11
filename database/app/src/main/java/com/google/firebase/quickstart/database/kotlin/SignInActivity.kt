@@ -9,7 +9,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.models.User
 import kotlinx.android.synthetic.main.activity_sign_in.buttonSignIn
@@ -26,8 +27,10 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        database = FirebaseDatabase.getInstance().reference
+        database = Firebase.database.reference
         auth = FirebaseAuth.getInstance()
+
+        setProgressBar(R.id.progressBar)
 
         // Click listeners
         buttonSignIn.setOnClickListener(this)
@@ -49,14 +52,14 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        showProgressDialog()
+        showProgressBar()
         val email = fieldEmail.text.toString()
         val password = fieldPassword.text.toString()
 
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     Log.d(TAG, "signIn:onComplete:" + task.isSuccessful)
-                    hideProgressDialog()
+                    hideProgressBar()
 
                     if (task.isSuccessful) {
                         onAuthSuccess(task.result?.user!!)
@@ -73,14 +76,14 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
             return
         }
 
-        showProgressDialog()
+        showProgressBar()
         val email = fieldEmail.text.toString()
         val password = fieldPassword.text.toString()
 
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     Log.d(TAG, "createUser:onComplete:" + task.isSuccessful)
-                    hideProgressDialog()
+                    hideProgressBar()
 
                     if (task.isSuccessful) {
                         onAuthSuccess(task.result?.user!!)

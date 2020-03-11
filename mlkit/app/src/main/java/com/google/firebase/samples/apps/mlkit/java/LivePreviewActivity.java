@@ -14,11 +14,14 @@
 package com.google.firebase.samples.apps.mlkit.java;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -41,12 +44,15 @@ import com.google.firebase.samples.apps.mlkit.common.CameraSource;
 import com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.java.automl.AutoMLImageLabelerProcessor;
+import com.google.firebase.samples.apps.mlkit.java.automl.AutoMLImageLabelerProcessor.Mode;
 import com.google.firebase.samples.apps.mlkit.java.barcodescanning.BarcodeScanningProcessor;
 import com.google.firebase.samples.apps.mlkit.java.custommodel.CustomImageClassifierProcessor;
 import com.google.firebase.samples.apps.mlkit.java.facedetection.FaceContourDetectorProcessor;
 import com.google.firebase.samples.apps.mlkit.java.facedetection.FaceDetectionProcessor;
 import com.google.firebase.samples.apps.mlkit.java.imagelabeling.ImageLabelingProcessor;
 import com.google.firebase.samples.apps.mlkit.java.objectdetection.ObjectDetectorProcessor;
+import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity;
+import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity.LaunchSource;
 import com.google.firebase.samples.apps.mlkit.java.textrecognition.TextRecognitionProcessor;
 
 import java.io.IOException;
@@ -162,6 +168,25 @@ public final class LivePreviewActivity extends AppCompatActivity
         startCameraSource();
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.live_preview_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            intent.putExtra(SettingsActivity.EXTRA_LAUNCH_SOURCE, LaunchSource.LIVE_PREVIEW);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void createCameraSource(String model) {
         // If there's no existing cameraSource, create one.
         if (cameraSource == null) {
@@ -187,7 +212,7 @@ public final class LivePreviewActivity extends AppCompatActivity
                     cameraSource.setMachineLearningFrameProcessor(new FaceDetectionProcessor(getResources()));
                     break;
                 case AUTOML_IMAGE_LABELING:
-                    cameraSource.setMachineLearningFrameProcessor(new AutoMLImageLabelerProcessor(this));
+                    cameraSource.setMachineLearningFrameProcessor(new AutoMLImageLabelerProcessor(this, Mode.LIVE_PREVIEW));
                     break;
                 case OBJECT_DETECTION:
                     Log.i(TAG, "Using Object Detector Processor");

@@ -1,8 +1,8 @@
 package com.google.firebase.quickstart.analytics.kotlin
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.quickstart.analytics.R
@@ -218,10 +219,11 @@ class MainActivity : AppCompatActivity() {
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
+    @SuppressLint("WrongConstant")
     inner class ImagePagerAdapter(
         fm: FragmentManager,
         private val infos: Array<ImageInfo>
-    ) : FragmentPagerAdapter(fm) {
+    ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
             val info = infos[position]

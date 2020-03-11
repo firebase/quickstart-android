@@ -20,23 +20,26 @@ import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.os.SystemClock;
+
 import androidx.annotation.NonNull;
+
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.ml.common.FirebaseMLException;
-import com.google.firebase.ml.common.modeldownload.FirebaseLocalModel;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
 import com.google.firebase.ml.common.modeldownload.FirebaseModelManager;
-import com.google.firebase.ml.common.modeldownload.FirebaseRemoteModel;
+import com.google.firebase.ml.custom.FirebaseCustomRemoteModel;
 import com.google.firebase.ml.custom.FirebaseModelDataType;
 import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions;
 import com.google.firebase.ml.custom.FirebaseModelInputs;
 import com.google.firebase.ml.custom.FirebaseModelInterpreter;
-import com.google.firebase.ml.custom.FirebaseModelOptions;
+import com.google.firebase.ml.custom.FirebaseModelInterpreterOptions;
 import com.google.firebase.ml.custom.FirebaseModelOutputs;
 
 import java.io.BufferedReader;
@@ -63,34 +66,14 @@ public class CustomImageClassifier {
     private static final String TAG = "MLKitDemoApp:Classifier";
 
     /**
-     * Name of the floating point model file.
-     */
-    private static final String LOCAL_FLOAT_MODEL_NAME = "mobilenet_float_v2_1.0_299";
-
-    /**
-     * Path of the floating point model file stored in Assets.
-     */
-    private static final String LOCAL_FLOAT_MODEL_PATH = "mobilenet_float_v2_1.0_299.tflite";
-
-    /**
      * Name of the floating point model uploaded to the Firebase console.
      */
-    private static final String HOSTED_FLOAT_MODEL_NAME = "mobilenet_float_v2_1.0_299";
-
-    /**
-     * Name of the quantized model file.
-     */
-    private static final String LOCAL_QUANT_MODEL_NAME = "mobilenet_quant_v2_1.0_299";
-
-    /**
-     * Path of the quantized model file stored in Assets.
-     */
-    private static final String LOCAL_QUANT_MODEL_PATH = "mobilenet_quant_v2_1.0_299.tflite";
+    private static final String REMOTE_FLOAT_MODEL_NAME = "mobilenet_float_v2_1.0_299";
 
     /**
      * Name of the quantized model uploaded to the Firebase console.
      */
-    private static final String HOSTED_QUANT_MODEL_NAME = "mobilenet_quant_v2_1.0_299";
+    private static final String REMOTE_QUANT_MODEL_NAME = "mobilenet_quant_v2_1.0_299";
 
     /**
      * Name of the label file stored in Assets.
@@ -121,7 +104,7 @@ public class CustomImageClassifier {
     /**
      * An instance of the driver class to run model inference with Firebase.
      */
-    private final FirebaseModelInterpreter interpreter;
+    private FirebaseModelInterpreter interpreter;
 
     /**
      * Data configuration of input & output data of model.
@@ -133,6 +116,7 @@ public class CustomImageClassifier {
      */
     private final List<String> labelList;
 
+    private ByteBuffer imgData;
     private final PriorityQueue<Map.Entry<String, Float>> sortedLabels =
             new PriorityQueue<>(
                     RESULTS_TO_SHOW,
@@ -147,36 +131,61 @@ public class CustomImageClassifier {
     /**
      * Initializes an {@code CustomImageClassifier}.
      */
-    CustomImageClassifier(Context context, boolean useQuantizedModel) throws FirebaseMLException {
+    CustomImageClassifier(final Context context, boolean useQuantizedModel) throws FirebaseMLException {
         mUseQuantizedModel = useQuantizedModel;
-        String localModelName = mUseQuantizedModel ? LOCAL_QUANT_MODEL_NAME :
-                LOCAL_FLOAT_MODEL_NAME;
-        String hostedModelName = mUseQuantizedModel ? HOSTED_QUANT_MODEL_NAME :
-                HOSTED_FLOAT_MODEL_NAME;
-        String localModelPath = mUseQuantizedModel ? LOCAL_QUANT_MODEL_PATH :
-                LOCAL_FLOAT_MODEL_PATH;
-        FirebaseModelOptions modelOptions =
-                new FirebaseModelOptions.Builder()
-                        .setRemoteModelName(hostedModelName)
-                        .setLocalModelName(localModelName)
-                        .build();
-        FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions
-                .Builder()
-                .requireWifi()
-                .build();
-        FirebaseLocalModel localModel = new FirebaseLocalModel.Builder(localModelName)
-                .setAssetFilePath(localModelPath).build();
-        FirebaseRemoteModel remoteModel = new FirebaseRemoteModel.Builder
-                (hostedModelName)
-                .enableModelUpdates(true)
-                .setInitialDownloadConditions(conditions)
-                .setUpdatesDownloadConditions(conditions)  // You could also specify different
-                // conditions for updates.
-                .build();
-        FirebaseModelManager manager = FirebaseModelManager.getInstance();
-        manager.registerLocalModel(localModel);
-        manager.registerRemoteModel(remoteModel);
-        interpreter = FirebaseModelInterpreter.getInstance(modelOptions);
+        final String remoteModelName = mUseQuantizedModel ? REMOTE_QUANT_MODEL_NAME :
+                REMOTE_FLOAT_MODEL_NAME;
+        final FirebaseCustomRemoteModel remoteModel =
+                new FirebaseCustomRemoteModel.Builder(remoteModelName).build();
+        final FirebaseModelManager firebaseModelManager = FirebaseModelManager.getInstance();
+        firebaseModelManager
+                .isModelDownloaded(remoteModel)
+                .continueWithTask(
+                        new Continuation<Boolean, Task<Void>>() {
+                            @Override
+                            public Task<Void> then(@NonNull Task<Boolean> task) throws Exception {
+                                // Create update condition if model is already downloaded,
+                                // otherwise create download
+                                // condition.
+                                FirebaseModelDownloadConditions conditions =
+                                        task.getResult()
+                                                ? new FirebaseModelDownloadConditions.Builder()
+                                                .requireWifi()
+                                                .build() // Update condition that requires wifi.
+                                                : new FirebaseModelDownloadConditions.Builder()
+                                                .build(); // Download condition.
+                                return firebaseModelManager.download(remoteModel, conditions);
+                            }
+                        })
+                .addOnSuccessListener(
+                        new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void ignored) {
+                                FirebaseModelInterpreterOptions interpreterOptions =
+                                        new FirebaseModelInterpreterOptions.Builder(
+                                                new FirebaseCustomRemoteModel.Builder(remoteModelName).build())
+                                                .build();
+                                try {
+                                    interpreter =
+                                            FirebaseModelInterpreter.getInstance(interpreterOptions);
+                                } catch (FirebaseMLException e) {
+                                    Log.e(TAG, "Failed to build FirebaseModelInterpreter. ", e);
+                                }
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception ignored) {
+                                Toast.makeText(
+                                        context,
+                                        "Model download failed for image classifier, please check" +
+                                                " your connection.",
+                                        Toast.LENGTH_LONG)
+                                        .show();
+                            }
+                        });
+
         labelList = loadLabelList(context.getApplicationContext());
         Log.d(TAG, "Created a Custom Image Classifier.");
         int[] inputDims = {DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE};
@@ -204,9 +213,9 @@ public class CustomImageClassifier {
             Tasks.forResult(uninitialized);
         }
         // Create input data.
-        ByteBuffer imgData = convertBitmapToByteBuffer(buffer, width, height);
+        convertBitmapToByteBuffer(buffer, width, height);
 
-        FirebaseModelInputs inputs = new FirebaseModelInputs.Builder().add(imgData).build();
+        FirebaseModelInputs inputs = new FirebaseModelInputs.Builder().add(this.imgData).build();
         // Here's where the magic happens!!
         return interpreter
                 .run(inputs, dataOptions)
@@ -220,7 +229,7 @@ public class CustomImageClassifier {
                 .continueWith(
                         new Continuation<FirebaseModelOutputs, List<String>>() {
                             @Override
-                            public List<String> then(Task<FirebaseModelOutputs> task) throws Exception {
+                            public List<String> then(@NonNull Task<FirebaseModelOutputs> task) throws Exception {
                                 if (mUseQuantizedModel) {
                                     byte[][] labelProbArray =
                                             task.getResult().<byte[][]>getOutput(0);
@@ -255,16 +264,19 @@ public class CustomImageClassifier {
     /**
      * Writes Image data into a {@code ByteBuffer}.
      */
-    private synchronized ByteBuffer convertBitmapToByteBuffer(
+    private synchronized void convertBitmapToByteBuffer(
             ByteBuffer buffer, int width, int height) {
         int bytesPerChannel = mUseQuantizedModel ? QUANT_NUM_OF_BYTES_PER_CHANNEL :
                 FLOAT_NUM_OF_BYTES_PER_CHANNEL;
-        ByteBuffer imgData =
-                ByteBuffer.allocateDirect(
-                        bytesPerChannel * DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
-        imgData.order(ByteOrder.nativeOrder());
+        if (this.imgData == null) {
+            this.imgData = ByteBuffer.allocateDirect(bytesPerChannel * DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
+        } else {
+            this.imgData.clear();
+        }
+
+        this.imgData.order(ByteOrder.nativeOrder());
         Bitmap bitmap = createResizedBitmap(buffer, width, height);
-        imgData.rewind();
+        this.imgData.rewind();
         bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(),
                 bitmap.getHeight());
         // Convert the image to int points.
@@ -276,19 +288,18 @@ public class CustomImageClassifier {
                 // Normalize the values according to the model used:
                 // Quantized model expects a [0, 255] scale while a float model expects [0, 1].
                 if (mUseQuantizedModel) {
-                    imgData.put((byte) ((val >> 16) & 0xFF));
-                    imgData.put((byte) ((val >> 8) & 0xFF));
-                    imgData.put((byte) (val & 0xFF));
+                    this.imgData.put((byte) ((val >> 16) & 0xFF));
+                    this.imgData.put((byte) ((val >> 8) & 0xFF));
+                    this.imgData.put((byte) (val & 0xFF));
                 } else {
-                    imgData.putFloat(((val >> 16) & 0xFF) / 255.0f);
-                    imgData.putFloat(((val >> 8) & 0xFF) / 255.0f);
-                    imgData.putFloat((val & 0xFF) / 255.0f);
+                    this.imgData.putFloat(((val >> 16) & 0xFF) / 255.0f);
+                    this.imgData.putFloat(((val >> 8) & 0xFF) / 255.0f);
+                    this.imgData.putFloat((val & 0xFF) / 255.0f);
                 }
             }
         }
         long endTime = SystemClock.uptimeMillis();
         Log.d(TAG, "Timecost to put values into ByteBuffer: " + (endTime - startTime));
-        return imgData;
     }
 
     /**

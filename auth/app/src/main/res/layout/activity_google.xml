@@ -7,6 +7,14 @@
     android:orientation="vertical"
     android:weightSum="4">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:indeterminate="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        style="?android:attr/progressBarStyleHorizontal"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -42,7 +50,6 @@
 
     </LinearLayout>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -70,7 +77,8 @@
 
             <Button
                 android:id="@+id/signOutButton"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_marginStart="@dimen/button_horizontal_margin"
+                android:layout_marginEnd="@dimen/button_horizontal_margin"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -79,7 +87,8 @@
 
             <Button
                 android:id="@+id/disconnectButton"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_marginStart="@dimen/button_horizontal_margin"
+                android:layout_marginEnd="@dimen/button_horizontal_margin"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

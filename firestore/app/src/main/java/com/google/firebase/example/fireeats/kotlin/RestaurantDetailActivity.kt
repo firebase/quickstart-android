@@ -2,14 +2,14 @@ package com.google.firebase.example.fireeats.kotlin
 
 import android.content.Context
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.example.fireeats.R
 import com.google.firebase.example.fireeats.kotlin.adapter.RatingAdapter
 import com.google.firebase.example.fireeats.kotlin.model.Rating
@@ -22,6 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_restaurant_detail.fabShowRatingDialog
 import kotlinx.android.synthetic.main.activity_restaurant_detail.recyclerRatings
 import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantButtonBack
@@ -55,7 +58,7 @@ class RestaurantDetailActivity : AppCompatActivity(),
                 ?: throw IllegalArgumentException("Must pass extra $KEY_RESTAURANT_ID")
 
         // Initialize Firestore
-        firestore = FirebaseFirestore.getInstance()
+        firestore = Firebase.firestore
 
         // Get reference to the restaurant
         restaurantRef = firestore.collection("restaurants").document(restaurantId)
@@ -118,7 +121,7 @@ class RestaurantDetailActivity : AppCompatActivity(),
         }
 
         snapshot?.let {
-            val restaurant = snapshot.toObject(Restaurant::class.java)
+            val restaurant = snapshot.toObject<Restaurant>()
             if (restaurant != null) {
                 onRestaurantLoaded(restaurant)
             }
@@ -173,7 +176,7 @@ class RestaurantDetailActivity : AppCompatActivity(),
 
         // In a transaction, add the new rating and update the aggregate totals
         return firestore.runTransaction { transaction ->
-            val restaurant = transaction.get(restaurantRef).toObject(Restaurant::class.java)
+            val restaurant = transaction.get(restaurantRef).toObject<Restaurant>()
             if (restaurant == null) {
                 throw Exception("Resraurant not found at ${restaurantRef.path}")
             }

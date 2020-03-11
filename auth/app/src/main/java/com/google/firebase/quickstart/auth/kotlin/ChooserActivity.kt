@@ -3,13 +3,13 @@ package com.google.firebase.quickstart.auth.kotlin
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.quickstart.auth.R
 import kotlinx.android.synthetic.main.activity_chooser.listView
 
@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.activity_chooser.listView
  * one of the following Files:
  *     {@link GoogleSignInActivity}
  *     {@link FacebookLoginActivity}
- *     {@link TwitterLoginActivity}
  *     {@link EmailPasswordActivity}
  *     {@link PasswordlessActivity}
  *     {@link PhoneAuthActivity}
@@ -34,7 +33,7 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         setContentView(R.layout.activity_chooser)
 
         // Set up Adapter
-        val adapter = MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES)
+        val adapter = MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES as Array<Class<*>>)
         adapter.setDescriptionIds(DESCRIPTION_IDS)
 
         listView.adapter = adapter
@@ -54,7 +53,7 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
         ArrayAdapter<Class<*>>(ctx, resource, classes) {
         private var descriptionIds: IntArray? = null
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             var view = convertView
 
             if (convertView == null) {
@@ -66,7 +65,7 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
             view?.findViewById<TextView>(android.R.id.text1)?.text = classes[position].simpleName
             view?.findViewById<TextView>(android.R.id.text2)?.setText(descriptionIds!![position])
 
-            return view
+            return view!!
         }
 
         fun setDescriptionIds(descriptionIds: IntArray) {
@@ -75,17 +74,27 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     }
 
     companion object {
-        private val CLASSES = arrayOf(GoogleSignInActivity::class.java,
-                FacebookLoginActivity::class.java, TwitterLoginActivity::class.java,
-                EmailPasswordActivity::class.java, PasswordlessActivity::class.java,
-                PhoneAuthActivity::class.java, AnonymousAuthActivity::class.java,
-                FirebaseUIActivity::class.java, CustomAuthActivity::class.java,
-                GenericIdpActivity::class.java)
-        private val DESCRIPTION_IDS = intArrayOf(R.string.desc_google_sign_in,
-                R.string.desc_facebook_login, R.string.desc_twitter_login,
-                R.string.desc_emailpassword, R.string.desc_passwordless,
-                R.string.desc_phone_auth, R.string.desc_anonymous_auth,
-                R.string.desc_firebase_ui, R.string.desc_custom_auth,
-                R.string.desc_generic_idp)
+        private val CLASSES = arrayOf(
+                GoogleSignInActivity::class.java,
+                FacebookLoginActivity::class.java,
+                EmailPasswordActivity::class.java,
+                PasswordlessActivity::class.java,
+                PhoneAuthActivity::class.java,
+                AnonymousAuthActivity::class.java,
+                FirebaseUIActivity::class.java,
+                CustomAuthActivity::class.java,
+                GenericIdpActivity::class.java
+        )
+        private val DESCRIPTION_IDS = intArrayOf(
+                R.string.desc_google_sign_in,
+                R.string.desc_facebook_login,
+                R.string.desc_emailpassword,
+                R.string.desc_passwordless,
+                R.string.desc_phone_auth,
+                R.string.desc_anonymous_auth,
+                R.string.desc_firebase_ui,
+                R.string.desc_custom_auth,
+                R.string.desc_generic_idp
+        )
     }
 }

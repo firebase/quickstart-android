@@ -18,7 +18,7 @@ class StickerProvider : ContentProvider() {
     private lateinit var rootDir: File
 
     override fun onCreate(): Boolean {
-        rootDir = File(context.filesDir, "stickers")
+        rootDir = File(context?.filesDir, "stickers")
         return try {
             rootDir = rootDir.canonicalFile
             true

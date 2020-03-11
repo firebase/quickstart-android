@@ -17,23 +17,23 @@
 package com.google.firebase.samples.apps.mlkit.translate.java;
 
 import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.FirebaseApp;
+import com.google.firebase.ml.common.modeldownload.FirebaseModelDownloadConditions;
+import com.google.firebase.ml.common.modeldownload.FirebaseModelManager;
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateLanguage;
-import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateModelManager;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslateRemoteModel;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslator;
 import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOptions;
@@ -46,7 +46,7 @@ import java.util.Locale;
 import java.util.Set;
 
 public class TranslateViewModel extends AndroidViewModel {
-    private final FirebaseTranslateModelManager modelManager;
+    private final FirebaseModelManager modelManager;
     MutableLiveData<Language> sourceLang = new MutableLiveData<>();
     MutableLiveData<Language> targetLang = new MutableLiveData<>();
     MutableLiveData<String> sourceText = new MutableLiveData<>();
@@ -56,7 +56,7 @@ public class TranslateViewModel extends AndroidViewModel {
 
     public TranslateViewModel(@NonNull Application application) {
         super(application);
-        modelManager = FirebaseTranslateModelManager.getInstance();
+        modelManager = FirebaseModelManager.getInstance();
 
         // Create a translation result or error object.
         final OnCompleteListener<String> processTranslation = new OnCompleteListener<String>() {
@@ -98,7 +98,8 @@ public class TranslateViewModel extends AndroidViewModel {
         List<Language> languages = new ArrayList<>();
         Set<Integer> languageIds = FirebaseTranslateLanguage.getAllLanguages();
         for (Integer languageId : languageIds) {
-            languages.add(new Language(FirebaseTranslateLanguage.languageCodeForLanguage(languageId)));
+            languages.add(
+                    new Language(FirebaseTranslateLanguage.languageCodeForLanguage(languageId)));
         }
         return languages;
     }
@@ -109,7 +110,7 @@ public class TranslateViewModel extends AndroidViewModel {
 
     // Updates the list of downloaded models available for local translation.
     private void fetchDownloadedModels() {
-        modelManager.getAvailableModels(FirebaseApp.getInstance()).addOnSuccessListener(
+        modelManager.getDownloadedModels(FirebaseTranslateRemoteModel.class).addOnSuccessListener(
                 new OnSuccessListener<Set<FirebaseTranslateRemoteModel>>() {
                     @Override
                     public void onSuccess(Set<FirebaseTranslateRemoteModel> remoteModels) {
@@ -127,28 +128,30 @@ public class TranslateViewModel extends AndroidViewModel {
     void downloadLanguage(Language language) {
         FirebaseTranslateRemoteModel model =
                 getModel(FirebaseTranslateLanguage.languageForLanguageCode(language.getCode()));
-        modelManager.downloadRemoteModelIfNeeded(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                fetchDownloadedModels();
-            }
-        });
+        modelManager.download(model, new FirebaseModelDownloadConditions.Builder().build())
+                .addOnCompleteListener(
+                        new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                fetchDownloadedModels();
+                            }
+                        });
     }
 
     // Deletes a locally stored translation model.
     void deleteLanguage(Language language) {
         FirebaseTranslateRemoteModel model =
                 getModel(FirebaseTranslateLanguage.languageForLanguageCode(language.getCode()));
-        modelManager.deleteDownloadedModel(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                fetchDownloadedModels();
-            }
-        });
+        modelManager.deleteDownloadedModel(model).addOnCompleteListener(
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        fetchDownloadedModels();
+                    }
+                });
     }
 
     public Task<String> translate() {
-        final TaskCompletionSource<String> translateTask = new TaskCompletionSource<String>();
         final String text = sourceText.getValue();
         final Language source = sourceLang.getValue();
         final Language target = targetLang.getValue();
@@ -165,8 +168,8 @@ public class TranslateViewModel extends AndroidViewModel {
                 .build();
         final FirebaseTranslator translator =
                 FirebaseNaturalLanguage.getInstance().getTranslator(options);
-        return translator.downloadModelIfNeeded().continueWithTask(new Continuation<Void,
-                Task<String>>() {
+        return translator.downloadModelIfNeeded().continueWithTask(
+                new Continuation<Void, Task<String>>() {
             @Override
             public Task<String> then(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {

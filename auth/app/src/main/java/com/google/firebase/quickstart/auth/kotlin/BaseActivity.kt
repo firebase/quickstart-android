@@ -1,30 +1,25 @@
 package com.google.firebase.quickstart.auth.kotlin
 
-import android.app.ProgressDialog
 import android.content.Context
-import androidx.annotation.VisibleForTesting
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import com.google.firebase.quickstart.auth.R
+import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 
 open class BaseActivity : AppCompatActivity() {
 
-    @VisibleForTesting
-    val progressDialog by lazy {
-        ProgressDialog(this)
+    private var progressBar: ProgressBar? = null
+
+    fun setProgressBar(resId: Int) {
+        progressBar = findViewById(resId)
     }
 
-    fun showProgressDialog() {
-        progressDialog.setMessage(getString(R.string.loading))
-        progressDialog.isIndeterminate = true
-        progressDialog.show()
+    fun showProgressBar() {
+        progressBar?.visibility = View.VISIBLE
     }
 
-    fun hideProgressDialog() {
-        if (progressDialog.isShowing) {
-            progressDialog.dismiss()
-        }
+    fun hideProgressBar() {
+        progressBar?.visibility = View.INVISIBLE
     }
 
     fun hideKeyboard(view: View) {
@@ -34,6 +29,6 @@ open class BaseActivity : AppCompatActivity() {
 
     public override fun onStop() {
         super.onStop()
-        hideProgressDialog()
+        hideProgressBar()
     }
 }

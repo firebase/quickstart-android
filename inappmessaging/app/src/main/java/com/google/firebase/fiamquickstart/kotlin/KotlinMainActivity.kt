@@ -1,16 +1,17 @@
 package com.google.firebase.fiamquickstart.kotlin
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
-import com.google.android.gms.tasks.OnSuccessListener
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.fiamquickstart.R
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.inappmessaging.ktx.inAppMessaging
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_main.eventTriggerButton
+import kotlinx.android.synthetic.main.activity_main.instanceIdText
 
 class KotlinMainActivity : AppCompatActivity() {
 
@@ -22,7 +23,7 @@ class KotlinMainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        firebaseIam = FirebaseInAppMessaging.getInstance()
+        firebaseIam = Firebase.inAppMessaging
 
         firebaseIam.isAutomaticDataCollectionEnabled = true
         firebaseIam.setMessagesSuppressed(false)
@@ -36,13 +37,11 @@ class KotlinMainActivity : AppCompatActivity() {
 
         // Get and display/log the Instance ID
         FirebaseInstanceId.getInstance().instanceId
-                .addOnSuccessListener(object : OnSuccessListener<InstanceIdResult> {
-                    override fun onSuccess(instanceIdResult: InstanceIdResult) {
-                        val instanceId = instanceIdResult.id
-                        instanceIdText.text = getString(R.string.instance_id_fmt, instanceId)
-                        Log.d(TAG, "InstanceId: $instanceId")
-                    }
-                })
+                .addOnSuccessListener { instanceIdResult ->
+                    val instanceId = instanceIdResult.id
+                    instanceIdText.text = getString(R.string.instance_id_fmt, instanceId)
+                    Log.d(TAG, "InstanceId: $instanceId")
+                }
     }
 
     companion object {

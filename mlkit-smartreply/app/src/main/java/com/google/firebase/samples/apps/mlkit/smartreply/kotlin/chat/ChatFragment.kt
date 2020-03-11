@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -98,22 +99,24 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
             inputText.text = ""
         })
 
-        viewModel.getSuggestions().observe(this, Observer { suggestions -> chipAdapter.setSuggestions(suggestions!!) })
+        viewModel.getSuggestions().observe(viewLifecycleOwner, Observer { suggestions ->
+            chipAdapter.setSuggestions(suggestions!!)
+        })
 
-        viewModel.messages.observe(this, Observer { messages ->
+        viewModel.messages.observe(viewLifecycleOwner, Observer { messages ->
             chatAdapter.setMessages(messages!!)
             if (chatAdapter.itemCount > 0) {
                 chatRecycler.smoothScrollToPosition(chatAdapter.itemCount - 1)
             }
         })
 
-        viewModel.getEmulatingRemoteUser().observe(this, Observer { isEmulatingRemoteUser ->
+        viewModel.getEmulatingRemoteUser().observe(viewLifecycleOwner, Observer { isEmulatingRemoteUser ->
             if (isEmulatingRemoteUser!!) {
                 emulatedUserText.setText(R.string.chatting_as_red)
-                emulatedUserText.setTextColor(resources.getColor(R.color.red))
+                emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
             } else {
                 emulatedUserText.setText(R.string.chatting_as_blue)
-                emulatedUserText.setTextColor(resources.getColor(R.color.blue))
+                emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
             }
         })
 
@@ -122,14 +125,14 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
         viewModel.setMessages(messageList)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.chat_fragment_actions, menu)
+        inflater.inflate(R.menu.chat_fragment_actions, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         super.onOptionsItemSelected(item)
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.generateHistoryBasic -> {
                 generateChatHistoryBasic()
                 return true

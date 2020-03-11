@@ -35,6 +35,8 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_passwordless)
 
+        setProgressBar(R.id.progressBar)
+
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
@@ -113,11 +115,11 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
                 .build()
 
         hideKeyboard(fieldEmail)
-        showProgressDialog()
+        showProgressBar()
 
         auth.sendSignInLinkToEmail(email, settings)
                 .addOnCompleteListener { task ->
-                    hideProgressDialog()
+                    hideProgressBar()
 
                     if (task.isSuccessful) {
                         Log.d(TAG, "Link sent")
@@ -145,11 +147,11 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         Log.d(TAG, "signInWithLink:" + link!!)
 
         hideKeyboard(fieldEmail)
-        showProgressDialog()
+        showProgressBar()
 
         auth.signInWithEmailLink(email, link)
                 .addOnCompleteListener { task ->
-                    hideProgressDialog()
+                    hideProgressBar()
                     if (task.isSuccessful) {
                         Log.d(TAG, "signInWithEmailLink:success")
 

@@ -2,4 +2,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="padding_standard">10dp</dimen>
+    <dimen name="message_corner_radius">3dp</dimen>
+    <dimen name="message_author_icon_size">40dp</dimen>
+    <dimen name="margin_message_text_icon">8dp</dimen>
 </resources>

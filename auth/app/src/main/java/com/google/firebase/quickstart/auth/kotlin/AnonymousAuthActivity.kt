@@ -30,6 +30,8 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_anonymous_auth)
 
+        setProgressBar(R.id.progressBar)
+
         // [START initialize_auth]
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
@@ -51,7 +53,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     // [END on_start_check_user]
 
     private fun signInAnonymously() {
-        showProgressDialog()
+        showProgressBar()
         // [START signin_anonymously]
         auth.signInAnonymously()
                 .addOnCompleteListener(this) { task ->
@@ -69,7 +71,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     // [START_EXCLUDE]
-                    hideProgressDialog()
+                    hideProgressBar()
                     // [END_EXCLUDE]
                 }
         // [END signin_anonymously]
@@ -94,7 +96,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         val credential = EmailAuthProvider.getCredential(email, password)
 
         // Link the anonymous user to the email credential
-        showProgressDialog()
+        showProgressBar()
 
         // [START link_credential]
         auth.currentUser?.linkWithCredential(credential)
@@ -111,7 +113,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     // [START_EXCLUDE]
-                    hideProgressDialog()
+                    hideProgressBar()
                     // [END_EXCLUDE]
                 }
         // [END link_credential]
@@ -140,7 +142,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        hideProgressDialog()
+        hideProgressBar()
         val isSignedIn = user != null
 
         // Status text
@@ -159,8 +161,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        val i = v.id
-        when (i) {
+        when (v.id) {
             R.id.buttonAnonymousSignIn -> signInAnonymously()
             R.id.buttonAnonymousSignOut -> signOut()
             R.id.buttonLinkAccount -> linkAccount()

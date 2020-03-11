@@ -122,14 +122,14 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
             }
         });
 
-        mViewModel.getSuggestions().observe(this, new Observer<List<SmartReplySuggestion>>() {
+        mViewModel.getSuggestions().observe(getViewLifecycleOwner(), new Observer<List<SmartReplySuggestion>>() {
             @Override
             public void onChanged(List<SmartReplySuggestion> suggestions) {
                mChipAdapter.setSuggestions(suggestions);
             }
         });
 
-        mViewModel.getMessages().observe(this, new Observer<List<Message>>() {
+        mViewModel.getMessages().observe(getViewLifecycleOwner(), new Observer<List<Message>>() {
             @Override
             public void onChanged(List<Message> messages) {
                 mChatAdapter.setMessages(messages);
@@ -139,7 +139,7 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
             }
         });
 
-        mViewModel.getEmulatingRemoteUser().observe(this, new Observer<Boolean>() {
+        mViewModel.getEmulatingRemoteUser().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isEmulatingRemoteUser) {
                 if (isEmulatingRemoteUser) {

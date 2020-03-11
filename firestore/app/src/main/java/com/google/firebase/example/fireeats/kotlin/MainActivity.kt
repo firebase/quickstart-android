@@ -3,7 +3,6 @@ package com.google.firebase.example.fireeats.kotlin
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -11,7 +10,8 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.core.text.HtmlCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
@@ -28,6 +28,8 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.buttonClearFilter
 import kotlinx.android.synthetic.main.activity_main.filterBar
 import kotlinx.android.synthetic.main.activity_main.recyclerRestaurants
@@ -54,13 +56,13 @@ class MainActivity : AppCompatActivity(),
         setSupportActionBar(toolbar)
 
         // View model
-        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true)
 
         // Firestore
-        firestore = FirebaseFirestore.getInstance()
+        firestore = Firebase.firestore
 
         // Get ${LIMIT} restaurants
         query = firestore.collection("restaurants")
@@ -204,7 +206,8 @@ class MainActivity : AppCompatActivity(),
         adapter.setQuery(query)
 
         // Set header
-        textCurrentSearch.text = Html.fromHtml(filters.getSearchDescription(this))
+        textCurrentSearch.text = HtmlCompat.fromHtml(filters.getSearchDescription(this),
+                HtmlCompat.FROM_HTML_MODE_LEGACY)
         textCurrentSortBy.text = filters.getOrderDescription(this)
 
         // Save filters
