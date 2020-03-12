@@ -43,6 +43,7 @@ import com.google.firebase.quickstart.auth.R;
  *     {@link AnonymousAuthActivity}
  *     {@link CustomAuthActivity}
  *     {@link GenericIdpActivity}
+ *     {@link MultiFactorActivity}
  */
 public class ChooserActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -56,6 +57,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             FirebaseUIActivity.class,
             CustomAuthActivity.class,
             GenericIdpActivity.class,
+            MultiFactorActivity.class,
     };
 
     private static final int[] DESCRIPTION_IDS = new int[] {
@@ -68,6 +70,7 @@ public class ChooserActivity extends AppCompatActivity implements AdapterView.On
             R.string.desc_firebase_ui,
             R.string.desc_custom_auth,
             R.string.desc_generic_idp,
+            R.string.desc_multi_factor,
     };
 
     @Override

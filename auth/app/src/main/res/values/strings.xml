@@ -28,6 +28,9 @@
     <string name="label_generic_idp">Generic OAuth</string>
     <string name="desc_generic_idp">Use a generic OAuth identity provider, like Apple, Microsoft, Yahoo, or Twitter to authenticate with Firebase.</string>
 
+    <string name="label_multi_factor">Multi-Factor Authentication</string>
+    <string name="desc_multi_factor">Use SMS for two-factor authentication. Note: this feature is only available for Cloud Identity Platform.</string>
+
     <string name="hint_user_id">User ID</string>
     <string name="get_custom_token">Get Token</string>
     <string name="sign_in">Sign In</string>
@@ -98,5 +101,6 @@
     <string name="custom_auth_signin_status_failed">Error: sign in failed</string>
 
     <string name="error_sign_in_failed">Sign in failed, see logs for details.</string>
+    <string name="multi_factor_signed_out">You are not signed in. To use this sample, first navigate to the Email/Password example to sign in and then return here to enroll in multi-factor auth.</string>
 
 </resources>

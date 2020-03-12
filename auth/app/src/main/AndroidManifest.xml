@@ -60,6 +60,9 @@
             android:name=".java.GenericIdpActivity"
             android:label="@string/label_generic_idp" />
         <activity
+            android:name=".java.MultiFactorActivity"
+            android:label="@string/label_multi_factor" />
+        <activity
             android:name=".java.MultiFactorEnrollActivity"
             android:label="MultiFactor Sign-In" />
         <activity
@@ -111,6 +114,9 @@
         <activity
             android:name=".kotlin.GenericIdpActivity"
             android:label="@string/label_generic_idp" />
+        <activity
+            android:name=".kotlin.MultiFactorActivity"
+            android:label="@string/label_multi_factor" />
         <activity
             android:name=".kotlin.MultiFactorEnrollActivity"
             android:label="MultiFactor Sign-In" />
