@@ -35,7 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.samples.apps.mlkit.translate.R;
@@ -78,8 +78,7 @@ public class TranslateFragment extends Fragment {
         final Spinner sourceLangSelector = view.findViewById(R.id.sourceLangSelector);
         final Spinner targetLangSelector = view.findViewById(R.id.targetLangSelector);
 
-        final TranslateViewModel viewModel =
-                ViewModelProviders.of(this).get(TranslateViewModel.class);
+        final TranslateViewModel viewModel = new ViewModelProvider(this).get(TranslateViewModel.class);
 
         // Get available language list and set up source and target language spinners
         // with default selections.

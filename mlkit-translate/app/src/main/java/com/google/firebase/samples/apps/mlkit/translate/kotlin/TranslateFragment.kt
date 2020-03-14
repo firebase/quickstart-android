@@ -28,7 +28,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.samples.apps.mlkit.translate.R
 import com.google.firebase.samples.apps.mlkit.translate.kotlin.TranslateViewModel.Language
 import kotlinx.android.synthetic.main.translate_fragment.buttonSwitchLang
@@ -59,7 +59,7 @@ class TranslateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel = ViewModelProviders.of(this).get(TranslateViewModel::class.java)
+        val viewModel = ViewModelProvider(this).get(TranslateViewModel::class.java)
 
         // Get available language list and set up source and target language spinners
         // with default selections.

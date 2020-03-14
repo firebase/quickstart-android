@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,7 +69,7 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
 
         mChatRecycler = view.findViewById(R.id.chatHistory);
         mEmulatedUserText = view.findViewById(R.id.switchText);
