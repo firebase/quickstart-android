@@ -24,7 +24,7 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
     // [START declare_auth]
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
-    
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_multi_factor)
@@ -37,7 +37,7 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
         enrollMfa.setOnClickListener(this)
         unenrollMfa.setOnClickListener(this)
         reloadButton.setOnClickListener(this)
-        
+
         // [START initialize_auth]
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
@@ -164,7 +164,9 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         val i = v.id
         when (i) {
-            R.id.emailSignInButton -> startActivityForResult(Intent(this, EmailPasswordActivity::class.java), RC_MULTI_FACTOR)
+            R.id.emailSignInButton -> {
+                startActivityForResult(Intent(this, EmailPasswordActivity::class.java), RC_MULTI_FACTOR)
+            }
             R.id.signOutButton -> signOut()
             R.id.verifyEmailButton -> sendEmailVerification()
             R.id.enrollMfa -> startActivity(Intent(this, MultiFactorEnrollActivity::class.java))

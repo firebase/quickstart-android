@@ -24,13 +24,12 @@ import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor5
 import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.smsCode
 import java.util.concurrent.TimeUnit
 
-
 /**
  * Activity that handles MFA sign-in
  */
 class MultiFactorSignInActivity : BaseActivity(), View.OnClickListener {
 
-    private lateinit var multiFactorResolver: MultiFactorResolver;
+    private lateinit var multiFactorResolver: MultiFactorResolver
     private var lastPhoneAuthCredential: PhoneAuthCredential? = null
     private var lastVerificationId: String? = null
 

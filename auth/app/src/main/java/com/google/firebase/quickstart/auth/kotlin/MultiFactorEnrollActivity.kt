@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -22,7 +21,6 @@ import kotlinx.android.synthetic.main.activity_phone_auth.fieldVerificationCode
 import kotlinx.android.synthetic.main.activity_phone_auth.status
 import kotlinx.android.synthetic.main.activity_phone_auth.titleText
 import java.util.concurrent.TimeUnit
-
 
 /**
  * Activity that allows the user to enroll second factors.
@@ -53,7 +51,9 @@ class MultiFactorEnrollActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCodeSent(
-                    verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
+                verificationId: String,
+                token: PhoneAuthProvider.ForceResendingToken
+            ) {
                 Log.d(TAG, "onCodeSent:$verificationId")
                 Toast.makeText(
                         this@MultiFactorEnrollActivity, "SMS code has been sent", Toast.LENGTH_SHORT)
@@ -104,7 +104,7 @@ class MultiFactorEnrollActivity : BaseActivity(), View.OnClickListener {
         FirebaseAuth.getInstance()
                 .currentUser
                 ?.multiFactor
-                ?.enroll(PhoneMultiFactorGenerator.getAssertion(credential),  /* displayName= */null)
+                ?.enroll(PhoneMultiFactorGenerator.getAssertion(credential), /* displayName= */null)
                 ?.addOnSuccessListener {
                     Toast.makeText(
                             this@MultiFactorEnrollActivity,
