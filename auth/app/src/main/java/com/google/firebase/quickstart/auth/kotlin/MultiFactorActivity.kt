@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.auth.kotlin
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -41,6 +42,8 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
         // [END initialize_auth]
+
+        showDisclaimer()
     }
 
     // [START on_start_check_user]
@@ -94,9 +97,9 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun reload() {
-        auth!!.currentUser!!.reload().addOnCompleteListener { task ->
+        auth.currentUser!!.reload().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                updateUI(auth!!.currentUser)
+                updateUI(auth.currentUser)
                 Toast.makeText(this@MultiFactorActivity,
                         "Reload successful!",
                         Toast.LENGTH_SHORT).show()
@@ -148,20 +151,25 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun showDisclaimer() {
+        AlertDialog.Builder(this)
+                .setTitle("Warning")
+                .setMessage("Multi-factor authentication with SMS is currently only available for " +
+                        "Google Cloud Identity Platform projects. For more information see: " +
+                        "https://cloud.google.com/identity-platform/docs/android/mfa")
+                .setPositiveButton("OK", null)
+                .show()
+    }
+
     override fun onClick(v: View) {
         val i = v.id
-        if (i == R.id.emailSignInButton) {
-            startActivityForResult(Intent(this, EmailPasswordActivity::class.java), RC_MULTI_FACTOR)
-        } else if (i == R.id.signOutButton) {
-            signOut()
-        } else if (i == R.id.verifyEmailButton) {
-            sendEmailVerification()
-        } else if (i == R.id.enrollMfa) {
-            startActivity(Intent(this, MultiFactorEnrollActivity::class.java))
-        } else if (i == R.id.unenrollMfa) {
-            startActivity(Intent(this, MultiFactorUnenrollActivity::class.java))
-        } else if (i == R.id.reloadButton) {
-            reload()
+        when (i) {
+            R.id.emailSignInButton -> startActivityForResult(Intent(this, EmailPasswordActivity::class.java), RC_MULTI_FACTOR)
+            R.id.signOutButton -> signOut()
+            R.id.verifyEmailButton -> sendEmailVerification()
+            R.id.enrollMfa -> startActivity(Intent(this, MultiFactorEnrollActivity::class.java))
+            R.id.unenrollMfa -> startActivity(Intent(this, MultiFactorUnenrollActivity::class.java))
+            R.id.reloadButton -> reload()
         }
     }
 

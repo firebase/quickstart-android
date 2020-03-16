@@ -16,6 +16,7 @@
 
 package com.google.firebase.quickstart.auth.java;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -79,6 +80,8 @@ public class MultiFactorActivity extends BaseActivity implements
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+        showDisclaimer();
     }
 
     // [START on_start_check_user]
@@ -203,6 +206,16 @@ public class MultiFactorActivity extends BaseActivity implements
             findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);
             findViewById(R.id.signedInButtons).setVisibility(View.GONE);
         }
+    }
+
+    private void showDisclaimer() {
+        new AlertDialog.Builder(this)
+                .setTitle("Warning")
+                .setMessage("Multi-factor authentication with SMS is currently only available for " +
+                        "Google Cloud Identity Platform projects. For more information see: " +
+                        "https://cloud.google.com/identity-platform/docs/android/mfa")
+                .setPositiveButton("OK", null)
+                .show();
     }
 
     @Override
