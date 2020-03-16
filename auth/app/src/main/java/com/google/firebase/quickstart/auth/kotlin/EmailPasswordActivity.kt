@@ -10,8 +10,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthMultiFactorException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import com.google.firebase.quickstart.auth.java.EmailPasswordActivity
-import com.google.firebase.quickstart.auth.java.MultiFactorActivity
 import kotlinx.android.synthetic.main.activity_emailpassword.detail
 import kotlinx.android.synthetic.main.activity_emailpassword.emailCreateAccountButton
 import kotlinx.android.synthetic.main.activity_emailpassword.emailPasswordButtons
@@ -229,7 +227,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
         // https://cloud.google.com/identity-platform/docs/android/mfa
         if (e is FirebaseAuthMultiFactorException) {
             Log.w(TAG, "multiFactorFailure", e)
-            val intent = Intent(this@EmailPasswordActivity, MultiFactorSignInActivity::class.java)
+            val intent = Intent()
             val resolver = e.resolver
             intent.putExtra("EXTRA_MFA_RESOLVER", resolver)
             setResult(MultiFactorActivity.RESULT_NEEDS_MFA_SIGN_IN, intent)

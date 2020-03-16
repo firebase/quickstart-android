@@ -97,7 +97,7 @@ public class MultiFactorActivity extends BaseActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_MULTI_FACTOR) {
             if (resultCode == RESULT_NEEDS_MFA_SIGN_IN) {
-                Intent intent = new Intent();
+                Intent intent = new Intent(this, MultiFactorSignInActivity.class);
                 intent.putExtras(data.getExtras());
                 startActivityForResult(intent, RC_MULTI_FACTOR);
             }

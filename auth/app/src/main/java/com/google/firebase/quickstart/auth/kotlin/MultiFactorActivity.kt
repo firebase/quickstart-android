@@ -56,7 +56,7 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_MULTI_FACTOR) {
             if (resultCode == RESULT_NEEDS_MFA_SIGN_IN) {
-                val intent = Intent()
+                val intent = Intent(this, MultiFactorSignInActivity::class.java)
                 intent.putExtras(data!!.extras!!)
                 startActivityForResult(intent, RC_MULTI_FACTOR)
             }

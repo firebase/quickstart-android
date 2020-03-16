@@ -43,7 +43,6 @@ public class EmailPasswordActivity extends BaseActivity implements
 
     private TextView mStatusTextView;
     private TextView mDetailTextView;
-    private TextView mMfaInfoTextView;
 
     private EditText mEmailField;
     private EditText mPasswordField;
@@ -63,7 +62,6 @@ public class EmailPasswordActivity extends BaseActivity implements
         mDetailTextView = findViewById(R.id.detail);
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
-        mMfaInfoTextView = findViewById(R.id.mfaInfo);
 
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
@@ -258,7 +256,6 @@ public class EmailPasswordActivity extends BaseActivity implements
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
-            mMfaInfoTextView.setText(null);
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.VISIBLE);
@@ -272,7 +269,7 @@ public class EmailPasswordActivity extends BaseActivity implements
         // https://cloud.google.com/identity-platform/docs/android/mfa
         if (e instanceof FirebaseAuthMultiFactorException) {
             Log.w(TAG, "multiFactorFailure", e);
-            Intent intent = new Intent(EmailPasswordActivity.this, MultiFactorSignInActivity.class);
+            Intent intent = new Intent();
             MultiFactorResolver resolver = ((FirebaseAuthMultiFactorException) e).getResolver();
             intent.putExtra("EXTRA_MFA_RESOLVER", resolver);
             setResult(MultiFactorActivity.RESULT_NEEDS_MFA_SIGN_IN, intent);
