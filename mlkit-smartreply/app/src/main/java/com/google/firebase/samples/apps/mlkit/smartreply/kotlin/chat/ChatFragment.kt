@@ -16,7 +16,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.samples.apps.mlkit.smartreply.R
@@ -56,7 +56,7 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(ChatViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ChatViewModel::class.java)
 
         chatRecycler = view.findViewById(R.id.chatHistory)
         emulatedUserText = view.findViewById(R.id.switchText)

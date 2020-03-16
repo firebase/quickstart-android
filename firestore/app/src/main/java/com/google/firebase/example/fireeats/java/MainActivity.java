@@ -16,7 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.text.HtmlCompat;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.buttonClearFilter).setOnClickListener(this);
 
         // View model
-        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
