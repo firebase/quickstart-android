@@ -68,7 +68,7 @@ Getting Started
 - Go to the [Firebase Console][fir-console] and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Phone** and turn on the **Enable** switch, then click **Save**.
-- Run the app on your device or emulator.
+- Run the app on your physical device:
     - Select **PhoneAuthActivity** from the main screen.
     - Enter your phone numeber and click **Verify** to begin.
 
@@ -129,6 +129,17 @@ Getting Started
     - Select **Twitter** in the dropdown.
     - Hit the sign in button and proceed through the login flow.
 
+### Multi Factor Authentication
+
+**Note**: Multi Factor authentication only works for apps using Google Cloud Identity Platform,
+a paid service. If you are only using Firebase Authentication this sample will not work for you.
+
+- Run the app on your physical device (emulators will not work)
+    - Select **MultiFactorAuthActivity** from the main screen.
+    - Sign in (if necessary).
+    - Verify your email (if necessary).
+    - Hit **Enroll MFA** to begin enrolling an SMS second factor.
+
 
 Result
 -----------
@@ -143,7 +154,7 @@ Support
 License
 -------
 
-Copyright 2016 Google, Inc.
+Copyright 2020 Google, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for
