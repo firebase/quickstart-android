@@ -131,7 +131,8 @@ Getting Started
 
 ### Multi Factor Authentication
 
-**Note**: Multi Factor authentication only works for apps using Google Cloud Identity Platform,
+**Note**: Multi Factor authentication only works for apps using
+[Google Cloud Identity Platform](https://cloud.google.com/identity-platform/docs/android/mfa),
 a paid service. If you are only using Firebase Authentication this sample will not work for you.
 
 - Run the app on your physical device (emulators will not work)
