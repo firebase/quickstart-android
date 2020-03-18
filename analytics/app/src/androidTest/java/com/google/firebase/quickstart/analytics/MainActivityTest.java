@@ -4,8 +4,8 @@ package com.google.firebase.quickstart.analytics;
 import androidx.annotation.StringRes;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.google.firebase.quickstart.analytics.java.MainActivity;

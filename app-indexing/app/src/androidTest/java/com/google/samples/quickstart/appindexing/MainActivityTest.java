@@ -17,8 +17,9 @@ package com.google.samples.quickstart.appindexing;
 
 import android.content.Intent;
 import android.net.Uri;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.google.samples.quickstart.appindexing.java.MainActivity;
 
