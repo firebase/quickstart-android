@@ -1,10 +1,10 @@
 package com.google.samples.quickstart.admobexample;
 
 
-import androidx.test.espresso.Espresso;
+import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.google.samples.quickstart.admobexample.java.MainActivity;
@@ -36,12 +36,12 @@ public class InterstitialAdTest {
     @Before
     public void setUp() {
         mAdResource = new AdViewIdlingResource(mActivityTestRule.getActivity().getAdView());
-        Espresso.registerIdlingResources(mAdResource);
+        IdlingRegistry.getInstance().register(mAdResource);
     }
 
     @After
     public void tearDown() {
-        Espresso.unregisterIdlingResources(mAdResource);
+        IdlingRegistry.getInstance().unregister(mAdResource);
     }
 
     @Test
