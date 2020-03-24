@@ -30,22 +30,22 @@ android {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.71"
 
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // FIAM (Java)
-    implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.3'
+    implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.4'
 
     // FIAM (Kotlin)
-    implementation 'com.google.firebase:firebase-inappmessaging-ktx:19.0.3'
-    implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:19.0.3'
+    implementation 'com.google.firebase:firebase-inappmessaging-ktx:19.0.4'
+    implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:19.0.4'
 
     // The Firebase SDK for Google Analytics is required to use In-App Messaging
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
-    implementation 'com.google.firebase:firebase-iid:20.0.2'
+    implementation 'com.google.firebase:firebase-analytics:17.2.3'
+    implementation 'com.google.firebase:firebase-iid:20.1.2'
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
