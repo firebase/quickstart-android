@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.core.util.Preconditions;
 
 import com.google.android.gms.common.images.Size;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
@@ -27,9 +26,9 @@ public class PreferenceUtils {
 
   @Nullable
   public static SizePair getCameraPreviewSizePair(Context context, int cameraId) {
-    Preconditions.checkArgument(
-        cameraId == CameraSource.CAMERA_FACING_BACK
-            || cameraId == CameraSource.CAMERA_FACING_FRONT);
+    if (!(cameraId == CameraSource.CAMERA_FACING_BACK || cameraId == CameraSource.CAMERA_FACING_FRONT)) {
+        throw new RuntimeException("Invalid cameraId: " + cameraId);
+    }
     String previewSizePrefKey;
     String pictureSizePrefKey;
     if (cameraId == CameraSource.CAMERA_FACING_BACK) {
