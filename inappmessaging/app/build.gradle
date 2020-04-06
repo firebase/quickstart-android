@@ -44,8 +44,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:19.0.4'
 
     // The Firebase SDK for Google Analytics is required to use In-App Messaging
-    implementation 'com.google.firebase:firebase-analytics:17.2.3'
-    implementation 'com.google.firebase:firebase-iid:20.1.2'
+    implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    implementation 'com.google.firebase:firebase-iid:20.1.5'
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
