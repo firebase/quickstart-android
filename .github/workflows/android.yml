@@ -17,5 +17,11 @@ jobs:
       run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;20.0.5594570" --sdk_root=${ANDROID_SDK_ROOT}
     - name: Check Snippets
       run: python scripts/checksnippets.py
-    - name: Build with Gradle
-      run: ./build.sh
+    - name: Copy mock google_services.json
+      run: ./copy_mock_google_services_json.sh
+    - name: Build with Gradle (Pull Request)
+      run: ./build_pull_request.sh
+      if: github.event_name == 'pull_request'
+    - name: Build with Gradle (Push)
+      run: ./gradlew clean ktlint build
+      if: github.event_name != 'pull_request'
