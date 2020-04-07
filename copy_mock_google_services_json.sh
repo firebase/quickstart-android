@@ -24,6 +24,3 @@ cp mock-google-services.json mlkit-smartreply/app/google-services.json
 cp mock-google-services.json mlkit-translate/app/google-services.json
 cp mock-google-services.json storage/app/google-services.json
 
-# Build
-echo "Building..."
-./gradlew clean ktlint build
