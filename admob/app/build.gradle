@@ -27,6 +27,10 @@ android {
     packagingOptions {
         exclude 'LICENSE.txt'
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
