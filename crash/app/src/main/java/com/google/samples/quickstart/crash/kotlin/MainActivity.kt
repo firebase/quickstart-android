@@ -4,8 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import com.crashlytics.android.Crashlytics
-import com.google.samples.quickstart.crash.R
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.samples.quickstart.crash.databinding.ActivityMainBinding
 
 /**
  * This Activity shows the different ways of reporting application crashes.
@@ -22,7 +21,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Log the onCreate event, this will also be printed in logcat
         Crashlytics.log(Log.VERBOSE, TAG, "onCreate")
@@ -35,19 +35,15 @@ class MainActivity : AppCompatActivity() {
         // Report a non-fatal exception, for demonstration purposes
         Crashlytics.logException(Exception("Non-fatal exception: something went wrong!"))
 
-        // Checkbox to indicate when to catch the thrown exception.
-        val catchCrashCheckBox = catchCrashCheckBox
-
         // Button that causes NullPointerException to be thrown.
-        val crashButton = crashButton
-        crashButton.setOnClickListener {
+        binding.crashButton.setOnClickListener {
             // Log that crash button was clicked.
             Crashlytics.log(Log.INFO, TAG, "Crash button clicked.")
 
-            // If catchCrashCheckBox is checked catch the exception and report is using
+            // If catchCrashCheckBox is checked catch the exception and report it using
             // logException(), Otherwise throw the exception and let Crashlytics automatically
             // report the crash.
-            if (catchCrashCheckBox.isChecked) {
+            if (binding.catchCrashCheckBox.isChecked) {
                 try {
                     throw NullPointerException()
                 } catch (ex: NullPointerException) {

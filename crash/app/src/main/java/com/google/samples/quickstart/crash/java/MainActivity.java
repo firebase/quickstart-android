@@ -20,11 +20,9 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.samples.quickstart.crash.R;
+import com.google.samples.quickstart.crash.databinding.ActivityMainBinding;
 
 /**
  * This Activity shows the different ways of reporting application crashes.
@@ -44,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        final ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // Log the onCreate event, this will also be printed in logcat
         Crashlytics.log(Log.VERBOSE, TAG, "onCreate");
@@ -57,21 +56,17 @@ public class MainActivity extends AppCompatActivity {
         // Report a non-fatal exception, for demonstration purposes
         Crashlytics.logException(new Exception("Non-fatal exception: something went wrong!"));
 
-        // Checkbox to indicate when to catch the thrown exception.
-        final CheckBox catchCrashCheckBox = findViewById(R.id.catchCrashCheckBox);
-
         // Button that causes NullPointerException to be thrown.
-        Button crashButton = findViewById(R.id.crashButton);
-        crashButton.setOnClickListener(new View.OnClickListener() {
+        binding.crashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Log that crash button was clicked.
                 Crashlytics.log(Log.INFO, TAG, "Crash button clicked.");
 
-                // If catchCrashCheckBox is checked catch the exception and report is using
+                // If catchCrashCheckBox is checked catch the exception and report it using
                 // logException(), Otherwise throw the exception and let Crashlytics automatically
                 // report the crash.
-                if (catchCrashCheckBox.isChecked()) {
+                if (binding.catchCrashCheckBox.isChecked()) {
                     try {
                         throw new NullPointerException();
                     } catch (NullPointerException ex) {
