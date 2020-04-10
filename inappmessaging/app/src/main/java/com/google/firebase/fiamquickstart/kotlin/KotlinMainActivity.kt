@@ -6,12 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.fiamquickstart.R
+import com.google.firebase.fiamquickstart.databinding.ActivityMainBinding
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.inappmessaging.ktx.inAppMessaging
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_main.eventTriggerButton
-import kotlinx.android.synthetic.main.activity_main.instanceIdText
 
 class KotlinMainActivity : AppCompatActivity() {
 
@@ -20,7 +19,8 @@ class KotlinMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         firebaseIam = Firebase.inAppMessaging
@@ -28,7 +28,7 @@ class KotlinMainActivity : AppCompatActivity() {
         firebaseIam.isAutomaticDataCollectionEnabled = true
         firebaseIam.setMessagesSuppressed(false)
 
-        eventTriggerButton.setOnClickListener { view ->
+        binding.eventTriggerButton.setOnClickListener { view ->
             firebaseAnalytics.logEvent("engagement_party", Bundle())
             Snackbar.make(view, "'engagement_party' event triggered!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null)
@@ -39,7 +39,7 @@ class KotlinMainActivity : AppCompatActivity() {
         FirebaseInstanceId.getInstance().instanceId
                 .addOnSuccessListener { instanceIdResult ->
                     val instanceId = instanceIdResult.id
-                    instanceIdText.text = getString(R.string.instance_id_fmt, instanceId)
+                    binding.instanceIdText.text = getString(R.string.instance_id_fmt, instanceId)
                     Log.d(TAG, "InstanceId: $instanceId")
                 }
     }
