@@ -55,7 +55,7 @@ dependencies {
     implementation 'com.google.guava:guava:27.1-android'
 
     implementation 'com.google.firebase:firebase-ml-natural-language:22.0.0'
-    implementation 'com.google.firebase:firebase-ml-natural-language-translate-model:20.0.7'
+    implementation 'com.google.firebase:firebase-ml-natural-language-translate-model:20.0.8'
 
     testImplementation 'junit:junit:4.13'
 }
