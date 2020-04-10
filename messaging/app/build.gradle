@@ -30,6 +30,10 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
