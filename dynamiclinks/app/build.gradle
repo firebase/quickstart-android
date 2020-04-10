@@ -36,6 +36,10 @@ android {
             resValue "string", "dynamic_links_uri_prefix", "https://YOUR_APP.page.link"
         }
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
