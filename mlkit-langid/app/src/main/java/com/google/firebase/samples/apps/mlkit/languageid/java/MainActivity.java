@@ -2,13 +2,10 @@ package com.google.firebase.samples.apps.mlkit.languageid.java;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import com.google.android.material.textfield.TextInputEditText;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -17,45 +14,42 @@ import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage;
 import com.google.firebase.ml.naturallanguage.languageid.FirebaseLanguageIdentification;
 import com.google.firebase.ml.naturallanguage.languageid.IdentifiedLanguage;
 import com.google.firebase.samples.apps.mlkit.languageid.R;
+import com.google.firebase.samples.apps.mlkit.languageid.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView outputText;
     private static final String TAG = "MainActivity";
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        final TextInputEditText inputText = findViewById(R.id.inputText);
-        Button idLanguageButton = findViewById(R.id.buttonIdLanguage);
-        Button findAllButton = findViewById(R.id.buttonIdAll);
-        outputText = findViewById(R.id.outputText);
-
-        idLanguageButton.setOnClickListener(new View.OnClickListener() {
+        binding.buttonIdLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input = inputText.getText().toString();
+                String input = binding.inputText.getText().toString();
                 if (input.isEmpty()) {
                     return;
                 }
-                inputText.getText().clear();
+                binding.inputText.getText().clear();
                 identifyLanguage(input);
             }
         });
 
-        findAllButton.setOnClickListener(new View.OnClickListener() {
+        binding.buttonIdAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input = inputText.getText().toString();
+                String input = binding.inputText.getText().toString();
                 if (input.isEmpty()) {
                     return;
                 }
-                inputText.getText().clear();
+                binding.inputText.getText().clear();
                 identifyPossibleLanguages(input);
             }
         });
@@ -82,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                                                     language.getConfidence())
                                     );
                                 }
-                                outputText.append(
+                                binding.outputText.append(
                                         String.format(
                                                 Locale.US,
                                                 "\n%s - [%s]",
@@ -114,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                         new OnSuccessListener<String>() {
                             @Override
                             public void onSuccess(String s) {
-                                outputText.append(
+                                binding.outputText.append(
                                         String.format(
                                                 Locale.US,
                                                 "\n%s - %s",
