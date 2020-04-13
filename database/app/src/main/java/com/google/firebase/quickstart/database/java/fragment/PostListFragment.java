@@ -148,8 +148,8 @@ public abstract class PostListFragment extends Fragment {
             }
 
             @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
+            public void onComplete(DatabaseError databaseError, boolean committed,
+                                   DataSnapshot currentData) {
                 // Transaction completed
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError);
             }
