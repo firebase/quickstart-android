@@ -25,11 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.samples.apps.mlkit.translate.databinding.TranslateFragmentBinding;
 import com.google.firebase.samples.apps.mlkit.translate.R;
 import com.google.firebase.samples.apps.mlkit.translate.java.TranslateViewModel.Language;
 import com.google.firebase.samples.apps.mlkit.translate.java.TranslateViewModel.ResultOrError;
@@ -46,6 +43,7 @@ import java.util.List;
 
 public class TranslateFragment extends Fragment {
 
+    private TranslateFragmentBinding binding;
 
     public static TranslateFragment newInstance() {
         return new TranslateFragment();
@@ -62,21 +60,14 @@ public class TranslateFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.translate_fragment, container, false);
+        binding = TranslateFragmentBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final Button switchButton = view.findViewById(R.id.buttonSwitchLang);
-        final ToggleButton sourceSyncButton = view.findViewById(R.id.buttonSyncSource);
-        final ToggleButton targetSyncButton = view.findViewById(R.id.buttonSyncTarget);
-        final TextInputEditText srcTextView = view.findViewById(R.id.sourceText);
-        final TextView targetTextView = view.findViewById(R.id.targetText);
-        final TextView downloadedModelsTextView = view.findViewById(R.id.downloadedModels);
-        final Spinner sourceLangSelector = view.findViewById(R.id.sourceLangSelector);
-        final Spinner targetLangSelector = view.findViewById(R.id.targetLangSelector);
 
         final TranslateViewModel viewModel = new ViewModelProvider(this).get(TranslateViewModel.class);
 
@@ -84,50 +75,50 @@ public class TranslateFragment extends Fragment {
         // with default selections.
         final ArrayAdapter<Language> adapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_dropdown_item, viewModel.getAvailableLanguages());
-        sourceLangSelector.setAdapter(adapter);
-        targetLangSelector.setAdapter(adapter);
-        sourceLangSelector.setSelection(adapter.getPosition(new Language("en")));
-        targetLangSelector.setSelection(adapter.getPosition(new Language("es")));
-        sourceLangSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.sourceLangSelector.setAdapter(adapter);
+        binding.targetLangSelector.setAdapter(adapter);
+        binding.sourceLangSelector.setSelection(adapter.getPosition(new Language("en")));
+        binding.targetLangSelector.setSelection(adapter.getPosition(new Language("es")));
+        binding.sourceLangSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setProgressText(targetTextView);
+                setProgressText(binding.targetText);
                 viewModel.sourceLang.setValue(adapter.getItem(position));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                targetTextView.setText("");
+                binding.targetText.setText("");
             }
         });
-        targetLangSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        binding.targetLangSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setProgressText(targetTextView);
+                setProgressText(binding.targetText);
                 viewModel.targetLang.setValue(adapter.getItem(position));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                targetTextView.setText("");
+                binding.targetText.setText("");
             }
         });
 
-        switchButton.setOnClickListener(new View.OnClickListener() {
+        binding.buttonSwitchLang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setProgressText(targetTextView);
-                int sourceLangPosition = sourceLangSelector.getSelectedItemPosition();
-                sourceLangSelector.setSelection(targetLangSelector.getSelectedItemPosition());
-                targetLangSelector.setSelection(sourceLangPosition);
+                setProgressText(binding.targetText);
+                int sourceLangPosition = binding.sourceLangSelector.getSelectedItemPosition();
+                binding.sourceLangSelector.setSelection(binding.targetLangSelector.getSelectedItemPosition());
+                binding.targetLangSelector.setSelection(sourceLangPosition);
             }
         });
 
         // Set up toggle buttons to delete or download remote models locally.
-        sourceSyncButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        binding.buttonSyncSource.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Language language = adapter.getItem(sourceLangSelector.getSelectedItemPosition());
+                Language language = adapter.getItem(binding.sourceLangSelector.getSelectedItemPosition());
                 if (isChecked) {
                     viewModel.downloadLanguage(language);
                 } else {
@@ -135,10 +126,10 @@ public class TranslateFragment extends Fragment {
                 }
             }
         });
-        targetSyncButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        binding.buttonSyncTarget.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Language language = adapter.getItem(targetLangSelector.getSelectedItemPosition());
+                Language language = adapter.getItem(binding.targetLangSelector.getSelectedItemPosition());
                 if (isChecked) {
                     viewModel.downloadLanguage(language);
                 } else {
@@ -148,7 +139,7 @@ public class TranslateFragment extends Fragment {
         });
 
         // Translate input text as it is typed
-        srcTextView.addTextChangedListener(new TextWatcher() {
+        binding.sourceText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -159,7 +150,7 @@ public class TranslateFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                setProgressText(targetTextView);
+                setProgressText(binding.targetText);
                 viewModel.sourceText.postValue(s.toString());
             }
         });
@@ -167,9 +158,9 @@ public class TranslateFragment extends Fragment {
             @Override
             public void onChanged(TranslateViewModel.ResultOrError resultOrError) {
                 if (resultOrError.error != null) {
-                    srcTextView.setError(resultOrError.error.getLocalizedMessage());
+                    binding.sourceText.setError(resultOrError.error.getLocalizedMessage());
                 } else {
-                    targetTextView.setText(resultOrError.result);
+                    binding.targetText.setText(resultOrError.result);
                 }
             }
         });
@@ -180,16 +171,22 @@ public class TranslateFragment extends Fragment {
             public void onChanged(@Nullable List<String> firebaseTranslateRemoteModels) {
                 String output = getContext().getString(R.string.downloaded_models_label,
                         firebaseTranslateRemoteModels);
-                downloadedModelsTextView.setText(output);
-                sourceSyncButton.setChecked(firebaseTranslateRemoteModels.contains(
-                        adapter.getItem(sourceLangSelector.getSelectedItemPosition()).getCode()));
-                targetSyncButton.setChecked(firebaseTranslateRemoteModels.contains(
-                        adapter.getItem(targetLangSelector.getSelectedItemPosition()).getCode()));
+                binding.downloadedModels.setText(output);
+                binding.buttonSyncSource.setChecked(firebaseTranslateRemoteModels.contains(
+                        adapter.getItem(binding.sourceLangSelector.getSelectedItemPosition()).getCode()));
+                binding.buttonSyncTarget.setChecked(firebaseTranslateRemoteModels.contains(
+                        adapter.getItem(binding.targetLangSelector.getSelectedItemPosition()).getCode()));
             }
         });
     }
 
     private void setProgressText(TextView tv) {
         tv.setText(getContext().getString(R.string.translate_progress));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
