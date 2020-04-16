@@ -23,6 +23,9 @@ android {
     aaptOptions {
         noCompress "tflite"
     }
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
