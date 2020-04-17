@@ -26,6 +26,9 @@ android {
         exclude 'META-INF/androidx.exifinterface_exifinterface.version'
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {

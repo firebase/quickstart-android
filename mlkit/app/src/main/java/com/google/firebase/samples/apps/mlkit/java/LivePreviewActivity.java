@@ -27,9 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,8 +39,7 @@ import com.google.android.gms.common.annotation.KeepName;
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions;
 import com.google.firebase.samples.apps.mlkit.R;
 import com.google.firebase.samples.apps.mlkit.common.CameraSource;
-import com.google.firebase.samples.apps.mlkit.common.CameraSourcePreview;
-import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
+import com.google.firebase.samples.apps.mlkit.databinding.ActivityLivePreviewBinding;
 import com.google.firebase.samples.apps.mlkit.java.automl.AutoMLImageLabelerProcessor;
 import com.google.firebase.samples.apps.mlkit.java.automl.AutoMLImageLabelerProcessor.Mode;
 import com.google.firebase.samples.apps.mlkit.java.barcodescanning.BarcodeScanningProcessor;
@@ -81,26 +78,16 @@ public final class LivePreviewActivity extends AppCompatActivity
     private static final int PERMISSION_REQUESTS = 1;
 
     private CameraSource cameraSource = null;
-    private CameraSourcePreview preview;
-    private GraphicOverlay graphicOverlay;
     private String selectedModel = FACE_CONTOUR;
+    private ActivityLivePreviewBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
-        setContentView(R.layout.activity_live_preview);
+        binding = ActivityLivePreviewBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        preview = findViewById(R.id.firePreview);
-        if (preview == null) {
-            Log.d(TAG, "Preview is null");
-        }
-        graphicOverlay = findViewById(R.id.fireFaceOverlay);
-        if (graphicOverlay == null) {
-            Log.d(TAG, "graphicOverlay is null");
-        }
-
-        Spinner spinner = findViewById(R.id.spinner);
         List<String> options = new ArrayList<>();
         options.add(FACE_CONTOUR);
         options.add(FACE_DETECTION);
@@ -117,14 +104,13 @@ public final class LivePreviewActivity extends AppCompatActivity
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // attaching data adapter to spinner
-        spinner.setAdapter(dataAdapter);
-        spinner.setOnItemSelectedListener(this);
+        binding.spinner.setAdapter(dataAdapter);
+        binding.spinner.setOnItemSelectedListener(this);
 
-        ToggleButton facingSwitch = findViewById(R.id.facingSwitch);
-        facingSwitch.setOnCheckedChangeListener(this);
+        binding.facingSwitch.setOnCheckedChangeListener(this);
         // Hide the toggle button if there is only 1 camera
         if (Camera.getNumberOfCameras() == 1) {
-            facingSwitch.setVisibility(View.GONE);
+            binding.facingSwitch.setVisibility(View.GONE);
         }
 
         if (allPermissionsGranted()) {
@@ -140,7 +126,7 @@ public final class LivePreviewActivity extends AppCompatActivity
         // parent.getItemAtPosition(pos)
         selectedModel = parent.getItemAtPosition(pos).toString();
         Log.d(TAG, "Selected model: " + selectedModel);
-        preview.stop();
+        binding.firePreview.stop();
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel);
             startCameraSource();
@@ -164,7 +150,7 @@ public final class LivePreviewActivity extends AppCompatActivity
                 cameraSource.setFacing(CameraSource.CAMERA_FACING_BACK);
             }
         }
-        preview.stop();
+        binding.firePreview.stop();
         startCameraSource();
     }
 
@@ -190,7 +176,7 @@ public final class LivePreviewActivity extends AppCompatActivity
     private void createCameraSource(String model) {
         // If there's no existing cameraSource, create one.
         if (cameraSource == null) {
-            cameraSource = new CameraSource(this, graphicOverlay);
+            cameraSource = new CameraSource(this, binding.fireFaceOverlay);
         }
 
         try {
@@ -256,13 +242,13 @@ public final class LivePreviewActivity extends AppCompatActivity
     private void startCameraSource() {
         if (cameraSource != null) {
             try {
-                if (preview == null) {
+                if (binding.firePreview == null) {
                     Log.d(TAG, "resume: Preview is null");
                 }
-                if (graphicOverlay == null) {
+                if (binding.fireFaceOverlay == null) {
                     Log.d(TAG, "resume: graphOverlay is null");
                 }
-                preview.start(cameraSource, graphicOverlay);
+                binding.firePreview.start(cameraSource, binding.fireFaceOverlay);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to start camera source.", e);
                 cameraSource.release();
@@ -284,7 +270,7 @@ public final class LivePreviewActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        preview.stop();
+        binding.firePreview.stop();
     }
 
     @Override

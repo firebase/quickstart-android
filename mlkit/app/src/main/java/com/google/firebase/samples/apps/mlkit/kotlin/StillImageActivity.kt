@@ -24,16 +24,11 @@ import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor
 import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity
 import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity.LaunchSource
+import com.google.firebase.samples.apps.mlkit.databinding.ActivityStillImageBinding
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudimagelabeling.CloudImageLabelingProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudlandmarkrecognition.CloudLandmarkRecognitionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition.CloudDocumentTextRecognitionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.cloudtextrecognition.CloudTextRecognitionProcessor
-import kotlinx.android.synthetic.main.activity_still_image.controlPanel
-import kotlinx.android.synthetic.main.activity_still_image.featureSelector
-import kotlinx.android.synthetic.main.activity_still_image.getImageButton
-import kotlinx.android.synthetic.main.activity_still_image.previewOverlay
-import kotlinx.android.synthetic.main.activity_still_image.previewPane
-import kotlinx.android.synthetic.main.activity_still_image.sizeSelector
 import java.io.IOException
 import java.util.ArrayList
 import kotlin.math.max
@@ -54,12 +49,14 @@ class StillImageActivity : AppCompatActivity() {
     private var imageMaxHeight = 0
     private var imageProcessor: VisionImageProcessor? = null
 
+    private lateinit var binding: ActivityStillImageBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityStillImageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        setContentView(R.layout.activity_still_image)
-
-        getImageButton.setOnClickListener { view ->
+        binding.getImageButton.setOnClickListener { view ->
                     // Menu for selecting either: a) take new photo b) select from existing
                     val popup = PopupMenu(this, view)
                     popup.setOnMenuItemClickListener { menuItem ->
@@ -80,12 +77,6 @@ class StillImageActivity : AppCompatActivity() {
                     inflater.inflate(R.menu.camera_button_menu, popup.menu)
                     popup.show()
                 }
-        if (previewPane == null) {
-            Log.d(TAG, "Preview is null")
-        }
-        if (previewOverlay == null) {
-            Log.d(TAG, "graphicOverlay is null")
-        }
 
         populateFeatureSelector()
         populateSizeSelector()
@@ -140,8 +131,8 @@ class StillImageActivity : AppCompatActivity() {
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // attaching data adapter to spinner
-        featureSelector.adapter = dataAdapter
-        featureSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.featureSelector.adapter = dataAdapter
+        binding.featureSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(
                 parentView: AdapterView<*>,
@@ -169,8 +160,8 @@ class StillImageActivity : AppCompatActivity() {
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // attaching data adapter to spinner
-        sizeSelector.adapter = dataAdapter
-        sizeSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.sizeSelector.adapter = dataAdapter
+        binding.sizeSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 
             override fun onItemSelected(
                 parentView: AdapterView<*>,
@@ -200,7 +191,7 @@ class StillImageActivity : AppCompatActivity() {
     private fun startCameraIntentForResult() {
         // Clean up last time's image
         imageUri = null
-        previewPane?.setImageBitmap(null)
+        binding.previewPane.setImageBitmap(null)
 
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         takePictureIntent.resolveActivity(packageManager)?.let {
@@ -238,7 +229,7 @@ class StillImageActivity : AppCompatActivity() {
             }
 
             // Clear the overlay first
-            previewOverlay?.clear()
+            binding.previewOverlay.clear()
 
             val imageBitmap = if (Build.VERSION.SDK_INT < 29) {
                 MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
@@ -264,9 +255,9 @@ class StillImageActivity : AppCompatActivity() {
                     (imageBitmap.height / scaleFactor).toInt(),
                     true)
 
-            previewPane?.setImageBitmap(resizedBitmap)
+            binding.previewPane.setImageBitmap(resizedBitmap)
             resizedBitmap?.let {
-                imageProcessor?.process(it, previewOverlay)
+                imageProcessor?.process(it, binding.previewOverlay)
             }
         } catch (e: IOException) {
             Log.e(TAG, "Error retrieving saved image")
@@ -280,9 +271,9 @@ class StillImageActivity : AppCompatActivity() {
             // Calculate the max width in portrait mode. This is done lazily since we need to wait for
             // a UI layout pass to get the right values. So delay it to first time image rendering time.
             imageMaxWidth = if (isLandScape) {
-                (previewPane.parent as View).height - controlPanel.height
+                (binding.previewPane.parent as View).height - binding.controlPanel.height
             } else {
-                (previewPane.parent as View).width
+                (binding.previewPane.parent as View).width
             }
         }
 
@@ -296,9 +287,9 @@ class StillImageActivity : AppCompatActivity() {
             // Calculate the max width in portrait mode. This is done lazily since we need to wait for
             // a UI layout pass to get the right values. So delay it to first time image rendering time.
             imageMaxHeight = if (isLandScape) {
-                (previewPane.parent as View).width
+                (binding.previewPane.parent as View).width
             } else {
-                (previewPane.parent as View).height - controlPanel.height
+                (binding.previewPane.parent as View).height - binding.controlPanel.height
             }
         }
 
