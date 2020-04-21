@@ -12,6 +12,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.example.fireeats.R;
+import com.google.firebase.example.fireeats.databinding.DialogRatingBinding;
 import com.google.firebase.example.fireeats.java.model.Rating;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
@@ -23,9 +24,8 @@ public class RatingDialogFragment extends DialogFragment implements View.OnClick
 
     public static final String TAG = "RatingDialog";
 
-    private MaterialRatingBar mRatingBar;
-    private EditText mRatingText;
-
+    private DialogRatingBinding mBinding;
+    
     interface RatingListener {
 
         void onRating(Rating rating);
@@ -39,16 +39,12 @@ public class RatingDialogFragment extends DialogFragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.dialog_rating, container, false);
-        mRatingBar = v.findViewById(R.id.restaurantFormRating);
-        mRatingText = v.findViewById(R.id.restaurantFormText);
+        mBinding = DialogRatingBinding.inflate(inflater, container, false);
 
+        mBinding.restaurantFormButton.setOnClickListener(this);
+        mBinding.restaurantFormCancel.setOnClickListener(this);
 
-
-        v.findViewById(R.id.restaurantFormButton).setOnClickListener(this);
-        v.findViewById(R.id.restaurantFormCancel).setOnClickListener(this);
-
-        return v;
+        return mBinding.getRoot();
     }
 
     @Override
@@ -72,8 +68,8 @@ public class RatingDialogFragment extends DialogFragment implements View.OnClick
     private void onSubmitClicked(View view) {
         Rating rating = new Rating(
                 FirebaseAuth.getInstance().getCurrentUser(),
-                mRatingBar.getRating(),
-                mRatingText.getText().toString());
+                mBinding.restaurantFormRating.getRating(),
+                mBinding.restaurantFormText.getText().toString());
 
         if (mRatingListener != null) {
             mRatingListener.onRating(rating);

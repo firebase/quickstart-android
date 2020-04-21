@@ -7,18 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.example.fireeats.R
+import com.google.firebase.example.fireeats.databinding.DialogRatingBinding
 import com.google.firebase.example.fireeats.kotlin.model.Rating
-import kotlinx.android.synthetic.main.dialog_rating.restaurantFormRating
-import kotlinx.android.synthetic.main.dialog_rating.restaurantFormText
-import kotlinx.android.synthetic.main.dialog_rating.view.restaurantFormButton
-import kotlinx.android.synthetic.main.dialog_rating.view.restaurantFormCancel
 
 /**
  * Dialog Fragment containing rating form.
  */
 class RatingDialogFragment : DialogFragment() {
 
+    private lateinit var binding: DialogRatingBinding
     private var ratingListener: RatingListener? = null
 
     internal interface RatingListener {
@@ -31,12 +28,12 @@ class RatingDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.dialog_rating, container, false)
+        binding = DialogRatingBinding.inflate(inflater, container, false)
 
-        v.restaurantFormButton.setOnClickListener { onSubmitClicked() }
-        v.restaurantFormCancel.setOnClickListener { onCancelClicked() }
+        binding.restaurantFormButton.setOnClickListener { onSubmitClicked() }
+        binding.restaurantFormCancel.setOnClickListener { onCancelClicked() }
 
-        return v
+        return binding.root
     }
 
     override fun onAttach(context: Context) {
@@ -59,8 +56,8 @@ class RatingDialogFragment : DialogFragment() {
         user?.let {
             val rating = Rating(
                     it,
-                    restaurantFormRating.rating.toDouble(),
-                    restaurantFormText.text.toString())
+                    binding.restaurantFormRating.rating.toDouble(),
+                    binding.restaurantFormText.text.toString())
 
             ratingListener?.onRating(rating)
         }

@@ -19,6 +19,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.example.fireeats.R
+import com.google.firebase.example.fireeats.databinding.ActivityMainBinding
 import com.google.firebase.example.fireeats.kotlin.adapter.RestaurantAdapter
 import com.google.firebase.example.fireeats.kotlin.model.Restaurant
 import com.google.firebase.example.fireeats.kotlin.util.RatingUtil
@@ -30,13 +31,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_main.buttonClearFilter
-import kotlinx.android.synthetic.main.activity_main.filterBar
-import kotlinx.android.synthetic.main.activity_main.recyclerRestaurants
-import kotlinx.android.synthetic.main.activity_main.textCurrentSearch
-import kotlinx.android.synthetic.main.activity_main.textCurrentSortBy
-import kotlinx.android.synthetic.main.activity_main.toolbar
-import kotlinx.android.synthetic.main.activity_main.viewEmpty
 
 class MainActivity : AppCompatActivity(),
         FilterDialogFragment.FilterListener,
@@ -45,6 +39,7 @@ class MainActivity : AppCompatActivity(),
     lateinit var firestore: FirebaseFirestore
     lateinit var query: Query
 
+    private lateinit var binding: ActivityMainBinding;
     private lateinit var filterDialog: FilterDialogFragment
     lateinit var adapter: RestaurantAdapter
 
@@ -52,8 +47,9 @@ class MainActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         // View model
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
@@ -74,29 +70,29 @@ class MainActivity : AppCompatActivity(),
             override fun onDataChanged() {
                 // Show/hide content if the query returns empty.
                 if (itemCount == 0) {
-                    recyclerRestaurants.visibility = View.GONE
-                    viewEmpty.visibility = View.VISIBLE
+                    binding.recyclerRestaurants.visibility = View.GONE
+                    binding.viewEmpty.visibility = View.VISIBLE
                 } else {
-                    recyclerRestaurants.visibility = View.VISIBLE
-                    viewEmpty.visibility = View.GONE
+                    binding.recyclerRestaurants.visibility = View.VISIBLE
+                    binding.viewEmpty.visibility = View.GONE
                 }
             }
 
             override fun onError(e: FirebaseFirestoreException) {
                 // Show a snackbar on errors
-                Snackbar.make(findViewById(android.R.id.content),
+                Snackbar.make(binding.root,
                         "Error: check logs for info.", Snackbar.LENGTH_LONG).show()
             }
         }
 
-        recyclerRestaurants.layoutManager = LinearLayoutManager(this)
-        recyclerRestaurants.adapter = adapter
+        binding.recyclerRestaurants.layoutManager = LinearLayoutManager(this)
+        binding.recyclerRestaurants.adapter = adapter
 
         // Filter Dialog
         filterDialog = FilterDialogFragment()
 
-        filterBar.setOnClickListener { onFilterClicked() }
-        buttonClearFilter.setOnClickListener { onClearFilterClicked() }
+        binding.filterBar.setOnClickListener { onFilterClicked() }
+        binding.buttonClearFilter.setOnClickListener { onClearFilterClicked() }
     }
 
     public override fun onStart() {
@@ -206,9 +202,9 @@ class MainActivity : AppCompatActivity(),
         adapter.setQuery(query)
 
         // Set header
-        textCurrentSearch.text = HtmlCompat.fromHtml(filters.getSearchDescription(this),
+        binding.textCurrentSearch.text = HtmlCompat.fromHtml(filters.getSearchDescription(this),
                 HtmlCompat.FROM_HTML_MODE_LEGACY)
-        textCurrentSortBy.text = filters.getOrderDescription(this)
+        binding.textCurrentSortBy.text = filters.getOrderDescription(this)
 
         // Save filters
         viewModel.filters = filters
