@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.quickstart.database.R;
+import com.google.firebase.quickstart.database.databinding.ActivitySignInBinding;
 import com.google.firebase.quickstart.database.java.models.User;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
@@ -27,29 +28,23 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
-    private EditText mEmailField;
-    private EditText mPasswordField;
-    private Button mSignInButton;
-    private Button mSignUpButton;
+    private ActivitySignInBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        binding = ActivitySignInBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
         // Views
-        mEmailField = findViewById(R.id.fieldEmail);
-        mPasswordField = findViewById(R.id.fieldPassword);
-        mSignInButton = findViewById(R.id.buttonSignIn);
-        mSignUpButton = findViewById(R.id.buttonSignUp);
         setProgressBar(R.id.progressBar);
 
         // Click listeners
-        mSignInButton.setOnClickListener(this);
-        mSignUpButton.setOnClickListener(this);
+        binding.buttonSignIn.setOnClickListener(this);
+        binding.buttonSignUp.setOnClickListener(this);
     }
 
     @Override
@@ -69,8 +64,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         }
 
         showProgressBar();
-        String email = mEmailField.getText().toString();
-        String password = mPasswordField.getText().toString();
+        String email = binding.fieldEmail.getText().toString();
+        String password = binding.fieldPassword.getText().toString();
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -96,8 +91,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         }
 
         showProgressBar();
-        String email = mEmailField.getText().toString();
-        String password = mPasswordField.getText().toString();
+        String email = binding.fieldEmail.getText().toString();
+        String password = binding.fieldPassword.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -137,18 +132,18 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private boolean validateForm() {
         boolean result = true;
-        if (TextUtils.isEmpty(mEmailField.getText().toString())) {
-            mEmailField.setError("Required");
+        if (TextUtils.isEmpty(binding.fieldEmail.getText().toString())) {
+            binding.fieldEmail.setError("Required");
             result = false;
         } else {
-            mEmailField.setError(null);
+            binding.fieldEmail.setError(null);
         }
 
-        if (TextUtils.isEmpty(mPasswordField.getText().toString())) {
-            mPasswordField.setError("Required");
+        if (TextUtils.isEmpty(binding.fieldPassword.getText().toString())) {
+            binding.fieldPassword.setError("Required");
             result = false;
         } else {
-            mPasswordField.setError(null);
+            binding.fieldPassword.setError(null);
         }
 
         return result;

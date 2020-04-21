@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.google.android.material.button.MaterialButton;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.quickstart.database.R;
+import com.google.firebase.quickstart.database.databinding.ActivityPostDetailBinding;
 import com.google.firebase.quickstart.database.java.models.Comment;
 import com.google.firebase.quickstart.database.java.models.Post;
 import com.google.firebase.quickstart.database.java.models.User;
@@ -38,18 +37,13 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
     private ValueEventListener mPostListener;
     private String mPostKey;
     private CommentAdapter mAdapter;
-
-    private TextView mAuthorView;
-    private TextView mTitleView;
-    private TextView mBodyView;
-    private EditText mCommentField;
-    private MaterialButton mCommentButton;
-    private RecyclerView mCommentsRecycler;
+    private ActivityPostDetailBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_detail);
+        binding = ActivityPostDetailBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // Get post key from intent
         mPostKey = getIntent().getStringExtra(EXTRA_POST_KEY);
@@ -63,16 +57,8 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
         mCommentsReference = FirebaseDatabase.getInstance().getReference()
                 .child("post-comments").child(mPostKey);
 
-        // Initialize Views
-        mAuthorView = findViewById(R.id.postAuthor);
-        mTitleView = findViewById(R.id.postTitle);
-        mBodyView = findViewById(R.id.postBody);
-        mCommentField = findViewById(R.id.fieldCommentText);
-        mCommentButton = findViewById(R.id.buttonPostComment);
-        mCommentsRecycler = findViewById(R.id.recyclerPostComments);
-
-        mCommentButton.setOnClickListener(this);
-        mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        binding.buttonPostComment.setOnClickListener(this);
+        binding.recyclerPostComments.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -88,9 +74,9 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                 // Get Post object and use the values to update the UI
                 Post post = dataSnapshot.getValue(Post.class);
                 // [START_EXCLUDE]
-                mAuthorView.setText(post.author);
-                mTitleView.setText(post.title);
-                mBodyView.setText(post.body);
+                binding.postAuthorLayout.postAuthor.setText(post.author);
+                binding.postTextLayout.postTitle.setText(post.title);
+                binding.postTextLayout.postBody.setText(post.body);
                 // [END_EXCLUDE]
             }
 
@@ -112,7 +98,7 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
 
         // Listen for comments
         mAdapter = new CommentAdapter(this, mCommentsReference);
-        mCommentsRecycler.setAdapter(mAdapter);
+        binding.recyclerPostComments.setAdapter(mAdapter);
     }
 
     @Override
@@ -147,14 +133,14 @@ public class PostDetailActivity extends BaseActivity implements View.OnClickList
                         String authorName = user.username;
 
                         // Create new comment object
-                        String commentText = mCommentField.getText().toString();
+                        String commentText = binding.fieldCommentText.getText().toString();
                         Comment comment = new Comment(uid, authorName, commentText);
 
                         // Push the comment, it will appear in the list
                         mCommentsReference.push().setValue(comment);
 
                         // Clear the field
-                        mCommentField.setText(null);
+                        binding.fieldCommentText.setText(null);
                     }
 
                     @Override
