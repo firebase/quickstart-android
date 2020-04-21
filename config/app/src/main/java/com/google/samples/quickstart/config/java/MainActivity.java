@@ -34,8 +34,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.google.samples.quickstart.config.BuildConfig;
 import com.google.samples.quickstart.config.R;
+import com.google.samples.quickstart.config.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,17 +47,17 @@ public class MainActivity extends AppCompatActivity {
     private static final String WELCOME_MESSAGE_CAPS_KEY = "welcome_message_caps";
 
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private ActivityMainBinding mBinding;
     private TextView mWelcomeTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        mWelcomeTextView = findViewById(R.id.welcomeTextView);
-
-        Button fetchButton = findViewById(R.id.fetchButton);
-        fetchButton.setOnClickListener(new View.OnClickListener() {
+        mWelcomeTextView = mBinding.welcomeTextView;
+        mBinding.fetchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fetchWelcome();

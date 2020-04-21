@@ -10,18 +10,19 @@ import com.google.firebase.remoteconfig.ktx.get
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.samples.quickstart.config.R
-import kotlinx.android.synthetic.main.activity_main.fetchButton
-import kotlinx.android.synthetic.main.activity_main.welcomeTextView
+import com.google.samples.quickstart.config.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var remoteConfig: FirebaseRemoteConfig
+    private lateinit var binding: ActivityMainBinding;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        fetchButton.setOnClickListener { fetchWelcome() }
+        binding.fetchButton.setOnClickListener { fetchWelcome() }
 
         // Get Remote Config instance.
         // [START get_remote_config_instance]
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
      * Fetch a welcome message from the Remote Config service, and then activate it.
      */
     private fun fetchWelcome() {
-        welcomeTextView.text = remoteConfig[LOADING_PHRASE_CONFIG_KEY].asString()
+        binding.welcomeTextView.text = remoteConfig[LOADING_PHRASE_CONFIG_KEY].asString()
 
         // [START fetch_config_with_callback]
         remoteConfig.fetchAndActivate()
@@ -81,8 +82,8 @@ class MainActivity : AppCompatActivity() {
         // [START get_config_values]
         val welcomeMessage = remoteConfig[WELCOME_MESSAGE_KEY].asString()
         // [END get_config_values]
-        welcomeTextView.isAllCaps = remoteConfig[WELCOME_MESSAGE_CAPS_KEY].asBoolean()
-        welcomeTextView.text = welcomeMessage
+        binding.welcomeTextView.isAllCaps = remoteConfig[WELCOME_MESSAGE_CAPS_KEY].asBoolean()
+        binding.welcomeTextView.text = welcomeMessage
     }
 
     companion object {
