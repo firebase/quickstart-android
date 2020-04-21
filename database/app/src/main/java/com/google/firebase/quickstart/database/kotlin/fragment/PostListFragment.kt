@@ -134,8 +134,8 @@ abstract class PostListFragment : Fragment() {
 
             override fun onComplete(
                 databaseError: DatabaseError?,
-                b: Boolean,
-                dataSnapshot: DataSnapshot?
+                committed: Boolean,
+                currentData: DataSnapshot?
             ) {
                 // Transaction completed
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError!!)
