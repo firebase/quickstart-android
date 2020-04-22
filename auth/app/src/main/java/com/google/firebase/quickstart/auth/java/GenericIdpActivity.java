@@ -22,8 +22,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.quickstart.auth.R;
+import com.google.firebase.quickstart.auth.databinding.ActivityGenericIdpBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,9 +59,7 @@ public class GenericIdpActivity extends BaseActivity implements
         }
     };
 
-    private TextView mStatusTextView;
-    private TextView mDetailTextView;
-    private Spinner mProviderSpinner;
+    private ActivityGenericIdpBinding mBinding;
     private ArrayAdapter<String> mSpinnerAdapter;
 
     // [START declare_auth]
@@ -72,35 +69,32 @@ public class GenericIdpActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generic_idp);
+        mBinding = ActivityGenericIdpBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
         // Views
-        mStatusTextView = findViewById(R.id.status);
-        mDetailTextView = findViewById(R.id.detail);
-        mProviderSpinner = findViewById(R.id.providerSpinner);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         // Set up button click listeners
-        Button signInButton = findViewById(R.id.genericSignInButton);
-        signInButton.setOnClickListener(this);
-        findViewById(R.id.signOutButton).setOnClickListener(this);
+        mBinding.genericSignInButton.setOnClickListener(this);
+        mBinding.signOutButton.setOnClickListener(this);
 
         // Spinner
         List<String> providers = new ArrayList<>(PROVIDER_MAP.keySet());
         mSpinnerAdapter = new ArrayAdapter<>(this, R.layout.item_spinner_list, providers);
-        mProviderSpinner.setAdapter(mSpinnerAdapter);
-        mProviderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mBinding.providerSpinner.setAdapter(mSpinnerAdapter);
+        mBinding.providerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                signInButton.setText(getString(R.string.generic_signin_fmt, mSpinnerAdapter.getItem(position)));
+                mBinding.genericSignInButton.setText(getString(R.string.generic_signin_fmt, mSpinnerAdapter.getItem(position)));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-        mProviderSpinner.setSelection(0);
+        mBinding.providerSpinner.setSelection(0);
     }
 
     @Override
@@ -160,26 +154,26 @@ public class GenericIdpActivity extends BaseActivity implements
     }
 
     private String getProviderId() {
-        String providerName = mSpinnerAdapter.getItem(mProviderSpinner.getSelectedItemPosition());
+        String providerName = mSpinnerAdapter.getItem(mBinding.providerSpinner.getSelectedItemPosition());
         return PROVIDER_MAP.get(providerName);
     }
 
     private void updateUI(FirebaseUser user) {
         hideProgressBar();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.generic_status_fmt, user.getDisplayName(), user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mBinding.status.setText(getString(R.string.generic_status_fmt, user.getDisplayName(), user.getEmail()));
+            mBinding.detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
-            findViewById(R.id.spinnerLayout).setVisibility(View.GONE);
-            findViewById(R.id.genericSignInButton).setVisibility(View.GONE);
-            findViewById(R.id.signOutButton).setVisibility(View.VISIBLE);
+            mBinding.spinnerLayout.setVisibility(View.GONE);
+            mBinding.genericSignInButton.setVisibility(View.GONE);
+            mBinding.signOutButton.setVisibility(View.VISIBLE);
         } else {
-            mStatusTextView.setText(R.string.signed_out);
-            mDetailTextView.setText(null);
+            mBinding.status.setText(R.string.signed_out);
+            mBinding.detail.setText(null);
 
-            findViewById(R.id.spinnerLayout).setVisibility(View.VISIBLE);
-            findViewById(R.id.genericSignInButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.signOutButton).setVisibility(View.GONE);
+            mBinding.spinnerLayout.setVisibility(View.VISIBLE);
+            mBinding.genericSignInButton.setVisibility(View.VISIBLE);
+            mBinding.signOutButton.setVisibility(View.GONE);
         }
     }
 

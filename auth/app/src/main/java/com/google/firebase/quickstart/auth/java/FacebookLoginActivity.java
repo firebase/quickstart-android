@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +39,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.quickstart.auth.R;
+import com.google.firebase.quickstart.auth.databinding.ActivityFacebookBinding;
 
 /**
  * Demonstrate Firebase Authentication using a Facebook access token.
@@ -49,8 +49,7 @@ public class FacebookLoginActivity extends BaseActivity implements
 
     private static final String TAG = "FacebookLogin";
 
-    private TextView mStatusTextView;
-    private TextView mDetailTextView;
+    private ActivityFacebookBinding mBinding;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -61,13 +60,12 @@ public class FacebookLoginActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_facebook);
+        mBinding = ActivityFacebookBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+        setProgressBar(mBinding.progressBar);
 
         // Views
-        mStatusTextView = findViewById(R.id.status);
-        mDetailTextView = findViewById(R.id.detail);
-        setProgressBar(R.id.progressBar);
-        findViewById(R.id.buttonFacebookSignout).setOnClickListener(this);
+        mBinding.buttonFacebookSignout.setOnClickListener(this);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -77,7 +75,7 @@ public class FacebookLoginActivity extends BaseActivity implements
         // [START initialize_fblogin]
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = findViewById(R.id.buttonFacebookLogin);
+        LoginButton loginButton = mBinding.buttonFacebookLogin;
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -168,17 +166,17 @@ public class FacebookLoginActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressBar();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.facebook_status_fmt, user.getDisplayName()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mBinding.status.setText(getString(R.string.facebook_status_fmt, user.getDisplayName()));
+            mBinding.detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
-            findViewById(R.id.buttonFacebookLogin).setVisibility(View.GONE);
-            findViewById(R.id.buttonFacebookSignout).setVisibility(View.VISIBLE);
+            mBinding.buttonFacebookLogin.setVisibility(View.GONE);
+            mBinding.buttonFacebookSignout.setVisibility(View.VISIBLE);
         } else {
-            mStatusTextView.setText(R.string.signed_out);
-            mDetailTextView.setText(null);
+            mBinding.status.setText(R.string.signed_out);
+            mBinding.detail.setText(null);
 
-            findViewById(R.id.buttonFacebookLogin).setVisibility(View.VISIBLE);
-            findViewById(R.id.buttonFacebookSignout).setVisibility(View.GONE);
+            mBinding.buttonFacebookLogin.setVisibility(View.VISIBLE);
+            mBinding.buttonFacebookSignout.setVisibility(View.GONE);
         }
     }
 

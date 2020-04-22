@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +21,7 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.PhoneMultiFactorGenerator;
 import com.google.firebase.auth.PhoneMultiFactorInfo;
 import com.google.firebase.quickstart.auth.R;
+import com.google.firebase.quickstart.auth.databinding.ActivityMultiFactorSignInBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +38,7 @@ public class MultiFactorSignInActivity extends BaseActivity implements
     private static final String KEY_VERIFICATION_ID = "key_verification_id";
     public static final String EXTRA_MFA_RESOLVER = "EXTRA_MFA_RESOLVER";
 
-    private Button mFinishSignInButton;
-    private EditText mSmsCodeEditText;
+    private ActivityMultiFactorSignInBinding mBinding;
 
     private MultiFactorResolver mMultiFactorResolver;
     private PhoneAuthCredential mPhoneAuthCredential;
@@ -48,28 +47,25 @@ public class MultiFactorSignInActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multi_factor_sign_in);
+        mBinding = ActivityMultiFactorSignInBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
 
-        mSmsCodeEditText = findViewById(R.id.smsCode);
         List<Button> phoneFactorButtonList = new ArrayList<>();
+        phoneFactorButtonList.add(mBinding.phoneFactor1);
+        phoneFactorButtonList.add(mBinding.phoneFactor2);
+        phoneFactorButtonList.add(mBinding.phoneFactor3);
+        phoneFactorButtonList.add(mBinding.phoneFactor4);
+        phoneFactorButtonList.add(mBinding.phoneFactor5);
 
-        // Users are currently limited to having 5 second factors
-        int[] factorButtonIds
-                = new int[]{R.id.phoneFactor1, R.id.phoneFactor2, R.id.phoneFactor3, R.id.phoneFactor4,
-                R.id.phoneFactor5};
-
-        for (int buttonId : factorButtonIds) {
-            Button button = findViewById(buttonId);
+        for (Button button : phoneFactorButtonList) {
             button.setVisibility(View.GONE);
-            phoneFactorButtonList.add(button);
         }
 
-        mFinishSignInButton = findViewById(R.id.finishMfaSignIn);
-        mFinishSignInButton.setOnClickListener(this);
+        mBinding.finishMfaSignIn.setOnClickListener(this);
 
         mMultiFactorResolver = retrieveResolverFromIntent(getIntent());
         List<MultiFactorInfo> multiFactorInfoList = mMultiFactorResolver.getHints();
@@ -118,7 +114,7 @@ public class MultiFactorSignInActivity extends BaseActivity implements
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                 MultiFactorSignInActivity.this.mPhoneAuthCredential = phoneAuthCredential;
-                mFinishSignInButton.performClick();
+                mBinding.finishMfaSignIn.performClick();
                 Toast.makeText(
                         MultiFactorSignInActivity.this, "Verification complete!", Toast.LENGTH_SHORT)
                         .show();
@@ -127,7 +123,7 @@ public class MultiFactorSignInActivity extends BaseActivity implements
             @Override
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
                 MultiFactorSignInActivity.this.mVerificationId = verificationId;
-                mFinishSignInButton.setClickable(true);
+                mBinding.finishMfaSignIn.setClickable(true);
             }
 
             @Override
@@ -145,7 +141,7 @@ public class MultiFactorSignInActivity extends BaseActivity implements
 
     private void onClickFinishSignIn() {
         if (mPhoneAuthCredential == null) {
-            if (isEmpty(mSmsCodeEditText.getText().toString())) {
+            if (isEmpty(mBinding.smsCode.getText().toString())) {
                 Toast.makeText(
                         MultiFactorSignInActivity.this, "You need to enter an SMS code.", Toast.LENGTH_SHORT)
                         .show();
@@ -153,7 +149,7 @@ public class MultiFactorSignInActivity extends BaseActivity implements
             }
             mPhoneAuthCredential =
                     PhoneAuthProvider.getCredential(
-                            mVerificationId, mSmsCodeEditText.getText().toString());
+                            mVerificationId, mBinding.smsCode.getText().toString());
         }
         mMultiFactorResolver
                 .resolveSignIn(PhoneMultiFactorGenerator.getAssertion(mPhoneAuthCredential))

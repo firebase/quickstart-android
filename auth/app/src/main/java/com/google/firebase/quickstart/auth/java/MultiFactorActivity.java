@@ -19,11 +19,8 @@ package com.google.firebase.quickstart.auth.java;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,13 +28,12 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthMultiFactorException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.MultiFactorInfo;
 import com.google.firebase.auth.PhoneMultiFactorInfo;
 import com.google.firebase.quickstart.auth.R;
+import com.google.firebase.quickstart.auth.databinding.ActivityMultiFactorBinding;
 
 import java.util.List;
 
@@ -49,9 +45,7 @@ public class MultiFactorActivity extends BaseActivity implements
     private static final String TAG = "MultiFactor";
     private static final int RC_MULTI_FACTOR = 9005;
 
-    private TextView mStatusTextView;
-    private TextView mDetailTextView;
-    private TextView mMfaInfoTextView;
+    private ActivityMultiFactorBinding mBinding;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -60,21 +54,17 @@ public class MultiFactorActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multi_factor);
-        setProgressBar(R.id.progressBar);
-
-        // Views
-        mStatusTextView = findViewById(R.id.status);
-        mDetailTextView = findViewById(R.id.detail);
-        mMfaInfoTextView = findViewById(R.id.mfaInfo);
+        mBinding = ActivityMultiFactorBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+        setProgressBar(mBinding.progressBar);
 
         // Buttons
-        findViewById(R.id.emailSignInButton).setOnClickListener(this);
-        findViewById(R.id.signOutButton).setOnClickListener(this);
-        findViewById(R.id.verifyEmailButton).setOnClickListener(this);
-        findViewById(R.id.enrollMfa).setOnClickListener(this);
-        findViewById(R.id.unenrollMfa).setOnClickListener(this);
-        findViewById(R.id.reloadButton).setOnClickListener(this);
+        mBinding.emailSignInButton.setOnClickListener(this);
+        mBinding.signOutButton.setOnClickListener(this);
+        mBinding.verifyEmailButton.setOnClickListener(this);
+        mBinding.enrollMfa.setOnClickListener(this);
+        mBinding.unenrollMfa.setOnClickListener(this);
+        mBinding.reloadButton.setOnClickListener(this);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -114,7 +104,7 @@ public class MultiFactorActivity extends BaseActivity implements
 
     private void sendEmailVerification() {
         // Disable button
-        findViewById(R.id.verifyEmailButton).setEnabled(false);
+        mBinding.verifyEmailButton.setEnabled(false);
 
         // Send verification email
         // [START send_email_verification]
@@ -125,7 +115,7 @@ public class MultiFactorActivity extends BaseActivity implements
                     public void onComplete(@NonNull Task<Void> task) {
                         // [START_EXCLUDE]
                         // Re-enable button
-                        findViewById(R.id.verifyEmailButton).setEnabled(true);
+                        mBinding.verifyEmailButton.setEnabled(true);
 
                         if (task.isSuccessful()) {
                             Toast.makeText(MultiFactorActivity.this,
@@ -165,16 +155,16 @@ public class MultiFactorActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressBar();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
+            mBinding.status.setText(getString(R.string.emailpassword_status_fmt,
                     user.getEmail(), user.isEmailVerified()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mBinding.detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
             List<MultiFactorInfo> secondFactors = user.getMultiFactor().getEnrolledFactors();
 
             if (secondFactors.isEmpty()) {
-                findViewById(R.id.unenrollMfa).setVisibility(View.GONE);
+                mBinding.unenrollMfa.setVisibility(View.GONE);
             } else {
-                findViewById(R.id.unenrollMfa).setVisibility(View.VISIBLE);
+                mBinding.unenrollMfa.setVisibility(View.VISIBLE);
 
                 StringBuilder sb = new StringBuilder("Second Factors: ");
                 String delimiter = ", ";
@@ -182,29 +172,29 @@ public class MultiFactorActivity extends BaseActivity implements
                     sb.append(((PhoneMultiFactorInfo) x).getPhoneNumber() + delimiter);
                 }
                 sb.setLength(sb.length() - delimiter.length());
-                mMfaInfoTextView.setText(sb.toString());
+                mBinding.mfaInfo.setText(sb.toString());
             }
 
-            findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
-            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
+            mBinding.emailPasswordButtons.setVisibility(View.GONE);
+            mBinding.signedInButtons.setVisibility(View.VISIBLE);
 
             int reloadVisibility = secondFactors.isEmpty() ? View.VISIBLE : View.GONE;
-            findViewById(R.id.reloadButton).setVisibility(reloadVisibility);
+            mBinding.reloadButton.setVisibility(reloadVisibility);
 
             if (user.isEmailVerified()) {
-                findViewById(R.id.verifyEmailButton).setVisibility(View.GONE);
-                findViewById(R.id.enrollMfa).setVisibility(View.VISIBLE);
+                mBinding.verifyEmailButton.setVisibility(View.GONE);
+                mBinding.enrollMfa.setVisibility(View.VISIBLE);
             } else {
-                findViewById(R.id.verifyEmailButton).setVisibility(View.VISIBLE);
-                findViewById(R.id.enrollMfa).setVisibility(View.GONE);
+                mBinding.verifyEmailButton.setVisibility(View.VISIBLE);
+                mBinding.enrollMfa.setVisibility(View.GONE);
             }
         } else {
-            mStatusTextView.setText(R.string.multi_factor_signed_out);
-            mDetailTextView.setText(null);
-            mMfaInfoTextView.setText(null);
+            mBinding.status.setText(R.string.multi_factor_signed_out);
+            mBinding.detail.setText(null);
+            mBinding.mfaInfo.setText(null);
 
-            findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);
-            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
+            mBinding.emailPasswordButtons.setVisibility(View.VISIBLE);
+            mBinding.signedInButtons.setVisibility(View.GONE);
         }
     }
 

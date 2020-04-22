@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -38,6 +37,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.quickstart.auth.R;
+import com.google.firebase.quickstart.auth.databinding.ActivityGoogleBinding;
 
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
@@ -53,23 +53,19 @@ public class GoogleSignInActivity extends BaseActivity implements
     // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
-    private TextView mStatusTextView;
-    private TextView mDetailTextView;
+    private ActivityGoogleBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_google);
-
-        // Views
-        mStatusTextView = findViewById(R.id.status);
-        mDetailTextView = findViewById(R.id.detail);
-        setProgressBar(R.id.progressBar);
+        mBinding = ActivityGoogleBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+        setProgressBar(mBinding.progressBar);
 
         // Button listeners
-        findViewById(R.id.signInButton).setOnClickListener(this);
-        findViewById(R.id.signOutButton).setOnClickListener(this);
-        findViewById(R.id.disconnectButton).setOnClickListener(this);
+        mBinding.signInButton.setOnClickListener(this);
+        mBinding.signOutButton.setOnClickListener(this);
+        mBinding.disconnectButton.setOnClickListener(this);
 
         // [START config_signin]
         // Configure Google Sign In
@@ -140,7 +136,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(mBinding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             updateUI(null);
                         }
 
@@ -190,17 +186,17 @@ public class GoogleSignInActivity extends BaseActivity implements
     private void updateUI(FirebaseUser user) {
         hideProgressBar();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mBinding.status.setText(getString(R.string.google_status_fmt, user.getEmail()));
+            mBinding.detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
-            findViewById(R.id.signInButton).setVisibility(View.GONE);
-            findViewById(R.id.signOutAndDisconnect).setVisibility(View.VISIBLE);
+            mBinding.signInButton.setVisibility(View.GONE);
+            mBinding.signOutAndDisconnect.setVisibility(View.VISIBLE);
         } else {
-            mStatusTextView.setText(R.string.signed_out);
-            mDetailTextView.setText(null);
+            mBinding.status.setText(R.string.signed_out);
+            mBinding.detail.setText(null);
 
-            findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
+            mBinding.signInButton.setVisibility(View.VISIBLE);
+            mBinding.signOutAndDisconnect.setVisibility(View.GONE);
         }
     }
 

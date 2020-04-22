@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +33,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.quickstart.auth.R;
+import com.google.firebase.quickstart.auth.databinding.ActivityAnonymousAuthBinding;
 
 /**
  * Activity to demonstrate anonymous login and account linking (with an email/password account).
@@ -47,13 +47,13 @@ public class AnonymousAuthActivity extends BaseActivity implements
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
-    private EditText mEmailField;
-    private EditText mPasswordField;
+    private ActivityAnonymousAuthBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_anonymous_auth);
+        mBinding = ActivityAnonymousAuthBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -61,14 +61,12 @@ public class AnonymousAuthActivity extends BaseActivity implements
         // [END initialize_auth]
 
         // Fields
-        mEmailField = findViewById(R.id.fieldEmail);
-        mPasswordField = findViewById(R.id.fieldPassword);
-        setProgressBar(R.id.progressBar);
+        setProgressBar(mBinding.progressBar);
 
         // Click listeners
-        findViewById(R.id.buttonAnonymousSignIn).setOnClickListener(this);
-        findViewById(R.id.buttonAnonymousSignOut).setOnClickListener(this);
-        findViewById(R.id.buttonLinkAccount).setOnClickListener(this);
+        mBinding.buttonAnonymousSignIn.setOnClickListener(this);
+        mBinding.buttonAnonymousSignOut.setOnClickListener(this);
+        mBinding.buttonLinkAccount.setOnClickListener(this);
     }
 
     // [START on_start_check_user]
@@ -121,8 +119,8 @@ public class AnonymousAuthActivity extends BaseActivity implements
         }
 
         // Get email and password from form
-        String email = mEmailField.getText().toString();
-        String password = mPasswordField.getText().toString();
+        String email = mBinding.fieldEmail.getText().toString();
+        String password = mBinding.fieldPassword.getText().toString();
 
         // Create EmailAuthCredential with email and password
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
@@ -157,20 +155,20 @@ public class AnonymousAuthActivity extends BaseActivity implements
     private boolean validateLinkForm() {
         boolean valid = true;
 
-        String email = mEmailField.getText().toString();
+        String email = mBinding.fieldEmail.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Required.");
+            mBinding.fieldEmail.setError("Required.");
             valid = false;
         } else {
-            mEmailField.setError(null);
+            mBinding.fieldEmail.setError(null);
         }
 
-        String password = mPasswordField.getText().toString();
+        String password = mBinding.fieldPassword.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            mPasswordField.setError("Required.");
+            mBinding.fieldPassword.setError("Required.");
             valid = false;
         } else {
-            mPasswordField.setError(null);
+            mBinding.fieldPassword.setError(null);
         }
 
         return valid;
