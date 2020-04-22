@@ -58,8 +58,8 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
         val chipManager = LinearLayoutManager(context)
         chipManager.orientation = RecyclerView.HORIZONTAL
         chipAdapter = ReplyChipAdapter(this)
-        
-        with (binding) {
+
+        with(binding) {
             chatHistory.layoutManager = LinearLayoutManager(context)
             smartRepliesRecycler.layoutManager = chipManager
             smartRepliesRecycler.adapter = chipAdapter
@@ -103,7 +103,6 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
                 }
             })
         }
-
 
         viewModel.getSuggestions().observe(viewLifecycleOwner, Observer { suggestions ->
             chipAdapter.setSuggestions(suggestions!!)

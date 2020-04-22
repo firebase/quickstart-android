@@ -32,7 +32,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         setProgressBar(R.id.progressBar)
 
         // Click listeners
-        with (binding) {
+        with(binding) {
             buttonSignIn.setOnClickListener(this@SignInActivity)
             buttonSignUp.setOnClickListener(this@SignInActivity)
         }

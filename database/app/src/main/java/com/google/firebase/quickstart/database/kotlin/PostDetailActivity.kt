@@ -52,7 +52,7 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                 .child("post-comments").child(postKey)
 
         // Initialize Views
-        with (binding) {
+        with(binding) {
             buttonPostComment.setOnClickListener(this@PostDetailActivity)
             recyclerPostComments.layoutManager = LinearLayoutManager(this@PostDetailActivity)
         }

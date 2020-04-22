@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        with (binding) {
+        with(binding) {
             buttonCalculate.setOnClickListener(this@MainActivity)
             buttonAddMessage.setOnClickListener(this@MainActivity)
             buttonSignIn.setOnClickListener(this@MainActivity)

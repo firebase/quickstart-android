@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        with (binding) {
+        with(binding) {
             buttonIdLanguage.setOnClickListener {
                 val input = inputText.text?.toString()
                 input?.let {

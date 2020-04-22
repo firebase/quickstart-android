@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(),
     lateinit var firestore: FirebaseFirestore
     lateinit var query: Query
 
-    private lateinit var binding: ActivityMainBinding;
+    private lateinit var binding: ActivityMainBinding
     private lateinit var filterDialog: FilterDialogFragment
     lateinit var adapter: RestaurantAdapter
 

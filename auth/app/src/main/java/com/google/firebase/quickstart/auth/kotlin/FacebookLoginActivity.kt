@@ -15,10 +15,7 @@ import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_facebook.buttonFacebookLogin
-import kotlinx.android.synthetic.main.activity_facebook.buttonFacebookSignout
-import kotlinx.android.synthetic.main.activity_facebook.detail
-import kotlinx.android.synthetic.main.activity_facebook.status
+import com.google.firebase.quickstart.auth.databinding.ActivityFacebookBinding
 
 /**
  * Demonstrate Firebase Authentication using a Facebook access token.
@@ -29,15 +26,16 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
+    private lateinit var binding: ActivityFacebookBinding
     private lateinit var callbackManager: CallbackManager
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_facebook)
+        binding = ActivityFacebookBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setProgressBar(binding.progressBar)
 
-        setProgressBar(R.id.progressBar)
-
-        buttonFacebookSignout.setOnClickListener(this)
+        binding.buttonFacebookSignout.setOnClickListener(this)
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -48,8 +46,8 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
         // Initialize Facebook Login button
         callbackManager = CallbackManager.Factory.create()
 
-        buttonFacebookLogin.setReadPermissions("email", "public_profile")
-        buttonFacebookLogin.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+        binding.buttonFacebookLogin.setReadPermissions("email", "public_profile")
+        binding.buttonFacebookLogin.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.d(TAG, "facebook:onSuccess:$loginResult")
                 handleFacebookAccessToken(loginResult.accessToken)
@@ -130,17 +128,17 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
     private fun updateUI(user: FirebaseUser?) {
         hideProgressBar()
         if (user != null) {
-            status.text = getString(R.string.facebook_status_fmt, user.displayName)
-            detail.text = getString(R.string.firebase_status_fmt, user.uid)
+            binding.status.text = getString(R.string.facebook_status_fmt, user.displayName)
+            binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
-            buttonFacebookLogin.visibility = View.GONE
-            buttonFacebookSignout.visibility = View.VISIBLE
+            binding.buttonFacebookLogin.visibility = View.GONE
+            binding.buttonFacebookSignout.visibility = View.VISIBLE
         } else {
-            status.setText(R.string.signed_out)
-            detail.text = null
+            binding.status.setText(R.string.signed_out)
+            binding.detail.text = null
 
-            buttonFacebookLogin.visibility = View.VISIBLE
-            buttonFacebookSignout.visibility = View.GONE
+            binding.buttonFacebookLogin.visibility = View.VISIBLE
+            binding.buttonFacebookSignout.visibility = View.GONE
         }
     }
 

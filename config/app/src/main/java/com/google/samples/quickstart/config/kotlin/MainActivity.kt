@@ -15,7 +15,7 @@ import com.google.samples.quickstart.config.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var remoteConfig: FirebaseRemoteConfig
-    private lateinit var binding: ActivityMainBinding;
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

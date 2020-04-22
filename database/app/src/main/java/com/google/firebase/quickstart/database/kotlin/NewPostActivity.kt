@@ -92,7 +92,7 @@ class NewPostActivity : BaseActivity() {
     }
 
     private fun setEditingEnabled(enabled: Boolean) {
-        with (binding) {
+        with(binding) {
             fieldTitle.isEnabled = enabled
             fieldBody.isEnabled = enabled
             if (enabled) {

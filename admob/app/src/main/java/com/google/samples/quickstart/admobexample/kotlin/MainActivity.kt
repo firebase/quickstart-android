@@ -1,6 +1,5 @@
 package com.google.samples.quickstart.admobexample.kotlin
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -140,6 +139,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
-        private const val TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713";
+        private const val TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713"
     }
 }

@@ -12,14 +12,7 @@ import com.google.firebase.auth.FirebaseAuthActionCodeException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_passwordless.fieldEmail
-import kotlinx.android.synthetic.main.activity_passwordless.passwordlessButtons
-import kotlinx.android.synthetic.main.activity_passwordless.passwordlessFields
-import kotlinx.android.synthetic.main.activity_passwordless.passwordlessSendEmailButton
-import kotlinx.android.synthetic.main.activity_passwordless.passwordlessSignInButton
-import kotlinx.android.synthetic.main.activity_passwordless.signOutButton
-import kotlinx.android.synthetic.main.activity_passwordless.signedInButtons
-import kotlinx.android.synthetic.main.activity_passwordless.status
+import com.google.firebase.quickstart.auth.databinding.ActivityPasswordlessBinding
 
 /**
  * Demonstrate Firebase Authentication without a password, using a link sent to an
@@ -30,24 +23,25 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
     private var pendingEmail: String = ""
     private var emailLink: String = ""
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivityPasswordlessBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_passwordless)
-
-        setProgressBar(R.id.progressBar)
+        binding = ActivityPasswordlessBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setProgressBar(binding.progressBar)
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
-        passwordlessSendEmailButton.setOnClickListener(this)
-        passwordlessSignInButton.setOnClickListener(this)
-        signOutButton.setOnClickListener(this)
+        binding.passwordlessSendEmailButton.setOnClickListener(this)
+        binding.passwordlessSignInButton.setOnClickListener(this)
+        binding.signOutButton.setOnClickListener(this)
 
         // Restore the "pending" email address
         if (savedInstanceState != null) {
             pendingEmail = savedInstanceState.getString(KEY_PENDING_EMAIL, null)
-            fieldEmail.setText(pendingEmail)
+            binding.fieldEmail.setText(pendingEmail)
         }
 
         // Check if the Intent that started the Activity contains an email sign-in link.
@@ -78,13 +72,13 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         if (intentHasEmailLink(intent)) {
             emailLink = intent!!.data!!.toString()
 
-            status.setText(R.string.status_link_found)
-            passwordlessSendEmailButton.isEnabled = false
-            passwordlessSignInButton.isEnabled = true
+            binding.status.setText(R.string.status_link_found)
+            binding.passwordlessSendEmailButton.isEnabled = false
+            binding.passwordlessSignInButton.isEnabled = true
         } else {
-            status.setText(R.string.status_email_not_sent)
-            passwordlessSendEmailButton.isEnabled = true
-            passwordlessSignInButton.isEnabled = false
+            binding.status.setText(R.string.status_email_not_sent)
+            binding.passwordlessSendEmailButton.isEnabled = true
+            binding.passwordlessSignInButton.isEnabled = false
         }
     }
 
@@ -114,7 +108,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
                 .setUrl("https://kotlin.auth.example.com/emailSignInLink")
                 .build()
 
-        hideKeyboard(fieldEmail)
+        hideKeyboard(binding.fieldEmail)
         showProgressBar()
 
         auth.sendSignInLinkToEmail(email, settings)
@@ -126,14 +120,14 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
                         showSnackbar("Sign-in link sent!")
 
                         pendingEmail = email
-                        status.setText(R.string.status_email_sent)
+                        binding.status.setText(R.string.status_email_sent)
                     } else {
                         val e = task.exception
                         Log.w(TAG, "Could not send link", e)
                         showSnackbar("Failed to send link.")
 
                         if (e is FirebaseAuthInvalidCredentialsException) {
-                            fieldEmail.error = "Invalid email address."
+                            binding.fieldEmail.error = "Invalid email address."
                         }
                     }
                 }
@@ -146,7 +140,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
     private fun signInWithEmailLink(email: String, link: String?) {
         Log.d(TAG, "signInWithLink:" + link!!)
 
-        hideKeyboard(fieldEmail)
+        hideKeyboard(binding.fieldEmail)
         showProgressBar()
 
         auth.signInWithEmailLink(email, link)
@@ -155,7 +149,7 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
                     if (task.isSuccessful) {
                         Log.d(TAG, "signInWithEmailLink:success")
 
-                        fieldEmail.text = null
+                        binding.fieldEmail.text = null
                         updateUI(task.result?.user)
                     } else {
                         Log.w(TAG, "signInWithEmailLink:failure", task.exception)
@@ -169,9 +163,9 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun onSendLinkClicked() {
-        val email = fieldEmail.text.toString()
+        val email = binding.fieldEmail.text.toString()
         if (TextUtils.isEmpty(email)) {
-            fieldEmail.error = "Email must not be empty."
+            binding.fieldEmail.error = "Email must not be empty."
             return
         }
 
@@ -179,9 +173,9 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun onSignInClicked() {
-        val email = fieldEmail.text.toString()
+        val email = binding.fieldEmail.text.toString()
         if (TextUtils.isEmpty(email)) {
-            fieldEmail.error = "Email must not be empty."
+            binding.fieldEmail.error = "Email must not be empty."
             return
         }
 
@@ -192,21 +186,21 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         auth.signOut()
 
         updateUI(null)
-        status.setText(R.string.status_email_not_sent)
+        binding.status.setText(R.string.status_email_not_sent)
     }
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            status.text = getString(R.string.passwordless_status_fmt,
+            binding.status.text = getString(R.string.passwordless_status_fmt,
                     user.email, user.isEmailVerified)
 
-            passwordlessFields.visibility = View.GONE
-            passwordlessButtons.visibility = View.GONE
-            signedInButtons.visibility = View.VISIBLE
+            binding.passwordlessFields.visibility = View.GONE
+            binding.passwordlessButtons.visibility = View.GONE
+            binding.signedInButtons.visibility = View.VISIBLE
         } else {
-            passwordlessFields.visibility = View.VISIBLE
-            passwordlessButtons.visibility = View.VISIBLE
-            signedInButtons.visibility = View.GONE
+            binding.passwordlessFields.visibility = View.VISIBLE
+            binding.passwordlessButtons.visibility = View.VISIBLE
+            binding.signedInButtons.visibility = View.GONE
         }
     }
 

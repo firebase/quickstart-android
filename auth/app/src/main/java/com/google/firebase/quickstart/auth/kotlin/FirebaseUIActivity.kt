@@ -11,10 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.BuildConfig
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_firebase_ui.detail
-import kotlinx.android.synthetic.main.activity_firebase_ui.signInButton
-import kotlinx.android.synthetic.main.activity_firebase_ui.signOutButton
-import kotlinx.android.synthetic.main.activity_firebase_ui.status
+import com.google.firebase.quickstart.auth.databinding.ActivityFirebaseUiBinding
 
 /**
  * Demonstrate authentication using the FirebaseUI-Android library. This activity demonstrates
@@ -25,16 +22,18 @@ import kotlinx.android.synthetic.main.activity_firebase_ui.status
 class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivityFirebaseUiBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_firebase_ui)
+        binding = ActivityFirebaseUiBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
-        signInButton.setOnClickListener(this)
-        signOutButton.setOnClickListener(this)
+        binding.signInButton.setOnClickListener(this)
+        binding.signOutButton.setOnClickListener(this)
     }
 
     override fun onStart() {
@@ -72,18 +71,18 @@ class FirebaseUIActivity : AppCompatActivity(), View.OnClickListener {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             // Signed in
-            status.text = getString(R.string.firebaseui_status_fmt, user.email)
-            detail.text = getString(R.string.id_fmt, user.uid)
+            binding.status.text = getString(R.string.firebaseui_status_fmt, user.email)
+            binding.detail.text = getString(R.string.id_fmt, user.uid)
 
-            signInButton.visibility = View.GONE
-            signOutButton.visibility = View.VISIBLE
+            binding.signInButton.visibility = View.GONE
+            binding.signOutButton.visibility = View.VISIBLE
         } else {
             // Signed out
-            status.setText(R.string.signed_out)
-            detail.text = null
+            binding.status.setText(R.string.signed_out)
+            binding.detail.text = null
 
-            signInButton.visibility = View.VISIBLE
-            signOutButton.visibility = View.GONE
+            binding.signInButton.visibility = View.VISIBLE
+            binding.signOutButton.visibility = View.GONE
         }
     }
 

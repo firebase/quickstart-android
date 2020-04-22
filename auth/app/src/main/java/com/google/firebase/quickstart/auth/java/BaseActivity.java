@@ -17,10 +17,6 @@ public class BaseActivity extends AppCompatActivity {
         mProgressBar = progressBar;
     }
 
-    public void setProgressBar(int resId) {
-        mProgressBar = findViewById(resId);
-    }
-
     public void showProgressBar() {
         if (mProgressBar != null) {
             mProgressBar.setVisibility(View.VISIBLE);

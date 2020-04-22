@@ -47,7 +47,7 @@ class MainActivity : BaseActivity() {
         }
 
         // Set up the ViewPager with the sections adapter.
-        with (binding) {
+        with(binding) {
             container.adapter = pagerAdapter
             tabs.setupWithViewPager(container)
 

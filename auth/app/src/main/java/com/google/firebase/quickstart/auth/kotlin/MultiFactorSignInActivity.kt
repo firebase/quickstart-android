@@ -14,14 +14,8 @@ import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneMultiFactorGenerator
 import com.google.firebase.auth.PhoneMultiFactorInfo
 import com.google.firebase.quickstart.auth.R
+import com.google.firebase.quickstart.auth.databinding.ActivityMultiFactorSignInBinding
 import com.google.firebase.quickstart.auth.java.BaseActivity
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.finishMfaSignIn
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor1
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor2
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor3
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor4
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor5
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.smsCode
 import java.util.concurrent.TimeUnit
 
 /**
@@ -29,23 +23,26 @@ import java.util.concurrent.TimeUnit
  */
 class MultiFactorSignInActivity : BaseActivity(), View.OnClickListener {
 
+    private lateinit var binding: ActivityMultiFactorSignInBinding
     private lateinit var multiFactorResolver: MultiFactorResolver
     private var lastPhoneAuthCredential: PhoneAuthCredential? = null
     private var lastVerificationId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_multi_factor_sign_in)
+        binding = ActivityMultiFactorSignInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         savedInstanceState?.let { onRestoreInstanceState(it) }
 
         // Users are currently limited to having 5 second factors
         val phoneFactorButtonList = listOf(
-                phoneFactor1, phoneFactor2, phoneFactor3, phoneFactor4, phoneFactor5)
+                binding.phoneFactor1, binding.phoneFactor2, binding.phoneFactor3,
+                binding.phoneFactor4, binding.phoneFactor5)
         for (button in phoneFactorButtonList) {
             button.visibility = View.GONE
         }
 
-        finishMfaSignIn.setOnClickListener(this)
+        binding.finishMfaSignIn.setOnClickListener(this)
         multiFactorResolver = retrieveResolverFromIntent(intent)
 
         val multiFactorInfoList = multiFactorResolver.hints
@@ -86,7 +83,7 @@ class MultiFactorSignInActivity : BaseActivity(), View.OnClickListener {
         return object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
                 lastPhoneAuthCredential = phoneAuthCredential
-                finishMfaSignIn.performClick()
+                binding.finishMfaSignIn.performClick()
                 Toast.makeText(
                         this@MultiFactorSignInActivity, "Verification complete!", Toast.LENGTH_SHORT)
                         .show()
@@ -94,7 +91,7 @@ class MultiFactorSignInActivity : BaseActivity(), View.OnClickListener {
 
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
                 lastVerificationId = verificationId
-                finishMfaSignIn.isClickable = true
+                binding.finishMfaSignIn.isClickable = true
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
@@ -111,14 +108,14 @@ class MultiFactorSignInActivity : BaseActivity(), View.OnClickListener {
 
     private fun onClickFinishSignIn() {
         if (lastPhoneAuthCredential == null) {
-            if (TextUtils.isEmpty(smsCode.text.toString())) {
+            if (TextUtils.isEmpty(binding.smsCode.text.toString())) {
                 Toast.makeText(
                         this@MultiFactorSignInActivity, "You need to enter an SMS code.", Toast.LENGTH_SHORT)
                         .show()
                 return
             }
             lastPhoneAuthCredential = PhoneAuthProvider.getCredential(
-                    lastVerificationId!!, smsCode.text.toString())
+                    lastVerificationId!!, binding.smsCode.text.toString())
         }
         multiFactorResolver
                 .resolveSignIn(PhoneMultiFactorGenerator.getAssertion(lastPhoneAuthCredential!!))

@@ -97,7 +97,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // attaching data adapter to spinner
-        with (binding) {
+        with(binding) {
             spinner.adapter = dataAdapter
             spinner.onItemSelectedListener = this@LivePreviewActivity
 

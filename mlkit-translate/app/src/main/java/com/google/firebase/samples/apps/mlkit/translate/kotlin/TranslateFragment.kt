@@ -65,16 +65,16 @@ class TranslateFragment : Fragment() {
                 android.R.layout.simple_spinner_dropdown_item, viewModel.availableLanguages
         )
 
-        with (binding) {
+        with(binding) {
             // SourceLangSelector
             sourceLangSelector.adapter = adapter
             sourceLangSelector.setSelection(adapter.getPosition(Language("en")))
             sourceLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
-                        parent: AdapterView<*>,
-                        view: View,
-                        position: Int,
-                        id: Long
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
                 ) {
                     setProgressText(targetText)
                     viewModel.sourceLang.value = adapter.getItem(position)
@@ -90,10 +90,10 @@ class TranslateFragment : Fragment() {
             targetLangSelector.setSelection(adapter.getPosition(Language("es")))
             targetLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
-                        parent: AdapterView<*>,
-                        view: View,
-                        position: Int,
-                        id: Long
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
                 ) {
                     setProgressText(targetText)
                     viewModel.targetLang.value = adapter.getItem(position)

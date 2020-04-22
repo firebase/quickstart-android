@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         auth = FirebaseAuth.getInstance()
 
         // Click listeners
-        with (binding) {
+        with(binding) {
             buttonCamera.setOnClickListener(this@MainActivity)
             buttonSignIn.setOnClickListener(this@MainActivity)
             buttonDownload.setOnClickListener(this@MainActivity)
@@ -206,7 +206,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        with (binding) {
+        with(binding) {
             // Signed in or Signed out
             if (user != null) {
                 layoutSignin.visibility = View.GONE
@@ -236,15 +236,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showProgressBar(progressCaption: String) {
-        with (binding) {
+        with(binding) {
             caption.text = progressCaption
             progressBar.visibility = View.VISIBLE
         }
-
     }
 
     private fun hideProgressBar() {
-        with (binding) {
+        with(binding) {
             caption.text = ""
             progressBar.visibility = View.INVISIBLE
         }
