@@ -30,6 +30,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.quickstart.auth.R;
+import com.google.firebase.quickstart.auth.databinding.ActivityCustomBinding;
 
 /**
  * Demonstrate Firebase Authentication using a custom minted token. For more information, see:
@@ -43,16 +44,18 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
+    private ActivityCustomBinding mBinding;
     private String mCustomToken;
     private TokenBroadcastReceiver mTokenReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom);
+        mBinding = ActivityCustomBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
         // Button click listeners
-        findViewById(R.id.buttonSignIn).setOnClickListener(this);
+        mBinding.buttonSignIn.setOnClickListener(this);
 
         // Create token receiver (for demo purposes only)
         mTokenReceiver = new TokenBroadcastReceiver() {
@@ -118,11 +121,9 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            ((TextView) findViewById(R.id.textSignInStatus)).setText(
-                    "User ID: " + user.getUid());
+            mBinding.textSignInStatus.setText("User ID: " + user.getUid());
         } else {
-            ((TextView) findViewById(R.id.textSignInStatus)).setText(
-                    "Error: sign in failed.");
+            mBinding.textSignInStatus.setText("Error: sign in failed.");
         }
     }
 
@@ -137,8 +138,8 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         }
 
         // Enable/disable sign-in button and show the token
-        findViewById(R.id.buttonSignIn).setEnabled((mCustomToken != null));
-        ((TextView) findViewById(R.id.textTokenStatus)).setText(status);
+        mBinding.buttonSignIn.setEnabled((mCustomToken != null));
+        mBinding.textTokenStatus.setText(status);
     }
 
     @Override
@@ -146,7 +147,6 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         int i = v.getId();
         if (i == R.id.buttonSignIn) {
             startSignIn();
-
         }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 // [START import_classes]
 import com.google.firebase.appindexing.FirebaseAppIndex
@@ -11,26 +12,30 @@ import com.google.firebase.appindexing.FirebaseUserActions
 import com.google.firebase.appindexing.Indexable
 import com.google.firebase.appindexing.builders.Actions
 // [END import_classes]
-import com.google.samples.quickstart.appindexing.R
-import kotlinx.android.synthetic.main.activity_main.addStickersBtn
-import kotlinx.android.synthetic.main.activity_main.clearStickersBtn
-import kotlinx.android.synthetic.main.activity_main.link
+import com.google.samples.quickstart.appindexing.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private var articleId: String? = null
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var linkText: TextView
 
     // [START handle_intent]
     override fun onCreate(savedInstanceState: Bundle?) {
         // [START_EXCLUDE]
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val firebaseAppIndex = FirebaseAppIndex.getInstance()
 
-        addStickersBtn.setOnClickListener { startService(Intent(baseContext, AppIndexingService::class.java)) }
+        with(binding) {
+            addStickersBtn.setOnClickListener { startService(Intent(baseContext, AppIndexingService::class.java)) }
 
-        clearStickersBtn.setOnClickListener { AppIndexingUtil.clearStickers(baseContext, firebaseAppIndex) }
+            clearStickersBtn.setOnClickListener { AppIndexingUtil.clearStickers(baseContext, firebaseAppIndex) }
+        }
+        linkText = binding.link
+
         // [END_EXCLUDE]
         onNewIntent(intent)
     }
@@ -41,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         val data = intent.data
         if (Intent.ACTION_VIEW == action && data != null) {
             articleId = data.lastPathSegment
-            link.text = data.toString()
+            linkText.text = data.toString()
         }
     }
     // [END handle_intent]

@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 check.dependsOn 'assembleDebugAndroidTest'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
@@ -20,6 +19,9 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    viewBinding {
+        enabled = true
     }
 }
 

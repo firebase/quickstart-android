@@ -17,15 +17,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.firebasestorage.R
-import kotlinx.android.synthetic.main.activity_main.buttonCamera
-import kotlinx.android.synthetic.main.activity_main.buttonDownload
-import kotlinx.android.synthetic.main.activity_main.buttonSignIn
-import kotlinx.android.synthetic.main.activity_main.caption
-import kotlinx.android.synthetic.main.activity_main.layoutDownload
-import kotlinx.android.synthetic.main.activity_main.layoutSignin
-import kotlinx.android.synthetic.main.activity_main.layoutStorage
-import kotlinx.android.synthetic.main.activity_main.pictureDownloadUri
-import kotlinx.android.synthetic.main.activity_main.progressBar
+import com.google.firebase.quickstart.firebasestorage.databinding.ActivityMainBinding
 import java.util.Locale
 
 /**
@@ -42,17 +34,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var downloadUrl: Uri? = null
     private var fileUri: Uri? = null
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
         // Click listeners
-        buttonCamera.setOnClickListener(this)
-        buttonSignIn.setOnClickListener(this)
-        buttonDownload.setOnClickListener(this)
+        with(binding) {
+            buttonCamera.setOnClickListener(this@MainActivity)
+            buttonSignIn.setOnClickListener(this@MainActivity)
+            buttonDownload.setOnClickListener(this@MainActivity)
+        }
 
         // Local broadcast receiver
         broadcastReceiver = object : BroadcastReceiver() {
@@ -209,22 +206,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        // Signed in or Signed out
-        if (user != null) {
-            layoutSignin.visibility = View.GONE
-            layoutStorage.visibility = View.VISIBLE
-        } else {
-            layoutSignin.visibility = View.VISIBLE
-            layoutStorage.visibility = View.GONE
-        }
+        with(binding) {
+            // Signed in or Signed out
+            if (user != null) {
+                layoutSignin.visibility = View.GONE
+                layoutStorage.visibility = View.VISIBLE
+            } else {
+                layoutSignin.visibility = View.VISIBLE
+                layoutStorage.visibility = View.GONE
+            }
 
-        // Download URL and Download button
-        if (downloadUrl != null) {
-            pictureDownloadUri.text = downloadUrl.toString()
-            layoutDownload.visibility = View.VISIBLE
-        } else {
-            pictureDownloadUri.text = null
-            layoutDownload.visibility = View.GONE
+            // Download URL and Download button
+            if (downloadUrl != null) {
+                pictureDownloadUri.text = downloadUrl.toString()
+                layoutDownload.visibility = View.VISIBLE
+            } else {
+                pictureDownloadUri.text = null
+                layoutDownload.visibility = View.GONE
+            }
         }
     }
 
@@ -237,13 +236,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showProgressBar(progressCaption: String) {
-        caption.setText(progressCaption)
-        progressBar.visibility = View.VISIBLE
+        with(binding) {
+            caption.text = progressCaption
+            progressBar.visibility = View.VISIBLE
+        }
     }
 
     private fun hideProgressBar() {
-        caption.setText("")
-        progressBar.visibility = View.INVISIBLE
+        with(binding) {
+            caption.text = ""
+            progressBar.visibility = View.INVISIBLE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -263,8 +266,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        val i = v.id
-        when (i) {
+        when (v.id) {
             R.id.buttonCamera -> launchCamera()
             R.id.buttonSignIn -> signInAnonymously()
             R.id.buttonDownload -> beginDownload()

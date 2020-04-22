@@ -13,7 +13,7 @@ import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.deeplinks.R
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.quickstart.deeplinks.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,17 +21,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         // [START_EXCLUDE]
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val linkSendTextView = binding.linkViewSend
+        val linkReceiveTextView = binding.linkViewReceive
 
         // Validate that the developer has set the app code.
         validateAppCode()
 
         // Create a deep link and display it in the UI
         val newDeepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0)
-        linkViewSend.text = newDeepLink.toString()
+        linkSendTextView.text = newDeepLink.toString()
 
         // Share button click listener
-        buttonShare.setOnClickListener { shareDeepLink(newDeepLink.toString()) }
+        binding.buttonShare.setOnClickListener { shareDeepLink(newDeepLink.toString()) }
         // [END_EXCLUDE]
 
         // [START get_deep_link]
@@ -55,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                         Snackbar.make(findViewById(android.R.id.content),
                                 "Found deep link!", Snackbar.LENGTH_LONG).show()
 
-                        linkViewReceive.text = deepLink.toString()
+                        linkReceiveTextView.text = deepLink.toString()
                     } else {
                         Log.d(TAG, "getDynamicLink: no link found")
                     }

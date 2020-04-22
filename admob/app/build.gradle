@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
@@ -26,6 +25,10 @@ android {
 
     packagingOptions {
         exclude 'LICENSE.txt'
+    }
+
+    viewBinding {
+        enabled = true
     }
 }
 

@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
@@ -29,6 +28,10 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+
+    viewBinding {
+        enabled = true
     }
 }
 

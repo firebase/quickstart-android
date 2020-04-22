@@ -11,8 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,24 +18,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.samples.apps.mlkit.smartreply.R
+import com.google.firebase.samples.apps.mlkit.smartreply.databinding.ChatFragmentBinding
 import com.google.firebase.samples.apps.mlkit.smartreply.kotlin.model.Message
 import java.util.ArrayList
 import java.util.Calendar
 
 class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
 
+    private var _binding: ChatFragmentBinding? = null
+    private val binding: ChatFragmentBinding get() = _binding!!
     private lateinit var viewModel: ChatViewModel
-    private lateinit var inputText: TextView
-    private lateinit var sendButton: Button
-    private lateinit var switchUserButton: Button
-
-    private lateinit var chatRecycler: RecyclerView
     private lateinit var chatAdapter: MessageListAdapter
-
-    private lateinit var smartRepliesRecyler: RecyclerView
     private lateinit var chipAdapter: ReplyChipAdapter
-
-    private lateinit var emulatedUserText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +41,8 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.chat_fragment, container, false)
+        _binding = ChatFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -58,66 +51,61 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
 
         viewModel = ViewModelProvider(this).get(ChatViewModel::class.java)
 
-        chatRecycler = view.findViewById(R.id.chatHistory)
-        emulatedUserText = view.findViewById(R.id.switchText)
-        smartRepliesRecyler = view.findViewById(R.id.smartRepliesRecycler)
-        inputText = view.findViewById(R.id.inputText)
-        sendButton = view.findViewById(R.id.button)
-        switchUserButton = view.findViewById(R.id.switchEmulatedUser)
-
         // Set up recycler view for chat messages
-        val layoutManager = LinearLayoutManager(context)
-        chatRecycler.layoutManager = layoutManager
         chatAdapter = MessageListAdapter()
 
         // Set up recycler view for smart replies
         val chipManager = LinearLayoutManager(context)
         chipManager.orientation = RecyclerView.HORIZONTAL
         chipAdapter = ReplyChipAdapter(this)
-        smartRepliesRecyler.layoutManager = chipManager
-        smartRepliesRecyler.adapter = chipAdapter
 
-        chatRecycler.adapter = chatAdapter
-        chatRecycler.setOnTouchListener { touchView, motionEvent ->
-            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(touchView.windowToken, 0)
-            false
-        }
+        with(binding) {
+            chatHistory.layoutManager = LinearLayoutManager(context)
+            smartRepliesRecycler.layoutManager = chipManager
+            smartRepliesRecycler.adapter = chipAdapter
 
-        switchUserButton.setOnClickListener {
-            chatAdapter.emulatingRemoteUser = !chatAdapter.emulatingRemoteUser
-            viewModel.switchUser()
-        }
-
-        sendButton.setOnClickListener(View.OnClickListener {
-            val input = inputText.text.toString()
-            if (TextUtils.isEmpty(input)) {
-                return@OnClickListener
+            chatHistory.adapter = chatAdapter
+            chatHistory.setOnTouchListener { touchView, motionEvent ->
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(touchView.windowToken, 0)
+                false
             }
 
-            viewModel.addMessage(input)
-            inputText.text = ""
-        })
+            switchEmulatedUser.setOnClickListener {
+                chatAdapter.emulatingRemoteUser = !chatAdapter.emulatingRemoteUser
+                viewModel.switchUser()
+            }
+
+            sendButton.setOnClickListener(View.OnClickListener {
+                val input = inputText.text.toString()
+                if (TextUtils.isEmpty(input)) {
+                    return@OnClickListener
+                }
+
+                viewModel.addMessage(input)
+                inputText.setText("")
+            })
+
+            viewModel.messages.observe(viewLifecycleOwner, Observer { messages ->
+                chatAdapter.setMessages(messages!!)
+                if (chatAdapter.itemCount > 0) {
+                    chatHistory.smoothScrollToPosition(chatAdapter.itemCount - 1)
+                }
+            })
+
+            viewModel.getEmulatingRemoteUser().observe(viewLifecycleOwner, Observer { isEmulatingRemoteUser ->
+                if (isEmulatingRemoteUser!!) {
+                    switchText.setText(R.string.chatting_as_red)
+                    switchText.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                } else {
+                    switchText.setText(R.string.chatting_as_blue)
+                    switchText.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
+                }
+            })
+        }
 
         viewModel.getSuggestions().observe(viewLifecycleOwner, Observer { suggestions ->
             chipAdapter.setSuggestions(suggestions!!)
-        })
-
-        viewModel.messages.observe(viewLifecycleOwner, Observer { messages ->
-            chatAdapter.setMessages(messages!!)
-            if (chatAdapter.itemCount > 0) {
-                chatRecycler.smoothScrollToPosition(chatAdapter.itemCount - 1)
-            }
-        })
-
-        viewModel.getEmulatingRemoteUser().observe(viewLifecycleOwner, Observer { isEmulatingRemoteUser ->
-            if (isEmulatingRemoteUser!!) {
-                emulatedUserText.setText(R.string.chatting_as_red)
-                emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-            } else {
-                emulatedUserText.setText(R.string.chatting_as_blue)
-                emulatedUserText.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
-            }
         })
 
         val messageList = ArrayList<Message>()
@@ -150,7 +138,7 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
     }
 
     override fun onChipClick(chipText: String) {
-        inputText.text = chipText
+        binding.inputText.setText(chipText)
     }
 
     private fun generateChatHistoryBasic() {
@@ -180,6 +168,11 @@ class ChatFragment : Fragment(), ReplyChipAdapter.ClickListener {
         messageList.add(Message("My cat died", false, calendar.timeInMillis))
 
         viewModel.setMessages(messageList)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

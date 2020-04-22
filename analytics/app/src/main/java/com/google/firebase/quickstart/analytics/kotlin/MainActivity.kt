@@ -15,8 +15,7 @@ import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.quickstart.analytics.R
-import kotlinx.android.synthetic.main.activity_main.pagerTabStrip
-import kotlinx.android.synthetic.main.activity_main.viewPager
+import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding
 import java.util.Locale
 
 /**
@@ -36,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    private lateinit var binding: ActivityMainBinding
+
     /**
      * The [androidx.viewpager.widget.PagerAdapter] that will provide fragments for each image.
      * This uses a [FragmentPagerAdapter], which keeps every loaded fragment in memory.
@@ -51,7 +52,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // [START shared_app_measurement]
         // Obtain the FirebaseAnalytics instance.
@@ -71,14 +73,14 @@ class MainActivity : AppCompatActivity() {
         imagePagerAdapter = ImagePagerAdapter(supportFragmentManager, IMAGE_INFOS)
 
         // Set up the ViewPager with the pattern adapter.
-        viewPager.adapter = imagePagerAdapter
+        binding.viewPager.adapter = imagePagerAdapter
 
         // Workaround for AppCompat issue not showing ViewPager titles
-        val params = pagerTabStrip.layoutParams as ViewPager.LayoutParams
+        val params = binding.pagerTabStrip.layoutParams as ViewPager.LayoutParams
         params.isDecor = true
 
         // When the visible image changes, send a screen view hit.
-        viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 recordImageView()
                 recordScreenView()
@@ -169,7 +171,7 @@ class MainActivity : AppCompatActivity() {
      * @return title of image
      */
     private fun getCurrentImageTitle(): String {
-        val position = viewPager.currentItem
+        val position = binding.viewPager.currentItem
         val info = IMAGE_INFOS[position]
         return getString(info.title)
     }
@@ -180,7 +182,7 @@ class MainActivity : AppCompatActivity() {
      * @return id of image
      */
     private fun getCurrentImageId(): String {
-        val position = viewPager.currentItem
+        val position = binding.viewPager.currentItem
         val info = IMAGE_INFOS[position]
         return getString(info.id)
     }

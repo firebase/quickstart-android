@@ -30,6 +30,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.samples.quickstart.admobexample.R;
+import com.google.samples.quickstart.admobexample.databinding.ActivityMainBinding;
 
 // [SNIPPET load_banner_ad]
 // Load an ad into the AdView.
@@ -43,12 +44,19 @@ public class MainActivity extends AppCompatActivity {
     // [START_EXCLUDE]
     private InterstitialAd mInterstitialAd;
     private Button mLoadInterstitialButton;
+    private ActivityMainBinding binding;
     // [END_EXCLUDE]
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // [START_EXCLUDE]
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        mAdView = binding.adView;
+        mLoadInterstitialButton = binding.loadInterstitialButton;
+        View layout = binding.getRoot();
+        // [END_EXCLUDE]
+        setContentView(layout);
         checkIds();
 
         // Initialize the Google Mobile Ads SDK

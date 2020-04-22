@@ -12,14 +12,8 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneMultiFactorGenerator
 import com.google.firebase.quickstart.auth.R
+import com.google.firebase.quickstart.auth.databinding.ActivityPhoneAuthBinding
 import com.google.firebase.quickstart.auth.java.BaseActivity
-import kotlinx.android.synthetic.main.activity_phone_auth.buttonStartVerification
-import kotlinx.android.synthetic.main.activity_phone_auth.buttonVerifyPhone
-import kotlinx.android.synthetic.main.activity_phone_auth.detail
-import kotlinx.android.synthetic.main.activity_phone_auth.fieldPhoneNumber
-import kotlinx.android.synthetic.main.activity_phone_auth.fieldVerificationCode
-import kotlinx.android.synthetic.main.activity_phone_auth.status
-import kotlinx.android.synthetic.main.activity_phone_auth.titleText
 import java.util.concurrent.TimeUnit
 
 /**
@@ -27,20 +21,22 @@ import java.util.concurrent.TimeUnit
  */
 class MultiFactorEnrollActivity : BaseActivity(), View.OnClickListener {
 
+    private lateinit var binding: ActivityPhoneAuthBinding
     private var lastCodeVerificationId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_phone_auth)
-        titleText.text = "SMS as a Second Factor"
-        status.visibility = View.GONE
-        detail.visibility = View.GONE
-        buttonStartVerification.setOnClickListener(this)
-        buttonVerifyPhone.setOnClickListener(this)
+        binding = ActivityPhoneAuthBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.titleText.text = "SMS as a Second Factor"
+        binding.status.visibility = View.GONE
+        binding.detail.visibility = View.GONE
+        binding.buttonStartVerification.setOnClickListener(this)
+        binding.buttonVerifyPhone.setOnClickListener(this)
     }
 
     private fun onClickVerifyPhoneNumber() {
-        val phoneNumber = fieldPhoneNumber.text.toString()
+        val phoneNumber = binding.fieldPhoneNumber.text.toString()
         val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                 // Instant-validation has been disabled (see requireSmsValidation below).
@@ -92,7 +88,7 @@ class MultiFactorEnrollActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun onClickSignInWithPhoneNumber() {
-        val smsCode = fieldVerificationCode.text.toString()
+        val smsCode = binding.fieldVerificationCode.text.toString()
         if (TextUtils.isEmpty(smsCode)) {
             return
         }

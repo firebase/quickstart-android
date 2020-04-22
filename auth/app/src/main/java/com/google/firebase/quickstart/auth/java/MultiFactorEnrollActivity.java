@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +22,7 @@ import com.google.firebase.quickstart.auth.R;
 import com.google.firebase.auth.PhoneMultiFactorGenerator;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.MultiFactorSession;
+import com.google.firebase.quickstart.auth.databinding.ActivityPhoneAuthBinding;
 
 import androidx.annotation.NonNull;
 
@@ -36,28 +36,25 @@ public class MultiFactorEnrollActivity extends BaseActivity implements
 
     private static final String TAG = "PhoneAuthActivity";
 
-    private EditText mPhoneNumberText;
-    private EditText mSmsCodeText;
+    private ActivityPhoneAuthBinding mBinding;
 
     private String mCodeVerificationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_phone_auth);
-        TextView titleText = findViewById(R.id.titleText);
-        titleText.setText("SMS as a Second Factor");
+        mBinding = ActivityPhoneAuthBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        findViewById(R.id.status).setVisibility(View.GONE);
-        findViewById(R.id.detail).setVisibility(View.GONE);
-        findViewById(R.id.buttonStartVerification).setOnClickListener(this);
-        findViewById(R.id.buttonVerifyPhone).setOnClickListener(this);
-        mPhoneNumberText = findViewById(R.id.fieldPhoneNumber);
-        mSmsCodeText = findViewById(R.id.fieldVerificationCode);
+        mBinding.titleText.setText("SMS as a Second Factor");
+        mBinding.status.setVisibility(View.GONE);
+        mBinding.detail.setVisibility(View.GONE);
+        mBinding.buttonStartVerification.setOnClickListener(this);
+        mBinding.buttonVerifyPhone.setOnClickListener(this);
     }
 
     private void onClickVerifyPhoneNumber() {
-        String phoneNumber = mPhoneNumberText.getText().toString();
+        String phoneNumber = mBinding.fieldPhoneNumber.getText().toString();
 
         OnVerificationStateChangedCallbacks callbacks =
                 new OnVerificationStateChangedCallbacks() {
@@ -122,7 +119,7 @@ public class MultiFactorEnrollActivity extends BaseActivity implements
     }
 
     private void onClickSignInWithPhoneNumber() {
-        String smsCode = mSmsCodeText.getText().toString();
+        String smsCode = mBinding.fieldVerificationCode.getText().toString();
         if (TextUtils.isEmpty(smsCode)) {
             return;
         }

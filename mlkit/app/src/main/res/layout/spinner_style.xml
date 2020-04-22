@@ -2,6 +2,7 @@
 
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textSize="22sp"
@@ -9,4 +10,5 @@
     android:gravity="left"
     android:textColor="#FFF"
     android:padding="1dip"
+    tools:viewBindingIgnore="true"
     />

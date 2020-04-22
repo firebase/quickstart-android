@@ -4,15 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -20,6 +16,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.example.fireeats.R;
+import com.google.firebase.example.fireeats.databinding.ActivityRestaurantDetailBinding;
 import com.google.firebase.example.fireeats.java.adapter.RatingAdapter;
 import com.google.firebase.example.fireeats.java.model.Rating;
 import com.google.firebase.example.fireeats.java.model.Restaurant;
@@ -33,8 +30,6 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
 
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
-
 public class RestaurantDetailActivity extends AppCompatActivity
         implements EventListener<DocumentSnapshot>, RatingDialogFragment.RatingListener, View.OnClickListener {
 
@@ -42,16 +37,8 @@ public class RestaurantDetailActivity extends AppCompatActivity
 
     public static final String KEY_RESTAURANT_ID = "key_restaurant_id";
 
-    private ImageView mImageView;
-    private TextView mNameView;
-    private MaterialRatingBar mRatingIndicator;
-    private TextView mNumRatingsView;
-    private TextView mCityView;
-    private TextView mCategoryView;
-    private TextView mPriceView;
-    private ViewGroup mEmptyView;
-    private RecyclerView mRatingsRecycler;
-
+    private ActivityRestaurantDetailBinding mBinding;
+    
     private RatingDialogFragment mRatingDialog;
 
     private FirebaseFirestore mFirestore;
@@ -63,20 +50,11 @@ public class RestaurantDetailActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant_detail);
+        mBinding = ActivityRestaurantDetailBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        mImageView = findViewById(R.id.restaurantImage);
-        mNameView = findViewById(R.id.restaurantName);
-        mRatingIndicator = findViewById(R.id.restaurantRating);
-        mNumRatingsView = findViewById(R.id.restaurantNumRatings);
-        mCityView = findViewById(R.id.restaurantCity);
-        mCategoryView = findViewById(R.id.restaurantCategory);
-        mPriceView = findViewById(R.id.restaurantPrice);
-        mEmptyView = findViewById(R.id.viewEmptyRatings);
-        mRatingsRecycler = findViewById(R.id.recyclerRatings);
-
-        findViewById(R.id.restaurantButtonBack).setOnClickListener(this);
-        findViewById(R.id.fabShowRatingDialog).setOnClickListener(this);
+        mBinding.restaurantButtonBack.setOnClickListener(this);
+        mBinding.fabShowRatingDialog.setOnClickListener(this);
 
         // Get restaurant ID from extras
         String restaurantId = getIntent().getExtras().getString(KEY_RESTAURANT_ID);
@@ -101,16 +79,16 @@ public class RestaurantDetailActivity extends AppCompatActivity
             @Override
             protected void onDataChanged() {
                 if (getItemCount() == 0) {
-                    mRatingsRecycler.setVisibility(View.GONE);
-                    mEmptyView.setVisibility(View.VISIBLE);
+                    mBinding.recyclerRatings.setVisibility(View.GONE);
+                    mBinding.viewEmptyRatings.setVisibility(View.VISIBLE);
                 } else {
-                    mRatingsRecycler.setVisibility(View.VISIBLE);
-                    mEmptyView.setVisibility(View.GONE);
+                    mBinding.recyclerRatings.setVisibility(View.VISIBLE);
+                    mBinding.viewEmptyRatings.setVisibility(View.GONE);
                 }
             }
         };
-        mRatingsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mRatingsRecycler.setAdapter(mRatingAdapter);
+        mBinding.recyclerRatings.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.recyclerRatings.setAdapter(mRatingAdapter);
 
         mRatingDialog = new RatingDialogFragment();
     }
@@ -155,17 +133,17 @@ public class RestaurantDetailActivity extends AppCompatActivity
     }
 
     private void onRestaurantLoaded(Restaurant restaurant) {
-        mNameView.setText(restaurant.getName());
-        mRatingIndicator.setRating((float) restaurant.getAvgRating());
-        mNumRatingsView.setText(getString(R.string.fmt_num_ratings, restaurant.getNumRatings()));
-        mCityView.setText(restaurant.getCity());
-        mCategoryView.setText(restaurant.getCategory());
-        mPriceView.setText(RestaurantUtil.getPriceString(restaurant));
+        mBinding.restaurantName.setText(restaurant.getName());
+        mBinding.restaurantRating.setRating((float) restaurant.getAvgRating());
+        mBinding.restaurantNumRatings.setText(getString(R.string.fmt_num_ratings, restaurant.getNumRatings()));
+        mBinding.restaurantCity.setText(restaurant.getCity());
+        mBinding.restaurantCategory.setText(restaurant.getCategory());
+        mBinding.restaurantPrice.setText(RestaurantUtil.getPriceString(restaurant));
 
         // Background image
-        Glide.with(mImageView.getContext())
+        Glide.with(mBinding.restaurantImage.getContext())
                 .load(restaurant.getPhoto())
-                .into(mImageView);
+                .into(mBinding.restaurantImage);
     }
 
     public void onBackArrowClicked(View view) {
@@ -187,7 +165,7 @@ public class RestaurantDetailActivity extends AppCompatActivity
 
                         // Hide keyboard and scroll to top
                         hideKeyboard();
-                        mRatingsRecycler.smoothScrollToPosition(0);
+                        mBinding.recyclerRatings.smoothScrollToPosition(0);
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
@@ -197,7 +175,7 @@ public class RestaurantDetailActivity extends AppCompatActivity
 
                         // Show failure message and hide keyboard
                         hideKeyboard();
-                        Snackbar.make(findViewById(android.R.id.content), "Failed to add rating",
+                        Snackbar.make(mBinding.getRoot(), "Failed to add rating",
                                 Snackbar.LENGTH_SHORT).show();
                     }
                 });

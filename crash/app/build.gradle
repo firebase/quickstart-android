@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 
 check.dependsOn 'assembleDebugAndroidTest'
@@ -27,6 +26,10 @@ android {
             testProguardFiles getDefaultProguardFile('proguard-android.txt'), 'test-proguard-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    viewBinding {
+        enabled = true
     }
 }
 

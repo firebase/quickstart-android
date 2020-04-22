@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.fiamquickstart.R;
+import com.google.firebase.fiamquickstart.databinding.ActivityMainBinding;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging;
@@ -24,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    final ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+    setContentView(binding.getRoot());
 
     mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     mInAppMessaging = FirebaseInAppMessaging.getInstance();
@@ -32,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
     mInAppMessaging.setAutomaticDataCollectionEnabled(true);
     mInAppMessaging.setMessagesSuppressed(false);
 
-    findViewById(R.id.eventTriggerButton)
-        .setOnClickListener(
+    binding.eventTriggerButton.setOnClickListener(
             new View.OnClickListener() {
               @Override
               public void onClick(View view) {
@@ -45,13 +46,12 @@ public class MainActivity extends AppCompatActivity {
             });
 
     // Get and display/log the Instance ID
-    final TextView textView = findViewById(R.id.instanceIdText);
     FirebaseInstanceId.getInstance().getInstanceId()
             .addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
               @Override
               public void onSuccess(InstanceIdResult instanceIdResult) {
                 String instanceId = instanceIdResult.getId();
-                textView.setText(getString(R.string.instance_id_fmt, instanceId));
+                binding.instanceIdText.setText(getString(R.string.instance_id_fmt, instanceId));
                 Log.d(TAG, "InstanceId: " + instanceId);
               }
             });

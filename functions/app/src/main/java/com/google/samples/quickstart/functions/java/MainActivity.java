@@ -26,8 +26,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -39,6 +37,7 @@ import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
 import com.google.samples.quickstart.functions.R;
+import com.google.samples.quickstart.functions.databinding.ActivityMainBinding;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,17 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final int RC_SIGN_IN = 9001;
 
-    // Add number views
-    private EditText mFirstNumberField;
-    private EditText mSecondNumberField;
-    private EditText mAddResultField;
-    private Button mCalculateButton;
-
-    // Add message views
-    private EditText mMessageInputField;
-    private EditText mMessageOutputField;
-    private Button mAddMessageButton;
-    private Button mSignInButton;
+    private ActivityMainBinding binding;
 
     // [START define_functions_instance]
     private FirebaseFunctions mFunctions;
@@ -75,20 +64,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        mFirstNumberField = findViewById(R.id.fieldFirstNumber);
-        mSecondNumberField = findViewById(R.id.fieldSecondNumber);
-        mAddResultField = findViewById(R.id.fieldAddResult);
-        mCalculateButton = findViewById(R.id.buttonCalculate);
-        mCalculateButton.setOnClickListener(this);
-
-        mMessageInputField = findViewById(R.id.fieldMessageInput);
-        mMessageOutputField = findViewById(R.id.fieldMessageOutput);
-        mAddMessageButton = findViewById(R.id.buttonAddMessage);
-        mSignInButton = findViewById(R.id.buttonSignIn);
-        mAddMessageButton.setOnClickListener(this);
-        mSignInButton.setOnClickListener(this);
+        binding.buttonCalculate.setOnClickListener(this);
+        binding.buttonAddMessage.setOnClickListener(this);
+        binding.buttonSignIn.setOnClickListener(this);
 
         // [START initialize_functions_instance]
         mFunctions = FirebaseFunctions.getInstance();
@@ -149,8 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hideKeyboard();
 
         try {
-            firstNumber = Integer.parseInt(mFirstNumberField.getText().toString());
-            secondNumber = Integer.parseInt(mSecondNumberField.getText().toString());
+            firstNumber = Integer.parseInt(binding.fieldFirstNumber.getText().toString());
+            secondNumber = Integer.parseInt(binding.fieldSecondNumber.getText().toString());
         } catch (NumberFormatException e) {
             showSnackbar("Please enter two numbers.");
             return;
@@ -184,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         // [START_EXCLUDE]
                         Integer result = task.getResult();
-                        mAddResultField.setText(String.valueOf(result));
+                        binding.fieldAddResult.setText(String.valueOf(result));
                         // [END_EXCLUDE]
                     }
                 });
@@ -192,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void onAddMessageClicked() {
-        String inputMessage = mMessageInputField.getText().toString();
+        String inputMessage = binding.fieldMessageInput.getText().toString();
 
         if (TextUtils.isEmpty(inputMessage)) {
             showSnackbar("Please enter a message.");
@@ -221,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         // [START_EXCLUDE]
                         String result = task.getResult();
-                        mMessageOutputField.setText(result);
+                        binding.fieldMessageOutput.setText(result);
                         // [END_EXCLUDE]
                     }
                 });

@@ -30,17 +30,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.samples.apps.mlkit.translate.R
+import com.google.firebase.samples.apps.mlkit.translate.databinding.TranslateFragmentBinding
 import com.google.firebase.samples.apps.mlkit.translate.kotlin.TranslateViewModel.Language
-import kotlinx.android.synthetic.main.translate_fragment.buttonSwitchLang
-import kotlinx.android.synthetic.main.translate_fragment.buttonSyncSource
-import kotlinx.android.synthetic.main.translate_fragment.buttonSyncTarget
-import kotlinx.android.synthetic.main.translate_fragment.downloadedModels
-import kotlinx.android.synthetic.main.translate_fragment.sourceLangSelector
-import kotlinx.android.synthetic.main.translate_fragment.sourceText
-import kotlinx.android.synthetic.main.translate_fragment.targetLangSelector
-import kotlinx.android.synthetic.main.translate_fragment.targetText
 
 class TranslateFragment : Fragment() {
+
+    private var _binding: TranslateFragmentBinding? = null
+    private val binding: TranslateFragmentBinding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +48,8 @@ class TranslateFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.translate_fragment, container, false)
+        _binding = TranslateFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -68,116 +65,123 @@ class TranslateFragment : Fragment() {
                 android.R.layout.simple_spinner_dropdown_item, viewModel.availableLanguages
         )
 
-        // SourceLangSelector
-        sourceLangSelector.adapter = adapter
-        sourceLangSelector.setSelection(adapter.getPosition(Language("en")))
-        sourceLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                setProgressText(targetText)
-                viewModel.sourceLang.value = adapter.getItem(position)
-            }
+        with(binding) {
+            // SourceLangSelector
+            sourceLangSelector.adapter = adapter
+            sourceLangSelector.setSelection(adapter.getPosition(Language("en")))
+            sourceLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    setProgressText(targetText)
+                    viewModel.sourceLang.value = adapter.getItem(position)
+                }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                targetText.text = ""
-            }
-        }
-
-        // TargetLangSelector
-        targetLangSelector.adapter = adapter
-        targetLangSelector.setSelection(adapter.getPosition(Language("es")))
-        targetLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                setProgressText(targetText)
-                viewModel.targetLang.value = adapter.getItem(position)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                targetText.text = ""
-            }
-        }
-
-        // Set up Switch Language Button
-        buttonSwitchLang.setOnClickListener {
-            setProgressText(targetText)
-            val sourceLangPosition = sourceLangSelector.selectedItemPosition
-            sourceLangSelector.setSelection(targetLangSelector.selectedItemPosition)
-            targetLangSelector.setSelection(sourceLangPosition)
-        }
-
-        // Set up toggle buttons to delete or download remote models locally.
-        buttonSyncSource.setOnCheckedChangeListener { _, isChecked ->
-            val language = adapter.getItem(sourceLangSelector.selectedItemPosition)
-            language?.let {
-                if (isChecked) {
-                    viewModel.downloadLanguage(language)
-                } else {
-                    viewModel.deleteLanguage(language)
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    targetText.text = ""
                 }
             }
-        }
-        buttonSyncTarget.setOnCheckedChangeListener { _, isChecked ->
-            val language = adapter.getItem(targetLangSelector.selectedItemPosition)
-            language?.let {
-                if (isChecked) {
-                    viewModel.downloadLanguage(language)
-                } else {
-                    viewModel.deleteLanguage(language)
+
+            // TargetLangSelector
+            targetLangSelector.adapter = adapter
+            targetLangSelector.setSelection(adapter.getPosition(Language("es")))
+            targetLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    setProgressText(targetText)
+                    viewModel.targetLang.value = adapter.getItem(position)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    targetText.text = ""
                 }
             }
-        }
 
-        // Translate input text as it is typed
-        sourceText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable) {
+            // Set up Switch Language Button
+            buttonSwitchLang.setOnClickListener {
                 setProgressText(targetText)
-                viewModel.sourceText.postValue(s.toString())
+                val sourceLangPosition = sourceLangSelector.selectedItemPosition
+                sourceLangSelector.setSelection(targetLangSelector.selectedItemPosition)
+                targetLangSelector.setSelection(sourceLangPosition)
             }
-        })
 
-        viewModel.translatedText.observe(viewLifecycleOwner, Observer { resultOrError ->
-            resultOrError.let {
-                if (resultOrError.error != null) {
-                    sourceText.error = resultOrError.error?.localizedMessage
-                } else {
-                    targetText.text = resultOrError.result
+            // Set up toggle buttons to delete or download remote models locally.
+            buttonSyncSource.setOnCheckedChangeListener { _, isChecked ->
+                val language = adapter.getItem(sourceLangSelector.selectedItemPosition)
+                language?.let {
+                    if (isChecked) {
+                        viewModel.downloadLanguage(language)
+                    } else {
+                        viewModel.deleteLanguage(language)
+                    }
                 }
             }
-        })
+            buttonSyncTarget.setOnCheckedChangeListener { _, isChecked ->
+                val language = adapter.getItem(targetLangSelector.selectedItemPosition)
+                language?.let {
+                    if (isChecked) {
+                        viewModel.downloadLanguage(language)
+                    } else {
+                        viewModel.deleteLanguage(language)
+                    }
+                }
+            }
 
-        // Update sync toggle button states based on downloaded models list.
-        viewModel.availableModels.observe(viewLifecycleOwner, Observer { firebaseTranslateRemoteModels ->
-            val output = context!!.getString(
-                    R.string.downloaded_models_label,
-                    firebaseTranslateRemoteModels
-            )
-            downloadedModels.text = output
-            firebaseTranslateRemoteModels?.let {
-                buttonSyncSource.isChecked = it.contains(
-                        adapter.getItem(sourceLangSelector.selectedItemPosition)!!.code
+            // Translate input text as it is typed
+            sourceText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+
+                override fun afterTextChanged(s: Editable) {
+                    setProgressText(targetText)
+                    viewModel.sourceText.postValue(s.toString())
+                }
+            })
+
+            viewModel.translatedText.observe(viewLifecycleOwner, Observer { resultOrError ->
+                resultOrError.let {
+                    if (resultOrError.error != null) {
+                        sourceText.error = resultOrError.error?.localizedMessage
+                    } else {
+                        targetText.text = resultOrError.result
+                    }
+                }
+            })
+
+            // Update sync toggle button states based on downloaded models list.
+            viewModel.availableModels.observe(viewLifecycleOwner, Observer { firebaseTranslateRemoteModels ->
+                val output = context!!.getString(
+                        R.string.downloaded_models_label,
+                        firebaseTranslateRemoteModels
                 )
-                buttonSyncTarget.isChecked = it.contains(
-                        adapter.getItem(targetLangSelector.selectedItemPosition)!!.code
-                )
-            }
-        })
+                downloadedModels.text = output
+                firebaseTranslateRemoteModels?.let {
+                    buttonSyncSource.isChecked = it.contains(
+                            adapter.getItem(sourceLangSelector.selectedItemPosition)!!.code
+                    )
+                    buttonSyncTarget.isChecked = it.contains(
+                            adapter.getItem(targetLangSelector.selectedItemPosition)!!.code
+                    )
+                }
+            })
+        }
     }
 
     private fun setProgressText(tv: TextView) {
         tv.text = context!!.getString(R.string.translate_progress)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

@@ -1,11 +1,9 @@
 package com.google.firebase.quickstart.database.java;
 
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -13,7 +11,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.quickstart.database.R;
+import com.google.firebase.quickstart.database.databinding.ActivityNewPostBinding;
 import com.google.firebase.quickstart.database.java.models.Post;
 import com.google.firebase.quickstart.database.java.models.User;
 
@@ -29,24 +27,19 @@ public class NewPostActivity extends BaseActivity {
     private DatabaseReference mDatabase;
     // [END declare_database_ref]
 
-    private EditText mTitleField;
-    private EditText mBodyField;
-    private FloatingActionButton mSubmitButton;
+    private ActivityNewPostBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_post);
+        binding = ActivityNewPostBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END initialize_database_ref]
 
-        mTitleField = findViewById(R.id.fieldTitle);
-        mBodyField = findViewById(R.id.fieldBody);
-        mSubmitButton = findViewById(R.id.fabSubmitPost);
-
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+        binding.fabSubmitPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitPost();
@@ -55,18 +48,18 @@ public class NewPostActivity extends BaseActivity {
     }
 
     private void submitPost() {
-        final String title = mTitleField.getText().toString();
-        final String body = mBodyField.getText().toString();
+        final String title = binding.fieldTitle.getText().toString();
+        final String body = binding.fieldBody.getText().toString();
 
         // Title is required
         if (TextUtils.isEmpty(title)) {
-            mTitleField.setError(REQUIRED);
+            binding.fieldTitle.setError(REQUIRED);
             return;
         }
 
         // Body is required
         if (TextUtils.isEmpty(body)) {
-            mBodyField.setError(REQUIRED);
+            binding.fieldBody.setError(REQUIRED);
             return;
         }
 
@@ -113,12 +106,12 @@ public class NewPostActivity extends BaseActivity {
     }
 
     private void setEditingEnabled(boolean enabled) {
-        mTitleField.setEnabled(enabled);
-        mBodyField.setEnabled(enabled);
+        binding.fieldTitle.setEnabled(enabled);
+        binding.fieldBody.setEnabled(enabled);
         if (enabled) {
-            mSubmitButton.show();
+            binding.fabSubmitPost.show();
         } else {
-            mSubmitButton.hide();
+            binding.fabSubmitPost.hide();
         }
     }
 

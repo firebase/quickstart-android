@@ -17,9 +17,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.perf.FirebasePerformance
 import com.google.firebase.perf.metrics.Trace
 import com.google.firebase.quickstart.perfmon.R
-import kotlinx.android.synthetic.main.activity_main.button
-import kotlinx.android.synthetic.main.activity_main.headerIcon
-import kotlinx.android.synthetic.main.activity_main.textViewContent
+import com.google.firebase.quickstart.perfmon.databinding.ActivityMainBinding
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -34,11 +32,14 @@ class MainActivity : AppCompatActivity() {
 
     private val numStartupTasks = CountDownLatch(2)
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        button.setOnClickListener {
+        binding.button.setOnClickListener {
             // write 40 chars of random text to file
             val contentFile = File(this.filesDir, CONTENT_FILE)
 
@@ -103,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                         numStartupTasks.countDown() // Signal end of image load task.
                         return false
                     }
-                }).into(headerIcon)
+                }).into(binding.headerIcon)
     }
 
     private fun writeStringToFile(filename: String, content: String): Task<Void> {
@@ -153,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     val fileContent = task.result
-                    textViewContent.text = task.result
+                    binding.textViewContent.text = task.result
                     // Increment a counter with the file size that was read.
                     Log.d(TAG, "Incrementing file size counter in trace")
                     trace.incrementMetric(

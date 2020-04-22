@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.firebase.example.fireeats.R;
+import com.google.firebase.example.fireeats.databinding.DialogFiltersBinding;
 import com.google.firebase.example.fireeats.java.model.Restaurant;
 import com.google.firebase.firestore.Query;
 
@@ -28,13 +29,7 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
     }
 
-    private View mRootView;
-
-    private Spinner mCategorySpinner;
-    private Spinner mCitySpinner;
-    private Spinner mSortSpinner;
-    private Spinner mPriceSpinner;
-
+    private DialogFiltersBinding mBinding;
     private FilterListener mFilterListener;
 
     @Nullable
@@ -42,17 +37,18 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.dialog_filters, container, false);
+        mBinding = DialogFiltersBinding.inflate(inflater, container, false);
+        
+        mBinding.buttonSearch.setOnClickListener(this);
+        mBinding.buttonCancel.setOnClickListener(this);
 
-        mCategorySpinner = mRootView.findViewById(R.id.spinnerCategory);
-        mCitySpinner = mRootView.findViewById(R.id.spinnerCity);
-        mSortSpinner = mRootView.findViewById(R.id.spinnerSort);
-        mPriceSpinner = mRootView.findViewById(R.id.spinnerPrice);
+        return mBinding.getRoot();
+    }
 
-        mRootView.findViewById(R.id.buttonSearch).setOnClickListener(this);
-        mRootView.findViewById(R.id.buttonCancel).setOnClickListener(this);
-
-        return mRootView;
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mBinding = null;
     }
 
     @Override
@@ -86,7 +82,7 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
     @Nullable
     private String getSelectedCategory() {
-        String selected = (String) mCategorySpinner.getSelectedItem();
+        String selected = (String) mBinding.spinnerCategory.getSelectedItem();
         if (getString(R.string.value_any_category).equals(selected)) {
             return null;
         } else {
@@ -96,7 +92,7 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
     @Nullable
     private String getSelectedCity() {
-        String selected = (String) mCitySpinner.getSelectedItem();
+        String selected = (String) mBinding.spinnerCity.getSelectedItem();
         if (getString(R.string.value_any_city).equals(selected)) {
             return null;
         } else {
@@ -105,7 +101,7 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     }
 
     private int getSelectedPrice() {
-        String selected = (String) mPriceSpinner.getSelectedItem();
+        String selected = (String) mBinding.spinnerPrice.getSelectedItem();
         if (selected.equals(getString(R.string.price_1))) {
             return 1;
         } else if (selected.equals(getString(R.string.price_2))) {
@@ -119,7 +115,7 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
     @Nullable
     private String getSelectedSortBy() {
-        String selected = (String) mSortSpinner.getSelectedItem();
+        String selected = (String) mBinding.spinnerSort.getSelectedItem();
         if (getString(R.string.sort_by_rating).equals(selected)) {
             return Restaurant.FIELD_AVG_RATING;
         } if (getString(R.string.sort_by_price).equals(selected)) {
@@ -133,7 +129,7 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
     @Nullable
     private Query.Direction getSortDirection() {
-        String selected = (String) mSortSpinner.getSelectedItem();
+        String selected = (String) mBinding.spinnerSort.getSelectedItem();
         if (getString(R.string.sort_by_rating).equals(selected)) {
             return Query.Direction.DESCENDING;
         } if (getString(R.string.sort_by_price).equals(selected)) {
@@ -146,18 +142,18 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     }
 
     public void resetFilters() {
-        if (mRootView != null) {
-            mCategorySpinner.setSelection(0);
-            mCitySpinner.setSelection(0);
-            mPriceSpinner.setSelection(0);
-            mSortSpinner.setSelection(0);
+        if (mBinding != null) {
+            mBinding.spinnerCategory.setSelection(0);
+            mBinding.spinnerCity.setSelection(0);
+            mBinding.spinnerPrice.setSelection(0);
+            mBinding.spinnerSort.setSelection(0);
         }
     }
 
     public Filters getFilters() {
         Filters filters = new Filters();
 
-        if (mRootView != null) {
+        if (mBinding != null) {
             filters.setCategory(getSelectedCategory());
             filters.setCity(getSelectedCity());
             filters.setPrice(getSelectedPrice());

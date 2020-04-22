@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,17 +19,10 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
+import com.google.firebase.quickstart.database.databinding.ActivityPostDetailBinding
 import com.google.firebase.quickstart.database.kotlin.models.Comment
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.models.User
-import kotlinx.android.synthetic.main.activity_post_detail.buttonPostComment
-import kotlinx.android.synthetic.main.activity_post_detail.fieldCommentText
-import kotlinx.android.synthetic.main.activity_post_detail.recyclerPostComments
-import kotlinx.android.synthetic.main.include_post_author.postAuthor
-import kotlinx.android.synthetic.main.include_post_text.postBody
-import kotlinx.android.synthetic.main.include_post_text.postTitle
-import kotlinx.android.synthetic.main.item_comment.view.commentAuthor
-import kotlinx.android.synthetic.main.item_comment.view.commentBody
 import java.util.ArrayList
 
 class PostDetailActivity : BaseActivity(), View.OnClickListener {
@@ -40,9 +34,12 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
     private var postListener: ValueEventListener? = null
     private var adapter: CommentAdapter? = null
 
+    private lateinit var binding: ActivityPostDetailBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_post_detail)
+        binding = ActivityPostDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Get post key from intent
         postKey = intent.getStringExtra(EXTRA_POST_KEY)
@@ -55,8 +52,10 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                 .child("post-comments").child(postKey)
 
         // Initialize Views
-        buttonPostComment.setOnClickListener(this)
-        recyclerPostComments.layoutManager = LinearLayoutManager(this)
+        with(binding) {
+            buttonPostComment.setOnClickListener(this@PostDetailActivity)
+            recyclerPostComments.layoutManager = LinearLayoutManager(this@PostDetailActivity)
+        }
     }
 
     public override fun onStart() {
@@ -70,9 +69,11 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                 val post = dataSnapshot.getValue<Post>()
                 // [START_EXCLUDE]
                 post?.let {
-                    postAuthor.text = it.author
-                    postTitle.text = it.title
-                    postBody.text = it.body
+                    binding.postAuthorLayout.postAuthor.text = it.author
+                    with(binding.postTextLayout) {
+                        postTitle.text = it.title
+                        postBody.text = it.body
+                    }
                 }
                 // [END_EXCLUDE]
             }
@@ -94,7 +95,7 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
 
         // Listen for comments
         adapter = CommentAdapter(this, commentsReference)
-        recyclerPostComments.adapter = adapter
+        binding.recyclerPostComments.adapter = adapter
     }
 
     public override fun onStop() {
@@ -130,14 +131,14 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
                         val authorName = user.username
 
                         // Create new comment object
-                        val commentText = fieldCommentText.text.toString()
+                        val commentText = binding.fieldCommentText.text.toString()
                         val comment = Comment(uid, authorName, commentText)
 
                         // Push the comment, it will appear in the list
                         commentsReference.push().setValue(comment)
 
                         // Clear the field
-                        fieldCommentText.text = null
+                        binding.fieldCommentText.text = null
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
@@ -148,8 +149,8 @@ class PostDetailActivity : BaseActivity(), View.OnClickListener {
     private class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(comment: Comment) {
-            itemView.commentAuthor.text = comment.author
-            itemView.commentBody.text = comment.text
+            itemView.findViewById<TextView>(R.id.commentAuthor).text = comment.author
+            itemView.findViewById<TextView>(R.id.commentBody).text = comment.text
         }
     }
 

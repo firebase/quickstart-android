@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_chooser.listView
+import com.google.firebase.quickstart.auth.databinding.ActivityChooserBinding
 
 /**
  * Simple list-based Activity to redirect to one of the other Activities. This Activity does not
@@ -29,16 +29,19 @@ import kotlinx.android.synthetic.main.activity_chooser.listView
  */
 class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
+    private lateinit var binding: ActivityChooserBinding;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityChooserBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_chooser)
 
         // Set up Adapter
         val adapter = MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES as Array<Class<*>>)
         adapter.setDescriptionIds(DESCRIPTION_IDS)
 
-        listView.adapter = adapter
-        listView.onItemClickListener = this
+        binding.listView.adapter = adapter
+        binding.listView.onItemClickListener = this
     }
 
     override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {

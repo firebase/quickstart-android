@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuthActionCodeException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.quickstart.auth.R;
+import com.google.firebase.quickstart.auth.databinding.ActivityPasswordlessBinding;
 
 /**
  * Demonstrate Firebase Authentication without a password, using a link sent to an
@@ -34,12 +32,7 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
 
     private FirebaseAuth mAuth;
 
-    private Button mSendLinkButton;
-    private Button mSignInButton;
-    private Button mSignOutButton;
-
-    private EditText mEmailField;
-    private TextView mStatusText;
+    private ActivityPasswordlessBinding mBinding;
 
     private String mPendingEmail;
     private String mEmailLink;
@@ -47,28 +40,21 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_passwordless);
+        mBinding = ActivityPasswordlessBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+        setProgressBar(mBinding.progressBar);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        mSendLinkButton = findViewById(R.id.passwordlessSendEmailButton);
-        mSignInButton = findViewById(R.id.passwordlessSignInButton);
-        mSignOutButton = findViewById(R.id.signOutButton);
-
-        mEmailField = findViewById(R.id.fieldEmail);
-        mStatusText = findViewById(R.id.status);
-
-        setProgressBar(R.id.progressBar);
-
-        mSendLinkButton.setOnClickListener(this);
-        mSignInButton.setOnClickListener(this);
-        mSignOutButton.setOnClickListener(this);
+        mBinding.passwordlessSendEmailButton.setOnClickListener(this);
+        mBinding.passwordlessSignInButton.setOnClickListener(this);
+        mBinding.signOutButton.setOnClickListener(this);
 
         // Restore the "pending" email address
         if (savedInstanceState != null) {
             mPendingEmail = savedInstanceState.getString(KEY_PENDING_EMAIL, null);
-            mEmailField.setText(mPendingEmail);
+            mBinding.fieldEmail.setText(mPendingEmail);
         }
 
         // Check if the Intent that started the Activity contains an email sign-in link.
@@ -102,13 +88,13 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
         if (intentHasEmailLink(intent)) {
             mEmailLink = intent.getData().toString();
 
-            mStatusText.setText(R.string.status_link_found);
-            mSendLinkButton.setEnabled(false);
-            mSignInButton.setEnabled(true);
+            mBinding.status.setText(R.string.status_link_found);
+            mBinding.passwordlessSendEmailButton.setEnabled(false);
+            mBinding.passwordlessSignInButton.setEnabled(true);
         } else {
-            mStatusText.setText(R.string.status_email_not_sent);
-            mSendLinkButton.setEnabled(true);
-            mSignInButton.setEnabled(false);
+            mBinding.status.setText(R.string.status_email_not_sent);
+            mBinding.passwordlessSendEmailButton.setEnabled(true);
+            mBinding.passwordlessSignInButton.setEnabled(false);
         }
     }
 
@@ -139,7 +125,7 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
                 .setUrl("https://auth.example.com/emailSignInLink")
                 .build();
 
-        hideKeyboard(mEmailField);
+        hideKeyboard(mBinding.fieldEmail);
         showProgressBar();
 
         mAuth.sendSignInLinkToEmail(email, settings)
@@ -153,14 +139,14 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
                             showSnackbar("Sign-in link sent!");
 
                             mPendingEmail = email;
-                            mStatusText.setText(R.string.status_email_sent);
+                            mBinding.status.setText(R.string.status_email_sent);
                         } else {
                             Exception e = task.getException();
                             Log.w(TAG, "Could not send link", e);
                             showSnackbar("Failed to send link.");
 
                             if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                                mEmailField.setError("Invalid email address.");
+                                mBinding.fieldEmail.setError("Invalid email address.");
                             }
                         }
                     }
@@ -174,7 +160,7 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
     private void signInWithEmailLink(String email, String link) {
         Log.d(TAG, "signInWithLink:" + link);
 
-        hideKeyboard(mEmailField);
+        hideKeyboard(mBinding.fieldEmail);
         showProgressBar();
 
         mAuth.signInWithEmailLink(email, link)
@@ -187,7 +173,7 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithEmailLink:success");
 
-                            mEmailField.setText(null);
+                            mBinding.fieldEmail.setText(null);
                             updateUI(task.getResult().getUser());
                         } else {
                             Log.w(TAG, "signInWithEmailLink:failure", task.getException());
@@ -202,9 +188,9 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void onSendLinkClicked() {
-        String email = mEmailField.getText().toString();
+        String email = mBinding.fieldEmail.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Email must not be empty.");
+            mBinding.fieldEmail.setError("Email must not be empty.");
             return;
         }
 
@@ -212,9 +198,9 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void onSignInClicked() {
-        String email = mEmailField.getText().toString();
+        String email = mBinding.fieldEmail.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Email must not be empty.");
+            mBinding.fieldEmail.setError("Email must not be empty.");
             return;
         }
 
@@ -225,21 +211,21 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
         mAuth.signOut();
 
         updateUI(null);
-        mStatusText.setText(R.string.status_email_not_sent);
+        mBinding.status.setText(R.string.status_email_not_sent);
     }
 
     private void updateUI(@Nullable FirebaseUser user) {
         if (user != null) {
-            mStatusText.setText(getString(R.string.passwordless_status_fmt,
+            mBinding.status.setText(getString(R.string.passwordless_status_fmt,
                     user.getEmail(), user.isEmailVerified()));
 
-            findViewById(R.id.passwordlessFields).setVisibility(View.GONE);
-            findViewById(R.id.passwordlessButtons).setVisibility(View.GONE);
-            findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
+            mBinding.passwordlessFields.setVisibility(View.GONE);
+            mBinding.passwordlessButtons.setVisibility(View.GONE);
+            mBinding.signedInButtons.setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.passwordlessFields).setVisibility(View.VISIBLE);
-            findViewById(R.id.passwordlessButtons).setVisibility(View.VISIBLE);
-            findViewById(R.id.signedInButtons).setVisibility(View.GONE);
+            mBinding.passwordlessFields.setVisibility(View.VISIBLE);
+            mBinding.passwordlessButtons.setVisibility(View.VISIBLE);
+            mBinding.signedInButtons.setVisibility(View.GONE);
         }
     }
 

@@ -10,8 +10,8 @@ open class BaseActivity : AppCompatActivity() {
 
     private var progressBar: ProgressBar? = null
 
-    fun setProgressBar(resId: Int) {
-        progressBar = findViewById(resId)
+    fun setProgressBar(bar: ProgressBar) {
+        progressBar = bar
     }
 
     fun showProgressBar() {
