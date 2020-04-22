@@ -15,7 +15,8 @@ import com.google.firebase.example.fireeats.kotlin.model.Rating
  */
 class RatingDialogFragment : DialogFragment() {
 
-    private lateinit var binding: DialogRatingBinding
+    private var _binding: DialogRatingBinding? = null
+    private val binding get() = _binding!!
     private var ratingListener: RatingListener? = null
 
     internal interface RatingListener {
@@ -28,12 +29,17 @@ class RatingDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogRatingBinding.inflate(inflater, container, false)
+        _binding = DialogRatingBinding.inflate(inflater, container, false)
 
         binding.restaurantFormButton.setOnClickListener { onSubmitClicked() }
         binding.restaurantFormCancel.setOnClickListener { onCancelClicked() }
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onAttach(context: Context) {

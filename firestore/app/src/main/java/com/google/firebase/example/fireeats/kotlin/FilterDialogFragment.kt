@@ -16,7 +16,8 @@ import com.google.firebase.firestore.Query
  */
 class FilterDialogFragment : DialogFragment() {
 
-    private lateinit var binding: DialogFiltersBinding
+    private var _binding: DialogFiltersBinding? = null
+    private val binding get() = _binding!!
     private var filterListener: FilterListener? = null
 
     private val selectedCategory: String?
@@ -105,12 +106,17 @@ class FilterDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DialogFiltersBinding.inflate(inflater, container, false)
+        _binding = DialogFiltersBinding.inflate(inflater, container, false)
 
         binding.buttonSearch.setOnClickListener { onSearchClicked() }
         binding.buttonCancel.setOnClickListener { onCancelClicked() }
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onAttach(context: Context) {

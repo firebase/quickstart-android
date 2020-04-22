@@ -46,6 +46,12 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mBinding = null;
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
