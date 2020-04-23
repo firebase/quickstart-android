@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.samples.apps.mlkit.R;
+import com.google.firebase.samples.apps.mlkit.databinding.ActivityChooserBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,21 +56,19 @@ public final class ChooserActivity extends AppCompatActivity
         R.string.desc_camera_source_activity, R.string.desc_still_image_activity,
       };
 
+  private ActivityChooserBinding mBinding;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    Log.d(TAG, "onCreate");
-
-    setContentView(R.layout.activity_chooser);
-
-    // Set up ListView and Adapter
-    ListView listView = findViewById(R.id.testActivityListView);
+    mBinding = ActivityChooserBinding.inflate(getLayoutInflater());
+    setContentView(mBinding.getRoot());
 
     MyArrayAdapter adapter = new MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES);
     adapter.setDescriptionIds(DESCRIPTION_IDS);
 
-    listView.setAdapter(adapter);
-    listView.setOnItemClickListener(this);
+    mBinding.testActivityListView.setAdapter(adapter);
+    mBinding.testActivityListView.setOnItemClickListener(this);
 
     if (!allPermissionsGranted()) {
       getRuntimePermissions();
