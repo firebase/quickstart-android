@@ -12,20 +12,19 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
+import com.google.firebase.quickstart.database.databinding.ActivitySignInBinding
 import com.google.firebase.quickstart.database.kotlin.models.User
-import kotlinx.android.synthetic.main.activity_sign_in.buttonSignIn
-import kotlinx.android.synthetic.main.activity_sign_in.buttonSignUp
-import kotlinx.android.synthetic.main.activity_sign_in.fieldEmail
-import kotlinx.android.synthetic.main.activity_sign_in.fieldPassword
 
 class SignInActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivitySignInBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+        binding = ActivitySignInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         database = Firebase.database.reference
         auth = FirebaseAuth.getInstance()
@@ -33,8 +32,10 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         setProgressBar(R.id.progressBar)
 
         // Click listeners
-        buttonSignIn.setOnClickListener(this)
-        buttonSignUp.setOnClickListener(this)
+        with(binding) {
+            buttonSignIn.setOnClickListener(this@SignInActivity)
+            buttonSignUp.setOnClickListener(this@SignInActivity)
+        }
     }
 
     public override fun onStart() {
@@ -53,8 +54,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         }
 
         showProgressBar()
-        val email = fieldEmail.text.toString()
-        val password = fieldPassword.text.toString()
+        val email = binding.fieldEmail.text.toString()
+        val password = binding.fieldPassword.text.toString()
 
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -77,8 +78,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         }
 
         showProgressBar()
-        val email = fieldEmail.text.toString()
-        val password = fieldPassword.text.toString()
+        val email = binding.fieldEmail.text.toString()
+        val password = binding.fieldPassword.text.toString()
 
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -115,18 +116,18 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
 
     private fun validateForm(): Boolean {
         var result = true
-        if (TextUtils.isEmpty(fieldEmail.text.toString())) {
-            fieldEmail.error = "Required"
+        if (TextUtils.isEmpty(binding.fieldEmail.text.toString())) {
+            binding.fieldEmail.error = "Required"
             result = false
         } else {
-            fieldEmail.error = null
+            binding.fieldEmail.error = null
         }
 
-        if (TextUtils.isEmpty(fieldPassword.text.toString())) {
-            fieldPassword.error = "Required"
+        if (TextUtils.isEmpty(binding.fieldPassword.text.toString())) {
+            binding.fieldPassword.error = "Required"
             result = false
         } else {
-            fieldPassword.error = null
+            binding.fieldPassword.error = null
         }
 
         return result

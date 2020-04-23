@@ -11,14 +11,14 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.quickstart.fcm.R
-import kotlinx.android.synthetic.main.activity_main.logTokenButton
-import kotlinx.android.synthetic.main.activity_main.subscribeButton
+import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
         // [END handle_data_extras]
 
-        subscribeButton.setOnClickListener {
+        binding.subscribeButton.setOnClickListener {
             Log.d(TAG, "Subscribing to weather topic")
             // [START subscribe_topics]
             FirebaseMessaging.getInstance().subscribeToTopic("weather")
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             // [END subscribe_topics]
         }
 
-        logTokenButton.setOnClickListener {
+        binding.logTokenButton.setOnClickListener {
             // Get token
             // [START retrieve_current_token]
             FirebaseInstanceId.getInstance().instanceId

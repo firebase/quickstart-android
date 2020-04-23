@@ -11,12 +11,9 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.quickstart.database.R
+import com.google.firebase.quickstart.database.databinding.ActivityNewPostBinding
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.models.User
-import kotlinx.android.synthetic.main.activity_new_post.fabSubmitPost
-import kotlinx.android.synthetic.main.activity_new_post.fieldBody
-import kotlinx.android.synthetic.main.activity_new_post.fieldTitle
 import java.util.HashMap
 
 class NewPostActivity : BaseActivity() {
@@ -24,31 +21,33 @@ class NewPostActivity : BaseActivity() {
     // [START declare_database_ref]
     private lateinit var database: DatabaseReference
     // [END declare_database_ref]
+    private lateinit var binding: ActivityNewPostBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_post)
+        binding = ActivityNewPostBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // [START initialize_database_ref]
         database = Firebase.database.reference
         // [END initialize_database_ref]
 
-        fabSubmitPost.setOnClickListener { submitPost() }
+        binding.fabSubmitPost.setOnClickListener { submitPost() }
     }
 
     private fun submitPost() {
-        val title = fieldTitle.text.toString()
-        val body = fieldBody.text.toString()
+        val title = binding.fieldTitle.text.toString()
+        val body = binding.fieldBody.text.toString()
 
         // Title is required
         if (TextUtils.isEmpty(title)) {
-            fieldTitle.error = REQUIRED
+            binding.fieldTitle.error = REQUIRED
             return
         }
 
         // Body is required
         if (TextUtils.isEmpty(body)) {
-            fieldBody.error = REQUIRED
+            binding.fieldBody.error = REQUIRED
             return
         }
 
@@ -93,12 +92,14 @@ class NewPostActivity : BaseActivity() {
     }
 
     private fun setEditingEnabled(enabled: Boolean) {
-        fieldTitle.isEnabled = enabled
-        fieldBody.isEnabled = enabled
-        if (enabled) {
-            fabSubmitPost.show()
-        } else {
-            fabSubmitPost.hide()
+        with(binding) {
+            fieldTitle.isEnabled = enabled
+            fieldBody.isEnabled = enabled
+            if (enabled) {
+                fabSubmitPost.show()
+            } else {
+                fabSubmitPost.hide()
+            }
         }
     }
 

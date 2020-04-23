@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.example.fireeats.R;
+import com.google.firebase.example.fireeats.databinding.ActivityMainBinding;
 import com.google.firebase.example.fireeats.java.adapter.RestaurantAdapter;
 import com.google.firebase.example.fireeats.java.model.Rating;
 import com.google.firebase.example.fireeats.java.model.Restaurant;
@@ -54,11 +55,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final int LIMIT = 50;
 
-    private Toolbar mToolbar;
-    private TextView mCurrentSearchView;
-    private TextView mCurrentSortByView;
-    private RecyclerView mRestaurantsRecycler;
-    private ViewGroup mEmptyView;
+    private ActivityMainBinding mBinding;
 
     private FirebaseFirestore mFirestore;
     private Query mQuery;
@@ -71,17 +68,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        mToolbar = findViewById(R.id.toolbar);
-        mCurrentSearchView = findViewById(R.id.textCurrentSearch);
-        mCurrentSortByView = findViewById(R.id.textCurrentSortBy);
-        mRestaurantsRecycler = findViewById(R.id.recyclerRestaurants);
-        mEmptyView = findViewById(R.id.viewEmpty);
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(mBinding.toolbar);
 
-        findViewById(R.id.filterBar).setOnClickListener(this);
-        findViewById(R.id.buttonClearFilter).setOnClickListener(this);
+        mBinding.filterBar.setOnClickListener(this);
+        mBinding.buttonClearFilter.setOnClickListener(this);
 
         // View model
         mViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
@@ -103,24 +96,24 @@ public class MainActivity extends AppCompatActivity implements
             protected void onDataChanged() {
                 // Show/hide content if the query returns empty.
                 if (getItemCount() == 0) {
-                    mRestaurantsRecycler.setVisibility(View.GONE);
-                    mEmptyView.setVisibility(View.VISIBLE);
+                    mBinding.recyclerRestaurants.setVisibility(View.GONE);
+                    mBinding.viewEmpty.setVisibility(View.VISIBLE);
                 } else {
-                    mRestaurantsRecycler.setVisibility(View.VISIBLE);
-                    mEmptyView.setVisibility(View.GONE);
+                    mBinding.recyclerRestaurants.setVisibility(View.VISIBLE);
+                    mBinding.viewEmpty.setVisibility(View.GONE);
                 }
             }
 
             @Override
             protected void onError(FirebaseFirestoreException e) {
                 // Show a snackbar on errors
-                Snackbar.make(findViewById(android.R.id.content),
+                Snackbar.make(mBinding.getRoot(),
                         "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
             }
         };
 
-        mRestaurantsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mRestaurantsRecycler.setAdapter(mAdapter);
+        mBinding.recyclerRestaurants.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.recyclerRestaurants.setAdapter(mAdapter);
 
         // Filter Dialog
         mFilterDialog = new FilterDialogFragment();
@@ -247,9 +240,9 @@ public class MainActivity extends AppCompatActivity implements
         mAdapter.setQuery(query);
 
         // Set header
-        mCurrentSearchView.setText(HtmlCompat.fromHtml(filters.getSearchDescription(this),
+        mBinding.textCurrentSearch.setText(HtmlCompat.fromHtml(filters.getSearchDescription(this),
                 HtmlCompat.FROM_HTML_MODE_LEGACY));
-        mCurrentSortByView.setText(filters.getOrderDescription(this));
+        mBinding.textCurrentSortBy.setText(filters.getOrderDescription(this));
 
         // Save filters
         mViewModel.setFilters(filters);

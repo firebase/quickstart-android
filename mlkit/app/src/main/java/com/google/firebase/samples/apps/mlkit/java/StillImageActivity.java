@@ -33,16 +33,14 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Spinner;
 
 import com.google.android.gms.common.annotation.KeepName;
 import com.google.firebase.samples.apps.mlkit.R;
-import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor;
+import com.google.firebase.samples.apps.mlkit.databinding.ActivityStillImageBinding;
 import com.google.firebase.samples.apps.mlkit.java.cloudimagelabeling.CloudImageLabelingProcessor;
 import com.google.firebase.samples.apps.mlkit.java.cloudlandmarkrecognition.CloudLandmarkRecognitionProcessor;
 import com.google.firebase.samples.apps.mlkit.java.cloudtextrecognition.CloudDocumentTextRecognitionProcessor;
@@ -80,8 +78,6 @@ public final class StillImageActivity extends AppCompatActivity {
   private static final int REQUEST_IMAGE_CAPTURE = 1001;
   private static final int REQUEST_CHOOSE_IMAGE = 1002;
 
-  private ImageView preview;
-  private GraphicOverlay graphicOverlay;
   private String selectedMode = CLOUD_LABEL_DETECTION;
   private String selectedSize = SIZE_PREVIEW;
 
@@ -94,14 +90,15 @@ public final class StillImageActivity extends AppCompatActivity {
   private Integer imageMaxHeight;
   private VisionImageProcessor imageProcessor;
 
+  private ActivityStillImageBinding binding;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    binding = ActivityStillImageBinding.inflate(getLayoutInflater());
+    setContentView(binding.getRoot());
 
-    setContentView(R.layout.activity_still_image);
-
-    Button getImageButton = findViewById(R.id.getImageButton);
-    getImageButton.setOnClickListener(
+    binding.getImageButton.setOnClickListener(
         new OnClickListener() {
           @Override
           public void onClick(View view) {
@@ -129,14 +126,6 @@ public final class StillImageActivity extends AppCompatActivity {
             popup.show();
           }
         });
-    preview = findViewById(R.id.previewPane);
-    if (preview == null) {
-      Log.d(TAG, "Preview is null");
-    }
-    graphicOverlay = findViewById(R.id.previewOverlay);
-    if (graphicOverlay == null) {
-      Log.d(TAG, "graphicOverlay is null");
-    }
 
     populateFeatureSelector();
     populateSizeSelector();
@@ -258,7 +247,7 @@ public final class StillImageActivity extends AppCompatActivity {
   private void startCameraIntentForResult() {
     // Clean up last time's image
     imageUri = null;
-    preview.setImageBitmap(null);
+    binding.previewPane.setImageBitmap(null);
 
     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -297,7 +286,7 @@ public final class StillImageActivity extends AppCompatActivity {
       }
 
       // Clear the overlay first
-      graphicOverlay.clear();
+      binding.previewOverlay.clear();
 
       Bitmap imageBitmap;
       if (Build.VERSION.SDK_INT < 29) {
@@ -326,9 +315,9 @@ public final class StillImageActivity extends AppCompatActivity {
               (int) (imageBitmap.getHeight() / scaleFactor),
               true);
 
-      preview.setImageBitmap(resizedBitmap);
+      binding.previewPane.setImageBitmap(resizedBitmap);
 
-      imageProcessor.process(resizedBitmap, graphicOverlay);
+      imageProcessor.process(resizedBitmap, binding.previewOverlay);
     } catch (IOException e) {
       Log.e(TAG, "Error retrieving saved image");
     }
@@ -342,9 +331,9 @@ public final class StillImageActivity extends AppCompatActivity {
       // a UI layout pass to get the right values. So delay it to first time image rendering time.
       if (isLandScape) {
         imageMaxWidth =
-            ((View) preview.getParent()).getHeight() - findViewById(R.id.controlPanel).getHeight();
+            ((View) binding.previewPane.getParent()).getHeight() - binding.controlPanel.getHeight();
       } else {
-        imageMaxWidth = ((View) preview.getParent()).getWidth();
+        imageMaxWidth = ((View) binding.previewPane.getParent()).getWidth();
       }
     }
 
@@ -358,10 +347,10 @@ public final class StillImageActivity extends AppCompatActivity {
       // Calculate the max width in portrait mode. This is done lazily since we need to wait for
       // a UI layout pass to get the right values. So delay it to first time image rendering time.
       if (isLandScape) {
-        imageMaxHeight = ((View) preview.getParent()).getWidth();
+        imageMaxHeight = ((View) binding.previewPane.getParent()).getWidth();
       } else {
         imageMaxHeight =
-            ((View) preview.getParent()).getHeight() - findViewById(R.id.controlPanel).getHeight();
+            ((View) binding.previewPane.getParent()).getHeight() - findViewById(R.id.controlPanel).getHeight();
       }
     }
 

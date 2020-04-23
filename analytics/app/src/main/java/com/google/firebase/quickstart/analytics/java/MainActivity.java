@@ -39,6 +39,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.quickstart.analytics.R;
+import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding;
 
 import java.util.Locale;
 
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
             new ImageInfo(R.drawable.face, R.string.pattern3_title, R.string.pattern3_id),
             new ImageInfo(R.drawable.whitebalance, R.string.pattern4_title, R.string.pattern4_id),
     };
+
+    private ActivityMainBinding binding;
 
     /**
      * The {@link androidx.viewpager.widget.PagerAdapter} that will provide fragments for each image.
@@ -84,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // [START shared_app_measurement]
         // Obtain the FirebaseAnalytics instance.
@@ -105,12 +109,12 @@ public class MainActivity extends AppCompatActivity {
         mImagePagerAdapter = new ImagePagerAdapter(getSupportFragmentManager(), IMAGE_INFOS);
 
         // Set up the ViewPager with the pattern adapter.
-        mViewPager = findViewById(R.id.viewPager);
+        mViewPager = binding.viewPager;
         mViewPager.setAdapter(mImagePagerAdapter);
 
         // Workaround for AppCompat issue not showing ViewPager titles
         ViewPager.LayoutParams params = (ViewPager.LayoutParams)
-                findViewById(R.id.pagerTabStrip).getLayoutParams();
+                binding.pagerTabStrip.getLayoutParams();
         params.isDecor = true;
 
         // When the visible image changes, send a screen view hit.

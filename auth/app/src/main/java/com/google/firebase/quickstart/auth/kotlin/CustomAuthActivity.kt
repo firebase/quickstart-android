@@ -8,9 +8,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_custom.buttonSignIn
-import kotlinx.android.synthetic.main.activity_custom.textSignInStatus
-import kotlinx.android.synthetic.main.activity_custom.textTokenStatus
+import com.google.firebase.quickstart.auth.databinding.ActivityCustomBinding
 
 /**
  * Demonstrate Firebase Authentication using a custom minted token. For more information, see:
@@ -22,15 +20,18 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
+    private lateinit var binding: ActivityCustomBinding
+
     private var customToken: String? = null
     private lateinit var tokenReceiver: TokenBroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_custom)
+        binding = ActivityCustomBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Button click listeners
-        buttonSignIn.setOnClickListener(this)
+        binding.buttonSignIn.setOnClickListener(this)
 
         // Create token receiver (for demo purposes only)
         tokenReceiver = object : TokenBroadcastReceiver() {
@@ -90,9 +91,9 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            textSignInStatus.text = getString(R.string.custom_auth_signin_status_user, user.uid)
+            binding.textSignInStatus.text = getString(R.string.custom_auth_signin_status_user, user.uid)
         } else {
-            textSignInStatus.text = getString(R.string.custom_auth_signin_status_failed)
+            binding.textSignInStatus.text = getString(R.string.custom_auth_signin_status_failed)
         }
     }
 
@@ -102,8 +103,8 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
         val status = "Token:$customToken"
 
         // Enable/disable sign-in button and show the token
-        buttonSignIn.isEnabled = true
-        textTokenStatus.text = status
+        binding.buttonSignIn.isEnabled = true
+        binding.textTokenStatus.text = status
     }
 
     override fun onClick(v: View) {

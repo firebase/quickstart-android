@@ -1,17 +1,17 @@
 package com.google.samples.quickstart.admobexample.kotlin
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import com.google.samples.quickstart.admobexample.R
-import kotlinx.android.synthetic.main.activity_main.adView
-import kotlinx.android.synthetic.main.activity_main.loadInterstitialButton
+import com.google.samples.quickstart.admobexample.databinding.ActivityMainBinding
 
 // [SNIPPET load_banner_ad]
 // Load an ad into the AdView.
@@ -19,12 +19,21 @@ import kotlinx.android.synthetic.main.activity_main.loadInterstitialButton
 class MainActivity : AppCompatActivity() {
 
     // [START_EXCLUDE]
+    private lateinit var binding: ActivityMainBinding
     private lateinit var interstitialAd: InterstitialAd
+    private lateinit var adView: AdView
+    private lateinit var loadInterstitialButton: Button
     // [END_EXCLUDE]
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        // [START_EXCLUDE]
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        adView = binding.adView
+        loadInterstitialButton = binding.loadInterstitialButton
+        val layout = binding.root
+        // [END_EXCLUDE]
+        setContentView(layout)
         checkIds()
 
         // Initialize the Google Mobile Ads SDK
@@ -130,6 +139,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
-        private const val TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713";
+        private const val TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713"
     }
 }

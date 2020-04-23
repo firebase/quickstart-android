@@ -9,13 +9,7 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_anonymous_auth.anonymousStatusEmail
-import kotlinx.android.synthetic.main.activity_anonymous_auth.anonymousStatusId
-import kotlinx.android.synthetic.main.activity_anonymous_auth.buttonAnonymousSignIn
-import kotlinx.android.synthetic.main.activity_anonymous_auth.buttonAnonymousSignOut
-import kotlinx.android.synthetic.main.activity_anonymous_auth.buttonLinkAccount
-import kotlinx.android.synthetic.main.activity_anonymous_auth.fieldEmail
-import kotlinx.android.synthetic.main.activity_anonymous_auth.fieldPassword
+import com.google.firebase.quickstart.auth.databinding.ActivityAnonymousAuthBinding
 
 /**
  * Activity to demonstrate anonymous login and account linking (with an email/password account).
@@ -26,11 +20,13 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
+    private lateinit var binding: ActivityAnonymousAuthBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_anonymous_auth)
-
-        setProgressBar(R.id.progressBar)
+        binding = ActivityAnonymousAuthBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setProgressBar(binding.progressBar)
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -38,9 +34,9 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         // [END initialize_auth]
 
         // Click listeners
-        buttonAnonymousSignIn.setOnClickListener(this)
-        buttonAnonymousSignOut.setOnClickListener(this)
-        buttonLinkAccount.setOnClickListener(this)
+        binding.buttonAnonymousSignIn.setOnClickListener(this)
+        binding.buttonAnonymousSignOut.setOnClickListener(this)
+        binding.buttonLinkAccount.setOnClickListener(this)
     }
 
     // [START on_start_check_user]
@@ -89,8 +85,8 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         }
 
         // Get email and password from the form
-        val email = fieldEmail.text.toString()
-        val password = fieldPassword.text.toString()
+        val email = binding.fieldEmail.text.toString()
+        val password = binding.fieldPassword.text.toString()
 
         // Create EmailAuthCredential with email and password
         val credential = EmailAuthProvider.getCredential(email, password)
@@ -122,20 +118,20 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
     private fun validateLinkForm(): Boolean {
         var valid = true
 
-        val email = fieldEmail.text.toString()
+        val email = binding.fieldEmail.text.toString()
         if (TextUtils.isEmpty(email)) {
-            fieldEmail.error = "Required."
+            binding.fieldEmail.error = "Required."
             valid = false
         } else {
-            fieldEmail.error = null
+            binding.fieldEmail.error = null
         }
 
-        val password = fieldPassword.text.toString()
+        val password = binding.fieldPassword.text.toString()
         if (TextUtils.isEmpty(password)) {
-            fieldPassword.error = "Required."
+            binding.fieldPassword.error = "Required."
             valid = false
         } else {
-            fieldPassword.error = null
+            binding.fieldPassword.error = null
         }
 
         return valid
@@ -147,17 +143,17 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
 
         // Status text
         if (isSignedIn) {
-            anonymousStatusId.text = getString(R.string.id_fmt, user!!.uid)
-            anonymousStatusEmail.text = getString(R.string.email_fmt, user.email)
+            binding.anonymousStatusId.text = getString(R.string.id_fmt, user!!.uid)
+            binding.anonymousStatusEmail.text = getString(R.string.email_fmt, user.email)
         } else {
-            anonymousStatusId.setText(R.string.signed_out)
-            anonymousStatusEmail.text = null
+            binding.anonymousStatusId.setText(R.string.signed_out)
+            binding.anonymousStatusEmail.text = null
         }
 
         // Button visibility
-        buttonAnonymousSignIn.isEnabled = !isSignedIn
-        buttonAnonymousSignOut.isEnabled = isSignedIn
-        buttonLinkAccount.isEnabled = isSignedIn
+        binding.buttonAnonymousSignIn.isEnabled = !isSignedIn
+        binding.buttonAnonymousSignOut.isEnabled = isSignedIn
+        binding.buttonLinkAccount.isEnabled = isSignedIn
     }
 
     override fun onClick(v: View) {

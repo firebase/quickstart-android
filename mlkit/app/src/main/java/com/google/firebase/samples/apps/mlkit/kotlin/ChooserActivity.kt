@@ -15,7 +15,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.google.firebase.samples.apps.mlkit.R
-import kotlinx.android.synthetic.main.activity_chooser.testActivityListView
+import com.google.firebase.samples.apps.mlkit.databinding.ActivityChooserBinding
 import java.util.ArrayList
 
 /**
@@ -25,18 +25,19 @@ import java.util.ArrayList
 class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback,
         AdapterView.OnItemClickListener {
 
+    private lateinit var binding: ActivityChooserBinding;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
-
-        setContentView(R.layout.activity_chooser)
+        binding = ActivityChooserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Set up ListView and Adapter
         val adapter = MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES)
         adapter.setDescriptionIds(DESCRIPTION_IDS)
 
-        testActivityListView.adapter = adapter
-        testActivityListView.onItemClickListener = this
+        binding.testActivityListView.adapter = adapter
+        binding.testActivityListView.onItemClickListener = this
 
         if (!allPermissionsGranted()) {
             getRuntimePermissions()

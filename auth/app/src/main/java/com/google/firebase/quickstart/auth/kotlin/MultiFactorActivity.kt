@@ -10,33 +10,28 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneMultiFactorInfo
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_multi_factor.detail
-import kotlinx.android.synthetic.main.activity_multi_factor.emailSignInButton
-import kotlinx.android.synthetic.main.activity_multi_factor.enrollMfa
-import kotlinx.android.synthetic.main.activity_multi_factor.mfaInfo
-import kotlinx.android.synthetic.main.activity_multi_factor.reloadButton
-import kotlinx.android.synthetic.main.activity_multi_factor.signOutButton
-import kotlinx.android.synthetic.main.activity_multi_factor.status
-import kotlinx.android.synthetic.main.activity_multi_factor.unenrollMfa
-import kotlinx.android.synthetic.main.activity_multi_factor.verifyEmailButton
+import com.google.firebase.quickstart.auth.databinding.ActivityMultiFactorBinding
 
 class MultiFactorActivity : BaseActivity(), View.OnClickListener {
     // [START declare_auth]
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
+    private lateinit var binding: ActivityMultiFactorBinding
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_multi_factor)
-        setProgressBar(R.id.progressBar)
+        binding = ActivityMultiFactorBinding.inflate(layoutInflater)
+        setContentView(binding.reloadButton)
+        setProgressBar(binding.progressBar)
 
         // Buttons
-        emailSignInButton.setOnClickListener(this)
-        signOutButton.setOnClickListener(this)
-        verifyEmailButton.setOnClickListener(this)
-        enrollMfa.setOnClickListener(this)
-        unenrollMfa.setOnClickListener(this)
-        reloadButton.setOnClickListener(this)
+        binding.emailSignInButton.setOnClickListener(this)
+        binding.signOutButton.setOnClickListener(this)
+        binding.verifyEmailButton.setOnClickListener(this)
+        binding.enrollMfa.setOnClickListener(this)
+        binding.unenrollMfa.setOnClickListener(this)
+        binding.reloadButton.setOnClickListener(this)
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -115,9 +110,9 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
     private fun updateUI(user: FirebaseUser?) {
         hideProgressBar()
         if (user != null) {
-            status.text = getString(R.string.emailpassword_status_fmt,
+            binding.status.text = getString(R.string.emailpassword_status_fmt,
                     user.email, user.isEmailVerified)
-            detail.text = getString(R.string.firebase_status_fmt, user.uid)
+            binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
             val secondFactors = user.multiFactor.enrolledFactors
             if (secondFactors.isEmpty()) {
                 findViewById<View>(R.id.unenrollMfa).visibility = View.GONE
@@ -129,7 +124,7 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
                     sb.append((x as PhoneMultiFactorInfo).phoneNumber + delimiter)
                 }
                 sb.setLength(sb.length - delimiter.length)
-                mfaInfo.text = sb.toString()
+                binding.mfaInfo.text = sb.toString()
             }
             findViewById<View>(R.id.emailPasswordButtons).visibility = View.GONE
             findViewById<View>(R.id.signedInButtons).visibility = View.VISIBLE
@@ -143,9 +138,9 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
                 findViewById<View>(R.id.enrollMfa).visibility = View.GONE
             }
         } else {
-            status.setText(R.string.multi_factor_signed_out)
-            detail.text = null
-            mfaInfo.text = null
+            binding.status.setText(R.string.multi_factor_signed_out)
+            binding.detail.text = null
+            binding.mfaInfo.text = null
             findViewById<View>(R.id.emailPasswordButtons).visibility = View.VISIBLE
             findViewById<View>(R.id.signedInButtons).visibility = View.GONE
         }

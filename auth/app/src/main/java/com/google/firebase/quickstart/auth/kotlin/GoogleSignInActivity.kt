@@ -14,13 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_google.detail
-import kotlinx.android.synthetic.main.activity_google.disconnectButton
-import kotlinx.android.synthetic.main.activity_google.main_layout
-import kotlinx.android.synthetic.main.activity_google.signInButton
-import kotlinx.android.synthetic.main.activity_google.signOutAndDisconnect
-import kotlinx.android.synthetic.main.activity_google.signOutButton
-import kotlinx.android.synthetic.main.activity_google.status
+import com.google.firebase.quickstart.auth.databinding.ActivityGoogleBinding
 
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
@@ -31,18 +25,19 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
+    private lateinit var binding: ActivityGoogleBinding
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_google)
-
-        setProgressBar(R.id.progressBar)
+        binding = ActivityGoogleBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setProgressBar(binding.progressBar)
 
         // Button listeners
-        signInButton.setOnClickListener(this)
-        signOutButton.setOnClickListener(this)
-        disconnectButton.setOnClickListener(this)
+        binding.signInButton.setOnClickListener(this)
+        binding.signOutButton.setOnClickListener(this)
+        binding.disconnectButton.setOnClickListener(this)
 
         // [START config_signin]
         // Configure Google Sign In
@@ -109,7 +104,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        Snackbar.make(main_layout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(binding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                         updateUI(null)
                     }
 
@@ -150,17 +145,17 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
     private fun updateUI(user: FirebaseUser?) {
         hideProgressBar()
         if (user != null) {
-            status.text = getString(R.string.google_status_fmt, user.email)
-            detail.text = getString(R.string.firebase_status_fmt, user.uid)
+            binding.status.text = getString(R.string.google_status_fmt, user.email)
+            binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
-            signInButton.visibility = View.GONE
-            signOutAndDisconnect.visibility = View.VISIBLE
+            binding.signInButton.visibility = View.GONE
+            binding.signOutAndDisconnect.visibility = View.VISIBLE
         } else {
-            status.setText(R.string.signed_out)
-            detail.text = null
+            binding.status.setText(R.string.signed_out)
+            binding.detail.text = null
 
-            signInButton.visibility = View.VISIBLE
-            signOutAndDisconnect.visibility = View.GONE
+            binding.signInButton.visibility = View.VISIBLE
+            binding.signOutAndDisconnect.visibility = View.GONE
         }
     }
 

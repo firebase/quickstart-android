@@ -13,8 +13,8 @@ public class BaseActivity extends AppCompatActivity {
     @VisibleForTesting
     public ProgressBar mProgressBar;
 
-    public void setProgressBar(int resId) {
-        mProgressBar = findViewById(resId);
+    public void setProgressBar(ProgressBar progressBar) {
+        mProgressBar = progressBar;
     }
 
     public void showProgressBar() {

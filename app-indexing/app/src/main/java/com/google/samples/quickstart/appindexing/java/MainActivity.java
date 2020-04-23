@@ -21,7 +21,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +36,7 @@ import com.google.firebase.appindexing.Indexable;
 import com.google.firebase.appindexing.builders.Actions;
 // [END import_classes]
 import com.google.samples.quickstart.appindexing.R;
+import com.google.samples.quickstart.appindexing.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,19 +50,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // [START_EXCLUDE]
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         final FirebaseAppIndex firebaseAppIndex = FirebaseAppIndex.getInstance();
 
-        Button addStickersBtn = findViewById(R.id.addStickersBtn);
-        addStickersBtn.setOnClickListener(new View.OnClickListener() {
+        binding.addStickersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startService(new Intent(MainActivity.this, AppIndexingService.class));
             }
         });
-        Button clearStickersBtn = findViewById(R.id.clearStickersBtn);
-        clearStickersBtn.setOnClickListener(new View.OnClickListener() {
+        binding.clearStickersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppIndexingUtil.clearStickers(MainActivity.this, firebaseAppIndex);

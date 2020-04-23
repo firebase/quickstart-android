@@ -3,7 +3,6 @@ package com.google.firebase.quickstart.auth.java;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.quickstart.auth.BuildConfig;
 import com.google.firebase.quickstart.auth.R;
+import com.google.firebase.quickstart.auth.databinding.ActivityFirebaseUiBinding;
 
 import java.util.Collections;
 
@@ -28,22 +28,19 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
     private FirebaseAuth mAuth;
 
-    private TextView mStatusView;
-    private TextView mDetailView;
+    private ActivityFirebaseUiBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_firebase_ui);
+        mBinding = ActivityFirebaseUiBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        mStatusView = findViewById(R.id.status);
-        mDetailView = findViewById(R.id.detail);
-
-        findViewById(R.id.signInButton).setOnClickListener(this);
-        findViewById(R.id.signOutButton).setOnClickListener(this);
+        mBinding.signInButton.setOnClickListener(this);
+        mBinding.signOutButton.setOnClickListener(this);
     }
 
     @Override
@@ -84,18 +81,18 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             // Signed in
-            mStatusView.setText(getString(R.string.firebaseui_status_fmt, user.getEmail()));
-            mDetailView.setText(getString(R.string.id_fmt, user.getUid()));
+            mBinding.status.setText(getString(R.string.firebaseui_status_fmt, user.getEmail()));
+            mBinding.detail.setText(getString(R.string.id_fmt, user.getUid()));
 
-            findViewById(R.id.signInButton).setVisibility(View.GONE);
-            findViewById(R.id.signOutButton).setVisibility(View.VISIBLE);
+            mBinding.signInButton.setVisibility(View.GONE);
+            mBinding.signOutButton.setVisibility(View.VISIBLE);
         } else {
             // Signed out
-            mStatusView.setText(R.string.signed_out);
-            mDetailView.setText(null);
+            mBinding.status.setText(R.string.signed_out);
+            mBinding.detail.setText(null);
 
-            findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.signOutButton).setVisibility(View.GONE);
+            mBinding.signInButton.setVisibility(View.VISIBLE);
+            mBinding.signOutButton.setVisibility(View.GONE);
         }
     }
 

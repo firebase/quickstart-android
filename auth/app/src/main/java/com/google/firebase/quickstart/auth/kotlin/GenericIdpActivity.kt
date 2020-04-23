@@ -26,12 +26,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.OAuthProvider
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_generic_idp.detail
-import kotlinx.android.synthetic.main.activity_generic_idp.genericSignInButton
-import kotlinx.android.synthetic.main.activity_generic_idp.providerSpinner
-import kotlinx.android.synthetic.main.activity_generic_idp.signOutButton
-import kotlinx.android.synthetic.main.activity_generic_idp.spinnerLayout
-import kotlinx.android.synthetic.main.activity_generic_idp.status
+import com.google.firebase.quickstart.auth.databinding.ActivityGenericIdpBinding
 import java.util.ArrayList
 
 /**
@@ -43,31 +38,34 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
+    private lateinit var binding: ActivityGenericIdpBinding
     private lateinit var spinnerAdapter: ArrayAdapter<String>
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_generic_idp)
+        binding = ActivityGenericIdpBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
         // Set up button click listeners
-        genericSignInButton.setOnClickListener(this)
-        signOutButton.setOnClickListener(this)
+        binding.genericSignInButton.setOnClickListener(this)
+        binding.signOutButton.setOnClickListener(this)
 
         // Spinner
         val providers = ArrayList(PROVIDER_MAP.keys)
         spinnerAdapter = ArrayAdapter(this, R.layout.item_spinner_list, providers)
-        providerSpinner.setAdapter(spinnerAdapter)
-        providerSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+        binding.providerSpinner.adapter = spinnerAdapter
+        binding.providerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                genericSignInButton.setText(getString(R.string.generic_signin_fmt, spinnerAdapter.getItem(position)))
+                binding.genericSignInButton.text =
+                        getString(R.string.generic_signin_fmt, spinnerAdapter.getItem(position))
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
-        })
-        providerSpinner.setSelection(0)
+        }
+        binding.providerSpinner.setSelection(0)
     }
 
     public override fun onStart() {
@@ -112,26 +110,26 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun getProviderId(): String {
-        val providerName = spinnerAdapter.getItem(providerSpinner.getSelectedItemPosition())
+        val providerName = spinnerAdapter.getItem(binding.providerSpinner.getSelectedItemPosition())
         return PROVIDER_MAP[providerName!!] ?: error("No provider selected")
     }
 
     private fun updateUI(user: FirebaseUser?) {
         hideProgressBar()
         if (user != null) {
-            status.text = getString(R.string.generic_status_fmt, user.displayName, user.email)
-            detail.text = getString(R.string.firebase_status_fmt, user.uid)
+            binding.status.text = getString(R.string.generic_status_fmt, user.displayName, user.email)
+            binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
-            spinnerLayout.visibility = View.GONE
-            genericSignInButton.visibility = View.GONE
-            signOutButton.visibility = View.VISIBLE
+            binding.spinnerLayout.visibility = View.GONE
+            binding.genericSignInButton.visibility = View.GONE
+            binding.signOutButton.visibility = View.VISIBLE
         } else {
-            status.setText(R.string.signed_out)
-            detail.text = null
+            binding.status.setText(R.string.signed_out)
+            binding.detail.text = null
 
-            spinnerLayout.visibility = View.VISIBLE
-            genericSignInButton.visibility = View.VISIBLE
-            signOutButton.visibility = View.GONE
+            binding.spinnerLayout.visibility = View.VISIBLE
+            binding.genericSignInButton.visibility = View.VISIBLE
+            binding.signOutButton.visibility = View.GONE
         }
     }
 

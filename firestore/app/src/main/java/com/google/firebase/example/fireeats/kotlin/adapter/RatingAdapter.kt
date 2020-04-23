@@ -1,17 +1,12 @@
 package com.google.firebase.example.fireeats.kotlin.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.example.fireeats.R
+import com.google.firebase.example.fireeats.databinding.ItemRatingBinding
 import com.google.firebase.example.fireeats.kotlin.model.Rating
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
-import kotlinx.android.synthetic.main.item_rating.view.ratingItemDate
-import kotlinx.android.synthetic.main.item_rating.view.ratingItemName
-import kotlinx.android.synthetic.main.item_rating.view.ratingItemRating
-import kotlinx.android.synthetic.main.item_rating.view.ratingItemText
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -21,27 +16,26 @@ import java.util.Locale
 open class RatingAdapter(query: Query) : FirestoreAdapter<RatingAdapter.ViewHolder>(query) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_rating, parent, false))
+        return ViewHolder(ItemRatingBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getSnapshot(position).toObject<Rating>())
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(val binding: ItemRatingBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(rating: Rating?) {
             if (rating == null) {
                 return
             }
 
-            itemView.ratingItemName.text = rating.userName
-            itemView.ratingItemRating.rating = rating.rating.toFloat()
-            itemView.ratingItemText.text = rating.text
+            binding.ratingItemName.text = rating.userName
+            binding.ratingItemRating.rating = rating.rating.toFloat()
+            binding.ratingItemText.text = rating.text
 
             if (rating.timestamp != null) {
-                itemView.ratingItemDate.text = FORMAT.format(rating.timestamp)
+                binding.ratingItemDate.text = FORMAT.format(rating.timestamp)
             }
         }
 

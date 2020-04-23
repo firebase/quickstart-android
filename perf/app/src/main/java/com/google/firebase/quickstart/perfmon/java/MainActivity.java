@@ -8,9 +8,6 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +20,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.Trace;
 import com.google.firebase.quickstart.perfmon.R;
+import com.google.firebase.quickstart.perfmon.databinding.ActivityMainBinding;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String IMAGE_URL =
             "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png";
 
-    private ImageView mHeader;
-    private TextView mContent;
     private Trace mTrace;
 
     private String STARTUP_TRACE_NAME = "startup_trace";
@@ -49,15 +45,15 @@ public class MainActivity extends AppCompatActivity {
     private String FILE_SIZE_COUNTER_NAME = "file size";
     private CountDownLatch mNumStartupTasks = new CountDownLatch(2);
 
+    private ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        mHeader = findViewById(R.id.headerIcon);
-        mContent = findViewById(R.id.textViewContent);
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // write 40 chars of random text to file
@@ -130,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                         mNumStartupTasks.countDown(); // Signal end of image load task.
                         return false;
                     }
-                }).into(mHeader);
+                }).into(binding.headerIcon);
     }
 
     private Task<Void> writeStringToFile(final String filename, final String content) {
@@ -189,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         String fileContent = task.getResult();
-                        mContent.setText(task.getResult());
+                        binding.textViewContent.setText(task.getResult());
                         // Increment a counter with the file size that was read.
                         Log.d(TAG, "Incrementing file size counter in trace");
                         mTrace.incrementMetric(FILE_SIZE_COUNTER_NAME, fileContent.getBytes().length);

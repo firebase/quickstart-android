@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.example.fireeats.R
+import com.google.firebase.example.fireeats.databinding.ActivityRestaurantDetailBinding
 import com.google.firebase.example.fireeats.kotlin.adapter.RatingAdapter
 import com.google.firebase.example.fireeats.kotlin.model.Rating
 import com.google.firebase.example.fireeats.kotlin.model.Restaurant
@@ -25,17 +26,6 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_restaurant_detail.fabShowRatingDialog
-import kotlinx.android.synthetic.main.activity_restaurant_detail.recyclerRatings
-import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantButtonBack
-import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantCategory
-import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantCity
-import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantImage
-import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantName
-import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantNumRatings
-import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantPrice
-import kotlinx.android.synthetic.main.activity_restaurant_detail.restaurantRating
-import kotlinx.android.synthetic.main.activity_restaurant_detail.viewEmptyRatings
 
 class RestaurantDetailActivity : AppCompatActivity(),
         EventListener<DocumentSnapshot>,
@@ -43,6 +33,7 @@ class RestaurantDetailActivity : AppCompatActivity(),
 
     private var ratingDialog: RatingDialogFragment? = null
 
+    private lateinit var binding: ActivityRestaurantDetailBinding
     private lateinit var firestore: FirebaseFirestore
     private lateinit var restaurantRef: DocumentReference
     private lateinit var ratingAdapter: RatingAdapter
@@ -51,7 +42,8 @@ class RestaurantDetailActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_restaurant_detail)
+        binding = ActivityRestaurantDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Get restaurant ID from extras
         val restaurantId = intent.extras?.getString(KEY_RESTAURANT_ID)
@@ -73,21 +65,21 @@ class RestaurantDetailActivity : AppCompatActivity(),
         ratingAdapter = object : RatingAdapter(ratingsQuery) {
             override fun onDataChanged() {
                 if (itemCount == 0) {
-                    recyclerRatings.visibility = View.GONE
-                    viewEmptyRatings.visibility = View.VISIBLE
+                    binding.recyclerRatings.visibility = View.GONE
+                    binding.viewEmptyRatings.visibility = View.VISIBLE
                 } else {
-                    recyclerRatings.visibility = View.VISIBLE
-                    viewEmptyRatings.visibility = View.GONE
+                    binding.recyclerRatings.visibility = View.VISIBLE
+                    binding.viewEmptyRatings.visibility = View.GONE
                 }
             }
         }
-        recyclerRatings.layoutManager = LinearLayoutManager(this)
-        recyclerRatings.adapter = ratingAdapter
+        binding.recyclerRatings.layoutManager = LinearLayoutManager(this)
+        binding.recyclerRatings.adapter = ratingAdapter
 
         ratingDialog = RatingDialogFragment()
 
-        restaurantButtonBack.setOnClickListener { onBackArrowClicked() }
-        fabShowRatingDialog.setOnClickListener { onAddRatingClicked() }
+        binding.restaurantButtonBack.setOnClickListener { onBackArrowClicked() }
+        binding.fabShowRatingDialog.setOnClickListener { onAddRatingClicked() }
     }
 
     public override fun onStart() {
@@ -129,17 +121,17 @@ class RestaurantDetailActivity : AppCompatActivity(),
     }
 
     private fun onRestaurantLoaded(restaurant: Restaurant) {
-        restaurantName.text = restaurant.name
-        restaurantRating.rating = restaurant.avgRating.toFloat()
-        restaurantNumRatings.text = getString(R.string.fmt_num_ratings, restaurant.numRatings)
-        restaurantCity.text = restaurant.city
-        restaurantCategory.text = restaurant.category
-        restaurantPrice.text = RestaurantUtil.getPriceString(restaurant)
+        binding.restaurantName.text = restaurant.name
+        binding.restaurantRating.rating = restaurant.avgRating.toFloat()
+        binding.restaurantNumRatings.text = getString(R.string.fmt_num_ratings, restaurant.numRatings)
+        binding.restaurantCity.text = restaurant.city
+        binding.restaurantCategory.text = restaurant.category
+        binding.restaurantPrice.text = RestaurantUtil.getPriceString(restaurant)
 
         // Background image
-        Glide.with(restaurantImage.context)
+        Glide.with(binding.restaurantImage.context)
                 .load(restaurant.photo)
-                .into(restaurantImage)
+                .into(binding.restaurantImage)
     }
 
     private fun onBackArrowClicked() {
@@ -158,7 +150,7 @@ class RestaurantDetailActivity : AppCompatActivity(),
 
                     // Hide keyboard and scroll to top
                     hideKeyboard()
-                    recyclerRatings.smoothScrollToPosition(0)
+                    binding.recyclerRatings.smoothScrollToPosition(0)
                 }
                 .addOnFailureListener(this) { e ->
                     Log.w(TAG, "Add rating failed", e)

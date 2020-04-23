@@ -25,8 +25,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +38,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.quickstart.firebasestorage.R;
+import com.google.firebase.quickstart.firebasestorage.databinding.ActivityMainBinding;
 
 import java.util.Locale;
 
@@ -59,28 +58,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String KEY_DOWNLOAD_URL = "key_download_url";
 
     private BroadcastReceiver mBroadcastReceiver;
-    private ProgressBar mProgressBar;
-    private TextView mCaption;
     private FirebaseAuth mAuth;
 
     private Uri mDownloadUrl = null;
     private Uri mFileUri = null;
 
+    private ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        mProgressBar = findViewById(R.id.progressBar);
-        mCaption = findViewById(R.id.caption);
-
         // Click listeners
-        findViewById(R.id.buttonCamera).setOnClickListener(this);
-        findViewById(R.id.buttonSignIn).setOnClickListener(this);
-        findViewById(R.id.buttonDownload).setOnClickListener(this);
+        binding.buttonCamera.setOnClickListener(this);
+        binding.buttonSignIn.setOnClickListener(this);
+        binding.buttonDownload.setOnClickListener(this);
 
         // Restore instance state
         if (savedInstanceState != null) {
@@ -254,22 +251,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void updateUI(FirebaseUser user) {
         // Signed in or Signed out
         if (user != null) {
-            findViewById(R.id.layoutSignin).setVisibility(View.GONE);
-            findViewById(R.id.layoutStorage).setVisibility(View.VISIBLE);
+            binding.layoutSignin.setVisibility(View.GONE);
+            binding.layoutStorage.setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.layoutSignin).setVisibility(View.VISIBLE);
-            findViewById(R.id.layoutStorage).setVisibility(View.GONE);
+            binding.layoutSignin.setVisibility(View.VISIBLE);
+            binding.layoutStorage.setVisibility(View.GONE);
         }
 
         // Download URL and Download button
         if (mDownloadUrl != null) {
-            ((TextView) findViewById(R.id.pictureDownloadUri))
-                    .setText(mDownloadUrl.toString());
-            findViewById(R.id.layoutDownload).setVisibility(View.VISIBLE);
+            binding.pictureDownloadUri.setText(mDownloadUrl.toString());
+            binding.layoutDownload.setVisibility(View.VISIBLE);
         } else {
-            ((TextView) findViewById(R.id.pictureDownloadUri))
-                    .setText(null);
-            findViewById(R.id.layoutDownload).setVisibility(View.GONE);
+            binding.pictureDownloadUri.setText(null);
+            binding.layoutDownload.setVisibility(View.GONE);
         }
     }
 
@@ -282,13 +277,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showProgressBar(String caption) {
-        mCaption.setText(caption);
-        mProgressBar.setVisibility(View.VISIBLE);
+        binding.caption.setText(caption);
+        binding.progressBar.setVisibility(View.VISIBLE);
     }
 
     private void hideProgressBar() {
-        mCaption.setText("");
-        mProgressBar.setVisibility(View.INVISIBLE);
+        binding.caption.setText("");
+        binding.progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override

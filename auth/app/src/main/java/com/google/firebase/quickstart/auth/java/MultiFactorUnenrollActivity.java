@@ -13,30 +13,33 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.MultiFactorInfo;
 import com.google.firebase.auth.PhoneMultiFactorInfo;
 import com.google.firebase.quickstart.auth.R;
+import com.google.firebase.quickstart.auth.databinding.ActivityMultiFactorSignInBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MultiFactorUnenrollActivity extends BaseActivity {
 
+    private ActivityMultiFactorSignInBinding mBinding;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_multi_factor_sign_in);
+        mBinding = ActivityMultiFactorSignInBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
-        findViewById(R.id.smsCode).setVisibility(View.GONE);
-        findViewById(R.id.finishMfaSignIn).setVisibility(View.GONE);
-
-        // Users are currently limited to having 5 second factors
-        int[] factorButtonIds
-                = new int[]{R.id.phoneFactor1, R.id.phoneFactor2, R.id.phoneFactor3, R.id.phoneFactor4,
-                R.id.phoneFactor5};
+        mBinding.smsCode.setVisibility(View.GONE);
+        mBinding.finishMfaSignIn.setVisibility(View.GONE);
 
         List<Button> phoneFactorButtonList = new ArrayList<>();
-        for (int buttonId : factorButtonIds) {
-            Button button = findViewById(buttonId);
+        phoneFactorButtonList.add(mBinding.phoneFactor1);
+        phoneFactorButtonList.add(mBinding.phoneFactor2);
+        phoneFactorButtonList.add(mBinding.phoneFactor3);
+        phoneFactorButtonList.add(mBinding.phoneFactor4);
+        phoneFactorButtonList.add(mBinding.phoneFactor5);
+
+        for (Button button : phoneFactorButtonList) {
             button.setVisibility(View.GONE);
-            phoneFactorButtonList.add(button);
         }
 
         List<MultiFactorInfo> multiFactorInfoList =

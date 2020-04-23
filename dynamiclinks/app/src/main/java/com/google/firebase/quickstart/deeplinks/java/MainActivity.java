@@ -34,6 +34,7 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.quickstart.deeplinks.R;
+import com.google.firebase.quickstart.deeplinks.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,17 +46,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         // [START_EXCLUDE]
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        TextView linkSendTextView = binding.linkViewSend;
+        final TextView linkReceiveTextView = binding.linkViewReceive;
 
         // Validate that the developer has set the app code.
         validateAppCode();
 
         // Create a deep link and display it in the UI
         final Uri deepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0);
-        ((TextView) findViewById(R.id.linkViewSend)).setText(deepLink.toString());
+        linkSendTextView.setText(deepLink.toString());
 
         // Share button click listener
-        findViewById(R.id.buttonShare).setOnClickListener(new View.OnClickListener() {
+        binding.buttonShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shareDeepLink(deepLink.toString());
@@ -87,8 +92,7 @@ public class MainActivity extends AppCompatActivity {
                             Snackbar.make(findViewById(android.R.id.content),
                                     "Found deep link!", Snackbar.LENGTH_LONG).show();
 
-                            ((TextView) findViewById(R.id.linkViewReceive))
-                                    .setText(deepLink.toString());
+                            linkReceiveTextView.setText(deepLink.toString());
                         } else {
                             Log.d(TAG, "getDynamicLink: no link found");
                         }

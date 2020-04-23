@@ -1,23 +1,16 @@
 package com.google.firebase.example.fireeats.kotlin.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.example.fireeats.R
+import com.google.firebase.example.fireeats.databinding.ItemRestaurantBinding
 import com.google.firebase.example.fireeats.kotlin.model.Restaurant
 import com.google.firebase.example.fireeats.kotlin.util.RestaurantUtil
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
-import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemCategory
-import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemCity
-import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemImage
-import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemName
-import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemNumRatings
-import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemPrice
-import kotlinx.android.synthetic.main.item_restaurant.view.restaurantItemRating
 
 /**
  * RecyclerView adapter for a list of Restaurants.
@@ -31,15 +24,15 @@ open class RestaurantAdapter(query: Query, private val listener: OnRestaurantSel
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return ViewHolder(inflater.inflate(R.layout.item_restaurant, parent, false))
+        return ViewHolder(ItemRestaurantBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getSnapshot(position), listener)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(val binding: ItemRestaurantBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
             snapshot: DocumentSnapshot,
@@ -51,26 +44,26 @@ open class RestaurantAdapter(query: Query, private val listener: OnRestaurantSel
                 return
             }
 
-            val resources = itemView.resources
+            val resources = binding.root.resources
 
             // Load image
-            Glide.with(itemView.restaurantItemImage.context)
+            Glide.with(binding.restaurantItemImage.context)
                     .load(restaurant.photo)
-                    .into(itemView.restaurantItemImage)
+                    .into(binding.restaurantItemImage)
 
             val numRatings: Int = restaurant.numRatings
 
-            itemView.restaurantItemName.text = restaurant.name
-            itemView.restaurantItemRating.rating = restaurant.avgRating.toFloat()
-            itemView.restaurantItemCity.text = restaurant.city
-            itemView.restaurantItemCategory.text = restaurant.category
-            itemView.restaurantItemNumRatings.text = resources.getString(
+            binding.restaurantItemName.text = restaurant.name
+            binding.restaurantItemRating.rating = restaurant.avgRating.toFloat()
+            binding.restaurantItemCity.text = restaurant.city
+            binding.restaurantItemCategory.text = restaurant.category
+            binding.restaurantItemNumRatings.text = resources.getString(
                     R.string.fmt_num_ratings,
                     numRatings)
-            itemView.restaurantItemPrice.text = RestaurantUtil.getPriceString(restaurant)
+            binding.restaurantItemPrice.text = RestaurantUtil.getPriceString(restaurant)
 
             // Click listener
-            itemView.setOnClickListener {
+            binding.root.setOnClickListener {
                 listener?.onRestaurantSelected(snapshot)
             }
         }

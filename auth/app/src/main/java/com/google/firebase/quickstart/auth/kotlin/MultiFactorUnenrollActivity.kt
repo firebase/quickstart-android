@@ -5,28 +5,25 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneMultiFactorInfo
-import com.google.firebase.quickstart.auth.R
+import com.google.firebase.quickstart.auth.databinding.ActivityMultiFactorSignInBinding
 import com.google.firebase.quickstart.auth.java.BaseActivity
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.finishMfaSignIn
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor1
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor2
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor3
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor4
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.phoneFactor5
-import kotlinx.android.synthetic.main.activity_multi_factor_sign_in.smsCode
 
 class MultiFactorUnenrollActivity : BaseActivity() {
 
+    private lateinit var binding: ActivityMultiFactorSignInBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_multi_factor_sign_in)
+        binding = ActivityMultiFactorSignInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        smsCode.visibility = View.GONE
-        finishMfaSignIn.visibility = View.GONE
+        binding.smsCode.visibility = View.GONE
+        binding.finishMfaSignIn.visibility = View.GONE
 
         // Users are currently limited to having 5 second factors
         val phoneFactorButtonList = listOf(
-                phoneFactor1, phoneFactor2, phoneFactor3, phoneFactor4, phoneFactor5)
+                binding.phoneFactor1, binding.phoneFactor2, binding.phoneFactor3,
+                binding.phoneFactor4, binding.phoneFactor5)
         for (button in phoneFactorButtonList) {
             button.visibility = View.GONE
         }

@@ -4,38 +4,36 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.ml.naturallanguage.FirebaseNaturalLanguage
 import com.google.firebase.samples.apps.mlkit.languageid.R
-import kotlinx.android.synthetic.main.activity_main.buttonIdAll
-import kotlinx.android.synthetic.main.activity_main.buttonIdLanguage
-import kotlinx.android.synthetic.main.activity_main.inputText
+import com.google.firebase.samples.apps.mlkit.languageid.databinding.ActivityMainBinding
 import java.util.ArrayList
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
-    private var outputText: TextView? = null
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        outputText = findViewById(R.id.outputText)
-
-        buttonIdLanguage.setOnClickListener {
-            val input = inputText.text?.toString()
-            input?.let {
-                inputText.text?.clear()
-                identifyLanguage(it)
+        with(binding) {
+            buttonIdLanguage.setOnClickListener {
+                val input = inputText.text?.toString()
+                input?.let {
+                    inputText.text?.clear()
+                    identifyLanguage(it)
+                }
             }
-        }
 
-        buttonIdAll.setOnClickListener {
-            val input = inputText.text?.toString()
-            input?.let {
-                inputText.text?.clear()
-                identifyPossibleLanguages(input)
+            buttonIdAll.setOnClickListener {
+                val input = inputText.text?.toString()
+                input?.let {
+                    inputText.text?.clear()
+                    identifyPossibleLanguages(input)
+                }
             }
         }
     }
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                         )
                     )
                 }
-                outputText?.append(
+                binding.outputText.append(
                     String.format(
                         Locale.US,
                         "\n%s - [%s]",
@@ -81,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         languageIdentification
             .identifyLanguage(inputText)
             .addOnSuccessListener(this@MainActivity) { s ->
-                outputText?.append(
+                binding.outputText.append(
                     String.format(
                         Locale.US,
                         "\n%s - %s",

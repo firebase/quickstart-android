@@ -8,20 +8,20 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.quickstart.database.R
+import com.google.firebase.quickstart.database.databinding.ActivityMainBinding
 import com.google.firebase.quickstart.database.kotlin.fragment.MyPostsFragment
 import com.google.firebase.quickstart.database.kotlin.fragment.MyTopPostsFragment
 import com.google.firebase.quickstart.database.kotlin.fragment.RecentPostsFragment
-import kotlinx.android.synthetic.main.activity_main.container
-import kotlinx.android.synthetic.main.activity_main.fabNewPost
-import kotlinx.android.synthetic.main.activity_main.tabs
 
 class MainActivity : BaseActivity() {
 
     private lateinit var pagerAdapter: FragmentPagerAdapter
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Create the adapter that will return a fragment for each section
         pagerAdapter = object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -47,12 +47,14 @@ class MainActivity : BaseActivity() {
         }
 
         // Set up the ViewPager with the sections adapter.
-        container.adapter = pagerAdapter
-        tabs.setupWithViewPager(container)
+        with(binding) {
+            container.adapter = pagerAdapter
+            tabs.setupWithViewPager(container)
 
-        // Button launches NewPostActivity
-        fabNewPost.setOnClickListener {
-            startActivity(Intent(this, NewPostActivity::class.java))
+            // Button launches NewPostActivity
+            fabNewPost.setOnClickListener {
+                startActivity(Intent(this@MainActivity, NewPostActivity::class.java))
+            }
         }
     }
 

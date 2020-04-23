@@ -10,18 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthMultiFactorException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.quickstart.auth.R
-import kotlinx.android.synthetic.main.activity_emailpassword.detail
-import kotlinx.android.synthetic.main.activity_emailpassword.emailCreateAccountButton
-import kotlinx.android.synthetic.main.activity_emailpassword.emailPasswordButtons
-import kotlinx.android.synthetic.main.activity_emailpassword.emailPasswordFields
-import kotlinx.android.synthetic.main.activity_emailpassword.emailSignInButton
-import kotlinx.android.synthetic.main.activity_emailpassword.fieldEmail
-import kotlinx.android.synthetic.main.activity_emailpassword.fieldPassword
-import kotlinx.android.synthetic.main.activity_emailpassword.reloadButton
-import kotlinx.android.synthetic.main.activity_emailpassword.signOutButton
-import kotlinx.android.synthetic.main.activity_emailpassword.signedInButtons
-import kotlinx.android.synthetic.main.activity_emailpassword.status
-import kotlinx.android.synthetic.main.activity_emailpassword.verifyEmailButton
+import com.google.firebase.quickstart.auth.databinding.ActivityEmailpasswordBinding
 
 class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
@@ -29,17 +18,20 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
     // [END declare_auth]
 
+    private lateinit var binding: ActivityEmailpasswordBinding
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_emailpassword)
-        setProgressBar(R.id.progressBar)
+        binding = ActivityEmailpasswordBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setProgressBar(binding.progressBar)
 
         // Buttons
-        emailSignInButton.setOnClickListener(this)
-        emailCreateAccountButton.setOnClickListener(this)
-        signOutButton.setOnClickListener(this)
-        verifyEmailButton.setOnClickListener(this)
-        reloadButton.setOnClickListener(this)
+        binding.emailSignInButton.setOnClickListener(this)
+        binding.emailCreateAccountButton.setOnClickListener(this)
+        binding.signOutButton.setOnClickListener(this)
+        binding.verifyEmailButton.setOnClickListener(this)
+        binding.reloadButton.setOnClickListener(this)
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -116,7 +108,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
                     // [START_EXCLUDE]
                     if (!task.isSuccessful) {
-                        status.setText(R.string.auth_failed)
+                        binding.status.setText(R.string.auth_failed)
                     }
                     hideProgressBar()
                     // [END_EXCLUDE]
@@ -131,7 +123,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
     private fun sendEmailVerification() {
         // Disable button
-        verifyEmailButton.isEnabled = false
+        binding.verifyEmailButton.isEnabled = false
 
         // Send verification email
         // [START send_email_verification]
@@ -140,7 +132,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                 ?.addOnCompleteListener(this) { task ->
                     // [START_EXCLUDE]
                     // Re-enable button
-                    verifyEmailButton.isEnabled = true
+                    binding.verifyEmailButton.isEnabled = true
 
                     if (task.isSuccessful) {
                         Toast.makeText(baseContext,
@@ -176,20 +168,20 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     private fun validateForm(): Boolean {
         var valid = true
 
-        val email = fieldEmail.text.toString()
+        val email = binding.fieldEmail.text.toString()
         if (TextUtils.isEmpty(email)) {
-            fieldEmail.error = "Required."
+            binding.fieldEmail.error = "Required."
             valid = false
         } else {
-            fieldEmail.error = null
+            binding.fieldEmail.error = null
         }
 
-        val password = fieldPassword.text.toString()
+        val password = binding.fieldPassword.text.toString()
         if (TextUtils.isEmpty(password)) {
-            fieldPassword.error = "Required."
+            binding.fieldPassword.error = "Required."
             valid = false
         } else {
-            fieldPassword.error = null
+            binding.fieldPassword.error = null
         }
 
         return valid
@@ -198,26 +190,26 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     private fun updateUI(user: FirebaseUser?) {
         hideProgressBar()
         if (user != null) {
-            status.text = getString(R.string.emailpassword_status_fmt,
+            binding.status.text = getString(R.string.emailpassword_status_fmt,
                     user.email, user.isEmailVerified)
-            detail.text = getString(R.string.firebase_status_fmt, user.uid)
+            binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
-            emailPasswordButtons.visibility = View.GONE
-            emailPasswordFields.visibility = View.GONE
-            signedInButtons.visibility = View.VISIBLE
+            binding.emailPasswordButtons.visibility = View.GONE
+            binding.emailPasswordFields.visibility = View.GONE
+            binding.signedInButtons.visibility = View.VISIBLE
 
             if (user.isEmailVerified) {
-                verifyEmailButton.visibility = View.GONE
+                binding.verifyEmailButton.visibility = View.GONE
             } else {
-                verifyEmailButton.visibility = View.VISIBLE
+                binding.verifyEmailButton.visibility = View.VISIBLE
             }
         } else {
-            status.setText(R.string.signed_out)
-            detail.text = null
+            binding.status.setText(R.string.signed_out)
+            binding.detail.text = null
 
-            emailPasswordButtons.visibility = View.VISIBLE
-            emailPasswordFields.visibility = View.VISIBLE
-            signedInButtons.visibility = View.GONE
+            binding.emailPasswordButtons.visibility = View.VISIBLE
+            binding.emailPasswordFields.visibility = View.VISIBLE
+            binding.signedInButtons.visibility = View.GONE
         }
     }
 
@@ -238,8 +230,10 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         val i = v.id
         when (i) {
-            R.id.emailCreateAccountButton -> createAccount(fieldEmail.text.toString(), fieldPassword.text.toString())
-            R.id.emailSignInButton -> signIn(fieldEmail.text.toString(), fieldPassword.text.toString())
+            R.id.emailCreateAccountButton -> {
+                createAccount(binding.fieldEmail.text.toString(), binding.fieldPassword.text.toString())
+            }
+            R.id.emailSignInButton -> signIn(binding.fieldEmail.text.toString(), binding.fieldPassword.text.toString())
             R.id.signOutButton -> signOut()
             R.id.verifyEmailButton -> sendEmailVerification()
             R.id.reloadButton -> reload()

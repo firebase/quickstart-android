@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 check.dependsOn 'assembleMainFlavorDebugAndroidTest'
 
@@ -35,6 +34,10 @@ android {
             //                  See: https://firebase.google.com/docs/dynamic-links/android/create#set-up-firebase-and-the-dynamic-links-sdk
             resValue "string", "dynamic_links_uri_prefix", "https://YOUR_APP.page.link"
         }
+    }
+
+    viewBinding {
+        enabled = true
     }
 }
 

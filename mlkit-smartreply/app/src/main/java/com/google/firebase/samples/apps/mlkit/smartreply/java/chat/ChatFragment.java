@@ -12,8 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.ml.naturallanguage.smartreply.SmartReplySuggestion;
 import com.google.firebase.samples.apps.mlkit.smartreply.R;
+import com.google.firebase.samples.apps.mlkit.smartreply.databinding.ChatFragmentBinding;
 import com.google.firebase.samples.apps.mlkit.smartreply.java.model.Message;
 
 import java.util.ArrayList;
@@ -34,17 +33,9 @@ import java.util.List;
 public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickListener {
 
     private ChatViewModel mViewModel;
-    private TextView mInputText;
-    private Button mSendButton;
-    private Button mSwitchUserButton;
-
-    private RecyclerView mChatRecycler;
     private MessageListAdapter mChatAdapter;
-
-    private RecyclerView mSmartRepliesRecyler;
     private ReplyChipAdapter mChipAdapter;
-
-    private TextView mEmulatedUserText;
+    private ChatFragmentBinding binding;
 
     public static ChatFragment newInstance() {
         return new ChatFragment();
@@ -61,7 +52,8 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.chat_fragment, container, false);
+        binding = ChatFragmentBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -71,27 +63,20 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
 
         mViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
 
-        mChatRecycler = view.findViewById(R.id.chatHistory);
-        mEmulatedUserText = view.findViewById(R.id.switchText);
-        mSmartRepliesRecyler = view.findViewById(R.id.smartRepliesRecycler);
-        mInputText = view.findViewById(R.id.inputText);
-        mSendButton = view.findViewById(R.id.button);
-        mSwitchUserButton = view.findViewById(R.id.switchEmulatedUser);
-
         // Set up recycler view for chat messages
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        mChatRecycler.setLayoutManager(layoutManager);
+        binding.chatHistory.setLayoutManager(layoutManager);
         mChatAdapter = new MessageListAdapter();
 
         // Set up recycler view for smart replies
         LinearLayoutManager chipManager = new LinearLayoutManager(getContext());
         chipManager.setOrientation(RecyclerView.HORIZONTAL);
         mChipAdapter = new ReplyChipAdapter(this);
-        mSmartRepliesRecyler.setLayoutManager(chipManager);
-        mSmartRepliesRecyler.setAdapter(mChipAdapter);
+        binding.smartRepliesRecycler.setLayoutManager(chipManager);
+        binding.smartRepliesRecycler.setAdapter(mChipAdapter);
 
-        mChatRecycler.setAdapter(mChatAdapter);
-        mChatRecycler.setOnTouchListener(new View.OnTouchListener() {
+        binding.chatHistory.setAdapter(mChatAdapter);
+        binding.chatHistory.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 InputMethodManager imm =
@@ -101,7 +86,7 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
             }
         });
 
-        mSwitchUserButton.setOnClickListener(new View.OnClickListener() {
+        binding.switchEmulatedUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mChatAdapter.setEmulatingRemoteUser(!mChatAdapter.getEmulatingRemoteUser());
@@ -109,16 +94,16 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
             }
         });
 
-        mSendButton.setOnClickListener(new View.OnClickListener() {
+        binding.sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String input = mInputText.getText().toString();
+                String input = binding.inputText.getText().toString();
                 if (TextUtils.isEmpty(input)) {
                     return;
                 }
 
                 mViewModel.addMessage(input);
-                mInputText.setText("");
+                binding.inputText.setText("");
             }
         });
 
@@ -134,7 +119,7 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
             public void onChanged(List<Message> messages) {
                 mChatAdapter.setMessages(messages);
                 if (mChatAdapter.getItemCount() > 0) {
-                    mChatRecycler.smoothScrollToPosition(mChatAdapter.getItemCount() - 1);
+                    binding.chatHistory.smoothScrollToPosition(mChatAdapter.getItemCount() - 1);
                 }
             }
         });
@@ -143,11 +128,11 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
             @Override
             public void onChanged(Boolean isEmulatingRemoteUser) {
                 if (isEmulatingRemoteUser) {
-                    mEmulatedUserText.setText(R.string.chatting_as_red);
-                    mEmulatedUserText.setTextColor(getResources().getColor(R.color.red));
+                    binding.switchText.setText(R.string.chatting_as_red);
+                    binding.switchText.setTextColor(getResources().getColor(R.color.red));
                 } else {
-                    mEmulatedUserText.setText(R.string.chatting_as_blue);
-                    mEmulatedUserText.setTextColor(getResources().getColor(R.color.blue));
+                    binding.switchText.setText(R.string.chatting_as_blue);
+                    binding.switchText.setTextColor(getResources().getColor(R.color.blue));
                 }
             }
         });
@@ -182,7 +167,7 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
 
     @Override
     public void onChipClick(@NonNull String chipText) {
-        mInputText.setText(chipText);
+        binding.inputText.setText(chipText);
     }
 
     private void generateChatHistoryBasic() {
@@ -212,5 +197,11 @@ public class ChatFragment extends Fragment implements ReplyChipAdapter.ClickList
         messageList.add(new Message("My cat died", false, calendar.getTimeInMillis()));
 
         mViewModel.setMessages(messageList);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

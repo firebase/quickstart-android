@@ -40,15 +40,12 @@ import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceContourDe
 import com.google.firebase.samples.apps.mlkit.kotlin.facedetection.FaceDetectionProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.imagelabeling.ImageLabelingProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.textrecognition.TextRecognitionProcessor
-import kotlinx.android.synthetic.main.activity_live_preview.facingSwitch
-import kotlinx.android.synthetic.main.activity_live_preview.fireFaceOverlay
-import kotlinx.android.synthetic.main.activity_live_preview.firePreview
-import kotlinx.android.synthetic.main.activity_live_preview.spinner
 import java.io.IOException
 import com.google.firebase.samples.apps.mlkit.kotlin.objectdetection.ObjectDetectorProcessor
 import com.google.firebase.ml.vision.objects.FirebaseVisionObjectDetectorOptions
 import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity
 import com.google.firebase.samples.apps.mlkit.common.preference.SettingsActivity.LaunchSource
+import com.google.firebase.samples.apps.mlkit.databinding.ActivityLivePreviewBinding
 import com.google.firebase.samples.apps.mlkit.kotlin.automl.AutoMLImageLabelerProcessor
 import com.google.firebase.samples.apps.mlkit.kotlin.automl.AutoMLImageLabelerProcessor.Mode
 
@@ -60,6 +57,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
 
     private var cameraSource: CameraSource? = null
     private var selectedModel = FACE_CONTOUR
+    private lateinit var binding: ActivityLivePreviewBinding
 
     private val requiredPermissions: Array<String?>
         get() {
@@ -80,16 +78,8 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate")
-
-        setContentView(R.layout.activity_live_preview)
-
-        if (firePreview == null) {
-            Log.d(TAG, "Preview is null")
-        }
-
-        if (fireFaceOverlay == null) {
-            Log.d(TAG, "graphicOverlay is null")
-        }
+        binding = ActivityLivePreviewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val options = arrayListOf(
             FACE_CONTOUR,
@@ -107,14 +97,15 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // attaching data adapter to spinner
-        spinner.adapter = dataAdapter
-        spinner.onItemSelectedListener = this
+        with(binding) {
+            spinner.adapter = dataAdapter
+            spinner.onItemSelectedListener = this@LivePreviewActivity
 
-        val facingSwitch = facingSwitch
-        facingSwitch.setOnCheckedChangeListener(this)
-        // Hide the toggle button if there is only 1 camera
-        if (Camera.getNumberOfCameras() == 1) {
-            facingSwitch.visibility = View.GONE
+            facingSwitch.setOnCheckedChangeListener(this@LivePreviewActivity)
+            // Hide the toggle button if there is only 1 camera
+            if (Camera.getNumberOfCameras() == 1) {
+                facingSwitch.visibility = View.GONE
+            }
         }
 
         if (allPermissionsGranted()) {
@@ -130,7 +121,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
         // parent.getItemAtPosition(pos)
         selectedModel = parent.getItemAtPosition(pos).toString()
         Log.d(TAG, "Selected model: $selectedModel")
-        firePreview?.stop()
+        binding.firePreview.stop()
         if (allPermissionsGranted()) {
             createCameraSource(selectedModel)
             startCameraSource()
@@ -153,7 +144,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
                 it.setFacing(CameraSource.CAMERA_FACING_BACK)
             }
         }
-        firePreview?.stop()
+        binding.firePreview.stop()
         startCameraSource()
     }
 
@@ -176,7 +167,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
     private fun createCameraSource(model: String) {
         // If there's no existing cameraSource, create one.
         if (cameraSource == null) {
-            cameraSource = CameraSource(this, fireFaceOverlay)
+            cameraSource = CameraSource(this, binding.fireFaceOverlay)
         }
 
         try {
@@ -246,13 +237,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
     private fun startCameraSource() {
         cameraSource?.let {
             try {
-                if (firePreview == null) {
-                    Log.d(TAG, "resume: Preview is null")
-                }
-                if (fireFaceOverlay == null) {
-                    Log.d(TAG, "resume: graphOverlay is null")
-                }
-                firePreview?.start(cameraSource, fireFaceOverlay)
+                binding.firePreview.start(cameraSource, binding.fireFaceOverlay)
             } catch (e: IOException) {
                 Log.e(TAG, "Unable to start camera source.", e)
                 cameraSource?.release()
@@ -270,7 +255,7 @@ class LivePreviewActivity : AppCompatActivity(), OnRequestPermissionsResultCallb
     /** Stops the camera.  */
     override fun onPause() {
         super.onPause()
-        firePreview?.stop()
+        binding.firePreview.stop()
     }
 
     public override fun onDestroy() {
