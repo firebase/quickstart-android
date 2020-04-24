@@ -10,7 +10,7 @@ git fetch origin
 # Get all the modules that were changed
 while read line; do
   module_name=${line%%/*}
-  if [[ ${MODULES} != *"${module_name}"* ]]; then
+  if [[ ${MODULES} != *"${module_name}" ]]; then
     MODULES="${MODULES} ${module_name}"
   fi
 done < <(git diff --name-only origin/$GITHUB_BASE_REF)
