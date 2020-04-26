@@ -43,8 +43,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
 
     // Firebase Authentication
-    implementation 'com.google.firebase:firebase-analytics:17.3.0'
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.firebase:firebase-analytics:17.4.0'
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
 
     // Google Sign In SDK (only required for Google Sign In)
     implementation 'com.google.android.gms:play-services-auth:18.0.0'

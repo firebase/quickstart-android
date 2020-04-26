@@ -43,12 +43,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
 
     // Database (Java)
-    implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'com.google.firebase:firebase-database:19.3.0'
 
     // Database (Kotlin)
-    implementation 'com.google.firebase:firebase-database-ktx:19.2.1'
+    implementation 'com.google.firebase:firebase-database-ktx:19.3.0'
 
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.firebaseui:firebase-ui-database:6.2.1'
 
     // Needed to fix a dependency conflict with FirebaseUI'

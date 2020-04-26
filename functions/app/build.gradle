@@ -43,8 +43,8 @@ dependencies {
     // Functions (Kotlin)
     implementation 'com.google.firebase:firebase-functions-ktx:19.0.2'
 
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
-    implementation 'com.google.firebase:firebase-messaging:20.1.5'
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
+    implementation 'com.google.firebase:firebase-messaging:20.1.6'
 
     implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
