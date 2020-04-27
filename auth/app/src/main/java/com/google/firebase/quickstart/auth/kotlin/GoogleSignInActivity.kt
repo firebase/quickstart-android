@@ -105,7 +105,10 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        Snackbar.make(binding.mainLayout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
+                        // [START_EXCLUDE]
+                        val view = binding.mainLayout
+                        // [END_EXCLUDE]
+                        Snackbar.make(view, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                         updateUI(null)
                     }
 
