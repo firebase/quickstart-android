@@ -14,7 +14,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.FirebaseFunctionsException
 import com.google.firebase.functions.ktx.functions
@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onSignInClicked() {
-        if (FirebaseAuth.getInstance().currentUser != null) {
+        if (Firebase.auth.currentUser != null) {
             showSnackbar("Signed in.")
             return
         }
