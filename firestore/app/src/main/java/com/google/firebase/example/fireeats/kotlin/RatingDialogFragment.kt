@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.example.fireeats.databinding.DialogRatingBinding
 import com.google.firebase.example.fireeats.kotlin.model.Rating
+import com.google.firebase.ktx.Firebase
 
 /**
  * Dialog Fragment containing rating form.
@@ -58,7 +59,7 @@ class RatingDialogFragment : DialogFragment() {
     }
 
     private fun onSubmitClicked() {
-        val user = FirebaseAuth.getInstance().currentUser
+        val user = Firebase.auth.currentUser
         user?.let {
             val rating = Rating(
                     it,

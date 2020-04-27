@@ -51,8 +51,13 @@ dependencies {
     // Firestore (Kotlin)
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.2'
 
-    // Other Firebase/Play services deps
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    // Firebase Authentication (Java)
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
+
+    // Firebase Authentication (Kotlin)
+    implementation 'com.google.firebase:firebase-auth-ktx:19.3.1'
+
+    // Play Services
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
     // FirebaseUI (for authentication)

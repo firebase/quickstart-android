@@ -17,7 +17,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.example.fireeats.R
 import com.google.firebase.example.fireeats.databinding.ActivityMainBinding
 import com.google.firebase.example.fireeats.kotlin.adapter.RestaurantAdapter
@@ -211,7 +211,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun shouldStartSignIn(): Boolean {
-        return !viewModel.isSigningIn && FirebaseAuth.getInstance().currentUser == null
+        return !viewModel.isSigningIn && Firebase.auth.currentUser == null
     }
 
     private fun startSignIn() {
