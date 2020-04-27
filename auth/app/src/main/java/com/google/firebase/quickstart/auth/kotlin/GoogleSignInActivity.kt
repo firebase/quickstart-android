@@ -58,7 +58,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
     }
 
     // [START on_start_check_user]
-    public override fun onStart() {
+    override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
@@ -67,7 +67,7 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
     // [END on_start_check_user]
 
     // [START onactivityresult]
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
