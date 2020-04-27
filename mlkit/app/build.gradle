@@ -43,19 +43,19 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
 
     // ML Kit dependencies
-    implementation 'com.google.firebase:firebase-ml-vision:24.0.2'
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
     // Barcode detection model.
-    implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.1.0'
+    implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.1.1'
     // Image Labeling model.
-    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:20.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:20.0.1'
     // Face model
-    implementation 'com.google.firebase:firebase-ml-vision-face-model:20.0.0'
+    implementation 'com.google.firebase:firebase-ml-vision-face-model:20.0.1'
     // Custom model
-    implementation 'com.google.firebase:firebase-ml-model-interpreter:22.0.2'
+    implementation 'com.google.firebase:firebase-ml-model-interpreter:22.0.3'
     // Object model
-    implementation 'com.google.firebase:firebase-ml-vision-object-detection-model:19.0.4'
+    implementation 'com.google.firebase:firebase-ml-vision-object-detection-model:19.0.5'
     // AutoML model
-    implementation 'com.google.firebase:firebase-ml-vision-automl:18.0.4'
+    implementation 'com.google.firebase:firebase-ml-vision-automl:18.0.5'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:runner:1.2.0'
