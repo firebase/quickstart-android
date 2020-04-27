@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -36,7 +36,7 @@ abstract class PostListFragment : Fragment() {
     private var adapter: FirebaseRecyclerAdapter<Post, PostViewHolder>? = null
 
     val uid: String
-        get() = FirebaseAuth.getInstance().currentUser!!.uid
+        get() = Firebase.auth.currentUser!!.uid
 
     override fun onCreateView(
         inflater: LayoutInflater,

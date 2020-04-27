@@ -48,7 +48,12 @@ dependencies {
     // Database (Kotlin)
     implementation 'com.google.firebase:firebase-database-ktx:19.3.0'
 
+    // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth:19.3.1'
+
+    // Firebase Authentication (Kotlin)
+    implementation 'com.google.firebase:firebase-auth-ktx:19.3.1'
+
     implementation 'com.firebaseui:firebase-ui-database:6.2.1'
 
     // Needed to fix a dependency conflict with FirebaseUI'

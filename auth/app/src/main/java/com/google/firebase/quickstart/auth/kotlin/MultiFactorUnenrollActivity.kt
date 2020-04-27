@@ -5,6 +5,8 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneMultiFactorInfo
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.auth.databinding.ActivityMultiFactorSignInBinding
 import com.google.firebase.quickstart.auth.java.BaseActivity
 
@@ -41,11 +43,11 @@ class MultiFactorUnenrollActivity : BaseActivity() {
 
     private fun generateFactorOnClickListener(phoneMultiFactorInfo: PhoneMultiFactorInfo): View.OnClickListener {
         return View.OnClickListener {
-            FirebaseAuth.getInstance()
-                    .currentUser
-                    ?.multiFactor
-                    ?.unenroll(phoneMultiFactorInfo)
-                    ?.addOnCompleteListener { task ->
+            Firebase.auth
+                    .currentUser!!
+                    .multiFactor
+                    .unenroll(phoneMultiFactorInfo)
+                    .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(this@MultiFactorUnenrollActivity,
                                     "Successfully unenrolled!", Toast.LENGTH_SHORT).show()

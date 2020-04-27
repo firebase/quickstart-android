@@ -7,6 +7,8 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.databinding.ActivityMainBinding
 import com.google.firebase.quickstart.database.kotlin.fragment.MyPostsFragment
@@ -64,14 +66,13 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val i = item.itemId
-        if (i == R.id.action_logout) {
-            FirebaseAuth.getInstance().signOut()
+        return if (item.itemId == R.id.action_logout) {
+            Firebase.auth.signOut()
             startActivity(Intent(this, SignInActivity::class.java))
             finish()
-            return true
+            true
         } else {
-            return super.onOptionsItemSelected(item)
+            super.onOptionsItemSelected(item)
         }
     }
 

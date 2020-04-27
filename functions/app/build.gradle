@@ -43,7 +43,12 @@ dependencies {
     // Functions (Kotlin)
     implementation 'com.google.firebase:firebase-functions-ktx:19.0.2'
 
+    // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth:19.3.1'
+
+    // Firebase Authentication (Kotlin)
+    implementation 'com.google.firebase:firebase-auth-ktx:19.3.1'
+
     implementation 'com.google.firebase:firebase-messaging:20.1.6'
 
     implementation 'com.firebaseui:firebase-ui-auth:6.2.1'

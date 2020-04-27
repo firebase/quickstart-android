@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.ActivityCustomBinding
 
@@ -43,7 +45,7 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
         // [END initialize_auth]
     }
 
