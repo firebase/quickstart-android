@@ -9,6 +9,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneMultiFactorInfo
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.ActivityMultiFactorBinding
 
@@ -35,7 +37,7 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
         // [END initialize_auth]
 
         showDisclaimer()
@@ -70,8 +72,8 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
         findViewById<View>(R.id.verifyEmailButton).isEnabled = false
         // Send verification email
         // [START send_email_verification]
-        val user = auth.currentUser
-        user!!.sendEmailVerification()
+        val user = auth.currentUser!!
+        user.sendEmailVerification()
                 .addOnCompleteListener(this) { task ->
                     // [START_EXCLUDE]
                     // Re-enable button
@@ -157,8 +159,7 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        val i = v.id
-        when (i) {
+        when (v.id) {
             R.id.emailSignInButton -> {
                 startActivityForResult(Intent(this, EmailPasswordActivity::class.java), RC_MULTI_FACTOR)
             }

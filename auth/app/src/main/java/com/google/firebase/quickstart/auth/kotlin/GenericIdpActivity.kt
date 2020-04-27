@@ -24,7 +24,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.OAuthProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.oAuthProvider
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.ActivityGenericIdpBinding
 import java.util.ArrayList
@@ -47,7 +49,7 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
 
         // Set up button click listeners
         binding.genericSignInButton.setOnClickListener(this)
@@ -90,15 +92,15 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
 
     private fun signIn() {
         // Could add custom scopes here
-        val scopes = ArrayList<String>()
+        val customScopes = ArrayList<String>()
 
         // Examples of provider ID: apple.com (Apple), microsoft.com (Microsoft), yahoo.com (Yahoo)
         val providerId = getProviderId()
 
         auth.startActivityForSignInWithProvider(this,
-                OAuthProvider.newBuilder(providerId, auth)
-                        .setScopes(scopes)
-                        .build())
+                        oAuthProvider(providerId, auth) {
+                            scopes = customScopes
+                        })
                 .addOnSuccessListener { authResult ->
                     Log.d(TAG, "activitySignIn:onSuccess:${authResult.user}")
                     updateUI(authResult.user)
@@ -110,7 +112,7 @@ class GenericIdpActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun getProviderId(): String {
-        val providerName = spinnerAdapter.getItem(binding.providerSpinner.getSelectedItemPosition())
+        val providerName = spinnerAdapter.getItem(binding.providerSpinner.selectedItemPosition)
         return PROVIDER_MAP[providerName!!] ?: error("No provider selected")
     }
 

@@ -9,6 +9,8 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthMultiFactorException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.ActivityEmailpasswordBinding
 
@@ -35,7 +37,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
         // [END initialize_auth]
     }
 
@@ -127,9 +129,9 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
         // Send verification email
         // [START send_email_verification]
-        val user = auth.currentUser
-        user?.sendEmailVerification()
-                ?.addOnCompleteListener(this) { task ->
+        val user = auth.currentUser!!
+        user.sendEmailVerification()
+                .addOnCompleteListener(this) { task ->
                     // [START_EXCLUDE]
                     // Re-enable button
                     binding.verifyEmailButton.isEnabled = true
@@ -150,7 +152,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun reload() {
-        auth.currentUser?.reload()?.addOnCompleteListener { task ->
+        auth.currentUser!!.reload().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 updateUI(auth.currentUser)
                 Toast.makeText(this@EmailPasswordActivity,
@@ -228,8 +230,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        val i = v.id
-        when (i) {
+        when (v.id) {
             R.id.emailCreateAccountButton -> {
                 createAccount(binding.fieldEmail.text.toString(), binding.fieldPassword.text.toString())
             }

@@ -8,6 +8,8 @@ import android.widget.Toast
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.ActivityAnonymousAuthBinding
 
@@ -30,7 +32,7 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
         // [END initialize_auth]
 
         // Click listeners
@@ -95,8 +97,8 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         showProgressBar()
 
         // [START link_credential]
-        auth.currentUser?.linkWithCredential(credential)
-                ?.addOnCompleteListener(this) { task ->
+        auth.currentUser!!.linkWithCredential(credential)
+                .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "linkWithCredential:success")
                         val user = task.result?.user

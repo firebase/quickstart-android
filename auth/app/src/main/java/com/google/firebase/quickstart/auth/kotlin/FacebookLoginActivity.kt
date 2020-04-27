@@ -14,6 +14,8 @@ import com.facebook.login.LoginResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.ActivityFacebookBinding
 
@@ -39,7 +41,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
 
         // [START initialize_auth]
         // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
         // [END initialize_auth]
 
         // [START initialize_fblogin]
@@ -143,8 +145,7 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        val i = v.id
-        if (i == R.id.buttonFacebookSignout) {
+        if (v.id == R.id.buttonFacebookSignout) {
             signOut()
         }
     }

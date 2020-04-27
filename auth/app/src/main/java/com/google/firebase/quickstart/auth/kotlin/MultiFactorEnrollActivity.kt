@@ -6,11 +6,12 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneMultiFactorGenerator
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.ActivityPhoneAuthBinding
 import com.google.firebase.quickstart.auth.java.BaseActivity
@@ -64,11 +65,11 @@ class MultiFactorEnrollActivity : BaseActivity(), View.OnClickListener {
                         .show()
             }
         }
-        FirebaseAuth.getInstance()
-                .currentUser
-                ?.multiFactor
-                ?.session
-                ?.addOnCompleteListener { task ->
+        Firebase.auth
+                .currentUser!!
+                .multiFactor
+                .session
+                .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val phoneAuthOptions = PhoneAuthOptions.newBuilder()
                                 .setPhoneNumber(phoneNumber) // A timeout of 0 disables SMS-auto-retrieval.
@@ -97,11 +98,11 @@ class MultiFactorEnrollActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun enrollWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        FirebaseAuth.getInstance()
-                .currentUser
-                ?.multiFactor
-                ?.enroll(PhoneMultiFactorGenerator.getAssertion(credential), /* displayName= */null)
-                ?.addOnSuccessListener {
+        Firebase.auth
+                .currentUser!!
+                .multiFactor
+                .enroll(PhoneMultiFactorGenerator.getAssertion(credential), /* displayName= */null)
+                .addOnSuccessListener {
                     Toast.makeText(
                             this@MultiFactorEnrollActivity,
                             "MFA enrollment was successful",
@@ -109,7 +110,7 @@ class MultiFactorEnrollActivity : BaseActivity(), View.OnClickListener {
                             .show()
                     finish()
                 }
-                ?.addOnFailureListener { e ->
+                .addOnFailureListener { e ->
                     Log.d(TAG, "MFA failure", e)
                     Toast.makeText(
                             this@MultiFactorEnrollActivity,
