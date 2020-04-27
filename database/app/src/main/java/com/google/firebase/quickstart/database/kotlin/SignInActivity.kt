@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -27,7 +28,7 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         database = Firebase.database.reference
-        auth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
 
         setProgressBar(R.id.progressBar)
 
