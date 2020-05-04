@@ -14,6 +14,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.analytics.R
 import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding
 import java.util.Locale
@@ -57,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         // [START shared_app_measurement]
         // Obtain the FirebaseAnalytics instance.
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics = Firebase.analytics
         // [END shared_app_measurement]
 
         // On first app open, ask the user his/her favorite food. Then set this as a user property
@@ -156,10 +159,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(sendIntent)
 
             // [START custom_event]
-            val params = Bundle()
-            params.putString("image_name", name)
-            params.putString("full_text", text)
-            firebaseAnalytics.logEvent("share_image", params)
+            firebaseAnalytics.logEvent("share_image") {
+                param("image_name", name)
+                param("full_text", text)
+            }
             // [END custom_event]
         }
         return false
@@ -196,11 +199,11 @@ class MainActivity : AppCompatActivity() {
         val name = getCurrentImageTitle()
 
         // [START image_view_event]
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id)
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name)
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+            param(FirebaseAnalytics.Param.ITEM_ID, id)
+            param(FirebaseAnalytics.Param.ITEM_NAME, name)
+            param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
+        }
         // [END image_view_event]
     }
 
