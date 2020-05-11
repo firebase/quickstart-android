@@ -2,8 +2,7 @@ package com.google.samples.quickstart.crash.kotlin
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.samples.quickstart.crash.databinding.ActivityMainBinding
 
 /**
@@ -19,26 +18,30 @@ import com.google.samples.quickstart.crash.databinding.ActivityMainBinding
  */
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var crashlytics: FirebaseCrashlytics;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        crashlytics = FirebaseCrashlytics.getInstance()
+
         // Log the onCreate event, this will also be printed in logcat
-        Crashlytics.log(Log.VERBOSE, TAG, "onCreate")
+        crashlytics.log("onCreate")
 
         // Add some custom values and identifiers to be included in crash reports
-        Crashlytics.setInt("MeaningOfLife", 42)
-        Crashlytics.setString("LastUIAction", "Test value")
-        Crashlytics.setUserIdentifier("123456789")
+        crashlytics.setCustomKey("MeaningOfLife", 42)
+        crashlytics.setCustomKey("LastUIAction", "Test value")
+        crashlytics.setUserId("123456789")
 
         // Report a non-fatal exception, for demonstration purposes
-        Crashlytics.logException(Exception("Non-fatal exception: something went wrong!"))
+        crashlytics.recordException(Exception("Non-fatal exception: something went wrong!"))
 
         // Button that causes NullPointerException to be thrown.
         binding.crashButton.setOnClickListener {
             // Log that crash button was clicked.
-            Crashlytics.log(Log.INFO, TAG, "Crash button clicked.")
+            crashlytics.log("Crash button clicked.")
 
             // If catchCrashCheckBox is checked catch the exception and report it using
             // logException(), Otherwise throw the exception and let Crashlytics automatically
@@ -48,8 +51,8 @@ class MainActivity : AppCompatActivity() {
                     throw NullPointerException()
                 } catch (ex: NullPointerException) {
                     // [START crashlytics_log_and_report]
-                    Crashlytics.log(Log.ERROR, TAG, "NPE caught!")
-                    Crashlytics.logException(ex)
+                    crashlytics.log( "NPE caught!")
+                    crashlytics.recordException(ex)
                     // [END crashlytics_log_and_report]
                 }
             } else {
@@ -59,12 +62,11 @@ class MainActivity : AppCompatActivity() {
 
         // Log that the Activity was created.
         // [START crashlytics_log_event]
-        Crashlytics.log("Activity created")
+        crashlytics.log("Activity created")
         // [END crashlytics_log_event]
     }
 
     companion object {
-
         private const val TAG = "MainActivity"
     }
 }
