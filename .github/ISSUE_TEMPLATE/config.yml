@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: 🐞 Bug in the Firebase SDK
+    url: https://github.com/firebase/firebase-android-sdk/issues/new/choose
+    about: Do you think you have found a bug in the Firebase Android SDK?
   - name: 🔥 Firebase Support
     url: https://firebase.google.com/support/
     about: If you have an urgent issue with your app, please contact support.
