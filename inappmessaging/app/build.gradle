@@ -40,15 +40,15 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // FIAM (Java)
-    implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.6'
+    implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.7'
 
     // FIAM (Kotlin)
-    implementation 'com.google.firebase:firebase-inappmessaging-ktx:19.0.6'
-    implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:19.0.6'
+    implementation 'com.google.firebase:firebase-inappmessaging-ktx:19.0.7'
+    implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:19.0.7'
 
     // The Firebase SDK for Google Analytics is required to use In-App Messaging
-    implementation 'com.google.firebase:firebase-analytics:17.4.1'
-    implementation 'com.google.firebase:firebase-iid:20.1.7'
+    implementation 'com.google.firebase:firebase-analytics:17.4.2'
+    implementation 'com.google.firebase:firebase-iid:20.2.0'
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

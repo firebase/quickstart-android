@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
 
     // Firebase Authentication (Java)
-    implementation 'com.google.firebase:firebase-analytics:17.4.1'
+    implementation 'com.google.firebase:firebase-analytics:17.4.2'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
 
     // Firebase Authentication (Kotlin)
