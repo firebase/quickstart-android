@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.fiamquickstart.R
 import com.google.firebase.fiamquickstart.databinding.ActivityMainBinding
 import com.google.firebase.iid.FirebaseInstanceId
@@ -22,7 +23,7 @@ class KotlinMainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics = Firebase.analytics
         firebaseIam = Firebase.inAppMessaging
 
         firebaseIam.isAutomaticDataCollectionEnabled = true
