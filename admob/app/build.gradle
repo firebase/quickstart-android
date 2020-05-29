@@ -27,9 +27,9 @@ android {
         exclude 'LICENSE.txt'
     }
 
-    viewBinding {
-        enabled = true
-    }
+    buildFeatures {
+  viewBinding = true
+}
 }
 
 dependencies {
