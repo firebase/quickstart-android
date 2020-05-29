@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content"
     tools:viewBindingIgnore="true">
-  <item android:drawable="@drawable/ic_switch_camera_white_48dp" android:state_checked="true"/>
-  <item android:drawable="@drawable/ic_switch_camera_white_48dp" android:state_checked="false"/>
+  <item 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" 
+    android:drawable="@drawable/ic_switch_camera_white_48dp" 
+    android:state_checked="true"/>
+  <item 
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content" 
+    android:drawable="@drawable/ic_switch_camera_white_48dp" 
+    android:state_checked="false"/>
 </selector>

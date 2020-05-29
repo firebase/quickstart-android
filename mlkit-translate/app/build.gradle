@@ -37,8 +37,8 @@ android {
         targetCompatibility = '1.8'
     }
     buildToolsVersion = '29.0.0'
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 

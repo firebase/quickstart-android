@@ -22,8 +22,8 @@ android {
     aaptOptions {
         noCompress "tflite"
     }
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 }
 
