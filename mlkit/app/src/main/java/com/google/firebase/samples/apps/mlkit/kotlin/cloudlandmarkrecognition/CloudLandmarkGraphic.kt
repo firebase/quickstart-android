@@ -26,7 +26,7 @@ class CloudLandmarkGraphic(overlay: GraphicOverlay, private val landmark: Fireba
      * Draws the landmark block annotations for position, size, and raw value on the supplied canvas.
      */
     override fun draw(canvas: Canvas) {
-        landmark.landmark?.let { lm ->
+        landmark.landmark.let { lm ->
             landmark.boundingBox?.let { boundingBox ->
                 // Draws the bounding box around the LandmarkBlock.
                 val rect = RectF(boundingBox)

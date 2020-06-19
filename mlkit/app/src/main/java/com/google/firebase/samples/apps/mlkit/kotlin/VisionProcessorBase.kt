@@ -97,7 +97,7 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
             .addOnSuccessListener { results ->
                 onSuccess(
                     originalCameraImage, results,
-                    metadata!!,
+                    metadata,
                     graphicOverlay
                 )
                 processLatestImage(graphicOverlay)
@@ -118,7 +118,7 @@ abstract class VisionProcessorBase<T> : VisionImageProcessor {
     protected abstract fun onSuccess(
         originalCameraImage: Bitmap?,
         results: T,
-        frameMetadata: FrameMetadata,
+        frameMetadata: FrameMetadata?,
         graphicOverlay: GraphicOverlay
     )
 

@@ -29,7 +29,7 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionImage
     override fun onSuccess(
         originalCameraImage: Bitmap?,
         results: List<FirebaseVisionImageLabel>,
-        frameMetadata: FrameMetadata,
+        frameMetadata: FrameMetadata?,
         graphicOverlay: GraphicOverlay
     ) {
         graphicOverlay.clear()
@@ -38,7 +38,7 @@ class CloudImageLabelingProcessor : VisionProcessorBase<List<FirebaseVisionImage
 
         results.forEach {
             Log.d(TAG, "cloud label: $it")
-            it.text?.let { text ->
+            it.text.let { text ->
                 labelsStr.add(text)
             }
         }
