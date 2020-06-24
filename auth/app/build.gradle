@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     flavorDimensions "minSdkVersion"
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.auth"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         multiDexEnabled true

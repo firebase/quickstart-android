@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.fcm"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -44,8 +44,8 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.1.0'
 
-    implementation 'com.google.firebase:firebase-iid:20.2.0'
-    implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.google.firebase:firebase-iid:20.2.1'
+    implementation 'com.google.firebase:firebase-messaging:20.2.1'
 
     // For an optimal experience using FCM, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.

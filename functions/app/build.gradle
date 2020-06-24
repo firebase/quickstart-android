@@ -4,12 +4,12 @@ apply plugin: 'kotlin-android'
 android {
     // Changes the test build type for instrumented tests to "stage".
     testBuildType "release"
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.google.samples.quickstart.functions"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -49,7 +49,7 @@ dependencies {
     // Firebase Authentication (Kotlin)
     implementation 'com.google.firebase:firebase-auth-ktx:19.3.1'
 
-    implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.2.1'
 
     implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'

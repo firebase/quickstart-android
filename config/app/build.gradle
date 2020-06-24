@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.google.samples.quickstart.config"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 

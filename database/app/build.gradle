@@ -5,12 +5,12 @@ apply plugin: 'org.jetbrains.kotlin.android.extensions'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.database"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -43,10 +43,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
 
     // Database (Java)
-    implementation 'com.google.firebase:firebase-database:19.3.0'
+    implementation 'com.google.firebase:firebase-database:19.3.1'
 
     // Database (Kotlin)
-    implementation 'com.google.firebase:firebase-database-ktx:19.3.0'
+    implementation 'com.google.firebase:firebase-database-ktx:19.3.1'
 
     // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth:19.3.1'
