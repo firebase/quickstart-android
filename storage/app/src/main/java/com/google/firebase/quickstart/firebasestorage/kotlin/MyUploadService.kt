@@ -37,7 +37,7 @@ class MyUploadService : MyBaseTaskService() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand:$intent:$startId")
         if (ACTION_UPLOAD == intent.action) {
-            val fileUri = intent.getParcelableExtra<Uri>(EXTRA_FILE_URI)
+            val fileUri = intent.getParcelableExtra<Uri>(EXTRA_FILE_URI)!!
 
             // Make sure we have permission to read the data
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

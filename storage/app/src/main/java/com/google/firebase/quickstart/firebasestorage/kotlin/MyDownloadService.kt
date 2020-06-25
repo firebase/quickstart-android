@@ -31,7 +31,7 @@ class MyDownloadService : MyBaseTaskService() {
 
         if (ACTION_DOWNLOAD == intent.action) {
             // Get the path to download from the intent
-            val downloadPath = intent.getStringExtra(EXTRA_DOWNLOAD_PATH)
+            val downloadPath = intent.getStringExtra(EXTRA_DOWNLOAD_PATH)!!
             downloadFromPath(downloadPath)
         }
 

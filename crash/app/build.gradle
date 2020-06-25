@@ -5,12 +5,12 @@ apply plugin: 'com.google.firebase.crashlytics'
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.google.samples.quickstart.crash"
         minSdkVersion 16
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -38,7 +38,7 @@ dependencies {
     implementation project(":internal:chooserx")
     implementation 'com.google.android.material:material:1.1.0'
 
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.1'
+    implementation 'com.google.firebase:firebase-crashlytics:17.1.0'
 
     // For an optimal experience using Crashlytics, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.

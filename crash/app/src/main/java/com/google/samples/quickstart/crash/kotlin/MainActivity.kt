@@ -18,7 +18,7 @@ import com.google.samples.quickstart.crash.databinding.ActivityMainBinding
  */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var crashlytics: FirebaseCrashlytics;
+    private lateinit var crashlytics: FirebaseCrashlytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                     throw NullPointerException()
                 } catch (ex: NullPointerException) {
                     // [START crashlytics_log_and_report]
-                    crashlytics.log( "NPE caught!")
+                    crashlytics.log("NPE caught!")
                     crashlytics.recordException(ex)
                     // [END crashlytics_log_and_report]
                 }
