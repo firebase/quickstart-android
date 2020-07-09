@@ -49,7 +49,7 @@ dependencies {
     // Firebase Authentication (Kotlin)
     implementation 'com.google.firebase:firebase-auth-ktx:19.3.2'
 
-    implementation 'com.google.firebase:firebase-messaging:20.2.2'
+    implementation 'com.google.firebase:firebase-messaging:20.2.3'
 
     implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
