@@ -29,7 +29,7 @@ import com.google.firebase.quickstart.auth.databinding.ActivityChooserBinding
  */
 class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
-    private lateinit var binding: ActivityChooserBinding;
+    private lateinit var binding: ActivityChooserBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

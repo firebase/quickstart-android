@@ -14,7 +14,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.databinding.ActivityNewPostBinding
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.models.User
-import java.util.HashMap
 
 class NewPostActivity : BaseActivity() {
 
@@ -116,9 +115,10 @@ class NewPostActivity : BaseActivity() {
         val post = Post(userId, username, title, body)
         val postValues = post.toMap()
 
-        val childUpdates = HashMap<String, Any>()
-        childUpdates["/posts/$key"] = postValues
-        childUpdates["/user-posts/$userId/$key"] = postValues
+        val childUpdates = hashMapOf<String, Any>(
+                "/posts/$key" to postValues,
+                "/user-posts/$userId/$key" to postValues
+        )
 
         database.updateChildren(childUpdates)
     }

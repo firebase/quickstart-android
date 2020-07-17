@@ -25,7 +25,7 @@ import java.util.ArrayList
 class ChooserActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback,
         AdapterView.OnItemClickListener {
 
-    private lateinit var binding: ActivityChooserBinding;
+    private lateinit var binding: ActivityChooserBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

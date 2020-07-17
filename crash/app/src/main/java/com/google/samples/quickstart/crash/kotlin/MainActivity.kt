@@ -3,6 +3,9 @@ package com.google.samples.quickstart.crash.kotlin
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.crashlytics.ktx.setCustomKeys
+import com.google.firebase.ktx.Firebase
 import com.google.samples.quickstart.crash.databinding.ActivityMainBinding
 
 /**
@@ -18,21 +21,23 @@ import com.google.samples.quickstart.crash.databinding.ActivityMainBinding
  */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var crashlytics: FirebaseCrashlytics;
+    private lateinit var crashlytics: FirebaseCrashlytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        crashlytics = FirebaseCrashlytics.getInstance()
+        crashlytics = Firebase.crashlytics
 
         // Log the onCreate event, this will also be printed in logcat
         crashlytics.log("onCreate")
 
         // Add some custom values and identifiers to be included in crash reports
-        crashlytics.setCustomKey("MeaningOfLife", 42)
-        crashlytics.setCustomKey("LastUIAction", "Test value")
+        crashlytics.setCustomKeys {
+            key("MeaningOfLife", 42)
+            key("LastUIAction", "Test value")
+        }
         crashlytics.setUserId("123456789")
 
         // Report a non-fatal exception, for demonstration purposes
@@ -51,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                     throw NullPointerException()
                 } catch (ex: NullPointerException) {
                     // [START crashlytics_log_and_report]
-                    crashlytics.log( "NPE caught!")
+                    crashlytics.log("NPE caught!")
                     crashlytics.recordException(ex)
                     // [END crashlytics_log_and_report]
                 }
