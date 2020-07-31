@@ -53,7 +53,7 @@ dependencies {
     // Analytics (Kotlin)
     implementation 'com.google.firebase:firebase-analytics-ktx:17.4.4'
 
-    implementation 'com.google.firebase:firebase-iid:20.2.3'
+    implementation 'com.google.firebase:firebase-iid:20.2.4'
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
