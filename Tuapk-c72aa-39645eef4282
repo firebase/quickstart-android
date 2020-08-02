@@ -1,0 +1,2 @@
+implementation 'com.google.firebase:firebase-analytics:17.4.4'
+FirebaseAnalytics privado mFirebaseAnalytics ;
