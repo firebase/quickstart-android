@@ -54,7 +54,7 @@ dependencies {
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
+    implementation 'com.firebaseui:firebase-ui-auth:6.3.0'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
