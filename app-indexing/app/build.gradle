@@ -33,7 +33,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-appindexing:19.1.0'
     // [END app_indexing_gradle_dep]
 
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.material:material:1.2.0'
 
     // Testing
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
