@@ -23,7 +23,7 @@
             android:id="@+id/icon_category"
             style="@style/AppTheme.FilterIcon"
             android:layout_centerVertical="true"
-            android:tint="@color/greySecondary"
+            app:tint="@color/greySecondary"
             app:srcCompat="@drawable/ic_fastfood_white_24dp" />
 
         <Spinner
@@ -44,7 +44,7 @@
             android:id="@+id/icon_city"
             style="@style/AppTheme.FilterIcon"
             android:layout_centerVertical="true"
-            android:tint="@color/greySecondary"
+            app:tint="@color/greySecondary"
             app:srcCompat="@drawable/ic_place_white_24px" />
 
         <Spinner
@@ -65,7 +65,7 @@
             android:id="@+id/icon_price"
             style="@style/AppTheme.FilterIcon"
             android:layout_centerVertical="true"
-            android:tint="@color/greySecondary"
+            app:tint="@color/greySecondary"
             app:srcCompat="@drawable/ic_monetization_on_white_24px" />
 
         <Spinner
@@ -86,7 +86,7 @@
             android:id="@+id/icon_sort"
             style="@style/AppTheme.FilterIcon"
             android:layout_centerVertical="true"
-            android:tint="@color/greySecondary"
+            app:tint="@color/greySecondary"
             app:srcCompat="@drawable/ic_sort_white_24px" />
 
         <Spinner
