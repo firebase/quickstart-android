@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:tint="@color/greySecondary"
+                    app:tint="@color/greySecondary"
                     app:srcCompat="@drawable/ic_filter_list_white_24px" />
 
                 <LinearLayout
@@ -87,7 +87,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:tint="@color/greySecondary"
+                    app:tint="@color/greySecondary"
                     app:srcCompat="@drawable/ic_close_white_24px" />
 
             </RelativeLayout>
