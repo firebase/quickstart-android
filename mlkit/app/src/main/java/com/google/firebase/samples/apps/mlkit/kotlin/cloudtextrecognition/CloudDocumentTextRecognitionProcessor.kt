@@ -24,7 +24,7 @@ class CloudDocumentTextRecognitionProcessor : VisionProcessorBase<FirebaseVision
     override fun onSuccess(
         originalCameraImage: Bitmap?,
         results: FirebaseVisionDocumentText,
-        frameMetadata: FrameMetadata,
+        frameMetadata: FrameMetadata?,
         graphicOverlay: GraphicOverlay
     ) {
         graphicOverlay.clear()

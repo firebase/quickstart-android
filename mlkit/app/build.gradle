@@ -25,6 +25,10 @@ android {
         exclude 'META-INF/androidx.exifinterface_exifinterface.version'
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
     buildFeatures {
         viewBinding = true
     }
@@ -35,8 +39,8 @@ dependencies {
     implementation project(':internal:chooserx')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
 
-    implementation 'androidx.camera:camera-camera2:1.0.0-alpha04'
-    implementation 'androidx.camera:camera-core:1.0.0-alpha04'
+    implementation 'androidx.camera:camera-camera2:1.0.0-beta08'
+    implementation 'androidx.camera:camera-core:1.0.0-beta08'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.media:media:1.1.0'
@@ -44,18 +48,11 @@ dependencies {
 
     // ML Kit dependencies
     implementation 'com.google.firebase:firebase-ml-vision:24.1.0'
-    // Barcode detection model.
-    implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.1.2'
-    // Image Labeling model.
-    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:20.0.2'
-    // Face model
-    implementation 'com.google.firebase:firebase-ml-vision-face-model:20.0.2'
-    // Custom model
-    implementation 'com.google.firebase:firebase-ml-model-interpreter:22.0.4'
-    // Object model
-    implementation 'com.google.firebase:firebase-ml-vision-object-detection-model:19.0.6'
-    // AutoML model
-    implementation 'com.google.firebase:firebase-ml-vision-automl:18.0.6'
+
+    // Needed to fix a temporary issue with duplicate class com.google.android.gms.internal.vision.* errors
+    // See: https://firebase.google.com/support/release-notes/android#bom_v25-8-0
+    implementation 'com.google.android.gms:play-services-vision:20.1.1'
+    implementation 'com.google.android.gms:play-services-vision-common:19.1.1'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:runner:1.2.0'

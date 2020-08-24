@@ -19,13 +19,6 @@
             android:value="barcode,face,ocr,ica" />
 
         <activity
-            android:name="com.google.firebase.samples.apps.mlkit.java.ChooserActivity"/>
-
-        <activity
-            android:name="com.google.firebase.samples.apps.mlkit.kotlin.ChooserActivity"/>
-
-
-        <activity
             android:name="com.google.firebase.samples.apps.mlkit.EntryChoiceActivity"
             android:exported="true"
             android:label="@string/app_name">
@@ -34,13 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name=".java.LivePreviewActivity" android:exported="true">
-        </activity>
-
-        <activity android:name=".kotlin.LivePreviewActivity" android:exported="true"/>
-
 
         <activity android:name=".java.StillImageActivity"
             android:exported="true">
