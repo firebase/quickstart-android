@@ -33,7 +33,7 @@ class CloudLandmarkRecognitionProcessor : VisionProcessorBase<List<FirebaseVisio
     override fun onSuccess(
         originalCameraImage: Bitmap?,
         results: List<FirebaseVisionCloudLandmark>,
-        frameMetadata: FrameMetadata,
+        frameMetadata: FrameMetadata?,
         graphicOverlay: GraphicOverlay
     ) {
         graphicOverlay.clear()

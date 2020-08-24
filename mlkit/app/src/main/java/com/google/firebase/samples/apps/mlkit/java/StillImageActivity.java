@@ -14,7 +14,10 @@
 package com.google.firebase.samples.apps.mlkit.java;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
@@ -23,6 +26,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
@@ -57,6 +63,7 @@ import java.util.List;
 public final class StillImageActivity extends AppCompatActivity {
 
   private static final String TAG = "StillImageActivity";
+  private static final int PERMISSION_REQUESTS = 1;
 
   private static final String CLOUD_LABEL_DETECTION = "Cloud Label";
   private static final String CLOUD_LANDMARK_DETECTION = "Landmark";
@@ -145,6 +152,10 @@ public final class StillImageActivity extends AppCompatActivity {
         tryReloadAndDetectInImage();
       }
     }
+
+    if (!allPermissionsGranted()) {
+      getRuntimePermissions();
+    }
   }
 
   @Override
@@ -153,6 +164,55 @@ public final class StillImageActivity extends AppCompatActivity {
     Log.d(TAG, "onResume");
     createImageProcessor();
     tryReloadAndDetectInImage();
+  }
+
+  private String[] getRequiredPermissions() {
+    try {
+      PackageInfo info =
+              this.getPackageManager()
+                      .getPackageInfo(this.getPackageName(), PackageManager.GET_PERMISSIONS);
+      String[] ps = info.requestedPermissions;
+      if (ps != null && ps.length > 0) {
+        return ps;
+      } else {
+        return new String[0];
+      }
+    } catch (Exception e) {
+      return new String[0];
+    }
+  }
+
+  private boolean allPermissionsGranted() {
+    for (String permission : getRequiredPermissions()) {
+      if (!isPermissionGranted(this, permission)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private void getRuntimePermissions() {
+    List<String> allNeededPermissions = new ArrayList<>();
+    for (String permission : getRequiredPermissions()) {
+      if (!isPermissionGranted(this, permission)) {
+        allNeededPermissions.add(permission);
+      }
+    }
+
+    if (!allNeededPermissions.isEmpty()) {
+      ActivityCompat.requestPermissions(
+              this, allNeededPermissions.toArray(new String[0]), PERMISSION_REQUESTS);
+    }
+  }
+
+  private static boolean isPermissionGranted(Context context, String permission) {
+    if (ContextCompat.checkSelfPermission(context, permission)
+            == PackageManager.PERMISSION_GRANTED) {
+      Log.i(TAG, "Permission granted: " + permission);
+      return true;
+    }
+    Log.i(TAG, "Permission NOT granted: " + permission);
+    return false;
   }
 
   @Override

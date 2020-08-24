@@ -28,7 +28,7 @@ android {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
     // [START app_indexing_gradle_dep]
     implementation 'com.google.firebase:firebase-appindexing:19.1.0'
     // [END app_indexing_gradle_dep]

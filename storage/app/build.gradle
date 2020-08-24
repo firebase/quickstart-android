@@ -30,7 +30,7 @@ android {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
 
     // Storage (Java)
     implementation 'com.google.firebase:firebase-storage:19.1.1'

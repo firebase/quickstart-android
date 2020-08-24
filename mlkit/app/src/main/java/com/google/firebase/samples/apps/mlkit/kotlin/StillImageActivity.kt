@@ -1,7 +1,9 @@
 package com.google.firebase.samples.apps.mlkit.kotlin
 
 import android.app.Activity
+import android.content.pm.PackageManager
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -19,6 +21,8 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.PopupMenu
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.common.annotation.KeepName
 import com.google.firebase.samples.apps.mlkit.R
 import com.google.firebase.samples.apps.mlkit.common.VisionImageProcessor
@@ -95,6 +99,10 @@ class StillImageActivity : AppCompatActivity() {
                 tryReloadAndDetectInImage()
             }
         }
+
+        if (!allPermissionsGranted()) {
+            getRuntimePermissions()
+        }
     }
 
     override fun onResume() {
@@ -102,6 +110,57 @@ class StillImageActivity : AppCompatActivity() {
         Log.d(TAG, "onResume")
         createImageProcessor()
         tryReloadAndDetectInImage()
+    }
+
+    private fun getRequiredPermissions(): Array<String?> {
+        return try {
+            val info = this.packageManager
+                    .getPackageInfo(this.packageName, PackageManager.GET_PERMISSIONS)
+            val ps = info.requestedPermissions
+            if (ps != null && ps.isNotEmpty()) {
+                ps
+            } else {
+                arrayOfNulls(0)
+            }
+        } catch (e: Exception) {
+            arrayOfNulls(0)
+        }
+    }
+
+    private fun allPermissionsGranted(): Boolean {
+        for (permission in getRequiredPermissions()) {
+            permission?.let {
+                if (!isPermissionGranted(this, it)) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    private fun getRuntimePermissions() {
+        val allNeededPermissions = ArrayList<String>()
+        for (permission in getRequiredPermissions()) {
+            permission?.let {
+                if (!isPermissionGranted(this, it)) {
+                    allNeededPermissions.add(permission)
+                }
+            }
+        }
+
+        if (allNeededPermissions.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                    this, allNeededPermissions.toTypedArray(), PERMISSION_REQUESTS)
+        }
+    }
+
+    private fun isPermissionGranted(context: Context, permission: String): Boolean {
+        if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "Permission granted: $permission")
+            return true
+        }
+        Log.i(TAG, "Permission NOT granted: $permission")
+        return false
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -335,6 +394,8 @@ class StillImageActivity : AppCompatActivity() {
     companion object {
 
         private const val TAG = "StillImageActivity"
+
+        private const val PERMISSION_REQUESTS = 1
 
         private const val CLOUD_LABEL_DETECTION = "Cloud Label"
         private const val CLOUD_LANDMARK_DETECTION = "Landmark"
