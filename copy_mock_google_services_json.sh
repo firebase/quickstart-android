@@ -19,7 +19,4 @@ cp mock-google-services.json inappmessaging/app/google-services.json
 cp mock-google-services.json perf/app/google-services.json
 cp mock-google-services.json messaging/app/google-services.json
 cp mock-google-services.json mlkit/app/google-services.json
-cp mock-google-services.json mlkit-langid/app/google-services.json
-cp mock-google-services.json mlkit-smartreply/app/google-services.json
-cp mock-google-services.json mlkit-translate/app/google-services.json
 cp mock-google-services.json storage/app/google-services.json
