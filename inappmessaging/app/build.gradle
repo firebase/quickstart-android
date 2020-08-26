@@ -36,7 +36,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
 
     implementation 'com.google.android.material:material:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // FIAM (Java)
