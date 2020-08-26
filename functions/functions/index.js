@@ -18,7 +18,7 @@
 const functions = require('firebase-functions');
 const sanitizer = require('./sanitizer');
 const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
+admin.initializeApp();
 
 // [START allAdd]
 // [START addFunctionTrigger]
