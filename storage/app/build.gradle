@@ -33,10 +33,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
 
     // Storage (Java)
-    implementation 'com.google.firebase:firebase-storage:19.1.1'
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
 
     // Storage (Kotlin)
-    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
+    implementation 'com.google.firebase:firebase-storage-ktx:19.2.0'
 
     // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth:19.3.2'

@@ -38,10 +38,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.0'
 
     // Functions (Java)
-    implementation 'com.google.firebase:firebase-functions:19.0.2'
+    implementation 'com.google.firebase:firebase-functions:19.1.0'
 
     // Functions (Kotlin)
-    implementation 'com.google.firebase:firebase-functions-ktx:19.0.2'
+    implementation 'com.google.firebase:firebase-functions-ktx:19.1.0'
 
     // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth:19.3.2'

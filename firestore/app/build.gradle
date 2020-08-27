@@ -46,10 +46,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
 
     // Firestore (Java)
-    implementation 'com.google.firebase:firebase-firestore:21.5.0'
+    implementation 'com.google.firebase:firebase-firestore:21.6.0'
 
     // Firestore (Kotlin)
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.5.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.6.0'
 
     // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth:19.3.2'
