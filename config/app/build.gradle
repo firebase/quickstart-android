@@ -32,7 +32,7 @@ dependencies {
     implementation project(":internal:chooserx")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
 
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
 
     // Remote Config (Java)
     implementation 'com.google.firebase:firebase-config:19.2.0'

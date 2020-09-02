@@ -44,7 +44,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.media:media:1.1.0'
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
 
     // ML Kit dependencies
     implementation 'com.google.firebase:firebase-ml-vision:24.1.0'
