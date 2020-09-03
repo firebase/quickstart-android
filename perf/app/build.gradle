@@ -40,7 +40,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-perf:19.0.8'
 
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
 
     implementation 'com.github.bumptech.glide:glide:3.7.0'
