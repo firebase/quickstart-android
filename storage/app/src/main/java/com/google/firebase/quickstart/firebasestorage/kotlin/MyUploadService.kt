@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.firebasestorage.kotlin
 
-import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
@@ -11,6 +10,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.firebasestorage.R
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.component1
+import com.google.firebase.storage.ktx.component2
 import com.google.firebase.storage.ktx.storage
 
 /**
@@ -49,12 +50,12 @@ class MyUploadService : MyBaseTaskService() {
             uploadFromUri(fileUri)
         }
 
-        return Service.START_REDELIVER_INTENT
+        return START_REDELIVER_INTENT
     }
 
     // [START upload_from_uri]
     private fun uploadFromUri(fileUri: Uri) {
-        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString())
+        Log.d(TAG, "uploadFromUri:src:$fileUri")
 
         // [START_EXCLUDE]
         taskStarted()
@@ -70,10 +71,10 @@ class MyUploadService : MyBaseTaskService() {
 
             // Upload file to Firebase Storage
             Log.d(TAG, "uploadFromUri:dst:" + photoRef.path)
-            photoRef.putFile(fileUri).addOnProgressListener { taskSnapshot ->
+            photoRef.putFile(fileUri).addOnProgressListener { (bytesTransferred, totalByteCount) ->
                 showProgressNotification(getString(R.string.progress_uploading),
-                        taskSnapshot.bytesTransferred,
-                        taskSnapshot.totalByteCount)
+                        bytesTransferred,
+                        totalByteCount)
             }.continueWithTask { task ->
                 // Forward any exceptions
                 if (!task.isSuccessful) {
