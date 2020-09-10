@@ -36,7 +36,6 @@ android {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
 
     implementation 'com.google.firebase:firebase-perf:19.0.8'
 
