@@ -17,6 +17,6 @@ jobs:
     - name: Copy mock google_services.json
       run: ./copy_mock_google_services_json.sh
     - name: Build with Modular Action
-      uses: rosariopfernandes/modular-android-action@v0.4
+      uses: rosariopfernandes/modular-android-action@v0.5
       with:
         for-each-module: 'assembleDebug'
