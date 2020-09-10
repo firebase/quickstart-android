@@ -37,7 +37,6 @@ android {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(':internal:chooserx')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
 
     implementation 'androidx.camera:camera-camera2:1.0.0-beta08'
     implementation 'androidx.camera:camera-core:1.0.0-beta08'
