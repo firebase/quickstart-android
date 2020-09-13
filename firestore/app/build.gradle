@@ -51,10 +51,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:21.6.0'
 
     // Firebase Authentication (Java)
-    implementation 'com.google.firebase:firebase-auth:19.3.2'
+    implementation 'com.google.firebase:firebase-auth:19.4.0'
 
     // Firebase Authentication (Kotlin)
-    implementation 'com.google.firebase:firebase-auth-ktx:19.3.2'
+    implementation 'com.google.firebase:firebase-auth-ktx:19.4.0'
 
     // Play Services
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
@@ -89,7 +89,7 @@ dependencies {
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     androidTestImplementation 'junit:junit:4.13'
     androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
-    androidTestImplementation 'com.google.firebase:firebase-auth:19.3.2'
+    androidTestImplementation 'com.google.firebase:firebase-auth:19.4.0'
 
 }
 
