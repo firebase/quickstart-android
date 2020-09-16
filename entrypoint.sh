@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Exit on error
-set -e
+#set -e
 
 # unshallow since GitHub actions does a shallow clone
 git fetch --unshallow
