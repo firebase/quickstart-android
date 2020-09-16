@@ -11,6 +11,7 @@ git fetch origin
 
 echo "base: $GITHUB_BASE_REF"
 echo "ref: $GITHUB_REF"
+echo "input branch: $3"
 
 echo "Running git remote"
 git remote

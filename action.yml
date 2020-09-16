@@ -9,6 +9,10 @@ inputs:
     description: 'Gradle Task to run for each module'
     required: true
     default: 'build'
+  branch-name:
+    description: 'Current Branch'
+    required: true
+    default: $GITHUB_BASE_REF
 runs:
   using: 'docker'
   image: 'Dockerfile'
