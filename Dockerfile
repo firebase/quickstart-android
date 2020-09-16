@@ -1,5 +1,5 @@
 # Container image that runs the code
-FROM openjdk:11-alpine
+FROM openjdk:16-jdk-alpine3.12
 
 # Copies the main file from the action to the filesystem
 COPY entrypoint.sh /entrypoint.sh
