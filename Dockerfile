@@ -8,7 +8,7 @@ COPY entrypoint.sh /entrypoint.sh
 RUN apt-get update && apt-get upgrade && apt-get install git
 
 # Install bash
-RUN apt-get add --no-cache bash
+RUN apt-get install bash
 
 # Execute the action code
 RUN chmod +x entrypoint.sh
