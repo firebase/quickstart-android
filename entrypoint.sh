@@ -23,8 +23,9 @@ git branch
 # Check if this is a fork
 #if [ -z ${GITHUB_BASE_REF+x} ]; then current_branch=$GITHUB_REF; else current_branch=origin/$GITHUB_BASE_REF; fi
 
-current_branch=arrREF=(${GITHUB_REF//;/ })[2]
-
+#current_branch=arrREF=(${GITHUB_REF//;/ })[2]
+current_branch="master"
+echo "branch is $current_branch"
 # Get all the modules that were changed
 while read line; do
   module_name=${line%%/*}
