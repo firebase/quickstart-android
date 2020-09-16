@@ -1,0 +1,16 @@
+name: 'Modular Android'
+description: 'Builds Android Modules selectively'
+inputs:
+  for-all-modules:
+    description: 'Gradle Task to run for all modules'
+    required: true
+    default: 'clean'
+  for-each-module:
+    description: 'Gradle Task to run for each module'
+    required: true
+    default: 'build'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.for-each-module }}
