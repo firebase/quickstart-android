@@ -11,7 +11,6 @@ git fetch origin
 
 echo "base: $GITHUB_BASE_REF"
 echo "ref: $GITHUB_REF"
-echo "input branch: $3"
 
 echo "Running git remote"
 git remote
@@ -19,20 +18,13 @@ git remote
 echo "Running git branch"
 git branch
 
-#current_branch=$GITHUB_BASE_REF
-# Check if this is a fork
-#if [ -z ${GITHUB_BASE_REF+x} ]; then current_branch=$GITHUB_REF; else current_branch=origin/$GITHUB_BASE_REF; fi
-
-#current_branch=arrREF=(${GITHUB_REF//;/ })[2]
-current_branch="origin/master"
-echo "branch is $current_branch"
 # Get all the modules that were changed
 while read line; do
   module_name=${line%%/*}
   if [[ ${MODULES} != *"${module_name}" ]]; then
     MODULES="${MODULES} ${module_name}"
   fi
-done < <(git diff --name-only $current_branch)
+done < <(git diff --name-only origin/$GITHUB_BASE_REF)
 changed_modules=$MODULES
 
 # Get a list of all available gradle tasks

@@ -21,4 +21,3 @@ jobs:
       uses: ./
       with:
         for-each-module: 'assembleDebug'
-        branch-name: $GITHUB_BASE_REF
