@@ -19,9 +19,11 @@ git remote
 echo "Running git branch"
 git branch
 
-current_branch=$GITHUB_BASE_REF
+#current_branch=$GITHUB_BASE_REF
 # Check if this is a fork
-if [ -z ${GITHUB_BASE_REF+x} ]; then current_branch=$GITHUB_REF; else current_branch=origin/$GITHUB_BASE_REF; fi
+#if [ -z ${GITHUB_BASE_REF+x} ]; then current_branch=$GITHUB_REF; else current_branch=origin/$GITHUB_BASE_REF; fi
+
+current_branch=arrREF=(${GITHUB_REF//;/ })[2]
 
 # Get all the modules that were changed
 while read line; do
