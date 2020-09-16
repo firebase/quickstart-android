@@ -5,7 +5,7 @@ FROM openjdk:8-jdk-buster
 COPY entrypoint.sh /entrypoint.sh
 
 # Install git
-RUN apt-get update && apt-get upgrade && apt-get add --no-cache git
+RUN apt-get update && apt-get upgrade && apt-get install git
 
 # Install bash
 RUN apt-get add --no-cache bash
