@@ -12,8 +12,8 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8 
-    - name: Install NDK
-      run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;21.0.6113669" --sdk_root=${ANDROID_SDK_ROOT}
+#    - name: Install NDK
+#      run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;21.0.6113669" --sdk_root=${ANDROID_SDK_ROOT}
     - name: Copy mock google_services.json
       run: ./copy_mock_google_services_json.sh
     - name: Build with Modular Action
