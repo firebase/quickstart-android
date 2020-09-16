@@ -5,10 +5,10 @@ FROM openjdk:8-jdk-buster
 COPY entrypoint.sh /entrypoint.sh
 
 # Install git
-RUN apk update && apk upgrade && apk add --no-cache git
+RUN apt-get update && apt-get upgrade && apt-get add --no-cache git
 
 # Install bash
-RUN apk add --no-cache bash
+RUN apt-get add --no-cache bash
 
 # Execute the action code
 RUN chmod +x entrypoint.sh
