@@ -1,6 +1,7 @@
 name: Android CI
 
 on:
+  - pull_request
   - push
 
 jobs:
