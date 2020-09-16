@@ -8,6 +8,10 @@ git fetch --unshallow
 git fetch origin
 
 # Checking the output of git remote
+
+echo "base: $GITHUB_BASE_REF"
+echo "ref: $GITHUB_REF"
+
 echo "Running git remote"
 git remote
 
