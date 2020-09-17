@@ -216,7 +216,10 @@ class MainActivity : AppCompatActivity() {
         val screenName = "${getCurrentImageId()}-${getCurrentImageTitle()}"
 
         // [START set_current_screen]
-        firebaseAnalytics.setCurrentScreen(this, screenName, null /* class override */)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+            param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+            param(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity")
+        }
         // [END set_current_screen]
     }
 

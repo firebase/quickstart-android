@@ -259,7 +259,10 @@ public class MainActivity extends AppCompatActivity {
         String screenName = getCurrentImageId() + "-" + getCurrentImageTitle();
 
         // [START set_current_screen]
-        mFirebaseAnalytics.setCurrentScreen(this, screenName, null /* class override */);
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName);
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
         // [END set_current_screen]
     }
 
