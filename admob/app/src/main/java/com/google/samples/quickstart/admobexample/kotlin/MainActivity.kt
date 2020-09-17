@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() {
         adView.loadAd(adRequest)
         // [END load_banner_ad]
 
+        // Please only build admob
+
         // AdMob ad unit IDs are not currently stored inside the google-services.json file.
         // Developers using AdMob can store them as custom values in a string resource file or
         // simply use constants. Note that the ad units used here are configured to return only test
