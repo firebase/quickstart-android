@@ -6,7 +6,7 @@ sourceCompatibility = JavaVersion.VERSION_1_7
 
 dependencies {
     compileOnly "com.android.tools.lint:lint-api:27.0.1"
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.0"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.10"
     testImplementation "com.android.tools.lint:lint:27.0.1"
     testImplementation "com.android.tools.lint:lint-tests:27.0.1"
 }
