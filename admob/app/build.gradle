@@ -40,11 +40,11 @@ dependencies {
     implementation 'androidx.browser:browser:1.0.0'
 
     // [START gradle_play_config]
+    implementation 'com.google.android.gms:play-services-ads:19.4.0'
+    // [END gradle_play_config]
+
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/setup)
     implementation platform('com.google.firebase:firebase-bom:25.10.0')
-
-    implementation 'com.google.android.gms:play-services-ads'
-    // [END gradle_play_config]
 
     // For an optimal experience using AdMob, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
