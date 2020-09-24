@@ -9,6 +9,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.firebasestorage.R
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.component1
+import com.google.firebase.storage.ktx.component2
 import com.google.firebase.storage.ktx.storage
 
 class MyDownloadService : MyBaseTaskService() {
@@ -46,8 +48,7 @@ class MyDownloadService : MyBaseTaskService() {
         showProgressNotification(getString(R.string.progress_downloading), 0, 0)
 
         // Download and get total bytes
-        storageRef.child(downloadPath).getStream { taskSnapshot, inputStream ->
-            val totalBytes = taskSnapshot.totalByteCount
+        storageRef.child(downloadPath).getStream { (_, totalBytes), inputStream ->
             var bytesDownloaded: Long = 0
 
             val buffer = ByteArray(1024)
@@ -63,12 +64,12 @@ class MyDownloadService : MyBaseTaskService() {
 
             // Close the stream at the end of the Task
             inputStream.close()
-        }.addOnSuccessListener { taskSnapshot ->
+        }.addOnSuccessListener { (_, totalBytes) ->
             Log.d(TAG, "download:SUCCESS")
 
             // Send success broadcast with number of bytes downloaded
-            broadcastDownloadFinished(downloadPath, taskSnapshot.totalByteCount)
-            showDownloadFinishedNotification(downloadPath, taskSnapshot.totalByteCount.toInt())
+            broadcastDownloadFinished(downloadPath, totalBytes)
+            showDownloadFinishedNotification(downloadPath, totalBytes.toInt())
 
             // Mark task completed
             taskCompleted()
