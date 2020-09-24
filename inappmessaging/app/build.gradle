@@ -38,19 +38,22 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.multidex:multidex:2.0.1'
 
+    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/setup)
+    implementation platform('com.google.firebase:firebase-bom:25.10.0')
+
     // FIAM (Java)
-    implementation 'com.google.firebase:firebase-inappmessaging-display:19.1.1'
+    implementation 'com.google.firebase:firebase-inappmessaging-display'
 
     // FIAM (Kotlin)
-    implementation 'com.google.firebase:firebase-inappmessaging-ktx:19.1.1'
-    implementation 'com.google.firebase:firebase-inappmessaging-display-ktx:19.1.1'
+    implementation 'com.google.firebase:firebase-inappmessaging-ktx'
+    implementation 'com.google.firebase:firebase-inappmessaging-display-ktx'
 
     // The Firebase SDK for Google Analytics is required to use In-App Messaging
     // Analytics (Java)
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    implementation 'com.google.firebase:firebase-analytics'
 
     // Analytics (Kotlin)
-    implementation 'com.google.firebase:firebase-analytics-ktx:17.5.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation 'com.google.firebase:firebase-iid:20.2.4'
 

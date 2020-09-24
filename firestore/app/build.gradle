@@ -44,17 +44,20 @@ dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
 
+    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/setup)
+    implementation platform('com.google.firebase:firebase-bom:25.10.0')
+
     // Firestore (Java)
-    implementation 'com.google.firebase:firebase-firestore:21.6.0'
+    implementation 'com.google.firebase:firebase-firestore'
 
     // Firestore (Kotlin)
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.6.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 
     // Firebase Authentication (Java)
-    implementation 'com.google.firebase:firebase-auth:19.4.0'
+    implementation 'com.google.firebase:firebase-auth'
 
     // Firebase Authentication (Kotlin)
-    implementation 'com.google.firebase:firebase-auth-ktx:19.4.0'
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
     // Play Services
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
