@@ -212,11 +212,14 @@ class MainActivity : AppCompatActivity() {
      * we change fragments.
      */
     private fun recordScreenView() {
-        // This string must be <= 36 characters long in order for setCurrentScreen to succeed.
+        // This string must be <= 36 characters long.
         val screenName = "${getCurrentImageId()}-${getCurrentImageTitle()}"
 
         // [START set_current_screen]
-        firebaseAnalytics.setCurrentScreen(this, screenName, null /* class override */)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
+            param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+            param(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity")
+        }
         // [END set_current_screen]
     }
 

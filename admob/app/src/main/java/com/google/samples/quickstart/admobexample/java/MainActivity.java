@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         checkIds();
 
         // Initialize the Google Mobile Ads SDK
-        MobileAds.initialize(this, getString(R.string.admob_app_id));
+        MobileAds.initialize(this);
 
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();

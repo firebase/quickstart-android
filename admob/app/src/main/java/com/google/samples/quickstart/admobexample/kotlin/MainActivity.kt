@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         checkIds()
 
         // Initialize the Google Mobile Ads SDK
-        MobileAds.initialize(this, getString(R.string.admob_app_id))
+        MobileAds.initialize(this)
 
         val adRequest = AdRequest.Builder().build()
 
