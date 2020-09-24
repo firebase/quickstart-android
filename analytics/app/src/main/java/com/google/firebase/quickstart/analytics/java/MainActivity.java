@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
      * we change fragments.
      */
     private void recordScreenView() {
-        // This string must be <= 36 characters long in order for setCurrentScreen to succeed.
+        // This string must be <= 36 characters long.
         String screenName = getCurrentImageId() + "-" + getCurrentImageTitle();
 
         // [START set_current_screen]
