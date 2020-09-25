@@ -39,10 +39,10 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/setup)
     implementation platform('com.google.firebase:firebase-bom:25.10.0')
 
-    // Functions (Java)
+    // Cloud Functions for Firebase (Java)
     implementation 'com.google.firebase:firebase-functions'
 
-    // Functions (Kotlin)
+    // Cloud Functions for Firebase (Kotlin)
     implementation 'com.google.firebase:firebase-functions-ktx'
 
     // Firebase Authentication (Java)
@@ -54,7 +54,10 @@ dependencies {
     // Firebase Cloud Messaging
     implementation 'com.google.firebase:firebase-messaging'
 
+    // Firebase UI
     implementation 'com.firebaseui:firebase-ui-auth:6.3.0'
+    
+    // Google Play services
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
 
     testImplementation 'junit:junit:4.13'

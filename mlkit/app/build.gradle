@@ -48,7 +48,7 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/setup)
     implementation platform('com.google.firebase:firebase-bom:25.10.0')
 
-    // ML Kit dependencies
+    // FirebaseML
     implementation 'com.google.firebase:firebase-ml-vision'
 
     // Needed to fix a temporary issue with duplicate class com.google.android.gms.internal.vision.* errors
