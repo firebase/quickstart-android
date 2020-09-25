@@ -36,10 +36,10 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/setup)
     implementation platform('com.google.firebase:firebase-bom:25.10.0')
 
-    // Remote Config (Java)
+    // Firebase Remote Config (Java)
     implementation 'com.google.firebase:firebase-config'
 
-    // Remote Config (Kotlin)
+    // Firebase Remote Config (Kotlin)
     implementation 'com.google.firebase:firebase-config-ktx'
 
     // For an optimal experience using Remote Config, add the Firebase SDK

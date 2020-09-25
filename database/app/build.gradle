@@ -44,10 +44,10 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/setup)
     implementation platform('com.google.firebase:firebase-bom:25.10.0')
 
-    // Database (Java)
+    // Firebase Realtime Database (Java)
     implementation 'com.google.firebase:firebase-database'
 
-    // Database (Kotlin)
+    // Firebase Realtime Database (Kotlin)
     implementation 'com.google.firebase:firebase-database-ktx'
 
     // Firebase Authentication (Java)

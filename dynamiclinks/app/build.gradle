@@ -50,10 +50,10 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/setup)
     implementation platform('com.google.firebase:firebase-bom:25.10.0')
 
-    // Dynamic Links (Java)
+    // Firebase Dynamic Links (Java)
     implementation 'com.google.firebase:firebase-dynamic-links'
 
-    // Dynamic Links (Kotlin)
+    // Firebase Dynamic Links (Kotlin)
     implementation 'com.google.firebase:firebase-dynamic-links-ktx'
 
     // For an optimal experience using Dynamic Links, add the Firebase SDK
