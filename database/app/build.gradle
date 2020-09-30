@@ -42,10 +42,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
 
     // Database (Java)
-    implementation 'com.google.firebase:firebase-database:19.4.0'
+    implementation 'com.google.firebase:firebase-database:19.5.0'
 
     // Database (Kotlin)
-    implementation 'com.google.firebase:firebase-database-ktx:19.4.0'
+    implementation 'com.google.firebase:firebase-database-ktx:19.5.0'
 
     // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth:19.4.0'
