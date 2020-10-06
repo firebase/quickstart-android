@@ -45,10 +45,10 @@ dependencies {
     implementation project(":internal:chooserx")
 
     // Firestore (Java)
-    implementation 'com.google.firebase:firebase-firestore:21.7.0'
+    implementation 'com.google.firebase:firebase-firestore:21.7.1'
 
     // Firestore (Kotlin)
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.7.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.7.1'
 
     // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth:19.4.0'
