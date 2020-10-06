@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -151,7 +152,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun startPhoneNumberVerification(phoneNumber: String) {
         // [START start_phone_auth]
-        PhoneAuthOptions options = 
+        val options = 
           PhoneAuthOptions.newBuilder(mAuth)
               .setPhoneNumber(phoneNumber)       // Phone number to verify
               .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
