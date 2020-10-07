@@ -46,7 +46,6 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:25.10.0')
 
     // Firebase Authentication (Java)
-    implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
 
     // Firebase Authentication (Kotlin)
