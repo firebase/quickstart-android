@@ -38,7 +38,11 @@ dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
 
-    implementation 'com.google.firebase:firebase-perf:19.0.9'
+    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
+    implementation platform('com.google.firebase:firebase-bom:25.10.0')
+
+    // Firebase Performance Monitoring
+    implementation 'com.google.firebase:firebase-perf'
 
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
