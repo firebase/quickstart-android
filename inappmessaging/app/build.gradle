@@ -35,11 +35,11 @@ dependencies {
     implementation project(":internal:chooserx")
 
     implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:25.10.0')
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
 
     // FIAM (Java)
     implementation 'com.google.firebase:firebase-inappmessaging-display'
