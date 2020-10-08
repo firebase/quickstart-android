@@ -176,7 +176,6 @@ public class PhoneAuthActivity extends AppCompatActivity implements
 
     private void startPhoneNumberVerification(String phoneNumber) {
         // [START start_phone_auth]
-
         PhoneAuthOptions options = 
           PhoneAuthOptions.newBuilder(mAuth) 
               .setPhoneNumber(phoneNumber)       // Phone number to verify
@@ -184,8 +183,7 @@ public class PhoneAuthActivity extends AppCompatActivity implements
               .setActivity(this)                 // Activity (for callback binding)
               .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
               .build();
-          PhoneAuthProvider.getInstance()
-              .verifyPhoneNumber(options);     
+          PhoneAuthProvider.verifyPhoneNumber(options);     
         // [END start_phone_auth]
 
         mVerificationInProgress = true;
@@ -201,13 +199,15 @@ public class PhoneAuthActivity extends AppCompatActivity implements
     // [START resend_verification]
     private void resendVerificationCode(String phoneNumber,
                                         PhoneAuthProvider.ForceResendingToken token) {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,        // Phone number to verify
-                60,                 // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
-                mCallbacks,         // OnVerificationStateChangedCallbacks
-                token);             // ForceResendingToken from callbacks
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber(phoneNumber)       // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(this)                 // Activity (for callback binding)
+                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                        .setForceResendingToken(token)     // ForceResendingToken from callbacks
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
     }
     // [END resend_verification]
 

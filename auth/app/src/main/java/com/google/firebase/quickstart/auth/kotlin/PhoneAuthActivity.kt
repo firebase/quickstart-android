@@ -152,14 +152,13 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun startPhoneNumberVerification(phoneNumber: String) {
         // [START start_phone_auth]
-        val options = 
-          PhoneAuthOptions.newBuilder(mAuth)
+        val options = PhoneAuthOptions.newBuilder(mAuth)
               .setPhoneNumber(phoneNumber)       // Phone number to verify
               .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
               .setActivity(this)                 // Activity (for callback binding)
               .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
               .build();
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(options);
+        PhoneAuthProvider.verifyPhoneNumber(options);
         // [END start_phone_auth]
 
         verificationInProgress = true
@@ -177,13 +176,14 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         phoneNumber: String,
         token: PhoneAuthProvider.ForceResendingToken?
     ) {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber, // Phone number to verify
-                60, // Timeout duration
-                TimeUnit.SECONDS, // Unit of timeout
-                this, // Activity (for callback binding)
-                callbacks, // OnVerificationStateChangedCallbacks
-                token) // ForceResendingToken from callbacks
+        val options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(phoneNumber)       // Phone number to verify
+                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                .setActivity(this)                 // Activity (for callback binding)
+                .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                .setForceResendingToken(token)     // ForceResendingToken from callbacks
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
     }
     // [END resend_verification]
 
