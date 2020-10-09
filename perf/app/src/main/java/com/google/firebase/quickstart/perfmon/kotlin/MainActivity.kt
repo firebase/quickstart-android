@@ -14,7 +14,8 @@ import com.bumptech.glide.request.target.Target
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.perf.FirebasePerformance
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.perf.ktx.performance
 import com.google.firebase.perf.metrics.Trace
 import com.google.firebase.quickstart.perfmon.R
 import com.google.firebase.quickstart.perfmon.databinding.ActivityMainBinding
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Begin tracing app startup tasks.
-        trace = FirebasePerformance.getInstance().newTrace(STARTUP_TRACE_NAME)
+        trace = Firebase.performance.newTrace(STARTUP_TRACE_NAME)
         Log.d(TAG, "Starting trace")
         trace.start()
         loadImageFromWeb()

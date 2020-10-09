@@ -7,7 +7,7 @@
     <string name="log_token">Log Token</string>
 
     <string name="msg_subscribed">Subscribed to weather topic</string>
-    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="msg_token_fmt" translatable="false">Firebase Installation ID: %s</string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <!--

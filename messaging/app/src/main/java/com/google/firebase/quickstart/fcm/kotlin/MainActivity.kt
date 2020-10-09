@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.installations.FirebaseInstallations
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.quickstart.fcm.R
 import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding
 
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         binding.subscribeButton.setOnClickListener {
             Log.d(TAG, "Subscribing to weather topic")
             // [START subscribe_topics]
-            FirebaseMessaging.getInstance().subscribeToTopic("weather")
+            Firebase.messaging.subscribeToTopic("weather")
                     .addOnCompleteListener { task ->
                         var msg = getString(R.string.msg_subscribed)
                         if (!task.isSuccessful) {
@@ -64,21 +64,22 @@ class MainActivity : AppCompatActivity() {
         binding.logTokenButton.setOnClickListener {
             // Get token
             // [START retrieve_current_token]
-            FirebaseInstanceId.getInstance().instanceId
-                    .addOnCompleteListener(OnCompleteListener { task ->
+            FirebaseInstallations.getInstance()
+                    .getId()
+                    .addOnCompleteListener { task ->
                         if (!task.isSuccessful) {
-                            Log.w(TAG, "getInstanceId failed", task.exception)
-                            return@OnCompleteListener
+                            Log.w(TAG, "getId failed", task.exception)
+                            return@addOnCompleteListener
                         }
 
-                        // Get new Instance ID token
-                        val token = task.result?.token
+                        // Get the installation id
+                        val id = task.result!!
 
                         // Log and toast
-                        val msg = getString(R.string.msg_token_fmt, token)
+                        val msg = getString(R.string.msg_token_fmt, id)
                         Log.d(TAG, msg)
                         Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    })
+                    }
             // [END retrieve_current_token]
         }
 
