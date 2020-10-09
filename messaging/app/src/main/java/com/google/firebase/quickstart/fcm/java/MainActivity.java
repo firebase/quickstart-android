@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.installations.FirebaseInstallations;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.quickstart.fcm.R;
 import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding;
@@ -96,26 +95,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get token
-                // [START retrieve_current_token]
-                FirebaseInstallations.getInstance().getId()
-                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                            @Override
-                            public void onComplete(@NonNull Task<String> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "getId failed", task.getException());
-                                    return;
-                                }
+                // [START log_reg_token]
+                FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                          if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                          }
 
-                                // Get new installation id
-                                String id = task.getResult();
+                          // Get new FCM registration token
+                          String token = task.getResult();
 
-                                // Log and toast
-                                String msg = getString(R.string.msg_token_fmt, id);
-                                Log.d(TAG, msg);
-                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                // [END retrieve_current_token]
+                          // Log and toast
+                          String msg = getString(R.string.msg_token_fmt, token);
+                          Log.d(TAG, msg);
+                          Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                // [END log_reg_token]
             }
         });
     }

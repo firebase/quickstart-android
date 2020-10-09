@@ -7,8 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.installations.FirebaseInstallations
-import com.google.firebase.installations.ktx.installations
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.quickstart.fcm.R
@@ -64,23 +63,22 @@ class MainActivity : AppCompatActivity() {
 
         binding.logTokenButton.setOnClickListener {
             // Get token
-            // [START retrieve_current_token]
-            Firebase.installations.getId()
-                    .addOnCompleteListener { task ->
-                        if (!task.isSuccessful) {
-                            Log.w(TAG, "getId failed", task.exception)
-                            return@addOnCompleteListener
-                        }
+            // [START log_reg_token]
+            Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
 
-                        // Get the installation id
-                        val id = task.result!!
+                // Get new FCM registration token
+                val token = task.result
 
-                        // Log and toast
-                        val msg = getString(R.string.msg_token_fmt, id)
-                        Log.d(TAG, msg)
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    }
-            // [END retrieve_current_token]
+                // Log and toast
+                val msg = getString(R.string.msg_token_fmt, token)
+                Log.d(TAG, msg)
+                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            })
+            // [END log_reg_token]
         }
 
         Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
