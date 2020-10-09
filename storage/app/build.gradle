@@ -31,17 +31,20 @@ dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
 
-    // Storage (Java)
-    implementation 'com.google.firebase:firebase-storage:19.2.0'
+    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
 
-    // Storage (Kotlin)
-    implementation 'com.google.firebase:firebase-storage-ktx:19.2.0'
+    // Cloud Storage for Firebase (Java)
+    implementation 'com.google.firebase:firebase-storage'
+
+    // Cloud Storage for Firebase (Kotlin)
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     // Firebase Authentication (Java)
-    implementation 'com.google.firebase:firebase-auth:19.4.0'
+    implementation 'com.google.firebase:firebase-auth'
 
     // Firebase Authentication (Kotlin)
-    implementation 'com.google.firebase:firebase-auth-ktx:19.4.0'
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
     implementation 'com.google.android.material:material:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

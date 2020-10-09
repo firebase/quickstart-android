@@ -43,9 +43,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:19.4.0'
     // [END gradle_play_config]
 
+    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+
     // For an optimal experience using AdMob, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    implementation 'com.google.firebase:firebase-analytics'
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'androidx.test:rules:1.3.0'

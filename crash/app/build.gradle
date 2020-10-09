@@ -38,15 +38,18 @@ dependencies {
     implementation project(":internal:chooserx")
     implementation 'com.google.android.material:material:1.2.1'
 
-    // Crashlytics (Java)
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
+    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
 
-    // Crashlytics (Kotlin)
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.2'
+    // Firebase Crashlytics (Java)
+    implementation 'com.google.firebase:firebase-crashlytics'
+
+    // Firebase Crashlytics (Kotlin)
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     // For an optimal experience using Crashlytics, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    implementation 'com.google.firebase:firebase-analytics'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

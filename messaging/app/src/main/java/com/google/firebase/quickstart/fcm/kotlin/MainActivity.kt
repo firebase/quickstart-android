@@ -8,7 +8,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.quickstart.fcm.R
 import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding
 
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         binding.subscribeButton.setOnClickListener {
             Log.d(TAG, "Subscribing to weather topic")
             // [START subscribe_topics]
-            FirebaseMessaging.getInstance().subscribeToTopic("weather")
+            Firebase.messaging.subscribeToTopic("weather")
                     .addOnCompleteListener { task ->
                         var msg = getString(R.string.msg_subscribed)
                         if (!task.isSuccessful) {
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         binding.logTokenButton.setOnClickListener {
             // Get token
             // [START log_reg_token]
-            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     Log.w(TAG, "Fetching FCM registration token failed", task.exception)
                     return@OnCompleteListener
