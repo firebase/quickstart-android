@@ -11,6 +11,7 @@ import com.google.firebase.fiamquickstart.databinding.ActivityMainBinding
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.inappmessaging.ktx.inAppMessaging
 import com.google.firebase.installations.FirebaseInstallations
+import com.google.firebase.installations.ktx.installations
 import com.google.firebase.ktx.Firebase
 
 class KotlinMainActivity : AppCompatActivity() {
@@ -37,8 +38,7 @@ class KotlinMainActivity : AppCompatActivity() {
         }
 
         // Get and display/log the installation id
-        FirebaseInstallations.getInstance()
-                .getId()
+        Firebase.installations.getId()
                 .addOnSuccessListener { id ->
                     binding.installationIdText.text = getString(R.string.installation_id_fmt, id)
                     Log.d(TAG, "Installation ID: $id")

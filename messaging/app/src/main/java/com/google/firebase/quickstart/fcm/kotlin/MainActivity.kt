@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.installations.FirebaseInstallations
+import com.google.firebase.installations.ktx.installations
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.quickstart.fcm.R
@@ -64,8 +65,7 @@ class MainActivity : AppCompatActivity() {
         binding.logTokenButton.setOnClickListener {
             // Get token
             // [START retrieve_current_token]
-            FirebaseInstallations.getInstance()
-                    .getId()
+            Firebase.installations.getId()
                     .addOnCompleteListener { task ->
                         if (!task.isSuccessful) {
                             Log.w(TAG, "getId failed", task.exception)
