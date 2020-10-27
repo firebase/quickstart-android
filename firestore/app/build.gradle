@@ -45,7 +45,7 @@ dependencies {
     implementation project(":internal:chooserx")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:25.13.0')
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
 
     // Cloud Firestore (Java)
     implementation 'com.google.firebase:firebase-firestore'
@@ -92,7 +92,7 @@ dependencies {
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     androidTestImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
-    androidTestImplementation 'com.google.firebase:firebase-auth:19.4.0'
+    androidTestImplementation 'com.google.firebase:firebase-auth:20.0.0'
 
 }
 
