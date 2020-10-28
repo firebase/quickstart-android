@@ -44,7 +44,7 @@ dependencies {
 
     // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
-    implementation 'com.google.firebase:firebase-auth:19.4.0'
+    implementation 'com.google.firebase:firebase-auth:20.0.0'
 
     // Firebase Authentication (Kotlin)
     implementation 'com.google.firebase:firebase-auth-ktx:19.4.0'
