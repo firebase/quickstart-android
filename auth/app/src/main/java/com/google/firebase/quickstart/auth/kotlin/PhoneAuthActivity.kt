@@ -184,7 +184,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         if (token != null) {
             optionsBuilder.setForceResendingToken(token) // callback's ForceResendingToken
         }
-        PhoneAuthProvider.verifyPhoneNumber(options.build())
+        PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
     }
     // [END resend_verification]
 
