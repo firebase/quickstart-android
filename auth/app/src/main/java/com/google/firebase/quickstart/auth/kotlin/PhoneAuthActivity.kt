@@ -156,7 +156,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
             .setPhoneNumber(phoneNumber)       // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
             .setActivity(this)                 // Activity (for callback binding)
-            .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+            .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
         // [END start_phone_auth]
@@ -176,14 +176,15 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         phoneNumber: String,
         token: PhoneAuthProvider.ForceResendingToken?
     ) {
-        val options = PhoneAuthOptions.newBuilder(auth)
+        val optionsBuilder = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)       // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
             .setActivity(this)                 // Activity (for callback binding)
-            .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
-            .setForceResendingToken(token)     // ForceResendingToken from callbacks
-            .build()
-        PhoneAuthProvider.verifyPhoneNumber(options)
+            .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
+        if (token != null) {
+            optionsBuilder.setForceResendingToken(token) // callback's ForceResendingToken
+        }
+        PhoneAuthProvider.verifyPhoneNumber(options.build())
     }
     // [END resend_verification]
 
