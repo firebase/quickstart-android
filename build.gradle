@@ -27,8 +27,8 @@ allprojects {
     }
 
     def isNonStable = { candidate ->
-        return ['alpha', 'beta', 'rc', 'SNAPSHOT', '-M'].any { word ->
-            return candidate.version.contains(word)
+        return ['alpha', 'beta', 'rc', 'snapshot', '-m'].any { word ->
+            return candidate.version.toLowerCase().contains(word)
         }
     }
 
