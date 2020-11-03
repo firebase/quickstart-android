@@ -1,7 +1,11 @@
 ---
-name: ⚠️ Issue with the quickstart code
-about:
-  Are you having issues running the code in this repository?
+name: "⚠️ Issue with the quickstart code"
+about: Are you having issues running the code in this repository?
+title: ''
+labels: ":arrow_heading_down: pull, bug, documentation, duplicate, enhancement, good
+  first issue, help wanted, invalid, question, wontfix"
+assignees: asadovtair
+
 ---
 
 <!-- DO NOT DELETE 
