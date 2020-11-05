@@ -34,7 +34,7 @@ class ChooserActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChooserBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_chooser)
+        setContentView(binding.root)
 
         // Set up Adapter
         val adapter = MyArrayAdapter(this, android.R.layout.simple_list_item_2, CLASSES as Array<Class<*>>)

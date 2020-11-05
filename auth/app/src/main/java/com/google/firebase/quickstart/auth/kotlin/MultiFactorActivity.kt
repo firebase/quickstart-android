@@ -24,7 +24,7 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMultiFactorBinding.inflate(layoutInflater)
-        setContentView(binding.reloadButton)
+        setContentView(binding.root)
         setProgressBar(binding.progressBar)
 
         // Buttons
