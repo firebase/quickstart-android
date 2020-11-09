@@ -52,7 +52,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
 
     // Google Sign In SDK (only required for Google Sign In)
-    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     // Firebase UI
     // Used in FirebaseUIActivity.
