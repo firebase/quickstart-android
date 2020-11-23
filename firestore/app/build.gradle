@@ -63,7 +63,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     // FirebaseUI (for authentication)
-    implementation 'com.firebaseui:firebase-ui-auth:7.0.0'
+    implementation 'com.firebaseui:firebase-ui-auth:7.1.0'
 
     // Support Libs
     implementation 'androidx.appcompat:appcompat:1.2.0'

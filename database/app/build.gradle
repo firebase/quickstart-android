@@ -56,7 +56,7 @@ dependencies {
     // Firebase Authentication (Kotlin)
     implementation 'com.google.firebase:firebase-auth-ktx'
 
-    implementation 'com.firebaseui:firebase-ui-database:7.0.0'
+    implementation 'com.firebaseui:firebase-ui-database:7.1.0'
 
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation 'androidx.arch.core:core-runtime:2.1.0'
