@@ -1,7 +1,6 @@
 package com.google.firebase.quickstart.perfmon.java;
 
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -16,7 +15,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.Trace;
 import com.google.firebase.quickstart.perfmon.R;
@@ -25,10 +24,11 @@ import com.google.firebase.quickstart.perfmon.databinding.ActivityMainBinding;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -130,45 +130,55 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Task<Void> writeStringToFile(final String filename, final String content) {
-        return Tasks.call(
-                AsyncTask.THREAD_POOL_EXECUTOR,
-                new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        FileOutputStream fos = new FileOutputStream(filename, true);
-                        fos.write(content.getBytes());
-                        fos.close();
-                        return null;
-                    }
-                });
+        final TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FileOutputStream fos = new FileOutputStream(filename, true);
+                    fos.write(content.getBytes());
+                    fos.close();
+                    taskCompletionSource.setResult(null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        return taskCompletionSource.getTask();
     }
 
     private Task<String> loadStringFromFile() {
-        return Tasks.call(
-                AsyncTask.THREAD_POOL_EXECUTOR,
-                new Callable<String>() {
-                    @Override
-                    public String call() throws Exception {
-                        File contentFile = new File(getFilesDir(), CONTENT_FILE);
-                        if (contentFile.createNewFile()) {
-                            // Content file exist did not exist in internal storage and new file was created.
-                            // Copy in the default content.
-                            InputStream is;
-                            is = getAssets().open(DEFAULT_CONTENT_FILE);
-                            int size = is.available();
-                            byte[] buffer = new byte[size];
-                            is.read(buffer);
-                            is.close();
-                            FileOutputStream fos = new FileOutputStream(contentFile);
-                            fos.write(buffer);
-                            fos.close();
-                        }
-                        FileInputStream fis = new FileInputStream(contentFile);
-                        byte[] content = new byte[(int) contentFile.length()];
-                        fis.read(content);
-                        return new String(content);
+        final TaskCompletionSource<String> taskCompletionSource = new TaskCompletionSource<>();
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    File contentFile = new File(getFilesDir(), CONTENT_FILE);
+                    if (contentFile.createNewFile()) {
+                        // Content file exist did not exist in internal storage and new file was created.
+                        // Copy in the default content.
+                        InputStream is;
+                        is = getAssets().open(DEFAULT_CONTENT_FILE);
+                        int size = is.available();
+                        byte[] buffer = new byte[size];
+                        is.read(buffer);
+                        is.close();
+                        FileOutputStream fos = new FileOutputStream(contentFile);
+                        fos.write(buffer);
+                        fos.close();
                     }
-                });
+                    FileInputStream fis = new FileInputStream(contentFile);
+                    byte[] content = new byte[(int) contentFile.length()];
+                    fis.read(content);
+                    taskCompletionSource.setResult(new String(content));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        return taskCompletionSource.getTask();
     }
 
     private void loadFileFromDisk() {
