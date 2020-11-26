@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
 check.dependsOn 'assembleDebugAndroidTest'
 
@@ -27,10 +26,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-}
-
-androidExtensions {
-    experimental = true
 }
 
 dependencies {
