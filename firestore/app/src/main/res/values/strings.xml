@@ -61,7 +61,6 @@
         <item>Ramen</item>
         <item>Sushi</item>
     </string-array>
-    ite
 
     <!-- 50 most populous cities in the US -->
     <string-array name="cities">
