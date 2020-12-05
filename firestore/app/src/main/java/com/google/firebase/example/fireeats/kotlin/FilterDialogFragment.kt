@@ -144,7 +144,7 @@ class FilterDialogFragment : DialogFragment() {
     }
 
     fun resetFilters() {
-        binding?.let {
+        _binding?.let {
             it.spinnerCategory.setSelection(0)
             it.spinnerCity.setSelection(0)
             it.spinnerPrice.setSelection(0)
