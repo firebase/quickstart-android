@@ -70,7 +70,7 @@ Getting Started
   - Click **Phone** and turn on the **Enable** switch, then click **Save**.
 - Run the app on your physical device:
     - Select **PhoneAuthActivity** from the main screen.
-    - Enter your phone numeber and click **Verify** to begin.
+    - Enter your phone number and click **Verify** to begin.
 
 ### Custom Authentication Setup
 
@@ -78,7 +78,7 @@ Getting Started
     - Click on the **Service accounts** tab in the left.
     - Click on the **Create Service Account** on the top.
     - Enter desired service account name and click on the **Create** button.
-    - Once the serivce account is created, click on the **Options**.
+    - Once the service account is created, click on the **Options**.
     - Choose **JSON** as the key type then click on the **Create** button.
     - You should now have a new JSON file for your service account in your Downloads directory.
 - Open the file `web/auth.html` using your web browser.
