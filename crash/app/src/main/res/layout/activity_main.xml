@@ -10,7 +10,8 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,25 +25,28 @@ specific language governing permissions and limitations under the License.
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/firebase_lockup_400" />
+        android:src="@drawable/firebase_lockup_400"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/crashButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/icon"
-        android:layout_centerHorizontal="true"
-        android:text="@string/crash_button_label" />
+        android:text="@string/crash_button_label"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/icon"
+        app:layout_constraintStart_toStartOf="@+id/icon"
+        app:layout_constraintTop_toBottomOf="@+id/icon" />
 
     <CheckBox
         android:id="@+id/catchCrashCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/crashButton"
-        android:layout_alignLeft="@+id/crashButton"
-        android:layout_below="@+id/crashButton"
+        android:text="@string/catch_crash_checkbox_label"
         android:layout_marginTop="10dp"
-        android:text="@string/catch_crash_checkbox_label" />
-</RelativeLayout>
+        app:layout_constraintEnd_toEndOf="@+id/crashButton"
+        app:layout_constraintStart_toStartOf="@+id/crashButton"
+        app:layout_constraintTop_toBottomOf="@+id/crashButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>
