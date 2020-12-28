@@ -41,9 +41,9 @@ specific language governing permissions and limitations under the License.
             app:cardBackgroundColor="@android:color/white"
             app:cardUseCompatPadding="true">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="16dp">
 
                 <TextView
@@ -52,69 +52,76 @@ specific language governing permissions and limitations under the License.
                     android:layout_height="wrap_content"
                     android:text="@string/heading_add_numbers"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-
-                <LinearLayout
-                    android:id="@+id/form_add_numbers"
-                    android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/fieldFirstNumber"
+                    android:layout_width="50dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/header_add_numbers"
-                    android:orientation="horizontal">
+                    android:gravity="center"
+                    android:inputType="number"
+                    app:layout_constraintStart_toStartOf="@+id/header_add_numbers"
+                    app:layout_constraintTop_toBottomOf="@+id/header_add_numbers"
+                    tools:text="1" />
 
-                    <EditText
-                        android:id="@+id/fieldFirstNumber"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:inputType="number"
-                        tools:text="1" />
+                <TextView
+                    android:id="@+id/labelPlus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/plus"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/fieldFirstNumber"
+                    app:layout_constraintStart_toEndOf="@+id/fieldFirstNumber"
+                    app:layout_constraintTop_toTopOf="@+id/fieldFirstNumber" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/plus"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/fieldSecondNumber"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:inputType="number"
+                    tools:text="1"
+                    app:layout_constraintBottom_toBottomOf="@+id/labelPlus"
+                    app:layout_constraintStart_toEndOf="@+id/labelPlus"
+                    app:layout_constraintTop_toTopOf="@+id/labelPlus" />
 
-                    <EditText
-                        android:id="@+id/fieldSecondNumber"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:inputType="number"
-                        tools:text="1" />
+                <TextView
+                    android:id="@+id/labelEquals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/equals"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/fieldSecondNumber"
+                    app:layout_constraintStart_toEndOf="@+id/fieldSecondNumber"
+                    app:layout_constraintTop_toTopOf="@+id/fieldSecondNumber" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/equals"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/fieldAddResult"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:inputType="number"
+                    tools:text="2"
+                    app:layout_constraintBottom_toBottomOf="@+id/labelEquals"
+                    app:layout_constraintStart_toEndOf="@+id/labelEquals"
+                    app:layout_constraintTop_toTopOf="@+id/labelEquals" />
 
-                    <EditText
-                        android:id="@+id/fieldAddResult"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:gravity="center"
-                        android:inputType="number"
-                        tools:text="2" />
-
-                </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonCalculate"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/form_add_numbers"
-                    android:text="@string/calculate" />
+                    android:text="@string/calculate"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fieldFirstNumber" />
 
-
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -125,9 +132,9 @@ specific language governing permissions and limitations under the License.
             app:cardBackgroundColor="@android:color/white"
             app:cardUseCompatPadding="true">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="16dp">
 
                 <TextView
@@ -136,32 +143,32 @@ specific language governing permissions and limitations under the License.
                     android:layout_height="wrap_content"
                     android:text="@string/heading_add_message"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-
-                <LinearLayout
-                    android:id="@+id/form_add_message"
+                <EditText
+                    android:id="@+id/fieldMessageInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/header_add_message"
-                    android:orientation="vertical">
+                    android:hint="@string/input"
+                    android:inputType="text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/header_add_message"
+                    tools:text="some bad message" />
 
-                    <EditText
-                        android:id="@+id/fieldMessageInput"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/input"
-                        tools:text="some bad message" />
-
-                    <EditText
-                        android:id="@+id/fieldMessageOutput"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:hint="@string/output"
-                        tools:text="some clean message" />
-
-                </LinearLayout>
+                <EditText
+                    android:id="@+id/fieldMessageOutput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/output"
+                    android:inputType="text"
+                    app:layout_constraintEnd_toEndOf="@+id/fieldMessageInput"
+                    app:layout_constraintStart_toStartOf="@+id/fieldMessageInput"
+                    app:layout_constraintTop_toBottomOf="@+id/fieldMessageInput"
+                    tools:text="some clean message" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonSignIn"
@@ -169,21 +176,22 @@ specific language governing permissions and limitations under the License.
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/buttonAddMessage"
-                    android:layout_toLeftOf="@+id/buttonAddMessage"
                     android:layout_toStartOf="@+id/buttonAddMessage"
-                    android:text="@string/sign_in" />
+                    android:layout_toLeftOf="@+id/buttonAddMessage"
+                    android:text="@string/sign_in"
+                    app:layout_constraintEnd_toStartOf="@+id/buttonAddMessage"
+                    app:layout_constraintTop_toBottomOf="@+id/fieldMessageOutput" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonAddMessage"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/form_add_message"
-                    android:text="@string/add_message" />
+                    android:text="@string/add_message"
+                    app:layout_constraintEnd_toEndOf="@+id/fieldMessageOutput"
+                    app:layout_constraintTop_toBottomOf="@+id/fieldMessageOutput" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
