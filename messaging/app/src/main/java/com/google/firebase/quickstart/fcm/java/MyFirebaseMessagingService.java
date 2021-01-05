@@ -104,10 +104,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     // [START on_new_token]
     /**
-     * Called if FCM registration token is updated. This may occur if the security of
-     * the previous token had been compromised. Note that this is called when the
-     * FCM registration token is initially generated so this is where you would retrieve
-     * the token.
+     * There are two scenarios when onNewToken is called:
+     * 1) When a new token is generated on initial app startup
+     * 2) Whenever an existing token is changed
+     * Under #2, there are three scenarios when the existing token is changed:
+     * A) App is restored to a new device
+     * B) User uninstalls/reinstalls the app
+     * C) User clears app data
      */
     @Override
     public void onNewToken(String token) {
