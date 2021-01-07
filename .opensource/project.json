@@ -19,7 +19,7 @@
       "crash/README.md": "Crashlytics",
       "database/README.md": "Realtime Database",
       "dynamiclinks/README.md": "Dynamic Links",
-      "firestore/README.md": "Cloud Firestore",
+      "firestore/README.md": "Firestore",
       "functions/README.md": "Cloud Functions",
       "inappmessaging/README.md": "In App Messaging",
       "messaging/README.md": "Cloud Messaging",
