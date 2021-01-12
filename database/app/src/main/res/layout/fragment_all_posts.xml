@@ -9,7 +9,6 @@
         android:id="@+id/messagesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:clipToPadding="false"
         android:padding="5dp"
         android:scrollbars="vertical"
