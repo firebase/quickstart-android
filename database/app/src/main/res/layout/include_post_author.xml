@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -10,15 +12,21 @@
         android:id="@+id/postAuthorPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_account_circle_40" />
+        android:src="@drawable/ic_action_account_circle_40"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/postAuthor"
         style="@style/Base.TextAppearance.AppCompat.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/postAuthorPhoto"
+        app:layout_constraintStart_toEndOf="@+id/postAuthorPhoto"
+        app:layout_constraintTop_toTopOf="@+id/postAuthorPhoto"
         tools:text="someauthor@email.com" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

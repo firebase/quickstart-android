@@ -48,30 +48,22 @@ public class NewPostTest {
 
         // Select email field
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.fieldEmail),
-                        withParent(withId(R.id.layoutEmailPassword)),
-                        isDisplayed()));
+                allOf(withId(R.id.fieldEmail), isDisplayed()));
         appCompatEditText.perform(click());
 
         // Enter email address
         ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.fieldEmail),
-                        withParent(withId(R.id.layoutEmailPassword)),
-                        isDisplayed()));
+                allOf(withId(R.id.fieldEmail), isDisplayed()));
         appCompatEditText2.perform(replaceText(email));
 
         // Enter password
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.fieldPassword),
-                        withParent(withId(R.id.layoutEmailPassword)),
-                        isDisplayed()));
+                allOf(withId(R.id.fieldPassword), isDisplayed()));
         appCompatEditText3.perform(replaceText(password));
 
         // Click sign up
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.buttonSignUp), withText(R.string.sign_up),
-                        withParent(withId(R.id.layoutButtons)),
-                        isDisplayed()));
+                allOf(withId(R.id.buttonSignUp), withText(R.string.sign_up), isDisplayed()));
         appCompatButton.perform(click());
 
         // Click new post button
@@ -111,9 +103,7 @@ public class NewPostTest {
 
         // Check that it has zero stars
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.postNumStars), withText("0"),
-                        withParent(withId(R.id.starLayout)),
-                        isDisplayed()));
+                allOf(withId(R.id.postNumStars), withText("0"), isDisplayed()));
         textView3.check(matches(withText("0")));
 
     }
