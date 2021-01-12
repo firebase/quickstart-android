@@ -30,13 +30,13 @@
 
     <EditText
         android:id="@+id/restaurantFormText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:hint="@string/hint_review"
-        app:layout_constraintTop_toBottomOf="@+id/restaurantFormRating"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/restaurantFormRating" />
 
 
     <View

@@ -45,7 +45,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp">
 
@@ -132,7 +131,6 @@
         android:id="@+id/viewEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -150,7 +148,6 @@
             style="@style/AppTheme.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/message_no_results"
             android:textColor="@color/greyDisabled" />
 
