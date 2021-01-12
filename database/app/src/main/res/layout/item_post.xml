@@ -44,8 +44,6 @@
             layout="@layout/include_post_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/postAuthorLayout"
-            android:layout_alignParentLeft="true"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"

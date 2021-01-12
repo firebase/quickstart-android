@@ -22,7 +22,6 @@
         layout="@layout/include_post_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/postAuthorLayout"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -56,11 +55,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerPostComments"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonPostComment"
-        tools:layout_editor_absoluteX="16dp"
         tools:listitem="@layout/item_comment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

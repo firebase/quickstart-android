@@ -24,7 +24,6 @@
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/progressBar"
         android:layout_centerHorizontal="true"
         android:src="@drawable/firebase_lockup_400"
         app:layout_constraintEnd_toEndOf="parent"
