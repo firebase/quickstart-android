@@ -43,103 +43,101 @@
     </LinearLayout>
 
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/grey_300"
-        android:gravity="center_vertical">
+        android:paddingTop="16dp"
+        android:background="@color/grey_300">
 
-        <LinearLayout
-            android:id="@+id/phoneAuthFields"
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            app:layout_constraintGuide_percent="0.5" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2.0">
-
-                <EditText
-                    android:id="@+id/fieldPhoneNumber"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_phone_number"
-                    android:layout_weight="1.0"
-                    android:inputType="phone"/>
-
-                <EditText
-                    android:id="@+id/fieldVerificationCode"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_verification_code"
-                    android:layout_weight="1.0"
-                    android:inputType="number"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3.0">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonStartVerification"
-                    android:layout_marginStart="@dimen/button_horizontal_margin"
-                    android:layout_marginEnd="@dimen/button_horizontal_margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:text="@string/start_phone_auth"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonVerifyPhone"
-                    android:layout_marginStart="@dimen/button_horizontal_margin"
-                    android:layout_marginEnd="@dimen/button_horizontal_margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:text="@string/verify_phone_auth"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonResend"
-                    android:layout_marginStart="@dimen/button_horizontal_margin"
-                    android:layout_marginEnd="@dimen/button_horizontal_margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:text="@string/resend_phone_auth"/>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/signedInButtons"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/fieldPhoneNumber"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:hint="@string/hint_phone_number"
+            android:inputType="phone"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/fieldVerificationCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1.0"
+            android:hint="@string/hint_verification_code"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/fieldPhoneNumber"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/fieldPhoneNumber" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonStartVerification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/start_phone_auth"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonVerifyPhone"
+            app:layout_constraintEnd_toStartOf="@+id/buttonVerifyPhone"
+            app:layout_constraintTop_toTopOf="@+id/buttonVerifyPhone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonVerifyPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/verify_phone_auth"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/fieldVerificationCode" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonResend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1.0"
+            android:text="@string/resend_phone_auth"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonVerifyPhone"
+            app:layout_constraintStart_toEndOf="@+id/buttonVerifyPhone"
+            app:layout_constraintTop_toTopOf="@+id/buttonVerifyPhone" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/phoneAuthFields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="fieldPhoneNumber, fieldVerificationCode, buttonResend, buttonStartVerification, buttonVerifyPhone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/signOutButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_out"
+            android:theme="@style/ThemeOverlay.MyDarkButton"
             android:visibility="gone"
-            android:weightSum="1.0">
+            app:layout_constraintEnd_toEndOf="@+id/fieldVerificationCode"
+            app:layout_constraintStart_toStartOf="@+id/fieldPhoneNumber"
+            app:layout_constraintTop_toBottomOf="@+id/buttonVerifyPhone" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/signOutButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:text="@string/sign_out"
-                android:theme="@style/ThemeOverlay.MyDarkButton" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
 

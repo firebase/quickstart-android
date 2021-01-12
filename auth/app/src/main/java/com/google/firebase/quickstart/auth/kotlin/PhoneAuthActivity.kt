@@ -287,13 +287,13 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         if (user == null) {
             // Signed out
             binding.phoneAuthFields.visibility = View.VISIBLE
-            binding.signedInButtons.visibility = View.GONE
+            binding.signOutButton.visibility = View.GONE
 
             binding.status.setText(R.string.signed_out)
         } else {
             // Signed in
             binding.phoneAuthFields.visibility = View.GONE
-            binding.signedInButtons.visibility = View.VISIBLE
+            binding.signOutButton.visibility = View.VISIBLE
 
             enableViews(binding.fieldPhoneNumber, binding.fieldVerificationCode)
             binding.fieldPhoneNumber.text = null

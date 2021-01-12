@@ -317,13 +317,13 @@ public class PhoneAuthActivity extends AppCompatActivity implements
         if (user == null) {
             // Signed out
             mBinding.phoneAuthFields.setVisibility(View.VISIBLE);
-            mBinding.signedInButtons.setVisibility(View.GONE);
+            mBinding.signOutButton.setVisibility(View.GONE);
 
             mBinding.status.setText(R.string.signed_out);
         } else {
             // Signed in
             mBinding.phoneAuthFields.setVisibility(View.GONE);
-            mBinding.signedInButtons.setVisibility(View.VISIBLE);
+            mBinding.signOutButton.setVisibility(View.VISIBLE);
 
             enableViews(mBinding.fieldPhoneNumber, mBinding.fieldVerificationCode);
             mBinding.fieldPhoneNumber.setText(null);
