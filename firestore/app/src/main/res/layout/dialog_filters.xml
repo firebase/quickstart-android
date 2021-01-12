@@ -1,133 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/filters_form"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="16dp">
 
     <TextView
+        android:id="@+id/filterDialogTitle"
         style="@style/AppTheme.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/header_filters" />
+        android:text="@string/header_filters"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Food Type -->
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/icon_category"
+        style="@style/AppTheme.FilterIcon"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerCategory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerCategory"
+        app:srcCompat="@drawable/ic_fastfood_white_24dp"
+        app:tint="@color/greySecondary" />
 
-        <ImageView
-            android:id="@+id/icon_category"
-            style="@style/AppTheme.FilterIcon"
-            android:layout_centerVertical="true"
-            app:tint="@color/greySecondary"
-            app:srcCompat="@drawable/ic_fastfood_white_24dp" />
+    <Spinner
+        android:id="@+id/spinnerCategory"
+        style="@style/AppTheme.FilterSpinner"
+        android:layout_width="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/categories"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_category"
+        app:layout_constraintTop_toBottomOf="@+id/filterDialogTitle" />
 
-        <Spinner
-            android:id="@+id/spinnerCategory"
-            style="@style/AppTheme.FilterSpinner"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/icon_category"
-            android:entries="@array/categories" />
-
-    </RelativeLayout>
 
     <!-- Location -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/icon_city"
+        style="@style/AppTheme.FilterIcon"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerCity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerCity"
+        app:srcCompat="@drawable/ic_place_white_24px"
+        app:tint="@color/greySecondary" />
 
-        <ImageView
-            android:id="@+id/icon_city"
-            style="@style/AppTheme.FilterIcon"
-            android:layout_centerVertical="true"
-            app:tint="@color/greySecondary"
-            app:srcCompat="@drawable/ic_place_white_24px" />
-
-        <Spinner
-            android:id="@+id/spinnerCity"
-            style="@style/AppTheme.FilterSpinner"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/icon_city"
-            android:entries="@array/cities" />
-
-    </RelativeLayout>
+    <Spinner
+        android:id="@+id/spinnerCity"
+        style="@style/AppTheme.FilterSpinner"
+        android:layout_width="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/cities"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_city"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategory" />
 
     <!-- Price -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/icon_price"
+        style="@style/AppTheme.FilterIcon"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerPrice"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerPrice"
+        app:srcCompat="@drawable/ic_monetization_on_white_24px"
+        app:tint="@color/greySecondary" />
 
-        <ImageView
-            android:id="@+id/icon_price"
-            style="@style/AppTheme.FilterIcon"
-            android:layout_centerVertical="true"
-            app:tint="@color/greySecondary"
-            app:srcCompat="@drawable/ic_monetization_on_white_24px" />
+    <Spinner
+        android:id="@+id/spinnerPrice"
+        style="@style/AppTheme.FilterSpinner"
+        android:layout_width="333dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/prices"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_price"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCity" />
 
-        <Spinner
-            android:id="@+id/spinnerPrice"
-            style="@style/AppTheme.FilterSpinner"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/icon_price"
-            android:entries="@array/prices" />
+    <!-- Sort By -->
+    <ImageView
+        android:id="@+id/icon_sort"
+        style="@style/AppTheme.FilterIcon"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerSort"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerSort"
+        app:srcCompat="@drawable/ic_sort_white_24px"
+        app:tint="@color/greySecondary" />
 
-    </RelativeLayout>
-
-    <!-- Sort by -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/icon_sort"
-            style="@style/AppTheme.FilterIcon"
-            android:layout_centerVertical="true"
-            app:tint="@color/greySecondary"
-            app:srcCompat="@drawable/ic_sort_white_24px" />
-
-        <Spinner
-            android:id="@+id/spinnerSort"
-            style="@style/AppTheme.FilterSpinner"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/icon_sort"
-            android:entries="@array/sort_by" />
-    </RelativeLayout>
+    <Spinner
+        android:id="@+id/spinnerSort"
+        style="@style/AppTheme.FilterSpinner"
+        android:layout_width="333dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/sort_by"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icon_sort"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPrice" />
 
     <!-- Cancel and apply buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonCancel"
+        app:layout_constraintEnd_toStartOf="@+id/buttonCancel"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buttonCancel" />
+
+    <Button
+        android:id="@+id/buttonCancel"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/buttonCancel"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/cancel"
-            android:textColor="@color/greySecondary"
-            android:theme="@style/ThemeOverlay.FilterButton" />
+        android:text="@string/cancel"
+        android:textColor="@color/greySecondary"
+        android:theme="@style/ThemeOverlay.FilterButton"
+        app:layout_constraintEnd_toStartOf="@+id/buttonSearch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/view2"
+        app:layout_constraintTop_toTopOf="@+id/buttonSearch" />
 
 
-        <Button
-            android:id="@+id/buttonSearch"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/apply"
-            android:theme="@style/ThemeOverlay.FilterButton" />
+    <Button
+        android:id="@+id/buttonSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/apply"
+        android:theme="@style/ThemeOverlay.FilterButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonCancel"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSort" />
 
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
