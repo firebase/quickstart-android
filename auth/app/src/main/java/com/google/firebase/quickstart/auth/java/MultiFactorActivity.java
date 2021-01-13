@@ -175,7 +175,7 @@ public class MultiFactorActivity extends BaseActivity implements
                 mBinding.mfaInfo.setText(sb.toString());
             }
 
-            mBinding.emailPasswordButtons.setVisibility(View.GONE);
+            mBinding.emailSignInButton.setVisibility(View.GONE);
             mBinding.signedInButtons.setVisibility(View.VISIBLE);
 
             int reloadVisibility = secondFactors.isEmpty() ? View.VISIBLE : View.GONE;
@@ -193,7 +193,7 @@ public class MultiFactorActivity extends BaseActivity implements
             mBinding.detail.setText(null);
             mBinding.mfaInfo.setText(null);
 
-            mBinding.emailPasswordButtons.setVisibility(View.VISIBLE);
+            mBinding.emailSignInButton.setVisibility(View.VISIBLE);
             mBinding.signedInButtons.setVisibility(View.GONE);
         }
     }

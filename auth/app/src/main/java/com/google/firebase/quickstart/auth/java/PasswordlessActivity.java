@@ -219,13 +219,13 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
             mBinding.status.setText(getString(R.string.passwordless_status_fmt,
                     user.getEmail(), user.isEmailVerified()));
 
-            mBinding.passwordlessFields.setVisibility(View.GONE);
+            mBinding.fieldEmail.setVisibility(View.GONE);
             mBinding.passwordlessButtons.setVisibility(View.GONE);
-            mBinding.signedInButtons.setVisibility(View.VISIBLE);
+            mBinding.signOutButton.setVisibility(View.VISIBLE);
         } else {
-            mBinding.passwordlessFields.setVisibility(View.VISIBLE);
+            mBinding.fieldEmail.setVisibility(View.VISIBLE);
             mBinding.passwordlessButtons.setVisibility(View.VISIBLE);
-            mBinding.signedInButtons.setVisibility(View.GONE);
+            mBinding.signOutButton.setVisibility(View.GONE);
         }
     }
 

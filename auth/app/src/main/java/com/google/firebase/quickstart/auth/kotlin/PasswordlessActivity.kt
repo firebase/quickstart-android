@@ -195,14 +195,11 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         if (user != null) {
             binding.status.text = getString(R.string.passwordless_status_fmt,
                     user.email, user.isEmailVerified)
-
-            binding.passwordlessFields.visibility = View.GONE
             binding.passwordlessButtons.visibility = View.GONE
-            binding.signedInButtons.visibility = View.VISIBLE
+            binding.signOutButton.visibility = View.VISIBLE
         } else {
-            binding.passwordlessFields.visibility = View.VISIBLE
             binding.passwordlessButtons.visibility = View.VISIBLE
-            binding.signedInButtons.visibility = View.GONE
+            binding.signOutButton.visibility = View.GONE
         }
     }
 

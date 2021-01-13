@@ -128,7 +128,7 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
                 sb.setLength(sb.length - delimiter.length)
                 binding.mfaInfo.text = sb.toString()
             }
-            findViewById<View>(R.id.emailPasswordButtons).visibility = View.GONE
+            findViewById<View>(R.id.emailSignInButton).visibility = View.GONE
             findViewById<View>(R.id.signedInButtons).visibility = View.VISIBLE
             val reloadVisibility = if (secondFactors.isEmpty()) View.VISIBLE else View.GONE
             findViewById<View>(R.id.reloadButton).visibility = reloadVisibility
@@ -143,7 +143,7 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
             binding.status.setText(R.string.multi_factor_signed_out)
             binding.detail.text = null
             binding.mfaInfo.text = null
-            findViewById<View>(R.id.emailPasswordButtons).visibility = View.VISIBLE
+            findViewById<View>(R.id.emailSignInButton).visibility = View.VISIBLE
             findViewById<View>(R.id.signedInButtons).visibility = View.GONE
         }
     }

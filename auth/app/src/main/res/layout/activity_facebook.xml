@@ -51,7 +51,7 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -61,17 +61,17 @@
             android:id="@+id/buttonFacebookLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_gravity="center"/>
 
         <Button
             android:id="@+id/buttonFacebookSignout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:text="@string/sign_out"
             android:theme="@style/ThemeOverlay.MyDarkButton"
             android:visibility="gone"/>
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </LinearLayout>
