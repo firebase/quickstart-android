@@ -1,17 +1,13 @@
 package com.google.samples.quickstart.admobexample;
 
 
-import androidx.test.espresso.IdlingRegistry;
+import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.filters.LargeTest;
 
-import com.google.samples.quickstart.admobexample.java.MainActivity;
+import com.google.samples.quickstart.admobexample.kotlin.FirstFragment;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,26 +24,9 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class InterstitialAdTest {
 
-    private AdViewIdlingResource mAdResource;
-
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-
-    @Before
-    public void setUp() {
-        mAdResource = new AdViewIdlingResource(mActivityTestRule.getActivity().getAdView());
-        IdlingRegistry.getInstance().register(mAdResource);
-    }
-
-    @After
-    public void tearDown() {
-        IdlingRegistry.getInstance().unregister(mAdResource);
-    }
-
     @Test
     public void interstitialAdTest() {
-        // Wait for ad to load
-        mAdResource.setIsLoadingAd(true);
+        FragmentScenario<FirstFragment> fragment = FragmentScenario.launchInContainer(FirstFragment.class);
 
         // Confirm that banner ad appears
         onView(withId(R.id.adView))
@@ -66,7 +45,7 @@ public class InterstitialAdTest {
         closeInterstitialButton.perform(click());
 
         // Confirm that we're on the second activity
-        onView(withText(R.string.second_activity_content))
+        onView(withText(R.string.second_fragment_content))
                 .check(matches(isDisplayed()));
     }
 }
