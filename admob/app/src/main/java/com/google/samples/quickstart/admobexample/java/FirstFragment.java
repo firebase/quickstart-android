@@ -17,20 +17,17 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.samples.quickstart.admobexample.R;
 import com.google.samples.quickstart.admobexample.databinding.FragmentFirstBinding;
 
-// [SNIPPET load_banner_ad]
-// Load an ad into the AdView.
-// [START load_banner_ad]
 class FirstFragment extends Fragment {
 
     private static final String TAG = "MainActivity";
     private static final String TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713";
 
     private AdView mAdView;
-    // [START_EXCLUDE]
     private InterstitialAd mInterstitialAd;
     private Button mLoadInterstitialButton;
     private FragmentFirstBinding binding;
@@ -41,7 +38,6 @@ class FirstFragment extends Fragment {
         binding = FragmentFirstBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
-    // [END_EXCLUDE]
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -54,21 +50,17 @@ class FirstFragment extends Fragment {
         mAdView = binding.adView;
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        // [END load_banner_ad]
 
         // AdMob ad unit IDs are not currently stored inside the google-services.json file.
         // Developers using AdMob can store them as custom values in a string resource file or
         // simply use constants. Note that the ad units used here are configured to return only test
         // ads, and should not be used outside this sample.
 
-        // [START instantiate_interstitial_ad]
         // Create an InterstitialAd object. This same object can be re-used whenever you want to
         // show an interstitial.
         mInterstitialAd = new InterstitialAd(getContext());
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
-        // [END instantiate_interstitial_ad]
 
-        // [START create_interstitial_ad_listener]
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
@@ -79,22 +71,17 @@ class FirstFragment extends Fragment {
             @Override
             public void onAdLoaded() {
                 // Ad received, ready to display
-                // [START_EXCLUDE]
                 if (mLoadInterstitialButton != null) {
                     mLoadInterstitialButton.setEnabled(true);
                 }
-                // [END_EXCLUDE]
             }
 
             @Override
-            public void onAdFailedToLoad(int i) {
-                // See https://goo.gl/sCZj0H for possible error codes.
-                Log.w(TAG, "onAdFailedToLoad:" + i);
+            public void onAdFailedToLoad(LoadAdError error) {
+                Log.w(TAG, "onAdFailedToLoad:" + error.getMessage());
             }
         });
-        // [END create_interstitial_ad_listener]
 
-        // [START display_interstitial_ad]
         mLoadInterstitialButton = binding.loadInterstitialButton;
         mLoadInterstitialButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +93,6 @@ class FirstFragment extends Fragment {
                 }
             }
         });
-        // [END display_interstitial_ad]
 
         // Disable button if an interstitial ad is not loaded yet.
         mLoadInterstitialButton.setEnabled(mInterstitialAd.isLoaded());
@@ -115,19 +101,16 @@ class FirstFragment extends Fragment {
     /**
      * Load a new interstitial ad asynchronously.
      */
-    // [START request_new_interstitial]
     private void requestNewInterstitial() {
         AdRequest adRequest = new AdRequest.Builder().build();
 
         mInterstitialAd.loadAd(adRequest);
     }
-    // [END request_new_interstitial]
 
     private void beginSecondActivity() {
         NavHostFragment.findNavController(this).navigate(R.id.action_FirstFragment_to_SecondFragment);
     }
 
-    // [START add_lifecycle_methods]
     /** Called when leaving the activity */
     @Override
     public void onPause() {
@@ -157,7 +140,6 @@ class FirstFragment extends Fragment {
         }
         super.onDestroy();
     }
-    // [END add_lifecycle_methods]
 
     @VisibleForTesting
     public AdView getAdView() {
