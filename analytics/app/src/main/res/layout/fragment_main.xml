@@ -12,7 +12,7 @@ under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
 CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -29,10 +29,9 @@ specific language governing permissions and limitations under the License.
         android:id="@+id/imageView"
         android:minHeight="256dp"
         android:minWidth="256dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
         android:elevation="2dp"
         android:scaleType="center"
         android:background="@drawable/circle"/>
 
-</RelativeLayout>
+</FrameLayout>

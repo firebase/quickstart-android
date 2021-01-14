@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
@@ -8,7 +9,7 @@
     android:orientation="vertical"
     android:weightSum="4">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
@@ -18,55 +19,73 @@
         <ImageView
             android:id="@+id/icon"
             style="@style/ThemeOverlay.FirebaseIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/desc_firebase_lockup"
             android:src="@drawable/firebase_lockup_400"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/title_bottom_margin"
-            android:text="@string/generic_title_text"
+            android:layout_marginTop="16dp"
             android:gravity="center"
-            android:theme="@style/ThemeOverlay.MyTitleText" />
+            android:text="@string/generic_title_text"
+            android:theme="@style/ThemeOverlay.MyTitleText"
+            app:layout_constraintEnd_toEndOf="@+id/icon"
+            app:layout_constraintStart_toStartOf="@+id/icon"
+            app:layout_constraintTop_toBottomOf="@+id/icon" />
 
         <TextView
             android:id="@+id/status"
             style="@style/ThemeOverlay.MyTextDetail"
-            android:text="@string/signed_out" />
+            android:layout_marginTop="16dp"
+            android:text="@string/signed_out"
+            app:layout_constraintEnd_toEndOf="@+id/titleText"
+            app:layout_constraintStart_toStartOf="@+id/titleText"
+            app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
         <TextView
             android:id="@+id/detail"
             style="@style/ThemeOverlay.MyTextDetail"
+            app:layout_constraintEnd_toEndOf="@+id/status"
+            app:layout_constraintStart_toStartOf="@+id/status"
+            app:layout_constraintTop_toBottomOf="@+id/status"
             tools:text="Firebase User ID: 123456789abc" />
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/providerSpinnerLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/generic_label_provider"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/detail"
+            app:layout_constraintTop_toBottomOf="@+id/detail" />
+
+        <Spinner
+            android:id="@+id/providerSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/providerSpinnerLabel"
+            android:layout_toEndOf="@+id/providerSpinnerLabel"
+            android:layout_toRightOf="@+id/providerSpinnerLabel"
+            app:layout_constraintBottom_toBottomOf="@+id/providerSpinnerLabel"
+            app:layout_constraintEnd_toEndOf="@+id/detail"
+            app:layout_constraintStart_toEndOf="@+id/providerSpinnerLabel"
+            app:layout_constraintTop_toTopOf="@+id/providerSpinnerLabel" />
+
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/spinnerLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            app:constraint_referenced_ids="providerSpinner, providerSpinnerLabel"/>
 
-            <TextView
-                android:id="@+id/providerSpinnerLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="@string/generic_label_provider"/>
-
-            <Spinner
-                android:id="@+id/providerSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/providerSpinnerLabel"
-                android:layout_toRightOf="@+id/providerSpinnerLabel"
-                android:layout_toEndOf="@+id/providerSpinnerLabel" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
