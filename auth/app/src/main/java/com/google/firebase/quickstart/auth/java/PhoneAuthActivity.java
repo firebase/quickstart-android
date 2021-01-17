@@ -376,6 +376,9 @@ public class PhoneAuthActivity extends AppCompatActivity implements
                 verifyPhoneNumberWithCode(mVerificationId, code);
                 break;
             case R.id.buttonResend:
+                if (!validatePhoneNumber()) {
+                    return;
+                }
                 resendVerificationCode(mBinding.fieldPhoneNumber.getText().toString(), mResendToken);
                 break;
             case R.id.signOutButton:
