@@ -39,6 +39,9 @@ the sample you wish to run.
 Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
 
 [![Actions Status][gh-actions-badge]][gh-actions]
+[![SAM Score][sam-score-badge]][sam-score]
 
 [gh-actions]: https://github.com/firebase/quickstart-android/actions
 [gh-actions-badge]: https://github.com/firebase/quickstart-android/workflows/Android%20CI/badge.svg
+[sam-score]: https://ossbot.computer/samscore.html
+[sam-score-badge]: https://ossbot.computer/samscorebadge?org=firebase&repo=quickstart-android
