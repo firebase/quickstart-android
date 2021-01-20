@@ -35,6 +35,7 @@
         </activity>
 
         <activity android:name=".java.MainActivity" />
+        <activity android:name=".kotlin.MainActivity" />
         <!-- [SNIPPET add_activity_config_changes]
             Include the AdActivity configChanges and theme.
             [START add_activity_config_changes] -->
@@ -43,23 +44,6 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
         <!-- [END add_activity_config_changes] -->
-        <activity
-            android:name=".java.SecondActivity"
-            android:label="@string/second_activity_title"
-            android:parentActivityName=".java.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".java.MainActivity" />
-        </activity>
-        <activity android:name=".kotlin.MainActivity" />
-        <activity
-            android:name=".kotlin.SecondActivity"
-            android:label="@string/second_activity_title"
-            android:parentActivityName=".java.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".java.MainActivity" />
-        </activity>
     </application>
 
 </manifest>
