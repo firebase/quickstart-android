@@ -15,7 +15,7 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                 Choice(
                         "Kotlin",
                         "Run the Firebase Realtime Database quickstart written in Kotlin.",
-                        Intent(this, com.google.firebase.quickstart.database.kotlin.SignInActivity::class.java))
+                        Intent(this, com.google.firebase.quickstart.database.kotlin.MainActivity::class.java))
         )
     }
 }

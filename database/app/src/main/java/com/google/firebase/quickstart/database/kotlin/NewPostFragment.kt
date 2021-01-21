@@ -3,6 +3,9 @@ package com.google.firebase.quickstart.database.kotlin
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -11,21 +14,25 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.quickstart.database.databinding.ActivityNewPostBinding
+import com.google.firebase.quickstart.database.databinding.FragmentNewPostBinding
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.models.User
 
-class NewPostActivity : BaseActivity() {
+class NewPostFragment : BaseFragment() {
+    private var _binding: FragmentNewPostBinding? = null
+    private val binding get() = _binding!!
 
     // [START declare_database_ref]
     private lateinit var database: DatabaseReference
     // [END declare_database_ref]
-    private lateinit var binding: ActivityNewPostBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityNewPostBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentNewPostBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // [START initialize_database_ref]
         database = Firebase.database.reference
@@ -52,7 +59,7 @@ class NewPostActivity : BaseActivity() {
 
         // Disable button so there are no multi-posts
         setEditingEnabled(false)
-        Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Posting...", Toast.LENGTH_SHORT).show()
 
         // [START single_value_read]
         val userId = uid
@@ -66,7 +73,7 @@ class NewPostActivity : BaseActivity() {
                         if (user == null) {
                             // User is null, error out
                             Log.e(TAG, "User $userId is unexpectedly null")
-                            Toast.makeText(baseContext,
+                            Toast.makeText(context,
                                     "Error: could not fetch user.",
                                     Toast.LENGTH_SHORT).show()
                         } else {
@@ -76,7 +83,7 @@ class NewPostActivity : BaseActivity() {
 
                         // Finish this Activity, back to the stream
                         setEditingEnabled(true)
-                        finish()
+                        // TODO: Pop back on navigation and update comment above
                         // [END_EXCLUDE]
                     }
 
@@ -124,9 +131,13 @@ class NewPostActivity : BaseActivity() {
     }
     // [END write_fan_out]
 
-    companion object {
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 
-        private const val TAG = "NewPostActivity"
+    companion object {
+        private const val TAG = "NewPostFragment"
         private const val REQUIRED = "Required"
     }
 }

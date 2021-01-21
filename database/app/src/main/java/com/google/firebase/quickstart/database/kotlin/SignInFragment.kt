@@ -1,11 +1,13 @@
 package com.google.firebase.quickstart.database.kotlin
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -13,19 +15,23 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
-import com.google.firebase.quickstart.database.databinding.ActivitySignInBinding
+import com.google.firebase.quickstart.database.databinding.FragmentSignInBinding
 import com.google.firebase.quickstart.database.kotlin.models.User
 
-class SignInActivity : BaseActivity(), View.OnClickListener {
+class SignInFragment : BaseFragment() {
+    private var _binding: FragmentSignInBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var database: DatabaseReference
     private lateinit var auth: FirebaseAuth
-    private lateinit var binding: ActivitySignInBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySignInBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentSignInBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         database = Firebase.database.reference
         auth = Firebase.auth
@@ -34,15 +40,15 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
 
         // Click listeners
         with(binding) {
-            buttonSignIn.setOnClickListener(this@SignInActivity)
-            buttonSignUp.setOnClickListener(this@SignInActivity)
+            buttonSignIn.setOnClickListener { signIn() }
+            buttonSignUp.setOnClickListener { signUp() }
         }
     }
 
-    public override fun onStart() {
+    override fun onStart() {
         super.onStart()
 
-        // Check auth on Activity start
+        // Check auth on Fragment start
         auth.currentUser?.let {
             onAuthSuccess(it)
         }
@@ -59,14 +65,14 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         val password = binding.fieldPassword.text.toString()
 
         auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
+                .addOnCompleteListener(requireActivity()) { task ->
                     Log.d(TAG, "signIn:onComplete:" + task.isSuccessful)
                     hideProgressBar()
 
                     if (task.isSuccessful) {
                         onAuthSuccess(task.result?.user!!)
                     } else {
-                        Toast.makeText(baseContext, "Sign In Failed",
+                        Toast.makeText(context, "Sign In Failed",
                                 Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -83,14 +89,14 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         val password = binding.fieldPassword.text.toString()
 
         auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
+                .addOnCompleteListener(requireActivity()) { task ->
                     Log.d(TAG, "createUser:onComplete:" + task.isSuccessful)
                     hideProgressBar()
 
                     if (task.isSuccessful) {
                         onAuthSuccess(task.result?.user!!)
                     } else {
-                        Toast.makeText(baseContext, "Sign Up Failed",
+                        Toast.makeText(context, "Sign Up Failed",
                                 Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -102,9 +108,8 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
         // Write new user
         writeNewUser(user.uid, username, user.email)
 
-        // Go to MainActivity
-        startActivity(Intent(this@SignInActivity, MainActivity::class.java))
-        finish()
+        // Go to MainFragment
+        findNavController().navigate(R.id.action_SignInFragment_to_MainFragment)
     }
 
     private fun usernameFromEmail(email: String): String {
@@ -141,17 +146,12 @@ class SignInActivity : BaseActivity(), View.OnClickListener {
     }
     // [END basic_write]
 
-    override fun onClick(v: View) {
-        val i = v.id
-        if (i == R.id.buttonSignIn) {
-            signIn()
-        } else if (i == R.id.buttonSignUp) {
-            signUp()
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     companion object {
-
-        private const val TAG = "SignInActivity"
+        private const val TAG = "SignInFragment"
     }
 }
