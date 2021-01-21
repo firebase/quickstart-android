@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         val fab = binding.fab
         val navController = findNavController(R.id.nav_host_fragment)
+        navController.setGraph(R.navigation.nav_graph)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.SignInFragment, R.id.NewPostFragment, R.id.PostDetailFragment -> {
