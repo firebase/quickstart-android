@@ -345,9 +345,6 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 verifyPhoneNumberWithCode(storedVerificationId, code)
             }
             R.id.buttonResend ->  {
-                if (!validatePhoneNumber()) {
-                    return
-                }
                 resendVerificationCode(binding.fieldPhoneNumber.text.toString(), resendToken)
             }
             R.id.signOutButton -> signOut()
