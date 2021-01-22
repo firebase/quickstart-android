@@ -17,6 +17,7 @@ package com.google.samples.quickstart.admobexample.java;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.Navigation;
 
 import com.google.samples.quickstart.admobexample.R;
 
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Navigation.findNavController(this, R.id.nav_host_fragment).setGraph(R.navigation.nav_graph_java);
     }
 
 }
