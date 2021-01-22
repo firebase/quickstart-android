@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -14,6 +15,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.databinding.FragmentNewPostBinding
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.models.User
@@ -81,9 +83,8 @@ class NewPostFragment : BaseFragment() {
                             writeNewPost(userId, user.username.toString(), title, body)
                         }
 
-                        // Finish this Activity, back to the stream
                         setEditingEnabled(true)
-                        // TODO: Pop back on navigation and update comment above
+                        findNavController().navigate(R.id.action_NewPostFragment_to_MainFragment)
                         // [END_EXCLUDE]
                     }
 

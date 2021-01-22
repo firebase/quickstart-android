@@ -10,12 +10,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.quickstart.database.R;
 import com.google.firebase.quickstart.database.databinding.FragmentNewPostBinding;
 import com.google.firebase.quickstart.database.java.models.Post;
 import com.google.firebase.quickstart.database.java.models.User;
@@ -96,9 +98,9 @@ public class NewPostFragment extends BaseFragment {
                             writeNewPost(userId, user.username, title, body);
                         }
 
-                        // Finish this Activity, back to the stream
                         setEditingEnabled(true);
-//                        finish(); TODO
+                        NavHostFragment.findNavController(NewPostFragment.this)
+                                .navigate(R.id.action_NewPostFragment_to_MainFragment);
                         // [END_EXCLUDE]
                     }
 
