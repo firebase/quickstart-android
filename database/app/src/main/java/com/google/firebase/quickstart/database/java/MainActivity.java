@@ -43,31 +43,31 @@ public class  MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
         fab = binding.fab;
-//
+
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         navController.setGraph(R.navigation.nav_graph_java);
-//        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-//            @Override
-//            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-//                switch (destination.getId()) {
-//                    case R.id.SignInFragment:
-//                    case R.id.NewPostFragment:
-//                    case R.id.PostDetailFragment: {
-//                        fab.setVisibility(View.GONE);
-//                        break;
-//                    }
-//                    case R.id.MainFragment: {
-//                        fab.setVisibility(View.VISIBLE);
-//                        fab.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                navController.navigate(R.id.action_MainFragment_to_NewPostFragment);
-//                            }
-//                        });
-//                        break;
-//                    }
-//                }
-//            }
-//        });
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                switch (destination.getId()) {
+                    case R.id.SignInFragment:
+                    case R.id.NewPostFragment:
+                    case R.id.PostDetailFragment: {
+                        fab.setVisibility(View.GONE);
+                        break;
+                    }
+                    case R.id.MainFragment: {
+                        fab.setVisibility(View.VISIBLE);
+                        fab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                navController.navigate(R.id.action_MainFragment_to_NewPostFragment);
+                            }
+                        });
+                        break;
+                    }
+                }
+            }
+        });
     }
 }
