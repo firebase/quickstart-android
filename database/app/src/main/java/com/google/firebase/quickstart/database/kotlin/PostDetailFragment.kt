@@ -9,7 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.*
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -34,7 +38,7 @@ class PostDetailFragment : BaseFragment() {
     private var _binding: FragmentPostDetailBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentPostDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,7 +47,7 @@ class PostDetailFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Get post key from arguments
-        val postKey = requireArguments().getString(EXTRA_POST_KEY)
+        postKey = requireArguments().getString(EXTRA_POST_KEY)
                 ?: throw IllegalArgumentException("Must pass EXTRA_POST_KEY")
 
         // Initialize Database
