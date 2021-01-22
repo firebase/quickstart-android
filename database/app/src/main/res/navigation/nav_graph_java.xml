@@ -2,12 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph_kotlin"
+    android:id="@+id/nav_graph_java"
     app:startDestination="@id/SignInFragment">
 
     <fragment
         android:id="@+id/SignInFragment"
-        android:name="com.google.firebase.quickstart.database.kotlin.SignInFragment"
+        android:name="com.google.firebase.quickstart.database.java.SignInFragment"
         android:label="@string/title_sign_in"
         tools:layout="@layout/fragment_sign_in">
 
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/MainFragment"
-        android:name="com.google.firebase.quickstart.database.kotlin.MainFragment"
+        android:name="com.google.firebase.quickstart.database.java.MainFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_main">
         <action
@@ -37,14 +37,14 @@
 
     <fragment
         android:id="@+id/PostDetailFragment"
-        android:name="com.google.firebase.quickstart.database.kotlin.PostDetailFragment"
+        android:name="com.google.firebase.quickstart.database.java.PostDetailFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_post_detail">
     </fragment>
 
     <fragment
         android:id="@+id/NewPostFragment"
-        android:name="com.google.firebase.quickstart.database.kotlin.NewPostFragment"
+        android:name="com.google.firebase.quickstart.database.java.NewPostFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_new_post">
     </fragment>

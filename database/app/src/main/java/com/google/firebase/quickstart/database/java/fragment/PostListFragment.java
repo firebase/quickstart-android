@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.database.java.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +23,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.quickstart.database.R;
-import com.google.firebase.quickstart.database.java.PostDetailActivity;
+import com.google.firebase.quickstart.database.java.PostDetailFragment;
 import com.google.firebase.quickstart.database.java.models.Post;
 import com.google.firebase.quickstart.database.java.viewholder.PostViewHolder;
 
@@ -90,10 +91,12 @@ public abstract class PostListFragment extends Fragment {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Launch PostDetailActivity
-                        Intent intent = new Intent(getActivity(), PostDetailActivity.class);
-                        intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey);
-                        startActivity(intent);
+                        // Launch PostDetailFragment
+                        NavController navController = Navigation.findNavController(requireActivity(),
+                                R.id.nav_host_fragment);
+                        Bundle args = new Bundle();
+                        args.putString(PostDetailFragment.EXTRA_POST_KEY, postKey);
+                        navController.navigate(R.id.action_MainFragment_to_PostDetailFragment, args);
                     }
                 });
 

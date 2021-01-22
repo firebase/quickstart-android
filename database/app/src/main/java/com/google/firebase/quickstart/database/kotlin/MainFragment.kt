@@ -45,15 +45,11 @@ class MainFragment : Fragment() {
                     getString(R.string.heading_my_posts),
                     getString(R.string.heading_my_top_posts))
 
-            override fun getItem(position: Int): Fragment {
-                return fragments[position]
-            }
+            override fun getItem(position: Int) = fragments[position]
 
             override fun getCount() = fragments.size
 
-            override fun getPageTitle(position: Int): CharSequence? {
-                return fragmentNames[position]
-            }
+            override fun getPageTitle(position: Int) = fragmentNames[position]
         }
 
         // Set up the ViewPager with the sections adapter.
@@ -80,9 +76,5 @@ class MainFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    companion object {
-        private const val TAG = "MainFragment"
     }
 }
