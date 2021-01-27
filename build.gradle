@@ -32,21 +32,21 @@ allprojects {
         }
     }
 
-    def isBlackListed = { candidate ->
-        def blacklist = [
+    def isBlocked = { candidate ->
+        def blocklist = [
                 'androidx.browser:browser',
                 'com.facebook.android',
                 'com.google.guava',
                 'com.github.bumptech.glide'
         ]
-        return blacklist.any { word ->
+        return blocklist.any { word ->
             return candidate.toString().contains(word)
         }
     }
 
     dependencyUpdates {
         rejectVersionIf {
-            isNonStable(it.candidate) || isBlackListed(it.candidate)
+            isNonStable(it.candidate) || isBlocked(it.candidate)
         }
     }
 }
