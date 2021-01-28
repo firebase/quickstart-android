@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.database.java.fragment;
+package com.google.firebase.quickstart.database.java.listfragments;
 
 import android.os.Bundle;
 import android.util.Log;

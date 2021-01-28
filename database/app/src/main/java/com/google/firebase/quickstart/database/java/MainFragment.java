@@ -17,9 +17,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.quickstart.database.R;
 import com.google.firebase.quickstart.database.databinding.FragmentMainBinding;
-import com.google.firebase.quickstart.database.java.fragment.MyPostsFragment;
-import com.google.firebase.quickstart.database.java.fragment.MyTopPostsFragment;
-import com.google.firebase.quickstart.database.java.fragment.RecentPostsFragment;
+import com.google.firebase.quickstart.database.java.listfragments.MyPostsFragment;
+import com.google.firebase.quickstart.database.java.listfragments.MyTopPostsFragment;
+import com.google.firebase.quickstart.database.java.listfragments.RecentPostsFragment;
 
 public class MainFragment extends Fragment {
 
