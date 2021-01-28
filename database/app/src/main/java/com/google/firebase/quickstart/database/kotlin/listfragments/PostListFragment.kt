@@ -86,7 +86,7 @@ abstract class PostListFragment : Fragment() {
                 // Set click listener for the whole post view
                 val postKey = postRef.key
                 viewHolder.itemView.setOnClickListener {
-                    // Launch PostDetailActivity
+                    // Launch PostDetailFragment
                     val navController = requireActivity().findNavController(R.id.nav_host_fragment)
                     val args = bundleOf(PostDetailFragment.EXTRA_POST_KEY to postKey)
                     navController.navigate(R.id.action_MainFragment_to_PostDetailFragment, args)

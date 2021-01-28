@@ -23,16 +23,13 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         navController.setGraph(R.navigation.nav_graph_kotlin)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.SignInFragment, R.id.NewPostFragment, R.id.PostDetailFragment -> {
-                    fab.isGone = true
+            if (destination.id == R.id.MainFragment) {
+                fab.isVisible = true
+                fab.setOnClickListener {
+                    navController.navigate(R.id.action_MainFragment_to_NewPostFragment)
                 }
-                R.id.MainFragment -> {
-                    fab.isVisible = true
-                    fab.setOnClickListener {
-                        navController.navigate(R.id.action_MainFragment_to_NewPostFragment)
-                    }
-                }
+            } else {
+                fab.isGone = true
             }
         }
     }
