@@ -156,13 +156,11 @@ public class SignInFragment extends BaseFragment implements View.OnClickListener
         return result;
     }
 
-    // [START basic_write]
     private void writeNewUser(String userId, String name, String email) {
         User user = new User(name, email);
 
         mDatabase.child("users").child(userId).setValue(user);
     }
-    // [END basic_write]
 
     public void onClick(View v) {
         int i = v.getId();

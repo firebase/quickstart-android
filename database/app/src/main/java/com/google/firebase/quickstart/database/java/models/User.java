@@ -2,7 +2,6 @@ package com.google.firebase.quickstart.database.java.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-// [START blog_user_class]
 @IgnoreExtraProperties
 public class User {
 
@@ -19,4 +18,3 @@ public class User {
     }
 
 }
-// [END blog_user_class]

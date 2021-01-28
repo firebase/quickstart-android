@@ -139,12 +139,10 @@ class SignInFragment : BaseFragment() {
         return result
     }
 
-    // [START basic_write]
     private fun writeNewUser(userId: String, name: String, email: String?) {
         val user = User(name, email)
         database.child("users").child(userId).setValue(user)
     }
-    // [END basic_write]
 
     override fun onDestroy() {
         super.onDestroy()

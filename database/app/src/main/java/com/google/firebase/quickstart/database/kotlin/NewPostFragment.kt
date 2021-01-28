@@ -24,9 +24,7 @@ class NewPostFragment : BaseFragment() {
     private var _binding: FragmentNewPostBinding? = null
     private val binding get() = _binding!!
 
-    // [START declare_database_ref]
     private lateinit var database: DatabaseReference
-    // [END declare_database_ref]
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentNewPostBinding.inflate(inflater, container, false)
@@ -36,9 +34,7 @@ class NewPostFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // [START initialize_database_ref]
         database = Firebase.database.reference
-        // [END initialize_database_ref]
 
         binding.fabSubmitPost.setOnClickListener { submitPost() }
     }
@@ -63,7 +59,6 @@ class NewPostFragment : BaseFragment() {
         setEditingEnabled(false)
         Toast.makeText(context, "Posting...", Toast.LENGTH_SHORT).show()
 
-        // [START single_value_read]
         val userId = uid
         database.child("users").child(userId).addListenerForSingleValueEvent(
                 object : ValueEventListener {
@@ -71,7 +66,6 @@ class NewPostFragment : BaseFragment() {
                         // Get user value
                         val user = dataSnapshot.getValue<User>()
 
-                        // [START_EXCLUDE]
                         if (user == null) {
                             // User is null, error out
                             Log.e(TAG, "User $userId is unexpectedly null")
@@ -85,17 +79,13 @@ class NewPostFragment : BaseFragment() {
 
                         setEditingEnabled(true)
                         findNavController().navigate(R.id.action_NewPostFragment_to_MainFragment)
-                        // [END_EXCLUDE]
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
                         Log.w(TAG, "getUser:onCancelled", databaseError.toException())
-                        // [START_EXCLUDE]
                         setEditingEnabled(true)
-                        // [END_EXCLUDE]
                     }
                 })
-        // [END single_value_read]
     }
 
     private fun setEditingEnabled(enabled: Boolean) {
@@ -110,7 +100,6 @@ class NewPostFragment : BaseFragment() {
         }
     }
 
-    // [START write_fan_out]
     private fun writeNewPost(userId: String, username: String, title: String, body: String) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
@@ -130,7 +119,6 @@ class NewPostFragment : BaseFragment() {
 
         database.updateChildren(childUpdates)
     }
-    // [END write_fan_out]
 
     override fun onDestroy() {
         super.onDestroy()

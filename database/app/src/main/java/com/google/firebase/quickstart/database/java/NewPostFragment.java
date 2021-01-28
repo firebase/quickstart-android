@@ -29,9 +29,7 @@ public class NewPostFragment extends BaseFragment {
     private static final String TAG = "NewPostFragment";
     private static final String REQUIRED = "Required";
 
-    // [START declare_database_ref]
     private DatabaseReference mDatabase;
-    // [END declare_database_ref]
 
     private FragmentNewPostBinding binding;
 
@@ -45,9 +43,7 @@ public class NewPostFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // [START initialize_database_ref]
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        // [END initialize_database_ref]
 
         binding.fabSubmitPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +73,6 @@ public class NewPostFragment extends BaseFragment {
         setEditingEnabled(false);
         Toast.makeText(getContext(), "Posting...", Toast.LENGTH_SHORT).show();
 
-        // [START single_value_read]
         final String userId = getUid();
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -86,7 +81,6 @@ public class NewPostFragment extends BaseFragment {
                         // Get user value
                         User user = dataSnapshot.getValue(User.class);
 
-                        // [START_EXCLUDE]
                         if (user == null) {
                             // User is null, error out
                             Log.e(TAG, "User " + userId + " is unexpectedly null");
@@ -101,18 +95,14 @@ public class NewPostFragment extends BaseFragment {
                         setEditingEnabled(true);
                         NavHostFragment.findNavController(NewPostFragment.this)
                                 .navigate(R.id.action_NewPostFragment_to_MainFragment);
-                        // [END_EXCLUDE]
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                         Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        // [START_EXCLUDE]
                         setEditingEnabled(true);
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END single_value_read]
     }
 
     private void setEditingEnabled(boolean enabled) {
@@ -125,7 +115,6 @@ public class NewPostFragment extends BaseFragment {
         }
     }
 
-    // [START write_fan_out]
     private void writeNewPost(String userId, String username, String title, String body) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
@@ -139,5 +128,4 @@ public class NewPostFragment extends BaseFragment {
 
         mDatabase.updateChildren(childUpdates);
     }
-    // [END write_fan_out]
 }

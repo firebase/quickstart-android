@@ -80,31 +80,25 @@ public class PostDetailFragment extends BaseFragment {
         super.onStart();
 
         // Add value event listener to the post
-        // [START post_value_event_listener]
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
                 Post post = dataSnapshot.getValue(Post.class);
-                // [START_EXCLUDE]
                 binding.postAuthorLayout.postAuthor.setText(post.author);
                 binding.postTextLayout.postTitle.setText(post.title);
                 binding.postTextLayout.postBody.setText(post.body);
-                // [END_EXCLUDE]
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // [START_EXCLUDE]
                 Toast.makeText(getContext(), "Failed to load post.",
                         Toast.LENGTH_SHORT).show();
-                // [END_EXCLUDE]
             }
         };
         mPostReference.addValueEventListener(postListener);
-        // [END post_value_event_listener]
 
         // Keep copy of post listener so we can remove it when app stops
         mPostListener = postListener;
@@ -169,7 +163,6 @@ public class PostDetailFragment extends BaseFragment {
             mDatabaseReference = ref;
 
             // Create child event listener
-            // [START child_event_listener_recycler]
             ChildEventListener childEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
@@ -178,12 +171,10 @@ public class PostDetailFragment extends BaseFragment {
                     // A new comment has been added, add it to the displayed list
                     Comment comment = dataSnapshot.getValue(Comment.class);
 
-                    // [START_EXCLUDE]
                     // Update RecyclerView
                     mCommentIds.add(dataSnapshot.getKey());
                     mComments.add(comment);
                     notifyItemInserted(mComments.size() - 1);
-                    // [END_EXCLUDE]
                 }
 
                 @Override
@@ -195,7 +186,6 @@ public class PostDetailFragment extends BaseFragment {
                     Comment newComment = dataSnapshot.getValue(Comment.class);
                     String commentKey = dataSnapshot.getKey();
 
-                    // [START_EXCLUDE]
                     int commentIndex = mCommentIds.indexOf(commentKey);
                     if (commentIndex > -1) {
                         // Replace with the new data
@@ -206,7 +196,6 @@ public class PostDetailFragment extends BaseFragment {
                     } else {
                         Log.w(TAG, "onChildChanged:unknown_child:" + commentKey);
                     }
-                    // [END_EXCLUDE]
                 }
 
                 @Override
@@ -217,7 +206,6 @@ public class PostDetailFragment extends BaseFragment {
                     // comment and if so remove it.
                     String commentKey = dataSnapshot.getKey();
 
-                    // [START_EXCLUDE]
                     int commentIndex = mCommentIds.indexOf(commentKey);
                     if (commentIndex > -1) {
                         // Remove data from the list
@@ -229,7 +217,6 @@ public class PostDetailFragment extends BaseFragment {
                     } else {
                         Log.w(TAG, "onChildRemoved:unknown_child:" + commentKey);
                     }
-                    // [END_EXCLUDE]
                 }
 
                 @Override
@@ -252,7 +239,6 @@ public class PostDetailFragment extends BaseFragment {
                 }
             };
             ref.addChildEventListener(childEventListener);
-            // [END child_event_listener_recycler]
 
             // Store reference to listener so it can be removed on app stop
             mChildEventListener = childEventListener;

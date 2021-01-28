@@ -67,12 +67,10 @@ class PostDetailFragment : BaseFragment() {
         super.onStart()
 
         // Add value event listener to the post
-        // [START post_value_event_listener]
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
                 val post = dataSnapshot.getValue<Post>()
-                // [START_EXCLUDE]
                 post?.let {
                     binding.postAuthorLayout.postAuthor.text = it.author
                     with(binding.postTextLayout) {
@@ -80,20 +78,16 @@ class PostDetailFragment : BaseFragment() {
                         postBody.text = it.body
                     }
                 }
-                // [END_EXCLUDE]
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-                // [START_EXCLUDE]
                 Toast.makeText(context, "Failed to load post.",
                         Toast.LENGTH_SHORT).show()
-                // [END_EXCLUDE]
             }
         }
         postReference.addValueEventListener(postListener)
-        // [END post_value_event_listener]
 
         // Keep copy of post listener so we can remove it when app stops
         this.postListener = postListener
@@ -154,7 +148,6 @@ class PostDetailFragment : BaseFragment() {
         init {
 
             // Create child event listener
-            // [START child_event_listener_recycler]
             val childEventListener = object : ChildEventListener {
                 override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                     Log.d(TAG, "onChildAdded:" + dataSnapshot.key!!)
@@ -162,12 +155,10 @@ class PostDetailFragment : BaseFragment() {
                     // A new comment has been added, add it to the displayed list
                     val comment = dataSnapshot.getValue<Comment>()
 
-                    // [START_EXCLUDE]
                     // Update RecyclerView
                     commentIds.add(dataSnapshot.key!!)
                     comments.add(comment!!)
                     notifyItemInserted(comments.size - 1)
-                    // [END_EXCLUDE]
                 }
 
                 override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -178,7 +169,6 @@ class PostDetailFragment : BaseFragment() {
                     val newComment = dataSnapshot.getValue<Comment>()
                     val commentKey = dataSnapshot.key
 
-                    // [START_EXCLUDE]
                     val commentIndex = commentIds.indexOf(commentKey)
                     if (commentIndex > -1 && newComment != null) {
                         // Replace with the new data
@@ -189,7 +179,6 @@ class PostDetailFragment : BaseFragment() {
                     } else {
                         Log.w(TAG, "onChildChanged:unknown_child: $commentKey")
                     }
-                    // [END_EXCLUDE]
                 }
 
                 override fun onChildRemoved(dataSnapshot: DataSnapshot) {
@@ -199,7 +188,6 @@ class PostDetailFragment : BaseFragment() {
                     // comment and if so remove it.
                     val commentKey = dataSnapshot.key
 
-                    // [START_EXCLUDE]
                     val commentIndex = commentIds.indexOf(commentKey)
                     if (commentIndex > -1) {
                         // Remove data from the list
@@ -211,7 +199,6 @@ class PostDetailFragment : BaseFragment() {
                     } else {
                         Log.w(TAG, "onChildRemoved:unknown_child:" + commentKey!!)
                     }
-                    // [END_EXCLUDE]
                 }
 
                 override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -232,7 +219,6 @@ class PostDetailFragment : BaseFragment() {
                 }
             }
             databaseReference.addChildEventListener(childEventListener)
-            // [END child_event_listener_recycler]
 
             // Store reference to listener so it can be removed on app stop
             this.childEventListener = childEventListener
