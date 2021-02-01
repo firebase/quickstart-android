@@ -1,12 +1,13 @@
-package com.google.firebase.quickstart.database.kotlin.fragment
+package com.google.firebase.quickstart.database.kotlin.listfragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
@@ -21,7 +22,7 @@ import com.google.firebase.database.Transaction
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
-import com.google.firebase.quickstart.database.kotlin.PostDetailActivity
+import com.google.firebase.quickstart.database.kotlin.PostDetailFragment
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.viewholder.PostViewHolder
 
@@ -85,17 +86,17 @@ abstract class PostListFragment : Fragment() {
                 // Set click listener for the whole post view
                 val postKey = postRef.key
                 viewHolder.itemView.setOnClickListener {
-                    // Launch PostDetailActivity
-                    val intent = Intent(activity, PostDetailActivity::class.java)
-                    intent.putExtra(PostDetailActivity.EXTRA_POST_KEY, postKey)
-                    startActivity(intent)
+                    // Launch PostDetailFragment
+                    val navController = requireActivity().findNavController(R.id.nav_host_fragment)
+                    val args = bundleOf(PostDetailFragment.EXTRA_POST_KEY to postKey)
+                    navController.navigate(R.id.action_MainFragment_to_PostDetailFragment, args)
                 }
 
                 // Determine if the current user has liked this post and set UI accordingly
                 viewHolder.setLikedState(model.stars.containsKey(uid))
 
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
-                viewHolder.bindToPost(model, View.OnClickListener {
+                viewHolder.bindToPost(model) {
                     // Need to write to both places the post is stored
                     val globalPostRef = database.child("posts").child(postRef.key!!)
                     val userPostRef = database.child("user-posts").child(model.uid!!).child(postRef.key!!)
@@ -103,7 +104,7 @@ abstract class PostListFragment : Fragment() {
                     // Run two transactions
                     onStarClicked(globalPostRef)
                     onStarClicked(userPostRef)
-                })
+                }
             }
         }
         recycler.adapter = adapter

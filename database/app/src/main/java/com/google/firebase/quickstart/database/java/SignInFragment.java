@@ -2,13 +2,17 @@ package com.google.firebase.quickstart.database.java;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,24 +22,28 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.quickstart.database.R;
-import com.google.firebase.quickstart.database.databinding.ActivitySignInBinding;
+import com.google.firebase.quickstart.database.databinding.FragmentSignInBinding;
 import com.google.firebase.quickstart.database.java.models.User;
 
-public class SignInActivity extends BaseActivity implements View.OnClickListener {
+public class SignInFragment extends BaseFragment implements View.OnClickListener {
 
-    private static final String TAG = "SignInActivity";
+    private static final String TAG = "SignInFragment";
 
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
 
-    private ActivitySignInBinding binding;
+    private FragmentSignInBinding binding;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentSignInBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivitySignInBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
@@ -68,7 +76,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         String password = binding.fieldPassword.getText().toString();
 
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signIn:onComplete:" + task.isSuccessful());
@@ -77,7 +85,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
                         } else {
-                            Toast.makeText(SignInActivity.this, "Sign In Failed",
+                            Toast.makeText(getContext(), "Sign In Failed",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -95,7 +103,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         String password = binding.fieldPassword.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "createUser:onComplete:" + task.isSuccessful());
@@ -104,7 +112,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         if (task.isSuccessful()) {
                             onAuthSuccess(task.getResult().getUser());
                         } else {
-                            Toast.makeText(SignInActivity.this, "Sign Up Failed",
+                            Toast.makeText(getContext(), "Sign Up Failed",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -117,9 +125,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         // Write new user
         writeNewUser(user.getUid(), username, user.getEmail());
 
-        // Go to MainActivity
-        startActivity(new Intent(SignInActivity.this, MainActivity.class));
-        finish();
+        // Go to MainFragment
+        NavHostFragment.findNavController(this).navigate(R.id.action_SignInFragment_to_MainFragment);
     }
 
     private String usernameFromEmail(String email) {
@@ -149,15 +156,12 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         return result;
     }
 
-    // [START basic_write]
     private void writeNewUser(String userId, String name, String email) {
         User user = new User(name, email);
 
         mDatabase.child("users").child(userId).setValue(user);
     }
-    // [END basic_write]
 
-    @Override
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.buttonSignIn) {

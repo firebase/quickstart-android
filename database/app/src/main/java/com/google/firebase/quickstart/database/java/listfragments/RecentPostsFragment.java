@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.database.java.fragment;
+package com.google.firebase.quickstart.database.java.listfragments;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;

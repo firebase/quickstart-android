@@ -6,7 +6,6 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-// [START post_class]
 @IgnoreExtraProperties
 public class Post {
 
@@ -28,7 +27,6 @@ public class Post {
         this.body = body;
     }
 
-    // [START post_to_map]
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -41,7 +39,5 @@ public class Post {
 
         return result;
     }
-    // [END post_to_map]
 
 }
-// [END post_class]

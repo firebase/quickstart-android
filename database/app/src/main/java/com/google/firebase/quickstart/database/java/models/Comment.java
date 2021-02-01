@@ -2,7 +2,6 @@ package com.google.firebase.quickstart.database.java.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-// [START comment_class]
 @IgnoreExtraProperties
 public class Comment {
 
@@ -21,4 +20,3 @@ public class Comment {
     }
 
 }
-// [END comment_class]

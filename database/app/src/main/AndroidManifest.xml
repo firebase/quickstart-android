@@ -20,21 +20,12 @@
         <activity
             android:name=".java.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".kotlin.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
-
-        <activity android:name=".java.SignInActivity" />
-        <activity android:name=".kotlin.SignInActivity" />
-
-        <activity android:name=".java.NewPostActivity" />
-        <activity android:name=".kotlin.NewPostActivity" />
-
-        <activity android:name=".java.PostDetailActivity" />
-        <activity android:name=".kotlin.PostDetailActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
