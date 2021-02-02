@@ -35,11 +35,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.3'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:26.1.1')
+    implementation platform('com.google.firebase:firebase-bom:26.4.0')
 
     // Firebase Realtime Database (Java)
     implementation 'com.google.firebase:firebase-database'

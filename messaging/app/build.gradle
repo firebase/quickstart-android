@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:26.1.1')
+    implementation platform('com.google.firebase:firebase-bom:26.4.0')
 
     // Firebase Cloud Messaging (Java)
     implementation 'com.google.firebase:firebase-messaging'
@@ -57,7 +57,7 @@ dependencies {
     // for Google Analytics. This is recommended, but not required.
     implementation 'com.google.firebase:firebase-analytics'
 
-    implementation 'com.google.firebase:firebase-installations-ktx:16.3.4'
+    implementation 'com.google.firebase:firebase-installations-ktx:16.3.5'
 
     implementation 'android.arch.work:work-runtime:1.0.1'
 
