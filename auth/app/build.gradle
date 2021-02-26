@@ -46,7 +46,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:26.5.0')
 
     // Firebase Authentication (Java)
-    implementation 'com.google.firebase:firebase-auth'
+    // Temporarily pinned to 20.0.1 to avoid https://youtrack.jetbrains.com/issue/KT-44375
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
 
     // Firebase Authentication (Kotlin)
     // Temporarily pinned to 20.0.1 to avoid https://youtrack.jetbrains.com/issue/KT-44375
