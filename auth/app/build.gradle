@@ -40,16 +40,19 @@ dependencies {
 
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.3.0'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:26.1.1')
+    // Temporarily pinning versions due to Kotlin bug (see below)
+    // implementation platform('com.google.firebase:firebase-bom:26.5.0')
 
     // Firebase Authentication (Java)
-    implementation 'com.google.firebase:firebase-auth'
+    // Temporarily pinned to 20.0.1 to avoid https://youtrack.jetbrains.com/issue/KT-44375
+    implementation 'com.google.firebase:firebase-auth:20.0.1'
 
     // Firebase Authentication (Kotlin)
-    implementation 'com.google.firebase:firebase-auth-ktx'
+    // Temporarily pinned to 20.0.1 to avoid https://youtrack.jetbrains.com/issue/KT-44375
+    implementation 'com.google.firebase:firebase-auth-ktx:20.0.1'
 
     // Google Sign In SDK (only required for Google Sign In)
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
