@@ -87,7 +87,10 @@ dependencies {
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'org.hamcrest:hamcrest-library:2.2'
-    androidTestImplementation 'com.google.firebase:firebase-auth:20.0.2'
+    
+    // Temporarily pinned to 20.0.1 to avoid 
+    // https://youtrack.jetbrains.com/issue/KT-44375
+    androidTestImplementation 'com.google.firebase:firebase-auth:20.0.1'
 
 }
 
