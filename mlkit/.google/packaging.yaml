@@ -1,0 +1,18 @@
+# GOOGLE SAMPLE PACKAGING DATA
+#
+# This file is used by Google as part of our samples packaging process.
+# End users may safely ignore this file. It has no relevance to other systems.
+---
+status:       PUBLISHED
+technologies: [Android]
+categories:   [Machine Learning]
+languages:    [Java, Kotlin]
+solutions:    [Mobile]
+github:       firebase/quickstart-android
+branch:       master
+level:        INTERMEDIATE
+apiRefs:
+    - gms:com.google.mlkit.vision.common.InputImage
+    - gms:com.google.mlkit.vision.barcode.Barcode
+    - gms:com.google.mlkit.vision.barcode.BarcodeScanner
+license:      apache2
