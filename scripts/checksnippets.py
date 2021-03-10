@@ -49,13 +49,13 @@ class MissingEndTag(Exception):
 
 
 def checkSnippets(folder):
-    print 'Checking snippets in folder: {}'.format(folder)
+    print('Checking snippets in folder: {}'.format(folder))
     javaFiles = findFileWithPattern(folder, '*.java')
 
     for f in javaFiles:
         checkJavaFile(folder, f)
 
-    print 'Done'
+    print('Done')
 
 
 def checkJavaFile(folder, javaFile):
@@ -81,7 +81,7 @@ def checkJavaFile(folder, javaFile):
     if len(regionDiff) > 0:
         raise RegionTagMismatch(kotlinName, regionDiff)
 
-    print 'SUCCESS: {} <--> {}'.format(javaName, kotlinName)
+    print('SUCCESS: {} <--> {}'.format(javaName, kotlinName))
 
 
 def regionsInFile(path):
