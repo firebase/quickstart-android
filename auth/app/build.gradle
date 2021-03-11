@@ -44,7 +44,7 @@ dependencies {
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     // Temporarily pinning versions due to Kotlin bug (see below)
-    // implementation platform('com.google.firebase:firebase-bom:26.5.0')
+    // implementation platform('com.google.firebase:firebase-bom:26.6.0')
 
     // Firebase Authentication (Java)
     // Temporarily pinned to 20.0.1 to avoid https://youtrack.jetbrains.com/issue/KT-44375
