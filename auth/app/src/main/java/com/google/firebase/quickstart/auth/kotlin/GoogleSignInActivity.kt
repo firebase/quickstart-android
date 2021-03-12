@@ -22,9 +22,7 @@ import com.google.firebase.quickstart.auth.databinding.ActivityGoogleBinding
  */
 class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
 
-    // [START declare_auth]
     private lateinit var auth: FirebaseAuth
-    // [END declare_auth]
 
     private lateinit var binding: ActivityGoogleBinding
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -40,32 +38,25 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
         binding.signOutButton.setOnClickListener(this)
         binding.disconnectButton.setOnClickListener(this)
 
-        // [START config_signin]
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build()
-        // [END config_signin]
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         auth = Firebase.auth
-        // [END initialize_auth]
     }
 
-    // [START on_start_check_user]
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         updateUI(currentUser)
     }
-    // [END on_start_check_user]
 
-    // [START onactivityresult]
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -80,19 +71,13 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e)
-                // [START_EXCLUDE]
                 updateUI(null)
-                // [END_EXCLUDE]
             }
         }
     }
-    // [END onactivityresult]
 
-    // [START auth_with_google]
     private fun firebaseAuthWithGoogle(idToken: String) {
-        // [START_EXCLUDE silent]
         showProgressBar()
-        // [END_EXCLUDE]
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
@@ -104,26 +89,19 @@ class GoogleSignInActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        // [START_EXCLUDE]
                         val view = binding.mainLayout
-                        // [END_EXCLUDE]
                         Snackbar.make(view, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                         updateUI(null)
                     }
 
-                    // [START_EXCLUDE]
                     hideProgressBar()
-                    // [END_EXCLUDE]
                 }
     }
-    // [END auth_with_google]
 
-    // [START signin]
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
-    // [END signin]
 
     private fun signOut() {
         // Firebase sign out
