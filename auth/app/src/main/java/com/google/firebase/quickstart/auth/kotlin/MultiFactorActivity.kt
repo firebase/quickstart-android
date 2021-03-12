@@ -15,9 +15,7 @@ import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.ActivityMultiFactorBinding
 
 class MultiFactorActivity : BaseActivity(), View.OnClickListener {
-    // [START declare_auth]
     private lateinit var auth: FirebaseAuth
-    // [END declare_auth]
 
     private lateinit var binding: ActivityMultiFactorBinding
 
@@ -35,15 +33,12 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
         binding.unenrollMfa.setOnClickListener(this)
         binding.reloadButton.setOnClickListener(this)
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         auth = Firebase.auth
-        // [END initialize_auth]
 
         showDisclaimer()
     }
 
-    // [START on_start_check_user]
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -51,7 +46,6 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
         updateUI(currentUser)
     }
 
-    // [END on_start_check_user]
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_MULTI_FACTOR) {
@@ -71,11 +65,9 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
     private fun sendEmailVerification() { // Disable button
         findViewById<View>(R.id.verifyEmailButton).isEnabled = false
         // Send verification email
-        // [START send_email_verification]
         val user = auth.currentUser!!
         user.sendEmailVerification()
                 .addOnCompleteListener(this) { task ->
-                    // [START_EXCLUDE]
                     // Re-enable button
                     findViewById<View>(R.id.verifyEmailButton).isEnabled = true
                     if (task.isSuccessful) {
@@ -88,9 +80,7 @@ class MultiFactorActivity : BaseActivity(), View.OnClickListener {
                                 "Failed to send verification email.",
                                 Toast.LENGTH_SHORT).show()
                     }
-                    // [END_EXCLUDE]
                 }
-        // [END send_email_verification]
     }
 
     private fun reload() {

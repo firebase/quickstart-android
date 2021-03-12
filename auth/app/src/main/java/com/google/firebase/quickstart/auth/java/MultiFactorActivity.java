@@ -47,9 +47,7 @@ public class MultiFactorActivity extends BaseActivity implements
 
     private ActivityMultiFactorBinding mBinding;
 
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,15 +64,12 @@ public class MultiFactorActivity extends BaseActivity implements
         mBinding.unenrollMfa.setOnClickListener(this);
         mBinding.reloadButton.setOnClickListener(this);
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
 
         showDisclaimer();
     }
 
-    // [START on_start_check_user]
     @Override
     public void onStart() {
         super.onStart();
@@ -82,7 +77,6 @@ public class MultiFactorActivity extends BaseActivity implements
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-    // [END on_start_check_user]
 
 
     @Override
@@ -107,13 +101,11 @@ public class MultiFactorActivity extends BaseActivity implements
         mBinding.verifyEmailButton.setEnabled(false);
 
         // Send verification email
-        // [START send_email_verification]
         final FirebaseUser user = mAuth.getCurrentUser();
         user.sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
                         // Re-enable button
                         mBinding.verifyEmailButton.setEnabled(true);
 
@@ -127,10 +119,8 @@ public class MultiFactorActivity extends BaseActivity implements
                                     "Failed to send verification email.",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END send_email_verification]
     }
 
     private void reload() {
