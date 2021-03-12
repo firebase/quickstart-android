@@ -51,9 +51,7 @@ public class FacebookLoginActivity extends BaseActivity implements
 
     private ActivityFacebookBinding mBinding;
 
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
 
     private CallbackManager mCallbackManager;
 
@@ -67,12 +65,9 @@ public class FacebookLoginActivity extends BaseActivity implements
         // Views
         mBinding.buttonFacebookSignout.setOnClickListener(this);
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
 
-        // [START initialize_fblogin]
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = mBinding.buttonFacebookLogin;
@@ -87,23 +82,17 @@ public class FacebookLoginActivity extends BaseActivity implements
             @Override
             public void onCancel() {
                 Log.d(TAG, "facebook:onCancel");
-                // [START_EXCLUDE]
                 updateUI(null);
-                // [END_EXCLUDE]
             }
 
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
-                // [START_EXCLUDE]
                 updateUI(null);
-                // [END_EXCLUDE]
             }
         });
-        // [END initialize_fblogin]
     }
 
-    // [START on_start_check_user]
     @Override
     public void onStart() {
         super.onStart();
@@ -111,9 +100,7 @@ public class FacebookLoginActivity extends BaseActivity implements
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-    // [END on_start_check_user]
 
-    // [START on_activity_result]
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -121,14 +108,10 @@ public class FacebookLoginActivity extends BaseActivity implements
         // Pass the activity result back to the Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
-    // [END on_activity_result]
 
-    // [START auth_with_facebook]
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
-        // [START_EXCLUDE silent]
         showProgressBar();
-        // [END_EXCLUDE]
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
@@ -148,13 +131,10 @@ public class FacebookLoginActivity extends BaseActivity implements
                             updateUI(null);
                         }
 
-                        // [START_EXCLUDE]
                         hideProgressBar();
-                        // [END_EXCLUDE]
                     }
                 });
     }
-    // [END auth_with_facebook]
 
     public void signOut() {
         mAuth.signOut();

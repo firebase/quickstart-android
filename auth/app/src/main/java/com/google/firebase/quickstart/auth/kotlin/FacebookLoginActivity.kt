@@ -24,9 +24,7 @@ import com.google.firebase.quickstart.auth.databinding.ActivityFacebookBinding
  */
 class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
 
-    // [START declare_auth]
     private lateinit var auth: FirebaseAuth
-    // [END declare_auth]
 
     private lateinit var binding: ActivityFacebookBinding
     private lateinit var callbackManager: CallbackManager
@@ -39,12 +37,9 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
 
         binding.buttonFacebookSignout.setOnClickListener(this)
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         auth = Firebase.auth
-        // [END initialize_auth]
 
-        // [START initialize_fblogin]
         // Initialize Facebook Login button
         callbackManager = CallbackManager.Factory.create()
 
@@ -57,45 +52,33 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
 
             override fun onCancel() {
                 Log.d(TAG, "facebook:onCancel")
-                // [START_EXCLUDE]
                 updateUI(null)
-                // [END_EXCLUDE]
             }
 
             override fun onError(error: FacebookException) {
                 Log.d(TAG, "facebook:onError", error)
-                // [START_EXCLUDE]
                 updateUI(null)
-                // [END_EXCLUDE]
             }
         })
-        // [END initialize_fblogin]
     }
 
-    // [START on_start_check_user]
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         updateUI(currentUser)
     }
-    // [END on_start_check_user]
 
-    // [START on_activity_result]
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
-    // [END on_activity_result]
 
-    // [START auth_with_facebook]
     private fun handleFacebookAccessToken(token: AccessToken) {
         Log.d(TAG, "handleFacebookAccessToken:$token")
-        // [START_EXCLUDE silent]
         showProgressBar()
-        // [END_EXCLUDE]
 
         val credential = FacebookAuthProvider.getCredential(token.token)
         auth.signInWithCredential(credential)
@@ -113,12 +96,9 @@ class FacebookLoginActivity : BaseActivity(), View.OnClickListener {
                         updateUI(null)
                     }
 
-                    // [START_EXCLUDE]
                     hideProgressBar()
-                    // [END_EXCLUDE]
                 }
     }
-    // [END auth_with_facebook]
 
     fun signOut() {
         auth.signOut()
