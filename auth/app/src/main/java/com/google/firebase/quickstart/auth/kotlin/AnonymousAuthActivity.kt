@@ -18,9 +18,7 @@ import com.google.firebase.quickstart.auth.databinding.ActivityAnonymousAuthBind
  */
 class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
 
-    // [START declare_auth]
     private lateinit var auth: FirebaseAuth
-    // [END declare_auth]
 
     private lateinit var binding: ActivityAnonymousAuthBinding
 
@@ -30,10 +28,8 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         setContentView(binding.root)
         setProgressBar(binding.progressBar)
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         auth = Firebase.auth
-        // [END initialize_auth]
 
         // Click listeners
         binding.buttonAnonymousSignIn.setOnClickListener(this)
@@ -41,18 +37,15 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         binding.buttonLinkAccount.setOnClickListener(this)
     }
 
-    // [START on_start_check_user]
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         updateUI(currentUser)
     }
-    // [END on_start_check_user]
 
     private fun signInAnonymously() {
         showProgressBar()
-        // [START signin_anonymously]
         auth.signInAnonymously()
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
@@ -68,11 +61,8 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
                         updateUI(null)
                     }
 
-                    // [START_EXCLUDE]
                     hideProgressBar()
-                    // [END_EXCLUDE]
                 }
-        // [END signin_anonymously]
     }
 
     private fun signOut() {
@@ -96,7 +86,6 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
         // Link the anonymous user to the email credential
         showProgressBar()
 
-        // [START link_credential]
         auth.currentUser!!.linkWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
@@ -110,11 +99,8 @@ class AnonymousAuthActivity : BaseActivity(), View.OnClickListener {
                         updateUI(null)
                     }
 
-                    // [START_EXCLUDE]
                     hideProgressBar()
-                    // [END_EXCLUDE]
                 }
-        // [END link_credential]
     }
 
     private fun validateLinkForm(): Boolean {

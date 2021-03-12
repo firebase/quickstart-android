@@ -43,9 +43,7 @@ public class AnonymousAuthActivity extends BaseActivity implements
 
     private static final String TAG = "AnonymousAuth";
 
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
 
     private ActivityAnonymousAuthBinding mBinding;
 
@@ -55,10 +53,8 @@ public class AnonymousAuthActivity extends BaseActivity implements
         mBinding = ActivityAnonymousAuthBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
 
         // Fields
         setProgressBar(mBinding.progressBar);
@@ -69,7 +65,6 @@ public class AnonymousAuthActivity extends BaseActivity implements
         mBinding.buttonLinkAccount.setOnClickListener(this);
     }
 
-    // [START on_start_check_user]
     @Override
     public void onStart() {
         super.onStart();
@@ -77,11 +72,9 @@ public class AnonymousAuthActivity extends BaseActivity implements
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-    // [END on_start_check_user]
 
     private void signInAnonymously() {
         showProgressBar();
-        // [START signin_anonymously]
         mAuth.signInAnonymously()
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -99,12 +92,9 @@ public class AnonymousAuthActivity extends BaseActivity implements
                             updateUI(null);
                         }
 
-                        // [START_EXCLUDE]
                         hideProgressBar();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END signin_anonymously]
     }
 
     private void signOut() {
@@ -128,7 +118,6 @@ public class AnonymousAuthActivity extends BaseActivity implements
         // Link the anonymous user to the email credential
         showProgressBar();
 
-        // [START link_credential]
         mAuth.getCurrentUser().linkWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -144,12 +133,9 @@ public class AnonymousAuthActivity extends BaseActivity implements
                             updateUI(null);
                         }
 
-                        // [START_EXCLUDE]
                         hideProgressBar();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END link_credential]
     }
 
     private boolean validateLinkForm() {
