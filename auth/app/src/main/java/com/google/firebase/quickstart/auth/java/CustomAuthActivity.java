@@ -40,9 +40,7 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
 
     private static final String TAG = "CustomAuthActivity";
 
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
 
     private ActivityCustomBinding mBinding;
     private String mCustomToken;
@@ -66,13 +64,10 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
             }
         };
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
     }
 
-    // [START on_start_check_user]
     @Override
     public void onStart() {
         super.onStart();
@@ -80,7 +75,6 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-    // [END on_start_check_user]
 
     @Override
     protected void onResume() {
@@ -97,7 +91,6 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
 
     private void startSignIn() {
         // Initiate sign in with custom token
-        // [START sign_in_custom]
         mAuth.signInWithCustomToken(mCustomToken)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -116,7 +109,6 @@ public class CustomAuthActivity extends AppCompatActivity implements View.OnClic
                         }
                     }
                 });
-        // [END sign_in_custom]
     }
 
     private void updateUI(FirebaseUser user) {

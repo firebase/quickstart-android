@@ -18,9 +18,7 @@ import com.google.firebase.quickstart.auth.databinding.ActivityCustomBinding
  */
 class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
-    // [START declare_auth]
     private lateinit var auth: FirebaseAuth
-    // [END declare_auth]
 
     private lateinit var binding: ActivityCustomBinding
 
@@ -43,20 +41,16 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         auth = Firebase.auth
-        // [END initialize_auth]
     }
 
-    // [START on_start_check_user]
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         updateUI(currentUser)
     }
-    // [END on_start_check_user]
 
     override fun onResume() {
         super.onResume()
@@ -70,7 +64,6 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun startSignIn() {
         // Initiate sign in with custom token
-        // [START sign_in_custom]
         customToken?.let {
             auth.signInWithCustomToken(it)
                     .addOnCompleteListener(this) { task ->
@@ -88,7 +81,6 @@ class CustomAuthActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
         }
-        // [END sign_in_custom]
     }
 
     private fun updateUI(user: FirebaseUser?) {
