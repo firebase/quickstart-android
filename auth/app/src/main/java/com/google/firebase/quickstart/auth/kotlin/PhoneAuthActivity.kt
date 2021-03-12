@@ -22,9 +22,7 @@ import java.util.concurrent.TimeUnit
 
 class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
 
-    // [START declare_auth]
     private lateinit var auth: FirebaseAuth
-    // [END declare_auth]
 
     private lateinit var binding: ActivityPhoneAuthBinding
     private var verificationInProgress = false
@@ -48,13 +46,10 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         binding.buttonResend.setOnClickListener(this)
         binding.signOutButton.setOnClickListener(this)
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         auth = Firebase.auth
-        // [END initialize_auth]
 
         // Initialize phone auth callbacks
-        // [START phone_auth_callbacks]
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             override fun onVerificationCompleted(credential: PhoneAuthCredential) {
@@ -65,14 +60,10 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:$credential")
-                // [START_EXCLUDE silent]
                 verificationInProgress = false
-                // [END_EXCLUDE]
 
-                // [START_EXCLUDE silent]
                 // Update the UI and attempt sign in with the phone credential
                 updateUI(STATE_VERIFY_SUCCESS, credential)
-                // [END_EXCLUDE]
                 signInWithPhoneAuthCredential(credential)
             }
 
@@ -80,27 +71,19 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
                 Log.w(TAG, "onVerificationFailed", e)
-                // [START_EXCLUDE silent]
                 verificationInProgress = false
-                // [END_EXCLUDE]
 
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     // Invalid request
-                    // [START_EXCLUDE]
                     binding.fieldPhoneNumber.error = "Invalid phone number."
-                    // [END_EXCLUDE]
                 } else if (e is FirebaseTooManyRequestsException) {
                     // The SMS quota for the project has been exceeded
-                    // [START_EXCLUDE]
                     Snackbar.make(findViewById(android.R.id.content), "Quota exceeded.",
                             Snackbar.LENGTH_SHORT).show()
-                    // [END_EXCLUDE]
                 }
 
                 // Show a message and update the UI
-                // [START_EXCLUDE]
                 updateUI(STATE_VERIFY_FAILED)
-                // [END_EXCLUDE]
             }
 
             override fun onCodeSent(
@@ -116,29 +99,22 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                 storedVerificationId = verificationId
                 resendToken = token
 
-                // [START_EXCLUDE]
                 // Update UI
                 updateUI(STATE_CODE_SENT)
-                // [END_EXCLUDE]
             }
         }
-        // [END phone_auth_callbacks]
     }
 
-    // [START on_start_check_user]
     override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         updateUI(currentUser)
 
-        // [START_EXCLUDE]
         if (verificationInProgress && validatePhoneNumber()) {
             startPhoneNumberVerification(binding.fieldPhoneNumber.text.toString())
         }
-        // [END_EXCLUDE]
     }
-    // [END on_start_check_user]
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -151,7 +127,6 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun startPhoneNumberVerification(phoneNumber: String) {
-        // [START start_phone_auth]
         val options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)       // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
@@ -159,19 +134,15 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
             .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
-        // [END start_phone_auth]
 
         verificationInProgress = true
     }
 
     private fun verifyPhoneNumberWithCode(verificationId: String?, code: String) {
-        // [START verify_with_code]
         val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
-        // [END verify_with_code]
         signInWithPhoneAuthCredential(credential)
     }
 
-    // [START resend_verification]
     private fun resendVerificationCode(
         phoneNumber: String,
         token: PhoneAuthProvider.ForceResendingToken?
@@ -186,9 +157,7 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
         }
         PhoneAuthProvider.verifyPhoneNumber(optionsBuilder.build())
     }
-    // [END resend_verification]
 
-    // [START sign_in_with_phone]
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this) { task ->
@@ -197,26 +166,19 @@ class PhoneAuthActivity : AppCompatActivity(), View.OnClickListener {
                         Log.d(TAG, "signInWithCredential:success")
 
                         val user = task.result?.user
-                        // [START_EXCLUDE]
                         updateUI(STATE_SIGNIN_SUCCESS, user)
-                        // [END_EXCLUDE]
                     } else {
                         // Sign in failed, display a message and update the UI
                         Log.w(TAG, "signInWithCredential:failure", task.exception)
                         if (task.exception is FirebaseAuthInvalidCredentialsException) {
                             // The verification code entered was invalid
-                            // [START_EXCLUDE silent]
                             binding.fieldVerificationCode.error = "Invalid code."
-                            // [END_EXCLUDE]
                         }
-                        // [START_EXCLUDE silent]
                         // Update UI
                         updateUI(STATE_SIGNIN_FAILED)
-                        // [END_EXCLUDE]
                     }
                 }
     }
-    // [END sign_in_with_phone]
 
     private fun signOut() {
         auth.signOut()
