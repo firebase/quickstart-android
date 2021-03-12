@@ -16,9 +16,7 @@ import com.google.firebase.quickstart.auth.databinding.ActivityEmailpasswordBind
 
 class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
-    // [START declare_auth]
     private lateinit var auth: FirebaseAuth
-    // [END declare_auth]
 
     private lateinit var binding: ActivityEmailpasswordBinding
 
@@ -35,13 +33,10 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
         binding.verifyEmailButton.setOnClickListener(this)
         binding.reloadButton.setOnClickListener(this)
 
-        // [START initialize_auth]
         // Initialize Firebase Auth
         auth = Firebase.auth
-        // [END initialize_auth]
     }
 
-    // [START on_start_check_user]
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -50,7 +45,6 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
             reload();
         }
     }
-    // [END on_start_check_user]
 
     private fun createAccount(email: String, password: String) {
         Log.d(TAG, "createAccount:$email")
@@ -60,7 +54,6 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
         showProgressBar()
 
-        // [START create_user_with_email]
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
@@ -76,11 +69,8 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                         updateUI(null)
                     }
 
-                    // [START_EXCLUDE]
                     hideProgressBar()
-                    // [END_EXCLUDE]
                 }
-        // [END create_user_with_email]
     }
 
     private fun signIn(email: String, password: String) {
@@ -91,7 +81,6 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
 
         showProgressBar()
 
-        // [START sign_in_with_email]
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
@@ -105,19 +94,14 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                         Toast.makeText(baseContext, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show()
                         updateUI(null)
-                        // [START_EXCLUDE]
                         checkForMultiFactorFailure(task.exception!!)
-                        // [END_EXCLUDE]
                     }
 
-                    // [START_EXCLUDE]
                     if (!task.isSuccessful) {
                         binding.status.setText(R.string.auth_failed)
                     }
                     hideProgressBar()
-                    // [END_EXCLUDE]
                 }
-        // [END sign_in_with_email]
     }
 
     private fun signOut() {
@@ -130,11 +114,9 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
         binding.verifyEmailButton.isEnabled = false
 
         // Send verification email
-        // [START send_email_verification]
         val user = auth.currentUser!!
         user.sendEmailVerification()
                 .addOnCompleteListener(this) { task ->
-                    // [START_EXCLUDE]
                     // Re-enable button
                     binding.verifyEmailButton.isEnabled = true
 
@@ -148,9 +130,7 @@ class EmailPasswordActivity : BaseActivity(), View.OnClickListener {
                                 "Failed to send verification email.",
                                 Toast.LENGTH_SHORT).show()
                     }
-                    // [END_EXCLUDE]
                 }
-        // [END send_email_verification]
     }
 
     private fun reload() {
