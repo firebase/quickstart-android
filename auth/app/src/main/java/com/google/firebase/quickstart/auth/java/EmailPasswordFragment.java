@@ -16,7 +16,6 @@
 
 package com.google.firebase.quickstart.auth.java;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -277,12 +277,12 @@ public class EmailPasswordFragment extends BaseFragment {
         // https://cloud.google.com/identity-platform/docs/android/mfa
         if (e instanceof FirebaseAuthMultiFactorException) {
             Log.w(TAG, "multiFactorFailure", e);
-            Intent intent = new Intent();
             MultiFactorResolver resolver = ((FirebaseAuthMultiFactorException) e).getResolver();
-            intent.putExtra("EXTRA_MFA_RESOLVER", resolver);
-            // TODO: navigate back to MFAFragment
-//            setResult(MultiFactorActivity.RESULT_NEEDS_MFA_SIGN_IN, intent);
-//            finish();
+            Bundle args = new Bundle();
+            args.putParcelable(MultiFactorSignInFragment.EXTRA_MFA_RESOLVER, resolver);
+            args.putBoolean(MultiFactorFragment.RESULT_NEEDS_MFA_SIGN_IN, true);
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_emailpassword_to_mfa, args);
         }
     }
 

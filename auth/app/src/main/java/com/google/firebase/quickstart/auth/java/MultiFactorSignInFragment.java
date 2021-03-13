@@ -1,7 +1,5 @@
 package com.google.firebase.quickstart.auth.java;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,7 +22,6 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.PhoneMultiFactorGenerator;
 import com.google.firebase.auth.PhoneMultiFactorInfo;
-import com.google.firebase.quickstart.auth.R;
 import com.google.firebase.quickstart.auth.databinding.FragmentMultiFactorSignInBinding;
 
 import java.util.ArrayList;
@@ -78,7 +76,7 @@ public class MultiFactorSignInFragment extends BaseFragment {
             }
         });
 
-        mMultiFactorResolver = retrieveResolverFromIntent(requireArguments());
+        mMultiFactorResolver = getResolverFromArguments(requireArguments());
         List<MultiFactorInfo> multiFactorInfoList = mMultiFactorResolver.getHints();
 
         for (int i = 0; i < multiFactorInfoList.size(); ++i) {
@@ -149,10 +147,8 @@ public class MultiFactorSignInFragment extends BaseFragment {
         };
     }
 
-    private MultiFactorResolver retrieveResolverFromIntent(Bundle arguments) {
-        // TODO: Get resolver from bundle
-//        return intent.getParcelableExtra(EXTRA_MFA_RESOLVER);
-        return null;
+    private MultiFactorResolver getResolverFromArguments(Bundle arguments) {
+        return arguments.getParcelable(EXTRA_MFA_RESOLVER);
     }
 
     private void onClickFinishSignIn() {
@@ -172,9 +168,8 @@ public class MultiFactorSignInFragment extends BaseFragment {
                         new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                // TODO navigate back
-//                                setResult(Activity.RESULT_OK);
-//                                finish();
+                                NavHostFragment.findNavController(MultiFactorSignInFragment.this)
+                                        .popBackStack();
                             }
                         })
                 .addOnFailureListener(

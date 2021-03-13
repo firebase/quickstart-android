@@ -17,7 +17,6 @@
 package com.google.firebase.quickstart.auth.java;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,10 +41,9 @@ import java.util.List;
 
 public class MultiFactorFragment extends BaseFragment {
 
-    public static final int RESULT_NEEDS_MFA_SIGN_IN = 42;
+    public static final String RESULT_NEEDS_MFA_SIGN_IN = "RESULT_NEEDS_MFA";
 
     private static final String TAG = "MultiFactor";
-    private static final int RC_MULTI_FACTOR = 9005;
 
     private FragmentMultiFactorBinding mBinding;
 
@@ -62,12 +61,18 @@ public class MultiFactorFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setProgressBar(mBinding.progressBar);
 
+        Bundle args = getArguments();
+        if (args != null && args.getBoolean(RESULT_NEEDS_MFA_SIGN_IN)) {
+            NavHostFragment.findNavController(this)
+                    .navigate(R.id.action_mfa_to_mfasignin, args);
+        }
+
         // Buttons
         mBinding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Use fragment navigation
-//                startActivityForResult(new Intent(getContext(), EmailPasswordActivity.class), RC_MULTI_FACTOR);
+                NavHostFragment.findNavController(MultiFactorFragment.this)
+                        .navigate(R.id.action_mfa_to_emailpassword);
             }
         });
         mBinding.signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -85,15 +90,15 @@ public class MultiFactorFragment extends BaseFragment {
         mBinding.enrollMfa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Switch to fragment
-//                startActivity(new Intent(getContext(), MultiFactorEnrollActivity.class));
+                NavHostFragment.findNavController(MultiFactorFragment.this)
+                        .navigate(R.id.action_mfa_to_enroll);
             }
         });
         mBinding.unenrollMfa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Switch to fragment
-//                startActivity(new Intent(getContext(), MultiFactorUnenrollActivity.class));
+                NavHostFragment.findNavController(MultiFactorFragment.this)
+                        .navigate(R.id.action_mfa_to_unenroll);
             }
         });
         mBinding.reloadButton.setOnClickListener(new View.OnClickListener() {
@@ -115,20 +120,6 @@ public class MultiFactorFragment extends BaseFragment {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_MULTI_FACTOR) {
-            if (resultCode == RESULT_NEEDS_MFA_SIGN_IN) {
-                // TODO: use Fragment
-//                Intent intent = new Intent(requireContext(), MultiFactorSignInActivity.class);
-//                intent.putExtras(data.getExtras());
-//                startActivityForResult(intent, RC_MULTI_FACTOR);
-            }
-        }
     }
 
     private void signOut() {

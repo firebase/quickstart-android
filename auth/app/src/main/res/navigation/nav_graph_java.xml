@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/ChooserFragment"
-    android:id="@+id/nav_graph_java.xml">
+    android:id="@+id/nav_graph_java">
 
     <fragment
         android:id="@+id/ChooserFragment"
