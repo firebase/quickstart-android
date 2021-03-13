@@ -40,7 +40,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.quickstart.auth.R;
-import com.google.firebase.quickstart.auth.databinding.ActivityGoogleBinding;
 import com.google.firebase.quickstart.auth.databinding.FragmentGoogleBinding;
 
 /**

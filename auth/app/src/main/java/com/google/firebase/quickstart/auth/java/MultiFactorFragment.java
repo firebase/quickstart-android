@@ -66,7 +66,8 @@ public class MultiFactorFragment extends BaseFragment {
         mBinding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(getContext(), EmailPasswordActivity.class), RC_MULTI_FACTOR);
+                // TODO: Use fragment navigation
+//                startActivityForResult(new Intent(getContext(), EmailPasswordActivity.class), RC_MULTI_FACTOR);
             }
         });
         mBinding.signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -85,14 +86,14 @@ public class MultiFactorFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 // TODO: Switch to fragment
-                startActivity(new Intent(getContext(), MultiFactorEnrollActivity.class));
+//                startActivity(new Intent(getContext(), MultiFactorEnrollActivity.class));
             }
         });
         mBinding.unenrollMfa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO: Switch to fragment
-                startActivity(new Intent(getContext(), MultiFactorUnenrollActivity.class));
+//                startActivity(new Intent(getContext(), MultiFactorUnenrollActivity.class));
             }
         });
         mBinding.reloadButton.setOnClickListener(new View.OnClickListener() {
@@ -122,9 +123,10 @@ public class MultiFactorFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_MULTI_FACTOR) {
             if (resultCode == RESULT_NEEDS_MFA_SIGN_IN) {
-                Intent intent = new Intent(requireContext(), MultiFactorSignInActivity.class);
-                intent.putExtras(data.getExtras());
-                startActivityForResult(intent, RC_MULTI_FACTOR);
+                // TODO: use Fragment
+//                Intent intent = new Intent(requireContext(), MultiFactorSignInActivity.class);
+//                intent.putExtras(data.getExtras());
+//                startActivityForResult(intent, RC_MULTI_FACTOR);
             }
         }
     }

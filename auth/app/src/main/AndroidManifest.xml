@@ -19,20 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".java.ChooserActivity" />
-        <activity
-            android:name=".java.CustomAuthActivity"
-            android:label="@string/label_custom_auth" />
-        <activity
-            android:name=".java.GoogleSignInActivity"
-            android:label="@string/label_google_sign_in" />
-        <activity
-            android:name=".java.FacebookLoginActivity"
-            android:label="@string/label_facebook_login" />
-        <activity
-            android:name=".java.EmailPasswordActivity"
-            android:label="@string/label_emailpassword"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity android:name=".java.MainActivity" />
+        <activity android:name=".kotlin.MainActivity" />
+
         <activity
             android:name=".java.PasswordlessActivity"
             android:label="@string/label_passwordless"
@@ -46,47 +36,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".java.PhoneAuthActivity"
-            android:label="@string/label_phone_auth"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".java.AnonymousAuthActivity"
-            android:label="@string/label_anonymous_auth" />
-        <activity
-            android:name=".java.FirebaseUIActivity"
-            android:label="@string/label_firebase_ui" />
-        <activity
-            android:name=".java.GenericIdpActivity"
-            android:label="@string/label_generic_idp" />
-        <activity
-            android:name=".java.MultiFactorActivity"
-            android:label="@string/label_multi_factor" />
-        <activity
-            android:name=".java.MultiFactorEnrollActivity"
-            android:label="MultiFactor Sign-In" />
-        <activity
-            android:name=".java.MultiFactorSignInActivity"
-            android:label="MultiFactor Sign-In" />
-        <activity
-            android:name=".java.MultiFactorUnenrollActivity"
-            android:label="MultiFactor Unenroll" />
 
-        <activity android:name=".kotlin.ChooserActivity" />
-
-        <activity
-            android:name=".kotlin.CustomAuthActivity"
-            android:label="@string/label_custom_auth" />
-        <activity
-            android:name=".kotlin.GoogleSignInActivity"
-            android:label="@string/label_google_sign_in" />
-        <activity
-            android:name=".kotlin.FacebookLoginActivity"
-            android:label="@string/label_facebook_login" />
-        <activity
-            android:name=".kotlin.EmailPasswordActivity"
-            android:label="@string/label_emailpassword"
-            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".kotlin.PasswordlessActivity"
             android:label="@string/label_passwordless"
@@ -101,31 +51,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".kotlin.PhoneAuthActivity"
-            android:label="@string/label_phone_auth"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".kotlin.AnonymousAuthActivity"
-            android:label="@string/label_anonymous_auth" />
-        <activity
-            android:name=".kotlin.FirebaseUIActivity"
-            android:label="@string/label_firebase_ui" />
-        <activity
-            android:name=".kotlin.GenericIdpActivity"
-            android:label="@string/label_generic_idp" />
-        <activity
-            android:name=".kotlin.MultiFactorActivity"
-            android:label="@string/label_multi_factor" />
-        <activity
-            android:name=".kotlin.MultiFactorEnrollActivity"
-            android:label="MultiFactor Sign-In" />
-        <activity
-            android:name=".kotlin.MultiFactorSignInActivity"
-            android:label="MultiFactor Sign-In" />
-        <activity
-            android:name=".kotlin.MultiFactorUnenrollActivity"
-            android:label="MultiFactor Unenroll" />
 
         <!-- Facebook Configuration -->
         <meta-data

@@ -172,16 +172,16 @@ public class MultiFactorSignInFragment extends BaseFragment {
                         new OnSuccessListener<AuthResult>() {
                             @Override
                             public void onSuccess(AuthResult authResult) {
-                                setResult(Activity.RESULT_OK);
-                                finish();
+                                // TODO navigate back
+//                                setResult(Activity.RESULT_OK);
+//                                finish();
                             }
                         })
                 .addOnFailureListener(
                         new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(
-                                        MultiFactorSignInFragment.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT)
+                                Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT)
                                         .show();
                             }
                         });

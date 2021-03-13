@@ -280,8 +280,9 @@ public class EmailPasswordFragment extends BaseFragment {
             Intent intent = new Intent();
             MultiFactorResolver resolver = ((FirebaseAuthMultiFactorException) e).getResolver();
             intent.putExtra("EXTRA_MFA_RESOLVER", resolver);
-            setResult(MultiFactorActivity.RESULT_NEEDS_MFA_SIGN_IN, intent);
-            finish();
+            // TODO: navigate back to MFAFragment
+//            setResult(MultiFactorActivity.RESULT_NEEDS_MFA_SIGN_IN, intent);
+//            finish();
         }
     }
 

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -71,8 +72,8 @@ public class MultiFactorUnenrollFragment extends BaseFragment {
                                             if (task.isSuccessful()) {
                                                 Toast.makeText(getContext(),
                                                         "Successfully unenrolled!", Toast.LENGTH_SHORT).show();
-                                                // TODO: Navigate back
-//                                            finish();
+                                                NavHostFragment.findNavController(MultiFactorUnenrollFragment.this)
+                                                        .popBackStack();
                                             } else {
                                                 Toast.makeText(getContext(),
                                                         "Unable to unenroll second factor. " + task.getException(), Toast.LENGTH_SHORT).show();

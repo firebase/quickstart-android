@@ -219,9 +219,10 @@ class EmailPasswordFragment : BaseFragment() {
             Log.w(TAG, "multiFactorFailure", e)
             val intent = Intent()
             val resolver = e.resolver
-            intent.putExtra("EXTRA_MFA_RESOLVER", resolver)
-            setResult(MultiFactorActivity.RESULT_NEEDS_MFA_SIGN_IN, intent)
-            finish()
+            // TODO: Find a way to handle this
+//            intent.putExtra("EXTRA_MFA_RESOLVER", resolver)
+//            setResult(MultiFactorActivity.RESULT_NEEDS_MFA_SIGN_IN, intent)
+//            finish()
         }
     }
 

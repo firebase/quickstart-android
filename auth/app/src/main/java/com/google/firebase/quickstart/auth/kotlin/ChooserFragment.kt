@@ -6,13 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.quickstart.auth.R
-import com.google.firebase.quickstart.auth.databinding.ActivityChooserBinding
 import com.google.firebase.quickstart.auth.databinding.FragmentChooserBinding
 
 /**
@@ -22,7 +19,7 @@ import com.google.firebase.quickstart.auth.databinding.FragmentChooserBinding
  *     {@link GoogleSignInFragment}
  *     {@link FacebookLoginFragment}
  *     {@link EmailPasswordFragment}
- *     {@link PasswordlessFragment}
+ *     {@link PasswordlessActivity}
  *     {@link PhoneAuthFragment}
  *     {@link AnonymousAuthFragment}
  *     {@link CustomAuthFragment}
@@ -95,16 +92,16 @@ class ChooserFragment : Fragment() {
     companion object {
         // TODO: Create an array of fragment destinations
         private val CLASSES = arrayOf(
-                GoogleSignInActivity::class.java,
-                FacebookLoginActivity::class.java,
-                EmailPasswordActivity::class.java,
+//                GoogleSignInActivity::class.java,
+//                FacebookLoginActivity::class.java,
+//                EmailPasswordActivity::class.java,
                 PasswordlessActivity::class.java,
-                PhoneAuthActivity::class.java,
-                AnonymousAuthActivity::class.java,
-                FirebaseUIActivity::class.java,
-                CustomAuthActivity::class.java,
-                GenericIdpActivity::class.java,
-                MultiFactorActivity::class.java
+//                PhoneAuthActivity::class.java,
+//                AnonymousAuthActivity::class.java,
+//                FirebaseUIActivity::class.java,
+//                CustomAuthActivity::class.java,
+//                GenericIdpActivity::class.java,
+//                MultiFactorActivity::class.java
         )
         private val DESCRIPTION_IDS = intArrayOf(
                 R.string.desc_google_sign_in,

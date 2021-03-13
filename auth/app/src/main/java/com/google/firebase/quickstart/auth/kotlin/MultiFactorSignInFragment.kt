@@ -1,7 +1,5 @@
 package com.google.firebase.quickstart.auth.kotlin
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -15,9 +13,7 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneMultiFactorGenerator
 import com.google.firebase.auth.PhoneMultiFactorInfo
-import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.FragmentMultiFactorSignInBinding
-import com.google.firebase.quickstart.auth.java.BaseActivity
 import java.util.concurrent.TimeUnit
 
 /**
@@ -51,7 +47,7 @@ class MultiFactorSignInFragment : BaseFragment() {
         }
 
         binding.finishMfaSignIn.setOnClickListener { onClickFinishSignIn() }
-        multiFactorResolver = retrieveResolverFromIntent(requireArguments())
+//        multiFactorResolver = retrieveResolverFromIntent(requireArguments())
 
         val multiFactorInfoList = multiFactorResolver.hints
         for (i in multiFactorInfoList.indices) {
@@ -110,8 +106,8 @@ class MultiFactorSignInFragment : BaseFragment() {
         }
     }
 
-    private fun retrieveResolverFromIntent(arguments: Bundle): MultiFactorResolver {
-        // TODO
+    private fun retrieveResolverFromIntent(arguments: Bundle): MultiFactorResolver? {
+        return null
     }
 
     private fun onClickFinishSignIn() {
@@ -127,8 +123,9 @@ class MultiFactorSignInFragment : BaseFragment() {
         multiFactorResolver
                 .resolveSignIn(PhoneMultiFactorGenerator.getAssertion(lastPhoneAuthCredential!!))
                 .addOnSuccessListener {
-                    setResult(Activity.RESULT_OK)
-                    finish()
+                    // TODO: Use Fragment
+//                    setResult(Activity.RESULT_OK)
+//                    finish()
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(context, "Error: " + e.message, Toast.LENGTH_SHORT)

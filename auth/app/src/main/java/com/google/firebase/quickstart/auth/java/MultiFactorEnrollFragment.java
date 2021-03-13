@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -149,8 +150,8 @@ public class MultiFactorEnrollFragment extends BaseFragment {
                                 Toast.LENGTH_LONG)
                                 .show();
 
-                        // TODO: Navigate back
-//                        finish();
+                        NavHostFragment.findNavController(MultiFactorEnrollFragment.this)
+                                .popBackStack();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

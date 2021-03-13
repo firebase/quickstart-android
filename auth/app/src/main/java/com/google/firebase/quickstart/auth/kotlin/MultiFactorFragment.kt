@@ -65,9 +65,10 @@ class MultiFactorFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_MULTI_FACTOR) {
             if (resultCode == RESULT_NEEDS_MFA_SIGN_IN) {
-                val intent = Intent(context, MultiFactorSignInActivity::class.java)
-                intent.putExtras(data!!.extras!!)
-                startActivityForResult(intent, RC_MULTI_FACTOR)
+                // TODO: Use fragment
+//                val intent = Intent(context, MultiFactorSignInActivity::class.java)
+//                intent.putExtras(data!!.extras!!)
+//                startActivityForResult(intent, RC_MULTI_FACTOR)
             }
         }
     }
