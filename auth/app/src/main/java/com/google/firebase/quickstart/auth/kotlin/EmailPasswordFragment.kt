@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthMultiFactorException
 import com.google.firebase.auth.FirebaseUser
@@ -217,12 +219,12 @@ class EmailPasswordFragment : BaseFragment() {
         // https://cloud.google.com/identity-platform/docs/android/mfa
         if (e is FirebaseAuthMultiFactorException) {
             Log.w(TAG, "multiFactorFailure", e)
-            val intent = Intent()
             val resolver = e.resolver
-            // TODO: Find a way to handle this
-//            intent.putExtra("EXTRA_MFA_RESOLVER", resolver)
-//            setResult(MultiFactorActivity.RESULT_NEEDS_MFA_SIGN_IN, intent)
-//            finish()
+            val args = bundleOf(
+                    MultiFactorSignInFragment.EXTRA_MFA_RESOLVER to resolver,
+                    MultiFactorFragment.RESULT_NEEDS_MFA_SIGN_IN to true
+            )
+            findNavController().navigate(R.id.action_emailpassword_to_mfa, args)
         }
     }
 

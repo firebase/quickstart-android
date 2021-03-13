@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.MultiFactorResolver
 import com.google.firebase.auth.PhoneAuthCredential
@@ -123,9 +124,7 @@ class MultiFactorSignInFragment : BaseFragment() {
         multiFactorResolver
                 .resolveSignIn(PhoneMultiFactorGenerator.getAssertion(lastPhoneAuthCredential!!))
                 .addOnSuccessListener {
-                    // TODO: Use Fragment
-//                    setResult(Activity.RESULT_OK)
-//                    finish()
+                    findNavController().popBackStack()
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(context, "Error: " + e.message, Toast.LENGTH_SHORT)

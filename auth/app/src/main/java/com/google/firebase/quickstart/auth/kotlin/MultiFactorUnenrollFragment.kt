@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneMultiFactorInfo
 import com.google.firebase.auth.ktx.auth
@@ -51,8 +52,7 @@ class MultiFactorUnenrollFragment : BaseFragment() {
                             if (task.isSuccessful) {
                                 Toast.makeText(context,
                                         "Successfully unenrolled!", Toast.LENGTH_SHORT).show()
-                                // TODO: Navigate back
-//                                finish()
+                                findNavController().popBackStack()
                             } else {
                                 Toast.makeText(context,
                                         "Unable to unenroll second factor. ${task.exception}",

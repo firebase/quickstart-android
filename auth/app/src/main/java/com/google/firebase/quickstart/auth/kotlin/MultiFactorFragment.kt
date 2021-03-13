@@ -1,7 +1,6 @@
 package com.google.firebase.quickstart.auth.kotlin
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isGone
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneMultiFactorInfo
@@ -33,18 +33,23 @@ class MultiFactorFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setProgressBar(binding.progressBar)
 
+        arguments?.let { args ->
+            if (args.getBoolean(RESULT_NEEDS_MFA_SIGN_IN)) {
+                findNavController().navigate(R.id.action_mfa_to_mfasignin, args)
+            }
+        }
+
         // Buttons
         binding.emailSignInButton.setOnClickListener {
-            // TODO: Use a fragment
-            // startActivityForResult(Intent(this, EmailPasswordActivity::class.java), RC_MULTI_FACTOR)
+            findNavController().navigate(R.id.action_mfa_to_emailpassword)
         }
         binding.signOutButton.setOnClickListener { signOut() }
         binding.verifyEmailButton.setOnClickListener { sendEmailVerification() }
         binding.enrollMfa.setOnClickListener {
-            // TODO
+            findNavController().navigate(R.id.action_mfa_to_enroll)
         }
         binding.unenrollMfa.setOnClickListener {
-            // TODO
+            findNavController().navigate(R.id.action_mfa_to_unenroll)
         }
         binding.reloadButton.setOnClickListener { reload() }
 
@@ -59,18 +64,6 @@ class MultiFactorFragment : BaseFragment() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         updateUI(currentUser)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_MULTI_FACTOR) {
-            if (resultCode == RESULT_NEEDS_MFA_SIGN_IN) {
-                // TODO: Use fragment
-//                val intent = Intent(context, MultiFactorSignInActivity::class.java)
-//                intent.putExtras(data!!.extras!!)
-//                startActivityForResult(intent, RC_MULTI_FACTOR)
-            }
-        }
     }
 
     private fun signOut() {
@@ -165,8 +158,7 @@ class MultiFactorFragment : BaseFragment() {
     }
 
     companion object {
-        const val RESULT_NEEDS_MFA_SIGN_IN = 42
+        const val RESULT_NEEDS_MFA_SIGN_IN = "RESULT_NEEDS_MFA"
         private const val TAG = "MultiFactor"
-        private const val RC_MULTI_FACTOR = 9005
     }
 }

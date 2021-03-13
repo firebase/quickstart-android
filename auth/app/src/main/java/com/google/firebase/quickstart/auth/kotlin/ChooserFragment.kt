@@ -1,7 +1,6 @@
 package com.google.firebase.quickstart.auth.kotlin
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.FragmentChooserBinding
 
@@ -45,23 +45,20 @@ class ChooserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Set up Adapter
-        val adapter = MyArrayAdapter(requireContext(), android.R.layout.simple_list_item_2, CLASSES as Array<Class<*>>)
+        val adapter = MyArrayAdapter(requireContext(), android.R.layout.simple_list_item_2)
         adapter.setDescriptionIds(DESCRIPTION_IDS)
 
         binding.listView.adapter = adapter
         binding.listView.setOnItemClickListener { _, _, position, _ ->
-            val clicked = CLASSES[position]
-            // TODO: navigate to another fragment instead
-            startActivity(Intent(context, clicked))
+            val actionId = NAV_ACTIONS[position]
+            findNavController().navigate(actionId)
         }
     }
 
     class MyArrayAdapter(
         private val ctx: Context,
-        resource: Int,
-        private val classes: Array<Class<*>>
-    ) :
-        ArrayAdapter<Class<*>>(ctx, resource, classes) {
+        resource: Int
+    ) : ArrayAdapter<String>(ctx, resource, CLASS_NAMES) {
         private var descriptionIds: IntArray? = null
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -73,7 +70,7 @@ class ChooserFragment : Fragment() {
             }
 
             // Android internal resource hence can't use synthetic binding
-            view?.findViewById<TextView>(android.R.id.text1)?.text = classes[position].simpleName
+            view?.findViewById<TextView>(android.R.id.text1)?.text = CLASS_NAMES[position]
             view?.findViewById<TextView>(android.R.id.text2)?.setText(descriptionIds!![position])
 
             return view!!
@@ -90,18 +87,29 @@ class ChooserFragment : Fragment() {
     }
 
     companion object {
-        // TODO: Create an array of fragment destinations
-        private val CLASSES = arrayOf(
-//                GoogleSignInActivity::class.java,
-//                FacebookLoginActivity::class.java,
-//                EmailPasswordActivity::class.java,
-                PasswordlessActivity::class.java,
-//                PhoneAuthActivity::class.java,
-//                AnonymousAuthActivity::class.java,
-//                FirebaseUIActivity::class.java,
-//                CustomAuthActivity::class.java,
-//                GenericIdpActivity::class.java,
-//                MultiFactorActivity::class.java
+        private val NAV_ACTIONS = arrayOf(
+                R.id.action_google,
+                R.id.action_facebook,
+                R.id.action_emailpassword,
+                R.id.action_passwordless,
+                R.id.action_phoneauth,
+                R.id.action_anonymousauth,
+                R.id.action_firebaseui,
+                R.id.action_customauth,
+                R.id.action_genericidp,
+                R.id.action_mfa,
+        )
+        private val CLASS_NAMES = arrayOf(
+                "GoogleSignInFragment",
+                "FacebookLoginFragment",
+                "EmailPasswordFragment",
+                "PasswordlessActivity",
+                "PhoneAuthFragment",
+                "AnonymousAuthFragment",
+                "FirebaseUIFragment",
+                "CustomAuthFragment",
+                "GenericIdpFragment",
+                "MultiFactorFragment",
         )
         private val DESCRIPTION_IDS = intArrayOf(
                 R.string.desc_google_sign_in,
