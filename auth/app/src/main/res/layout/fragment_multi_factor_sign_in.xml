@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/ThemeOverlay.MyDarkButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/phoneFactor1"/>
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/ThemeOverlay.MyDarkButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/phoneFactor2"/>
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/ThemeOverlay.MyDarkButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/phoneFactor3"/>
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/ThemeOverlay.MyDarkButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/phoneFactor4"/>
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/ThemeOverlay.MyDarkButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/phoneFactor5"/>
+
+
+    <EditText
+        android:id="@+id/smsCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_verification_code"/>
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/ThemeOverlay.MyDarkButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/finishMfaSignIn"
+        android:text="@string/verify_phone_auth"
+        android:clickable="false"/>
+</LinearLayout>
