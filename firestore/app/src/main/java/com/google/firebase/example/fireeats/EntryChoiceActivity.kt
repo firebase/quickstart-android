@@ -3,6 +3,7 @@ package com.google.firebase.example.fireeats
 import android.content.Intent
 import com.firebase.example.internal.BaseEntryChoiceActivity
 import com.firebase.example.internal.Choice
+import com.google.firebase.example.fireeats.kotlin.MainActivity
 
 class EntryChoiceActivity : BaseEntryChoiceActivity() {
 
@@ -11,7 +12,7 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                 Choice(
                         "Java",
                         "Run the Firestore quickstart written in Java.",
-                        Intent(this, com.google.firebase.example.fireeats.java.MainActivity::class.java)),
+                        Intent(this, MainActivity::class.java)),
                 Choice(
                         "Kotlin",
                         "Run the Firestore quickstart written in Kotlin.",

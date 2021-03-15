@@ -11,7 +11,7 @@ import androidx.test.uiautomator.UiSelector;
 import android.view.accessibility.AccessibilityWindowInfo;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.example.fireeats.java.MainActivity;
+import com.google.firebase.example.fireeats.java.MainFragment;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,10 +22,10 @@ import org.junit.runner.RunWith;
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 
-@LargeTest @RunWith(AndroidJUnit4.class) public class MainActivityTest {
+@LargeTest @RunWith(AndroidJUnit4.class) public class MainFragmentTest {
 
-  @Rule public ActivityTestRule<MainActivity> mActivityTestRule =
-      new ActivityTestRule<>(MainActivity.class, false, false);
+  @Rule public ActivityTestRule<MainFragment> mActivityTestRule =
+      new ActivityTestRule<>(MainFragment.class, false, false);
 
   UiDevice device;
   final long TIMEOUT = 300000;  // Five minute timeout because our CI is slooow.

@@ -76,7 +76,7 @@
     <Spinner
         android:id="@+id/spinnerPrice"
         style="@style/AppTheme.FilterSpinner"
-        android:layout_width="333dp"
+        android:layout_width="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -98,7 +98,7 @@
     <Spinner
         android:id="@+id/spinnerSort"
         style="@style/AppTheme.FilterSpinner"
-        android:layout_width="333dp"
+        android:layout_width="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"

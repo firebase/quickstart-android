@@ -3,51 +3,50 @@ package com.google.firebase.example.fireeats.kotlin
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.example.fireeats.R
-import com.google.firebase.example.fireeats.databinding.ActivityRestaurantDetailBinding
+import com.google.firebase.example.fireeats.databinding.FragmentRestaurantDetailBinding
 import com.google.firebase.example.fireeats.kotlin.adapter.RatingAdapter
 import com.google.firebase.example.fireeats.kotlin.model.Rating
 import com.google.firebase.example.fireeats.kotlin.model.Restaurant
 import com.google.firebase.example.fireeats.kotlin.util.RestaurantUtil
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
-class RestaurantDetailActivity : AppCompatActivity(),
+class RestaurantDetailFragment : Fragment(),
         EventListener<DocumentSnapshot>,
         RatingDialogFragment.RatingListener {
 
     private var ratingDialog: RatingDialogFragment? = null
 
-    private lateinit var binding: ActivityRestaurantDetailBinding
+    private lateinit var binding: FragmentRestaurantDetailBinding
     private lateinit var firestore: FirebaseFirestore
     private lateinit var restaurantRef: DocumentReference
     private lateinit var ratingAdapter: RatingAdapter
 
     private var restaurantRegistration: ListenerRegistration? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityRestaurantDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentRestaurantDetailBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // Get restaurant ID from extras
-        val restaurantId = intent.extras?.getString(KEY_RESTAURANT_ID)
-                ?: throw IllegalArgumentException("Must pass extra $KEY_RESTAURANT_ID")
+        val restaurantId = RestaurantDetailFragmentArgs.fromBundle(requireArguments()).keyRestaurantId
 
         // Initialize Firestore
         firestore = Firebase.firestore
@@ -73,7 +72,7 @@ class RestaurantDetailActivity : AppCompatActivity(),
                 }
             }
         }
-        binding.recyclerRatings.layoutManager = LinearLayoutManager(this)
+        binding.recyclerRatings.layoutManager = LinearLayoutManager(context)
         binding.recyclerRatings.adapter = ratingAdapter
 
         ratingDialog = RatingDialogFragment()
@@ -96,11 +95,6 @@ class RestaurantDetailActivity : AppCompatActivity(),
 
         restaurantRegistration?.remove()
         restaurantRegistration = null
-    }
-
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 
     /**
@@ -135,29 +129,30 @@ class RestaurantDetailActivity : AppCompatActivity(),
     }
 
     private fun onBackArrowClicked() {
-        onBackPressed()
+        requireActivity().onBackPressed()
     }
 
     private fun onAddRatingClicked() {
-        ratingDialog?.show(supportFragmentManager, RatingDialogFragment.TAG)
+        ratingDialog?.show(childFragmentManager, RatingDialogFragment.TAG)
     }
 
     override fun onRating(rating: Rating) {
         // In a transaction, add the new rating and update the aggregate totals
         addRating(restaurantRef, rating)
-                .addOnSuccessListener(this) {
+                .addOnSuccessListener(requireActivity()) {
                     Log.d(TAG, "Rating added")
 
                     // Hide keyboard and scroll to top
                     hideKeyboard()
                     binding.recyclerRatings.smoothScrollToPosition(0)
                 }
-                .addOnFailureListener(this) { e ->
+                .addOnFailureListener(requireActivity()) { e ->
                     Log.w(TAG, "Add rating failed", e)
 
                     // Show failure message and hide keyboard
                     hideKeyboard()
-                    Snackbar.make(findViewById(android.R.id.content), "Failed to add rating",
+                    Snackbar.make(
+                        requireView().findViewById(android.R.id.content), "Failed to add rating",
                             Snackbar.LENGTH_SHORT).show()
                 }
     }
@@ -193,9 +188,10 @@ class RestaurantDetailActivity : AppCompatActivity(),
     }
 
     private fun hideKeyboard() {
-        val view = currentFocus
+        // TODO
+        val view = requireActivity().currentFocus
         if (view != null) {
-            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                     .hideSoftInputFromWindow(view.windowToken, 0)
         }
     }

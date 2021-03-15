@@ -3,11 +3,15 @@ package com.google.firebase.example.fireeats.java;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
@@ -16,7 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.example.fireeats.R;
-import com.google.firebase.example.fireeats.databinding.ActivityRestaurantDetailBinding;
+import com.google.firebase.example.fireeats.databinding.FragmentRestaurantDetailBinding;
 import com.google.firebase.example.fireeats.java.adapter.RatingAdapter;
 import com.google.firebase.example.fireeats.java.model.Rating;
 import com.google.firebase.example.fireeats.java.model.Restaurant;
@@ -30,14 +34,12 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
 
-public class RestaurantDetailActivity extends AppCompatActivity
+public class RestaurantDetailFragment extends Fragment
         implements EventListener<DocumentSnapshot>, RatingDialogFragment.RatingListener, View.OnClickListener {
 
     private static final String TAG = "RestaurantDetail";
 
-    public static final String KEY_RESTAURANT_ID = "key_restaurant_id";
-
-    private ActivityRestaurantDetailBinding mBinding;
+    private FragmentRestaurantDetailBinding mBinding;
     
     private RatingDialogFragment mRatingDialog;
 
@@ -47,20 +49,21 @@ public class RestaurantDetailActivity extends AppCompatActivity
 
     private RatingAdapter mRatingAdapter;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mBinding = ActivityRestaurantDetailBinding.inflate(getLayoutInflater());
-        setContentView(mBinding.getRoot());
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mBinding = FragmentRestaurantDetailBinding.inflate(inflater, container, false);
+        return mBinding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         mBinding.restaurantButtonBack.setOnClickListener(this);
         mBinding.fabShowRatingDialog.setOnClickListener(this);
 
-        // Get restaurant ID from extras
-        String restaurantId = getIntent().getExtras().getString(KEY_RESTAURANT_ID);
-        if (restaurantId == null) {
-            throw new IllegalArgumentException("Must pass extra " + KEY_RESTAURANT_ID);
-        }
+        String restaurantId = RestaurantDetailFragmentArgs.fromBundle(getArguments()).getKeyRestaurantId();
 
         // Initialize Firestore
         mFirestore = FirebaseFirestore.getInstance();
@@ -87,7 +90,7 @@ public class RestaurantDetailActivity extends AppCompatActivity
                 }
             }
         };
-        mBinding.recyclerRatings.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.recyclerRatings.setLayoutManager(new LinearLayoutManager(requireContext()));
         mBinding.recyclerRatings.setAdapter(mRatingAdapter);
 
         mRatingDialog = new RatingDialogFragment();
@@ -111,12 +114,6 @@ public class RestaurantDetailActivity extends AppCompatActivity
             mRestaurantRegistration.remove();
             mRestaurantRegistration = null;
         }
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
     }
 
     /**
@@ -147,18 +144,18 @@ public class RestaurantDetailActivity extends AppCompatActivity
     }
 
     public void onBackArrowClicked(View view) {
-        onBackPressed();
+        requireActivity().onBackPressed();
     }
 
     public void onAddRatingClicked(View view) {
-        mRatingDialog.show(getSupportFragmentManager(), RatingDialogFragment.TAG);
+        mRatingDialog.show(getChildFragmentManager(), RatingDialogFragment.TAG);
     }
 
     @Override
     public void onRating(Rating rating) {
         // In a transaction, add the new rating and update the aggregate totals
         addRating(mRestaurantRef, rating)
-                .addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                .addOnSuccessListener(requireActivity(), new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Rating added");
@@ -168,7 +165,7 @@ public class RestaurantDetailActivity extends AppCompatActivity
                         mBinding.recyclerRatings.smoothScrollToPosition(0);
                     }
                 })
-                .addOnFailureListener(this, new OnFailureListener() {
+                .addOnFailureListener(requireActivity(), new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Add rating failed", e);
@@ -212,9 +209,9 @@ public class RestaurantDetailActivity extends AppCompatActivity
     }
 
     private void hideKeyboard() {
-        View view = getCurrentFocus();
+        View view = requireActivity().getCurrentFocus();
         if (view != null) {
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+            ((InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE))
                     .hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_java"
+    app:startDestination="@id/MainFragment">
+
+    <fragment
+        android:id="@+id/MainFragment"
+        android:name="com.google.firebase.example.fireeats.java.MainFragment"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_MainFragment_to_RestaurantDetailFragment"
+            app:destination="@id/RestaurantDetailFragment"
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_to_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_to_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/RestaurantDetailFragment"
+        android:name="com.google.firebase.example.fireeats.java.RestaurantDetailFragment"
+        tools:layout="@layout/fragment_restaurant_detail" >
+        <argument
+            android:name="key_restaurant_id"
+            app:argType="string" />
+    </fragment>
+
+</navigation>
