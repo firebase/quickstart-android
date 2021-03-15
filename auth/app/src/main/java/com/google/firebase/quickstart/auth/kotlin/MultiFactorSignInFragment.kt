@@ -48,7 +48,7 @@ class MultiFactorSignInFragment : BaseFragment() {
         }
 
         binding.finishMfaSignIn.setOnClickListener { onClickFinishSignIn() }
-//        multiFactorResolver = retrieveResolverFromIntent(requireArguments())
+        multiFactorResolver = getResolverFromArguments(requireArguments())
 
         val multiFactorInfoList = multiFactorResolver.hints
         for (i in multiFactorInfoList.indices) {
@@ -61,7 +61,7 @@ class MultiFactorSignInFragment : BaseFragment() {
         }
     }
 
-    public override fun onSaveInstanceState(bundle: Bundle) {
+    override fun onSaveInstanceState(bundle: Bundle) {
         super.onSaveInstanceState(bundle)
         bundle.putString(KEY_VERIFICATION_ID, lastVerificationId)
     }
@@ -107,8 +107,8 @@ class MultiFactorSignInFragment : BaseFragment() {
         }
     }
 
-    private fun retrieveResolverFromIntent(arguments: Bundle): MultiFactorResolver? {
-        return null
+    private fun getResolverFromArguments(arguments: Bundle): MultiFactorResolver {
+        return arguments.getParcelable(EXTRA_MFA_RESOLVER)!!
     }
 
     private fun onClickFinishSignIn() {
