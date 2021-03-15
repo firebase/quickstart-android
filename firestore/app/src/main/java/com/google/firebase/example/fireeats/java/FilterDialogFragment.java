@@ -55,8 +55,8 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof FilterListener) {
-            mFilterListener = (FilterListener) context;
+        if (getParentFragment() instanceof FilterListener) {
+            mFilterListener = (FilterListener) getParentFragment();
         }
     }
 

@@ -22,22 +22,10 @@
 
         <activity
             android:name=".java.MainActivity"
-            android:theme="@style/AppTheme.Activity">
-
-        </activity>
-
-        <activity
-            android:name=".java.RestaurantDetailActivity"
             android:theme="@style/AppTheme.Activity" />
 
         <activity
             android:name=".kotlin.MainActivity"
-            android:theme="@style/AppTheme.Activity">
-
-        </activity>
-
-        <activity
-            android:name=".kotlin.RestaurantDetailActivity"
             android:theme="@style/AppTheme.Activity" />
     </application>
 

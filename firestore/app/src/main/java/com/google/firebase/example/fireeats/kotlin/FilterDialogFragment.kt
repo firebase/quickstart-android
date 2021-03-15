@@ -122,8 +122,8 @@ class FilterDialogFragment : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (context is FilterListener) {
-            filterListener = context
+        if (parentFragment is FilterListener) {
+            filterListener = parentFragment as FilterListener
         }
     }
 

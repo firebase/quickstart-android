@@ -46,8 +46,8 @@ class RatingDialogFragment : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (context is RatingListener) {
-            ratingListener = context
+        if (parentFragment is RatingListener) {
+            ratingListener = parentFragment as RatingListener
         }
     }
 

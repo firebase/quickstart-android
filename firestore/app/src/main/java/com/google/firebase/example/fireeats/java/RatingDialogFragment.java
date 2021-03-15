@@ -57,8 +57,8 @@ public class RatingDialogFragment extends DialogFragment implements View.OnClick
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof RatingListener) {
-            mRatingListener = (RatingListener) context;
+        if (getParentFragment() instanceof RatingListener) {
+            mRatingListener = (RatingListener) getParentFragment();
         }
     }
 

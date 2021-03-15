@@ -3,6 +3,7 @@ package com.google.firebase.example.fireeats
 import android.content.Intent
 import com.firebase.example.internal.BaseEntryChoiceActivity
 import com.firebase.example.internal.Choice
+import com.google.firebase.example.fireeats.kotlin.MainActivity
 
 class EntryChoiceActivity : BaseEntryChoiceActivity() {
 
