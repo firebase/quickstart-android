@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/ChooserFragment"
+    android:id="@+id/nav_graph_java">
+
+    <fragment
+        android:id="@+id/ChooserFragment"
+        android:name="com.google.firebase.quickstart.auth.java.ChooserFragment"
+        tools:layout="@layout/fragment_chooser">
+
+        <action
+            android:id="@+id/action_anonymousauth"
+            app:destination="@id/AnonymousAuthFragment" />
+
+        <action
+            android:id="@+id/action_customauth"
+            app:destination="@id/CustomAuthFragment" />
+
+        <action
+            android:id="@+id/action_emailpassword"
+            app:destination="@id/EmailPasswordFragment" />
+
+        <action
+            android:id="@+id/action_facebook"
+            app:destination="@id/FacebookLoginFragment" />
+
+        <action
+            android:id="@+id/action_firebaseui"
+            app:destination="@id/FirebaseUIFragment" />
+
+        <action
+            android:id="@+id/action_genericidp"
+            app:destination="@id/GenericIdpFragment" />
+
+        <action
+            android:id="@+id/action_google"
+            app:destination="@id/GoogleSignInFragment" />
+
+        <action
+            android:id="@+id/action_mfa"
+            app:destination="@id/MultiFactorFragment" />
+
+        <action
+            android:id="@+id/action_phoneauth"
+            app:destination="@id/PhoneAuthFragment" />
+
+        <action
+            android:id="@+id/action_passwordless"
+            app:destination="@id/PasswordlessActivity" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/AnonymousAuthFragment"
+        android:name="com.google.firebase.quickstart.auth.java.AnonymousAuthFragment"
+        tools:layout="@layout/fragment_anonymous_auth"/>
+
+    <fragment
+        android:id="@+id/CustomAuthFragment"
+        android:name="com.google.firebase.quickstart.auth.java.CustomAuthFragment"
+        tools:layout="@layout/fragment_custom"/>
+
+    <fragment
+        android:id="@+id/EmailPasswordFragment"
+        android:name="com.google.firebase.quickstart.auth.java.EmailPasswordFragment"
+        tools:layout="@layout/fragment_emailpassword">
+        <action
+            android:id="@+id/action_emailpassword_to_mfa"
+            app:popUpTo="@id/MultiFactorFragment"
+            app:destination="@id/MultiFactorFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/FacebookLoginFragment"
+        android:name="com.google.firebase.quickstart.auth.java.FacebookLoginFragment"
+        tools:layout="@layout/fragment_emailpassword"/>
+
+    <fragment
+        android:id="@+id/FirebaseUIFragment"
+        android:name="com.google.firebase.quickstart.auth.java.FirebaseUIFragment"
+        tools:layout="@layout/fragment_firebase_ui"/>
+
+    <fragment
+        android:id="@+id/GenericIdpFragment"
+        android:name="com.google.firebase.quickstart.auth.java.GenericIdpFragment"
+        tools:layout="@layout/fragment_generic_idp"/>
+
+    <fragment
+        android:id="@+id/GoogleSignInFragment"
+        android:name="com.google.firebase.quickstart.auth.java.GoogleSignInFragment"
+        tools:layout="@layout/fragment_google"/>
+
+    <fragment
+        android:id="@+id/MultiFactorEnrollFragment"
+        android:name="com.google.firebase.quickstart.auth.java.MultiFactorEnrollFragment"
+        tools:layout="@layout/fragment_phone_auth"/>
+
+    <fragment
+        android:id="@+id/MultiFactorFragment"
+        android:name="com.google.firebase.quickstart.auth.java.MultiFactorFragment"
+        tools:layout="@layout/fragment_multi_factor">
+
+        <action
+            android:id="@+id/action_mfa_to_emailpassword"
+            app:destination="@id/EmailPasswordFragment" />
+
+        <action
+            android:id="@+id/action_mfa_to_enroll"
+            app:destination="@id/MultiFactorEnrollFragment" />
+
+        <action
+            android:id="@+id/action_mfa_to_unenroll"
+            app:destination="@id/MultiFactorUnenrollFragment" />
+
+        <action
+            android:id="@+id/action_mfa_to_mfasignin"
+            app:destination="@id/MultiFactorSignInFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/MultiFactorSignInFragment"
+        android:name="com.google.firebase.quickstart.auth.java.MultiFactorSignInFragment"
+        tools:layout="@layout/fragment_multi_factor_sign_in"/>
+
+    <fragment
+        android:id="@+id/MultiFactorUnenrollFragment"
+        android:name="com.google.firebase.quickstart.auth.java.MultiFactorUnenrollFragment"
+        tools:layout="@layout/fragment_multi_factor_sign_in"/>
+
+    <fragment
+        android:id="@+id/PhoneAuthFragment"
+        android:name="com.google.firebase.quickstart.auth.java.PhoneAuthFragment"
+        tools:layout="@layout/fragment_phone_auth"/>
+
+    <activity
+        android:id="@+id/PasswordlessActivity"
+        android:name="com.google.firebase.quickstart.auth.java.PasswordlessActivity"
+        tools:layout="@layout/activity_passwordless"/>
+
+</navigation>
