@@ -188,7 +188,6 @@ class RestaurantDetailFragment : Fragment(),
     }
 
     private fun hideKeyboard() {
-        // TODO
         val view = requireActivity().currentFocus
         if (view != null) {
             (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)

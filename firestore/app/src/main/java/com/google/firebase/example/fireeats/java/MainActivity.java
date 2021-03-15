@@ -14,7 +14,7 @@ public class  MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setSupportActionBar(findViewById<Toolbar>(R.id.toolbar));
+        setSupportActionBar(this.<Toolbar>findViewById(R.id.toolbar));
 
         Navigation.findNavController(this, R.id.nav_host_fragment)
                 .setGraph(R.navigation.nav_graph_java);
