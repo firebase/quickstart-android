@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        final FirebaseAppIndex firebaseAppIndex = FirebaseAppIndex.getInstance();
+        final FirebaseAppIndex firebaseAppIndex = FirebaseAppIndex.getInstance(this);
 
         binding.addStickersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 .setUrl(APP_URI)
                 .build();
 
-        Task<Void> task = FirebaseAppIndex.getInstance().update(articleToIndex);
+        Task<Void> task = FirebaseAppIndex.getInstance(this).update(articleToIndex);
 
         // If the Task is already complete, a call to the listener will be immediately
         // scheduled
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // log the view action
-        Task<Void> actionTask = FirebaseUserActions.getInstance().start(Actions.newView(TITLE,
+        Task<Void> actionTask = FirebaseUserActions.getInstance(this).start(Actions.newView(TITLE,
                 APP_URI));
 
         actionTask.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         final Uri BASE_URL = Uri.parse("https://www.example.com/articles/");
         final String APP_URI = BASE_URL.buildUpon().appendPath(articleId).build().toString();
 
-        Task<Void> actionTask = FirebaseUserActions.getInstance().end(Actions.newView(TITLE,
+        Task<Void> actionTask = FirebaseUserActions.getInstance(this).end(Actions.newView(TITLE,
                 APP_URI));
 
         actionTask.addOnSuccessListener(MainActivity.this, new OnSuccessListener<Void>() {

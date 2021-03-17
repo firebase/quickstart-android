@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val firebaseAppIndex = FirebaseAppIndex.getInstance()
+        val firebaseAppIndex = FirebaseAppIndex.getInstance(this)
 
         with(binding) {
             addStickersBtn.setOnClickListener { startService(Intent(baseContext, AppIndexingService::class.java)) }
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                 .setUrl(appUri)
                 .build()
 
-        val task = FirebaseAppIndex.getInstance().update(articleToIndex)
+        val task = FirebaseAppIndex.getInstance(this).update(articleToIndex)
 
         // If the Task is already complete, a call to the listener will be immediately
         // scheduled
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // log the view action
-        val actionTask = FirebaseUserActions.getInstance().start(Actions.newView(TITLE,
+        val actionTask = FirebaseUserActions.getInstance(this).start(Actions.newView(TITLE,
                 appUri))
 
         actionTask.addOnSuccessListener(this) {
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         val baseUrl = Uri.parse("https://www.example.com/kotlin_articles/")
         val appUri = baseUrl.buildUpon().appendPath(articleId).build().toString()
 
-        val actionTask = FirebaseUserActions.getInstance().end(Actions.newView(TITLE,
+        val actionTask = FirebaseUserActions.getInstance(this).end(Actions.newView(TITLE,
                 appUri))
 
         actionTask.addOnSuccessListener(this) {

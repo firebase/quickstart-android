@@ -7,6 +7,6 @@ import com.google.firebase.appindexing.FirebaseAppIndex
 class AppIndexingService : IntentService("AppIndexingService") {
 
     override fun onHandleIntent(intent: Intent?) {
-        AppIndexingUtil.setStickers(applicationContext, FirebaseAppIndex.getInstance())
+        AppIndexingUtil.setStickers(applicationContext, FirebaseAppIndex.getInstance(applicationContext))
     }
 }
