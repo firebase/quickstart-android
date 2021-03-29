@@ -21,11 +21,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.quickstart.database.R;
 import com.google.firebase.quickstart.database.java.PostDetailFragment;
 import com.google.firebase.quickstart.database.java.models.Post;
 import com.google.firebase.quickstart.database.java.viewholder.PostViewHolder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class PostListFragment extends Fragment {
 
@@ -111,13 +115,19 @@ public abstract class PostListFragment extends Fragment {
                 viewHolder.bindToPost(model, new View.OnClickListener() {
                     @Override
                     public void onClick(View starView) {
-                        // Need to write to both places the post is stored
-                        DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
-                        DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
+                        if (false) {
+                            // Need to write to both places the post is stored
+                            DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
+                            DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
 
-                        // Run two transactions
-                        onStarClicked(globalPostRef);
-                        onStarClicked(userPostRef);
+                            // Run two transactions
+                            onStarClicked(globalPostRef);
+                            onStarClicked(userPostRef);
+                        }
+                        else {
+                            // Or: run a single multi-path update
+                            onStarClicked(model.uid, postRef.getKey());
+                        }
                     }
                 });
             }
@@ -160,6 +170,16 @@ public abstract class PostListFragment extends Fragment {
     }
     // [END post_stars_transaction]
 
+    // [START post_stars_increment]
+    private void onStarClicked(String uid, String key) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("posts/"+key+"/stars/"+uid, true);
+        updates.put("posts/"+key+"/starCount", ServerValue.increment(1));
+        updates.put("user-posts/"+uid+"/"+key+"/stars/"+uid, true);
+        updates.put("user-posts/"+uid+"/"+key+"/starCount", ServerValue.increment(1));
+        mDatabase.updateChildren(updates);
+    }
+    // [END post_stars_increment]
 
     @Override
     public void onStart() {

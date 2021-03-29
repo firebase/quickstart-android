@@ -13,18 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.MutableData
-import com.google.firebase.database.Query
-import com.google.firebase.database.Transaction
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.PostDetailFragment
 import com.google.firebase.quickstart.database.kotlin.models.Post
 import com.google.firebase.quickstart.database.kotlin.viewholder.PostViewHolder
+import java.util.*
 
 abstract class PostListFragment : Fragment() {
 
@@ -97,13 +93,18 @@ abstract class PostListFragment : Fragment() {
 
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
                 viewHolder.bindToPost(model) {
-                    // Need to write to both places the post is stored
-                    val globalPostRef = database.child("posts").child(postRef.key!!)
-                    val userPostRef = database.child("user-posts").child(model.uid!!).child(postRef.key!!)
+                    if (false) {
+                        // Need to write to both places the post is stored
+                        val globalPostRef = database.child("posts").child(postRef.key!!)
+                        val userPostRef = database.child("user-posts").child(model.uid!!).child(postRef.key!!)
 
-                    // Run two transactions
-                    onStarClicked(globalPostRef)
-                    onStarClicked(userPostRef)
+                        // Run two transactions
+                        onStarClicked(globalPostRef)
+                        onStarClicked(userPostRef)
+                    }
+                    else {
+                        onStarClicked(model.uid!!, postRef.key!!)
+                    }
                 }
             }
         }
@@ -138,11 +139,22 @@ abstract class PostListFragment : Fragment() {
                 currentData: DataSnapshot?
             ) {
                 // Transaction completed
-                Log.d(TAG, "postTransaction:onComplete:" + databaseError!!)
+                Log.d(TAG, "postTransaction:onComplete:" + databaseError)
             }
         })
     }
     // [END post_stars_transaction]
+
+    // [START post_stars_increment]
+    private fun onStarClicked(uid: String, key: String) {
+        val updates: MutableMap<String, Any> = HashMap()
+        updates["posts/$key/stars/$uid"] = true
+        updates["posts/$key/starCount"] = ServerValue.increment(1)
+        updates["user-posts/$uid/$key/stars/$uid"] = true
+        updates["user-posts/$uid/$key/starCount"] = ServerValue.increment(1)
+        database.updateChildren(updates)
+    }
+    // [END post_stars_increment]
 
     override fun onStart() {
         super.onStart()
