@@ -67,7 +67,7 @@ public class EmailPasswordFragment extends BaseFragment {
                 signIn(email, password);
             }
         });
-        mBinding.signOutButton.setOnClickListener(new View.OnClickListener() {
+        mBinding.emailCreateAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = mBinding.fieldEmail.getText().toString();
