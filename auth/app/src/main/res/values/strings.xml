@@ -19,6 +19,11 @@
     <string name="label_anonymous_auth">Anonymous Authentication</string>
     <string name="desc_anonymous_auth">Sign in anonymously and then later upgrade to a full Firebase Auth user.</string>
 
+    <string name="label_anonymous_sign_in">Anonymous Sign In</string>
+    <string name="label_account_linking">Account Linking</string>
+    <string name="btn_link_account">Link Account</string>
+
+
     <string name="label_custom_auth">Custom Authentication</string>
     <string name="desc_custom_auth">Use a custom token signed by your own server to authenticate with Firebase.</string>
 
