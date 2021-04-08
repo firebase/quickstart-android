@@ -1,136 +1,185 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grey_100"
+    android:orientation="vertical"
+    android:weightSum="4">
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/icon"
+            style="@style/ThemeOverlay.FirebaseIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/desc_firebase_lockup"
+            android:src="@drawable/firebase_lockup_400" />
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/title_bottom_margin"
+            android:text="@string/label_anonymous_sign_in"
+            android:theme="@style/ThemeOverlay.MyTitleText" />
+
+        <TextView
+            android:id="@+id/anonymousStatusId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/signed_out" />
+
+        <TextView
+            android:id="@+id/anonymousStatusEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Email: none" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/progressBar"
-        android:contentDescription="@string/desc_firebase_lockup"
-        android:src="@drawable/firebase_lockup_400"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+        android:background="@color/grey_300"
+        android:gravity="center_vertical"
+        android:paddingTop="16dp">
 
-    <TextView
-        android:id="@+id/titleAnonymous"
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/icon"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:text="Anonymous Sign In"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon" />
+        <Button
+            android:id="@+id/buttonAnonymousSignIn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/sign_in"
+            app:layout_constraintEnd_toStartOf="@+id/buttonAnonymousSignOut"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <TextView
-        android:id="@+id/anonymousStatusId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleAnonymous"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_marginTop="8dp"
-        android:text="@string/signed_out"
-        app:layout_constraintStart_toStartOf="@+id/titleAnonymous"
-        app:layout_constraintTop_toBottomOf="@+id/titleAnonymous" />
+        <Button
+            android:id="@+id/buttonAnonymousSignOut"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:enabled="false"
+            android:text="@string/sign_out"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonAnonymousSignIn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/buttonAnonymousSignIn"
+            app:layout_constraintTop_toTopOf="@+id/buttonAnonymousSignIn" />
 
-    <TextView
-        android:id="@+id/anonymousStatusEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/anonymousStatusId"
-        app:layout_constraintStart_toStartOf="@+id/anonymousStatusId"
-        app:layout_constraintTop_toBottomOf="@+id/anonymousStatusId"
-        tools:text="Email: none" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/label_anonymous_sign_in"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonAnonymousSignIn"
-        android:layout_marginStart="@dimen/button_horizontal_margin"
-        android:layout_marginEnd="@dimen/button_horizontal_margin"
-        android:layout_width="@dimen/field_width_standard"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/anonymousStatusEmail"
-        android:text="@string/sign_in"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/anonymousStatusEmail"
-        app:layout_constraintTop_toBottomOf="@+id/anonymousStatusEmail" />
+        <EditText
+            android:id="@+id/fieldEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:hint="@string/hint_email"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toStartOf="@+id/fieldPassword"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <Button
-        android:id="@+id/buttonAnonymousSignOut"
-        android:layout_marginStart="@dimen/button_horizontal_margin"
-        android:layout_marginEnd="@dimen/button_horizontal_margin"
-        android:layout_width="@dimen/field_width_standard"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/buttonAnonymousSignIn"
-        android:layout_toEndOf="@+id/buttonAnonymousSignIn"
-        android:layout_toRightOf="@+id/buttonAnonymousSignIn"
-        android:enabled="false"
-        android:text="@string/sign_out"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonAnonymousSignIn"
-        app:layout_constraintStart_toEndOf="@+id/buttonAnonymousSignIn"
-        app:layout_constraintTop_toTopOf="@+id/buttonAnonymousSignIn" />
+        <EditText
+            android:id="@+id/fieldPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:ems="10"
+            android:hint="@string/hint_password"
+            android:inputType="textPassword"
+            app:layout_constraintBottom_toBottomOf="@+id/fieldEmail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/fieldEmail"
+            app:layout_constraintTop_toTopOf="@+id/fieldEmail"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/titleLinking"
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonAnonymousSignIn"
-        android:layout_marginTop="24dp"
-        android:text="Account Linking"
-        app:layout_constraintStart_toStartOf="@+id/buttonAnonymousSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAnonymousSignIn" />
+        <Button
+            android:id="@+id/buttonLinkAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:enabled="false"
+            android:text="@string/btn_link_account"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fieldEmail"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/fieldEmail"
-        android:layout_width="@dimen/field_width_standard"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleLinking"
-        android:hint="@string/hint_email"
-        android:layout_marginTop="8dp"
-        android:inputType="textEmailAddress"
-        app:layout_constraintStart_toStartOf="@+id/titleLinking"
-        app:layout_constraintTop_toBottomOf="@+id/titleLinking" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/label_account_linking"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonAnonymousSignIn" />
 
-    <EditText
-        android:id="@+id/fieldPassword"
-        android:layout_width="@dimen/field_width_standard"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/fieldEmail"
-        android:layout_toRightOf="@+id/fieldEmail"
-        android:hint="@string/hint_password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="@+id/fieldEmail"
-        app:layout_constraintStart_toEndOf="@+id/fieldEmail"
-        app:layout_constraintTop_toTopOf="@+id/fieldEmail" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/buttonLinkAccount"
-        android:layout_marginStart="@dimen/button_horizontal_margin"
-        android:layout_marginEnd="@dimen/button_horizontal_margin"
-        android:layout_width="@dimen/field_width_standard"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fieldEmail"
-        android:enabled="false"
-        android:text="Link Account"
-        app:layout_constraintStart_toStartOf="@+id/fieldEmail"
-        app:layout_constraintTop_toBottomOf="@+id/fieldEmail" />
+</LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
