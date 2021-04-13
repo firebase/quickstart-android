@@ -45,16 +45,13 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    // Temporarily pinning versions due to Kotlin bug (see below)
-    // implementation platform('com.google.firebase:firebase-bom:27.0.0')
+    implementation platform('com.google.firebase:firebase-bom:27.0.0')
 
     // Firebase Authentication (Java)
-    // Temporarily pinned to 20.0.1 to avoid https://youtrack.jetbrains.com/issue/KT-44375
-    implementation 'com.google.firebase:firebase-auth:20.0.4'
+    implementation 'com.google.firebase:firebase-auth'
 
     // Firebase Authentication (Kotlin)
-    // Temporarily pinned to 20.0.1 to avoid https://youtrack.jetbrains.com/issue/KT-44375
-    implementation 'com.google.firebase:firebase-auth-ktx:20.0.4'
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
     // Google Sign In SDK (only required for Google Sign In)
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
