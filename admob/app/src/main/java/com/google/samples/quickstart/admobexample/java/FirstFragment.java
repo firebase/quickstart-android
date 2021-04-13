@@ -13,12 +13,13 @@ import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.samples.quickstart.admobexample.R;
 import com.google.samples.quickstart.admobexample.databinding.FragmentFirstBinding;
 
@@ -48,46 +49,15 @@ class FirstFragment extends Fragment {
         MobileAds.initialize(getContext());
 
         mAdView = binding.adView;
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
 
-        // AdMob ad unit IDs are not currently stored inside the google-services.json file.
-        // Developers using AdMob can store them as custom values in a string resource file or
-        // simply use constants. Note that the ad units used here are configured to return only test
-        // ads, and should not be used outside this sample.
-
-        // Create an InterstitialAd object. This same object can be re-used whenever you want to
-        // show an interstitial.
-        mInterstitialAd = new InterstitialAd(getContext());
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-                beginSecondActivity();
-            }
-
-            @Override
-            public void onAdLoaded() {
-                // Ad received, ready to display
-                if (mLoadInterstitialButton != null) {
-                    mLoadInterstitialButton.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void onAdFailedToLoad(LoadAdError error) {
-                Log.w(TAG, "onAdFailedToLoad:" + error.getMessage());
-            }
-        });
+        requestNewInterstitial();
 
         mLoadInterstitialButton = binding.loadInterstitialButton;
         mLoadInterstitialButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(getActivity());
                 } else {
                     beginSecondActivity();
                 }
@@ -95,7 +65,7 @@ class FirstFragment extends Fragment {
         });
 
         // Disable button if an interstitial ad is not loaded yet.
-        mLoadInterstitialButton.setEnabled(mInterstitialAd.isLoaded());
+        mLoadInterstitialButton.setEnabled(mInterstitialAd != null);
     }
 
     /**
@@ -103,8 +73,40 @@ class FirstFragment extends Fragment {
      */
     private void requestNewInterstitial() {
         AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
-        mInterstitialAd.loadAd(adRequest);
+        // AdMob ad unit IDs are not currently stored inside the google-services.json file.
+        // Developers using AdMob can store them as custom values in a string resource file or
+        // simply use constants. Note that the ad units used here are configured to return only test
+        // ads, and should not be used outside this sample.
+        InterstitialAd.load(getContext(), getString(R.string.interstitial_ad_unit_id), adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                super.onAdLoaded(interstitialAd);
+                mInterstitialAd = interstitialAd;
+
+                // Ad received, ready to display
+                if (mLoadInterstitialButton != null) {
+                    mLoadInterstitialButton.setEnabled(true);
+                }
+
+                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent();
+                        requestNewInterstitial();
+                        beginSecondActivity();
+                    }
+                });
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                mInterstitialAd = null;
+                Log.w(TAG, "onAdFailedToLoad:" + loadAdError.getMessage());
+            }
+        });
     }
 
     private void beginSecondActivity() {
@@ -127,7 +129,7 @@ class FirstFragment extends Fragment {
         if (mAdView != null) {
             mAdView.resume();
         }
-        if (!mInterstitialAd.isLoaded()) {
+        if (mInterstitialAd == null) {
             requestNewInterstitial();
         }
     }
