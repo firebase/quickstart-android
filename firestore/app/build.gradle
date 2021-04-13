@@ -93,7 +93,7 @@ dependencies {
     
     // Temporarily pinned to 20.0.1 to avoid 
     // https://youtrack.jetbrains.com/issue/KT-44375
-    androidTestImplementation 'com.google.firebase:firebase-auth:20.0.1'
+    androidTestImplementation 'com.google.firebase:firebase-auth:20.0.4'
 
 }
 
