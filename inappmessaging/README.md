@@ -11,7 +11,7 @@ This quickstart demonstrates basic usage of Firebase In-App Messaging.
   * Click **New Campaign**
     * In the **Style and content** section, design a campaign using one of the provided layouts (Modal, Image, or Banner),
       then click **Next**.
-    * In the **Target** section, enter any campain name and description. In the dropdown, choose to target the app
+    * In the **Target** section, enter any campaign name and description. In the dropdown, choose to target the app
       you just created, then click **Next**.
     * In the **Scheduling** section, choose any reasonable start and end date. Choose `engagement_party` for the trigger event,
       then click **Next**.
