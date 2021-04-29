@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         final ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+        CustomKeySamples.setSampleCustomKeys(this.getApplicationContext());
+        CustomKeySamples.updateAndTrackNetworkState(this.getApplicationContext());
+
         mCrashlytics = FirebaseCrashlytics.getInstance();
 
         // Log the onCreate event, this will also be printed in logcat
