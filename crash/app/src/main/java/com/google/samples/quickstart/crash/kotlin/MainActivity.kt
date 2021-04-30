@@ -28,6 +28,10 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val customKeySamples = CustomKeySamples(applicationContext)
+        customKeySamples.setSampleCustomKeys()
+        customKeySamples.updateAndTrackNetworkState()
+
         crashlytics = Firebase.crashlytics
 
         // Log the onCreate event, this will also be printed in logcat
