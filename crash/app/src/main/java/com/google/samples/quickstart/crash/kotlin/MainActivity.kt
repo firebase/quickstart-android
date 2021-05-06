@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        this.customKeySamples = CustomKeySamples(applicationContext)
+        customKeySamples = CustomKeySamples(applicationContext)
         customKeySamples.setSampleCustomKeys()
         customKeySamples.updateAndTrackNetworkState()
 

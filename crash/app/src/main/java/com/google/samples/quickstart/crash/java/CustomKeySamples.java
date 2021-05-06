@@ -98,12 +98,12 @@ public class CustomKeySamples {
 
     private void updateNetworkCapabilityCustomKeys(NetworkCapabilities networkCapabilities) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            FirebaseCrashlytics instance = FirebaseCrashlytics.getInstance();
-            instance.setCustomKey("Network Bandwidth", networkCapabilities.getLinkDownstreamBandwidthKbps());
-            instance.setCustomKey("Network Upstream", networkCapabilities.getLinkUpstreamBandwidthKbps());
-            instance.setCustomKey("Network Metered", networkCapabilities.hasCapability(NET_CAPABILITY_NOT_METERED));
-            // This key is long and not as easy to filter by.
-            instance.setCustomKey("Network Capabilities", networkCapabilities.toString());
+            FirebaseCrashlytics.getInstance().setCustomKeys(new CustomKeysAndValues.Builder()
+                    .putInt("Network Bandwidth", networkCapabilities.getLinkDownstreamBandwidthKbps())
+                    .putInt("Network Upstream", networkCapabilities.getLinkUpstreamBandwidthKbps())
+                    .putBoolean("Network Metered", networkCapabilities.hasCapability(NET_CAPABILITY_NOT_METERED))
+                    // This key is long and not as easy to filter by.
+                    .putString("Network Capabilities", networkCapabilities.toString()).build());
         }
     }
 
