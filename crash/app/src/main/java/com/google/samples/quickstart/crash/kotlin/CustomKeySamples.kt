@@ -16,6 +16,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.crashlytics.ktx.setCustomKeys
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.internal.synchronized
 
 /**
  * The following are samples of custom keys that may be useful to record via Crashlytics prior to a Crash.
@@ -23,7 +24,7 @@ import com.google.firebase.ktx.Firebase
  * These utility methods are not meant to be comprehensive, but they are illustrative of the types of things you
  * could track using custom keys in Crashlytics.
  */
-class CustomKeySamples(private val context: Context) {
+class CustomKeySamples(private val context: Context, private var callback: NetworkCallback? = null) {
 
     /**
      * Set a subset of custom keys simultaneously.
@@ -41,6 +42,8 @@ class CustomKeySamples(private val context: Context) {
 
     /**
      * Update network state and add a hook to update network state going forward.
+     *
+     * Note: This code is executed above API level N.
      */
     fun updateAndTrackNetworkState() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -49,12 +52,35 @@ class CustomKeySamples(private val context: Context) {
                     .getNetworkCapabilities(connectivityManager.activeNetwork)
                     ?.let { updateNetworkCapabilityCustomKeys(it) }
 
-            // Set up a callback to match our best-practices around custom keys being up-to-date
-            connectivityManager.registerDefaultNetworkCallback(object : NetworkCallback() {
-                override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
-                    updateNetworkCapabilityCustomKeys(networkCapabilities)
+            kotlin.synchronized(this) {
+                if (callback == null) {
+                    // Set up a callback to match our best-practices around custom keys being up-to-date
+                    val newCallback: NetworkCallback = object : NetworkCallback() {
+                        override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+                            updateNetworkCapabilityCustomKeys(networkCapabilities)
+                        }
+                    }
+                    callback = newCallback
+                    connectivityManager.registerDefaultNetworkCallback(newCallback)
                 }
-            })
+            }
+        }
+    }
+
+    /**
+     * Remove the handler for the network state.
+     *
+     * Note: This code is executed above API level N.
+     */
+    fun stopTrackingNetworkState() {
+        val connectivityManager = context
+                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val oldCallback = callback
+        kotlin.synchronized(this) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && oldCallback != null) {
+                connectivityManager.unregisterNetworkCallback(oldCallback)
+                callback = null
+            }
         }
     }
 
@@ -74,6 +100,11 @@ class CustomKeySamples(private val context: Context) {
     /**
      * @see {@link com.google.samples.quickstart.crash.java.CustomKeySamples.updateAndTrackNetworkState}, which does not require READ_PHONE_STATE
      * and returns more useful information about bandwidth, metering, and capabilities.
+     *
+     * Supressed deprecation warning because that code path is only used below API Level N.
+     *
+     * Supressed Lint warning because READ_PHONE_STATE is a high priority permission and
+     * we don't want to enforce needing it for this code example.
      */
     @Suppress("DEPRECATION")
     @Deprecated("Prefer updateAndTrackNetworkState, which does not require READ_PHONE_STATE")
@@ -100,6 +131,8 @@ class CustomKeySamples(private val context: Context) {
 
     /**
      * Retrieve the locale information for the app.
+     *
+     * Supressed deprecation warning because that code path is only used below API Level N.
      */
     @Suppress("DEPRECATION")
     val locale: String
@@ -139,6 +172,8 @@ class CustomKeySamples(private val context: Context) {
     /**
      * Retrieve the preferred ABI of the device. Some devices can support
      * multiple ABIs and the first one returned in the preferred one.
+     *
+     * Supressed deprecation warning because that code path is only used below Lollipop.
      */
     @Suppress("DEPRECATION")
     val preferredAbi: String
@@ -148,6 +183,8 @@ class CustomKeySamples(private val context: Context) {
 
     /**
      * Retrieve the install source and return it as a string.
+     *
+     * Supressed deprecation warning because that code path is only used below API level R.
      */
     @Suppress("DEPRECATION")
     val installSource: String

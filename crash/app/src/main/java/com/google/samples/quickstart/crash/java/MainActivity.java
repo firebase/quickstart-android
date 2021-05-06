@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private FirebaseCrashlytics mCrashlytics;
+    private CustomKeySamples samples;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
         final ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-        CustomKeySamples.setSampleCustomKeys(this.getApplicationContext());
-        CustomKeySamples.updateAndTrackNetworkState(this.getApplicationContext());
+        this.samples = new CustomKeySamples(this.getApplicationContext());
+        samples.setSampleCustomKeys();
+        samples.updateAndTrackNetworkState();
 
         mCrashlytics = FirebaseCrashlytics.getInstance();
 
@@ -92,5 +93,11 @@ public class MainActivity extends AppCompatActivity {
         // [START crashlytics_log_event]
         mCrashlytics.log("Activity created");
         // [END crashlytics_log_event]
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        samples.stopTrackingNetworkState();
     }
 }
