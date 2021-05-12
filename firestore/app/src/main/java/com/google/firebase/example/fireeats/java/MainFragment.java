@@ -76,6 +76,7 @@ public class MainFragment extends Fragment implements
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         mBinding = FragmentMainBinding.inflate(inflater, container, false);
         return mBinding.getRoot();
     }
