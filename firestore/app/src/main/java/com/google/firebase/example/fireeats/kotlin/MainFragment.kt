@@ -50,6 +50,7 @@ class MainFragment : Fragment(),
     private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setHasOptionsMenu(true)
         binding = FragmentMainBinding.inflate(inflater, container, false);
         return binding.root;
     }
