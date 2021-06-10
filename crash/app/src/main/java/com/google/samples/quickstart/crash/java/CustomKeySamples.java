@@ -28,23 +28,35 @@ import static android.net.NetworkCapabilities.NET_CAPABILITY_NOT_METERED;
  */
 public class CustomKeySamples {
 
+
+    private final Context context;
+
+    // Lazily instantiated when a listener is set up.
+    private ConnectivityManager.NetworkCallback callback = null;
+
+    public CustomKeySamples(Context context) {
+        this.context = context;
+    }
+
     /**
      * Set a subset of custom keys simultaneously.
      */
-    public static void setSampleCustomKeys(Context context) {
+    public void setSampleCustomKeys() {
         FirebaseCrashlytics.getInstance().setCustomKeys(new CustomKeysAndValues.Builder()
-                .putString("Locale", getLocale(context))
-                .putFloat("Screen Density", getDensity(context))
-                .putString("Google Play Services Availability", getGooglePlayServicesAvailability(context))
+                .putString("Locale", getLocale())
+                .putFloat("Screen Density", getDensity())
+                .putString("Google Play Services Availability", getGooglePlayServicesAvailability())
                 .putString("Os Version", getOsVersion())
-                .putString("Install Source", getInstallSource(context))
+                .putString("Install Source", getInstallSource())
                 .putString("Preferred ABI", getPreferredAbi()).build());
     }
 
     /**
      * Update network state and add a hook to update network state going forward.
+     *
+     * Note: This code is executed above API level N.
      */
-    public static void updateAndTrackNetworkState(Context context) {
+    public void updateAndTrackNetworkState() {
         ConnectivityManager connectivityManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -53,25 +65,45 @@ public class CustomKeySamples {
             if (networkCapabilities != null) {
                 updateNetworkCapabilityCustomKeys(networkCapabilities);
             }
-
-            // Set up a callback to match our best-practices around custom keys being up-to-date
-            connectivityManager.registerDefaultNetworkCallback(new ConnectivityManager.NetworkCallback() {
-                @Override
-                public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
-                    updateNetworkCapabilityCustomKeys(networkCapabilities);
+            synchronized(this) {
+                if (callback == null) {
+                    // Set up a callback to match our best-practices around custom keys being up-to-date
+                    callback = new ConnectivityManager.NetworkCallback() {
+                        @Override
+                        public void onCapabilitiesChanged(Network network, NetworkCapabilities networkCapabilities) {
+                            updateNetworkCapabilityCustomKeys(networkCapabilities);
+                        }
+                    };
+                    connectivityManager.registerDefaultNetworkCallback(callback);
                 }
-            });
+            }
         }
     }
 
-    private static void updateNetworkCapabilityCustomKeys(NetworkCapabilities networkCapabilities) {
+    /**
+     * Remove the handler for the network state.
+     *
+     * Note: This code is executed above API level N.
+     */
+    public void stopTrackingNetworkState() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        synchronized(this) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && callback != null) {
+                connectivityManager.unregisterNetworkCallback(callback);
+                callback = null;
+            }
+        }
+    }
+
+    private void updateNetworkCapabilityCustomKeys(NetworkCapabilities networkCapabilities) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            FirebaseCrashlytics instance = FirebaseCrashlytics.getInstance();
-            instance.setCustomKey("Network Bandwidth", networkCapabilities.getLinkDownstreamBandwidthKbps());
-            instance.setCustomKey("Network Upstream", networkCapabilities.getLinkUpstreamBandwidthKbps());
-            instance.setCustomKey("Network Metered", networkCapabilities.hasCapability(NET_CAPABILITY_NOT_METERED));
-            // This key is long and not as easy to filter by.
-            instance.setCustomKey("Network Capabilities", networkCapabilities.toString());
+            FirebaseCrashlytics.getInstance().setCustomKeys(new CustomKeysAndValues.Builder()
+                    .putInt("Network Bandwidth", networkCapabilities.getLinkDownstreamBandwidthKbps())
+                    .putInt("Network Upstream", networkCapabilities.getLinkUpstreamBandwidthKbps())
+                    .putBoolean("Network Metered", networkCapabilities.hasCapability(NET_CAPABILITY_NOT_METERED))
+                    // This key is long and not as easy to filter by.
+                    .putString("Network Capabilities", networkCapabilities.toString()).build());
         }
     }
 
@@ -79,10 +111,12 @@ public class CustomKeySamples {
      * @see {@link com.google.samples.quickstart.crash.java.CustomKeySamples#updateAndTrackNetworkState},
      * which does not require READ_PHONE_STATE
      * and returns more useful information about bandwidth, metering, and capabilities.
+     *
+     * Supressed deprecation warning because that code path is only used below API Level N.
      */
     @Deprecated
     @SuppressLint("MissingPermission")
-    public static void addPhoneStateRequiredNetworkKeys(Context context) {
+    public void addPhoneStateRequiredNetworkKeys() {
         TelephonyManager telephonyManager = ((TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE));
 
@@ -104,9 +138,11 @@ public class CustomKeySamples {
 
     /**
      * Retrieve the locale information for the app.
+     *
+     * Supressed deprecation warning because that code path is only used below API Level N.
      */
     @SuppressWarnings("deprecation")
-    public static String getLocale(Context context) {
+    public String getLocale() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return context
                     .getResources()
@@ -122,7 +158,7 @@ public class CustomKeySamples {
     /**
      * Retrieve the screen density information for the app.
      */
-    public static float getDensity(Context context) {
+    public float getDensity() {
         return context
                 .getResources()
                 .getDisplayMetrics()
@@ -132,7 +168,7 @@ public class CustomKeySamples {
     /**
      * Retrieve the locale information for the app.
      */
-    public static String getGooglePlayServicesAvailability(Context context) {
+    public String getGooglePlayServicesAvailability() {
         return GoogleApiAvailability
                 .getInstance()
                 .isGooglePlayServicesAvailable(context) == 0 ? "Unavailable" : "Available";
@@ -141,7 +177,7 @@ public class CustomKeySamples {
     /**
      * Return the underlying kernel version of the Android device.
      */
-    public static String getOsVersion() {
+    public String getOsVersion() {
         String osVersion = System.getProperty("os.version");
         return osVersion != null ? osVersion : "Unknown";
     }
@@ -149,9 +185,11 @@ public class CustomKeySamples {
     /**
      * Retrieve the preferred ABI of the device. Some devices can support
      * multiple ABIs and the first one returned in the preferred one.
+     *
+     * Supressed deprecation warning because that code path is only used below Lollipop.
      */
     @SuppressWarnings("deprecation")
-    public static String getPreferredAbi() {
+    public String getPreferredAbi() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             return Build.SUPPORTED_ABIS[0];
         }
@@ -161,8 +199,10 @@ public class CustomKeySamples {
 
     /**
      * Retrieve the install source and return it as a string.
-     **/
-    public static String getInstallSource(Context context) {
+     *
+     * Supressed deprecation warning because that code path is only used below API level R.
+     */
+    public String getInstallSource() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             try {
                 InstallSourceInfo info = context
@@ -194,7 +234,7 @@ public class CustomKeySamples {
     /**
      * Add a focus listener that updates a custom key when this view gains the focus.
      **/
-    public static void focusListener(View view, boolean hasFocus) {
+    public void focusListener(View view, boolean hasFocus) {
         if (hasFocus) {
             FirebaseCrashlytics.getInstance().setCustomKey("view_focus", view.getId());
         }
