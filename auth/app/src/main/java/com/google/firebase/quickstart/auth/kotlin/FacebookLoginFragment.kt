@@ -51,7 +51,7 @@ class FacebookLoginFragment : BaseFragment() {
         // Initialize Facebook Login button
         callbackManager = CallbackManager.Factory.create()
 
-        binding.buttonFacebookLogin.setReadPermissions("email", "public_profile")
+        binding.buttonFacebookLogin.setPermissions("email", "public_profile")
         binding.buttonFacebookLogin.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 Log.d(TAG, "facebook:onSuccess:$loginResult")
