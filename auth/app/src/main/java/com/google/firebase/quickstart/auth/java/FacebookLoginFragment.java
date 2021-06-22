@@ -83,7 +83,7 @@ public class FacebookLoginFragment extends BaseFragment {
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = mBinding.buttonFacebookLogin;
-        loginButton.setReadPermissions("email", "public_profile");
+        loginButton.setPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {

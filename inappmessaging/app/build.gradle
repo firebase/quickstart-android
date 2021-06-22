@@ -47,6 +47,10 @@ dependencies {
     // FIAM (Kotlin)
     implementation 'com.google.firebase:firebase-inappmessaging-ktx'
     implementation 'com.google.firebase:firebase-inappmessaging-display-ktx'
+    implementation('com.squareup.picasso:picasso') {
+        version { strictly("2.8") }
+        because("Firebase In-App Messaging includes a Picasso version that doesn't use AndroidX")
+    }
 
     // The Firebase SDK for Google Analytics is required to use In-App Messaging
     // Analytics (Java)

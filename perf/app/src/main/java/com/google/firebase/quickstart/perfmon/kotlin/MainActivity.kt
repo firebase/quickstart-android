@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.perfmon.kotlin
 
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +9,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.android.gms.tasks.OnCompleteListener
@@ -85,29 +87,29 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadImageFromWeb() {
         Glide.with(this).load(IMAGE_URL)
-                .placeholder(ColorDrawable(ContextCompat.getColor(this, R.color.colorAccent)))
-                .listener(object : RequestListener<String, GlideDrawable> {
-                    override fun onException(
-                        e: Exception,
-                        model: String,
-                        target: Target<GlideDrawable>,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        numStartupTasks.countDown() // Signal end of image load task.
-                        return false
-                    }
+            .placeholder(ColorDrawable(ContextCompat.getColor(this, R.color.colorAccent)))
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    numStartupTasks.countDown() // Signal end of image load task.
+                    return false
+                }
 
-                    override fun onResourceReady(
-                        resource: GlideDrawable,
-                        model: String,
-                        target: Target<GlideDrawable>,
-                        isFromMemoryCache: Boolean,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        numStartupTasks.countDown() // Signal end of image load task.
-                        return false
-                    }
-                }).into(binding.headerIcon)
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    numStartupTasks.countDown() // Signal end of image load task.
+                    return false
+                }
+            }).into(binding.headerIcon)
     }
 
     private fun writeStringToFile(filename: String, content: String): Task<Void> {
