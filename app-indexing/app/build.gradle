@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
-check.dependsOn 'assembleDebugAndroidTest'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
+
+check.dependsOn 'assembleDebugAndroidTest'
 
 android {
     compileSdkVersion 30
@@ -41,4 +43,3 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 }
 
-apply plugin: 'com.google.gms.google-services'

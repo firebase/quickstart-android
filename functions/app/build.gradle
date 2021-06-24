@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     // Changes the test build type for instrumented tests to "stage".
@@ -67,5 +68,3 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 }
-
-apply plugin: 'com.google.gms.google-services'

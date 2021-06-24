@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'androidx.navigation.safeargs'
 
 android {
@@ -93,5 +94,3 @@ dependencies {
     androidTestImplementation 'com.google.firebase:firebase-auth'
 
 }
-
-apply plugin: 'com.google.gms.google-services'
