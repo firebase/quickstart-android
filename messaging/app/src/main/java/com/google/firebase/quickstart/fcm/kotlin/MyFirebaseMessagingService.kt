@@ -83,7 +83,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun scheduleJob() {
         // [START dispatch_job]
         val work = OneTimeWorkRequest.Builder(MyWorker::class.java).build()
-        WorkManager.getInstance().beginWith(work).enqueue()
+        WorkManager.getInstance(this).beginWith(work).enqueue()
         // [END dispatch_job]
     }
 
