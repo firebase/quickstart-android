@@ -5,7 +5,7 @@ buildscript {
     repositories {
         mavenLocal()
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.google.gms:google-services:4.3.8'
@@ -18,7 +18,7 @@ allprojects {
     repositories {
         mavenLocal()
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
