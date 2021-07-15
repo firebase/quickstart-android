@@ -8,8 +8,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.database.R
@@ -22,7 +23,7 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var pagerAdapter: FragmentPagerAdapter
+    private lateinit var pagerAdapter: FragmentStateAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
@@ -34,28 +35,27 @@ class MainFragment : Fragment() {
         setHasOptionsMenu(true)
 
         // Create the adapter that will return a fragment for each section
-        pagerAdapter = object : FragmentPagerAdapter(parentFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        pagerAdapter = object : FragmentStateAdapter(parentFragmentManager, viewLifecycleOwner.lifecycle) {
             private val fragments = arrayOf<Fragment>(
                     RecentPostsFragment(),
                     MyPostsFragment(),
                     MyTopPostsFragment())
 
-            private val fragmentNames = arrayOf(
-                    getString(R.string.heading_recent),
-                    getString(R.string.heading_my_posts),
-                    getString(R.string.heading_my_top_posts))
+            override fun createFragment(position: Int) = fragments[position]
 
-            override fun getItem(position: Int) = fragments[position]
-
-            override fun getCount() = fragments.size
-
-            override fun getPageTitle(position: Int) = fragmentNames[position]
+            override fun getItemCount() = fragments.size
         }
 
         // Set up the ViewPager with the sections adapter.
         with(binding) {
             container.adapter = pagerAdapter
-            tabs.setupWithViewPager(container)
+            TabLayoutMediator(tabs, container) { tab, position ->
+                tab.text = when(position) {
+                    0 -> getString(R.string.heading_recent)
+                    1 -> getString(R.string.heading_my_posts)
+                    else -> getString(R.string.heading_my_top_posts)
+                }
+            }.attach()
         }
     }
 

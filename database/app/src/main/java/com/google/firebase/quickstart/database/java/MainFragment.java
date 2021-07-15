@@ -11,9 +11,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.quickstart.database.R;
 import com.google.firebase.quickstart.database.databinding.FragmentMainBinding;
@@ -38,37 +39,35 @@ public class MainFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // Create the adapter that will return a fragment for each section
-        FragmentPagerAdapter mPagerAdapter = new FragmentPagerAdapter(getParentFragmentManager(),
-                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        FragmentStateAdapter mPagerAdapter = new FragmentStateAdapter(getParentFragmentManager(),
+                getViewLifecycleOwner().getLifecycle()) {
             private final Fragment[] mFragments = new Fragment[]{
                     new RecentPostsFragment(),
                     new MyPostsFragment(),
                     new MyTopPostsFragment(),
             };
-            private final String[] mFragmentNames = new String[]{
-                    getString(R.string.heading_recent),
-                    getString(R.string.heading_my_posts),
-                    getString(R.string.heading_my_top_posts)
-            };
 
+            @NonNull
             @Override
-            public Fragment getItem(int position) {
+            public Fragment createFragment(int position) {
                 return mFragments[position];
             }
 
             @Override
-            public int getCount() {
+            public int getItemCount() {
                 return mFragments.length;
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return mFragmentNames[position];
             }
         };
         // Set up the ViewPager with the sections adapter.
         binding.container.setAdapter(mPagerAdapter);
-        binding.tabs.setupWithViewPager(binding.container);
+        String[] mFragmentNames = new String[]{
+                getString(R.string.heading_recent),
+                getString(R.string.heading_my_posts),
+                getString(R.string.heading_my_top_posts)
+        };
+        new TabLayoutMediator(binding.tabs, binding.container,
+                (tab, position) -> tab.setText(mFragmentNames[position])
+        ).attach();
     }
 
     @Override
