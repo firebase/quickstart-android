@@ -42,6 +42,7 @@ dependencies {
     implementation project(':internal:lintchecks')
     implementation 'androidx.multidex:multidex:2.0.1'
 
+    implementation 'androidx.activity:activity-ktx:1.2.3'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
     implementation 'com.google.android.material:material:1.4.0'
@@ -62,7 +63,7 @@ dependencies {
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    implementation 'com.firebaseui:firebase-ui-auth:7.1.1'
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
