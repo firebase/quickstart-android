@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.firebasestorage.kotlin
 
-import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -10,7 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -120,24 +119,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         out.putParcelable(KEY_DOWNLOAD_URL, downloadUrl)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.d(TAG, "onActivityResult:$requestCode:$resultCode:$data")
-        if (requestCode == RC_TAKE_PICTURE) {
-            if (resultCode == Activity.RESULT_OK) {
-                fileUri = data?.data
-
-                if (fileUri != null) {
-                    uploadFromUri(fileUri!!)
-                } else {
-                    Log.w(TAG, "File URI is null")
-                }
-            } else {
-                Toast.makeText(this, "Taking picture failed.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun uploadFromUri(uploadUri: Uri) {
         Log.d(TAG, "uploadFromUri:src: $uploadUri")
 
@@ -178,9 +159,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(TAG, "launchCamera")
 
         // Pick an image from storage
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-        intent.type = "image/*"
-        startActivityForResult(intent, RC_TAKE_PICTURE)
+        val intentLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { fileUri ->
+            if (fileUri != null) {
+                uploadFromUri(fileUri)
+            } else {
+                Log.w(TAG, "File URI is null")
+            }
+        }
+        intentLauncher.launch(arrayOf("image/*"))
     }
 
     private fun signInAnonymously() {
@@ -278,8 +264,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
 
         private const val TAG = "Storage#MainActivity"
-
-        private const val RC_TAKE_PICTURE = 101
 
         private const val KEY_FILE_URI = "key_file_uri"
         private const val KEY_DOWNLOAD_URL = "key_download_url"

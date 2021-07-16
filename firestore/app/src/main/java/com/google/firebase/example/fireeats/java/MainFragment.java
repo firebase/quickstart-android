@@ -12,25 +12,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavAction;
-import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
-import androidx.navigation.NavOptionsBuilder;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -58,8 +55,6 @@ public class MainFragment extends Fragment implements
         RestaurantAdapter.OnRestaurantSelectedListener, View.OnClickListener {
 
     private static final String TAG = "MainActivity";
-
-    private static final int RC_SIGN_IN = 9001;
 
     private static final int LIMIT = 50;
 
@@ -177,23 +172,19 @@ public class MainFragment extends Fragment implements
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-            mViewModel.setIsSigningIn(false);
+    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
+        IdpResponse response = result.getIdpResponse();
+        mViewModel.setIsSigningIn(false);
 
-            if (resultCode != Activity.RESULT_OK) {
-                if (response == null) {
-                    // User pressed the back button.
-                    requireActivity().finish();
-                } else if (response.getError() != null
-                        && response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    showSignInErrorDialog(R.string.message_no_network);
-                } else {
-                    showSignInErrorDialog(R.string.message_unknown);
-                }
+        if (result.getResultCode() != Activity.RESULT_OK) {
+            if (response == null) {
+                // User pressed the back button.
+                requireActivity().finish();
+            } else if (response.getError() != null
+                    && response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+                showSignInErrorDialog(R.string.message_no_network);
+            } else {
+                showSignInErrorDialog(R.string.message_unknown);
             }
         }
     }
@@ -265,13 +256,18 @@ public class MainFragment extends Fragment implements
 
     private void startSignIn() {
         // Sign in with FirebaseUI
+        ActivityResultLauncher<Intent> signinLauncher = requireActivity()
+                .registerForActivityResult(new FirebaseAuthUIActivityResultContract(),
+                        this::onSignInResult
+                );
+
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(Collections.singletonList(
                         new AuthUI.IdpConfig.EmailBuilder().build()))
                 .setIsSmartLockEnabled(false)
                 .build();
 
-        startActivityForResult(intent, RC_SIGN_IN);
+        signinLauncher.launch(intent);
         mViewModel.setIsSigningIn(true);
     }
 

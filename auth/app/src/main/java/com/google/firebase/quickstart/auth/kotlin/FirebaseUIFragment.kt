@@ -1,7 +1,6 @@
 package com.google.firebase.quickstart.auth.kotlin
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -51,31 +52,30 @@ class FirebaseUIFragment : Fragment() {
         updateUI(auth.currentUser)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == Activity.RESULT_OK) {
-                // Sign in succeeded
-                updateUI(auth.currentUser)
-            } else {
-                // Sign in failed
-                Toast.makeText(context, "Sign In Failed", Toast.LENGTH_SHORT).show()
-                updateUI(null)
-            }
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Sign in succeeded
+            updateUI(auth.currentUser)
+        } else {
+            // Sign in failed
+            Toast.makeText(context, "Sign In Failed", Toast.LENGTH_SHORT).show()
+            updateUI(null)
         }
     }
 
     private fun startSignIn() {
         // Build FirebaseUI sign in intent. For documentation on this operation and all
         // possible customization see: https://github.com/firebase/firebaseui-android
+        val signInLauncher = requireActivity().registerForActivityResult(
+            FirebaseAuthUIActivityResultContract()
+        ) { result -> this.onSignInResult(result)}
         val intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                 .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
                 .setLogo(R.mipmap.ic_launcher)
                 .build()
 
-        startActivityForResult(intent, RC_SIGN_IN)
+        signInLauncher.launch(intent)
     }
 
     private fun updateUI(user: FirebaseUser?) {
@@ -104,9 +104,5 @@ class FirebaseUIFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val RC_SIGN_IN = 9001
     }
 }

@@ -1,7 +1,6 @@
 package com.google.firebase.example.fireeats.kotlin
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,7 +18,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
-import com.firebase.ui.auth.IdpResponse
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.example.fireeats.R
@@ -139,21 +139,18 @@ class MainFragment : Fragment(),
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-            viewModel.isSigningIn = false
+    private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
+        val response = result.idpResponse
+        viewModel.isSigningIn = false
 
-            if (resultCode != Activity.RESULT_OK) {
-                if (response == null) {
-                    // User pressed the back button.
-                    requireActivity().finish()
-                } else if (response.error != null && response.error!!.errorCode == ErrorCodes.NO_NETWORK) {
-                    showSignInErrorDialog(R.string.message_no_network)
-                } else {
-                    showSignInErrorDialog(R.string.message_unknown)
-                }
+        if (result.resultCode != Activity.RESULT_OK) {
+            if (response == null) {
+                // User pressed the back button.
+                requireActivity().finish()
+            } else if (response.error != null && response.error!!.errorCode == ErrorCodes.NO_NETWORK) {
+                showSignInErrorDialog(R.string.message_no_network)
+            } else {
+                showSignInErrorDialog(R.string.message_unknown)
             }
         }
     }
@@ -222,12 +219,16 @@ class MainFragment : Fragment(),
 
     private fun startSignIn() {
         // Sign in with FirebaseUI
+        val signInLauncher = requireActivity().registerForActivityResult(
+            FirebaseAuthUIActivityResultContract()
+        ) { result -> this.onSignInResult(result)}
+
         val intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
                 .setIsSmartLockEnabled(false)
                 .build()
 
-        startActivityForResult(intent, RC_SIGN_IN)
+        signInLauncher.launch(intent)
         viewModel.isSigningIn = true
     }
 
@@ -274,8 +275,6 @@ class MainFragment : Fragment(),
     companion object {
 
         private const val TAG = "MainActivity"
-
-        private const val RC_SIGN_IN = 9001
 
         private const val LIMIT = 50
     }
