@@ -19,9 +19,16 @@ package com.google.samples.quickstart.functions.java;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -45,15 +52,13 @@ import java.util.Map;
 
 /**
  * This activity demonstrates the Android SDK for Callable Functions.
- *
+ * <p>
  * For more information, see the documentation for Cloud Functions for Firebase:
  * https://firebase.google.com/docs/functions/
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
-
-    private static final int RC_SIGN_IN = 9001;
 
     private ActivityMainBinding binding;
 
@@ -223,6 +228,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void signIn() {
+        ActivityResultLauncher<Intent> signInLauncher =
+                registerForActivityResult(new FirebaseAuthUIActivityResultContract(), this::onSignInResult);
+
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(Collections.singletonList(
@@ -230,30 +238,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setIsSmartLockEnabled(false)
                 .build();
 
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        signInLauncher.launch(signInIntent);
     }
 
     private void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
+        if (result.getResultCode() == RESULT_OK) {
+            showSnackbar("Signed in.");
+        } else {
+            showSnackbar("Error signing in.");
 
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-                showSnackbar("Signed in.");
-            } else {
-                showSnackbar("Error signing in.");
-
-                IdpResponse response = IdpResponse.fromResultIntent(data);
-                Log.w(TAG, "signIn", response.getError());
-            }
+            IdpResponse response = result.getIdpResponse();
+            Log.w(TAG, "signIn", response.getError());
         }
     }
 
