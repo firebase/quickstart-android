@@ -25,8 +25,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,8 +52,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "Storage#MainActivity";
-
-    private static final int RC_TAKE_PICTURE = 101;
 
     private static final String KEY_FILE_URI = "key_file_uri";
     private static final String KEY_DOWNLOAD_URL = "key_download_url";
@@ -156,25 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         out.putParcelable(KEY_DOWNLOAD_URL, mDownloadUrl);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
-        super.onActivityResult(requestCode,resultCode, data);
-        if (requestCode == RC_TAKE_PICTURE) {
-            if (resultCode == RESULT_OK) {
-                mFileUri = data.getData();
-
-                if (mFileUri != null) {
-                    uploadFromUri(mFileUri);
-                } else {
-                    Log.w(TAG, "File URI is null");
-                }
-            } else {
-                Toast.makeText(this, "Taking picture failed.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private void uploadFromUri(Uri fileUri) {
         Log.d(TAG, "uploadFromUri:src:" + fileUri.toString());
 
@@ -213,9 +193,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "launchCamera");
 
         // Pick an image from storage
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, RC_TAKE_PICTURE);
+        ActivityResultLauncher<String[]> intentLauncher = registerForActivityResult(
+                new ActivityResultContracts.OpenDocument(), fileUri -> {
+                    if (fileUri != null) {
+                        uploadFromUri(fileUri);
+                    } else {
+                        Log.w(TAG, "File URI is null");
+                    }
+                });
+        intentLauncher.launch(new String[]{ "image/*" });
     }
 
     private void signInAnonymously() {
