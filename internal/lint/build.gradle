@@ -17,9 +17,9 @@ compileKotlin {
 }
 
 dependencies {
-    compileOnly "com.android.tools.lint:lint-api:27.2.2"
-    testImplementation "com.android.tools.lint:lint:27.2.2"
-    testImplementation "com.android.tools.lint:lint-tests:27.2.2"
+    compileOnly "com.android.tools.lint:lint-api:30.0.0"
+    testImplementation "com.android.tools.lint:lint:30.0.0"
+    testImplementation "com.android.tools.lint:lint-tests:30.0.0"
 }
 
 jar {
