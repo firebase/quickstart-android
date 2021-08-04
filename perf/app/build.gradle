@@ -42,7 +42,7 @@ dependencies {
     implementation project(":internal:chooserx")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:28.2.1')
+    implementation platform('com.google.firebase:firebase-bom:28.3.0')
 
     // Firebase Performance Monitoring (Java)
     implementation 'com.google.firebase:firebase-perf'
@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf-ktx'
 
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'

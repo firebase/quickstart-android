@@ -8,18 +8,19 @@ repositories {
 }
 
 java {
-    targetCompatibility = JavaVersion.VERSION_1_8
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_11
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
 dependencies {
-    compileOnly "com.android.tools.lint:lint-api:27.2.2"
-    testImplementation "com.android.tools.lint:lint:27.2.2"
-    testImplementation "com.android.tools.lint:lint-tests:27.2.2"
+    compileOnly "com.android.tools.lint:lint-api:30.0.0"
+    testImplementation "com.android.tools.lint:lint:30.0.0"
+    testImplementation "com.android.tools.lint:lint-tests:30.0.0"
+    testImplementation "junit:junit:4.13.2"
 }
 
 jar {

@@ -20,9 +20,9 @@ class InvalidImportDetectorTest {
         lint()
                 .allowMissingSdk()
                 .files(javaPackage, java("""
-          package com.google.firebase.kotlin;
+          package com.google.firebase.java;
 
-          import com.google.firebase.Hello;
+          import com.google.firebase.java.Hello;
 
           class Example {
           }""").indented())
