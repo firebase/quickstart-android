@@ -2,7 +2,7 @@
 
 A collection of quickstart samples demonstrating the Firebase APIs on Android. For more information, see https://firebase.google.com.
 
-## Samples
+## Samples 
 
 You can open each of the following samples as an Android Studio project, and run
 them on a mobile device or a virtual device (AVD). When doing so you need to
