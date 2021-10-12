@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">StockNewsApp</string>
+  <string name="topic">Topic</string>
+</resources>
