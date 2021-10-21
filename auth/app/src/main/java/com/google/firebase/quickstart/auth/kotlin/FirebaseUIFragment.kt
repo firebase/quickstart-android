@@ -32,6 +32,12 @@ class FirebaseUIFragment : Fragment() {
     private val binding: FragmentFirebaseUiBinding
         get() = _binding!!
 
+    // Build FirebaseUI sign in intent. For documentation on this operation and all
+    // possible customization see: https://github.com/firebase/firebaseui-android
+    private val signInLauncher = registerForActivityResult(
+        FirebaseAuthUIActivityResultContract()
+    ) { result -> this.onSignInResult(result)}
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFirebaseUiBinding.inflate(inflater, container, false)
         return binding.root
@@ -64,11 +70,6 @@ class FirebaseUIFragment : Fragment() {
     }
 
     private fun startSignIn() {
-        // Build FirebaseUI sign in intent. For documentation on this operation and all
-        // possible customization see: https://github.com/firebase/firebaseui-android
-        val signInLauncher = requireActivity().registerForActivityResult(
-            FirebaseAuthUIActivityResultContract()
-        ) { result -> this.onSignInResult(result)}
         val intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                 .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))

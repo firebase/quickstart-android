@@ -36,6 +36,13 @@ public class FirebaseUIFragment extends Fragment {
 
     private FragmentFirebaseUiBinding mBinding;
 
+    // Build FirebaseUI sign in intent. For documentation on this operation and all
+    // possible customization see: https://github.com/firebase/firebaseui-android
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+            new FirebaseAuthUIActivityResultContract(),
+            this::onSignInResult
+    );
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -88,13 +95,6 @@ public class FirebaseUIFragment extends Fragment {
     }
 
     private void startSignIn() {
-        // Build FirebaseUI sign in intent. For documentation on this operation and all
-        // possible customization see: https://github.com/firebase/firebaseui-android
-        ActivityResultLauncher<Intent> signinLauncher = requireActivity()
-                .registerForActivityResult(new FirebaseAuthUIActivityResultContract(),
-                        this::onSignInResult
-                );
-
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                 .setAvailableProviders(Collections.singletonList(
@@ -102,7 +102,7 @@ public class FirebaseUIFragment extends Fragment {
                 .setLogo(R.mipmap.ic_launcher)
                 .build();
 
-        signinLauncher.launch(intent);
+        signInLauncher.launch(intent);
     }
 
     private void updateUI(FirebaseUser user) {
