@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.google.samples.quickstart.admobexample"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -48,7 +48,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:20.2.0'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:28.3.0')
+    implementation platform('com.google.firebase:firebase-bom:29.0.0')
 
     // For an optimal experience using AdMob, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
