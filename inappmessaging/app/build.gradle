@@ -8,7 +8,7 @@ android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "com.google.firebase.fiamquickstart"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -42,18 +42,13 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:28.3.0')
+    implementation platform('com.google.firebase:firebase-bom:29.0.0')
 
     // FIAM (Java)
     implementation 'com.google.firebase:firebase-inappmessaging-display'
 
     // FIAM (Kotlin)
-    implementation 'com.google.firebase:firebase-inappmessaging-ktx'
     implementation 'com.google.firebase:firebase-inappmessaging-display-ktx'
-    implementation('com.squareup.picasso:picasso') {
-        version { strictly("2.8") }
-        because("Firebase In-App Messaging includes a Picasso version that doesn't use AndroidX")
-    }
 
     // The Firebase SDK for Google Analytics is required to use In-App Messaging
     // Analytics (Java)
