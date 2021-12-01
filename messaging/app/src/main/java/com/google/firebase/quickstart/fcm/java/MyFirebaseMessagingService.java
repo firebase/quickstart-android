@@ -134,6 +134,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // [END dispatch_job]
     }
 
+    @Override
+    public boolean shouldPostNotification(RemoteMessage message) {
+        return super.shouldPostNotification(message);
+    }
+
     /**
      * Handle time allotted to BroadcastReceivers.
      */
