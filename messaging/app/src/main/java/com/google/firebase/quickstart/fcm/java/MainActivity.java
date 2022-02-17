@@ -29,9 +29,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableReference;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.quickstart.fcm.R;
 import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,26 +102,46 @@ public class MainActivity extends AppCompatActivity {
                 // Get token
                 // [START log_reg_token]
                 FirebaseMessaging.getInstance().getToken()
-                    .addOnCompleteListener(new OnCompleteListener<String>() {
-                        @Override
-                        public void onComplete(@NonNull Task<String> task) {
-                          if (!task.isSuccessful()) {
-                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                            return;
-                          }
+                    .addOnCompleteListener(task -> {
+                      if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                      }
 
-                          // Get new FCM registration token
-                          String token = task.getResult();
+                      // Get new FCM registration token
+                      String token = task.getResult();
 
-                          // Log and toast
-                          String msg = getString(R.string.msg_token_fmt, token);
-                          Log.d(TAG, msg);
-                          Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        }
+                      // Log and toast
+                      String msg = getString(R.string.msg_token_fmt, token);
+                      Log.d(TAG, msg);
+                      Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     });
                 // [END log_reg_token]
             }
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // [START send_reg_token]
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+
+                    String token = task.getResult();
+                    Map<String, String> tokenMap = new HashMap<>();
+                    tokenMap.put("fcm_token", token);
+
+                    // Send token to backend server
+                    HttpsCallableReference callable =
+                            FirebaseFunctions.getInstance().getHttpsCallable("updateToken");
+                    callable.call(tokenMap).getResult();
+                });
+        // [END send_reg_token]
+    }
 }

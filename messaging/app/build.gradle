@@ -58,6 +58,12 @@ dependencies {
     // Firebase Cloud Messaging (Kotlin)
     implementation 'com.google.firebase:firebase-messaging-ktx'
 
+    // Cloud Functions for Firebase (Java)
+    implementation 'com.google.firebase:firebase-functions'
+
+    // Cloud Functions for Firebase (Kotlin)
+    implementation 'com.google.firebase:firebase-functions-ktx'
+
     // For an optimal experience using FCM, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
     implementation 'com.google.firebase:firebase-analytics'
