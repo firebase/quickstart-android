@@ -852,7 +852,7 @@
         "client_id": "android:com.google.firebase.appdistributionquickstart",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "com.google.samples.quickstart.crash",
+          "package_name": "com.google.firebase.appdistributionquickstart",
           "certificate_hash": []
         }
       },
