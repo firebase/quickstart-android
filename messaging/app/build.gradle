@@ -26,17 +26,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     packagingOptions {
-        exclude 'LICENSE.txt'
+        resources {
+            excludes += ['LICENSE.txt']
+        }
     }
 
-    lintOptions {
-        abortOnError false
-    }
 
     buildFeatures {
         viewBinding = true
+    }
+    lint {
+        abortOnError false
     }
 }
 

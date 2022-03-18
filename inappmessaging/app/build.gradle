@@ -24,12 +24,12 @@ android {
         }
     }
 
-    lintOptions {
-        warning 'InvalidPackage'
-    }
 
     buildFeatures {
         viewBinding = true
+    }
+    lint {
+        warning 'InvalidPackage'
     }
 }
 

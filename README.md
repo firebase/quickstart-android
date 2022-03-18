@@ -18,6 +18,7 @@ the sample you wish to run.
 
 - [Admob](admob/README.md)
 - [Analytics](analytics/README.md)
+- [App Distribution](appdistribution/README.md)
 - [App-Indexing](app-indexing/README.md)
 - [Auth](auth/README.md)
 - [Config](config/README.md)

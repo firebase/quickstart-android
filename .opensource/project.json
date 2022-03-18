@@ -13,6 +13,7 @@
     "pages" : {
       "admob/README.md": "Admob",
       "analytics/README.md": "Analytics",
+      "appdistribution/README.md": "App Distribution",
       "app-indexing/README.md": "App Indexing",
       "auth/README.md": "Authentication",
       "config/README.md": "Remote Config",

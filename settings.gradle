@@ -1,5 +1,6 @@
 include ':admob:app',
         ':analytics:app',
+        ':appdistribution:app',
         ':app-indexing:app',
         ':auth:app',
         ':config:app',

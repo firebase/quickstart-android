@@ -1,4 +1,4 @@
-package com.google.firebase.fiamquickstart;
+package com.google.firebase.appdistributionquickstart;
 
 import android.os.RemoteException;
 import androidx.annotation.IdRes;
