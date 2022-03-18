@@ -7,6 +7,7 @@ set -e
 echo "Using mock google-services.json"
 cp mock-google-services.json admob/app/google-services.json
 cp mock-google-services.json analytics/app/google-services.json
+cp mock-google-services.json appdistribution/app/google-services.json
 cp mock-google-services.json auth/app/google-services.json
 cp mock-google-services.json config/app/google-services.json
 cp mock-google-services.json crash/app/google-services.json
