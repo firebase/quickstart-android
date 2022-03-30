@@ -1,4 +1,4 @@
-package com.google.firebase.appdistributionquickstart.kotlin
+package com.google.firebase.fiamquickstart.kotlin
 
 import android.os.Bundle
 import android.util.Log
@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.appdistributionquickstart.R
-import com.google.firebase.appdistributionquickstart.databinding.ActivityMainBinding
+import com.google.firebase.fiamquickstart.R
+import com.google.firebase.fiamquickstart.databinding.ActivityMainBinding
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.inappmessaging.ktx.inAppMessaging
 import com.google.firebase.installations.ktx.installations

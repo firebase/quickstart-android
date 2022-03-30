@@ -1,4 +1,4 @@
-package com.google.firebase.appdistributionquickstart;
+package com.google.firebase.fiamquickstart;
 
 import android.os.RemoteException;
 import androidx.annotation.IdRes;
@@ -25,6 +25,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+
+import com.google.firebase.fiamquickstart.R;
 
 
 /**
