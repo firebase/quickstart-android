@@ -22,7 +22,8 @@
             android:theme="@style/AppTheme">
         </activity>
 
-        <activity android:name="com.google.firebase.fiamquickstart.EntryChoiceActivity">
+        <activity android:name="com.google.firebase.fiamquickstart.EntryChoiceActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EntryChoiceActivity">
+        <activity android:name=".EntryChoiceActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +27,8 @@
         <activity
             android:name=".java.PasswordlessActivity"
             android:label="@string/label_passwordless"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data
@@ -40,7 +42,8 @@
         <activity
             android:name=".kotlin.PasswordlessActivity"
             android:label="@string/label_passwordless"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <data
