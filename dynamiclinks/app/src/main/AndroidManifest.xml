@@ -9,7 +9,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
-        <activity android:name=".EntryChoiceActivity">
+        <activity android:name=".EntryChoiceActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,7 +18,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".java.MainActivity" >
+        <activity android:name=".java.MainActivity"
+            android:exported="true">
             <!-- [START link_intent_filter] -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -30,7 +32,8 @@
             <!-- [END link_intent_filter] -->
         </activity>
 
-        <activity android:name=".kotlin.MainActivity" >
+        <activity android:name=".kotlin.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>

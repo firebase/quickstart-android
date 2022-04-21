@@ -13,7 +13,8 @@
 
         <activity android:name=".kotlin.MainActivity"/>
 
-        <activity android:name=".EntryChoiceActivity">
+        <activity android:name=".EntryChoiceActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -7,12 +7,12 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.google.samples.quickstart.config"
         minSdkVersion 18
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
 
@@ -35,7 +35,7 @@ dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
 
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.material:material:1.5.0'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation platform('com.google.firebase:firebase-bom:28.3.0')
