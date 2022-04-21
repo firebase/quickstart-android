@@ -28,3 +28,7 @@
 -keepclassmembers class com.google.firebase.quickstart.database.java.models.** {
     *;
 }
+
+-keepclassmembers class com.google.firebase.quickstart.database.kotlin.models.** {
+    *;
+}
