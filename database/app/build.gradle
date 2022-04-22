@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.database"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
