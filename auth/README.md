@@ -24,7 +24,7 @@ Getting Started
 
 ### Facebook Login Setup
 
-- Go to the [Meta for Developers](https://developers.facebook.com) and follow all
+- Go to the [Meta for Developers Site](https://developers.facebook.com) and follow all
   instructions to set up a new Android app.
   - When asked for a package name, use
   `com.google.firebase.quickstart.auth`.
