@@ -1,4 +1,7 @@
-# Firebase Quickstarts for Android
+**Note: This branch includes the old Java Firebase Quickstarts which are no longer being maintained by Firebase. If you're still using Java, consider [migrating to Kotlin](https://developer.android.com/kotlin/add-kotlin).
+To see the up-to-date (Kotlin-only) quickstarts checkout the [main branch](https://github.com/firebase/quickstart-android).**
+
+# Firebase Quickstarts for Android (Java included)
 
 A collection of quickstart samples demonstrating the Firebase APIs on Android. For more information, see https://firebase.google.com.
 
