@@ -1,16 +1,18 @@
 package com.google.firebase.quickstart.auth.kotlin
 
 import android.content.Intent
+import android.content.IntentSender
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -31,9 +33,10 @@ class GoogleSignInFragment : BaseFragment() {
     private val binding: FragmentGoogleBinding
         get() = _binding!!
 
-    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var oneTapClient: SignInClient
+    private lateinit var signInRequest: BeginSignInRequest
 
-    private val signInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val signInLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
         handleSignInResult(result.data)
     }
 
@@ -53,12 +56,16 @@ class GoogleSignInFragment : BaseFragment() {
         binding.disconnectButton.setOnClickListener { revokeAccess() }
 
         // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-
-        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+        oneTapClient = Identity.getSignInClient(requireContext())
+        signInRequest = BeginSignInRequest.builder()
+            .setGoogleIdTokenRequestOptions(
+                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                    .setSupported(true)
+                    .setServerClientId(getString(R.string.default_web_client_id))
+                    .setFilterByAuthorizedAccounts(true)
+                    .build()
+            )
+            .build()
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -73,12 +80,17 @@ class GoogleSignInFragment : BaseFragment() {
 
     private fun handleSignInResult(data: Intent?) {
         // Result returned from launching the Intent from GoogleSignInClient.signInIntent
-        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
         try {
             // Google Sign In was successful, authenticate with Firebase
-            val account = task.getResult(ApiException::class.java)!!
-            Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-            firebaseAuthWithGoogle(account.idToken!!)
+            val credential = oneTapClient.getSignInCredentialFromIntent(data)
+            val idToken = credential.googleIdToken
+            if (idToken != null) {
+                Log.d(TAG, "firebaseAuthWithGoogle: ${credential.id}")
+                firebaseAuthWithGoogle(idToken)
+            } else {
+                // Shouldn't happen.
+                Log.d(TAG, "No ID token!")
+            }
         } catch (e: ApiException) {
             // Google Sign In failed, update UI appropriately
             Log.w(TAG, "Google sign in failed", e)
@@ -109,8 +121,20 @@ class GoogleSignInFragment : BaseFragment() {
     }
 
     private fun signIn() {
-        val signInIntent = googleSignInClient.signInIntent
-        signInLauncher.launch(signInIntent)
+        oneTapClient.beginSignIn(signInRequest)
+            .addOnSuccessListener { result ->
+                try {
+                    val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent)
+                        .build()
+                    signInLauncher.launch(intentSenderRequest)
+                } catch (e: IntentSender.SendIntentException) {
+                    Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
+                }
+            }
+            .addOnFailureListener {
+                // No saved credentials found. Launch the One Tap sign-up flow, or
+                // do nothing and continue presenting the signed-out UI.
+            }
     }
 
     private fun signOut() {
@@ -118,7 +142,7 @@ class GoogleSignInFragment : BaseFragment() {
         auth.signOut()
 
         // Google sign out
-        googleSignInClient.signOut().addOnCompleteListener(requireActivity()) {
+        oneTapClient.signOut().addOnCompleteListener(requireActivity()) {
             updateUI(null)
         }
     }
@@ -128,9 +152,10 @@ class GoogleSignInFragment : BaseFragment() {
         auth.signOut()
 
         // Google revoke access
-        googleSignInClient.revokeAccess().addOnCompleteListener(requireActivity()) {
-            updateUI(null)
-        }
+        // TODO(rosariopf): Find out how to revoke access with GIS
+//        googleSignInClient.revokeAccess().addOnCompleteListener(requireActivity()) {
+//            updateUI(null)
+//        }
     }
 
     private fun updateUI(user: FirebaseUser?) {
@@ -156,6 +181,6 @@ class GoogleSignInFragment : BaseFragment() {
     }
 
     companion object {
-        private const val TAG = "GoogleActivity"
+        private const val TAG = "GoogleSignInFrag"
     }
 }
