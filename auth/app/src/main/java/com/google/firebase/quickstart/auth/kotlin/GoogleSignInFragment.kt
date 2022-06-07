@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
@@ -36,7 +36,7 @@ class GoogleSignInFragment : BaseFragment() {
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
 
-    private val signInLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+    private val signInLauncher = registerForActivityResult(StartIntentSenderForResult()) { result ->
         handleSignInResult(result.data)
     }
 
