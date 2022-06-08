@@ -161,7 +161,7 @@ class GoogleSignInFragment : BaseFragment() {
                 .build()
             signInLauncher.launch(intentSenderRequest)
         } catch (e: IntentSender.SendIntentException) {
-            Log.e(TAG, "Couldn't start One Tap UI: ${e.localizedMessage}")
+            Log.e(TAG, "Couldn't start Sign In: ${e.localizedMessage}")
         }
     }
 
@@ -209,6 +209,6 @@ class GoogleSignInFragment : BaseFragment() {
     }
 
     companion object {
-        private const val TAG = "GoogleSignInFrag"
+        private const val TAG = "GoogleFragmentKt"
     }
 }

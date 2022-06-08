@@ -16,6 +16,7 @@
 
 package com.google.firebase.quickstart.auth.java;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.BeginSignInResult;
+import com.google.android.gms.auth.api.identity.GetSignInIntentRequest;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
@@ -59,8 +61,7 @@ public class GoogleSignInFragment extends BaseFragment {
 
     private FirebaseAuth mAuth;
 
-    private SignInClient oneTapClient;
-    private BeginSignInRequest signInRequest;
+    private SignInClient signInClient;
     private FragmentGoogleBinding mBinding;
 
     private final ActivityResultLauncher<IntentSenderRequest> signInLauncher = registerForActivityResult(
@@ -106,19 +107,16 @@ public class GoogleSignInFragment extends BaseFragment {
         });
 
         // Configure Google Sign In
-        oneTapClient = Identity.getSignInClient(requireContext());
-        signInRequest = BeginSignInRequest.builder()
-                .setGoogleIdTokenRequestOptions(
-                        BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                                .setSupported(true)
-                                .setServerClientId(getString(R.string.default_web_client_id))
-                                .setFilterByAuthorizedAccounts(true)
-                                .build()
-                )
-                .build();
+        signInClient = Identity.getSignInClient(requireContext());
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+        // Display One-Tap Sign In if user isn't logged in
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            oneTapSignIn();
+        }
     }
 
     @Override
@@ -132,7 +130,7 @@ public class GoogleSignInFragment extends BaseFragment {
     public void handleSignInResult(Intent data) {
         try {
             // Google Sign In was successful, authenticate with Firebase
-            SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(data);
+            SignInCredential credential = signInClient.getSignInCredentialFromIntent(data);
             String idToken = credential.getGoogleIdToken();
             Log.d(TAG, "firebaseAuthWithGoogle:" + credential.getId());
             firebaseAuthWithGoogle(idToken);
@@ -168,17 +166,43 @@ public class GoogleSignInFragment extends BaseFragment {
     }
 
     private void signIn() {
-        oneTapClient.beginSignIn(signInRequest)
+        GetSignInIntentRequest signInRequest = GetSignInIntentRequest.builder()
+                .setServerClientId(getString(R.string.default_web_client_id))
+                .build();
+
+        signInClient.getSignInIntent(signInRequest)
+                .addOnSuccessListener(new OnSuccessListener<PendingIntent>() {
+                    @Override
+                    public void onSuccess(PendingIntent pendingIntent) {
+                        launchSignIn(pendingIntent);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Google Sign-in failed", e);
+                    }
+                });
+    }
+
+    private void oneTapSignIn() {
+        // Configure One Tap UI
+        BeginSignInRequest oneTapRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(
+                        BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                                .setSupported(true)
+                                .setServerClientId(getString(R.string.default_web_client_id))
+                                .setFilterByAuthorizedAccounts(true)
+                                .build()
+                )
+                .build();
+
+        // Display the One Tap UI
+        signInClient.beginSignIn(oneTapRequest)
                 .addOnSuccessListener(new OnSuccessListener<BeginSignInResult>() {
                     @Override
-                    public void onSuccess(BeginSignInResult result) {
-                        try {
-                            IntentSenderRequest intentSenderRequest = new IntentSenderRequest.Builder(result.getPendingIntent())
-                                    .build();
-                            signInLauncher.launch(intentSenderRequest);
-                        } catch (Exception e) {
-                            Log.e(TAG, "Couldn't start One Tap UI: " + e.getLocalizedMessage());
-                        }
+                    public void onSuccess(BeginSignInResult beginSignInResult) {
+                        launchSignIn(beginSignInResult.getPendingIntent());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -190,12 +214,22 @@ public class GoogleSignInFragment extends BaseFragment {
                 });
     }
 
+    private void launchSignIn(PendingIntent pendingIntent) {
+        try {
+            IntentSenderRequest intentSenderRequest = new IntentSenderRequest.Builder(pendingIntent)
+                    .build();
+            signInLauncher.launch(intentSenderRequest);
+        } catch (Exception e) {
+            Log.e(TAG, "Couldn't start Sign In: " + e.getLocalizedMessage());
+        }
+    }
+
     private void signOut() {
         // Firebase sign out
         mAuth.signOut();
 
         // Google sign out
-        oneTapClient.signOut().addOnCompleteListener(requireActivity(),
+        signInClient.signOut().addOnCompleteListener(requireActivity(),
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
