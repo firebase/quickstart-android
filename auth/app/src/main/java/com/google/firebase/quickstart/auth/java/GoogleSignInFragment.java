@@ -99,12 +99,6 @@ public class GoogleSignInFragment extends BaseFragment {
                 signOut();
             }
         });
-        mBinding.disconnectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                revokeAccess();
-            }
-        });
 
         // Configure Google Sign In
         signInClient = Identity.getSignInClient(requireContext());
@@ -238,14 +232,6 @@ public class GoogleSignInFragment extends BaseFragment {
                 });
     }
 
-    private void revokeAccess() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google revoke access
-        // TODO(rosariopf): Find out how to revoke access with GIS
-    }
-
     private void updateUI(FirebaseUser user) {
         hideProgressBar();
         if (user != null) {
@@ -253,13 +239,13 @@ public class GoogleSignInFragment extends BaseFragment {
             mBinding.detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
             mBinding.signInButton.setVisibility(View.GONE);
-            mBinding.signOutAndDisconnect.setVisibility(View.VISIBLE);
+            mBinding.signOutButton.setVisibility(View.VISIBLE);
         } else {
             mBinding.status.setText(R.string.signed_out);
             mBinding.detail.setText(null);
 
             mBinding.signInButton.setVisibility(View.VISIBLE);
-            mBinding.signOutAndDisconnect.setVisibility(View.GONE);
+            mBinding.signOutButton.setVisibility(View.GONE);
         }
     }
 

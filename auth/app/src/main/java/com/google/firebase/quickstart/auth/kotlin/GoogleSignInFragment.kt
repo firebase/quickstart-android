@@ -54,7 +54,6 @@ class GoogleSignInFragment : BaseFragment() {
         // Button listeners
         binding.signInButton.setOnClickListener { signIn() }
         binding.signOutButton.setOnClickListener { signOut() }
-        binding.disconnectButton.setOnClickListener { revokeAccess() }
 
         // Configure Google Sign In
         signInClient = Identity.getSignInClient(requireContext())
@@ -175,17 +174,6 @@ class GoogleSignInFragment : BaseFragment() {
         }
     }
 
-    private fun revokeAccess() {
-        // Firebase sign out
-        auth.signOut()
-
-        // Google revoke access
-        // TODO(rosariopf): Find out how to revoke access with GIS
-//        googleSignInClient.revokeAccess().addOnCompleteListener(requireActivity()) {
-//            updateUI(null)
-//        }
-    }
-
     private fun updateUI(user: FirebaseUser?) {
         hideProgressBar()
         if (user != null) {
@@ -193,13 +181,13 @@ class GoogleSignInFragment : BaseFragment() {
             binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
 
             binding.signInButton.visibility = View.GONE
-            binding.signOutAndDisconnect.visibility = View.VISIBLE
+            binding.signOutButton.visibility = View.VISIBLE
         } else {
             binding.status.setText(R.string.signed_out)
             binding.detail.text = null
 
             binding.signInButton.visibility = View.VISIBLE
-            binding.signOutAndDisconnect.visibility = View.GONE
+            binding.signOutButton.visibility = View.GONE
         }
     }
 
