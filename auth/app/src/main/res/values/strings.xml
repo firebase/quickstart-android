@@ -43,7 +43,6 @@
     <string name="send_link">Send Link</string>
     <string name="sign_out">Sign Out</string>
     <string name="verify_email">Verify</string>
-    <string name="disconnect">Disconnect</string>
     <string name="loading">Loading…</string>
     <string name="custom_token">Custom Token</string>
     <string name="signed_in">Signed In</string>

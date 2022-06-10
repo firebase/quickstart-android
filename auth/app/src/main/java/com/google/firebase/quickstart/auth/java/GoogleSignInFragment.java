@@ -16,6 +16,7 @@
 
 package com.google.firebase.quickstart.auth.java;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,15 +24,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.IntentSenderRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.BeginSignInResult;
+import com.google.android.gms.auth.api.identity.GetSignInIntentRequest;
+import com.google.android.gms.auth.api.identity.Identity;
+import com.google.android.gms.auth.api.identity.SignInClient;
+import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
@@ -48,12 +58,21 @@ import com.google.firebase.quickstart.auth.databinding.FragmentGoogleBinding;
 public class GoogleSignInFragment extends BaseFragment {
 
     private static final String TAG = "GoogleFragment";
-    private static final int RC_SIGN_IN = 9001;
 
     private FirebaseAuth mAuth;
 
-    private GoogleSignInClient mGoogleSignInClient;
+    private SignInClient signInClient;
     private FragmentGoogleBinding mBinding;
+
+    private final ActivityResultLauncher<IntentSenderRequest> signInLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartIntentSenderForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    handleSignInResult(result.getData());
+                }
+            }
+    );
 
     @Nullable
     @Override
@@ -80,23 +99,18 @@ public class GoogleSignInFragment extends BaseFragment {
                 signOut();
             }
         });
-        mBinding.disconnectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                revokeAccess();
-            }
-        });
 
         // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso);
+        signInClient = Identity.getSignInClient(requireContext());
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
+        // Display One-Tap Sign In if user isn't logged in
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            oneTapSignIn();
+        }
     }
 
     @Override
@@ -107,23 +121,17 @@ public class GoogleSignInFragment extends BaseFragment {
         updateUI(currentUser);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
-                updateUI(null);
-            }
+    private void handleSignInResult(Intent data) {
+        try {
+            // Google Sign In was successful, authenticate with Firebase
+            SignInCredential credential = signInClient.getSignInCredentialFromIntent(data);
+            String idToken = credential.getGoogleIdToken();
+            Log.d(TAG, "firebaseAuthWithGoogle:" + credential.getId());
+            firebaseAuthWithGoogle(idToken);
+        } catch (ApiException e) {
+            // Google Sign In failed, update UI appropriately
+            Log.w(TAG, "Google sign in failed", e);
+            updateUI(null);
         }
     }
 
@@ -152,8 +160,62 @@ public class GoogleSignInFragment extends BaseFragment {
     }
 
     private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        GetSignInIntentRequest signInRequest = GetSignInIntentRequest.builder()
+                .setServerClientId(getString(R.string.default_web_client_id))
+                .build();
+
+        signInClient.getSignInIntent(signInRequest)
+                .addOnSuccessListener(new OnSuccessListener<PendingIntent>() {
+                    @Override
+                    public void onSuccess(PendingIntent pendingIntent) {
+                        launchSignIn(pendingIntent);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Google Sign-in failed", e);
+                    }
+                });
+    }
+
+    private void oneTapSignIn() {
+        // Configure One Tap UI
+        BeginSignInRequest oneTapRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(
+                        BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                                .setSupported(true)
+                                .setServerClientId(getString(R.string.default_web_client_id))
+                                .setFilterByAuthorizedAccounts(true)
+                                .build()
+                )
+                .build();
+
+        // Display the One Tap UI
+        signInClient.beginSignIn(oneTapRequest)
+                .addOnSuccessListener(new OnSuccessListener<BeginSignInResult>() {
+                    @Override
+                    public void onSuccess(BeginSignInResult beginSignInResult) {
+                        launchSignIn(beginSignInResult.getPendingIntent());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // No saved credentials found. Launch the One Tap sign-up flow, or
+                        // do nothing and continue presenting the signed-out UI.
+                    }
+                });
+    }
+
+    private void launchSignIn(PendingIntent pendingIntent) {
+        try {
+            IntentSenderRequest intentSenderRequest = new IntentSenderRequest.Builder(pendingIntent)
+                    .build();
+            signInLauncher.launch(intentSenderRequest);
+        } catch (Exception e) {
+            Log.e(TAG, "Couldn't start Sign In: " + e.getLocalizedMessage());
+        }
     }
 
     private void signOut() {
@@ -161,21 +223,7 @@ public class GoogleSignInFragment extends BaseFragment {
         mAuth.signOut();
 
         // Google sign out
-        mGoogleSignInClient.signOut().addOnCompleteListener(requireActivity(),
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        updateUI(null);
-                    }
-                });
-    }
-
-    private void revokeAccess() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google revoke access
-        mGoogleSignInClient.revokeAccess().addOnCompleteListener(requireActivity(),
+        signInClient.signOut().addOnCompleteListener(requireActivity(),
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -191,13 +239,13 @@ public class GoogleSignInFragment extends BaseFragment {
             mBinding.detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
             mBinding.signInButton.setVisibility(View.GONE);
-            mBinding.signOutAndDisconnect.setVisibility(View.VISIBLE);
+            mBinding.signOutButton.setVisibility(View.VISIBLE);
         } else {
             mBinding.status.setText(R.string.signed_out);
             mBinding.detail.setText(null);
 
             mBinding.signInButton.setVisibility(View.VISIBLE);
-            mBinding.signOutAndDisconnect.setVisibility(View.GONE);
+            mBinding.signOutButton.setVisibility(View.GONE);
         }
     }
 

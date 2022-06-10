@@ -58,7 +58,7 @@ dependencies {
     // Firebase Authentication (Kotlin)
     implementation 'com.google.firebase:firebase-auth-ktx'
 
-    // Google Sign In SDK (only required for Google Sign In)
+    // Google Identity Services SDK (only required for Auth with Google)
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
 
     // Firebase UI
