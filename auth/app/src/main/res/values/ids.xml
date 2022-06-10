@@ -6,4 +6,5 @@
     -->
     <!--  TODO(developer): REPLACE -->
     <string name="facebook_app_id">REPLACE_ME</string>
+    <string name="facebook_client_token">REPLACE_ME</string>
 </resources>

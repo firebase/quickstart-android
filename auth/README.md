@@ -24,19 +24,19 @@ Getting Started
 
 ### Facebook Login Setup
 
-- Go to the [Facebook Developers Site](https://developers.facebook.com) and follow all
+- Go to the [Meta for Developers Site](https://developers.facebook.com) and follow all
   instructions to set up a new Android app.
   - When asked for a package name, use
-  `com.google.firebase.quickstart.usermanagement`.
+  `com.google.firebase.quickstart.auth`.
   - When asked for a main class name,
-  use `com.google.firebase.quickstart.usermanagement.FacebookLoginActivity`.
+  use `com.google.firebase.quickstart.auth.kotlin.MainActivity`.
 - Go to the [Firebase Console][fir-console] and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Facebook** and turn on the **Enable** switch, then click **Save**.
   - Enter your Facebook **App Id** and **App Secret** and click **Save**.
-- Open the file `app/src/main/res/values/ids.xml` and replace the value of the `facebook_app_id` with the ID of the Facebook app you just created.
+- Open the file `app/src/main/res/values/ids.xml` and replace the values of `facebook_app_id` and `facebook_client_token` with the ID of the Facebook app you just created and the client token respectively.
 - Run the app on your device or emulator.
-    - Select the **FacebookLoginActivity** from the main screen.
+    - Select the **FacebookLoginFragment** from the main screen.
     - Click the **Sign In** button to begin.
     - If you see text that says Facebook is disabled, make sure you are running
       either the **facebookDebug** or **facebookRelease** variants of this sample.
