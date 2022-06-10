@@ -34,8 +34,8 @@ dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
 
-    implementation 'com.google.android.material:material:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation "androidx.preference:preference-ktx:1.2.0"
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)

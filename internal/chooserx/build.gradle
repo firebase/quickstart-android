@@ -23,7 +23,7 @@ android {
 }
 
 dependencies {
-    api 'com.google.android.material:material:1.6.0'
+    api 'com.google.android.material:material:1.6.1'
     api 'androidx.recyclerview:recyclerview:1.2.1'
     api 'androidx.constraintlayout:constraintlayout:2.1.4'
 }
