@@ -121,7 +121,7 @@ public class GoogleSignInFragment extends BaseFragment {
         updateUI(currentUser);
     }
 
-    public void handleSignInResult(Intent data) {
+    private void handleSignInResult(Intent data) {
         try {
             // Google Sign In was successful, authenticate with Firebase
             SignInCredential credential = signInClient.getSignInCredentialFromIntent(data);
