@@ -98,7 +98,7 @@ You can also define what color is used with your notification. Different android
 versions use this settings in different ways: Android < N use this as background color
 for the icon. Android >= N use this to color the icon and the app name.
 
-See the [docs](https://goo.gl/sPggnS) for more.
+See the [docs](https://firebase.google.com/docs/cloud-messaging/android/receive#edit-the-app-manifest) for more.
 
 Result
 -----------
