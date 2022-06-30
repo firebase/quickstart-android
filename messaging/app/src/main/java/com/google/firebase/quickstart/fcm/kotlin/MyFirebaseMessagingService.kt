@@ -9,13 +9,37 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ServiceLifecycleDispatcher
+import androidx.lifecycle.lifecycleScope
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.quickstart.fcm.R
+import kotlinx.coroutines.launch
 
-class MyFirebaseMessagingService : FirebaseMessagingService() {
+class MyFirebaseMessagingService : FirebaseMessagingService(), LifecycleOwner {
+
+    private val mDispatcher = ServiceLifecycleDispatcher(this)
+
+    override fun onCreate() {
+        mDispatcher.onServicePreSuperOnCreate()
+        super.onCreate()
+    }
+
+    override fun onStart(intent: Intent?, startId: Int) {
+        mDispatcher.onServicePreSuperOnStart()
+        super.onStart(intent, startId)
+    }
+
+    override fun onDestroy() {
+        mDispatcher.onServicePreSuperOnDestroy()
+        super.onDestroy()
+    }
+
+    override fun getLifecycle(): Lifecycle = mDispatcher.lifecycle
 
     /**
      * Called when message is received.
@@ -73,7 +97,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // FCM registration token to your app server.
-        sendRegistrationToServer(token)
+        lifecycleScope.launch {
+            sendRegistrationToServer(token)
+        }
     }
     // [END on_new_token]
 
@@ -102,7 +128,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      *
      * @param token The new token.
      */
-    private fun sendRegistrationToServer(token: String?) {
+    private suspend fun sendRegistrationToServer(token: String?) {
         // TODO: Implement this method to send token to your app server.
         Log.d(TAG, "sendRegistrationTokenToServer($token)")
     }
