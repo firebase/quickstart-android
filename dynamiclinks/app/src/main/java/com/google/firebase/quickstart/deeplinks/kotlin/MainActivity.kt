@@ -8,6 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.dynamiclinks.ktx.androidParameters
 import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         // [START get_deep_link]
         Firebase.dynamicLinks
                 .getDynamicLink(intent)
-                .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                .addOnSuccessListener(this) { pendingDynamicLinkData: PendingDynamicLinkData? ->
                     // Get deep link from result (may be null if no link is found)
                     var deepLink: Uri? = null
                     if (pendingDynamicLinkData != null) {
