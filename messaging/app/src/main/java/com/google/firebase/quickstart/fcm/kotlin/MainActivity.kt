@@ -8,10 +8,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.quickstart.fcm.R
 import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding
+import com.google.firebase.quickstart.fcm.java.MainActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -82,6 +86,32 @@ class MainActivity : AppCompatActivity() {
         }
 
         Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // [START send_reg_token]
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener { task: Task<String> ->
+                if (!task.isSuccessful) {
+                    Log.w(
+                        TAG,
+                        "Fetching FCM registration token failed",
+                        task.exception
+                    )
+                    return@addOnCompleteListener
+                }
+                val token = task.result
+                val tokenMap: MutableMap<String, String?> =
+                    HashMap()
+                tokenMap["fcm_token"] = token
+
+                // Send token to backend server
+                val callable = FirebaseFunctions.getInstance().getHttpsCallable("updateToken")
+                callable.call(tokenMap).getResult()
+            }
+        // [END send_reg_token]
     }
 
     companion object {
