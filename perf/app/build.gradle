@@ -8,11 +8,11 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.google.firebase.quickstart.perfmon"
         minSdkVersion 19
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
