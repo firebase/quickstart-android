@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-            Toast.makeText(this, "Notifications permission granted",Toast.LENGTH_SHORT)
+            Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT)
                 .show()
         } else {
             Toast.makeText(this, "FCM can't post notifications without POST_NOTIFICATIONS permission",
