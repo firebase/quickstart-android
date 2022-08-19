@@ -16,11 +16,15 @@
 
 package com.google.samples.quickstart.functions.java;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
@@ -28,11 +32,13 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -66,6 +72,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseFunctions mFunctions;
     // [END define_functions_instance]
 
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(this,
+                            "FCM can't post notifications without POST_NOTIFICATIONS permission",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // [START initialize_functions_instance]
         mFunctions = FirebaseFunctions.getInstance();
         // [END initialize_functions_instance]
+
+        askNotificationPermission();
     }
 
     // [START function_add_numbers]
@@ -272,6 +292,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonSignIn:
                 onSignInClicked();
                 break;
+        }
+    }
+
+    private void askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                // FCM SDK (and your app) can post notifications.
+            } else{
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
         }
     }
 }
