@@ -44,7 +44,7 @@ dependencies {
     implementation project(":internal:chooserx")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:30.3.2')
+    implementation platform('com.google.firebase:firebase-bom:30.4.0')
 
     // Firestore (Java)
     implementation 'com.google.firebase:firebase-firestore'
@@ -59,7 +59,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
 
     // Google Play services
-    implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    implementation 'com.google.android.gms:play-services-auth:20.3.0'
 
     // FirebaseUI (for authentication)
     implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
