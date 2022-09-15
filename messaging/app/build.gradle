@@ -7,16 +7,18 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
-    compileSdkVersion 33
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.fcm"
-        minSdkVersion 19
-        targetSdkVersion 33
+        minSdk 21 // minSdk would be 19 without compose
+        targetSdk 33
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-
+        vectorDrawables {
+            useSupportLibrary true
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -35,6 +37,22 @@ android {
 
     buildFeatures {
         viewBinding = true
+        compose = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.3.0'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
     lint {
         abortOnError false
@@ -70,6 +88,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-installations-ktx:17.0.2'
 
     implementation 'androidx.work:work-runtime:2.7.1'
+
+    // Jetpack Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.activity:activity-compose:1.5.1'
 
     // Testing dependencies
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
