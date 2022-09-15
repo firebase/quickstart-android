@@ -13,6 +13,5 @@ include ':admob:app',
         ':internal:lintchecks',
         ':inappmessaging:app',
         ':messaging:app',
-        ':mlkit:app',
         ':perf:app',
         ':storage:app'
