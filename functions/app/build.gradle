@@ -61,7 +61,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging'
 
     // Firebase UI
-    implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
     
     // Google Play services
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
