@@ -7,6 +7,7 @@ plugins {
 check.dependsOn 'assembleMainFlavorDebugAndroidTest'
 
 android {
+    namespace 'com.google.firebase.quickstart.deeplinks'
     compileSdkVersion 33
     flavorDimensions "irrelevant"
 

@@ -6,6 +6,7 @@ plugins {
 }
 
 android {
+    namespace 'com.google.firebase.example.fireeats'
     testBuildType "release"
     compileSdkVersion 33
 
