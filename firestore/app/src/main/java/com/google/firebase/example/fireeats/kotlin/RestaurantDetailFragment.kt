@@ -134,7 +134,7 @@ class RestaurantDetailFragment : Fragment(),
     }
 
     private fun onBackArrowClicked() {
-        requireActivity().onBackPressed()
+        findNavController().popBackStack()
     }
 
     private fun onAddRatingClicked() {
