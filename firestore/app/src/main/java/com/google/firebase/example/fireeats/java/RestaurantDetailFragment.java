@@ -144,7 +144,7 @@ public class RestaurantDetailFragment extends Fragment
     }
 
     public void onBackArrowClicked(View view) {
-        findNavController().popBackStack();
+        NavHostFragment.findNavController(this).popBackStack();
     }
 
     public void onAddRatingClicked(View view) {
