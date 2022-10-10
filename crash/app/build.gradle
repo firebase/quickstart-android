@@ -8,6 +8,7 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
+    namespace 'com.google.samples.quickstart.crash'
     compileSdkVersion 33
 
     defaultConfig {

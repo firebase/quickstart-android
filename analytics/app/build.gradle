@@ -7,6 +7,7 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
+    namespace 'com.google.firebase.quickstart.analytics'
     compileSdkVersion 33
 
     defaultConfig {

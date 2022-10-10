@@ -29,6 +29,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    namespace 'com.google.firebase.quickstart.firebasestorage'
 }
 
 dependencies {
