@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace 'com.firebase.example.internal'
     compileSdkVersion 33
 
     defaultConfig {

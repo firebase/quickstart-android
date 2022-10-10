@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace 'com.google.samples.quickstart.functions'
     // Changes the test build type for instrumented tests to "stage".
     testBuildType "release"
     compileSdkVersion 33

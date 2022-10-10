@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace 'com.google.firebase.fiamquickstart'
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.google.firebase.fiamquickstart"

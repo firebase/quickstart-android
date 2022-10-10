@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
 }
 android {
+    namespace 'com.firebase.lintchecks'
     compileSdkVersion 33
 
     defaultConfig {
