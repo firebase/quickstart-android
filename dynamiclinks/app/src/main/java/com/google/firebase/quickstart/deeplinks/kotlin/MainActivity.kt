@@ -8,16 +8,19 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
+import android.widget.TextView
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.dynamiclinks.ktx.androidParameters
 import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
+import com.google.firebase.dynamiclinks.ktx.component1
+import com.google.firebase.dynamiclinks.ktx.component2
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.deeplinks.R
 import com.google.firebase.quickstart.deeplinks.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
     // [START on_create]
     override fun onCreate(savedInstanceState: Bundle?) {
         // [START_EXCLUDE]
@@ -35,9 +38,18 @@ class MainActivity : AppCompatActivity() {
         val newDeepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0)
         linkSendTextView.text = newDeepLink.toString()
 
+        // create a short link and display it in the UI
+        buildShortLinkFromParams(Uri.parse(DEEP_LINK_URL), 0)
+
         // Share button click listener
         binding.buttonShare.setOnClickListener { shareDeepLink(newDeepLink.toString()) }
         // [END_EXCLUDE]
+
+        binding.buttonShareShortLink.setOnClickListener {
+          val shortLinkTextView = findViewById<TextView>(R.id.shortLinkViewSend);
+          val shortDynamicLink = shortLinkTextView.text;
+          shareDeepLink(shortDynamicLink.toString());
+        }
 
         // [START get_deep_link]
         Firebase.dynamicLinks
@@ -104,6 +116,29 @@ class MainActivity : AppCompatActivity() {
 
         // Return the dynamic link as a URI
         return link.uri
+    }
+
+    @VisibleForTesting
+    fun buildShortLinkFromParams(deepLink: Uri, minVersion: Int) {
+      val uriPrefix = getString(R.string.dynamic_links_uri_prefix)
+
+      // Set dynamic link parameters:
+      //  * URI prefix (required)
+      //  * Android Parameters (required)
+      //  * Deep link
+      Firebase.dynamicLinks.shortLinkAsync {
+        link = deepLink
+        domainUriPrefix = uriPrefix
+        androidParameters {
+          minimumVersion = minVersion
+        }
+      }.addOnSuccessListener { (shortLink, flowchartLink) ->
+        val shortLinkTextView = findViewById<TextView>(R.id.shortLinkViewSend);
+        shortLinkTextView.text = shortLink.toString();
+      }.addOnFailureListener(this) { e ->
+        Log.e(TAG, e.toString());
+        throw java.lang.Error(e.toString());
+      }
     }
 
     private fun shareDeepLink(deepLink: String) {
