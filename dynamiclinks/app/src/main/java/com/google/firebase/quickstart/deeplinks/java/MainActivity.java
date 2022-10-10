@@ -21,6 +21,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,8 +33,10 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.DynamicLink.AndroidParameters;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.quickstart.deeplinks.R;
 import com.google.firebase.quickstart.deeplinks.databinding.ActivityMainBinding;
 
@@ -59,12 +63,24 @@ public class MainActivity extends AppCompatActivity {
         final Uri deepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0);
         linkSendTextView.setText(deepLink.toString());
 
+        // create a short link and display it in the UI
+        buildShortLinkFromParams(Uri.parse(DEEP_LINK_URL), 0);
+
         // Share button click listener
         binding.buttonShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shareDeepLink(deepLink.toString());
             }
+        });
+
+        binding.buttonShareShortLink.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            TextView shortLinkTextView = findViewById(R.id.shortLinkViewSend);
+            String shortDynamicLink = shortLinkTextView.getText().toString();
+            shareDeepLink(shortDynamicLink);
+          }
         });
         // [END_EXCLUDE]
 
@@ -164,5 +180,40 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.ok, null)
                     .create().show();
         }
+    }
+
+    @VisibleForTesting
+    public void buildShortLinkFromParams(@NonNull Uri deepLink, int minVersion) {
+      String uriPrefix = getString(R.string.dynamic_links_uri_prefix);
+
+      // Set dynamic link parameters:
+      //  * URI prefix (required)
+      //  * Android Parameters (required)
+      //  * Deep link
+      FirebaseDynamicLinks.getInstance()
+          .createDynamicLink()
+          .setDomainUriPrefix(uriPrefix)
+          .setAndroidParameters(
+             new AndroidParameters.Builder()
+                 .setMinimumVersion(minVersion)
+                 .build()
+          )
+          .setLink(deepLink)
+          .buildShortDynamicLink()
+          .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+            @Override
+            public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+              if (task.isSuccessful()) {
+                // Short link created
+                Uri shortDynamicLink = task.getResult().getShortLink();
+                TextView shortLinkTextView = findViewById(R.id.shortLinkViewSend);
+                shortLinkTextView.setText(shortDynamicLink.toString());
+              } else {
+                // Error
+                Log.e(TAG, task.getException().getMessage());
+                throw new Error(task.getException().getMessage());
+              }
+            }
+          });
     }
 }
