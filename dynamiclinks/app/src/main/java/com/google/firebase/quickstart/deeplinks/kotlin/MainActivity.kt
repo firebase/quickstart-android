@@ -120,25 +120,25 @@ class MainActivity : AppCompatActivity() {
 
     @VisibleForTesting
     fun buildShortLinkFromParams(deepLink: Uri, minVersion: Int) {
-      val uriPrefix = getString(R.string.dynamic_links_uri_prefix)
+        val uriPrefix = getString(R.string.dynamic_links_uri_prefix)
 
-      // Set dynamic link parameters:
-      //  * URI prefix (required)
-      //  * Android Parameters (required)
-      //  * Deep link
-      Firebase.dynamicLinks.shortLinkAsync {
+        // Set dynamic link parameters:
+        //  * URI prefix (required)
+        //  * Android Parameters (required)
+        //  * Deep link
+        Firebase.dynamicLinks.shortLinkAsync {
         link = deepLink
         domainUriPrefix = uriPrefix
         androidParameters {
-          minimumVersion = minVersion
+            minimumVersion = minVersion
         }
-      }.addOnSuccessListener { (shortLink, flowchartLink) ->
+        }.addOnSuccessListener { (shortLink, flowchartLink) ->
         val shortLinkTextView = findViewById<TextView>(R.id.shortLinkViewSend);
         shortLinkTextView.text = shortLink.toString();
-      }.addOnFailureListener(this) { e ->
+        }.addOnFailureListener(this) { e ->
         Log.e(TAG, e.toString());
         throw java.lang.Error(e.toString());
-      }
+        }
     }
 
     private fun shareDeepLink(deepLink: String) {
