@@ -46,9 +46,9 @@ class MainActivity : AppCompatActivity() {
         // [END_EXCLUDE]
 
         binding.buttonShareShortLink.setOnClickListener {
-          val shortLinkTextView = findViewById<TextView>(R.id.shortLinkViewSend);
-          val shortDynamicLink = shortLinkTextView.text;
-          shareDeepLink(shortDynamicLink.toString());
+            val shortLinkTextView = findViewById<TextView>(R.id.shortLinkViewSend);
+            val shortDynamicLink = shortLinkTextView.text;
+            shareDeepLink(shortDynamicLink.toString());
         }
 
         // [START get_deep_link]
