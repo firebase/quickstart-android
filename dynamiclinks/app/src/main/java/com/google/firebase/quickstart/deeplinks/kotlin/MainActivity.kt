@@ -127,17 +127,16 @@ class MainActivity : AppCompatActivity() {
         //  * Android Parameters (required)
         //  * Deep link
         Firebase.dynamicLinks.shortLinkAsync {
-        link = deepLink
-        domainUriPrefix = uriPrefix
-        androidParameters {
-            minimumVersion = minVersion
-        }
+            link = deepLink
+            domainUriPrefix = uriPrefix
+            androidParameters {
+                minimumVersion = minVersion
+            }
         }.addOnSuccessListener { (shortLink, flowchartLink) ->
-        val shortLinkTextView = findViewById<TextView>(R.id.shortLinkViewSend);
-        shortLinkTextView.text = shortLink.toString();
+            val shortLinkTextView = findViewById<TextView>(R.id.shortLinkViewSend);
+            shortLinkTextView.text = shortLink.toString();
         }.addOnFailureListener(this) { e ->
-        Log.e(TAG, e.toString());
-        throw java.lang.Error(e.toString());
+            Log.e(TAG, e.toString());
         }
     }
 

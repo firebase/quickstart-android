@@ -75,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.buttonShareShortLink.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            TextView shortLinkTextView = findViewById(R.id.shortLinkViewSend);
-            String shortDynamicLink = shortLinkTextView.getText().toString();
-            shareDeepLink(shortDynamicLink);
-          }
+            @Override
+            public void onClick(View v) {
+                TextView shortLinkTextView = findViewById(R.id.shortLinkViewSend);
+                String shortDynamicLink = shortLinkTextView.getText().toString();
+                shareDeepLink(shortDynamicLink);
+            }
         });
         // [END_EXCLUDE]
 
@@ -184,36 +184,34 @@ public class MainActivity extends AppCompatActivity {
 
     @VisibleForTesting
     public void buildShortLinkFromParams(@NonNull Uri deepLink, int minVersion) {
-      String uriPrefix = getString(R.string.dynamic_links_uri_prefix);
+        String uriPrefix = getString(R.string.dynamic_links_uri_prefix);
 
-      // Set dynamic link parameters:
-      //  * URI prefix (required)
-      //  * Android Parameters (required)
-      //  * Deep link
-      FirebaseDynamicLinks.getInstance()
-          .createDynamicLink()
-          .setDomainUriPrefix(uriPrefix)
-          .setAndroidParameters(
-             new AndroidParameters.Builder()
-                 .setMinimumVersion(minVersion)
-                 .build()
-          )
-          .setLink(deepLink)
-          .buildShortDynamicLink()
-          .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
-            @Override
-            public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-              if (task.isSuccessful()) {
-                // Short link created
-                Uri shortDynamicLink = task.getResult().getShortLink();
-                TextView shortLinkTextView = findViewById(R.id.shortLinkViewSend);
-                shortLinkTextView.setText(shortDynamicLink.toString());
-              } else {
-                // Error
-                Log.e(TAG, task.getException().getMessage());
-                throw new Error(task.getException().getMessage());
-              }
-            }
-          });
+        // Set dynamic link parameters:
+        // * URI prefix (required)
+        // * Android Parameters (required)
+        // * Deep link
+        FirebaseDynamicLinks.getInstance()
+                .createDynamicLink()
+                .setDomainUriPrefix(uriPrefix)
+                .setAndroidParameters(
+                        new AndroidParameters.Builder()
+                                .setMinimumVersion(minVersion)
+                                .build())
+                .setLink(deepLink)
+                .buildShortDynamicLink()
+                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if (task.isSuccessful()) {
+                            // Short link created
+                            Uri shortDynamicLink = task.getResult().getShortLink();
+                            TextView shortLinkTextView = findViewById(R.id.shortLinkViewSend);
+                            shortLinkTextView.setText(shortDynamicLink.toString());
+                        } else {
+                            // Error
+                            Log.e(TAG, task.getException().getMessage());
+                        }
+                    }
+                });
     }
 }
