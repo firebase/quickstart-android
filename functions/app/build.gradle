@@ -47,10 +47,16 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.0.0')
 
     // Cloud Functions for Firebase (Java)
-    implementation 'com.google.firebase:firebase-functions'
+    implementation ('com.google.firebase:firebase-functions') {
+        // This is workaround to prevent the clash with firebase-messaging
+        exclude group: 'com.google.firebase', module: 'firebase-iid'
+    }
 
     // Cloud Functions for Firebase (Kotlin)
-    implementation 'com.google.firebase:firebase-functions-ktx'
+    implementation ('com.google.firebase:firebase-functions-ktx') {
+        // This is workaround to prevent the clash with firebase-messaging
+        exclude group: 'com.google.firebase', module: 'firebase-iid'
+    }
 
     // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth'
