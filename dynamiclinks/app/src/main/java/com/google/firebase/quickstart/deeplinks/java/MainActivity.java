@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         binding.buttonGenerateShortLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-				Uri deepLink = Uri.parse(DEEP_LINK_URL);
+				        Uri deepLink = Uri.parse(DEEP_LINK_URL);
                 buildShortLinkFromParams(deepLink, 0);
             }
         });
