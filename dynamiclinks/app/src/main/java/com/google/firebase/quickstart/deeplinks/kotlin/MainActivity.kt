@@ -38,9 +38,6 @@ class MainActivity : AppCompatActivity() {
         val newDeepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0)
         linkSendTextView.text = newDeepLink.toString()
 
-        // create a short link and display it in the UI
-        buildShortLinkFromParams(Uri.parse(DEEP_LINK_URL), 0)
-
         // Share button click listener
         binding.buttonShare.setOnClickListener { shareDeepLink(newDeepLink.toString()) }
         // [END_EXCLUDE]
@@ -50,6 +47,11 @@ class MainActivity : AppCompatActivity() {
             val shortDynamicLink = shortLinkTextView.text;
             shareDeepLink(shortDynamicLink.toString());
         }
+
+		binding.buttonGenerateShortLink.setOnClickListener {
+			val deepLink = Uri.parse(DEEP_LINK_URL);
+			buildShortLinkFromParams(deepLink, 0);
+		}
 
         // [START get_deep_link]
         Firebase.dynamicLinks

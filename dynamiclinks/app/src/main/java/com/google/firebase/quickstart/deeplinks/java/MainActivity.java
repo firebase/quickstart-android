@@ -19,6 +19,7 @@ package com.google.firebase.quickstart.deeplinks.java;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -63,9 +64,6 @@ public class MainActivity extends AppCompatActivity {
         final Uri deepLink = buildDeepLink(Uri.parse(DEEP_LINK_URL), 0);
         linkSendTextView.setText(deepLink.toString());
 
-        // create a short link and display it in the UI
-        buildShortLinkFromParams(Uri.parse(DEEP_LINK_URL), 0);
-
         // Share button click listener
         binding.buttonShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,12 +72,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+		// create a short link and display it in the UI
         binding.buttonShareShortLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TextView shortLinkTextView = findViewById(R.id.shortLinkViewSend);
                 String shortDynamicLink = shortLinkTextView.getText().toString();
                 shareDeepLink(shortDynamicLink);
+            }
+        });
+
+        binding.buttonGenerateShortLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+				Uri deepLink = Uri.parse(DEEP_LINK_URL);
+                buildShortLinkFromParams(deepLink, 0);
             }
         });
         // [END_EXCLUDE]
@@ -180,6 +187,11 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton(android.R.string.ok, null)
                     .create().show();
         }
+    }
+
+    public void generateShortLink() {
+        Uri deepLink = Uri.parse(DEEP_LINK_URL);
+        buildShortLinkFromParams(deepLink, 0);
     }
 
     @VisibleForTesting
