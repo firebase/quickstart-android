@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.text.HtmlCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -38,7 +40,8 @@ import com.google.firebase.ktx.Firebase
 
 class MainFragment : Fragment(),
         FilterDialogFragment.FilterListener,
-        RestaurantAdapter.OnRestaurantSelectedListener {
+        RestaurantAdapter.OnRestaurantSelectedListener,
+        MenuProvider {
 
     lateinit var firestore: FirebaseFirestore
     lateinit var query: Query
@@ -50,7 +53,6 @@ class MainFragment : Fragment(),
     private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        setHasOptionsMenu(true)
         binding = FragmentMainBinding.inflate(inflater, container, false);
         return binding.root;
     }
@@ -92,6 +94,10 @@ class MainFragment : Fragment(),
             }
         }
 
+        // MenuProvider
+        val menuHost : MenuHost = requireActivity() as MenuHost
+        menuHost.addMenuProvider(this)
+
         binding.recyclerRestaurants.layoutManager = LinearLayoutManager(context)
         binding.recyclerRestaurants.adapter = adapter
 
@@ -123,12 +129,11 @@ class MainFragment : Fragment(),
         adapter.stopListening()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_main, menu)
-        return super.onCreateOptionsMenu(menu, inflater)
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.menu_main, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onMenuItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_add_items -> onAddItemsClicked()
             R.id.menu_sign_out -> {
@@ -136,7 +141,7 @@ class MainFragment : Fragment(),
                 startSignIn()
             }
         }
-        return super.onOptionsItemSelected(item)
+        return true;
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
