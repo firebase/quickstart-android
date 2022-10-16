@@ -87,7 +87,7 @@ public class MainFragment extends Fragment implements
         mBinding.filterBar.setOnClickListener(this);
         mBinding.buttonClearFilter.setOnClickListener(this);
 
-        //Menu provider
+        // MenuProvider
         menuHost = requireActivity();
         menuHost.addMenuProvider(this);
 
