@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -22,9 +24,11 @@ import com.google.firebase.quickstart.database.java.listfragments.MyPostsFragmen
 import com.google.firebase.quickstart.database.java.listfragments.MyTopPostsFragment;
 import com.google.firebase.quickstart.database.java.listfragments.RecentPostsFragment;
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements MenuProvider {
 
     private FragmentMainBinding binding;
+
+    private MenuHost menuHost;
 
     @Nullable
     @Override
@@ -36,7 +40,10 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
+
+        // MenuProvider
+        menuHost = requireActivity();
+        menuHost.addMenuProvider(this);
 
         // Create the adapter that will return a fragment for each section
         FragmentStateAdapter mPagerAdapter = new FragmentStateAdapter(getParentFragmentManager(),
@@ -71,20 +78,21 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
+    public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.menu_main, menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int i = item.getItemId();
+    public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+        int i = menuItem.getItemId();
         if (i == R.id.action_logout) {
             FirebaseAuth.getInstance().signOut();
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_MainFragment_to_SignInFragment);
             return true;
         } else {
-            return super.onOptionsItemSelected(item);
+            return false;
         }
     }
+
 }
