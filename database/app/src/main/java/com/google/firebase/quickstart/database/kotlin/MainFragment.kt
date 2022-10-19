@@ -37,7 +37,7 @@ class MainFragment : Fragment(), MenuProvider {
 
         // MenuProvider
         val menuHost: MenuHost = requireActivity() as MenuHost
-        menuHost.addMenuProvider(this);
+        menuHost.addMenuProvider(this)
 
         // Create the adapter that will return a fragment for each section
         pagerAdapter = object : FragmentStateAdapter(parentFragmentManager, viewLifecycleOwner.lifecycle) {
