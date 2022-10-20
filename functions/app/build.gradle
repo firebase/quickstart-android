@@ -41,10 +41,10 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.6.0'
     implementation 'androidx.fragment:fragment-ktx:1.5.3'
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:31.0.0')
+    implementation platform('com.google.firebase:firebase-bom:31.0.1')
 
     // Cloud Functions for Firebase (Java)
     implementation 'com.google.firebase:firebase-functions'
