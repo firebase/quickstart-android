@@ -45,7 +45,7 @@ dependencies {
     implementation project(":internal:chooserx")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:31.0.0')
+    implementation platform('com.google.firebase:firebase-bom:31.0.1')
 
     // Firestore (Java)
     implementation 'com.google.firebase:firebase-firestore'
@@ -72,7 +72,7 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.browser:browser:1.0.0'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.media:media:1.6.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.multidex:multidex:2.0.1'
