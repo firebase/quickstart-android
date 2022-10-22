@@ -171,13 +171,13 @@ public class MainFragment extends Fragment implements
         switch (item.getItemId()) {
             case R.id.menu_add_items:
                 onAddItemsClicked();
-                break;
+                return true;
             case R.id.menu_sign_out:
                 AuthUI.getInstance().signOut(requireContext());
                 startSignIn();
-                break;
+                return true;
         }
-        return true;
+        return false;
     }
 
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {

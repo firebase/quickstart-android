@@ -134,14 +134,18 @@ class MainFragment : Fragment(),
     }
 
     override fun onMenuItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_add_items -> onAddItemsClicked()
+        return when (item.itemId) {
+            R.id.menu_add_items -> {
+                onAddItemsClicked()
+                true
+            }
             R.id.menu_sign_out -> {
                 AuthUI.getInstance().signOut(requireContext())
                 startSignIn()
+                true
             }
+            else -> false
         }
-        return true;
     }
 
     private fun onSignInResult(result: FirebaseAuthUIAuthenticationResult) {
