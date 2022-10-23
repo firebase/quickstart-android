@@ -9,17 +9,21 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceManager
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.analytics.R
 import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding
-import java.util.Locale
+import com.google.firebase.quickstart.analytics.java.MainActivity
+import com.google.firebase.quickstart.analytics.kotlin.MainActivity.Companion.IMAGE_INFOS
+import java.util.*
 
 /**
  * Activity which displays numerous background images that may be viewed. These background images
@@ -42,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * The [androidx.viewpager.widget.PagerAdapter] that will provide fragments for each image.
-     * This uses a [FragmentPagerAdapter], which keeps every loaded fragment in memory.
+     * This uses a [FragmentStateAdapter], which keeps every loaded fragment in memory.
      */
     private lateinit var imagePagerAdapter: ImagePagerAdapter
 
@@ -73,22 +77,28 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Create the adapter that will return a fragment for each image.
-        imagePagerAdapter = ImagePagerAdapter(supportFragmentManager, IMAGE_INFOS)
+        imagePagerAdapter = ImagePagerAdapter(this, IMAGE_INFOS)
 
         // Set up the ViewPager with the pattern adapter.
-        binding.viewPager.adapter = imagePagerAdapter
+        //binding.viewPager.adapter = imagePagerAdapter
+        val viewPager: ViewPager2 = findViewById(R.id.pager)
 
         // Workaround for AppCompat issue not showing ViewPager titles
-        val params = binding.pagerTabStrip.layoutParams as ViewPager.LayoutParams
-        params.isDecor = true
+//        val params = binding.pagerTabStrip.layoutParams as ViewPager.LayoutParams
+//        params.isDecor = true
 
         // When the visible image changes, send a screen view hit.
-        binding.viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected(position: Int) {
-                recordImageView()
-                recordScreenView()
-            }
-        })
+//        binding.viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+//            override fun onPageSelected(position: Int) {
+//                recordImageView()
+//                recordScreenView()
+//            }
+//        })
+
+            val tabLayout: TabLayout = findViewById(R.id.tab_layout)
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = "${IMAGE_INFOS[position]}"
+            }.attach()
 
         // Send initial screen screen view hit.
         recordImageView()
@@ -174,7 +184,7 @@ class MainActivity : AppCompatActivity() {
      * @return title of image
      */
     private fun getCurrentImageTitle(): String {
-        val position = binding.viewPager.currentItem
+        val position = 0//binding.viewPager.currentItem
         val info = IMAGE_INFOS[position]
         return getString(info.title)
     }
@@ -185,14 +195,14 @@ class MainActivity : AppCompatActivity() {
      * @return id of image
      */
     private fun getCurrentImageId(): String {
-        val position = binding.viewPager.currentItem
+        val position = 0//binding.viewPager.currentItem
         val info = IMAGE_INFOS[position]
         return getString(info.id)
     }
 
     /**
      * Record a screen view for the visible [ImageFragment] displayed
-     * inside [FragmentPagerAdapter].
+     * inside [FragmentStateAdapter].
      */
     private fun recordImageView() {
         val id = getCurrentImageId()
@@ -224,29 +234,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * A [FragmentPagerAdapter] that returns a fragment corresponding to
+     * A [FragmentStateAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     @SuppressLint("WrongConstant")
     inner class ImagePagerAdapter(
-        fm: FragmentManager,
+        fm: FragmentActivity,
         private val infos: Array<ImageInfo>
-    ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    ) : FragmentStateAdapter(fm) {
 
-        override fun getItem(position: Int): Fragment {
-            val info = infos[position]
-            return ImageFragment.newInstance(info.image)
-        }
-
-        override fun getCount() = infos.size
-
-        override fun getPageTitle(position: Int): CharSequence? {
+        fun getPageTitle(position: Int): CharSequence? {
             if (position < 0 || position >= infos.size) {
                 return null
             }
             val l = Locale.getDefault()
             val info = infos[position]
-            return getString(info.title).toUpperCase(l)
+            return getString(info.title).uppercase(l)
+        }
+
+        override fun getItemCount(): Int {
+            return infos.size
+        }
+
+        override fun createFragment(position: Int): Fragment {
+            val info = infos[position]
+            return ImageFragment.newInstance(info.image)
         }
     }
 }

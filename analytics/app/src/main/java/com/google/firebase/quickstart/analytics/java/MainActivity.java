@@ -28,15 +28,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentActivity;
+
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.quickstart.analytics.R;
 import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding;
@@ -52,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String KEY_FAVORITE_FOOD = "favorite_food";
 
+
     private static final ImageInfo[] IMAGE_INFOS = {
             new ImageInfo(R.drawable.favorite, R.string.pattern1_title, R.string.pattern1_id),
             new ImageInfo(R.drawable.flash, R.string.pattern2_title, R.string.pattern2_id),
@@ -63,14 +70,14 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * The {@link androidx.viewpager.widget.PagerAdapter} that will provide fragments for each image.
-     * This uses a {@link FragmentPagerAdapter}, which keeps every loaded fragment in memory.
+     * This uses a {@link FragmentStateAdapter}, which keeps every loaded fragment in memory.
      */
     private ImagePagerAdapter mImagePagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the patterns.
      */
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
 
     /**
      * The {@code FirebaseAnalytics} used to record screen views.
@@ -83,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
      * The user's favorite food, chosen from a dialog.
      */
     private String mFavoriteFood;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,25 +114,37 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Create the adapter that will return a fragment for each image.
-        mImagePagerAdapter = new ImagePagerAdapter(getSupportFragmentManager(), IMAGE_INFOS);
+        mImagePagerAdapter = new ImagePagerAdapter(this, IMAGE_INFOS);
 
         // Set up the ViewPager with the pattern adapter.
-        mViewPager = binding.viewPager;
+        mViewPager =  (ViewPager2)findViewById(R.id.pager);
         mViewPager.setAdapter(mImagePagerAdapter);
+        mViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 
-        // Workaround for AppCompat issue not showing ViewPager titles
-        ViewPager.LayoutParams params = (ViewPager.LayoutParams)
-                binding.pagerTabStrip.getLayoutParams();
-        params.isDecor = true;
+        ImageView imageView = findViewById(R.id.imageView);
 
-        // When the visible image changes, send a screen view hit.
-        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            public void onPageSelected(int position) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 recordImageView();
                 recordScreenView();
             }
         });
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+
+        // Workaround for AppCompat issue not showing ViewPager titles
+//        ViewPager.LayoutParams params = (ViewPager.LayoutParams)
+//                binding.pagerTabStrip.getLayoutParams();
+//        params.isDecor = true;
+
+        // When the visible image changes, send a screen view hit.
+        new TabLayoutMediator(tabLayout, mViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+               tab.setText(IMAGE_INFOS[position].title);
+            }
+        }).attach();
 
         // Send initial screen screen view hit.
         recordImageView();
@@ -228,14 +248,14 @@ public class MainActivity extends AppCompatActivity {
      * @return id of image
      */
     private String getCurrentImageId() {
-        int position = mViewPager.getCurrentItem();
+        int position = 0;
         ImageInfo info = IMAGE_INFOS[position];
         return getString(info.id);
     }
 
     /**
      * Record a screen view for the visible {@link ImageFragment} displayed
-     * inside {@link FragmentPagerAdapter}.
+     * inside {@link FragmentStateAdapter}.
      */
     private void recordImageView() {
         String id =  getCurrentImageId();
@@ -267,38 +287,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * A {@link FragmentStateAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class ImagePagerAdapter extends FragmentPagerAdapter {
+    public class ImagePagerAdapter extends FragmentStateAdapter {
 
         private final ImageInfo[] infos;
 
         @SuppressLint("WrongConstant")
-        public ImagePagerAdapter(FragmentManager fm, ImageInfo[] infos) {
-            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        public ImagePagerAdapter(FragmentActivity fm, ImageInfo[] infos) {
+            super(fm);
             this.infos = infos;
         }
 
+
+        @NonNull
         @Override
-        public Fragment getItem(int position) {
+        public Fragment createFragment(int position) {
             ImageInfo info = infos[position];
-            return ImageFragment.newInstance(info.image);
+            return ImageFragment.newInstance(info.id);
         }
 
         @Override
-        public int getCount() {
+        public int getItemCount() {
             return infos.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            if (position < 0 || position >= infos.length) {
-                return null;
-            }
-            Locale l = Locale.getDefault();
-            ImageInfo info = infos[position];
-            return getString(info.title).toUpperCase(l);
         }
     }
 }
