@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.text.HtmlCompat;
+import androidx.core.view.MenuHost;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -52,7 +55,8 @@ import java.util.List;
 
 public class MainFragment extends Fragment implements
         FilterDialogFragment.FilterListener,
-        RestaurantAdapter.OnRestaurantSelectedListener, View.OnClickListener {
+        RestaurantAdapter.OnRestaurantSelectedListener, View.OnClickListener,
+        MenuProvider {
 
     private static final String TAG = "MainActivity";
 
@@ -68,10 +72,11 @@ public class MainFragment extends Fragment implements
 
     private MainActivityViewModel mViewModel;
 
+    private MenuHost menuHost;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         mBinding = FragmentMainBinding.inflate(inflater, container, false);
         return mBinding.getRoot();
     }
@@ -81,6 +86,10 @@ public class MainFragment extends Fragment implements
         super.onViewCreated(view, savedInstanceState);
         mBinding.filterBar.setOnClickListener(this);
         mBinding.buttonClearFilter.setOnClickListener(this);
+
+        // MenuProvider
+        menuHost = requireActivity();
+        menuHost.addMenuProvider(this);
 
         // View model
         mViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
@@ -153,23 +162,22 @@ public class MainFragment extends Fragment implements
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.menu_main, menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onMenuItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add_items:
                 onAddItemsClicked();
-                break;
+                return true;
             case R.id.menu_sign_out:
                 AuthUI.getInstance().signOut(requireContext());
                 startSignIn();
-                break;
+                return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {

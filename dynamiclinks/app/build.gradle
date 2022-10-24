@@ -7,6 +7,7 @@ plugins {
 check.dependsOn 'assembleMainFlavorDebugAndroidTest'
 
 android {
+    namespace 'com.google.firebase.quickstart.deeplinks'
     compileSdkVersion 33
     flavorDimensions "irrelevant"
 
@@ -16,7 +17,7 @@ android {
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -48,10 +49,10 @@ dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
 
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:30.5.0')
+    implementation platform('com.google.firebase:firebase-bom:31.0.1')
 
     // Firebase Dynamic Links (Java)
     implementation 'com.google.firebase:firebase-dynamic-links'

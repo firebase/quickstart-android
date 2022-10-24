@@ -16,37 +16,71 @@
         android:layout_marginBottom="16dp"
         android:src="@drawable/firebase_lockup_400"/>
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/title_receive"/>
-
-    <TextView
-        android:id="@+id/linkViewReceive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:text="@string/msg_no_deep_link"/>
-
-    <TextView
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/title_send"/>
-
-    <TextView
-        android:id="@+id/linkViewSend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="https://abc.xyz/foo"/>
-
-    <Button
-        android:id="@+id/buttonShare"
-        android:layout_width="@dimen/standard_field_width"
-        android:layout_height="wrap_content"
-        android:text="@string/share" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="vertical">
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/title_receive" />
+        <TextView
+            android:id="@+id/linkViewReceive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:text="@string/msg_no_deep_link" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="164dp"
+        android:orientation="vertical">
+        <TextView
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/dynamic_link" />
+        <TextView
+            android:id="@+id/linkViewSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="https://abc.xyz/foo" />
+        <Button
+            android:id="@+id/buttonShare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/share_dynamic_link" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="298dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/textView"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/short_dynamic_link" />
+        <TextView
+            android:id="@+id/shortLinkViewSend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="https://abc.xyz/foo" />
+        <Button
+            android:id="@+id/buttonGenerateShortLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/generate_short_link" />
+        <Button
+            android:id="@+id/buttonShareShortLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/share_short_link" />
+    </LinearLayout>
 </LinearLayout>
