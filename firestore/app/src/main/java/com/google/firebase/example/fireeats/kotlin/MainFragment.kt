@@ -95,7 +95,7 @@ class MainFragment : Fragment(),
         }
 
         // MenuProvider
-        val menuHost : MenuHost = requireActivity() as MenuHost
+        val menuHost: MenuHost = requireActivity() as MenuHost
         menuHost.addMenuProvider(this)
 
         binding.recyclerRestaurants.layoutManager = LinearLayoutManager(context)
