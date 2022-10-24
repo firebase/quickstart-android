@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         mImagePagerAdapter = new ImagePagerAdapter(this, IMAGE_INFOS);
 
         // Set up the ViewPager with the pattern adapter.
-        mViewPager =  (ViewPager2)findViewById(R.id.pager);
+        mViewPager =  (ViewPager2)findViewById(R.id.viewPager);
         mViewPager.setAdapter(mImagePagerAdapter);
         mViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
 

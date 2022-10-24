@@ -24,14 +24,14 @@ specific language governing permissions and limitations under the License.
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="23dp"
-        app:layout_constraintBottom_toTopOf="@+id/pager"
-        app:layout_constraintEnd_toEndOf="@id/pager"
+        app:layout_constraintBottom_toTopOf="@+id/viewPager"
+        app:layout_constraintEnd_toEndOf="@id/viewPager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="528dp"
         app:layout_constraintBottom_toBottomOf="parent"

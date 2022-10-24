@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set up the ViewPager with the pattern adapter.
         //binding.viewPager.adapter = imagePagerAdapter
-        val viewPager: ViewPager2 = findViewById(R.id.pager)
+        val viewPager: ViewPager2 = findViewById(R.id.viewPager)
         viewPager.adapter = imagePagerAdapter
 
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)
