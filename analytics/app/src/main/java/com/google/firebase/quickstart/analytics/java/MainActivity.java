@@ -28,25 +28,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.quickstart.analytics.R;
 import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding;
-
 import java.util.Locale;
 
 /**
@@ -112,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
             setUserFavoriteFood(userFavoriteFood);
         }
 
-
         // Create the adapter that will return a fragment for each image.
         mImagePagerAdapter = new ImagePagerAdapter(this, IMAGE_INFOS);
 
@@ -120,8 +114,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager =  (ViewPager2)findViewById(R.id.pager);
         mViewPager.setAdapter(mImagePagerAdapter);
         mViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-
-        ImageView imageView = findViewById(R.id.imageView);
 
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -133,11 +125,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-
-        // Workaround for AppCompat issue not showing ViewPager titles
-//        ViewPager.LayoutParams params = (ViewPager.LayoutParams)
-//                binding.pagerTabStrip.getLayoutParams();
-//        params.isDecor = true;
 
         // When the visible image changes, send a screen view hit.
         new TabLayoutMediator(tabLayout, mViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
@@ -250,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
     private String getCurrentImageId() {
         int position = 0;
         ImageInfo info = IMAGE_INFOS[position];
-        return getString(info.id);
+        return getString(info.image);
     }
 
     /**
@@ -305,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment createFragment(int position) {
             ImageInfo info = infos[position];
-            return ImageFragment.newInstance(info.id);
+            return ImageFragment.newInstance(info.image);
         }
 
         @Override
