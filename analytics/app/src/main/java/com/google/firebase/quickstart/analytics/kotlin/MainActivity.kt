@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     /**
-     * The [androidx.viewpager.widget.PagerAdapter] that will provide fragments for each image.
+     * The [androidx.viewpager2.widget.PagerAdapter] that will provide fragments for each image.
      * This uses a [FragmentStateAdapter], which keeps every loaded fragment in memory.
      */
     private lateinit var imagePagerAdapter: ImagePagerAdapter
@@ -82,23 +82,12 @@ class MainActivity : AppCompatActivity() {
         // Set up the ViewPager with the pattern adapter.
         //binding.viewPager.adapter = imagePagerAdapter
         val viewPager: ViewPager2 = findViewById(R.id.pager)
+        viewPager.adapter = imagePagerAdapter
 
-        // Workaround for AppCompat issue not showing ViewPager titles
-//        val params = binding.pagerTabStrip.layoutParams as ViewPager.LayoutParams
-//        params.isDecor = true
-
-        // When the visible image changes, send a screen view hit.
-//        binding.viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
-//            override fun onPageSelected(position: Int) {
-//                recordImageView()
-//                recordScreenView()
-//            }
-//        })
-
-            val tabLayout: TabLayout = findViewById(R.id.tab_layout)
-            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                tab.text = "${IMAGE_INFOS[position]}"
-            }.attach()
+        val tabLayout: TabLayout = findViewById(R.id.tab_layout)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.setText(IMAGE_INFOS[position].title)
+        }.attach()
 
         // Send initial screen screen view hit.
         recordImageView()
