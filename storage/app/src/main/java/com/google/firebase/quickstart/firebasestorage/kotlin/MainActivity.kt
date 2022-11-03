@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var cameraIntent: ActivityResultLauncher<Array<String>>;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -50,6 +53,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             buttonCamera.setOnClickListener(this@MainActivity)
             buttonSignIn.setOnClickListener(this@MainActivity)
             buttonDownload.setOnClickListener(this@MainActivity)
+        }
+
+        cameraIntent = registerForActivityResult(ActivityResultContracts.OpenDocument()) { fileUri ->
+            if (fileUri != null) {
+                uploadFromUri(fileUri)
+            } else {
+                Log.w(TAG, "File URI is null")
+            }
         }
 
         // Local broadcast receiver
@@ -159,14 +170,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(TAG, "launchCamera")
 
         // Pick an image from storage
-        val intentLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { fileUri ->
-            if (fileUri != null) {
-                uploadFromUri(fileUri)
-            } else {
-                Log.w(TAG, "File URI is null")
-            }
-        }
-        intentLauncher.launch(arrayOf("image/*"))
+        this.cameraIntent.launch(arrayOf("image/*"))
     }
 
     private fun signInAnonymously() {

@@ -7,8 +7,8 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.core.app.NotificationCompat
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.google.firebase.quickstart.firebasestorage.R
 
 /**
@@ -79,8 +79,11 @@ abstract class MyBaseTaskService : Service() {
      */
     protected fun showFinishedNotification(caption: String, intent: Intent, success: Boolean) {
         // Make PendingIntent for notification
+
+        // Make PendingIntent for notification
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
         val pendingIntent = PendingIntent.getActivity(this, 0 /* requestCode */, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+                flag)
 
         val icon = if (success) R.drawable.ic_check_white_24 else R.drawable.ic_error_white_24dp
 
