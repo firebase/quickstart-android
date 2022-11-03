@@ -81,7 +81,8 @@ abstract class MyBaseTaskService : Service() {
         // Make PendingIntent for notification
 
         // Make PendingIntent for notification
-        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
         val pendingIntent = PendingIntent.getActivity(this, 0 /* requestCode */, intent,
                 flag)
 
