@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(TAG, "launchCamera")
 
         // Pick an image from storage
-        this.cameraIntent.launch(arrayOf("image/*"))
+        cameraIntent.launch(arrayOf("image/*"))
     }
 
     private fun signInAnonymously() {

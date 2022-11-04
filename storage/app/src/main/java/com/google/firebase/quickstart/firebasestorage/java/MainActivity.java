@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         onNewIntent(getIntent());
 
-        this.intentLauncher = registerForActivityResult(
+        intentLauncher = registerForActivityResult(
                 new ActivityResultContracts.OpenDocument(), fileUri -> {
                     if (fileUri != null) {
                         uploadFromUri(fileUri);
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "launchCamera");
 
         // Pick an image from storage
-        this.intentLauncher.launch(new String[]{ "image/*" });
+        intentLauncher.launch(new String[]{ "image/*" });
     }
 
     private void signInAnonymously() {
