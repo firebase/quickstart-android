@@ -7,6 +7,7 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
+    namespace 'com.google.firebase.quickstart.firebasestorage'
     compileSdk 33
 
     defaultConfig {
@@ -55,7 +56,7 @@ dependencies {
     implementation project(":internal:chooserx")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:30.4.1')
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
 
     // Cloud Storage for Firebase (Java)
     implementation 'com.google.firebase:firebase-storage'
@@ -69,15 +70,15 @@ dependencies {
     // Firebase Authentication (Kotlin)
     implementation 'com.google.firebase:firebase-auth-ktx'
 
+    implementation 'androidx.activity:activity-ktx:1.6.1'
     // Jetpack Compose
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.activity:activity-compose:1.5.1'
 
-    implementation 'androidx.activity:activity-ktx:1.5.1'
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.4.0'

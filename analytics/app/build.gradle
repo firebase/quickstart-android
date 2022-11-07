@@ -7,6 +7,7 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
+    namespace 'com.google.firebase.quickstart.analytics'
     compileSdk 33
 
     defaultConfig {
@@ -54,7 +55,7 @@ dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
 
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation "androidx.preference:preference-ktx:1.2.0"
     // Needed to override the version used by preference-ktx
@@ -62,7 +63,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:30.4.1')
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
 
     // Firebase Analytics (Java)
     implementation 'com.google.firebase:firebase-analytics'

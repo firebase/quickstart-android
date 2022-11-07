@@ -7,6 +7,7 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
+    namespace 'com.google.firebase.quickstart.auth'
     compileSdkVersion 33
     flavorDimensions "minSdkVersion"
 
@@ -56,12 +57,12 @@ dependencies {
     implementation project(':internal:lintchecks')
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation 'androidx.activity:activity-ktx:1.5.1'
+    implementation 'androidx.activity:activity-ktx:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 
@@ -72,7 +73,7 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.5.1'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:30.4.1')
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
 
     // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth'
@@ -85,7 +86,7 @@ dependencies {
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    implementation 'com.firebaseui:firebase-ui-auth:8.0.1'
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.

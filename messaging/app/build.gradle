@@ -7,6 +7,7 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
+    namespace 'com.google.firebase.quickstart.fcm'
     compileSdk 33
 
     defaultConfig {
@@ -62,19 +63,19 @@ android {
 dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
-    implementation 'androidx.annotation:annotation:1.4.0'
+    implementation 'androidx.annotation:annotation:1.5.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0'
     implementation 'androidx.core:core-ktx:1.9.0'
 
     // Required when asking for permission to post notifications (starting in Android 13)
-    implementation 'androidx.activity:activity-ktx:1.5.1'
-    implementation 'androidx.fragment:fragment-ktx:1.5.2'
+    implementation 'androidx.activity:activity-ktx:1.6.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.4'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:30.4.1')
+    implementation platform('com.google.firebase:firebase-bom:31.0.2')
 
     // Firebase Cloud Messaging (Java)
     implementation 'com.google.firebase:firebase-messaging'
@@ -86,7 +87,7 @@ dependencies {
     // for Google Analytics. This is recommended, but not required.
     implementation 'com.google.firebase:firebase-analytics'
 
-    implementation 'com.google.firebase:firebase-installations-ktx:17.0.2'
+    implementation 'com.google.firebase:firebase-installations-ktx:17.1.0'
 
     implementation 'androidx.work:work-runtime:2.7.1'
 
@@ -100,7 +101,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'
-    androidTestImplementation 'androidx.annotation:annotation:1.4.0'
+    androidTestImplementation 'androidx.annotation:annotation:1.5.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
