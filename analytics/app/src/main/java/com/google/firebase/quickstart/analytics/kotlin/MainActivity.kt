@@ -173,7 +173,7 @@ class MainActivity : AppCompatActivity() {
      * @return title of image
      */
     private fun getCurrentImageTitle(): String {
-        val position = 0//binding.viewPager.currentItem
+        val position = binding.viewPager.currentItem
         val info = IMAGE_INFOS[position]
         return getString(info.title)
     }
