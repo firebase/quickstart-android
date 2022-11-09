@@ -7,6 +7,7 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
+    namespace 'com.google.firebase.quickstart.fcm'
     compileSdkVersion 33
 
     defaultConfig {
@@ -52,10 +53,10 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.6.0'
     implementation 'androidx.fragment:fragment-ktx:1.5.3'
 
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:30.5.0')
+    implementation platform('com.google.firebase:firebase-bom:31.0.1')
 
     // Firebase Cloud Messaging (Java)
     implementation 'com.google.firebase:firebase-messaging'
@@ -67,7 +68,7 @@ dependencies {
     // for Google Analytics. This is recommended, but not required.
     implementation 'com.google.firebase:firebase-analytics'
 
-    implementation 'com.google.firebase:firebase-installations-ktx:17.0.3'
+    implementation 'com.google.firebase:firebase-installations-ktx:17.1.0'
 
     implementation 'androidx.work:work-runtime:2.7.1'
 

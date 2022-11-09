@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace 'com.google.firebase.fiamquickstart'
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.google.firebase.fiamquickstart"
@@ -37,12 +38,12 @@ dependencies {
     implementation project(":internal:lintchecks")
     implementation project(":internal:chooserx")
 
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:30.5.0')
+    implementation platform('com.google.firebase:firebase-bom:31.0.1')
 
     // FIAM (Java)
     implementation 'com.google.firebase:firebase-inappmessaging-display'
@@ -57,7 +58,7 @@ dependencies {
     // Analytics (Kotlin)
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
-    implementation 'com.google.firebase:firebase-installations-ktx:17.0.3'
+    implementation 'com.google.firebase:firebase-installations-ktx:17.1.0'
 
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.Task
@@ -134,7 +135,7 @@ class RestaurantDetailFragment : Fragment(),
     }
 
     private fun onBackArrowClicked() {
-        requireActivity().onBackPressed()
+        findNavController().popBackStack()
     }
 
     private fun onAddRatingClicked() {

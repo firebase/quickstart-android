@@ -8,6 +8,7 @@ plugins {
 check.dependsOn 'assembleDebugAndroidTest'
 
 android {
+    namespace 'com.google.firebase.quickstart.perfmon'
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.google.firebase.quickstart.perfmon"
@@ -42,7 +43,7 @@ dependencies {
     implementation project(":internal:chooserx")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:30.5.0')
+    implementation platform('com.google.firebase:firebase-bom:31.0.1')
 
     // Firebase Performance Monitoring (Java)
     implementation 'com.google.firebase:firebase-perf'
@@ -50,7 +51,7 @@ dependencies {
     // Firebase Performance Monitoring (Kotlin)
     implementation 'com.google.firebase:firebase-perf-ktx'
 
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 
