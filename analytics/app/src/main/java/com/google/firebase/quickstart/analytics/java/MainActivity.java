@@ -21,7 +21,6 @@
 
 package com.google.firebase.quickstart.analytics.java;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,7 +31,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.preference.PreferenceManager;
@@ -110,13 +108,13 @@ public class MainActivity extends AppCompatActivity {
         mImagePagerAdapter = new ImagePagerAdapter(getSupportFragmentManager(), IMAGE_INFOS, getLifecycle());
 
         // Set up the ViewPager with the pattern adapter.
-        mViewPager =  binding.viewPager;
+        mViewPager = binding.viewPager;
         mViewPager.setAdapter(mImagePagerAdapter);
 
         mViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
                 recordImageView();
                 recordScreenView();
             }
@@ -233,9 +231,9 @@ public class MainActivity extends AppCompatActivity {
      * @return id of image
      */
     private String getCurrentImageId() {
-        int position = 0;
+        int position = mViewPager.getCurrentItem();;
         ImageInfo info = IMAGE_INFOS[position];
-        return getString(info.image);
+        return getString(info.id);
     }
 
     /**
@@ -279,12 +277,19 @@ public class MainActivity extends AppCompatActivity {
 
         private final ImageInfo[] infos;
 
-        @SuppressLint("WrongConstant")
         public ImagePagerAdapter(FragmentManager fm, ImageInfo[] infos, Lifecycle lifecyle) {
             super(fm, lifecyle);
             this.infos = infos;
         }
 
+        public CharSequence getPageTitle(int position) {
+            if (position < 0 || position >= infos.length) {
+                return null;
+            }
+            Locale l = Locale.getDefault();
+            ImageInfo info = infos[position];
+            return getString(info.title).toUpperCase(l);
+        }
 
         @NonNull
         @Override
