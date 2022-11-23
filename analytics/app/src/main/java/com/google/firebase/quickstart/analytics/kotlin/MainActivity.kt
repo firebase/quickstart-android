@@ -10,7 +10,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.preference.PreferenceManager
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -23,7 +26,8 @@ import com.google.firebase.quickstart.analytics.R
 import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding
 import com.google.firebase.quickstart.analytics.java.MainActivity
 import com.google.firebase.quickstart.analytics.kotlin.MainActivity.Companion.IMAGE_INFOS
-import java.util.*
+import java.util.Locale
+
 
 /**
  * Activity which displays numerous background images that may be viewed. These background images
@@ -77,12 +81,21 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Create the adapter that will return a fragment for each image.
-        imagePagerAdapter = ImagePagerAdapter(this, IMAGE_INFOS)
+        imagePagerAdapter = ImagePagerAdapter(supportFragmentManager, IMAGE_INFOS, lifecycle)
 
         // Set up the ViewPager with the pattern adapter.
-        //binding.viewPager.adapter = imagePagerAdapter
+        binding.viewPager.adapter = imagePagerAdapter
         val viewPager: ViewPager2 = findViewById(R.id.viewPager)
         viewPager.adapter = imagePagerAdapter
+
+        val pageChangedCallback = object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                recordImageView()
+                recordScreenView()
+            }
+        }
+
+        binding.viewPager.registerOnPageChangeCallback(pageChangedCallback)
 
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -184,7 +197,7 @@ class MainActivity : AppCompatActivity() {
      * @return id of image
      */
     private fun getCurrentImageId(): String {
-        val position = 0//binding.viewPager.currentItem
+        val position = binding.viewPager.currentItem
         val info = IMAGE_INFOS[position]
         return getString(info.id)
     }
@@ -226,11 +239,11 @@ class MainActivity : AppCompatActivity() {
      * A [FragmentStateAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    @SuppressLint("WrongConstant")
     inner class ImagePagerAdapter(
-        fm: FragmentActivity,
-        private val infos: Array<ImageInfo>
-    ) : FragmentStateAdapter(fm) {
+        fm: FragmentManager,
+        private val infos: Array<ImageInfo>,
+        lc: Lifecycle
+    ) : FragmentStateAdapter(fm, lc) {
 
         fun getPageTitle(position: Int): CharSequence? {
             if (position < 0 || position >= infos.size) {
@@ -241,9 +254,7 @@ class MainActivity : AppCompatActivity() {
             return getString(info.title).uppercase(l)
         }
 
-        override fun getItemCount(): Int {
-            return infos.size
-        }
+        override fun getItemCount(): Int = infos.size
 
         override fun createFragment(position: Int): Fragment {
             val info = infos[position]
