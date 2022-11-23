@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
      * @return id of image
      */
     private String getCurrentImageId() {
-        int position = mViewPager.getCurrentItem();;
+        int position = mViewPager.getCurrentItem();
         ImageInfo info = IMAGE_INFOS[position];
         return getString(info.id);
     }
