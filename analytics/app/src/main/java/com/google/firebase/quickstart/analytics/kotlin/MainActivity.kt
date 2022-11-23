@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set up the ViewPager with the pattern adapter.
         binding.viewPager.adapter = imagePagerAdapter
-        val viewPager: ViewPager2 = findViewById(R.id.viewPager)
+        val viewPager: ViewPager2 = binding.viewPager
         viewPager.adapter = imagePagerAdapter
 
         val pageChangedCallback = object : ViewPager2.OnPageChangeCallback() {
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewPager.registerOnPageChangeCallback(pageChangedCallback)
 
-        val tabLayout: TabLayout = findViewById(R.id.tab_layout)
+        val tabLayout: TabLayout = binding.tabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.setText(IMAGE_INFOS[position].title)
         }.attach()
@@ -242,8 +242,8 @@ class MainActivity : AppCompatActivity() {
     inner class ImagePagerAdapter(
         fm: FragmentManager,
         private val infos: Array<ImageInfo>,
-        lc: Lifecycle
-    ) : FragmentStateAdapter(fm, lc) {
+        lifecyle: Lifecycle
+    ) : FragmentStateAdapter(fm, lifecyle) {
 
         fun getPageTitle(position: Int): CharSequence? {
             if (position < 0 || position >= infos.size) {
