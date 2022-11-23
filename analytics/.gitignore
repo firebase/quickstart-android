@@ -2,7 +2,6 @@
 /local.properties
 .DS_Store
 build/
-app/google-services.json
 
 # Android Studio
 .idea
