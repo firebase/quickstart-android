@@ -3,6 +3,7 @@
 .DS_Store
 build/
 google-services.json
+
 # Android Studio
 .idea
 *.iml
