@@ -9,11 +9,9 @@ import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.preference.PreferenceManager
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -85,8 +83,6 @@ class MainActivity : AppCompatActivity() {
 
         // Set up the ViewPager with the pattern adapter.
         binding.viewPager.adapter = imagePagerAdapter
-        val viewPager: ViewPager2 = binding.viewPager
-        viewPager.adapter = imagePagerAdapter
 
         val pageChangedCallback = object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -98,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.registerOnPageChangeCallback(pageChangedCallback)
 
         val tabLayout: TabLayout = binding.tabLayout
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+        TabLayoutMediator(tabLayout, binding.viewPager) { tab, position ->
             tab.setText(IMAGE_INFOS[position].title)
         }.attach()
 
