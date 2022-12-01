@@ -86,8 +86,9 @@ public abstract class MyBaseTaskService extends Service {
      */
     protected void showFinishedNotification(String caption, Intent intent, boolean success) {
         // Make PendingIntent for notification
+        int flag = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* requestCode */, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                flag);
 
         int icon = success ? R.drawable.ic_check_white_24 : R.drawable.ic_error_white_24dp;
 

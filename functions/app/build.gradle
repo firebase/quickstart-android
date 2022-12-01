@@ -64,18 +64,13 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:31.0.2')
+    implementation platform('com.google.firebase:firebase-bom:31.1.0')
 
     // Cloud Functions for Firebase (Java)
     implementation 'com.google.firebase:firebase-functions'
 
     // Cloud Functions for Firebase (Kotlin)
     implementation 'com.google.firebase:firebase-functions-ktx'
-
-    // TODO(thatfiredev): remove this explicit dependency once
-    //  https://github.com/firebase/firebase-android-sdk/issues/4206 is fixed.
-    // This is workaround to prevent the clash with firebase-messaging
-    implementation 'com.google.firebase:firebase-iid:21.1.0'
 
     // Firebase Authentication (Java)
     implementation 'com.google.firebase:firebase-auth'
@@ -90,7 +85,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
     
     // Google Play services
-    implementation 'com.google.android.gms:play-services-auth:20.3.0'
+    implementation 'com.google.android.gms:play-services-auth:20.4.0'
 
     // Jetpack Compose
     implementation "androidx.compose.ui:ui:$compose_version"
@@ -99,9 +94,9 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.5.1'
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation 'androidx.test:rules:1.4.0'
-    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    androidTestImplementation 'androidx.test:runner:1.5.1'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"

@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ActivityMainBinding binding;
 
+    private ActivityResultLauncher<String[]> intentLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +86,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mDownloadUrl = savedInstanceState.getParcelable(KEY_DOWNLOAD_URL);
         }
         onNewIntent(getIntent());
+
+        intentLauncher = registerForActivityResult(
+                new ActivityResultContracts.OpenDocument(), fileUri -> {
+                    if (fileUri != null) {
+                        uploadFromUri(fileUri);
+                    } else {
+                        Log.w(TAG, "File URI is null");
+                    }
+                });
 
         // Local broadcast receiver
         mBroadcastReceiver = new BroadcastReceiver() {
@@ -193,14 +204,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "launchCamera");
 
         // Pick an image from storage
-        ActivityResultLauncher<String[]> intentLauncher = registerForActivityResult(
-                new ActivityResultContracts.OpenDocument(), fileUri -> {
-                    if (fileUri != null) {
-                        uploadFromUri(fileUri);
-                    } else {
-                        Log.w(TAG, "File URI is null");
-                    }
-                });
         intentLauncher.launch(new String[]{ "image/*" });
     }
 

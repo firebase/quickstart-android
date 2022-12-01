@@ -10,16 +10,22 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Lifecycle
 import androidx.preference.PreferenceManager
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.analytics.R
 import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding
+import com.google.firebase.quickstart.analytics.java.MainActivity
+import com.google.firebase.quickstart.analytics.kotlin.MainActivity.Companion.IMAGE_INFOS
 import java.util.Locale
+
 
 /**
  * Activity which displays numerous background images that may be viewed. These background images
@@ -41,8 +47,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     /**
-     * The [androidx.viewpager.widget.PagerAdapter] that will provide fragments for each image.
-     * This uses a [FragmentPagerAdapter], which keeps every loaded fragment in memory.
+     * The [androidx.viewpager2.widget.PagerAdapter] that will provide fragments for each image.
+     * This uses a [FragmentStateAdapter], which keeps every loaded fragment in memory.
      */
     private lateinit var imagePagerAdapter: ImagePagerAdapter
 
@@ -73,22 +79,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Create the adapter that will return a fragment for each image.
-        imagePagerAdapter = ImagePagerAdapter(supportFragmentManager, IMAGE_INFOS)
+        imagePagerAdapter = ImagePagerAdapter(supportFragmentManager, IMAGE_INFOS, lifecycle)
 
         // Set up the ViewPager with the pattern adapter.
         binding.viewPager.adapter = imagePagerAdapter
 
-        // Workaround for AppCompat issue not showing ViewPager titles
-        val params = binding.pagerTabStrip.layoutParams as ViewPager.LayoutParams
-        params.isDecor = true
-
-        // When the visible image changes, send a screen view hit.
-        binding.viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+        val pageChangedCallback = object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 recordImageView()
                 recordScreenView()
             }
-        })
+        }
+
+        binding.viewPager.registerOnPageChangeCallback(pageChangedCallback)
+
+        val tabLayout: TabLayout = binding.tabLayout
+        TabLayoutMediator(tabLayout, binding.viewPager) { tab, position ->
+            tab.setText(IMAGE_INFOS[position].title)
+        }.attach()
 
         // Send initial screen screen view hit.
         recordImageView()
@@ -192,7 +200,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * Record a screen view for the visible [ImageFragment] displayed
-     * inside [FragmentPagerAdapter].
+     * inside [FragmentStateAdapter].
      */
     private fun recordImageView() {
         val id = getCurrentImageId()
@@ -224,29 +232,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * A [FragmentPagerAdapter] that returns a fragment corresponding to
+     * A [FragmentStateAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    @SuppressLint("WrongConstant")
     inner class ImagePagerAdapter(
         fm: FragmentManager,
-        private val infos: Array<ImageInfo>
-    ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        private val infos: Array<ImageInfo>,
+        lifecyle: Lifecycle
+    ) : FragmentStateAdapter(fm, lifecyle) {
 
-        override fun getItem(position: Int): Fragment {
-            val info = infos[position]
-            return ImageFragment.newInstance(info.image)
-        }
-
-        override fun getCount() = infos.size
-
-        override fun getPageTitle(position: Int): CharSequence? {
+        fun getPageTitle(position: Int): CharSequence? {
             if (position < 0 || position >= infos.size) {
                 return null
             }
             val l = Locale.getDefault()
             val info = infos[position]
-            return getString(info.title).toUpperCase(l)
+            return getString(info.title).uppercase(l)
+        }
+
+        override fun getItemCount(): Int = infos.size
+
+        override fun createFragment(position: Int): Fragment {
+            val info = infos[position]
+            return ImageFragment.newInstance(info.image)
         }
     }
 }
