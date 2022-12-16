@@ -12,12 +12,15 @@ android {
 
     defaultConfig {
         applicationId "com.google.samples.quickstart.config"
-        minSdkVersion 19
+        minSdkVersion 21 // needed to be updated to 21 for compose/material 3
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
 
     buildTypes {
@@ -29,6 +32,22 @@ android {
 
     buildFeatures {
         viewBinding = true
+        compose true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.3.2'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 }
 
@@ -37,6 +56,7 @@ dependencies {
     implementation project(":internal:chooserx")
 
     implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation platform('com.google.firebase:firebase-bom:31.1.0')
@@ -50,9 +70,20 @@ dependencies {
     // For an optimal experience using Remote Config, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha02'
+
+    debugImplementation "androidx.fragment:fragment-testing:1.5.4"
+    // Jetpack COmpose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.activity:activity-compose:1.5.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
-    androidTestImplementation 'androidx.test:rules:1.5.0'
-    androidTestImplementation 'androidx.test:runner:1.5.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 }
