@@ -43,7 +43,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:31.1.0')
+    implementation platform('com.google.firebase:firebase-bom:31.1.1')
 
     // ADD the SDK to the "prerelease" variant only (example)
     implementation 'com.google.firebase:firebase-appdistribution-ktx:16.0.0-beta01'
@@ -52,8 +52,8 @@ dependencies {
     // for Google Analytics. This is recommended, but not required.
     implementation 'com.google.firebase:firebase-analytics'
 
-    androidTestImplementation 'androidx.test:runner:1.5.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'androidx.test:rules:1.5.0'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 }
