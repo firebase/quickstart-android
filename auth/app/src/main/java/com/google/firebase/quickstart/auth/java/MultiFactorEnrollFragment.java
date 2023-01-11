@@ -110,6 +110,7 @@ public class MultiFactorEnrollFragment extends BaseFragment {
                                 if (task.isSuccessful()) {
                                     PhoneAuthOptions phoneAuthOptions =
                                             PhoneAuthOptions.newBuilder()
+                                                    .setActivity(requireActivity())
                                                     .setPhoneNumber(phoneNumber)
                                                     // A timeout of 0 disables SMS-auto-retrieval.
                                                     .setTimeout(0L, TimeUnit.SECONDS)

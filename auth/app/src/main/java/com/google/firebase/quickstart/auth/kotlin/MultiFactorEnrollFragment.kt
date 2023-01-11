@@ -78,6 +78,7 @@ class MultiFactorEnrollFragment : BaseFragment() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val phoneAuthOptions = PhoneAuthOptions.newBuilder()
+                                .setActivity(requireActivity())
                                 .setPhoneNumber(phoneNumber) // A timeout of 0 disables SMS-auto-retrieval.
                                 .setTimeout(0L, TimeUnit.SECONDS)
                                 .setMultiFactorSession(task.result!!)
