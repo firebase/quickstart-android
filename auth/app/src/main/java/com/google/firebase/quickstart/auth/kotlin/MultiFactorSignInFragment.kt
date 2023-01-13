@@ -14,6 +14,7 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneMultiFactorGenerator
 import com.google.firebase.auth.PhoneMultiFactorInfo
+import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.FragmentMultiFactorSignInBinding
 import java.util.concurrent.TimeUnit
 
@@ -125,7 +126,7 @@ class MultiFactorSignInFragment : BaseFragment() {
         multiFactorResolver
                 .resolveSignIn(PhoneMultiFactorGenerator.getAssertion(lastPhoneAuthCredential!!))
                 .addOnSuccessListener {
-                    findNavController().popBackStack()
+                    findNavController().navigate(R.id.action_mfasignin_to_mfa)
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(context, "Error: " + e.message, Toast.LENGTH_SHORT)

@@ -66,10 +66,10 @@
         android:id="@+id/EmailPasswordFragment"
         android:name="com.google.firebase.quickstart.auth.java.EmailPasswordFragment"
         tools:layout="@layout/fragment_emailpassword">
+
         <action
-            android:id="@+id/action_emailpassword_to_mfa"
-            app:popUpTo="@id/MultiFactorFragment"
-            app:destination="@id/MultiFactorFragment" />
+            android:id="@+id/action_emailpassword_to_mfasignin"
+            app:destination="@id/MultiFactorSignInFragment" />
     </fragment>
 
     <fragment
@@ -114,16 +114,19 @@
             android:id="@+id/action_mfa_to_unenroll"
             app:destination="@id/MultiFactorUnenrollFragment" />
 
-        <action
-            android:id="@+id/action_mfa_to_mfasignin"
-            app:destination="@id/MultiFactorSignInFragment" />
-
     </fragment>
 
     <fragment
         android:id="@+id/MultiFactorSignInFragment"
         android:name="com.google.firebase.quickstart.auth.java.MultiFactorSignInFragment"
-        tools:layout="@layout/fragment_multi_factor_sign_in"/>
+        tools:layout="@layout/fragment_multi_factor_sign_in">
+
+        <action
+            android:id="@+id/action_mfasignin_to_mfa"
+            app:popUpTo="@id/MultiFactorFragment"
+            app:destination="@id/MultiFactorFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/MultiFactorUnenrollFragment"

@@ -33,12 +33,6 @@ class MultiFactorFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setProgressBar(binding.progressBar)
 
-        arguments?.let { args ->
-            if (args.getBoolean(RESULT_NEEDS_MFA_SIGN_IN)) {
-                findNavController().navigate(R.id.action_mfa_to_mfasignin, args)
-            }
-        }
-
         // Buttons
         binding.emailSignInButton.setOnClickListener {
             findNavController().navigate(R.id.action_mfa_to_emailpassword)
@@ -158,7 +152,6 @@ class MultiFactorFragment : BaseFragment() {
     }
 
     companion object {
-        const val RESULT_NEEDS_MFA_SIGN_IN = "RESULT_NEEDS_MFA"
         private const val TAG = "MultiFactor"
     }
 }

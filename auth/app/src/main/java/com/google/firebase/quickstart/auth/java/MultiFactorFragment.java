@@ -41,8 +41,6 @@ import java.util.List;
 
 public class MultiFactorFragment extends BaseFragment {
 
-    public static final String RESULT_NEEDS_MFA_SIGN_IN = "RESULT_NEEDS_MFA";
-
     private static final String TAG = "MultiFactor";
 
     private FragmentMultiFactorBinding mBinding;
@@ -60,12 +58,6 @@ public class MultiFactorFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setProgressBar(mBinding.progressBar);
-
-        Bundle args = getArguments();
-        if (args != null && args.getBoolean(RESULT_NEEDS_MFA_SIGN_IN)) {
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_mfa_to_mfasignin, args);
-        }
 
         // Buttons
         mBinding.emailSignInButton.setOnClickListener(new View.OnClickListener() {
