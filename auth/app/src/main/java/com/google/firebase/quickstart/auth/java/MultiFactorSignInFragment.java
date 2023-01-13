@@ -111,7 +111,9 @@ public class MultiFactorSignInFragment extends BaseFragment {
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        mVerificationId = savedInstanceState.getString(KEY_VERIFICATION_ID);
+        if (savedInstanceState != null) {
+            mVerificationId = savedInstanceState.getString(KEY_VERIFICATION_ID);
+        }
     }
 
     private View.OnClickListener generateFactorOnClickListener(PhoneMultiFactorInfo phoneMultiFactorInfo) {
