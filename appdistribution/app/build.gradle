@@ -31,6 +31,10 @@ android {
     }
     lint {
         warning 'InvalidPackage'
+        // TODO(thatfiredev): Remove this once
+        //  https://github.com/bumptech/glide/issues/4940 is fixed
+        //  (and the same change gets applied to App Distribution)
+        disable 'NotificationPermission'
     }
 }
 
