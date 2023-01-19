@@ -34,7 +34,6 @@ class MainComposeActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         
         setContent {
 
@@ -141,7 +140,9 @@ fun MainAppView(modifier: Modifier = Modifier, buttonClickEventAdLoader : () -> 
 
         }
         Row(    // pushed to bottom due to .weight above
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally)
         ) {
             AdvertBanner()
         }
