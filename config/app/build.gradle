@@ -42,7 +42,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.1.1')
 
     // Firebase Remote Config (Java)
-    implementation 'com.google.firebase:firebase-config'
+    implementation 'com.google.firebase:firebase-config:21.2.1'
 
     // Firebase Remote Config (Kotlin)
     implementation 'com.google.firebase:firebase-config-ktx'

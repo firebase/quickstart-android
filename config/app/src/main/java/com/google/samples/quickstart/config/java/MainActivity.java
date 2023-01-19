@@ -32,7 +32,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.ConfigUpdate;
+import com.google.firebase.remoteconfig.ConfigUpdateListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigException;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.samples.quickstart.config.R;
 import com.google.samples.quickstart.config.databinding.ActivityMainBinding;
@@ -86,6 +89,22 @@ public class MainActivity extends AppCompatActivity {
         // [START set_default_values]
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
         // [END set_default_values]
+
+        mFirebaseRemoteConfig.addOnConfigUpdateListener(new ConfigUpdateListener() {
+            @Override
+            public void onUpdate(@NonNull ConfigUpdate configUpdate) {
+                Log.i(TAG, "Received Realtime Signal");
+                if (configUpdate.getUpdatedKeys().contains("realtime_rc_changed_params")) {
+                    Log.i(TAG, "Received realtime_rc_changed_params");
+                }
+                mFirebaseRemoteConfig.activate();
+            }
+
+            @Override
+            public void onError(FirebaseRemoteConfigException error) {
+                Log.i(TAG, "Got error: " + error.toString());
+            }
+        });
 
         fetchWelcome();
     }
