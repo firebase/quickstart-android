@@ -121,16 +121,30 @@ class MainComposeActivity : ComponentActivity() {
 
 @Composable
 fun MainAppView(modifier: Modifier = Modifier, buttonClickEventAdLoader : () -> Unit = {}){
-    Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        AppNameBanner()
-        Spacer(modifier = Modifier.height(24.dp))
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .weight(1f), // fills as much space as possible
 
-        Image(painter = painterResource(R.drawable.firebase_lockup_400), contentDescription = "")
-        Spacer(modifier = Modifier.height(160.dp))
-        InterstitialButton(myClickEventInterstitialLoader = {buttonClickEventAdLoader()})
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AppNameBanner()
+            Spacer(modifier = Modifier.height(24.dp))
 
-        Spacer(modifier = Modifier.height(192.dp))
-        AdvertBanner()
+            Image(painter = painterResource(R.drawable.firebase_lockup_400), contentDescription = "")
+            Spacer(modifier = Modifier.height(160.dp))
+            InterstitialButton(myClickEventInterstitialLoader = { buttonClickEventAdLoader() })
+
+        }
+        Row(    // pushed to bottom due to .weight above
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            AdvertBanner()
+        }
     }
 }
 
@@ -165,16 +179,17 @@ fun InterstitialButton(modifier: Modifier = Modifier, myClickEventInterstitialLo
 @Composable
 fun AdvertBanner(modifier: Modifier = Modifier) { // banner advert
 
-    AndroidView(
-        modifier = modifier.fillMaxWidth(),
-        factory = { context ->
-            AdView(context).apply {
-                setAdSize(AdSize.BANNER)
-                adUnitId = context.getString(R.string.banner_ad_unit_id)
-                loadAd(AdRequest.Builder().build())
+        AndroidView(
+            modifier = modifier.fillMaxWidth(),
+            factory = { context ->
+                AdView(context).apply {
+                    setAdSize(AdSize.BANNER)
+                    adUnitId = context.getString(R.string.banner_ad_unit_id)
+                    loadAd(AdRequest.Builder().build())
+                }
             }
-        }
-    )
+        )
+
 
 }
 
