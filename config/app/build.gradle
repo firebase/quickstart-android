@@ -39,7 +39,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.7.0'
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation platform('com.google.firebase:firebase-bom:31.1.1')
+    implementation platform('com.google.firebase:firebase-bom:31.2.0')
 
     // Firebase Remote Config (Java)
     implementation 'com.google.firebase:firebase-config:21.2.1'
@@ -50,6 +50,11 @@ dependencies {
     // For an optimal experience using Remote Config, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.firebase:firebase-annotations:16.2.0'
+
+    implementation 'com.google.firebase:firebase-installations-interop:17.1.0'
+    implementation 'com.google.firebase:firebase-installations:17.1.0'
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'androidx.test:rules:1.5.0'
