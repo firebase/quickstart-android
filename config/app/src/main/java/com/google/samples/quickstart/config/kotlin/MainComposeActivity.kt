@@ -18,16 +18,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.samples.quickstart.config.R
 import com.google.samples.quickstart.config.kotlin.ui.theme.ConfigTheme
 //import com.google.samples.quickstart.config.ui.theme.ConfigTheme
 
 
 class MainComposeActivity : ComponentActivity() {
-    private var startingText: String = "Fetching Config..."
+    private val startingText: String = "Welcome! Please fetch Config..."
+    private lateinit var displayText: String
+    private lateinit var remoteConfig: FirebaseRemoteConfig
+    private val buttonClickLambda = { configButtonOnClick() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Initialize config and set starting text
+        remoteConfig = FirebaseActivity.initializeConfig()
+        displayText = startingText
+
         setContent {
             ConfigTheme {
                 // A surface container using the 'background' color from the theme
@@ -35,7 +44,24 @@ class MainComposeActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainAppView(remoteConfigDisplayText = startingText)
+                    MainAppView(remoteConfigDisplayText = displayText, buttonClickEventMSGFetcher = buttonClickLambda)
+                }
+            }
+        }
+    }
+
+    fun configButtonOnClick(){
+        // Call the FirebaseActivity to fetch the message
+        displayText = FirebaseActivity.fetchConfig(this, remoteConfig)
+
+        setContent {
+            ConfigTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MainAppView(remoteConfigDisplayText = displayText, buttonClickEventMSGFetcher = buttonClickLambda)
                 }
             }
         }
@@ -44,7 +70,7 @@ class MainComposeActivity : ComponentActivity() {
 
 
 @Composable
-fun MainAppView(modifier: Modifier = Modifier, remoteConfigDisplayText: String){
+fun MainAppView(modifier: Modifier = Modifier, remoteConfigDisplayText: String, buttonClickEventMSGFetcher : () -> Unit = {}){
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally){
         AppNameBanner()
         Spacer(modifier = Modifier.height(24.dp))
@@ -55,7 +81,7 @@ fun MainAppView(modifier: Modifier = Modifier, remoteConfigDisplayText: String){
         ConfigText(remoteConfigDisplayText = remoteConfigDisplayText)
         Spacer(modifier = Modifier.height(160.dp))
 
-        ConfigButton()
+        ConfigButton(myClickEventMSGFetcher = buttonClickEventMSGFetcher)
     }
 
 }
@@ -84,10 +110,10 @@ fun ConfigText(modifier: Modifier = Modifier, remoteConfigDisplayText: String){
 }
 
 @Composable
-fun ConfigButton(modifier: Modifier = Modifier){
+fun ConfigButton(modifier: Modifier = Modifier, myClickEventMSGFetcher : () -> Unit = {}){
     Button(
         colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
-        onClick = {  }    //lambda for onClick action
+        onClick = { myClickEventMSGFetcher() } // Calls function from MainComposeActivity to change display text
     ) {
         Text(
             text = stringResource(R.string.fetch_remote_welcome_message),
