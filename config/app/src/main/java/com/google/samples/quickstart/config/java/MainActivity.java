@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.remoteconfig.ConfigUpdate;
 import com.google.firebase.remoteconfig.ConfigUpdateListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -97,7 +98,10 @@ public class MainActivity extends AppCompatActivity {
                 if (configUpdate.getUpdatedKeys().contains("realtime_rc_changed_params")) {
                     Log.i(TAG, "Received realtime_rc_changed_params");
                 }
-                mFirebaseRemoteConfig.activate();
+                mFirebaseRemoteConfig.activate().onSuccessTask((task) -> {
+                    displayWelcomeMessage();
+                    return Tasks.forResult(null);
+                });
             }
 
             @Override
@@ -105,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "Got error: " + error.toString());
             }
         });
-
-        fetchWelcome();
     }
 
     /**
