@@ -121,17 +121,3 @@ fun ConfigButton(modifier: Modifier = Modifier, myClickEventMSGFetcher : () -> U
         )
     }
 }
-
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ConfigTheme {
-        Greeting("Android")
-    }
-}

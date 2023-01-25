@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">Firebase Remote Config</string>
-    <string name="fetch_remote_welcome_message">Fetch Remote Welcome</string>
-    <string name="title_activity_main_compose">MainComposeActivity</string>
+    <string name="fetch_remote_welcome_message">Fetch remote welcome</string>
 </resources>
