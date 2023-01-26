@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,27 +17,25 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.samples.quickstart.config.R
 import com.google.samples.quickstart.config.kotlin.ui.theme.ConfigTheme
 //import com.google.samples.quickstart.config.ui.theme.ConfigTheme
 
 
 class MainComposeActivity : ComponentActivity() {
-    private val startingText: String = "Welcome! Please fetch Config..."
-    private lateinit var displayText: String
-    private lateinit var remoteConfig: FirebaseRemoteConfig
-    private val buttonClickLambda = { configButtonOnClick() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         //Initialize config and set starting text
-        remoteConfig = FirebaseActivity.initializeConfig()
-        displayText = startingText
+        val remoteConfig = initializeConfig()
 
         setContent {
             ConfigTheme {
@@ -44,33 +44,45 @@ class MainComposeActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainAppView(remoteConfigDisplayText = displayText, buttonClickEventMSGFetcher = buttonClickLambda)
+                    MainAppView()
                 }
             }
         }
     }
 
-    fun configButtonOnClick(){
-        // Call the FirebaseActivity to fetch the message
-        displayText = FirebaseActivity.fetchConfig(this, remoteConfig)
+    private fun initializeConfig() : FirebaseRemoteConfig {
+        // Get Remote Config instance.
+        // [START get_remote_config_instance]
+        val remoteConfig = Firebase.remoteConfig
+        // [END get_remote_config_instance]
 
-        setContent {
-            ConfigTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    MainAppView(remoteConfigDisplayText = displayText, buttonClickEventMSGFetcher = buttonClickLambda)
-                }
-            }
+        // Create a Remote Config Setting to enable developer mode, which you can use to increase
+        // the number of fetches available per hour during development. Also use Remote Config
+        // Setting to set the minimum fetch interval.
+        // [START enable_dev_mode]
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 3600
         }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        // [END enable_dev_mode]
+
+        // Set default Remote Config parameter values. An app uses the in-app default values, and
+        // when you need to adjust those defaults, you set an updated value for only the values you
+        // want to change in the Firebase console. See Best Practices in the README for more
+        // information.
+        // [START set_default_values]
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+        // [END set_default_values]
+        return remoteConfig
     }
 }
 
 
 @Composable
-fun MainAppView(modifier: Modifier = Modifier, remoteConfigDisplayText: String, buttonClickEventMSGFetcher : () -> Unit = {}){
+fun MainAppView(
+    modifier: Modifier = Modifier,
+    remoteConfigViewModel: RemoteConfigViewModel = viewModel()
+){
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally){
         AppNameBanner()
         Spacer(modifier = Modifier.height(24.dp))
@@ -78,6 +90,7 @@ fun MainAppView(modifier: Modifier = Modifier, remoteConfigDisplayText: String, 
         Image(painter = painterResource(R.drawable.firebase_lockup_400), contentDescription = "")
 
         // Text displayed
+        val remoteConfigDisplayText by remoteConfigViewModel.welcomeMessage.collectAsState()
         Text(
             text = remoteConfigDisplayText,
             fontSize = 16.sp
@@ -87,7 +100,7 @@ fun MainAppView(modifier: Modifier = Modifier, remoteConfigDisplayText: String, 
         // Button to fetch remote welcome
         Button(
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
-            onClick = { buttonClickEventMSGFetcher() } // Calls function from MainComposeActivity to change display text
+            onClick = { remoteConfigViewModel.fetchConfig() } // Calls function from MainComposeActivity to change display text
         ) {
             Text(
                 text = stringResource(R.string.fetch_remote_welcome_message),
