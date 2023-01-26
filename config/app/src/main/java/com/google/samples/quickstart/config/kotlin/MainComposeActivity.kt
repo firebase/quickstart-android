@@ -76,12 +76,24 @@ fun MainAppView(modifier: Modifier = Modifier, remoteConfigDisplayText: String, 
         Spacer(modifier = Modifier.height(24.dp))
 
         Image(painter = painterResource(R.drawable.firebase_lockup_400), contentDescription = "")
-//        Spacer(modifier = Modifier.height(16.dp))
 
-        ConfigText(remoteConfigDisplayText = remoteConfigDisplayText)
+        // Text displayed
+        Text(
+            text = remoteConfigDisplayText,
+            fontSize = 16.sp
+        )
         Spacer(modifier = Modifier.height(160.dp))
 
-        ConfigButton(myClickEventMSGFetcher = buttonClickEventMSGFetcher)
+        // Button to fetch remote welcome
+        Button(
+            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
+            onClick = { buttonClickEventMSGFetcher() } // Calls function from MainComposeActivity to change display text
+        ) {
+            Text(
+                text = stringResource(R.string.fetch_remote_welcome_message),
+                fontSize = 20.sp
+            )
+        }
     }
 
 }
@@ -97,27 +109,6 @@ fun AppNameBanner(modifier: Modifier = Modifier){
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(8.dp),
             color = Color.White
-        )
-    }
-}
-
-@Composable
-fun ConfigText(modifier: Modifier = Modifier, remoteConfigDisplayText: String){
-    Text(
-        text = remoteConfigDisplayText,
-        fontSize = 16.sp
-    )
-}
-
-@Composable
-fun ConfigButton(modifier: Modifier = Modifier, myClickEventMSGFetcher : () -> Unit = {}){
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
-        onClick = { myClickEventMSGFetcher() } // Calls function from MainComposeActivity to change display text
-    ) {
-        Text(
-            text = stringResource(R.string.fetch_remote_welcome_message),
-            fontSize = 20.sp
         )
     }
 }
