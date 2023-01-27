@@ -47,17 +47,16 @@ class RemoteConfigViewModel(
     }
 
     fun fetchRemoteConfig() {
-        remoteConfig.fetchAndActivate()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val updated = task.result
-                    Log.d(TAG, "Config params updated: $updated")
-                    _welcomeMessage.value = remoteConfig[WELCOME_MESSAGE_KEY].asString()
-                } else {
-                    Log.e(TAG, "There was an error fetching and activating your config")
-                    _welcomeMessage.value = task.exception?.message ?: "Unknown Error"
-                }
+        viewModelScope.launch {
+            try {
+                val updated = remoteConfig.fetchAndActivate().await()
+                Log.d(TAG, "Config params updated: $updated")
+                _welcomeMessage.value = remoteConfig[WELCOME_MESSAGE_KEY].asString()
+            } catch (e: Exception) {
+                Log.e(TAG, "There was an error fetching and activating your config")
+                _welcomeMessage.value = e.message ?: "Unknown Error"
             }
+        }
     }
 
     companion object {
