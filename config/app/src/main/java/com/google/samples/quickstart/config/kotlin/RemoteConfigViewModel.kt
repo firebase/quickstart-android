@@ -21,6 +21,9 @@ class RemoteConfigViewModel(
     private val _welcomeMessage = MutableStateFlow("Welcome...")
     val welcomeMessage: StateFlow<String> = _welcomeMessage
 
+    private val _allCaps = MutableStateFlow(false)
+    val allCaps: StateFlow<Boolean> = _allCaps
+
     fun enableDeveloperMode() {
         viewModelScope.launch {
             // Create a Remote Config Setting to enable developer mode, which you can use to increase
@@ -41,17 +44,21 @@ class RemoteConfigViewModel(
             // information.
             remoteConfig.setDefaultsAsync(defaultValuesXml).await()
 
-            // Update the UI with the default parameter value for welcome message
-            _welcomeMessage.value = remoteConfig[WELCOME_MESSAGE_KEY].asString()
+            // Update the UI with the default parameter values
+            updateUI()
         }
     }
 
     fun fetchRemoteConfig() {
+        _welcomeMessage.value = remoteConfig[LOADING_PHRASE_CONFIG_KEY].asString()
+
         viewModelScope.launch {
             try {
                 val updated = remoteConfig.fetchAndActivate().await()
                 Log.d(TAG, "Config params updated: $updated")
-                _welcomeMessage.value = remoteConfig[WELCOME_MESSAGE_KEY].asString()
+
+                // Update the UI with the fetched parameter values
+                updateUI()
             } catch (e: Exception) {
                 Log.e(TAG, "There was an error fetching and activating your config")
                 _welcomeMessage.value = e.message ?: "Unknown Error"
@@ -59,9 +66,18 @@ class RemoteConfigViewModel(
         }
     }
 
+    private fun updateUI() {
+        _welcomeMessage.value = remoteConfig[WELCOME_MESSAGE_KEY].asString()
+        _allCaps.value = remoteConfig[WELCOME_MESSAGE_CAPS_KEY].asBoolean()
+    }
+
     companion object {
         const val TAG = "RemoteConfigViewModel"
+
+        // Remote Config keys
+        private const val LOADING_PHRASE_CONFIG_KEY = "loading_phrase"
         private const val WELCOME_MESSAGE_KEY = "welcome_message"
+        private const val WELCOME_MESSAGE_CAPS_KEY = "welcome_message_caps"
 
         // Used to inject this ViewModel's dependencies
         // See also: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories

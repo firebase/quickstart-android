@@ -28,5 +28,11 @@ class MainActivity : AppCompatActivity() {
                 binding.welcomeTextView.text = welcomeMessage
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.allCaps.collect { isWelcomeAllCaps ->
+                binding.welcomeTextView.isAllCaps = isWelcomeAllCaps
+            }
+        }
     }
 }

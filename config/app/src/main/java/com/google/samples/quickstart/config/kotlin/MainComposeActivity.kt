@@ -55,7 +55,6 @@ class MainComposeActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun MainAppView(
     modifier: Modifier = Modifier,
@@ -86,8 +85,15 @@ fun MainAppView(
 
         // Text displayed
         val remoteConfigDisplayText by remoteConfigViewModel.welcomeMessage.collectAsState()
+
+        val allCaps by remoteConfigViewModel.allCaps.collectAsState()
+
         Text(
-            text = remoteConfigDisplayText,
+            text = if (allCaps) {
+                remoteConfigDisplayText.uppercase()
+            } else {
+                remoteConfigDisplayText
+            },
             fontSize = 16.sp
         )
         Spacer(modifier = Modifier.height(160.dp))
