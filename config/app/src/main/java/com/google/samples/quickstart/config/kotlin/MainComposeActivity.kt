@@ -16,22 +16,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfig
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.google.samples.quickstart.config.R
 import com.google.samples.quickstart.config.kotlin.ui.theme.ConfigTheme
 
@@ -40,10 +41,6 @@ class MainComposeActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //Initialize config and set starting text
-        val remoteConfig = initializeConfig()
-
         setContent {
             ConfigTheme {
                 // A surface container using the 'background' color from the theme
@@ -56,41 +53,32 @@ class MainComposeActivity : ComponentActivity() {
             }
         }
     }
-
-    private fun initializeConfig() : FirebaseRemoteConfig {
-        // Get Remote Config instance.
-        // [START get_remote_config_instance]
-        val remoteConfig = Firebase.remoteConfig
-        // [END get_remote_config_instance]
-
-        // Create a Remote Config Setting to enable developer mode, which you can use to increase
-        // the number of fetches available per hour during development. Also use Remote Config
-        // Setting to set the minimum fetch interval.
-        // [START enable_dev_mode]
-        val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3600
-        }
-        remoteConfig.setConfigSettingsAsync(configSettings)
-        // [END enable_dev_mode]
-
-        // Set default Remote Config parameter values. An app uses the in-app default values, and
-        // when you need to adjust those defaults, you set an updated value for only the values you
-        // want to change in the Firebase console. See Best Practices in the README for more
-        // information.
-        // [START set_default_values]
-        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
-        // [END set_default_values]
-        return remoteConfig
-    }
 }
 
 
 @Composable
 fun MainAppView(
     modifier: Modifier = Modifier,
-    remoteConfigViewModel: RemoteConfigViewModel = viewModel()
-){
-    Column(modifier, horizontalAlignment = Alignment.CenterHorizontally){
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    remoteConfigViewModel: RemoteConfigViewModel = viewModel(factory = RemoteConfigViewModel.Factory)
+) {
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            // Configure Firebase Remote Config when the screen is created
+            if (event == Lifecycle.Event.ON_CREATE) {
+                remoteConfigViewModel.enableDeveloperMode()
+                remoteConfigViewModel.setDefaultValues(R.xml.remote_config_defaults)
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         AppNameBanner()
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -109,7 +97,7 @@ fun MainAppView(
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
             onClick = {
                 // Fetch config and update the display text
-                remoteConfigViewModel.fetchConfig()
+                remoteConfigViewModel.fetchRemoteConfig()
             }
         ) {
             Text(
@@ -118,11 +106,10 @@ fun MainAppView(
             )
         }
     }
-
 }
 
 @Composable
-fun AppNameBanner(modifier: Modifier = Modifier){
+fun AppNameBanner(modifier: Modifier = Modifier) {
     TopAppBar(
         backgroundColor = colorResource(R.color.colorPrimary)
     ) {

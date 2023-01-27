@@ -2,20 +2,51 @@ package com.google.samples.quickstart.config.kotlin
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.get
 import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class RemoteConfigViewModel(
-    private val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
+    private val remoteConfig: FirebaseRemoteConfig
 ) : ViewModel() {
-    private val _welcomeMessage = MutableStateFlow(remoteConfig[WELCOME_MESSAGE_KEY].asString())
+    private val _welcomeMessage = MutableStateFlow("Welcome...")
     val welcomeMessage: StateFlow<String> = _welcomeMessage
 
-    fun fetchConfig() {
+    fun enableDeveloperMode() {
+        viewModelScope.launch {
+            // Create a Remote Config Setting to enable developer mode, which you can use to increase
+            // the number of fetches available per hour during development. Also use Remote Config
+            // Setting to set the minimum fetch interval.
+            val configSettings = remoteConfigSettings {
+                minimumFetchIntervalInSeconds = 3600
+            }
+            remoteConfig.setConfigSettingsAsync(configSettings).await()
+        }
+    }
+
+    fun setDefaultValues(defaultValuesXml: Int) {
+        viewModelScope.launch {
+            // Set default Remote Config parameter values. An app uses the in-app default values, and
+            // when you need to adjust those defaults, you set an updated value for only the values you
+            // want to change in the Firebase console. See Best Practices in the README for more
+            // information.
+            remoteConfig.setDefaultsAsync(defaultValuesXml).await()
+
+            // Update the UI with the default parameter value for welcome message
+            _welcomeMessage.value = remoteConfig[WELCOME_MESSAGE_KEY].asString()
+        }
+    }
+
+    fun fetchRemoteConfig() {
         remoteConfig.fetchAndActivate()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -23,13 +54,28 @@ class RemoteConfigViewModel(
                     Log.d(TAG, "Config params updated: $updated")
                     _welcomeMessage.value = remoteConfig[WELCOME_MESSAGE_KEY].asString()
                 } else {
+                    Log.e(TAG, "There was an error fetching and activating your config")
                     _welcomeMessage.value = task.exception?.message ?: "Unknown Error"
                 }
             }
     }
 
     companion object {
-        const val TAG = "ConfigViewModel"
+        const val TAG = "RemoteConfigViewModel"
         private const val WELCOME_MESSAGE_KEY = "welcome_message"
+
+        // Used to inject this ViewModel's dependencies
+        // See also: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(
+                modelClass: Class<T>,
+                extras: CreationExtras
+            ): T {
+                // Get Remote Config instance.
+                val remoteConfig = Firebase.remoteConfig
+                return RemoteConfigViewModel(remoteConfig) as T
+            }
+        }
     }
 }
