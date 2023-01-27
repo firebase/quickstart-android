@@ -107,7 +107,8 @@ fun MainAppView(
         // Button to fetch remote welcome
         Button(
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
-            onClick = { remoteConfigViewModel.fetchConfig() } // Calls function from MainComposeActivity to change display text
+            onClick = { remoteConfigViewModel.fetchConfig() }
+            // Calls function from MainComposeActivity to change display text
         ) {
             Text(
                 text = stringResource(R.string.fetch_remote_welcome_message),
