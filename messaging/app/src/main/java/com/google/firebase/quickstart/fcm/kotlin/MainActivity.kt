@@ -3,6 +3,7 @@ package com.google.firebase.quickstart.fcm.kotlin
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -11,11 +12,18 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.quickstart.fcm.R
 import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -80,25 +88,46 @@ class MainActivity : AppCompatActivity() {
         binding.logTokenButton.setOnClickListener {
             // Get token
             // [START log_reg_token]
-            Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
-
-                // Get new FCM registration token
-                val token = task.result
-
+            GlobalScope.launch {
+                val token = getAndStoreRegToken()
                 // Log and toast
-                val msg = getString(R.string.msg_token_fmt, token)
-                Log.d(TAG, msg)
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-            })
+                Log.d(TAG, "on click listener: $token")
+                val deviceToken = hashMapOf(
+                    "token" to token,
+                    "timestamp" to FieldValue.serverTimestamp(),
+                )
+
+                // Get user ID from Firebase Auth or your own server
+                Firebase.firestore.collection("fcmTokens").document("myuserid")
+                    .set(deviceToken)
+            }
             // [END log_reg_token]
         }
 
         Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
         askNotificationPermission()
+
+        // In the app’s first Activity
+        val preferences = this.getPreferences(Context.MODE_PRIVATE)
+        val lastRefreshLong = preferences.getLong("lastRefreshDate", -1)
+        Log.d(TAG, "last refresh in preferences: $lastRefreshLong")
+        GlobalScope.launch {
+            val document = Firebase.firestore.collection("refresh").document("refreshDate").get().await()
+            val updatedTime = (document.data!!["lastRefreshDate"] as Timestamp).seconds * 1000
+            Log.d(TAG, "updatedTime: $updatedTime from Firestore")
+            val lastRefreshDate = Date(if (lastRefreshLong == -1L) updatedTime else lastRefreshLong)
+            val c = Calendar.getInstance()
+            c.time = lastRefreshDate
+            c.add(Calendar.DATE, 30)
+            val today = Date()
+            if (today.after(c.time)) {
+                // get token and store into Firestore (see function above)
+                getAndStoreRegToken()
+                // update device cache
+                Log.d(TAG, "get registration token and store")
+                preferences.edit().putLong("lastRefreshDate", updatedTime)
+            }
+        }
     }
 
     private fun askNotificationPermission() {
@@ -113,6 +142,24 @@ class MainActivity : AppCompatActivity() {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+    }
+
+    private suspend fun getAndStoreRegToken(): String {
+        var token = ""
+        runBlocking {
+            token = Firebase.messaging.token.await()
+            Log.d(TAG, "getRegistrationToken(): $token")
+            // Add token and timestamp to Firestore for this user
+            val deviceToken = hashMapOf(
+                "token" to token,
+                "timestamp" to FieldValue.serverTimestamp(),
+            )
+
+            // Get user ID from Firebase Auth or your own server
+            Firebase.firestore.collection("fcmTokens").document("myuserid")
+                .set(deviceToken)
+        }
+        return token
     }
 
     companion object {
