@@ -77,7 +77,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // FCM registration token to your app server.
-        storeToken(token)
+        sendTokenToServer(token)
     }
     // [END on_new_token]
 
@@ -106,7 +106,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      *
      * @param token The new token.
      */
-    private fun storeToken(token: String?) {
+    private fun sendTokenToServer(token: String?) {
         // TODO: Implement this method to send token to your app server.
         Log.d(TAG, "sendRegistrationTokenToServer($token)")
         // Add token and timestamp to Firestore for this user

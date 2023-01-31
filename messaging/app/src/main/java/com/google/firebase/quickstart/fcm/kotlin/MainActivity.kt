@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
@@ -23,7 +24,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
@@ -88,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         binding.logTokenButton.setOnClickListener {
             // Get token
             // [START log_reg_token]
-            GlobalScope.launch {
+            lifecycleScope.launch {
                 val token = getAndStoreRegToken()
                 // Log and toast
                 Log.d(TAG, "on click listener: $token")
@@ -99,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
                 // Get user ID from Firebase Auth or your own server
                 Firebase.firestore.collection("fcmTokens").document("myuserid")
-                    .set(deviceToken)
+                    .set(deviceToken).await()
             }
             // [END log_reg_token]
         }
@@ -116,9 +118,10 @@ class MainActivity : AppCompatActivity() {
             val updatedTime = (document.data!!["lastRefreshDate"] as Timestamp).seconds * 1000
             Log.d(TAG, "updatedTime: $updatedTime from Firestore")
             val lastRefreshDate = Date(if (lastRefreshLong == -1L) updatedTime else lastRefreshLong)
-            val c = Calendar.getInstance()
-            c.time = lastRefreshDate
-            c.add(Calendar.DATE, 30)
+            val c = Calendar.getInstance().apply {
+                time = lastRefreshDate
+                add(Calendar.DATE, 30)
+            }
             val today = Date()
             if (today.after(c.time)) {
                 // get token and store into Firestore (see function above)
@@ -144,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun getAndStoreRegToken(): String {
+    private fun getAndStoreRegToken(): String {
         var token = ""
         runBlocking {
             token = Firebase.messaging.token.await()

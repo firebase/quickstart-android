@@ -70,8 +70,13 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-installations-ktx:17.1.0'
 
-    implementation 'androidx.work:work-runtime:2.7.1'
+    // Used to store FCM registration tokens
     implementation 'com.google.firebase:firebase-firestore-ktx:24.1.0'
+
+    implementation 'androidx.work:work-runtime:2.7.1'
+
+    // Used for Firestore
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
 
     // Testing dependencies
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
