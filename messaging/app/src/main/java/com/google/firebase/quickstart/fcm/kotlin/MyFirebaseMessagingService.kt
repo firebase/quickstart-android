@@ -108,7 +108,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      */
     private fun sendTokenToServer(token: String?) {
         // TODO: Implement this method to send token to your app server.
-        Log.d(TAG, "sendRegistrationTokenToServer($token)")
         // Add token and timestamp to Firestore for this user
         val deviceToken = hashMapOf(
             "token" to token,

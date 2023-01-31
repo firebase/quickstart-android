@@ -22,7 +22,6 @@ import com.google.firebase.quickstart.fcm.R
 import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 import java.util.Date
@@ -93,7 +92,6 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 val token = getAndStoreRegToken()
                 // Log and toast
-                Log.d(TAG, "on click listener: $token")
                 val deviceToken = hashMapOf(
                     "token" to token,
                     "timestamp" to FieldValue.serverTimestamp(),
@@ -112,11 +110,9 @@ class MainActivity : AppCompatActivity() {
         // In the app’s first Activity
         val preferences = this.getPreferences(Context.MODE_PRIVATE)
         val lastRefreshLong = preferences.getLong("lastRefreshDate", -1)
-        Log.d(TAG, "last refresh in preferences: $lastRefreshLong")
         GlobalScope.launch {
             val document = Firebase.firestore.collection("refresh").document("refreshDate").get().await()
             val updatedTime = (document.data!!["lastRefreshDate"] as Timestamp).seconds * 1000
-            Log.d(TAG, "updatedTime: $updatedTime from Firestore")
             val lastRefreshDate = Date(if (lastRefreshLong == -1L) updatedTime else lastRefreshLong)
             val c = Calendar.getInstance().apply {
                 time = lastRefreshDate
@@ -127,7 +123,6 @@ class MainActivity : AppCompatActivity() {
                 // get token and store into Firestore (see function above)
                 getAndStoreRegToken()
                 // update device cache
-                Log.d(TAG, "get registration token and store")
                 preferences.edit().putLong("lastRefreshDate", updatedTime)
             }
         }
@@ -147,21 +142,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getAndStoreRegToken(): String {
-        var token = ""
-        runBlocking {
-            token = Firebase.messaging.token.await()
-            Log.d(TAG, "getRegistrationToken(): $token")
-            // Add token and timestamp to Firestore for this user
-            val deviceToken = hashMapOf(
-                "token" to token,
-                "timestamp" to FieldValue.serverTimestamp(),
-            )
+    private suspend fun getAndStoreRegToken(): String {
+        var token = Firebase.messaging.token.await()
+        // Add token and timestamp to Firestore for this user
+        val deviceToken = hashMapOf(
+            "token" to token,
+            "timestamp" to FieldValue.serverTimestamp(),
+        )
 
-            // Get user ID from Firebase Auth or your own server
-            Firebase.firestore.collection("fcmTokens").document("myuserid")
-                .set(deviceToken)
-        }
+        // Get user ID from Firebase Auth or your own server
+        Firebase.firestore.collection("fcmTokens").document("myuserid")
+            .set(deviceToken).await()
         return token
     }
 
