@@ -54,6 +54,7 @@ class MainComposeActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainAppView(
     modifier: Modifier = Modifier,
@@ -76,41 +77,46 @@ fun MainAppView(
         }
     }
 
-    Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Scaffold(topBar = {
         AppNameBanner()
-        Spacer(modifier = Modifier.height(24.dp))
+    }, content = {
+        Column(modifier = Modifier.padding(it).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Spacer(modifier = Modifier.height(24.dp))
 
-        Image(painter = painterResource(R.drawable.firebase_lockup_400), contentDescription = "")
+            Image(painter = painterResource(R.drawable.firebase_lockup_400), contentDescription = "")
 
-        // Text displayed
-        val remoteConfigDisplayText by remoteConfigViewModel.welcomeMessage.collectAsState()
+            // Text displayed
+            val remoteConfigDisplayText by remoteConfigViewModel.welcomeMessage.collectAsState()
 
-        val allCaps by remoteConfigViewModel.allCaps.collectAsState()
+            val allCaps by remoteConfigViewModel.allCaps.collectAsState()
 
-        Text(
-            text = if (allCaps) {
-                remoteConfigDisplayText.uppercase()
-            } else {
-                remoteConfigDisplayText
-            },
-            fontSize = 16.sp
-        )
-        Spacer(modifier = Modifier.height(160.dp))
-
-        // Button to fetch remote welcome
-        Button(
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
-            onClick = {
-                // Fetch config and update the display text
-                remoteConfigViewModel.fetchRemoteConfig()
-            }
-        ) {
             Text(
-                text = stringResource(R.string.fetch_remote_welcome_message),
-                fontSize = 20.sp
+                text = if (allCaps) {
+                    remoteConfigDisplayText.uppercase()
+                } else {
+                    remoteConfigDisplayText
+                },
+                fontSize = 16.sp
             )
+            Spacer(modifier = Modifier.height(160.dp))
+
+            // Button to fetch remote welcome
+            Button(
+                colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
+                onClick = {
+                    // Fetch config and update the display text
+                    remoteConfigViewModel.fetchRemoteConfig()
+                }
+            ) {
+                Text(
+                    text = stringResource(R.string.fetch_remote_welcome_message),
+                    fontSize = 20.sp
+                )
+            }
         }
-    }
+    })
+
+
 }
 
 @Composable
