@@ -43,12 +43,9 @@ class MainComposeActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    Greeting("Android")
-                    MainAppView( buttonClickEventAdLoader = buttonClickLambda ) // better here?
+                    MainAppView( buttonClickEventAdLoader = buttonClickLambda ) // call Composable UI
                 }
             }
-
-//            MainAppView( buttonClickEventAdLoader = { buttonClickLambda } )    // or here?
 
             initializeInterstitial()
         }
@@ -192,17 +189,4 @@ fun AdvertBanner(modifier: Modifier = Modifier) { // banner advert
         )
 
 
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    AdmobTheme {
-        Greeting("Android")
-    }
 }

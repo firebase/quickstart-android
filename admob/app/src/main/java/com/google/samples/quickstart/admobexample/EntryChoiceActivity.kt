@@ -19,7 +19,7 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                         Intent(this, com.google.samples.quickstart.admobexample.kotlin.MainActivity::class.java)),
                 Choice(
                         "Compose",
-                        "Run the Firebase Admob quickstart written in Kotlin with Compose.",
+                        "Run the Firebase Admob quickstart written in Compose.",
                         Intent(this, com.google.samples.quickstart.admobexample.kotlin.MainComposeActivity::class.java))
         )
     }
