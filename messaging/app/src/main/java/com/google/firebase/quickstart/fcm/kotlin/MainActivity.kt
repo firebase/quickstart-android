@@ -20,7 +20,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import com.google.firebase.quickstart.fcm.R
 import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Calendar
@@ -110,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         // In the app’s first Activity
         val preferences = this.getPreferences(Context.MODE_PRIVATE)
         val lastRefreshLong = preferences.getLong("lastRefreshDate", -1)
-        GlobalScope.launch {
+        lifecycleScope.launch {
             val document = Firebase.firestore.collection("refresh").document("refreshDate").get().await()
             val updatedTime = (document.data!!["lastRefreshDate"] as Timestamp).seconds * 1000
             val lastRefreshDate = Date(if (lastRefreshLong == -1L) updatedTime else lastRefreshLong)
