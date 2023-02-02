@@ -89,16 +89,13 @@ class MainActivity : AppCompatActivity() {
             // Get token
             // [START log_reg_token]
             lifecycleScope.launch {
+                // Get new FCM registration token
                 val token = getAndStoreRegToken()
-                // Log and toast
-                val deviceToken = hashMapOf(
-                    "token" to token,
-                    "timestamp" to FieldValue.serverTimestamp(),
-                )
 
-                // Get user ID from Firebase Auth or your own server
-                Firebase.firestore.collection("fcmTokens").document("myuserid")
-                    .set(deviceToken).await()
+                // Log and toast
+                val msg = getString(R.string.msg_token_fmt, token)
+                Log.d(TAG, msg)
+                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
             }
             // [END log_reg_token]
         }
@@ -110,18 +107,18 @@ class MainActivity : AppCompatActivity() {
         val preferences = this.getPreferences(Context.MODE_PRIVATE)
         val lastRefreshLong = preferences.getLong("lastRefreshDate", -1)
         lifecycleScope.launch {
-            val document = Firebase.firestore.collection("refresh").document("refreshDate").get().await()
-            val updatedTime = (document.data!!["lastRefreshDate"] as Timestamp).seconds * 1000
-            val lastRefreshDate = Date(if (lastRefreshLong == -1L) updatedTime else lastRefreshLong)
             val c = Calendar.getInstance().apply {
-                time = lastRefreshDate
+                time = if (lastRefreshLong == -1L) Date() else Date(lastRefreshLong)
                 add(Calendar.DATE, 30)
             }
+
             val today = Date()
-            if (today.after(c.time)) {
-                // get token and store into Firestore (see function above)
+            if (today.after(c.time) || lastRefreshLong == -1L) {
+                // get token and store into Firestore
                 getAndStoreRegToken()
-                // update device cache
+                // sync device cache time with Firestore just in case
+                val document = Firebase.firestore.collection("refresh").document("refreshDate").get().await()
+                val updatedTime = (document.data!!["lastRefreshDate"] as Timestamp).seconds * 1000
                 preferences.edit().putLong("lastRefreshDate", updatedTime)
             }
         }
