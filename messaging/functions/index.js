@@ -5,6 +5,8 @@ const admin = require('firebase-admin');
 
 admin.initializeApp();
 
+const EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30; // 30 days
+
 /**
  * Scheduled function that runs once a month. It updates the last refresh date for
  * tokens so that a client can refresh the token if the last time it did so was
@@ -23,7 +25,7 @@ exports.scheduledFunction = functions.pubsub.schedule('0 0 1 * *').onRun((contex
  * all topics the token is subscribed to.
  */
 exports.pruneTokens = functions.pubsub.schedule('every 24 hours').onRun(async (context) => {
-  const staleTokensResult = await admin.firestore().collection('tokens')
+  const staleTokensResult = await admin.firestore().collection('fcmTokens')
       .where("timestamp", "<", Date.now() - EXPIRATION_TIME)
       .get();
 
