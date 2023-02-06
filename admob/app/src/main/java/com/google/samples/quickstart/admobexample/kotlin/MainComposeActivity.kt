@@ -17,7 +17,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -115,35 +114,36 @@ class MainComposeActivity : ComponentActivity() {
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainAppView(modifier: Modifier = Modifier, buttonClickEventAdLoader : () -> Unit = {}){
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .weight(1f), // fills as much space as possible
-
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+    Scaffold(
+        topBar = {  // top bar with app name
             AppNameBanner()
-            Spacer(modifier = Modifier.height(24.dp))
+                 },
+        content = {
 
-            Image(painter = painterResource(R.drawable.firebase_lockup_400), contentDescription = "")
-            Spacer(modifier = Modifier.height(160.dp))
-            InterstitialButton(myClickEventInterstitialLoader = { buttonClickEventAdLoader() })
+            Column(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
 
-        }
-        Row(    // pushed to bottom due to .weight above
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally)
-        ) {
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Image(painter = painterResource(R.drawable.firebase_lockup_400), contentDescription = "")
+                Spacer(modifier = Modifier.height(160.dp))
+                InterstitialButton(myClickEventInterstitialLoader = { buttonClickEventAdLoader() })
+
+            }
+                  },
+        bottomBar = { // keeps the banner ad at the bottom!
             AdvertBanner()
         }
-    }
+    )
+
 }
 
 @Composable
@@ -177,16 +177,20 @@ fun InterstitialButton(modifier: Modifier = Modifier, myClickEventInterstitialLo
 @Composable
 fun AdvertBanner(modifier: Modifier = Modifier) { // banner advert
 
-        AndroidView(
-            modifier = modifier.fillMaxWidth(),
-            factory = { context ->
-                AdView(context).apply {
-                    setAdSize(AdSize.BANNER)
-                    adUnitId = context.getString(R.string.banner_ad_unit_id)
-                    loadAd(AdRequest.Builder().build())
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            AndroidView(
+                modifier = modifier.fillMaxWidth(),
+                factory = { context ->
+                    AdView(context).apply {
+                        setAdSize(AdSize.BANNER)
+                        adUnitId = context.getString(R.string.banner_ad_unit_id)
+                        loadAd(AdRequest.Builder().build())
+                    }
                 }
-            }
-        )
-
+            )
+        }
 
 }
