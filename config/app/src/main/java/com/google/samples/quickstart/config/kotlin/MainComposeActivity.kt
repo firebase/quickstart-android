@@ -3,20 +3,23 @@ package com.google.samples.quickstart.config.kotlin
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
+
+import androidx.compose.material.Colors
+import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
@@ -47,7 +50,7 @@ class MainComposeActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colors.background
                 ) {
                     MainAppView()
                 }
@@ -56,7 +59,6 @@ class MainComposeActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainAppView(
     modifier: Modifier = Modifier,
@@ -80,7 +82,17 @@ fun MainAppView(
     }
 
     Scaffold(topBar = {
-        AppNameBanner()
+        TopAppBar(
+            backgroundColor = colorResource(R.color.colorPrimary)
+        ) {
+            androidx.compose.material.Text(
+                text = stringResource(R.string.app_name),
+                style = androidx.compose.material.MaterialTheme.typography.h6,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(8.dp),
+                color = Color.White
+            )
+        }
     }, content = {
         Column(modifier = Modifier.padding(it).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Spacer(modifier = Modifier.height(24.dp))
@@ -104,7 +116,7 @@ fun MainAppView(
 
             // Button to fetch remote welcome
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorAccent)),
                 onClick = {
                     // Fetch config and update the display text
                     remoteConfigViewModel.fetchRemoteConfig()
@@ -121,17 +133,3 @@ fun MainAppView(
 
 }
 
-@Composable
-fun AppNameBanner(modifier: Modifier = Modifier) {
-    TopAppBar(
-        backgroundColor = colorResource(R.color.colorPrimary)
-    ) {
-        androidx.compose.material.Text(
-            text = stringResource(R.string.app_name),
-            style = androidx.compose.material.MaterialTheme.typography.h6,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(8.dp),
-            color = Color.White
-        )
-    }
-}
