@@ -71,7 +71,6 @@ dependencies {
     // For an optimal experience using AdMob, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'androidx.compose.material3:material3:1.0.1'
 
     debugImplementation "androidx.fragment:fragment-testing:1.5.4"
     // Jetpack Compose

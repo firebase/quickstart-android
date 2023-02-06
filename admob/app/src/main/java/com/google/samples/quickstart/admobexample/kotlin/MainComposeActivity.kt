@@ -6,9 +6,21 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.material.Surface
 import androidx.compose.material.TopAppBar
-import androidx.compose.material3.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +32,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.google.android.gms.ads.*
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 import com.google.samples.quickstart.admobexample.kotlin.ui.theme.AdmobTheme
 import com.google.samples.quickstart.admobexample.R
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -28,11 +46,12 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 
 class MainComposeActivity : ComponentActivity() {
     private var mInterstitialAd: InterstitialAd? = null
-    private var adUnitId: String = "ca-app-pub-3940256099942544/1033173712" // could be set to another id
+    private lateinit var adUnitId: String //="ca-app-pub-3940256099942544/1033173712" //could be set to another id
     private val buttonClickLambda = { displayNewInterstitial() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        adUnitId  = getString(R.string.interstitial_ad_unit_id)
         
         setContent {
 
@@ -40,7 +59,7 @@ class MainComposeActivity : ComponentActivity() {
                  //A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colors.background
                 ) {
                     MainAppView( buttonClickEventAdLoader = buttonClickLambda ) // call Composable UI
                 }
@@ -88,6 +107,7 @@ class MainComposeActivity : ComponentActivity() {
     private fun initializeInterstitial(){
         MobileAds.initialize(this)
         val adRequest = AdRequest.Builder().build()
+
         InterstitialAd.load(this, adUnitId, adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 Log.d(TAG, adError.toString())
@@ -114,7 +134,7 @@ class MainComposeActivity : ComponentActivity() {
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun MainAppView(modifier: Modifier = Modifier, buttonClickEventAdLoader : () -> Unit = {}){
     Scaffold(
@@ -164,7 +184,7 @@ fun AppNameBanner(modifier: Modifier = Modifier){
 @Composable
 fun InterstitialButton(modifier: Modifier = Modifier, myClickEventInterstitialLoader : () -> Unit = {}){
     Button(
-        colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.colorAccent)),
+        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorAccent)),
         onClick = { myClickEventInterstitialLoader() }    //lambda for onClick action
     ) {
         Text(
