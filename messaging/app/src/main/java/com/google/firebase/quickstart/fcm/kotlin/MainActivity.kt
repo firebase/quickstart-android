@@ -107,12 +107,12 @@ class MainActivity : AppCompatActivity() {
         val preferences = this.getPreferences(Context.MODE_PRIVATE)
         val lastRefreshLong = preferences.getLong("lastRefreshDate", -1)
         lifecycleScope.launch {
+            val today = Date()
             val c = Calendar.getInstance().apply {
-                time = if (lastRefreshLong == -1L) Date() else Date(lastRefreshLong)
+                time = if (lastRefreshLong == -1L) today else Date(lastRefreshLong)
                 add(Calendar.DATE, 30)
             }
 
-            val today = Date()
             if (today.after(c.time) || lastRefreshLong == -1L) {
                 // get token and store into Firestore
                 getAndStoreRegToken()
