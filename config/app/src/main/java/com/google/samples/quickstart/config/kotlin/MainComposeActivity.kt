@@ -11,7 +11,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Spacer
 
-import androidx.compose.material.Colors
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.Button
@@ -19,11 +18,13 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,6 +41,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.samples.quickstart.config.R
 import com.google.samples.quickstart.config.kotlin.ui.theme.ConfigTheme
+import kotlinx.coroutines.launch
 
 class MainComposeActivity : ComponentActivity() {
 
@@ -81,7 +83,12 @@ fun MainAppView(
         }
     }
 
-    Scaffold(topBar = {
+    val scaffoldState = rememberScaffoldState() // this contains the `SnackbarHostState`
+    val coroutineScope = rememberCoroutineScope()
+
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
         TopAppBar(
             backgroundColor = colorResource(R.color.colorPrimary)
         ) {
@@ -120,15 +127,24 @@ fun MainAppView(
                 onClick = {
                     // Fetch config and update the display text
                     remoteConfigViewModel.fetchRemoteConfig()
+                    // Display Scaffold
+                    coroutineScope.launch { // using the `coroutineScope` to `launch` showing the snackbar
+                        // taking the `snackbarHostState` from the attached `scaffoldState`
+                        val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                            message = "Fetching remote message..."
+                        )
+                    }
                 }
             ) {
                 Text(
                     text = stringResource(R.string.fetch_remote_welcome_message),
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    color = Color.White
                 )
             }
         }
     })
+
 
 
 }
