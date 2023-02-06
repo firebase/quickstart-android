@@ -139,7 +139,17 @@ class MainComposeActivity : ComponentActivity() {
 fun MainAppView(modifier: Modifier = Modifier, buttonClickEventAdLoader : () -> Unit = {}){
     Scaffold(
         topBar = {  // top bar with app name
-            AppNameBanner()
+            TopAppBar(
+                backgroundColor = colorResource(R.color.colorPrimary)
+            ) {
+                androidx.compose.material.Text(
+                    text = stringResource(R.string.app_name),
+                    style = androidx.compose.material.MaterialTheme.typography.h6,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(8.dp),
+                    color = Color.White
+                )
+            }
                  },
         content = {
 
@@ -167,21 +177,6 @@ fun MainAppView(modifier: Modifier = Modifier, buttonClickEventAdLoader : () -> 
 }
 
 @Composable
-fun AppNameBanner(modifier: Modifier = Modifier){
-    TopAppBar(
-        backgroundColor = colorResource(R.color.colorPrimary)
-    ) {
-        androidx.compose.material.Text(
-            text = stringResource(R.string.app_name),
-            style = androidx.compose.material.MaterialTheme.typography.h6,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(8.dp),
-            color = Color.White
-        )
-    }
-}
-
-@Composable
 fun InterstitialButton(modifier: Modifier = Modifier, myClickEventInterstitialLoader : () -> Unit = {}){
     Button(
         colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorAccent)),
@@ -189,7 +184,8 @@ fun InterstitialButton(modifier: Modifier = Modifier, myClickEventInterstitialLo
     ) {
         Text(
             text = stringResource(R.string.interstitial_button_text),
-            fontSize = 24.sp
+            fontSize = 24.sp,
+            color = Color.White
         )
     }
 }
