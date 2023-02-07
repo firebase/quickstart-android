@@ -12,18 +12,20 @@ const EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30; // 30 days
  * tokens so that a client can refresh the token if the last time it did so was
  * before the refresh date.
  */
-
+// [START refresh_date_scheduled_function]
 exports.scheduledFunction = functions.pubsub.schedule('0 0 1 * *').onRun((context) => { 
     admin.firestore().doc('refresh/refreshDate').set({ lastRefreshDate : Date.now() });
 });
+// [END refresh_date_scheduled_function]
 
 /**
  * Scheduled function that runs once a day. It retrieves all stale tokens then
  * unsubscribes them from 'topic1' then deletes them.
  *
- * Note: topic1 is an example topic here. It is up to the developer to unsubscribe
+ * Note: weather is an example topic here. It is up to the developer to unsubscribe
  * all topics the token is subscribed to.
  */
+// [START remove_stale_tokens]
 exports.pruneTokens = functions.pubsub.schedule('every 24 hours').onRun(async (context) => {
   const staleTokensResult = await admin.firestore().collection('fcmTokens')
       .where("timestamp", "<", Date.now() - EXPIRATION_TIME)
@@ -31,7 +33,7 @@ exports.pruneTokens = functions.pubsub.schedule('every 24 hours').onRun(async (c
 
   const staleTokens = staleTokensResult.docs.map(staleTokenDoc => staleTokenDoc.id);
 
-  await admin.messaging().unsubscribeFromTopic(staleTokens, 'topic1');
+  await admin.messaging().unsubscribeFromTopic(staleTokens, 'weather');
 
   const deletePromises = [];
   for (const staleTokenDoc of staleTokensResult.docs) {
@@ -39,3 +41,4 @@ exports.pruneTokens = functions.pubsub.schedule('every 24 hours').onRun(async (c
   }
   await Promise.all(deletePromises);
 });
+// [END remove_stale_tokens]

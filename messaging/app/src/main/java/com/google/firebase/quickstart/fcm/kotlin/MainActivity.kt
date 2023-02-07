@@ -87,7 +87,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.logTokenButton.setOnClickListener {
             // Get token
-            // [START log_reg_token]
             lifecycleScope.launch {
                 // Get new FCM registration token
                 val token = getAndStoreRegToken()
@@ -97,7 +96,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, msg)
                 Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
             }
-            // [END log_reg_token]
         }
 
         Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
@@ -139,6 +137,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun getAndStoreRegToken(): String {
+        // [START log_reg_token]
         var token = Firebase.messaging.token.await()
         // Add token and timestamp to Firestore for this user
         val deviceToken = hashMapOf(
@@ -149,6 +148,7 @@ class MainActivity : AppCompatActivity() {
         // Get user ID from Firebase Auth or your own server
         Firebase.firestore.collection("fcmTokens").document("myuserid")
             .set(deviceToken).await()
+        // [END log_reg_token]
         return token
     }
 
