@@ -60,7 +60,11 @@ configurations {
 }
 
 dependencies {
-    ktlint "com.github.shyiko:ktlint:0.31.0"
+    ktlint ("com.pinterest:ktlint:0.48.2") {
+        attributes {
+            attribute(Bundling.BUNDLING_ATTRIBUTE, getObjects().named(Bundling, Bundling.EXTERNAL))
+        }
+    }
 }
 
 task("ktlint", type: JavaExec, group: "verification") {
@@ -75,7 +79,7 @@ task("ktlint", type: JavaExec, group: "verification") {
 
     description = "Check Kotlin code style."
     classpath = configurations.ktlint
-    main = "com.github.shyiko.ktlint.Main"
+    mainClass.set("com.pinterest.ktlint.Main")
     args = [
         "--format",
         "--android",

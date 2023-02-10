@@ -65,27 +65,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Get Remote Config instance.
-        // [START get_remote_config_instance]
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        // [END get_remote_config_instance]
 
         // Create a Remote Config Setting to enable developer mode, which you can use to increase
         // the number of fetches available per hour during development. Also use Remote Config
         // Setting to set the minimum fetch interval.
-        // [START enable_dev_mode]
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
                 .setMinimumFetchIntervalInSeconds(3600)
                 .build();
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
-        // [END enable_dev_mode]
 
         // Set default Remote Config parameter values. An app uses the in-app default values, and
         // when you need to adjust those defaults, you set an updated value for only the values you
         // want to change in the Firebase console. See Best Practices in the README for more
         // information.
-        // [START set_default_values]
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
-        // [END set_default_values]
 
         fetchWelcome();
     }
@@ -96,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     private void fetchWelcome() {
         mWelcomeTextView.setText(mFirebaseRemoteConfig.getString(LOADING_PHRASE_CONFIG_KEY));
 
-        // [START fetch_config_with_callback]
         mFirebaseRemoteConfig.fetchAndActivate()
                 .addOnCompleteListener(this, new OnCompleteListener<Boolean>() {
                     @Override
@@ -114,18 +107,14 @@ public class MainActivity extends AppCompatActivity {
                         displayWelcomeMessage();
                     }
                 });
-        // [END fetch_config_with_callback]
     }
 
     /**
      * Display a welcome message in all caps if welcome_message_caps is set to true. Otherwise,
      * display a welcome message as fetched from welcome_message.
      */
-     // [START display_welcome_message]
     private void displayWelcomeMessage() {
-        // [START get_config_values]
         String welcomeMessage = mFirebaseRemoteConfig.getString(WELCOME_MESSAGE_KEY);
-        // [END get_config_values]
         if (mFirebaseRemoteConfig.getBoolean(WELCOME_MESSAGE_CAPS_KEY)) {
             mWelcomeTextView.setAllCaps(true);
         } else {
@@ -133,5 +122,4 @@ public class MainActivity extends AppCompatActivity {
         }
         mWelcomeTextView.setText(welcomeMessage);
     }
-    // [END display_welcome_message]
 }
