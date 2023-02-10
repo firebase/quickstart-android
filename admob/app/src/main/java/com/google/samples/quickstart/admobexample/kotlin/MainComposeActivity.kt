@@ -54,9 +54,8 @@ class MainComposeActivity : ComponentActivity() {
         adUnitId  = getString(R.string.interstitial_ad_unit_id)
         
         setContent {
-
             AdmobTheme {
-                 //A surface container using the 'background' color from the theme
+                //A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
@@ -150,7 +149,7 @@ fun MainAppView(modifier: Modifier = Modifier, buttonClickEventAdLoader : () -> 
                     color = Color.White
                 )
             }
-                 },
+        },
         content = {
 
             Column(
@@ -165,7 +164,16 @@ fun MainAppView(modifier: Modifier = Modifier, buttonClickEventAdLoader : () -> 
 
                 Image(painter = painterResource(R.drawable.firebase_lockup_400), contentDescription = "")
                 Spacer(modifier = Modifier.height(160.dp))
-                InterstitialButton(myClickEventInterstitialLoader = { buttonClickEventAdLoader() })
+                Button(
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorAccent)),
+                    onClick = { buttonClickEventAdLoader() }    //lambda for onClick action
+                ) {
+                    Text(
+                        text = stringResource(R.string.interstitial_button_text),
+                        fontSize = 24.sp,
+                        color = Color.White
+                    )
+                }
 
             }
                   },
@@ -176,19 +184,6 @@ fun MainAppView(modifier: Modifier = Modifier, buttonClickEventAdLoader : () -> 
 
 }
 
-@Composable
-fun InterstitialButton(modifier: Modifier = Modifier, myClickEventInterstitialLoader : () -> Unit = {}){
-    Button(
-        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorAccent)),
-        onClick = { myClickEventInterstitialLoader() }    //lambda for onClick action
-    ) {
-        Text(
-            text = stringResource(R.string.interstitial_button_text),
-            fontSize = 24.sp,
-            color = Color.White
-        )
-    }
-}
 
 @Composable
 fun AdvertBanner(modifier: Modifier = Modifier) { // banner advert
