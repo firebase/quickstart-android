@@ -92,7 +92,7 @@ fun MainAppView(
         TopAppBar(
             backgroundColor = colorResource(R.color.colorPrimary)
         ) {
-            androidx.compose.material.Text(
+            Text(
                 text = stringResource(R.string.app_name),
                 style = androidx.compose.material.MaterialTheme.typography.h6,
                 textAlign = TextAlign.Center,
