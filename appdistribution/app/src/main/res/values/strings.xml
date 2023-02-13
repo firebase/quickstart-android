@@ -3,4 +3,6 @@
     <string name="textview_text">Welcome to the Firebase App Distribution Quickstart app. Press the button to trigger an analytics event!</string>
 
     <string name="installation_id_fmt">Firebase Installation ID: %s</string>
+    <string name="show_feedback_notification">Show Feedback Notification</string>
+    <string name="send_feedback">Send Feedback</string>
 </resources>
