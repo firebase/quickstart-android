@@ -19,6 +19,13 @@ allprojects {
         mavenLocal()
         google()
         mavenCentral()
+
+        // TODO(EAP Tester):
+        //  1. Download the zip file according to the provided instructions
+        //  2. Replace the $root variable with the absolute path to your quickstart app
+        def root = "Users/rosariopf/AndroidStudioProjects/quickstart-android/appdistribution"
+        maven { url "file://$root/firebase-app-distribution-eap-repo" }
+        // TODO(thatfiredev): remove this repo once the feature is publicly available
     }
 }
 

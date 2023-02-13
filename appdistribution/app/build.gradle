@@ -50,7 +50,8 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.2.0')
 
     // ADD the SDK to the "prerelease" variant only (example)
-    implementation 'com.google.firebase:firebase-appdistribution-ktx:16.0.0-beta01'
+    // TODO(thatfiredev): Replace with public version once it's released
+    implementation 'com.google.firebase:firebase-appdistribution-api-ktx:16.0.1-SNAPSHOT'
 
     // For an optimal experience using App Distribution, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
