@@ -27,6 +27,8 @@ import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
+    val IS_OPTIMIZE = true
+
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -100,9 +102,11 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
         askNotificationPermission()
 
-
-        dateRefresh()
-        optimizedDateRefresh() // optimized version of dateRefresh() that requires using Android SharedPreferences
+        if (IS_OPTIMIZE) {
+            dateRefresh()
+        } else {
+            optimizedDateRefresh() // optimized version of dateRefresh() that uses Android SharedPreferences
+        }
     }
 
     private fun askNotificationPermission() {
@@ -135,8 +139,10 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "got token: $token")
 
         // As an optimization, store today’s date in Android cache
-        val preferences = this.getSharedPreferences("default", Context.MODE_PRIVATE)
-        preferences.edit().putLong("lastDeviceRefreshDate", Date().time)
+        if (IS_OPTIMIZE) {
+            val preferences = this.getSharedPreferences("default", Context.MODE_PRIVATE)
+            preferences.edit().putLong("lastDeviceRefreshDate", Date().time)
+        }
 
         return token
     }
