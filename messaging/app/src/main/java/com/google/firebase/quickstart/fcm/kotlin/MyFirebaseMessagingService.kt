@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.OneTimeWorkRequest
@@ -17,6 +18,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.quickstart.fcm.R
+import java.util.*
+
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -117,6 +120,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // Get user ID from Firebase Auth or your own server
         Firebase.firestore.collection("fcmTokens").document("myuserid")
             .set(deviceToken)
+
+        // As an optimization, store today’s date in Android cache
+        val preferences = this.getSharedPreferences("default", Context.MODE_PRIVATE)
+        preferences.edit().putLong("lastDeviceRefreshDate", Date().time)
     }
 
     /**
