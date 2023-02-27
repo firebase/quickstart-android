@@ -12,11 +12,15 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                 Choice(
                         "Java",
                         "Run the Firebase Admob quickstart written in Java.",
-                        Intent(this, MainActivity::class.java)),
+                        Intent(this, com.google.samples.quickstart.admobexample.java.MainActivity::class.java)),
                 Choice(
                         "Kotlin",
                         "Run the Firebase Admob quickstart written in Kotlin.",
-                        Intent(this, com.google.samples.quickstart.admobexample.kotlin.MainActivity::class.java))
+                        Intent(this, com.google.samples.quickstart.admobexample.kotlin.MainActivity::class.java)),
+                Choice(
+                        "Compose",
+                        "Run the Firebase Admob quickstart written in Compose.",
+                        Intent(this, com.google.samples.quickstart.admobexample.kotlin.MainComposeActivity::class.java))
         )
     }
 }
