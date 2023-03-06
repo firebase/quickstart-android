@@ -69,7 +69,7 @@ class KotlinMainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // FYI: This is no longer needed in the most recent versions of EAP
+        // Hide the notification once this activity is destroyed
         firebaseAppDistribution.cancelFeedbackNotification()
     }
 
