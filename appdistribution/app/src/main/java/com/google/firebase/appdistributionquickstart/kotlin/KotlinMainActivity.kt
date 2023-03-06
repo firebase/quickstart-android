@@ -4,14 +4,17 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.firebase.appdistribution.FirebaseAppDistribution
 import com.google.firebase.appdistribution.FirebaseAppDistributionException
 import com.google.firebase.appdistribution.InterruptionLevel
 import com.google.firebase.appdistribution.ktx.appDistribution
+import com.google.firebase.appdistributionquickstart.R
 import com.google.firebase.appdistributionquickstart.databinding.ActivityMainBinding
 import com.google.firebase.ktx.Firebase
 
@@ -23,7 +26,9 @@ class KotlinMainActivity : AppCompatActivity() {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
-        if (!isGranted) {
+        if (isGranted) {
+            showFeedbackNotification()
+        } else {
             Toast.makeText(
                 this@KotlinMainActivity,
                 "The app won't display feedback notifications because the notification permission was denied",
@@ -40,17 +45,12 @@ class KotlinMainActivity : AppCompatActivity() {
         firebaseAppDistribution = Firebase.appDistribution
 
         binding.btShowNotification.setOnClickListener {
-            firebaseAppDistribution.showFeedbackNotification(
-                "Data Collection Notice",
-                InterruptionLevel.HIGH
-            )
+            askNotificationPermission()
         }
 
         binding.btSendFeedback.setOnClickListener {
-            firebaseAppDistribution.startFeedback("Thanks for sharing your feedback with us")
+            firebaseAppDistribution.startFeedback(R.string.feedbackAdditionalFormText)
         }
-
-        askNotificationPermission()
     }
 
     override fun onResume() {
@@ -73,6 +73,13 @@ class KotlinMainActivity : AppCompatActivity() {
         firebaseAppDistribution.cancelFeedbackNotification()
     }
 
+    private fun showFeedbackNotification() {
+        firebaseAppDistribution.showFeedbackNotification(
+            R.string.feedbackAdditionalFormText,
+            InterruptionLevel.HIGH
+        )
+    }
+
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -80,11 +87,20 @@ class KotlinMainActivity : AppCompatActivity() {
                 PackageManager.PERMISSION_GRANTED
             ) {
                 // All set. We can post notifications
+                showFeedbackNotification()
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // Display an educational UI explaining to the user the features that will be enabled
-                // by them granting the POST_NOTIFICATION permission. This UI should provide the user
-                // "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-                // If the user selects "No thanks," allow the user to continue without notifications.
+                Log.i(TAG, "Showing customer rationale for requesting permission.")
+                AlertDialog.Builder(this)
+                    .setMessage(
+                        "Using a notification to initiate feedback to the developer. " +
+                                "To enable this feature, allow the app to post notifications."
+                    )
+                    .setPositiveButton("OK") { _, _ ->
+                        Log.i(TAG, "Launching request for permission.")
+                        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                    .setNegativeButton("No thanks") { _, _ -> Log.i(TAG, "User denied permission request.") }
+                    .show()
             } else {
                 // Directly ask for the permission
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -94,6 +110,6 @@ class KotlinMainActivity : AppCompatActivity() {
 
     companion object {
 
-        private const val TAG = "AppDistribution-Quickstart"
+        private const val TAG = "KotlinMainActivity.kt"
     }
 }
