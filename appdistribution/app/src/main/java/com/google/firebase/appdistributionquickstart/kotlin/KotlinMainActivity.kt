@@ -31,7 +31,8 @@ class KotlinMainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(
                 this@KotlinMainActivity,
-                "You won't be able to tap a notification to send feedback because the notification permission was denied",
+                "You won't be able to tap a notification to send feedback because" +
+                        " the notification permission was denied",
                 Toast.LENGTH_LONG
             ).show()
         }

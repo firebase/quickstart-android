@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(
                             MainActivity.this,
-                            "You won't be able to tap a notification to send feedback because the notification permission was denied",
+                            "You won't be able to tap a notification to send feedback because" +
+                                    " the notification permission was denied",
                             Toast.LENGTH_LONG
                     ).show();
                 }
@@ -102,7 +103,9 @@ public class MainActivity extends AppCompatActivity {
                             Log.i(TAG, "Launching request for permission.");
                             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
                         })
-                        .setNegativeButton("No thanks", (dialogInterface, i) -> Log.i(TAG, "User denied permission request."))
+                        .setNegativeButton("No thanks", (dialogInterface, i) -> {
+                            Log.i(TAG, "User denied permission request.");
+                        })
                         .show();
             } else {
                 // Directly ask for the permission
