@@ -31,7 +31,7 @@ class KotlinMainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(
                 this@KotlinMainActivity,
-                "The app won't display feedback notifications because the notification permission was denied",
+                "You won't be able to tap a notification to send feedback because the notification permission was denied",
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -49,7 +49,7 @@ class KotlinMainActivity : AppCompatActivity() {
         }
 
         binding.btSendFeedback.setOnClickListener {
-            firebaseAppDistribution.startFeedback(R.string.feedbackAdditionalFormText)
+            firebaseAppDistribution.startFeedback(R.string.feedback_additional_form_text)
         }
     }
 
@@ -75,7 +75,7 @@ class KotlinMainActivity : AppCompatActivity() {
 
     private fun showFeedbackNotification() {
         firebaseAppDistribution.showFeedbackNotification(
-            R.string.feedbackAdditionalFormText,
+            R.string.feedback_additional_form_text,
             InterruptionLevel.HIGH
         )
     }
@@ -105,6 +105,8 @@ class KotlinMainActivity : AppCompatActivity() {
                 // Directly ask for the permission
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
+        } else {
+            showFeedbackNotification()
         }
     }
 

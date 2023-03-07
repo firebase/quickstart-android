@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(
                             MainActivity.this,
-                            "The app won't display feedback notifications because the notification permission was denied",
+                            "You won't be able to tap a notification to send feedback because the notification permission was denied",
                             Toast.LENGTH_LONG
                     ).show();
                 }
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.btSendFeedback.setOnClickListener(view -> {
-            mFirebaseAppDistribution.startFeedback(R.string.feedbackAdditionalFormText);
+            mFirebaseAppDistribution.startFeedback(R.string.feedback_additional_form_text);
         });
     }
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showFeedbackNotification() {
         mFirebaseAppDistribution.showFeedbackNotification(
-                R.string.feedbackAdditionalFormText,
+                R.string.feedback_additional_form_text,
                 InterruptionLevel.HIGH
         );
     }
@@ -108,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
                 // Directly ask for the permission
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             }
+        } else {
+            showFeedbackNotification();
         }
     }
 }
