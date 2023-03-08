@@ -79,15 +79,15 @@ dependencies {
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.media:media:1.6.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
     // Android architecture components
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.5.1'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.6.0'
 
     // Third-party libraries
     implementation 'me.zhanghai.android.materialratingbar:library:1.4.0'
