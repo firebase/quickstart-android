@@ -33,9 +33,14 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigException;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.samples.quickstart.config.R;
 import com.google.samples.quickstart.config.databinding.ActivityMainBinding;
+import com.google.firebase.remoteconfig.ConfigUpdateListener;
+import com.google.firebase.remoteconfig.ConfigUpdate;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigException;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -86,6 +91,25 @@ public class MainActivity extends AppCompatActivity {
         // [START set_default_values]
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
         // [END set_default_values]
+
+        mFirebaseRemoteConfig.addOnConfigUpdateListener(new ConfigUpdateListener() {
+            @Override
+            public void onUpdate(ConfigUpdate configUpdate) {
+                Log.d(TAG, "Updated keys: " + configUpdate.getUpdatedKeys());
+
+                mFirebaseRemoteConfig.activate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Boolean> task) {
+                        displayWelcomeMessage();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(FirebaseRemoteConfigException error) {
+                Log.e(TAG, "Error: " + error.getCode() + ": " + error.getMessage());
+            }
+        });
 
         fetchWelcome();
     }
