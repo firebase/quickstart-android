@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         // [END set_default_values]
 
+        // [START add_config_update_listener]
         remoteConfig.addOnConfigUpdateListener(object : ConfigUpdateListener {
             override fun onUpdate(configUpdate : ConfigUpdate) {
                 Log.d(TAG, "Updated keys: " + configUpdate.updatedKeys.joinToString(", "));
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                 Log.w(TAG, "Config Update Error Code: " + error.code, error)
             }
         })
-
+        // [END add_config_update_listener]
 
         fetchWelcome()
     }

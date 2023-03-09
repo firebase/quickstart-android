@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
         // [END set_default_values]
 
+        // [START add_config_update_listener]
         mFirebaseRemoteConfig.addOnConfigUpdateListener(new ConfigUpdateListener() {
             @Override
             public void onUpdate(ConfigUpdate configUpdate) {
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Error: " + error.getCode() + ": " + error.getMessage());
             }
         });
+        // [END add_config_update_listener]
 
         fetchWelcome();
     }
