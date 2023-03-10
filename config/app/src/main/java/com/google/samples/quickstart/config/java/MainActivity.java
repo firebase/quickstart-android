@@ -26,7 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +38,6 @@ import com.google.samples.quickstart.config.R;
 import com.google.samples.quickstart.config.databinding.ActivityMainBinding;
 import com.google.firebase.remoteconfig.ConfigUpdateListener;
 import com.google.firebase.remoteconfig.ConfigUpdate;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -108,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(FirebaseRemoteConfigException error) {
-                Log.e(TAG, "Error: " + error.getCode() + ": " + error.getMessage());
+                Log.e(TAG, "Error: " + error.getCode() + ": " + error.getMessage(), error);
             }
         });
         // [END add_config_update_listener]
