@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onError(error: FirebaseRemoteConfigException) {
-                Log.w(TAG, "Config Update Error Code: " + error.code, error)
+                Log.w(TAG, "Config update error with code: " + error.code, error)
             }
         })
         // [END add_config_update_listener]
