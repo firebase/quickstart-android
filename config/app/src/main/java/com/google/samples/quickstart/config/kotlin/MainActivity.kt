@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         // [START add_config_update_listener]
         remoteConfig.addOnConfigUpdateListener(object : ConfigUpdateListener {
             override fun onUpdate(configUpdate : ConfigUpdate) {
-                Log.d(TAG, "Updated keys: " + configUpdate.updatedKeys.joinToString(", "));
+                Log.d(TAG, "Updated keys: " + configUpdate.updatedKeys);
 
                 if (configUpdate.updatedKeys.contains("welcome_message")) {
                     remoteConfig.activate().addOnCompleteListener {
