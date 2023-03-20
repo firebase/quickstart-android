@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(FirebaseRemoteConfigException error) {
-                Log.e(TAG, "Error: " + error.getCode() + ": " + error.getMessage(), error);
+                Log.w(TAG, "Config update error with code: " + error.getCode(), error);
             }
         });
         // [END add_config_update_listener]
