@@ -17,6 +17,7 @@
 package com.google.firebase.quickstart.auth.kotlin
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,9 +31,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.oAuthProvider
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.FragmentGenericIdpBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 /**
  * Demonstrate Firebase Authentication using a Generic Identity Provider (IDP).
@@ -59,7 +65,7 @@ class GenericIdpFragment : BaseFragment() {
         binding.genericSignInButton.setOnClickListener {
             val providerName = spinnerAdapter.getItem(binding.providerSpinner.selectedItemPosition)
             if (providerName != null) {
-                viewModel.signIn(requireActivity(), providerName)
+                signIn(providerName)
             } else {
                 Snackbar.make(requireView(), "No provider selected", Snackbar.LENGTH_SHORT).show()
             }
@@ -85,19 +91,47 @@ class GenericIdpFragment : BaseFragment() {
                     binding.signOutButton.isGone = uiState.isSignInVisible
                     binding.spinnerLayout.isGone = !uiState.isSignInVisible
 
-                    // Spinner
-                    spinnerAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner_list, uiState.providerNames)
-                    binding.providerSpinner.adapter = spinnerAdapter
-                    binding.providerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                            binding.genericSignInButton.text =
-                                getString(R.string.generic_signin_fmt, spinnerAdapter.getItem(position))
-                        }
 
-                        override fun onNothingSelected(parent: AdapterView<*>) {}
-                    }
-                    binding.providerSpinner.setSelection(0)
                 }
+            }
+        }
+
+        // Spinner
+        spinnerAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner_list, ArrayList(PROVIDER_MAP.keys))
+        binding.providerSpinner.adapter = spinnerAdapter
+        binding.providerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                binding.genericSignInButton.text =
+                    getString(R.string.generic_signin_fmt, spinnerAdapter.getItem(position))
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+        binding.providerSpinner.setSelection(0)
+    }
+
+    private fun signIn(providerName: String) {
+        // Could add custom scopes here
+        val customScopes = listOf<String>()
+
+        // Examples of provider ID: apple.com (Apple), microsoft.com (Microsoft), yahoo.com (Yahoo)
+        val providerId = PROVIDER_MAP[providerName]!!
+
+        val oAuthProvider = oAuthProvider(providerId) {
+            scopes = customScopes
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val authResult =
+                    Firebase.auth.startActivityForSignInWithProvider(requireActivity(), oAuthProvider).await()
+                authResult.user?.let {
+                    Log.d("GenericIdpFragment", "activitySignIn:onSuccess:${authResult.user}")
+                    viewModel.showSignedInUser(it)
+                }
+            } catch (e: Exception) {
+                Log.w("GenericIdpFragment", "activitySignIn:onFailure", e)
+                // TODO(thatfiredev): Snackbar Sign in failed, see logs for details.
             }
         }
     }
@@ -105,5 +139,15 @@ class GenericIdpFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val TAG = "GenericIdpFragment"
+        private val PROVIDER_MAP = mapOf(
+            "Apple" to "apple.com",
+            "Microsoft" to "microsoft.com",
+            "Yahoo" to "yahoo.com",
+            "Twitter" to "twitter.com"
+        )
     }
 }
