@@ -96,12 +96,14 @@ public class MainActivity extends AppCompatActivity {
             public void onUpdate(ConfigUpdate configUpdate) {
                 Log.d(TAG, "Updated keys: " + configUpdate.getUpdatedKeys());
 
-                mFirebaseRemoteConfig.activate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Boolean> task) {
-                        displayWelcomeMessage();
-                    }
-                });
+                if (configUpdate.getUpdatedKeys().contains(WELCOME_MESSAGE_KEY)) {
+                    mFirebaseRemoteConfig.activate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Boolean> task) {
+                            displayWelcomeMessage();
+                        }
+                    });
+                }
             }
 
             @Override
