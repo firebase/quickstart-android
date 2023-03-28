@@ -53,11 +53,9 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation platform('com.google.firebase:firebase-bom:31.3.0')
 
-    // Firebase Authentication (Java)
-    implementation 'com.google.firebase:firebase-auth'
-
     // Firebase Authentication (Kotlin)
-    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation files('../libs/firebase-auth-ktx-21.2.0.aar')
+    implementation 'com.google.firebase:firebase-common-ktx'
 
     // Google Identity Services SDK (only required for Auth with Google)
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
