@@ -60,7 +60,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
 
     // Google Identity Services SDK (only required for Auth with Google)
-    implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
 
     // Firebase UI
     // Used in FirebaseUIActivity.
