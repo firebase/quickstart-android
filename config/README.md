@@ -1,95 +1,56 @@
-Firebase Remote Config Quickstart
+Firebase Remote Config Emulator Quickstart
 ==============================
 
-The Firebase Remote Config Android quickstart app demonstrates using Remote
-Config to define user-facing text in an Android app.
+The Firebase Remote Config Emulator Android quickstart app demonstrates using Remote
+Config Emulator to define user-facing text in an Android app.
 
 Introduction
 ------------
 
-This is a simple example of using Remote Config to override in-app default
-values by defining service-side parameter values in the Firebase console. This
-example demonstrates a small subset of the capilities of Firebase Remote
-Config. To learn more about how you can use Firebase Remote Config in your app,
-see
-[Firebase Remote Config Introduction](https://firebase.google.com/docs/remote-config/).
+This is a simple example of using the Remote Config Emulator to override in-app default
+values by defining emulator-side parameter values in the Firebase Emulator Suite UI console.
 
 Getting started
 ---------------
 
-1. [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
-2. [Create a Remote Config project for the quickstart sample](https://firebase.google.com/docs/remote-config/android#create_a_product_name_project_for_the_quickstart_sample),
-  defining the parameter values and parameter keys used by the sample.
-3. Run the sample on an Android device or emulator.
-4. Change one or more parameter values in the Firebase Console (the value of
-  `welcome_message`, `welcome_message_caps`, or both).
-5. Tap **Fetch Remote Config** in the app to fetch new parameter values and see
+1. Install custom Firebase CLI. From the root of this quickstart
+   1. run `npm install -g "https://firebasestorage.googleapis.com/v0/b/jeff-storage-90953.appspot.com/o/firebase-tools-11.16.0-rc-emulator.tgz?alt=media&token=bc26160a-07fc-4b70-a92b-fa11207daa8b"`
+   2. run `firebase --version`
+   3. Confirm that version is `11.16.0-rc-emulator`
+2. Turn on the Remote Config emulator experiment
+   1. run `firebase experiments:enable rcemulator`
+3. Install custom Firebase Emulator UI
+   1. run `npm install "https://firebasestorage.googleapis.com/v0/b/jeff-storage-90953.appspot.com/o/firebase-remote-config-0.4.3.tgz?alt=media&token=4a5100f7-e043-4ddd-898d-7638596b8d61"`
+4. Initialize Firebase demo project
+   1. run `firebase init emulators`
+   2. select `Don't set up a default project`
+   3. choose the `Remote Config Emulator` from the list of emulators
+   4. `y` to download the emulators
+5. Update `firebase.json` file to identify the local template file.
+   1. add the following field:
+```json
+"remoteconfig": {
+  "template": "remoteconfig.template.json"
+}
+```
+6. Start the emulator
+   1. run `firebase emulators:start --project demo-rc-emulation`
+
+7. Run the sample on an Android emulator.
+8. Change one or more parameter values in the Firebase Emulator Suite UI (the value of
+`welcome_message`). 
+12. Tap **Fetch Remote Config** in the app to fetch new parameter values and see
   the resulting change in the app.
-
-Best practices
---------------
-This section provides some additional information about how the quickstart
-example sets in-app default parameter values and fetches values from the Remote
-Config service
-
-### In-app default parameter values ###
-
-In-app default values are set using an XML file in this example, but you can
-also set in-app default values inline using other `setDefault` methods of the
-[`FirebaseRemoteConfig` class](https://firebase.google.com/docs/reference/android/com/google/firebase/remoteconfig/FirebaseRemoteConfig#public-method-summary).
-Then, you can override only those values that you need to change from the
-Firebase console. This lets you use Remote Config for any default value that you
-might want to override in the future, without the need to set all of those
-values in the Firebase console.
-
-### Fetch values from the Remote Config service ###
-
-When an app calls `fetch`, locally stored parameter values are used unless the
-minimum fetch interval is reached. The minimal fetch interval is determined by:
-
-1. The parameter passed to `fetch(long minFetchInterval)`.
-2. The minimum fetch interval set in Remote Config settings.
-3. The default minimum fetch interval, 12 hours.
-
-Fetched values are immediately activated when retrieved using `fetchAndActivate`.
-`fetchAndActivate` returns true if the final set of key/value pairs now available
-to the application is different to the set before calling `fetchAndActivate`, false
-is returned otherwise. In the quickstart sample app, you call `fetchAndActivate`
-from the UI by tapping **Fetch Remote Config**.
-
-To control when fetched values are activated and available to your app use `fetch`, the
-values are locally stored, but not immediately activated. To activate
-fetched values so that they take effect, call the `activate` method.
-
-You can also create a Remote Config Setting to enable developer mode, but you
-must remove this setting before distributing your app. Fetching Remote Config
-data from the service is normally limited to a few requests per hour. By
-enabling developer mode, you can make many more requests per hour, so you can
-test your app with different Remote Config parameter values during development.
-
-- To learn more about fetching data from remote config, see the Remote Config
-  Frequently Asked Question (FAQ) on
-  [fetching and activating parameter values](https://firebase.google.com/support/faq#remote-config-values).
-- To learn about parameters and conditions that you can use to change the
-  behavior and appearance of your app for segments of your userbase, see
-  [Remote Config Parameters and Conditions](https://firebase.google.com/docs/remote-config/parameters).
-- To learn more about the Remote Config API, see
-  [Remote Config API Overview](https://firebase.google.com/docs/remote-config/api-overview).
-
-Result
------------
-<img src="https://github.com/firebase/quickstart-android/raw/master/config/app/src/screen.png" height="534" width="300"/>
 
 Support
 -------
 
-- [Stack Overflow](https://stackoverflow.com/questions/tagged/firebase-remote-config)
-- [Firebase Support](https://firebase.google.com/support/)
+- [GitHub Issues](<TODO>)
 
 License
 -------
 
-Copyright 2016 Google, Inc.
+Copyright 2023 Google, Inc.
 
 Licensed to the Apache Software Foundation (ASF) under one or more contributor
 license agreements.  See the NOTICE file distributed with this work for
