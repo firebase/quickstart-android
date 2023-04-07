@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "name": "web_users",
+      "expression": "device.os == 'web'",
+      "tagColor": "GREEN"
+    },
+    {
+      "name": "android_users",
+      "expression": "device.os == 'android'",
+      "tagColor": "BLUE"
+    }
+  ],
+  "parameters": {
+    "welcome_message": {
+      "defaultValue": {
+        "value": "Hi Welcome!"
+      },
+      "conditionalValues": {
+        "web_users": {
+          "value": "Hi Welcome web users!"
+        },
+        "android_users": {
+          "value": "Hi Welcome android users!"
+        }
+      },
+      "valueType": "STRING"
+    }
+  }
+}
