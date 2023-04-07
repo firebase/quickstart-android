@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         // Get Remote Config instance.
         // [START get_remote_config_instance]
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        mFirebaseRemoteConfig.useEmulator("10.0.2.2", 9399);
         // [END get_remote_config_instance]
 
         // Create a Remote Config Setting to enable developer mode, which you can use to increase
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         // Setting to set the minimum fetch interval.
         // [START enable_dev_mode]
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(3600)
+                .setMinimumFetchIntervalInSeconds(0)
                 .build();
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
         // [END enable_dev_mode]

@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         // Get Remote Config instance.
         // [START get_remote_config_instance]
         remoteConfig = Firebase.remoteConfig
+        remoteConfig.useEmulator("10.0.2.2", 9399)
         // [END get_remote_config_instance]
 
         // Create a Remote Config Setting to enable developer mode, which you can use to increase
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         // Setting to set the minimum fetch interval.
         // [START enable_dev_mode]
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 3600
+            minimumFetchIntervalInSeconds = 0
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
         // [END enable_dev_mode]
