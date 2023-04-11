@@ -13,6 +13,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
@@ -24,10 +27,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
-
-    val IS_OPTIMIZE = true
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -102,11 +104,12 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
         askNotificationPermission()
 
-        if (IS_OPTIMIZE) {
-            dateRefresh()
-        } else {
-            optimizedDateRefresh() // optimized version of dateRefresh() that uses Android SharedPreferences
-        }
+        // Refresh token and send to server every month
+        val saveRequest =
+            PeriodicWorkRequestBuilder<UpdateTokenWorker>(730, TimeUnit.HOURS)
+                .build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("saveRequest", ExistingPeriodicWorkPolicy.UPDATE, saveRequest);
     }
 
     private fun askNotificationPermission() {
@@ -126,79 +129,32 @@ class MainActivity : AppCompatActivity() {
     private suspend fun getAndStoreRegToken(): String {
         // [START log_reg_token]
         var token = Firebase.messaging.token.await()
-        // Add token and timestamp to Firestore for this user
-        val deviceToken = hashMapOf(
-            "token" to token,
-            "timestamp" to FieldValue.serverTimestamp(),
-        )
 
-        // Get user ID from Firebase Auth or your own server
-        Firebase.firestore.collection("fcmTokens").document("myuserid")
-            .set(deviceToken).await()
+        // Check whether the retrieved token matches the one on your server for this user's device
+        val preferences = this.getPreferences(Context.MODE_PRIVATE)
+        val tokenStored = preferences.getString("deviceToken", "")
+        lifecycleScope.launch {
+            if (tokenStored == "" || tokenStored != token)
+            {
+                // If you have your own server, call API to send the above token and Date() for this user's device
+
+                // Example shown below with Firestore
+                // Add token and timestamp to Firestore for this user
+                val deviceToken = hashMapOf(
+                    "token" to token,
+                    "timestamp" to FieldValue.serverTimestamp(),
+                )
+
+                // Get user ID from Firebase Auth or your own server
+                Firebase.firestore.collection("fcmTokens").document("myuserid")
+                    .set(deviceToken).await()
+            }
+        }
+
         // [END log_reg_token]
         Log.d(TAG, "got token: $token")
 
-        // As an optimization, store today’s date in Android cache
-        if (IS_OPTIMIZE) {
-            val preferences = this.getSharedPreferences("default", Context.MODE_PRIVATE)
-            preferences.edit().putLong("lastDeviceRefreshDate", Date().time)
-        }
-
         return token
-    }
-
-    // Check to see whether this device's registration token was refreshed within the last month. Refresh if not.
-    private fun dateRefresh() {
-        lifecycleScope.launch {
-            val refreshDate = (Firebase.firestore.collection("refresh")
-                    .document("refreshDate").get().await().data!!["lastRefreshDate"] as Timestamp)
-            val deviceRefreshDate = (Firebase.firestore.collection("fcmTokens")
-                    .document("myuserid").get().await().data!!["timestamp"] as Timestamp)
-            if (deviceRefreshDate < refreshDate) {
-                getAndStoreRegToken()
-            }
-        }
-    }
-
-    /*
-        As an optimization to prevent Firestore calls every time the device opens the app, store the last all-devices
-        refresh date (lastGlobalRefresh) and this particular device's last refresh date (lastDeviceRefresh) into
-        Android's SharedPreferences.
-
-        If lastDeviceRefresh is before lastGlobalRefresh, update the device's registration token, and store it into
-        Firestore and SharedPreferencs. Also, if today's date is a month after lastGlobalRefresh, sync lastGlobalRefresh
-        in SharedPreferences with Firestore's lastGlobalRefresh.
-    */
-    private fun optimizedDateRefresh() {
-        val preferences = this.getPreferences(Context.MODE_PRIVATE)
-        // Refresh date (stored as milliseconds, SharedPreferences cannot store Date) that ensures token freshness
-        val lastGlobalRefreshLong = preferences.getLong("lastGlobalRefreshDate", -1)
-        val lastGlobalRefresh = Date(lastGlobalRefreshLong)
-        // Date of last refresh of device’s registration token
-        val lastDeviceRefreshLong = preferences.getLong("lastDeviceRefreshDate", -1)
-        val lastDeviceRefresh = Date(lastDeviceRefreshLong)
-        lifecycleScope.launch {
-            if (lastDeviceRefreshLong == -1L || lastGlobalRefreshLong == -1L
-                || lastDeviceRefresh.before(lastGlobalRefresh)) {
-                // Get token, store into Firestore, and update cache
-                getAndStoreRegToken()
-                preferences.edit().putLong("lastGlobalRefreshDate", lastDeviceRefresh.time)
-            }
-
-            // Check if today is more than one month beyond cached global refresh date
-            // and if so, sync date with Firestore and update cache
-            val today = Date()
-            val c = Calendar.getInstance().apply {
-                time = if (lastGlobalRefreshLong == -1L) today else lastGlobalRefresh
-                add(Calendar.DATE, 30)
-            }
-
-            if (lastGlobalRefreshLong == -1L || today.after(c.time)) {
-                val document = Firebase.firestore.collection("refresh").document("refreshDate").get().await()
-                val updatedTime = (document.data!!["lastRefreshDate"] as Timestamp).seconds * 1000
-                preferences.edit().putLong("lastGlobalRefreshDate", updatedTime)
-            }
-        }
     }
 
     companion object {

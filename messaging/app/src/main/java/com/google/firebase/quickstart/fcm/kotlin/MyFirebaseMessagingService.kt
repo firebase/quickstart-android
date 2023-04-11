@@ -110,20 +110,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * @param token The new token.
      */
     private fun sendTokenToServer(token: String?) {
-        // TODO: Implement this method to send token to your app server.
+        // If you're running your own server, call API to send token and today's date for the user
+
+        // Example shown below with Firestore
         // Add token and timestamp to Firestore for this user
         val deviceToken = hashMapOf(
             "token" to token,
             "timestamp" to FieldValue.serverTimestamp(),
         )
-
         // Get user ID from Firebase Auth or your own server
         Firebase.firestore.collection("fcmTokens").document("myuserid")
             .set(deviceToken)
-
-        // As an optimization, store today’s date in Android cache
-        val preferences = this.getSharedPreferences("default", Context.MODE_PRIVATE)
-        preferences.edit().putLong("lastDeviceRefreshDate", Date().time)
     }
 
     /**
