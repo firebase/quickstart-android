@@ -39,6 +39,13 @@ android {
             resValue "string", "dynamic_links_uri_prefix", "https://YOUR_APP.page.link"
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     buildFeatures {
         viewBinding = true
