@@ -16,10 +16,10 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                         "Kotlin",
                         "Run the Firebase Dynamic Links quickstart written in Kotlin.",
                         Intent(this, com.google.firebase.quickstart.deeplinks.kotlin.MainActivity::class.java)),
-            Choice(
-                "Compose",
-                "Run the Firebase Dynamic Links quickstart written in Compose.",
-                Intent(this, com.google.firebase.quickstart.deeplinks.kotlin.MainComposeActivity::class.java))
+                Choice(
+                        "Compose",
+                        "Run the Firebase Dynamic Links quickstart written in Compose.",
+                        Intent(this, com.google.firebase.quickstart.deeplinks.kotlin.MainComposeActivity::class.java))
         )
     }
 }

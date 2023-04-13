@@ -32,7 +32,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.validateAppCode(uriPrefix)
 
         // Create a deep link and display it in the UI
+
+        // [START build_dynamic_link]
         val newDeepLink = viewModel.buildDeepLink(uriPrefix, Uri.parse(DEEP_LINK_URL), 0)
+        // [END build_dynamic_link]
         linkSendTextView.text = newDeepLink.toString()
 
         // Share button click listener
