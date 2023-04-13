@@ -24,6 +24,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -125,122 +126,155 @@ fun MainAppView(
             }
         },
         content = { it
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-            ) {
-
-                if(openDialog) {
-                    AlertDialog(
-                        onDismissRequest = { openDialog = false },
-                        title = { Text("Invalid Configuration") },
-                        text = { Text("Please set your Dynamic Links domain in app/build.gradle") },
-                        confirmButton = {
-                            Button(onClick = {
-                                openDialog = false
-                            }) {
-                                Text(stringResource(android.R.string.ok))
-                            }
-                        }
-                    )
-                }
-
-                Image(
-                    painter = painterResource(R.drawable.firebase_lockup_400),
-                    contentDescription = "",
-                    modifier = Modifier.fillMaxWidth(),
-                    alignment = Alignment.Center
-                )
-
-                val linkReceiveTextView by dynamicLinksViewModel.deepLink.collectAsState()
-                val shortLinkTextView by dynamicLinksViewModel.shortLink.collectAsState()
-
-                Text(
-                    text = stringResource(R.string.title_receive),
-                    fontSize = 20.sp,
-                    style = MaterialTheme.typography.h6,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-
-                Text(
-                    text = linkReceiveTextView.ifEmpty {
-                        stringResource(R.string.msg_no_deep_link)
+                MainContent(
+                    openDialog = openDialog,
+                    linkReceiveTextView = dynamicLinksViewModel.deepLink.collectAsState(),
+                    shortLinkTextView = dynamicLinksViewModel.shortLink.collectAsState(),
+                    newDeepLink = newDeepLink,
+                    buildDeepLink = {
+                        dynamicLinksViewModel.buildDeepLink(uriPrefix, Uri.parse(DEEP_LINK_URL), 0).toString()
                     },
-                    fontSize = 16.sp,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-
-                Text(
-                    text = stringResource(R.string.dynamic_link),
-                    fontSize = 20.sp,
-                    style = MaterialTheme.typography.h6,
-                    modifier = Modifier.padding(top = 32.dp)
-                )
-
-                Text(
-                    text = dynamicLinksViewModel.buildDeepLink(uriPrefix, Uri.parse(DEEP_LINK_URL), 0).toString(),
-                    fontSize = 16.sp,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorPrimary)),
-                    onClick = {
-                        shareDeepLink(context, newDeepLink)
+                    buildShortLinkFromParams = {
+                        dynamicLinksViewModel.buildShortLinkFromParams(uriPrefix, it, 0)
                     }
-                ) {
-                    Text(
-                        text = stringResource(R.string.share_dynamic_link).uppercase(),
-                        color = Color.White,
-                    )
-                }
 
-                Text(
-                    text = stringResource(R.string.short_dynamic_link),
-                    fontSize = 20.sp,
-                    style = MaterialTheme.typography.h6,
-                    modifier = Modifier.padding(top = 32.dp)
                 )
-
-                Text(
-                    text = shortLinkTextView.ifEmpty {
-                        "https://abc.xyz/foo"
-                    },
-                    fontSize = 16.sp,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorPrimary)),
-                    onClick = {
-                        val deepLink = Uri.parse(DEEP_LINK_URL)
-                        dynamicLinksViewModel.buildShortLinkFromParams(uriPrefix, deepLink, 0)
-                    }
-                ) {
-                    Text(
-                        text = stringResource(R.string.generate_short_link).uppercase(),
-                        color = Color.White
-                    )
-                }
-
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorPrimary)),
-                    onClick = {
-                        shareDeepLink(context, shortLinkTextView)
-                    }
-                ) {
-                    Text(
-                        text = stringResource(R.string.share_short_link).uppercase(),
-                        color = Color.White
-                    )
-                }
-            }
         }
     )
+}
+
+@Composable
+fun MainContent(
+    openDialog: Boolean = false,
+    linkReceiveTextView: State<String> = mutableStateOf(""),
+    shortLinkTextView: State<String> = mutableStateOf(""),
+    newDeepLink: String = "",
+    buildDeepLink: () -> String = { "" },
+    buildShortLinkFromParams: (Uri) -> Unit = {},
+){
+    val context = LocalContext.current
+    var openDialog by remember { mutableStateOf(openDialog) }
+    val linkReceiveTextView by linkReceiveTextView
+    val shortLinkTextView by shortLinkTextView
+
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
+    ) {
+        if(openDialog) {
+            AlertDialog(
+                onDismissRequest = { openDialog = false },
+                title = { Text("Invalid Configuration") },
+                text = { Text("Please set your Dynamic Links domain in app/build.gradle") },
+                confirmButton = {
+                    Button(onClick = {
+                        openDialog = false
+                    }) {
+                        Text(stringResource(android.R.string.ok))
+                    }
+                }
+            )
+        }
+
+        Image(
+            painter = painterResource(R.drawable.firebase_lockup_400),
+            contentDescription = "",
+            modifier = Modifier.fillMaxWidth(),
+            alignment = Alignment.Center
+        )
+
+        Text(
+            text = stringResource(R.string.title_receive),
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+
+        Text(
+            text = linkReceiveTextView.ifEmpty {
+                stringResource(R.string.msg_no_deep_link)
+            },
+            fontSize = 16.sp,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.dynamic_link),
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier.padding(top = 32.dp)
+        )
+
+        Text(
+            text = buildDeepLink(),
+            fontSize = 16.sp,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorPrimary)),
+            onClick = {
+                shareDeepLink(context, newDeepLink)
+            }
+        ) {
+            Text(
+                text = stringResource(R.string.share_dynamic_link).uppercase(),
+                color = Color.White,
+            )
+        }
+
+        Text(
+            text = stringResource(R.string.short_dynamic_link),
+            fontSize = 20.sp,
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier.padding(top = 32.dp)
+        )
+
+        Text(
+            text = shortLinkTextView.ifEmpty {
+                "https://abc.xyz/foo"
+            },
+            fontSize = 16.sp,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorPrimary)),
+            onClick = {
+                val deepLink = Uri.parse(DEEP_LINK_URL)
+                buildShortLinkFromParams(deepLink)
+            }
+        ) {
+            Text(
+                text = stringResource(R.string.generate_short_link).uppercase(),
+                color = Color.White
+            )
+        }
+
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorPrimary)),
+            onClick = {
+                shareDeepLink(context, shortLinkTextView)
+            }
+        ) {
+            Text(
+                text = stringResource(R.string.share_short_link).uppercase(),
+                color = Color.White
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun MainContentPreview(){
+    DynamicLinksTheme {
+        MainContent()
+    }
 }
 
 fun shareDeepLink(context: Context, deepLink: String) {
