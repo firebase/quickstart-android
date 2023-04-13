@@ -15,9 +15,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private val viewModel: DynamicLinksViewModel by viewModels { DynamicLinksViewModel.Factory }
 
-    // [START on_create]
     override fun onCreate(savedInstanceState: Bundle?) {
-        // [START_EXCLUDE]
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -33,14 +31,11 @@ class MainActivity : AppCompatActivity() {
 
         // Create a deep link and display it in the UI
 
-        // [START build_dynamic_link]
         val newDeepLink = viewModel.buildDeepLink(uriPrefix, Uri.parse(DEEP_LINK_URL), 0)
-        // [END build_dynamic_link]
         linkSendTextView.text = newDeepLink.toString()
 
         // Share button click listener
         binding.buttonShare.setOnClickListener { shareDeepLink(newDeepLink.toString()) }
-        // [END_EXCLUDE]
 
         binding.buttonShareShortLink.setOnClickListener {
             val shortDynamicLink = shortLinkTextView.text
@@ -52,9 +47,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.buildShortLinkFromParams(uriPrefix, deepLink, 0)
 		}
 
-        // [START get_deep_link]
         viewModel.getDynamicLink(intent)
-        // [END get_deep_link]
 
         lifecycleScope.launch {
             viewModel.deepLink.collect { deepLink ->
@@ -88,7 +81,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-    // [END on_create]
 
     private fun shareDeepLink(deepLink: String) {
         val intent = Intent(Intent.ACTION_SEND)

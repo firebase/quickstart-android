@@ -24,7 +24,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
@@ -36,7 +35,6 @@ import com.google.firebase.quickstart.deeplinks.kotlin.ui.theme.DynamicLinksThem
 import kotlinx.coroutines.channels.Channel
 
 private const val DEEP_LINK_URL = "https://www.youtube.com/deeplinks"
-private const val TAG = "MainComposeActivity"
 
 class MainComposeActivity : ComponentActivity() {
 
@@ -94,7 +92,7 @@ fun MainAppView(
     val channel = remember { Channel<Int>(Channel.Factory.CONFLATED) }
     val scaffoldState = rememberScaffoldState(snackbarHostState = snackbarHostState)
 
-    // This will only run once and will not be triggered by recomposition
+    // Checks if a valid uri has been updated, show only once
     LaunchedEffect(key1 = true) {
         dynamicLinksViewModel.validUriPrefix.collect { flag ->
             if (!flag) {
@@ -103,7 +101,7 @@ fun MainAppView(
         }
     }
 
-    // This will only run once and will not be triggered by recomposition
+    // Checks if a deep link is used to open app
     LaunchedEffect(key1 = channel) {
         dynamicLinksViewModel.deepLink.collect { deepLink ->
             if (deepLink.isNotEmpty()) {

@@ -42,14 +42,12 @@ class DynamicLinksViewModel(
                 // account.
                 // ...
 
-                // [START_EXCLUDE]
                 // Display deep link in the UI
                 if (deepLink != null) {
                     _deepLink.value = deepLink.toString()
                 } else {
                     Log.d(TAG, "getDynamicLink: no link found")
                 }
-                // [END_EXCLUDE]
             }
             .addOnFailureListener { e: Exception -> Log.w(TAG, "getDynamicLink:onFailure", e) }
     }
@@ -73,7 +71,6 @@ class DynamicLinksViewModel(
         //  * URI prefix (required)
         //  * Android Parameters (required)
         //  * Deep link
-        // [START build_dynamic_link]
         // Build the dynamic link
         val link = Firebase.dynamicLinks.dynamicLink {
             domainUriPrefix = uriPrefix
@@ -82,7 +79,6 @@ class DynamicLinksViewModel(
             }
             link = deepLink
         }
-        // [END build_dynamic_link]
 
         // Return the dynamic link as a URI
         return link.uri
