@@ -5,7 +5,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.0.0'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20'
 
         classpath 'com.google.gms:google-services:4.3.15'
@@ -84,6 +84,7 @@ task("ktlint", type: JavaExec, group: "verification") {
         "--reporter=checkstyle,output=${outputFile}",
         "**/*.kt",
     ]
+    jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
 }
 
 task clean(type: Delete) {
