@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">App Distribution Quickstart</string>
-    <string name="textview_text">Welcome to the Firebase App Distribution Quickstart app. Press the button to trigger an analytics event!</string>
+    <string name="textview_text">Welcome to the Firebase App Distribution Quickstart app</string>
 
     <string name="installation_id_fmt">Firebase Installation ID: %s</string>
+    <string name="show_feedback_notification">Show Feedback Notification</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="feedback_additional_form_text">This is a placeholder for text from the developer that is shown to the tester before they provide feedback. It can contain <a href="https://firebase.google.com/docs/app-distribution">links</a> to more information.</string>
 </resources>

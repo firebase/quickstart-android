@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Used by the Firebase App Distribution SDK to display in app feedback notifications -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <application
         android:name="androidx.multidex.MultiDexApplication"
         android:allowBackup="true"
