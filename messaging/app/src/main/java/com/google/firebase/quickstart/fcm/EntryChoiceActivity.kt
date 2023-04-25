@@ -3,7 +3,6 @@ package com.google.firebase.quickstart.fcm
 import android.content.Intent
 import com.firebase.example.internal.BaseEntryChoiceActivity
 import com.firebase.example.internal.Choice
-import com.google.firebase.quickstart.fcm.java.MainActivity
 
 class EntryChoiceActivity : BaseEntryChoiceActivity() {
 
@@ -12,7 +11,7 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                 Choice(
                         "Java",
                         "Run the Firebase Cloud Messaging quickstart written in Java.",
-                        Intent(this, MainActivity::class.java)),
+                        Intent(this, com.google.firebase.quickstart.fcm.java.MainActivity::class.java)),
                 Choice(
                         "Kotlin",
                         "Run the Firebase Cloud Messaging written in Kotlin.",
