@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         // [START handle_data_extras]
         intent.extras?.let {
             for (key in it.keySet()) {
-                val value = intent.extras?.get(key)
+                val value = intent.extras?.getString(key)
                 Log.d(TAG, "Key: $key Value: $value")
             }
         }
