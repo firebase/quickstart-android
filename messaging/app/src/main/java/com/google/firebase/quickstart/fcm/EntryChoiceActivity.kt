@@ -8,7 +8,7 @@ import com.google.firebase.quickstart.fcm.java.MainActivity
 class EntryChoiceActivity : BaseEntryChoiceActivity() {
 
     override fun getChoices(): List<Choice> {
-        return kotlin.collections.listOf(
+        return listOf(
                 Choice(
                         "Java",
                         "Run the Firebase Cloud Messaging quickstart written in Java.",
