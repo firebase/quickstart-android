@@ -23,9 +23,9 @@ class AnonymousAuthFragment : BaseFragment() {
     private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAnonymousAuthBinding.inflate(inflater, container, false)
         return binding.root
@@ -60,22 +60,25 @@ class AnonymousAuthFragment : BaseFragment() {
     private fun signInAnonymously() {
         showProgressBar()
         auth.signInAnonymously()
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInAnonymously:success")
-                        val user = auth.currentUser
-                        updateUI(user)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInAnonymously:failure", task.exception)
-                        Toast.makeText(context, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show()
-                        updateUI(null)
-                    }
-
-                    hideProgressBar()
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInAnonymously:success")
+                    val user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInAnonymously:failure", task.exception)
+                    Toast.makeText(
+                        context,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    updateUI(null)
                 }
+
+                hideProgressBar()
+            }
     }
 
     private fun signOut() {
@@ -100,20 +103,23 @@ class AnonymousAuthFragment : BaseFragment() {
         showProgressBar()
 
         auth.currentUser!!.linkWithCredential(credential)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "linkWithCredential:success")
-                        val user = task.result?.user
-                        updateUI(user)
-                    } else {
-                        Log.w(TAG, "linkWithCredential:failure", task.exception)
-                        Toast.makeText(context, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show()
-                        updateUI(null)
-                    }
-
-                    hideProgressBar()
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "linkWithCredential:success")
+                    val user = task.result?.user
+                    updateUI(user)
+                } else {
+                    Log.w(TAG, "linkWithCredential:failure", task.exception)
+                    Toast.makeText(
+                        context,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    updateUI(null)
                 }
+
+                hideProgressBar()
+            }
     }
 
     private fun validateLinkForm(): Boolean {

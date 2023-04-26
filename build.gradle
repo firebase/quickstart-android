@@ -79,7 +79,7 @@ task("ktlint", type: JavaExec, group: "verification") {
     mainClass.set("com.pinterest.ktlint.Main")
     args = [
         "--format",
-        "--android",
+        "--code-style=android_studio",
         "--reporter=plain",
         "--reporter=checkstyle,output=${outputFile}",
         "**/*.kt",

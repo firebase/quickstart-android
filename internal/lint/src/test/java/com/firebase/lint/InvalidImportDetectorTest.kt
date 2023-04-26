@@ -7,47 +7,62 @@ import org.junit.Test
 
 class InvalidImportDetectorTest {
 
-    private val javaPackage = java("""
+    private val javaPackage = java(
+        """
       package com.google.firebase.java;
 
       public final class Hello {
         public static final class drawable {
         }
-      }""").indented()
+      }""",
+    ).indented()
 
     @Test
     fun normalRImport() {
         lint()
-                .allowMissingSdk()
-                .files(javaPackage, java("""
+            .allowMissingSdk()
+            .files(
+                javaPackage,
+                java(
+                    """
           package com.google.firebase.java;
 
           import com.google.firebase.java.Hello;
 
           class Example {
-          }""").indented())
-                .issues(ISSUE_INVALID_IMPORT)
-                .run()
-                .expectClean()
+          }""",
+                ).indented(),
+            )
+            .issues(ISSUE_INVALID_IMPORT)
+            .run()
+            .expectClean()
     }
 
     @Test
     fun wrongImport() {
         lint()
-                .allowMissingSdk()
-                .files(javaPackage, java("""
+            .allowMissingSdk()
+            .files(
+                javaPackage,
+                java(
+                    """
           package com.google.firebase.kotlin;
 
           import com.google.firebase.java.Hello;
 
           class Example {
-          }""").indented())
-                .issues(ISSUE_INVALID_IMPORT)
-                .run()
-                .expect("""
+          }""",
+                ).indented(),
+            )
+            .issues(ISSUE_INVALID_IMPORT)
+            .run()
+            .expect(
+                """
           |src/com/google/firebase/kotlin/Example.java:3: Error: $SHORT_MESSAGE [SuspiciousImport]
           |import com.google.firebase.java.Hello;
           |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          |1 errors, 0 warnings""".trimMargin())
+          |1 errors, 0 warnings
+                """.trimMargin(),
+            )
     }
 }

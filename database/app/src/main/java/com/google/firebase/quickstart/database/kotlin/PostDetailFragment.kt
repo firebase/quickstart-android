@@ -10,9 +10,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
@@ -48,13 +48,13 @@ class PostDetailFragment : BaseFragment() {
 
         // Get post key from arguments
         postKey = requireArguments().getString(EXTRA_POST_KEY)
-                ?: throw IllegalArgumentException("Must pass EXTRA_POST_KEY")
+            ?: throw IllegalArgumentException("Must pass EXTRA_POST_KEY")
 
         // Initialize Database
         postReference = Firebase.database.reference
-                .child("posts").child(postKey)
+            .child("posts").child(postKey)
         commentsReference = Firebase.database.reference
-                .child("post-comments").child(postKey)
+            .child("post-comments").child(postKey)
 
         // Initialize Views
         with(binding) {
@@ -83,8 +83,11 @@ class PostDetailFragment : BaseFragment() {
             override fun onCancelled(databaseError: DatabaseError) {
                 // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-                Toast.makeText(context, "Failed to load post.",
-                        Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Failed to load post.",
+                    Toast.LENGTH_SHORT,
+                ).show()
             }
         }
         postReference.addValueEventListener(postListener)
@@ -112,32 +115,32 @@ class PostDetailFragment : BaseFragment() {
     private fun postComment() {
         val uid = uid
         Firebase.database.reference.child("users").child(uid)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        // Get user information
-                        val user = dataSnapshot.getValue<User>() ?: return
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Get user information
+                    val user = dataSnapshot.getValue<User>() ?: return
 
-                        val authorName = user.username
+                    val authorName = user.username
 
-                        // Create new comment object
-                        val commentText = binding.fieldCommentText.text.toString()
-                        val comment = Comment(uid, authorName, commentText)
+                    // Create new comment object
+                    val commentText = binding.fieldCommentText.text.toString()
+                    val comment = Comment(uid, authorName, commentText)
 
-                        // Push the comment, it will appear in the list
-                        commentsReference.push().setValue(comment)
+                    // Push the comment, it will appear in the list
+                    commentsReference.push().setValue(comment)
 
-                        // Clear the field
-                        binding.fieldCommentText.text = null
-                    }
+                    // Clear the field
+                    binding.fieldCommentText.text = null
+                }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                    }
-                })
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            })
     }
 
     private class CommentAdapter(
-            private val context: Context,
-            private val databaseReference: DatabaseReference
+        private val context: Context,
+        private val databaseReference: DatabaseReference,
     ) : RecyclerView.Adapter<CommentViewHolder>() {
 
         private val childEventListener: ChildEventListener?
@@ -214,8 +217,11 @@ class PostDetailFragment : BaseFragment() {
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     Log.w(TAG, "postComments:onCancelled", databaseError.toException())
-                    Toast.makeText(context, "Failed to load comments.",
-                            Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "Failed to load comments.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
             }
             databaseReference.addChildEventListener(childEventListener)

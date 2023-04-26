@@ -70,7 +70,7 @@ class GenericIdpFragment : BaseFragment() {
         binding.providerSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 binding.genericSignInButton.text =
-                        getString(R.string.generic_signin_fmt, spinnerAdapter.getItem(position))
+                    getString(R.string.generic_signin_fmt, spinnerAdapter.getItem(position))
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -105,18 +105,20 @@ class GenericIdpFragment : BaseFragment() {
         // Examples of provider ID: apple.com (Apple), microsoft.com (Microsoft), yahoo.com (Yahoo)
         val providerId = getProviderId()
 
-        auth.startActivityForSignInWithProvider(requireActivity(),
-                        oAuthProvider(providerId, auth) {
-                            scopes = customScopes
-                        })
-                .addOnSuccessListener { authResult ->
-                    Log.d(TAG, "activitySignIn:onSuccess:${authResult.user}")
-                    updateUI(authResult.user)
-                }
-                .addOnFailureListener { e ->
-                    Log.w(TAG, "activitySignIn:onFailure", e)
-                    showToast(getString(R.string.error_sign_in_failed))
-                }
+        auth.startActivityForSignInWithProvider(
+            requireActivity(),
+            oAuthProvider(providerId, auth) {
+                scopes = customScopes
+            },
+        )
+            .addOnSuccessListener { authResult ->
+                Log.d(TAG, "activitySignIn:onSuccess:${authResult.user}")
+                updateUI(authResult.user)
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "activitySignIn:onFailure", e)
+                showToast(getString(R.string.error_sign_in_failed))
+            }
     }
 
     private fun getProviderId(): String {
@@ -155,10 +157,10 @@ class GenericIdpFragment : BaseFragment() {
     companion object {
         private const val TAG = "GenericIdp"
         private val PROVIDER_MAP = mapOf(
-                "Apple" to "apple.com",
-                "Microsoft" to "microsoft.com",
-                "Yahoo" to "yahoo.com",
-                "Twitter" to "twitter.com"
+            "Apple" to "apple.com",
+            "Microsoft" to "microsoft.com",
+            "Yahoo" to "yahoo.com",
+            "Twitter" to "twitter.com",
         )
     }
 }

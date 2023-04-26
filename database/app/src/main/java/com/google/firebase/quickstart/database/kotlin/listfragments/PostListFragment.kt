@@ -42,7 +42,7 @@ abstract class PostListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val rootView = inflater.inflate(R.layout.fragment_all_posts, container, false)
@@ -70,8 +70,8 @@ abstract class PostListFragment : Fragment() {
         val postsQuery = getQuery(database)
 
         val options = FirebaseRecyclerOptions.Builder<Post>()
-                .setQuery(postsQuery, Post::class.java)
-                .build()
+            .setQuery(postsQuery, Post::class.java)
+            .build()
 
         adapter = object : FirebaseRecyclerAdapter<Post, PostViewHolder>(options) {
 
@@ -115,7 +115,7 @@ abstract class PostListFragment : Fragment() {
         postRef.runTransaction(object : Transaction.Handler {
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
                 val p = mutableData.getValue(Post::class.java)
-                        ?: return Transaction.success(mutableData)
+                    ?: return Transaction.success(mutableData)
 
                 if (p.stars.containsKey(uid)) {
                     // Unstar the post and remove self from stars
@@ -135,7 +135,7 @@ abstract class PostListFragment : Fragment() {
             override fun onComplete(
                 databaseError: DatabaseError?,
                 committed: Boolean,
-                currentData: DataSnapshot?
+                currentData: DataSnapshot?,
             ) {
                 // Transaction completed
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError!!)

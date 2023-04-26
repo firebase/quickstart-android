@@ -2,8 +2,6 @@ package com.google.firebase.quickstart.fcm.kotlin
 
 import android.content.Context
 import android.util.Log
-import androidx.work.ListenableWorker
-
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 

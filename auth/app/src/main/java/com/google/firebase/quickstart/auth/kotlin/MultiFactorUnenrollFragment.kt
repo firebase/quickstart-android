@@ -30,8 +30,12 @@ class MultiFactorUnenrollFragment : BaseFragment() {
 
         // Users are currently limited to having 5 second factors
         val phoneFactorButtonList = listOf(
-                binding.phoneFactor1, binding.phoneFactor2, binding.phoneFactor3,
-                binding.phoneFactor4, binding.phoneFactor5)
+            binding.phoneFactor1,
+            binding.phoneFactor2,
+            binding.phoneFactor3,
+            binding.phoneFactor4,
+            binding.phoneFactor5,
+        )
         for (button in phoneFactorButtonList) {
             button.visibility = View.GONE
         }
@@ -45,21 +49,26 @@ class MultiFactorUnenrollFragment : BaseFragment() {
             button.isClickable = true
             button.setOnClickListener {
                 Firebase.auth
-                        .currentUser!!
-                        .multiFactor
-                        .unenroll(phoneMultiFactorInfo)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Toast.makeText(context,
-                                        "Successfully unenrolled!", Toast.LENGTH_SHORT).show()
-                                findNavController().popBackStack()
-                            } else {
-                                Toast.makeText(context,
-                                        "Unable to unenroll second factor. ${task.exception}",
-                                        Toast.LENGTH_SHORT)
-                                        .show()
-                            }
+                    .currentUser!!
+                    .multiFactor
+                    .unenroll(phoneMultiFactorInfo)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(
+                                context,
+                                "Successfully unenrolled!",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                            findNavController().popBackStack()
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Unable to unenroll second factor. ${task.exception}",
+                                Toast.LENGTH_SHORT,
+                            )
+                                .show()
                         }
+                    }
             }
         }
     }
