@@ -39,10 +39,7 @@ open class RestaurantAdapter(query: Query, private val listener: OnRestaurantSel
             listener: OnRestaurantSelectedListener?
         ) {
 
-            val restaurant = snapshot.toObject<Restaurant>()
-            if (restaurant == null) {
-                return
-            }
+            val restaurant = snapshot.toObject<Restaurant>() ?: return
 
             val resources = binding.root.resources
 
