@@ -170,7 +170,7 @@ class RestaurantDetailFragment : Fragment(),
         // In a transaction, add the new rating and update the aggregate totals
         return firestore.runTransaction { transaction ->
             val restaurant = transaction.get(restaurantRef).toObject<Restaurant>()
-                ?: throw Exception("Resraurant not found at ${restaurantRef.path}")
+                ?: throw Exception("Restaurant not found at ${restaurantRef.path}")
 
             // Compute new number of ratings
             val newNumRatings = restaurant.numRatings + 1
