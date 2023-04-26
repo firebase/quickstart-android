@@ -4,6 +4,7 @@ import com.google.firebase.example.fireeats.kotlin.model.Rating
 import java.util.ArrayList
 import java.util.Random
 import java.util.UUID
+import kotlin.math.floor
 
 /**
  * Utilities for Ratings.
@@ -36,7 +37,7 @@ object RatingUtil {
             val random = Random()
 
             val score = random.nextDouble() * 5.0
-            val text = REVIEW_CONTENTS[Math.floor(score).toInt()]
+            val text = REVIEW_CONTENTS[floor(score).toInt()]
 
             rating.userId = UUID.randomUUID().toString()
             rating.userName = "Random User"
