@@ -71,11 +71,11 @@ object RestaurantUtil {
      * Get price represented as dollar signs.
      */
     fun getPriceString(priceInt: Int): String {
-        when (priceInt) {
-            1 -> return "$"
-            2 -> return "$$"
-            3 -> return "$$$"
-            else -> return "$$$"
+        return when (priceInt) {
+            1 -> "$"
+            2 -> "$$"
+            3 -> "$$$"
+            else -> "$$$"
         }
     }
 
