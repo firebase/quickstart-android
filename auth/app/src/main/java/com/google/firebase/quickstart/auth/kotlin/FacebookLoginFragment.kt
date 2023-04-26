@@ -51,22 +51,25 @@ class FacebookLoginFragment : BaseFragment() {
         callbackManager = CallbackManager.Factory.create()
 
         binding.buttonFacebookLogin.setPermissions("email", "public_profile")
-        binding.buttonFacebookLogin.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(loginResult: LoginResult) {
-                Log.d(TAG, "facebook:onSuccess:$loginResult")
-                handleFacebookAccessToken(loginResult.accessToken)
-            }
+        binding.buttonFacebookLogin.registerCallback(
+            callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(loginResult: LoginResult) {
+                    Log.d(TAG, "facebook:onSuccess:$loginResult")
+                    handleFacebookAccessToken(loginResult.accessToken)
+                }
 
-            override fun onCancel() {
-                Log.d(TAG, "facebook:onCancel")
-                updateUI(null)
-            }
+                override fun onCancel() {
+                    Log.d(TAG, "facebook:onCancel")
+                    updateUI(null)
+                }
 
-            override fun onError(error: FacebookException) {
-                Log.d(TAG, "facebook:onError", error)
-                updateUI(null)
-            }
-        })
+                override fun onError(error: FacebookException) {
+                    Log.d(TAG, "facebook:onError", error)
+                    updateUI(null)
+                }
+            },
+        )
     }
 
     override fun onStart() {
@@ -82,22 +85,25 @@ class FacebookLoginFragment : BaseFragment() {
 
         val credential = FacebookAuthProvider.getCredential(token.token)
         auth.signInWithCredential(credential)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success")
-                        val user = auth.currentUser
-                        updateUI(user)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        Toast.makeText(context, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show()
-                        updateUI(null)
-                    }
-
-                    hideProgressBar()
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
+                    val user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    Toast.makeText(
+                        context,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    updateUI(null)
                 }
+
+                hideProgressBar()
+            }
     }
 
     fun signOut() {

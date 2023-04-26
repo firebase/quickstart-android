@@ -16,10 +16,18 @@ object RestaurantUtil {
     private const val MAX_IMAGE_NUM = 22
 
     private val NAME_FIRST_WORDS = arrayOf(
-            "Foo", "Bar", "Baz", "Qux", "Fire", "Sam's", "World Famous", "Google", "The Best")
+        "Foo", "Bar", "Baz", "Qux", "Fire", "Sam's", "World Famous", "Google", "The Best",
+    )
 
     private val NAME_SECOND_WORDS = arrayOf(
-            "Restaurant", "Cafe", "Spot", "Eatin' Place", "Eatery", "Drive Thru", "Diner")
+        "Restaurant",
+        "Cafe",
+        "Spot",
+        "Eatin' Place",
+        "Eatery",
+        "Drive Thru",
+        "Diner",
+    )
 
     /**
      * Create a random Restaurant POJO.
@@ -80,8 +88,10 @@ object RestaurantUtil {
     }
 
     private fun getRandomName(random: Random): String {
-        return (getRandomString(NAME_FIRST_WORDS, random) + " " +
-                getRandomString(NAME_SECOND_WORDS, random))
+        return (
+            getRandomString(NAME_FIRST_WORDS, random) + " " +
+                getRandomString(NAME_SECOND_WORDS, random)
+            )
     }
 
     private fun getRandomString(array: Array<String>, random: Random): String {

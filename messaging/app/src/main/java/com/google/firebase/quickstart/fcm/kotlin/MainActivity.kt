@@ -20,14 +20,17 @@ import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
+        ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
             Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT)
                 .show()
         } else {
-            Toast.makeText(this, "FCM can't post notifications without POST_NOTIFICATIONS permission",
-                Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "FCM can't post notifications without POST_NOTIFICATIONS permission",
+                Toast.LENGTH_LONG,
+            ).show()
         }
     }
 
@@ -41,8 +44,13 @@ class MainActivity : AppCompatActivity() {
             val channelId = getString(R.string.default_notification_channel_id)
             val channelName = getString(R.string.default_notification_channel_name)
             val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager?.createNotificationChannel(NotificationChannel(channelId,
-                    channelName, NotificationManager.IMPORTANCE_LOW))
+            notificationManager?.createNotificationChannel(
+                NotificationChannel(
+                    channelId,
+                    channelName,
+                    NotificationManager.IMPORTANCE_LOW,
+                ),
+            )
         }
 
         // If a notification message is tapped, any data accompanying the notification
@@ -56,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         // [START handle_data_extras]
         intent.extras?.let {
             for (key in it.keySet()) {
-                val value = intent.extras?.get(key)
+                val value = intent.extras?.getString(key)
                 Log.d(TAG, "Key: $key Value: $value")
             }
         }
@@ -66,34 +74,36 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "Subscribing to weather topic")
             // [START subscribe_topics]
             Firebase.messaging.subscribeToTopic("weather")
-                    .addOnCompleteListener { task ->
-                        var msg = getString(R.string.msg_subscribed)
-                        if (!task.isSuccessful) {
-                            msg = getString(R.string.msg_subscribe_failed)
-                        }
-                        Log.d(TAG, msg)
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                .addOnCompleteListener { task ->
+                    var msg = getString(R.string.msg_subscribed)
+                    if (!task.isSuccessful) {
+                        msg = getString(R.string.msg_subscribe_failed)
                     }
+                    Log.d(TAG, msg)
+                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                }
             // [END subscribe_topics]
         }
 
         binding.logTokenButton.setOnClickListener {
             // Get token
             // [START log_reg_token]
-            Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
+            Firebase.messaging.token.addOnCompleteListener(
+                OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                        return@OnCompleteListener
+                    }
 
-                // Get new FCM registration token
-                val token = task.result
+                    // Get new FCM registration token
+                    val token = task.result
 
-                // Log and toast
-                val msg = getString(R.string.msg_token_fmt, token)
-                Log.d(TAG, msg)
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-            })
+                    // Log and toast
+                    val msg = getString(R.string.msg_token_fmt, token)
+                    Log.d(TAG, msg)
+                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                },
+            )
             // [END log_reg_token]
         }
 
