@@ -38,11 +38,11 @@ object RestaurantUtil {
 
         // Cities (first elemnt is 'Any')
         var cities = context.resources.getStringArray(R.array.cities)
-        cities = Arrays.copyOfRange(cities, 1, cities.size)
+        cities = cities.copyOfRange(1, cities.size)
 
         // Categories (first element is 'Any')
         var categories = context.resources.getStringArray(R.array.categories)
-        categories = Arrays.copyOfRange(categories, 1, categories.size)
+        categories = categories.copyOfRange(1, categories.size)
 
         val prices = intArrayOf(1, 2, 3)
 
@@ -79,11 +79,11 @@ object RestaurantUtil {
      * Get price represented as dollar signs.
      */
     fun getPriceString(priceInt: Int): String {
-        when (priceInt) {
-            1 -> return "$"
-            2 -> return "$$"
-            3 -> return "$$$"
-            else -> return "$$$"
+        return when (priceInt) {
+            1 -> "$"
+            2 -> "$$"
+            3 -> "$$$"
+            else -> "$$$"
         }
     }
 
