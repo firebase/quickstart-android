@@ -43,8 +43,9 @@ class MyUploadService : MyBaseTaskService() {
             // Make sure we have permission to read the data
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 contentResolver.takePersistableUriPermission(
-                        fileUri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    fileUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION,
+                )
             }
 
             uploadFromUri(fileUri)
@@ -66,15 +67,17 @@ class MyUploadService : MyBaseTaskService() {
         // Get a reference to store file at photos/<FILENAME>.jpg
         fileUri.lastPathSegment?.let {
             val photoRef = storageRef.child("photos")
-                    .child(it)
+                .child(it)
             // [END get_child_ref]
 
             // Upload file to Firebase Storage
             Log.d(TAG, "uploadFromUri:dst:" + photoRef.path)
             photoRef.putFile(fileUri).addOnProgressListener { (bytesTransferred, totalByteCount) ->
-                showProgressNotification(getString(R.string.progress_uploading),
-                        bytesTransferred,
-                        totalByteCount)
+                showProgressNotification(
+                    getString(R.string.progress_uploading),
+                    bytesTransferred,
+                    totalByteCount,
+                )
             }.continueWithTask { task ->
                 // Forward any exceptions
                 if (!task.isSuccessful) {
@@ -118,10 +121,10 @@ class MyUploadService : MyBaseTaskService() {
         val action = if (success) UPLOAD_COMPLETED else UPLOAD_ERROR
 
         val broadcast = Intent(action)
-                .putExtra(EXTRA_DOWNLOAD_URL, downloadUrl)
-                .putExtra(EXTRA_FILE_URI, fileUri)
+            .putExtra(EXTRA_DOWNLOAD_URL, downloadUrl)
+            .putExtra(EXTRA_FILE_URI, fileUri)
         return LocalBroadcastManager.getInstance(applicationContext)
-                .sendBroadcast(broadcast)
+            .sendBroadcast(broadcast)
     }
 
     /**
@@ -133,9 +136,9 @@ class MyUploadService : MyBaseTaskService() {
 
         // Make Intent to MainActivity
         val intent = Intent(this, MainActivity::class.java)
-                .putExtra(EXTRA_DOWNLOAD_URL, downloadUrl)
-                .putExtra(EXTRA_FILE_URI, fileUri)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            .putExtra(EXTRA_DOWNLOAD_URL, downloadUrl)
+            .putExtra(EXTRA_FILE_URI, fileUri)
+            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
         val success = downloadUrl != null
         val caption = if (success) getString(R.string.upload_success) else getString(R.string.upload_failure)

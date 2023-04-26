@@ -43,16 +43,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var cameraIntent: ActivityResultLauncher<Array<String>>;
+    private lateinit var cameraIntent: ActivityResultLauncher<Array<String>>
     private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
+        ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
-            Toast.makeText(this, "Notifications permission granted",Toast.LENGTH_SHORT)
+            Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT)
                 .show()
         } else {
-            Toast.makeText(this, "Can't post notifications without POST_NOTIFICATIONS permission",
-                Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                this,
+                "Can't post notifications without POST_NOTIFICATIONS permission",
+                Toast.LENGTH_LONG,
+            ).show()
         }
     }
 
@@ -91,16 +94,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         val numBytes = intent.getLongExtra(MyDownloadService.EXTRA_BYTES_DOWNLOADED, 0)
 
                         // Alert success
-                        showMessageDialog(getString(R.string.success), String.format(Locale.getDefault(),
+                        showMessageDialog(
+                            getString(R.string.success),
+                            String.format(
+                                Locale.getDefault(),
                                 "%d bytes downloaded from %s",
                                 numBytes,
-                                intent.getStringExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH)))
+                                intent.getStringExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH),
+                            ),
+                        )
                     }
                     MyDownloadService.DOWNLOAD_ERROR ->
                         // Alert failure
-                        showMessageDialog("Error", String.format(Locale.getDefault(),
+                        showMessageDialog(
+                            "Error",
+                            String.format(
+                                Locale.getDefault(),
                                 "Failed to download from %s",
-                                intent.getStringExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH)))
+                                intent.getStringExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH),
+                            ),
+                        )
                     MyUploadService.UPLOAD_COMPLETED, MyUploadService.UPLOAD_ERROR -> onUploadResultIntent(intent)
                 }
             }
@@ -160,9 +173,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         // Start MyUploadService to upload the file, so that the file is uploaded
         // even if this Activity is killed or put in the background
-        startService(Intent(this, MyUploadService::class.java)
+        startService(
+            Intent(this, MyUploadService::class.java)
                 .putExtra(MyUploadService.EXTRA_FILE_URI, uploadUri)
-                .setAction(MyUploadService.ACTION_UPLOAD))
+                .setAction(MyUploadService.ACTION_UPLOAD),
+        )
 
         // Show loading spinner
         showProgressBar(getString(R.string.progress_uploading))
@@ -175,8 +190,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             // Kick off MyDownloadService to download the file
             val intent = Intent(this, MyDownloadService::class.java)
-                    .putExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH, path)
-                    .setAction(MyDownloadService.ACTION_DOWNLOAD)
+                .putExtra(MyDownloadService.EXTRA_DOWNLOAD_PATH, path)
+                .setAction(MyDownloadService.ACTION_DOWNLOAD)
             startService(intent)
 
             // Show loading spinner
@@ -195,16 +210,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // Sign in anonymously. Authentication is required to read or write from Firebase Storage.
         showProgressBar(getString(R.string.progress_auth))
         auth.signInAnonymously()
-                .addOnSuccessListener(this) { authResult ->
-                    Log.d(TAG, "signInAnonymously:SUCCESS")
-                    hideProgressBar()
-                    updateUI(authResult.user)
-                }
-                .addOnFailureListener(this) { exception ->
-                    Log.e(TAG, "signInAnonymously:FAILURE", exception)
-                    hideProgressBar()
-                    updateUI(null)
-                }
+            .addOnSuccessListener(this) { authResult ->
+                Log.d(TAG, "signInAnonymously:SUCCESS")
+                hideProgressBar()
+                updateUI(authResult.user)
+            }
+            .addOnFailureListener(this) { exception ->
+                Log.e(TAG, "signInAnonymously:FAILURE", exception)
+                hideProgressBar()
+                updateUI(null)
+            }
     }
 
     private fun onUploadResultIntent(intent: Intent) {
@@ -239,9 +254,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun showMessageDialog(title: String, message: String) {
         val ad = AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .create()
+            .setTitle(title)
+            .setMessage(message)
+            .create()
         ad.show()
     }
 

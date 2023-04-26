@@ -11,15 +11,17 @@ import com.android.tools.lint.detector.api.Severity
 import org.jetbrains.uast.UField
 
 val ISSUE_HUNGARIAN_NOTATION = Issue.create(
-        "HungarianNotation",
-        "Using mHungarianNotation in a Kotlin file!",
-        "mFriends don’t let sFriends use Hungarian notation! -Jake Wharton",
-        Category.MESSAGES,
-        9,
-        Severity.ERROR,
-        Implementation(
-                HungarianNotationDetector::class.java,
-                Scope.JAVA_FILE_SCOPE))
+    "HungarianNotation",
+    "Using mHungarianNotation in a Kotlin file!",
+    "mFriends don’t let sFriends use Hungarian notation! -Jake Wharton",
+    Category.MESSAGES,
+    9,
+    Severity.ERROR,
+    Implementation(
+        HungarianNotationDetector::class.java,
+        Scope.JAVA_FILE_SCOPE,
+    ),
+)
 
 class HungarianNotationDetector : Detector(), Detector.UastScanner {
 

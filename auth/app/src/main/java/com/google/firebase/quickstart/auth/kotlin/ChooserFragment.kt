@@ -33,9 +33,9 @@ class ChooserFragment : Fragment() {
         get() = _binding!!
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentChooserBinding.inflate(inflater, container, false)
         return binding.root
@@ -57,7 +57,7 @@ class ChooserFragment : Fragment() {
 
     class MyArrayAdapter(
         private val ctx: Context,
-        resource: Int
+        resource: Int,
     ) : ArrayAdapter<String>(ctx, resource, CLASS_NAMES) {
         private var descriptionIds: IntArray? = null
 
@@ -88,40 +88,40 @@ class ChooserFragment : Fragment() {
 
     companion object {
         private val NAV_ACTIONS = arrayOf(
-                R.id.action_google,
-                R.id.action_facebook,
-                R.id.action_emailpassword,
-                R.id.action_passwordless,
-                R.id.action_phoneauth,
-                R.id.action_anonymousauth,
-                R.id.action_firebaseui,
-                R.id.action_customauth,
-                R.id.action_genericidp,
-                R.id.action_mfa
+            R.id.action_google,
+            R.id.action_facebook,
+            R.id.action_emailpassword,
+            R.id.action_passwordless,
+            R.id.action_phoneauth,
+            R.id.action_anonymousauth,
+            R.id.action_firebaseui,
+            R.id.action_customauth,
+            R.id.action_genericidp,
+            R.id.action_mfa,
         )
         private val CLASS_NAMES = arrayOf(
-                "GoogleSignInFragment",
-                "FacebookLoginFragment",
-                "EmailPasswordFragment",
-                "PasswordlessActivity",
-                "PhoneAuthFragment",
-                "AnonymousAuthFragment",
-                "FirebaseUIFragment",
-                "CustomAuthFragment",
-                "GenericIdpFragment",
-                "MultiFactorFragment"
+            "GoogleSignInFragment",
+            "FacebookLoginFragment",
+            "EmailPasswordFragment",
+            "PasswordlessActivity",
+            "PhoneAuthFragment",
+            "AnonymousAuthFragment",
+            "FirebaseUIFragment",
+            "CustomAuthFragment",
+            "GenericIdpFragment",
+            "MultiFactorFragment",
         )
         private val DESCRIPTION_IDS = intArrayOf(
-                R.string.desc_google_sign_in,
-                R.string.desc_facebook_login,
-                R.string.desc_emailpassword,
-                R.string.desc_passwordless,
-                R.string.desc_phone_auth,
-                R.string.desc_anonymous_auth,
-                R.string.desc_firebase_ui,
-                R.string.desc_custom_auth,
-                R.string.desc_generic_idp,
-                R.string.desc_multi_factor
+            R.string.desc_google_sign_in,
+            R.string.desc_facebook_login,
+            R.string.desc_emailpassword,
+            R.string.desc_passwordless,
+            R.string.desc_phone_auth,
+            R.string.desc_anonymous_auth,
+            R.string.desc_firebase_ui,
+            R.string.desc_custom_auth,
+            R.string.desc_generic_idp,
+            R.string.desc_multi_factor,
         )
     }
 }

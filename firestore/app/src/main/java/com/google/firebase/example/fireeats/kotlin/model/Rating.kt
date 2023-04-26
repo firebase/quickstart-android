@@ -13,7 +13,7 @@ data class Rating(
     var userName: String? = null,
     var rating: Double = 0.toDouble(),
     var text: String? = null,
-    @ServerTimestamp var timestamp: Date? = null
+    @ServerTimestamp var timestamp: Date? = null,
 ) {
 
     constructor(user: FirebaseUser, rating: Double, text: String) : this() {

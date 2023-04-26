@@ -1,7 +1,7 @@
 package com.google.firebase.example.fireeats.kotlin.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
@@ -19,8 +19,8 @@ import java.util.ArrayList
  * many times as the user scrolls.
  */
 abstract class FirestoreAdapter<VH : RecyclerView.ViewHolder>(private var query: Query?) :
-        RecyclerView.Adapter<VH>(),
-        EventListener<QuerySnapshot> {
+    RecyclerView.Adapter<VH>(),
+    EventListener<QuerySnapshot> {
 
     private var registration: ListenerRegistration? = null
 

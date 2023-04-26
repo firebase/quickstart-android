@@ -65,17 +65,20 @@ class SignInFragment : BaseFragment() {
         val password = binding.fieldPassword.text.toString()
 
         auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    Log.d(TAG, "signIn:onComplete:" + task.isSuccessful)
-                    hideProgressBar()
+            .addOnCompleteListener(requireActivity()) { task ->
+                Log.d(TAG, "signIn:onComplete:" + task.isSuccessful)
+                hideProgressBar()
 
-                    if (task.isSuccessful) {
-                        onAuthSuccess(task.result?.user!!)
-                    } else {
-                        Toast.makeText(context, "Sign In Failed",
-                                Toast.LENGTH_SHORT).show()
-                    }
+                if (task.isSuccessful) {
+                    onAuthSuccess(task.result?.user!!)
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Sign In Failed",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
+            }
     }
 
     private fun signUp() {
@@ -89,17 +92,20 @@ class SignInFragment : BaseFragment() {
         val password = binding.fieldPassword.text.toString()
 
         auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    Log.d(TAG, "createUser:onComplete:" + task.isSuccessful)
-                    hideProgressBar()
+            .addOnCompleteListener(requireActivity()) { task ->
+                Log.d(TAG, "createUser:onComplete:" + task.isSuccessful)
+                hideProgressBar()
 
-                    if (task.isSuccessful) {
-                        onAuthSuccess(task.result?.user!!)
-                    } else {
-                        Toast.makeText(context, "Sign Up Failed",
-                                Toast.LENGTH_SHORT).show()
-                    }
+                if (task.isSuccessful) {
+                    onAuthSuccess(task.result?.user!!)
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Sign Up Failed",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
+            }
     }
 
     private fun onAuthSuccess(user: FirebaseUser) {
