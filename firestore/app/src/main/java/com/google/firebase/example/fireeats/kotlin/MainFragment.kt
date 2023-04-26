@@ -16,6 +16,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.auth.AuthUI
@@ -61,7 +62,7 @@ class MainFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
 
         // View model
-        viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
+        viewModel = ViewModelProvider(this).get<MainActivityViewModel>()
 
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true)
