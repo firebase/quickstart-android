@@ -61,7 +61,7 @@ class MainFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
 
         // View model
-        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true)
