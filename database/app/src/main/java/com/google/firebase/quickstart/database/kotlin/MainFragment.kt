@@ -42,9 +42,10 @@ class MainFragment : Fragment(), MenuProvider {
         // Create the adapter that will return a fragment for each section
         pagerAdapter = object : FragmentStateAdapter(parentFragmentManager, viewLifecycleOwner.lifecycle) {
             private val fragments = arrayOf<Fragment>(
-                    RecentPostsFragment(),
-                    MyPostsFragment(),
-                    MyTopPostsFragment())
+                RecentPostsFragment(),
+                MyPostsFragment(),
+                MyTopPostsFragment(),
+            )
 
             override fun createFragment(position: Int) = fragments[position]
 
@@ -55,7 +56,7 @@ class MainFragment : Fragment(), MenuProvider {
         with(binding) {
             container.adapter = pagerAdapter
             TabLayoutMediator(tabs, container) { tab, position ->
-                tab.text = when(position) {
+                tab.text = when (position) {
                     0 -> getString(R.string.heading_recent)
                     1 -> getString(R.string.heading_my_posts)
                     else -> getString(R.string.heading_my_top_posts)

@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity() {
 
         // [START add_config_update_listener]
         remoteConfig.addOnConfigUpdateListener(object : ConfigUpdateListener {
-            override fun onUpdate(configUpdate : ConfigUpdate) {
-                Log.d(TAG, "Updated keys: " + configUpdate.updatedKeys);
+            override fun onUpdate(configUpdate: ConfigUpdate) {
+                Log.d(TAG, "Updated keys: " + configUpdate.updatedKeys)
 
                 if (configUpdate.updatedKeys.contains("welcome_message")) {
                     remoteConfig.activate().addOnCompleteListener {
@@ -79,18 +79,24 @@ class MainActivity : AppCompatActivity() {
 
         // [START fetch_config_with_callback]
         remoteConfig.fetchAndActivate()
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val updated = task.result
-                        Log.d(TAG, "Config params updated: $updated")
-                        Toast.makeText(this, "Fetch and activate succeeded",
-                                Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(this, "Fetch failed",
-                                Toast.LENGTH_SHORT).show()
-                    }
-                    displayWelcomeMessage()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val updated = task.result
+                    Log.d(TAG, "Config params updated: $updated")
+                    Toast.makeText(
+                        this,
+                        "Fetch and activate succeeded",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Fetch failed",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
+                displayWelcomeMessage()
+            }
         // [END fetch_config_with_callback]
     }
 

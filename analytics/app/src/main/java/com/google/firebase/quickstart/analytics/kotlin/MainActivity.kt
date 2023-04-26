@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.analytics.kotlin
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -22,10 +21,8 @@ import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.analytics.R
 import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding
-import com.google.firebase.quickstart.analytics.java.MainActivity
 import com.google.firebase.quickstart.analytics.kotlin.MainActivity.Companion.IMAGE_INFOS
 import java.util.Locale
-
 
 /**
  * Activity which displays numerous background images that may be viewed. These background images
@@ -40,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             ImageInfo(R.drawable.favorite, R.string.pattern1_title, R.string.pattern1_id),
             ImageInfo(R.drawable.flash, R.string.pattern2_title, R.string.pattern2_id),
             ImageInfo(R.drawable.face, R.string.pattern3_title, R.string.pattern3_id),
-            ImageInfo(R.drawable.whitebalance, R.string.pattern4_title, R.string.pattern4_id)
+            ImageInfo(R.drawable.whitebalance, R.string.pattern4_title, R.string.pattern4_id),
         )
     }
 
@@ -114,12 +111,12 @@ class MainActivity : AppCompatActivity() {
     private fun askFavoriteFood() {
         val choices = resources.getStringArray(R.array.food_items)
         val ad = AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(R.string.food_dialog_title)
-                .setItems(choices) { _, which ->
-                    val food = choices[which]
-                    setUserFavoriteFood(food)
-                }.create()
+            .setCancelable(false)
+            .setTitle(R.string.food_dialog_title)
+            .setItems(choices) { _, which ->
+                val food = choices[which]
+                setUserFavoriteFood(food)
+            }.create()
 
         ad.show()
     }
@@ -130,7 +127,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun getUserFavoriteFood(): String? {
         return PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(KEY_FAVORITE_FOOD, null)
+            .getString(KEY_FAVORITE_FOOD, null)
     }
 
     /**
@@ -141,8 +138,8 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "setFavoriteFood: $food")
 
         PreferenceManager.getDefaultSharedPreferences(this).edit()
-                .putString(KEY_FAVORITE_FOOD, food)
-                .apply()
+            .putString(KEY_FAVORITE_FOOD, food)
+            .apply()
 
         // [START user_property]
         firebaseAnalytics.setUserProperty("favorite_food", food)
@@ -238,7 +235,7 @@ class MainActivity : AppCompatActivity() {
     inner class ImagePagerAdapter(
         fm: FragmentManager,
         private val infos: Array<ImageInfo>,
-        lifecyle: Lifecycle
+        lifecyle: Lifecycle,
     ) : FragmentStateAdapter(fm, lifecyle) {
 
         fun getPageTitle(position: Int): CharSequence? {

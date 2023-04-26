@@ -32,16 +32,16 @@ class KotlinMainActivity : AppCompatActivity() {
         binding.eventTriggerButton.setOnClickListener { view ->
             firebaseAnalytics.logEvent("engagement_party", Bundle())
             Snackbar.make(view, "'engagement_party' event triggered!", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null)
-                    .show()
+                .setAction("Action", null)
+                .show()
         }
 
         // Get and display/log the installation id
         Firebase.installations.getId()
-                .addOnSuccessListener { id ->
-                    binding.installationIdText.text = getString(R.string.installation_id_fmt, id)
-                    Log.d(TAG, "Installation ID: $id")
-                }
+            .addOnSuccessListener { id ->
+                binding.installationIdText.text = getString(R.string.installation_id_fmt, id)
+                Log.d(TAG, "Installation ID: $id")
+            }
     }
 
     companion object {

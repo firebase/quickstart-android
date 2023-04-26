@@ -2,10 +2,10 @@ package com.google.firebase.quickstart.auth.kotlin
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthActionCodeException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -104,8 +104,10 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
     private fun sendSignInLink(email: String) {
         val settings = actionCodeSettings {
             setAndroidPackageName(
-                    packageName,
-                    false, null/* minimum app version */)/* install if not available? */
+                packageName,
+                false,
+                null, // minimum app version
+            ) // install if not available?
             handleCodeInApp = true
             url = "https://kotlin.auth.example.com/emailSignInLink"
         }
@@ -114,25 +116,25 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         showProgressBar()
 
         auth.sendSignInLinkToEmail(email, settings)
-                .addOnCompleteListener { task ->
-                    hideProgressBar()
+            .addOnCompleteListener { task ->
+                hideProgressBar()
 
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "Link sent")
-                        showSnackbar("Sign-in link sent!")
+                if (task.isSuccessful) {
+                    Log.d(TAG, "Link sent")
+                    showSnackbar("Sign-in link sent!")
 
-                        pendingEmail = email
-                        binding.status.setText(R.string.status_email_sent)
-                    } else {
-                        val e = task.exception
-                        Log.w(TAG, "Could not send link", e)
-                        showSnackbar("Failed to send link.")
+                    pendingEmail = email
+                    binding.status.setText(R.string.status_email_sent)
+                } else {
+                    val e = task.exception
+                    Log.w(TAG, "Could not send link", e)
+                    showSnackbar("Failed to send link.")
 
-                        if (e is FirebaseAuthInvalidCredentialsException) {
-                            binding.fieldEmail.error = "Invalid email address."
-                        }
+                    if (e is FirebaseAuthInvalidCredentialsException) {
+                        binding.fieldEmail.error = "Invalid email address."
                     }
                 }
+            }
     }
 
     /**
@@ -146,22 +148,22 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
         showProgressBar()
 
         auth.signInWithEmailLink(email, link)
-                .addOnCompleteListener { task ->
-                    hideProgressBar()
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "signInWithEmailLink:success")
+            .addOnCompleteListener { task ->
+                hideProgressBar()
+                if (task.isSuccessful) {
+                    Log.d(TAG, "signInWithEmailLink:success")
 
-                        binding.fieldEmail.text = null
-                        updateUI(task.result?.user)
-                    } else {
-                        Log.w(TAG, "signInWithEmailLink:failure", task.exception)
-                        updateUI(null)
+                    binding.fieldEmail.text = null
+                    updateUI(task.result?.user)
+                } else {
+                    Log.w(TAG, "signInWithEmailLink:failure", task.exception)
+                    updateUI(null)
 
-                        if (task.exception is FirebaseAuthActionCodeException) {
-                            showSnackbar("Invalid or expired sign-in link.")
-                        }
+                    if (task.exception is FirebaseAuthActionCodeException) {
+                        showSnackbar("Invalid or expired sign-in link.")
                     }
                 }
+            }
     }
 
     private fun onSendLinkClicked() {
@@ -193,8 +195,11 @@ class PasswordlessActivity : BaseActivity(), View.OnClickListener {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            binding.status.text = getString(R.string.passwordless_status_fmt,
-                    user.email, user.isEmailVerified)
+            binding.status.text = getString(
+                R.string.passwordless_status_fmt,
+                user.email,
+                user.isEmailVerified,
+            )
             binding.passwordlessButtons.visibility = View.GONE
             binding.signOutButton.visibility = View.VISIBLE
         } else {

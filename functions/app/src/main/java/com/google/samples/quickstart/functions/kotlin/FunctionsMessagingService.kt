@@ -3,9 +3,9 @@ package com.google.samples.quickstart.functions.kotlin
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.samples.quickstart.functions.R
@@ -34,10 +34,10 @@ class FunctionsMessagingService : FirebaseMessagingService() {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
             val manager = NotificationManagerCompat.from(this)
             val notification = NotificationCompat.Builder(this, "Messages")
-                    .setContentText(remoteMessage.data["text"])
-                    .setContentTitle("New message")
-                    .setSmallIcon(R.drawable.ic_stat_notification)
-                    .build()
+                .setContentText(remoteMessage.data["text"])
+                .setContentTitle("New message")
+                .setSmallIcon(R.drawable.ic_stat_notification)
+                .build()
             manager.notify(0, notification)
         }
     }

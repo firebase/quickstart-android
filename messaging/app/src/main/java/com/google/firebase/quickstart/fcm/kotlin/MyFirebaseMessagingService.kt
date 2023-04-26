@@ -42,7 +42,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (remoteMessage.data.isNotEmpty()) {
             Log.d(TAG, "Message data payload: ${remoteMessage.data}")
 
-            if (/* Check if data needs to be processed by long running job */ true) {
+            // Check if data needs to be processed by long running job
+            if (isLongRunningJob()) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
                 scheduleJob()
             } else {
@@ -61,6 +62,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // message, here is where that should be initiated. See sendNotification method below.
     }
     // [END receive_message]
+
+    private fun isLongRunningJob() = true
 
     // [START on_new_token]
     /**
@@ -114,32 +117,40 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      * @param messageBody FCM message body received.
      */
     private fun sendNotification(messageBody: String) {
+        val requestCode = 0
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE,
+        )
 
         val channelId = getString(R.string.default_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                .setContentTitle(getString(R.string.fcm_message))
-                .setContentText(messageBody)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent)
+            .setSmallIcon(R.drawable.ic_stat_ic_notification)
+            .setContentTitle(getString(R.string.fcm_message))
+            .setContentText(messageBody)
+            .setAutoCancel(true)
+            .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT)
+            val channel = NotificationChannel(
+                channelId,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT,
+            )
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        val notificationId = 0
+        notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
     companion object {
