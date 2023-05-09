@@ -14,9 +14,3 @@ dependencies {
     testImplementation("com.android.tools.lint:lint-tests:31.0.0")
     testImplementation("junit:junit:4.13.2")
 }
-
-//jar {
-//    manifest {
-//        attributes("Lint-Registry-v2": "com.firebase.lint.QuickstartIssueRegistry")
-//    }
-//}
