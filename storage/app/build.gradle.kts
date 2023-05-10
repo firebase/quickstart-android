@@ -4,7 +4,6 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("com.google.gms.google-services")
-    id("com.google.firebase.firebase-perf")
 }
 
 tasks {
@@ -12,11 +11,11 @@ tasks {
 }
 
 android {
-    namespace = "com.google.firebase.quickstart.perfmon"
+    namespace = "com.google.firebase.quickstart.firebasestorage"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.google.firebase.quickstart.perfmon"
+        applicationId = "com.google.firebase.quickstart.firebasestorage"
         minSdk = 19
         targetSdk = 33
         versionCode = 1
@@ -24,18 +23,11 @@ android {
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-        }
-        getByName("debug") {
-            //FirebasePerformance {
-                // Set this flag to 'false' to disable @AddTrace annotation processing and
-                // automatic HTTP/S network request monitoring
-                // for a specific build variant at compile time.
-               // instrumentationEnabled = true
-           // }
         }
     }
     compileOptions {
@@ -45,13 +37,9 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
     buildFeatures {
         viewBinding = true
-    }
-    lint {
-        // TODO(thatfiredev): Remove this once
-        //  https://github.com/bumptech/glide/issues/4940 is fixed
-        disable.add("NotificationPermission")
     }
 }
 
@@ -62,18 +50,23 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
 
-    // Firebase Performance Monitoring (Java)
-    implementation("com.google.firebase:firebase-perf")
+    // Cloud Storage for Firebase (Java)
+    implementation("com.google.firebase:firebase-storage")
 
-    // Firebase Performance Monitoring (Kotlin)
-    implementation("com.google.firebase:firebase-perf-ktx")
+    // Cloud Storage for Firebase (Kotlin)
+    implementation("com.google.firebase:firebase-storage-ktx")
 
+    // Firebase Authentication (Java)
+    implementation("com.google.firebase:firebase-auth")
+
+    // Firebase Authentication (Kotlin)
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+    implementation("androidx.activity:activity-ktx:1.7.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-
-    testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.5.2")
 }
