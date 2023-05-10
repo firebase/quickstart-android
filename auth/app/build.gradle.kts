@@ -77,7 +77,7 @@ dependencies {
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
     implementation("com.facebook.android:facebook-login:13.2.0")
-    implementation("androidx.browser:browser:1.0.0")
+    implementation("androidx.browser:browser:1.5.0")
 
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test:rules:1.5.0")
