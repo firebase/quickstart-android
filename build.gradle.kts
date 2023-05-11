@@ -14,67 +14,66 @@ plugins {
 allprojects {
     repositories {
         google()
-        //mavenLocal() must be listed at the top to facilitate testing
         mavenLocal()
         mavenCentral()
     }
 }
 
-//configurations {
-//    ktlint
-//}
+val ktlint by configurations.creating
 
-//dependencies {
-//    ktlint ("com.pinterest:ktlint:0.49.0") {
-//        attributes {
-//            attribute(Bundling.BUNDLING_ATTRIBUTE, getObjects().named(Bundling, Bundling.EXTERNAL))
-//        }
-//    }
-//}
-
-//task("ktlint", type: JavaExec, group: "verification") {
-//    def outputDir = "${project.buildDir}/reports/ktlint/"
-//    def inputFiles = project.fileTree(dir: "src", include: "**/*.kt")
-//    def outputFile = "${outputDir}ktlint-checkstyle-report.xml"
-//
-//    // See:
-//    // https://medium.com/@vanniktech/making-your-gradle-tasks-incremental-7f26e4ef09c3
-//    inputs.files(inputFiles)
-//    outputs.dir(outputDir)
-//
-//    description = "Check Kotlin code style."
-//    classpath = configurations.ktlint
-//    mainClass.set("com.pinterest.ktlint.Main")
-//    args = [
-//        "--format",
-//        "--code-style=android_studio",
-//        "--reporter=plain",
-//        "--reporter=checkstyle,output=${outputFile}",
-//        "**/*.kt",
-//    ]
-//    jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
-//}
-
-fun isNonStable(candidate: ModuleComponentIdentifier): Boolean {
-    return listOf("alpha", "beta", "rc", "snapshot", "-m").any { keyword ->
-        candidate.version.toLowerCase().contains(keyword)
+dependencies {
+    ktlint("com.pinterest:ktlint:0.49.0") {
+        attributes {
+            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+        }
     }
 }
 
-fun isBlackListed(candidate: ModuleComponentIdentifier): Boolean {
+tasks.register<JavaExec>("ktlintCheck") {
+    val outputDir = "${project.buildDir}/reports/ktlint/"
+    val inputFiles = project.fileTree("src").include("**/*.kt")
+    val outputFile = "${outputDir}ktlint-checkstyle-report.xml"
+
+    // See: https://medium.com/@vanniktech/making-your-gradle-tasks-incremental-7f26e4ef09c3
+    inputs.file(inputFiles)
+    outputs.file(outputFile)
+
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Check Kotlin code style"
+    classpath = ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+
+    args(
+        "--format",
+        "--code-style=android_studio",
+        "--reporter=plain",
+        "--reporter=checkstyle,output=${outputFile}",
+        "**/*.kt"
+    )
+
+    jvmArgs("--add-opens=java.base/java.lang=ALL-UNNAMED")
+}
+
+fun isNonStable(candidate: ModuleComponentIdentifier): Boolean {
+    return listOf("alpha", "beta", "rc", "snapshot", "-m").any { keyword ->
+        keyword in candidate.version.lowercase()
+    }
+}
+
+fun isBlockListed(candidate: ModuleComponentIdentifier): Boolean {
     return listOf(
             "androidx.browser:browser",
             "com.facebook.android",
             "com.google.guava",
             "com.github.bumptech.glide"
     ).any { keyword ->
-        candidate.toString().contains(keyword)
+        keyword in candidate.toString().lowercase()
     }
 }
 
 tasks.withType<DependencyUpdatesTask> {
     rejectVersionIf {
-        isNonStable(candidate) || isBlackListed(candidate)
+        isNonStable(candidate) || isBlockListed(candidate)
     }
 }
 
