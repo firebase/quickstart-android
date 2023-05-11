@@ -32,7 +32,7 @@ android {
         }
     }
     packaging {
-        resources.excludes.add("LICENSE.txt")
+        resources.excludes += "LICENSE.txt"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

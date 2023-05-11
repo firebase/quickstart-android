@@ -42,10 +42,10 @@ android {
     }
 
     lint {
-        disable.add("InvalidPackage")
+        disable += "InvalidPackage"
         // TODO(thatfiredev): Remove this once
         //  https://github.com/bumptech/glide/issues/4940 is fixed
-        disable.add("NotificationPermission")
+        disable += "NotificationPermission"
     }
 }
 
