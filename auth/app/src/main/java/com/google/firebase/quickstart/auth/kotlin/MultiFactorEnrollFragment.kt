@@ -52,46 +52,50 @@ class MultiFactorEnrollFragment : BaseFragment() {
                 // Auto-retrieval has also been disabled (timeout is set to 0).
                 // This should never be triggered.
                 throw RuntimeException(
-                        "onVerificationCompleted() triggered with instant-validation and auto-retrieval disabled.")
+                    "onVerificationCompleted() triggered with instant-validation and auto-retrieval disabled.",
+                )
             }
 
             override fun onCodeSent(
                 verificationId: String,
-                token: PhoneAuthProvider.ForceResendingToken
+                token: PhoneAuthProvider.ForceResendingToken,
             ) {
                 Log.d(TAG, "onCodeSent:$verificationId")
                 Toast.makeText(context, "SMS code has been sent", Toast.LENGTH_SHORT)
-                        .show()
+                    .show()
                 lastCodeVerificationId = verificationId
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
                 Log.w(TAG, "onVerificationFailed ", e)
                 Toast.makeText(context, "Verification failed: ${e.message}", Toast.LENGTH_SHORT)
-                        .show()
+                    .show()
             }
         }
         Firebase.auth
-                .currentUser!!
-                .multiFactor
-                .session
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val phoneAuthOptions = PhoneAuthOptions.newBuilder()
-                                .setActivity(requireActivity())
-                                .setPhoneNumber(phoneNumber) // A timeout of 0 disables SMS-auto-retrieval.
-                                .setTimeout(0L, TimeUnit.SECONDS)
-                                .setMultiFactorSession(task.result!!)
-                                .setCallbacks(callbacks) // Disable instant-validation.
-                                .requireSmsValidation(true)
-                                .build()
-                        PhoneAuthProvider.verifyPhoneNumber(phoneAuthOptions)
-                    } else {
-                        Toast.makeText(context,
-                                "Failed to get session: ${task.exception}", Toast.LENGTH_SHORT)
-                                .show()
-                    }
+            .currentUser!!
+            .multiFactor
+            .session
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val phoneAuthOptions = PhoneAuthOptions.newBuilder()
+                        .setActivity(requireActivity())
+                        .setPhoneNumber(phoneNumber) // A timeout of 0 disables SMS-auto-retrieval.
+                        .setTimeout(0L, TimeUnit.SECONDS)
+                        .setMultiFactorSession(task.result!!)
+                        .setCallbacks(callbacks) // Disable instant-validation.
+                        .requireSmsValidation(true)
+                        .build()
+                    PhoneAuthProvider.verifyPhoneNumber(phoneAuthOptions)
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Failed to get session: ${task.exception}",
+                        Toast.LENGTH_SHORT,
+                    )
+                        .show()
                 }
+            }
     }
 
     private fun onClickSignInWithPhoneNumber() {
@@ -105,21 +109,23 @@ class MultiFactorEnrollFragment : BaseFragment() {
 
     private fun enrollWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         Firebase.auth
-                .currentUser!!
-                .multiFactor
-                .enroll(PhoneMultiFactorGenerator.getAssertion(credential), /* displayName= */null)
-                .addOnSuccessListener {
-                    Toast.makeText(context, "MFA enrollment was successful", Toast.LENGTH_LONG)
-                            .show()
-                    findNavController().popBackStack()
-                }
-                .addOnFailureListener { e ->
-                    Log.d(TAG, "MFA failure", e)
-                    Toast.makeText(context,
-                            "MFA enrollment was unsuccessful. $e",
-                            Toast.LENGTH_LONG)
-                            .show()
-                }
+            .currentUser!!
+            .multiFactor
+            .enroll(PhoneMultiFactorGenerator.getAssertion(credential), null)
+            .addOnSuccessListener {
+                Toast.makeText(context, "MFA enrollment was successful", Toast.LENGTH_LONG)
+                    .show()
+                findNavController().popBackStack()
+            }
+            .addOnFailureListener { e ->
+                Log.d(TAG, "MFA failure", e)
+                Toast.makeText(
+                    context,
+                    "MFA enrollment was unsuccessful. $e",
+                    Toast.LENGTH_LONG,
+                )
+                    .show()
+            }
     }
 
     override fun onDestroyView() {

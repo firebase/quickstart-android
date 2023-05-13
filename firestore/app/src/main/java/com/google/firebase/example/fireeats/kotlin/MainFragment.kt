@@ -16,6 +16,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.auth.AuthUI
@@ -38,10 +39,11 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class MainFragment : Fragment(),
-        FilterDialogFragment.FilterListener,
-        RestaurantAdapter.OnRestaurantSelectedListener,
-        MenuProvider {
+class MainFragment :
+    Fragment(),
+    FilterDialogFragment.FilterListener,
+    RestaurantAdapter.OnRestaurantSelectedListener,
+    MenuProvider {
 
     lateinit var firestore: FirebaseFirestore
     lateinit var query: Query
@@ -53,15 +55,15 @@ class MainFragment : Fragment(),
     private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentMainBinding.inflate(inflater, container, false);
-        return binding.root;
+        binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // View model
-        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this).get<MainActivityViewModel>()
 
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true)
@@ -71,8 +73,8 @@ class MainFragment : Fragment(),
 
         // Get ${LIMIT} restaurants
         query = firestore.collection("restaurants")
-                .orderBy("avgRating", Query.Direction.DESCENDING)
-                .limit(LIMIT.toLong())
+            .orderBy("avgRating", Query.Direction.DESCENDING)
+            .limit(LIMIT.toLong())
 
         // RecyclerView
         adapter = object : RestaurantAdapter(query, this@MainFragment) {
@@ -89,8 +91,11 @@ class MainFragment : Fragment(),
 
             override fun onError(e: FirebaseFirestoreException) {
                 // Show a snackbar on errors
-                Snackbar.make(binding.root,
-                        "Error: check logs for info.", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(
+                    binding.root,
+                    "Error: check logs for info.",
+                    Snackbar.LENGTH_LONG,
+                ).show()
             }
         }
 
@@ -214,8 +219,10 @@ class MainFragment : Fragment(),
         adapter.setQuery(query)
 
         // Set header
-        binding.textCurrentSearch.text = HtmlCompat.fromHtml(filters.getSearchDescription(requireContext()),
-                HtmlCompat.FROM_HTML_MODE_LEGACY)
+        binding.textCurrentSearch.text = HtmlCompat.fromHtml(
+            filters.getSearchDescription(requireContext()),
+            HtmlCompat.FROM_HTML_MODE_LEGACY,
+        )
         binding.textCurrentSortBy.text = filters.getOrderDescription(requireContext())
 
         // Save filters
@@ -229,13 +236,13 @@ class MainFragment : Fragment(),
     private fun startSignIn() {
         // Sign in with FirebaseUI
         val signInLauncher = requireActivity().registerForActivityResult(
-            FirebaseAuthUIActivityResultContract()
-        ) { result -> this.onSignInResult(result)}
+            FirebaseAuthUIActivityResultContract(),
+        ) { result -> this.onSignInResult(result) }
 
         val intent = AuthUI.getInstance().createSignInIntentBuilder()
-                .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
-                .setIsSmartLockEnabled(false)
-                .build()
+            .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
+            .setIsSmartLockEnabled(false)
+            .build()
 
         signInLauncher.launch(intent)
         viewModel.isSigningIn = true
@@ -272,11 +279,11 @@ class MainFragment : Fragment(),
 
     private fun showSignInErrorDialog(@StringRes message: Int) {
         val dialog = AlertDialog.Builder(requireContext())
-                .setTitle(R.string.title_sign_in_error)
-                .setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton(R.string.option_retry) { _, _ -> startSignIn() }
-                .setNegativeButton(R.string.option_exit) { _, _ -> requireActivity().finish() }.create()
+            .setTitle(R.string.title_sign_in_error)
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton(R.string.option_retry) { _, _ -> startSignIn() }
+            .setNegativeButton(R.string.option_exit) { _, _ -> requireActivity().finish() }.create()
 
         dialog.show()
     }

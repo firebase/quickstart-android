@@ -56,8 +56,11 @@ class MyDownloadService : MyBaseTaskService() {
 
             while (size != -1) {
                 bytesDownloaded += size.toLong()
-                showProgressNotification(getString(R.string.progress_downloading),
-                        bytesDownloaded, totalBytes)
+                showProgressNotification(
+                    getString(R.string.progress_downloading),
+                    bytesDownloaded,
+                    totalBytes,
+                )
 
                 size = inputStream.read(buffer)
             }
@@ -94,10 +97,10 @@ class MyDownloadService : MyBaseTaskService() {
         val action = if (success) DOWNLOAD_COMPLETED else DOWNLOAD_ERROR
 
         val broadcast = Intent(action)
-                .putExtra(EXTRA_DOWNLOAD_PATH, downloadPath)
-                .putExtra(EXTRA_BYTES_DOWNLOADED, bytesDownloaded)
+            .putExtra(EXTRA_DOWNLOAD_PATH, downloadPath)
+            .putExtra(EXTRA_BYTES_DOWNLOADED, bytesDownloaded)
         return LocalBroadcastManager.getInstance(applicationContext)
-                .sendBroadcast(broadcast)
+            .sendBroadcast(broadcast)
     }
 
     /**
@@ -109,9 +112,9 @@ class MyDownloadService : MyBaseTaskService() {
 
         // Make Intent to MainActivity
         val intent = Intent(this, MainActivity::class.java)
-                .putExtra(EXTRA_DOWNLOAD_PATH, downloadPath)
-                .putExtra(EXTRA_BYTES_DOWNLOADED, bytesDownloaded)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            .putExtra(EXTRA_DOWNLOAD_PATH, downloadPath)
+            .putExtra(EXTRA_BYTES_DOWNLOADED, bytesDownloaded)
+            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
         val success = bytesDownloaded != -1
         val caption = if (success) {

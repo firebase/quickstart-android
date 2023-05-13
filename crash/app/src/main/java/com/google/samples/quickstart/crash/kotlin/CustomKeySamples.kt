@@ -49,8 +49,8 @@ class CustomKeySamples(private val context: Context, private var callback: Netwo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             connectivityManager
-                    .getNetworkCapabilities(connectivityManager.activeNetwork)
-                    ?.let { updateNetworkCapabilityCustomKeys(it) }
+                .getNetworkCapabilities(connectivityManager.activeNetwork)
+                ?.let { updateNetworkCapabilityCustomKeys(it) }
 
             kotlin.synchronized(this) {
                 if (callback == null) {
@@ -74,7 +74,7 @@ class CustomKeySamples(private val context: Context, private var callback: Netwo
      */
     fun stopTrackingNetworkState() {
         val connectivityManager = context
-                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val oldCallback = callback
         kotlin.synchronized(this) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && oldCallback != null) {
@@ -89,8 +89,11 @@ class CustomKeySamples(private val context: Context, private var callback: Netwo
             Firebase.crashlytics.setCustomKeys {
                 key("Network Bandwidth", networkCapabilities.linkDownstreamBandwidthKbps)
                 key("Network Upstream", networkCapabilities.linkUpstreamBandwidthKbps)
-                key("Network Metered", networkCapabilities
-                        .hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED))
+                key(
+                    "Network Metered",
+                    networkCapabilities
+                        .hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_METERED),
+                )
                 // This key is long and not as easy to filter by.
                 key("Network Capabilities", networkCapabilities.toString())
             }
@@ -111,9 +114,10 @@ class CustomKeySamples(private val context: Context, private var callback: Netwo
     @SuppressLint("MissingPermission")
     fun addPhoneStateRequiredNetworkKeys() {
         val telephonyManager = context
-                .getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            .getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
+            != PackageManager.PERMISSION_GRANTED
+        ) {
             return
         }
 
@@ -138,13 +142,13 @@ class CustomKeySamples(private val context: Context, private var callback: Netwo
     val locale: String
         get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context
-                    .resources
-                    .configuration
-                    .locales[0].toString()
+                .resources
+                .configuration
+                .locales[0].toString()
         } else {
             context
-                    .resources
-                    .configuration.locale.toString()
+                .resources
+                .configuration.locale.toString()
         }
 
     /**
@@ -152,16 +156,21 @@ class CustomKeySamples(private val context: Context, private var callback: Netwo
      */
     val density: Float
         get() = context
-                .resources
-                .displayMetrics.density
+            .resources
+            .displayMetrics.density
 
     /**
      * Retrieve the locale information for the app.
      */
     val googlePlayServicesAvailability: String
         get() = if (GoogleApiAvailability
-                        .getInstance()
-                        .isGooglePlayServicesAvailable(context) == 0) "Unavailable" else "Available"
+                .getInstance()
+                .isGooglePlayServicesAvailable(context) == 0
+        ) {
+            "Unavailable"
+        } else {
+            "Available"
+        }
 
     /**
      * Return the underlying kernel version of the Android device.
@@ -191,14 +200,14 @@ class CustomKeySamples(private val context: Context, private var callback: Netwo
         get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             try {
                 val info = context
-                        .packageManager
-                        .getInstallSourceInfo(context.packageName)
+                    .packageManager
+                    .getInstallSourceInfo(context.packageName)
 
                 // This returns all three of the install source, originating source, and initiating
                 // source.
                 "Originating: ${info.originatingPackageName ?: "None"}, " +
-                        "Installing: ${info.installingPackageName ?: "None"}, " +
-                        "Initiating: ${info.initiatingPackageName ?: "None"}"
+                    "Installing: ${info.installingPackageName ?: "None"}, " +
+                    "Initiating: ${info.initiatingPackageName ?: "None"}"
             } catch (e: PackageManager.NameNotFoundException) {
                 "Unknown"
             }
