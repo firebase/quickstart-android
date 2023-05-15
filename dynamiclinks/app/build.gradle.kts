@@ -7,7 +7,7 @@ plugins {
 }
 
 tasks {
-    check.dependsOn("assembleDebugAndroidTest")
+    check.dependsOn("assembleMainFlavorDebugAndroidTest")
 }
 
 android {
