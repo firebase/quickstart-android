@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
+import com.google.firebase.perf.plugin.FirebasePerfExtension
 
 plugins {
     id("com.android.application")
@@ -30,12 +31,12 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
         getByName("debug") {
-            //FirebasePerformance {
-                // Set this flag to 'false' to disable @AddTrace annotation processing and
-                // automatic HTTP/S network request monitoring
-                // for a specific build variant at compile time.
-               // instrumentationEnabled = true
-           // }
+//            configure<FirebasePerfExtension> {
+//                 Set this flag to 'false' to disable @AddTrace annotation processing and
+//                 automatic HTTP/S network request monitoring
+//                 for a specific build variant at compile time.
+//                setInstrumentationEnabled(true)
+//            }
         }
     }
     compileOptions {
