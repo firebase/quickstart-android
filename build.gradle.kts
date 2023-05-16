@@ -35,7 +35,7 @@ tasks.register<JavaExec>("ktlintCheck") {
     val outputFile = "${outputDir}ktlint-checkstyle-report.xml"
 
     // See: https://medium.com/@vanniktech/making-your-gradle-tasks-incremental-7f26e4ef09c3
-    inputs.file(inputFiles)
+    inputs.files(inputFiles)
     outputs.file(outputFile)
 
     group = LifecycleBasePlugin.VERIFICATION_GROUP
