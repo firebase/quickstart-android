@@ -1,14 +1,14 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    id("com.android.application") version "8.0.0" apply false
-    id("com.android.library") version "8.0.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.20" apply false
+    id("com.android.application") version "8.0.1" apply false
+    id("com.android.library") version "8.0.1" apply false
+    id("org.jetbrains.kotlin.android") version "1.8.21" apply false
     id("com.google.gms.google-services") version "4.3.15" apply false
-    id("com.google.firebase.crashlytics") version "2.9.4" apply false
+    id("com.google.firebase.crashlytics") version "2.9.5" apply false
     id("com.google.firebase.firebase-perf") version "1.4.2" apply false
     id("androidx.navigation.safeargs") version "2.5.3" apply false
-    id("com.github.ben-manes.versions") version "0.41.0" apply true
+    id("com.github.ben-manes.versions") version "0.46.0" apply true
 }
 
 allprojects {
@@ -22,7 +22,7 @@ allprojects {
 val ktlint by configurations.creating
 
 dependencies {
-    ktlint("com.pinterest:ktlint:0.49.0") {
+    ktlint("com.pinterest:ktlint:0.49.1") {
         attributes {
             attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
         }

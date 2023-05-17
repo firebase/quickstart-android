@@ -77,7 +77,7 @@ dependencies {
     // Support Libs
     implementation("androidx.activity:activity-ktx:1.7.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.core:core-ktx:1.10.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.browser:browser:1.5.0")
