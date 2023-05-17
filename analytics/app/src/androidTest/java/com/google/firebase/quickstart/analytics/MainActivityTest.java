@@ -66,8 +66,6 @@ public class MainActivityTest {
         try{
             ViewInteraction appCompatTextView = onView(
                     allOf(withId(android.R.id.text1), withText(food),
-                            withParent(allOf(withId(R.id.select_dialog_listview),
-                                    withParent(withId(R.id.contentPanel)))),
                             isDisplayed()));
             appCompatTextView.perform(click());
         } catch (NoMatchingViewException e) {
