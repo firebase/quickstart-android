@@ -96,7 +96,6 @@ public class FirebaseUIFragment extends Fragment {
 
     private void startSignIn() {
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
-                .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                 .setAvailableProviders(Collections.singletonList(
                         new AuthUI.IdpConfig.EmailBuilder().build()))
                 .setLogo(R.mipmap.ic_launcher)

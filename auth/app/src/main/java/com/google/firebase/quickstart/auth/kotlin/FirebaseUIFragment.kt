@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.BuildConfig
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
@@ -71,7 +72,6 @@ class FirebaseUIFragment : Fragment() {
 
     private fun startSignIn() {
         val intent = AuthUI.getInstance().createSignInIntentBuilder()
-            .setIsSmartLockEnabled(!BuildConfig.DEBUG)
             .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
             .setLogo(R.mipmap.ic_launcher)
             .build()
