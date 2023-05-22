@@ -59,7 +59,7 @@ class MainComposeActivity : ComponentActivity() {
 fun MainAppView(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     dynamicLinksViewModel: DynamicLinksViewModel = viewModel(factory = DynamicLinksViewModel.Factory)
-){
+) {
     val context = LocalContext.current
     val activity = context.findActivity()
     val intent = activity?.intent
@@ -125,7 +125,12 @@ fun MainAppView(
                 )
             }
         },
-        content = { it
+        content = { it ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
+            ) {
                 MainContent(
                     openDialog = openDialog,
                     linkReceiveTextView = dynamicLinksViewModel.deepLink.collectAsState(),
@@ -137,8 +142,8 @@ fun MainAppView(
                     buildShortLinkFromParams = {
                         dynamicLinksViewModel.buildShortLinkFromParams(uriPrefix, it, 0)
                     }
-
                 )
+            }
         }
     )
 }
@@ -207,7 +212,7 @@ fun MainContent(
         )
 
         Text(
-            text = buildDeepLink(),
+            text = buildDeepLink().ifEmpty { "https://abc.xyz/foo" },
             fontSize = 16.sp,
             modifier = Modifier.padding(top = 8.dp)
         )

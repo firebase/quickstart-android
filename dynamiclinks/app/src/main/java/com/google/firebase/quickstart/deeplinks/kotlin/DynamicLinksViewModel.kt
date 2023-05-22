@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
@@ -13,6 +14,8 @@ import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class DynamicLinksViewModel(
     private val dynamicLinks: FirebaseDynamicLinks
@@ -28,10 +31,12 @@ class DynamicLinksViewModel(
     val validUriPrefix: StateFlow<Boolean> = _validUriPrefix
 
     fun getDynamicLink(intent: Intent) {
-        dynamicLinks
-            .getDynamicLink(intent)
-            .addOnSuccessListener { pendingDynamicLinkData: PendingDynamicLinkData? ->
-                // Get deep link from result (may be null if no link is found)
+        viewModelScope.launch {
+            try {
+                val pendingDynamicLinkData: PendingDynamicLinkData = dynamicLinks
+                    .getDynamicLink(intent)
+                    .await()
+
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
@@ -48,8 +53,10 @@ class DynamicLinksViewModel(
                 } else {
                     Log.d(TAG, "getDynamicLink: no link found")
                 }
+            } catch (e: Exception) {
+                Log.w(TAG, "getDynamicLink:onFailure", e)
             }
-            .addOnFailureListener { e: Exception -> Log.w(TAG, "getDynamicLink:onFailure", e) }
+        }
     }
 
 
@@ -90,15 +97,23 @@ class DynamicLinksViewModel(
         //  * URI prefix (required)
         //  * Android Parameters (required)
         //  * Deep link
-        Firebase.dynamicLinks.shortLinkAsync {
-            link = deepLink
-            domainUriPrefix = uriPrefix
-            androidParameters {
-                minimumVersion = minVersion
+
+        try {
+            viewModelScope.launch {
+                val shortDynamicLinks = Firebase.dynamicLinks.shortLinkAsync {
+                    link = deepLink
+                    domainUriPrefix = uriPrefix
+                    androidParameters {
+                        minimumVersion = minVersion
+                    }
+                }.await()
+
+                val shortLinks = shortDynamicLinks.shortLink
+                val flowChartLink = shortDynamicLinks.previewLink
+
+                _shortLink.value = shortLinks.toString()
             }
-        }.addOnSuccessListener { (shortLink, flowchartLink) ->
-            _shortLink.value = shortLink.toString()
-        }.addOnFailureListener { e ->
+        } catch (e: Exception) {
             Log.e(TAG, e.toString())
         }
     }
