@@ -11,6 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts.StartIntentSenderForResult
+import androidx.core.view.isGone
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.GetSignInIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -23,19 +28,19 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.FragmentGoogleBinding
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
 class GoogleSignInFragment : BaseFragment() {
-
-    private lateinit var auth: FirebaseAuth
-
     private var _binding: FragmentGoogleBinding? = null
     private val binding: FragmentGoogleBinding
         get() = _binding!!
 
     private lateinit var signInClient: SignInClient
+    private val viewModel by viewModels<GoogleSignInViewModel>()
 
     private val signInLauncher = registerForActivityResult(StartIntentSenderForResult()) { result ->
         handleSignInResult(result.data)
@@ -58,21 +63,28 @@ class GoogleSignInFragment : BaseFragment() {
         // Configure Google Sign In
         signInClient = Identity.getSignInClient(requireContext())
 
-        // Initialize Firebase Auth
-        auth = Firebase.auth
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    binding.status.text = uiState.status
+                    binding.detail.text = uiState.detail
 
-        // Display One-Tap Sign In if user isn't logged in
-        val currentUser = auth.currentUser
-        if (currentUser == null) {
-            oneTapSignIn()
+                    binding.signInButton.isGone = !uiState.isSignInVisible
+                    binding.signOutButton.isGone = uiState.isSignInVisible
+
+                    if (uiState.isProgressBarVisible) {
+                        showProgressBar()
+                    } else {
+                        hideProgressBar()
+                    }
+
+                    // Display One-Tap Sign In if user isn't logged in
+                    if (uiState.isOneTapUiShown) {
+                        oneTapSignIn()
+                    }
+                }
+            }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
     }
 
     private fun handleSignInResult(data: Intent?) {
@@ -83,7 +95,7 @@ class GoogleSignInFragment : BaseFragment() {
             val idToken = credential.googleIdToken
             if (idToken != null) {
                 Log.d(TAG, "firebaseAuthWithGoogle: ${credential.id}")
-                firebaseAuthWithGoogle(idToken)
+                viewModel.signInWithFirebase(idToken)
             } else {
                 // Shouldn't happen.
                 Log.d(TAG, "No ID token!")
@@ -91,30 +103,8 @@ class GoogleSignInFragment : BaseFragment() {
         } catch (e: ApiException) {
             // Google Sign In failed, update UI appropriately
             Log.w(TAG, "Google sign in failed", e)
-            updateUI(null)
+            viewModel.showInitialState()
         }
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        showProgressBar()
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success")
-                        val user = auth.currentUser
-                        updateUI(user)
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        val view = binding.mainLayout
-                        Snackbar.make(view, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-                        updateUI(null)
-                    }
-
-                    hideProgressBar()
-                }
     }
 
     private fun signIn() {
@@ -122,13 +112,14 @@ class GoogleSignInFragment : BaseFragment() {
             .setServerClientId(getString(R.string.default_web_client_id))
             .build()
 
-        signInClient.getSignInIntent(signInRequest)
-            .addOnSuccessListener { pendingIntent ->
+        lifecycleScope.launch {
+            try {
+                val pendingIntent = signInClient.getSignInIntent(signInRequest).await()
                 launchSignIn(pendingIntent)
-            }
-            .addOnFailureListener { e ->
+            } catch (e: Exception) {
                 Log.e(TAG, "Google Sign-in failed", e)
             }
+        }
     }
 
     private fun oneTapSignIn() {
@@ -144,14 +135,15 @@ class GoogleSignInFragment : BaseFragment() {
             .build()
 
         // Display the One Tap UI
-        signInClient.beginSignIn(oneTapRequest)
-            .addOnSuccessListener { result ->
-                launchSignIn(result.pendingIntent)
-            }
-            .addOnFailureListener { e ->
+        lifecycleScope.launch {
+            try {
+                val beginSignInResult = signInClient.beginSignIn(oneTapRequest).await()
+                launchSignIn(beginSignInResult.pendingIntent)
+            } catch (e: Exception) {
                 // No saved credentials found. Launch the One Tap sign-up flow, or
                 // do nothing and continue presenting the signed-out UI.
             }
+        }
     }
 
     private fun launchSignIn(pendingIntent: PendingIntent) {
@@ -166,28 +158,17 @@ class GoogleSignInFragment : BaseFragment() {
 
     private fun signOut() {
         // Firebase sign out
-        auth.signOut()
+        viewModel.signOut()
 
         // Google sign out
-        signInClient.signOut().addOnCompleteListener(requireActivity()) {
-            updateUI(null)
-        }
-    }
-
-    private fun updateUI(user: FirebaseUser?) {
-        hideProgressBar()
-        if (user != null) {
-            binding.status.text = getString(R.string.google_status_fmt, user.email)
-            binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
-
-            binding.signInButton.visibility = View.GONE
-            binding.signOutButton.visibility = View.VISIBLE
-        } else {
-            binding.status.setText(R.string.signed_out)
-            binding.detail.text = null
-
-            binding.signInButton.visibility = View.VISIBLE
-            binding.signOutButton.visibility = View.GONE
+        lifecycleScope.launch {
+            try {
+                signInClient.signOut().await()
+            } catch (e: Exception) {
+                // Google Sign out failed
+            } finally {
+                viewModel.showInitialState()
+            }
         }
     }
 
