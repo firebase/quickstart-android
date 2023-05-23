@@ -46,10 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String DEEP_LINK_URL = "https://example.com/deeplinks";
 
-    // [START on_create]
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // [START_EXCLUDE]
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -89,9 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 buildShortLinkFromParams(deepLink, 0);
             }
         });
-        // [END_EXCLUDE]
 
-        // [START get_deep_link]
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
@@ -109,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
                         // account.
                         // ...
 
-                        // [START_EXCLUDE]
                         // Display deep link in the UI
                         if (deepLink != null) {
                             Snackbar.make(findViewById(android.R.id.content),
@@ -119,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             Log.d(TAG, "getDynamicLink: no link found");
                         }
-                        // [END_EXCLUDE]
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
@@ -128,9 +122,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.w(TAG, "getDynamicLink:onFailure", e);
                     }
                 });
-        // [END get_deep_link]
     }
-    // [END on_create]
 
     /**
      * Build a Firebase Dynamic Link.
@@ -152,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         //  * URI prefix (required)
         //  * Android Parameters (required)
         //  * Deep link
-        // [START build_dynamic_link]
         DynamicLink.Builder builder = FirebaseDynamicLinks.getInstance()
                 .createDynamicLink()
                 .setDomainUriPrefix(uriPrefix)
@@ -163,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Build the dynamic link
         DynamicLink link = builder.buildDynamicLink();
-        // [END build_dynamic_link]
 
         // Return the dynamic link as a URI
         return link.getUri();

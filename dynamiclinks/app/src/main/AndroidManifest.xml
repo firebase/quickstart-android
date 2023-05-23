@@ -19,7 +19,6 @@
 
         <activity android:name=".java.MainActivity"
             android:exported="true">
-            <!-- [START link_intent_filter] -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -28,10 +27,21 @@
                     android:host="example.com"
                     android:scheme="https"/>
             </intent-filter>
-            <!-- [END link_intent_filter] -->
         </activity>
 
         <activity android:name=".kotlin.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="kotlin.example.com"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".kotlin.MainComposeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
