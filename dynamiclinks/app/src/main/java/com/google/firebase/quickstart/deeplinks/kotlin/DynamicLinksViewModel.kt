@@ -3,14 +3,16 @@ package com.google.firebase.quickstart.deeplinks.kotlin
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
-import com.google.firebase.dynamiclinks.ktx.*
+import com.google.firebase.dynamiclinks.ktx.androidParameters
+import com.google.firebase.dynamiclinks.ktx.dynamicLink
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,10 +39,7 @@ class DynamicLinksViewModel(
                     .getDynamicLink(intent)
                     .await()
 
-                var deepLink: Uri? = null
-                if (pendingDynamicLinkData != null) {
-                    deepLink = pendingDynamicLinkData.link
-                }
+                val deepLink: Uri? = pendingDynamicLinkData.link
 
                 // Handle the deep link. For example, open the linked
                 // content, or apply promotional credit to the user's
@@ -72,7 +71,7 @@ class DynamicLinksViewModel(
      * require a minimum version.
      * @return a [Uri] representing a properly formed deep link.
      */
-    @VisibleForTesting
+//    @VisibleForTesting
     fun buildDeepLink(uriPrefix: String, deepLink: Uri, minVersion: Int): Uri {
         // Set dynamic link parameters:
         //  * URI prefix (required)
@@ -91,7 +90,7 @@ class DynamicLinksViewModel(
         return link.uri
     }
 
-    @VisibleForTesting
+//    @VisibleForTesting
     fun buildShortLinkFromParams(uriPrefix: String, deepLink: Uri, minVersion: Int) {
         // Set dynamic link parameters:
         //  * URI prefix (required)
@@ -109,7 +108,7 @@ class DynamicLinksViewModel(
                 }.await()
 
                 val shortLinks = shortDynamicLinks.shortLink
-                val flowChartLink = shortDynamicLinks.previewLink
+                // val flowChartLink = shortDynamicLinks.previewLink
 
                 _shortLink.value = shortLinks.toString()
             }

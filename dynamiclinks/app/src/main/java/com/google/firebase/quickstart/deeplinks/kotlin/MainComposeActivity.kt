@@ -13,8 +13,25 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarHostState
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -132,9 +149,9 @@ fun MainAppView(
                     .padding(it)
             ) {
                 MainContent(
-                    openDialog = openDialog,
-                    linkReceiveTextView = dynamicLinksViewModel.deepLink.collectAsState(),
-                    shortLinkTextView = dynamicLinksViewModel.shortLink.collectAsState(),
+                    _openDialog = openDialog,
+                    _linkReceiveTextView = dynamicLinksViewModel.deepLink.collectAsState(),
+                    _shortLinkTextView = dynamicLinksViewModel.shortLink.collectAsState(),
                     newDeepLink = newDeepLink,
                     buildDeepLink = {
                         dynamicLinksViewModel.buildDeepLink(uriPrefix, Uri.parse(DEEP_LINK_URL), 0).toString()
@@ -150,17 +167,17 @@ fun MainAppView(
 
 @Composable
 fun MainContent(
-    openDialog: Boolean = false,
-    linkReceiveTextView: State<String> = mutableStateOf(""),
-    shortLinkTextView: State<String> = mutableStateOf(""),
+    _openDialog: Boolean = false,
+    _linkReceiveTextView: State<String> = mutableStateOf(""),
+    _shortLinkTextView: State<String> = mutableStateOf(""),
     newDeepLink: String = "",
     buildDeepLink: () -> String = { "" },
     buildShortLinkFromParams: (Uri) -> Unit = {},
 ){
     val context = LocalContext.current
-    var openDialog by remember { mutableStateOf(openDialog) }
-    val linkReceiveTextView by linkReceiveTextView
-    val shortLinkTextView by shortLinkTextView
+    var openDialog by remember { mutableStateOf(_openDialog) }
+    val linkReceiveTextView by _linkReceiveTextView
+    val shortLinkTextView by _shortLinkTextView
 
     Column(
         modifier = Modifier
