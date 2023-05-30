@@ -48,7 +48,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.0.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
 
     // Cloud Storage for Firebase (Java)
     implementation("com.google.firebase:firebase-storage")
@@ -62,7 +62,7 @@ dependencies {
     // Firebase Authentication (Kotlin)
     implementation("com.google.firebase:firebase-auth-ktx")
 
-    implementation("androidx.activity:activity-ktx:1.7.1")
+    implementation("androidx.activity:activity-ktx:1.7.2")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
