@@ -235,16 +235,17 @@ public class PasswordlessActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.passwordlessSendEmailButton:
-                onSendLinkClicked();
-                break;
-            case R.id.passwordlessSignInButton:
-                onSignInClicked();
-                break;
-            case R.id.signOutButton:
-                onSignOutClicked();
-                break;
+        //Due to bump in Java version, we can not use view ids in switch
+        //(see: http://tools.android.com/tips/non-constant-fields), so we
+        //need to use if/else:
+
+        int viewId = view.getId();
+        if (viewId == R.id.passwordlessSendEmailButton) {
+            onSendLinkClicked();
+        } else if (viewId == R.id.passwordlessSignInButton) {
+            onSignInClicked();
+        } else if (viewId == R.id.signOutButton) {
+            onSignOutClicked();
         }
     }
 }
