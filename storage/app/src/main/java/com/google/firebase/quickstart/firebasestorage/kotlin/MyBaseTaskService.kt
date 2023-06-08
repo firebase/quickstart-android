@@ -46,9 +46,11 @@ abstract class MyBaseTaskService : Service() {
     private fun createDefaultChannel() {
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(CHANNEL_ID_DEFAULT,
-                    "Default",
-                    NotificationManager.IMPORTANCE_DEFAULT)
+            val channel = NotificationChannel(
+                CHANNEL_ID_DEFAULT,
+                "Default",
+                NotificationManager.IMPORTANCE_DEFAULT,
+            )
             manager.createNotificationChannel(channel)
         }
     }
@@ -64,12 +66,12 @@ abstract class MyBaseTaskService : Service() {
 
         createDefaultChannel()
         val builder = NotificationCompat.Builder(this, CHANNEL_ID_DEFAULT)
-                .setSmallIcon(R.drawable.ic_file_upload_white_24dp)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(caption)
-                .setProgress(100, percentComplete, false)
-                .setOngoing(true)
-                .setAutoCancel(false)
+            .setSmallIcon(R.drawable.ic_file_upload_white_24dp)
+            .setContentTitle(getString(R.string.app_name))
+            .setContentText(caption)
+            .setProgress(100, percentComplete, false)
+            .setOngoing(true)
+            .setAutoCancel(false)
 
         manager.notify(PROGRESS_NOTIFICATION_ID, builder.build())
     }
@@ -81,20 +83,26 @@ abstract class MyBaseTaskService : Service() {
         // Make PendingIntent for notification
 
         // Make PendingIntent for notification
-        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            PendingIntent.FLAG_IMMUTABLE else PendingIntent.FLAG_UPDATE_CURRENT
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* requestCode */, intent,
-                flag)
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_IMMUTABLE
+        } else PendingIntent.FLAG_UPDATE_CURRENT
+        val requestCode = 0
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            requestCode,
+            intent,
+            flag,
+        )
 
         val icon = if (success) R.drawable.ic_check_white_24 else R.drawable.ic_error_white_24dp
 
         createDefaultChannel()
         val builder = NotificationCompat.Builder(this, CHANNEL_ID_DEFAULT)
-                .setSmallIcon(icon)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(caption)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
+            .setSmallIcon(icon)
+            .setContentTitle(getString(R.string.app_name))
+            .setContentText(caption)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
 
         manager.notify(FINISHED_NOTIFICATION_ID, builder.build())
     }

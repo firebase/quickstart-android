@@ -3,10 +3,10 @@ package com.google.firebase.quickstart.perfmon.kotlin
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -49,14 +49,14 @@ class MainActivity : AppCompatActivity() {
             val contentFile = File(this.filesDir, CONTENT_FILE)
 
             writeStringToFile(contentFile.absolutePath, "${getRandomString(40)}\n")
-                    .addOnCompleteListener { task ->
-                        if (!task.isSuccessful) {
-                            Log.e(TAG, "Unable to write to file", task.exception)
-                            return@addOnCompleteListener
-                        }
-
-                        loadFileFromDisk()
+                .addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.e(TAG, "Unable to write to file", task.exception)
+                        return@addOnCompleteListener
                     }
+
+                    loadFileFromDisk()
+                }
         }
 
         // Begin tracing app startup tasks.
@@ -69,20 +69,25 @@ class MainActivity : AppCompatActivity() {
         trace.incrementMetric(REQUESTS_COUNTER_NAME, 1)
         loadFileFromDisk()
         // Wait for app startup tasks to complete asynchronously and stop the trace.
-        Thread(Runnable {
-            try {
-                numStartupTasks.await()
-            } catch (e: InterruptedException) {
-                Log.e(TAG, "Unable to wait for startup task completion.")
-            } finally {
-                Log.d(TAG, "Stopping trace")
-                trace.stop()
-                runOnUiThread {
-                    Toast.makeText(this, "Trace completed",
-                            Toast.LENGTH_SHORT).show()
+        Thread(
+            Runnable {
+                try {
+                    numStartupTasks.await()
+                } catch (e: InterruptedException) {
+                    Log.e(TAG, "Unable to wait for startup task completion.")
+                } finally {
+                    Log.d(TAG, "Stopping trace")
+                    trace.stop()
+                    runOnUiThread {
+                        Toast.makeText(
+                            this,
+                            "Trace completed",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
                 }
-            }
-        }).start()
+            },
+        ).start()
     }
 
     private fun loadImageFromWeb() {
@@ -93,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                     e: GlideException?,
                     model: Any?,
                     target: Target<Drawable>?,
-                    isFirstResource: Boolean
+                    isFirstResource: Boolean,
                 ): Boolean {
                     numStartupTasks.countDown() // Signal end of image load task.
                     return false
@@ -104,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                     model: Any?,
                     target: Target<Drawable>?,
                     dataSource: DataSource?,
-                    isFirstResource: Boolean
+                    isFirstResource: Boolean,
                 ): Boolean {
                     numStartupTasks.countDown() // Signal end of image load task.
                     return false
@@ -153,12 +158,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadFileFromDisk() {
         loadStringFromFile()
-                .addOnCompleteListener(OnCompleteListener { task ->
+            .addOnCompleteListener(
+                OnCompleteListener { task ->
                     if (!task.isSuccessful) {
                         Log.e(TAG, "Couldn't read text file.")
                         Toast.makeText(
-                                this, getString(R.string.text_read_error), Toast.LENGTH_LONG)
-                                .show()
+                            this,
+                            getString(R.string.text_read_error),
+                            Toast.LENGTH_LONG,
+                        )
+                            .show()
                         return@OnCompleteListener
                     }
 
@@ -167,10 +176,12 @@ class MainActivity : AppCompatActivity() {
                     // Increment a counter with the file size that was read.
                     Log.d(TAG, "Incrementing file size counter in trace")
                     trace.incrementMetric(
-                            FILE_SIZE_COUNTER_NAME,
-                            fileContent!!.toByteArray().size.toLong())
+                        FILE_SIZE_COUNTER_NAME,
+                        fileContent!!.toByteArray().size.toLong(),
+                    )
                     numStartupTasks.countDown()
-                })
+                },
+            )
     }
 
     private fun getRandomString(length: Int): String {
@@ -190,7 +201,7 @@ class MainActivity : AppCompatActivity() {
         private const val DEFAULT_CONTENT_FILE = "default_content.txt"
         private const val CONTENT_FILE = "content.txt"
         private const val IMAGE_URL =
-                "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+            "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
 
         private const val STARTUP_TRACE_NAME = "startup_trace"
         private const val REQUESTS_COUNTER_NAME = "requests sent"

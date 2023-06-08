@@ -30,9 +30,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 
-class RestaurantDetailFragment : Fragment(),
+class RestaurantDetailFragment :
+    Fragment(),
     EventListener<DocumentSnapshot>,
-        RatingDialogFragment.RatingListener {
+    RatingDialogFragment.RatingListener {
 
     private var ratingDialog: RatingDialogFragment? = null
 
@@ -62,9 +63,9 @@ class RestaurantDetailFragment : Fragment(),
 
         // Get ratings
         val ratingsQuery = restaurantRef
-                .collection("ratings")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .limit(50)
+            .collection("ratings")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .limit(50)
 
         // RecyclerView
         ratingAdapter = object : RatingAdapter(ratingsQuery) {
@@ -130,8 +131,8 @@ class RestaurantDetailFragment : Fragment(),
 
         // Background image
         Glide.with(binding.restaurantImage.context)
-                .load(restaurant.photo)
-                .into(binding.restaurantImage)
+            .load(restaurant.photo)
+            .into(binding.restaurantImage)
     }
 
     private fun onBackArrowClicked() {
@@ -145,22 +146,24 @@ class RestaurantDetailFragment : Fragment(),
     override fun onRating(rating: Rating) {
         // In a transaction, add the new rating and update the aggregate totals
         addRating(restaurantRef, rating)
-                .addOnSuccessListener(requireActivity()) {
-                    Log.d(TAG, "Rating added")
+            .addOnSuccessListener(requireActivity()) {
+                Log.d(TAG, "Rating added")
 
-                    // Hide keyboard and scroll to top
-                    hideKeyboard()
-                    binding.recyclerRatings.smoothScrollToPosition(0)
-                }
-                .addOnFailureListener(requireActivity()) { e ->
-                    Log.w(TAG, "Add rating failed", e)
+                // Hide keyboard and scroll to top
+                hideKeyboard()
+                binding.recyclerRatings.smoothScrollToPosition(0)
+            }
+            .addOnFailureListener(requireActivity()) { e ->
+                Log.w(TAG, "Add rating failed", e)
 
-                    // Show failure message and hide keyboard
-                    hideKeyboard()
-                    Snackbar.make(
-                        requireView().findViewById(android.R.id.content), "Failed to add rating",
-                            Snackbar.LENGTH_SHORT).show()
-                }
+                // Show failure message and hide keyboard
+                hideKeyboard()
+                Snackbar.make(
+                    requireView().findViewById(android.R.id.content),
+                    "Failed to add rating",
+                    Snackbar.LENGTH_SHORT,
+                ).show()
+            }
     }
 
     private fun addRating(restaurantRef: DocumentReference, rating: Rating): Task<Void> {
@@ -170,9 +173,7 @@ class RestaurantDetailFragment : Fragment(),
         // In a transaction, add the new rating and update the aggregate totals
         return firestore.runTransaction { transaction ->
             val restaurant = transaction.get(restaurantRef).toObject<Restaurant>()
-            if (restaurant == null) {
-                throw Exception("Resraurant not found at ${restaurantRef.path}")
-            }
+                ?: throw Exception("Restaurant not found at ${restaurantRef.path}")
 
             // Compute new number of ratings
             val newNumRatings = restaurant.numRatings + 1
@@ -197,7 +198,7 @@ class RestaurantDetailFragment : Fragment(),
         val view = requireActivity().currentFocus
         if (view != null) {
             (requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                    .hideSoftInputFromWindow(view.windowToken, 0)
+                .hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 

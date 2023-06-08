@@ -76,34 +76,42 @@ class MultiFactorFragment : BaseFragment() {
         // Send verification email
         val user = auth.currentUser!!
         user.sendEmailVerification()
-                .addOnCompleteListener(requireActivity()) { task ->
-                    // Re-enable button
-                    binding.verifyEmailButton.isEnabled = true
-                    if (task.isSuccessful) {
-                        Toast.makeText(context,
-                                "Verification email sent to " + user.email,
-                                Toast.LENGTH_SHORT).show()
-                    } else {
-                        Log.e(TAG, "sendEmailVerification", task.exception)
-                        Toast.makeText(context,
-                                "Failed to send verification email.",
-                                Toast.LENGTH_SHORT).show()
-                    }
+            .addOnCompleteListener(requireActivity()) { task ->
+                // Re-enable button
+                binding.verifyEmailButton.isEnabled = true
+                if (task.isSuccessful) {
+                    Toast.makeText(
+                        context,
+                        "Verification email sent to " + user.email,
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                } else {
+                    Log.e(TAG, "sendEmailVerification", task.exception)
+                    Toast.makeText(
+                        context,
+                        "Failed to send verification email.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
+            }
     }
 
     private fun reload() {
         auth.currentUser!!.reload().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 updateUI(auth.currentUser)
-                Toast.makeText(context,
-                        "Reload successful!",
-                        Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Reload successful!",
+                    Toast.LENGTH_SHORT,
+                ).show()
             } else {
                 Log.e(TAG, "reload", task.exception)
-                Toast.makeText(context,
-                        "Failed to reload user.",
-                        Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Failed to reload user.",
+                    Toast.LENGTH_SHORT,
+                ).show()
             }
         }
     }
@@ -111,8 +119,11 @@ class MultiFactorFragment : BaseFragment() {
     private fun updateUI(user: FirebaseUser?) {
         hideProgressBar()
         if (user != null) {
-            binding.status.text = getString(R.string.emailpassword_status_fmt,
-                    user.email, user.isEmailVerified)
+            binding.status.text = getString(
+                R.string.emailpassword_status_fmt,
+                user.email,
+                user.isEmailVerified,
+            )
             binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
             val secondFactors = user.multiFactor.enrolledFactors
             if (secondFactors.isEmpty()) {
@@ -144,12 +155,14 @@ class MultiFactorFragment : BaseFragment() {
 
     private fun showDisclaimer() {
         AlertDialog.Builder(requireContext())
-                .setTitle("Warning")
-                .setMessage("Multi-factor authentication with SMS is currently only available for " +
-                        "Google Cloud Identity Platform projects. For more information see: " +
-                        "https://cloud.google.com/identity-platform/docs/android/mfa")
-                .setPositiveButton("OK", null)
-                .show()
+            .setTitle("Warning")
+            .setMessage(
+                "Multi-factor authentication with SMS is currently only available for " +
+                    "Google Cloud Identity Platform projects. For more information see: " +
+                    "https://cloud.google.com/identity-platform/docs/android/mfa",
+            )
+            .setPositiveButton("OK", null)
+            .show()
     }
 
     override fun onDestroyView() {
