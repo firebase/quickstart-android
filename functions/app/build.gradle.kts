@@ -51,7 +51,7 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
 
     // Cloud Functions for Firebase (Java)
     implementation("com.google.firebase:firebase-functions")
@@ -72,7 +72,7 @@ dependencies {
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
     
     // Google Play services
-    implementation("com.google.android.gms:play-services-auth:20.5.0")
+    implementation("com.google.android.gms:play-services-auth:20.6.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
