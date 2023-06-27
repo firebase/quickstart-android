@@ -59,7 +59,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
 
     // Firebase Authentication (Java)
     implementation("com.google.firebase:firebase-auth")
@@ -68,7 +68,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
 
     // Google Identity Services SDK (only required for Auth with Google)
-    implementation("com.google.android.gms:play-services-auth:20.5.0")
+    implementation("com.google.android.gms:play-services-auth:20.6.0")
 
     // Firebase UI
     // Used in FirebaseUIActivity.

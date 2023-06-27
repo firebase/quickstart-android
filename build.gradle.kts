@@ -5,10 +5,10 @@ plugins {
     id("com.android.library") version "8.0.2" apply false
     id("org.jetbrains.kotlin.android") version "1.8.22" apply false
     id("com.google.gms.google-services") version "4.3.15" apply false
-    id("com.google.firebase.crashlytics") version "2.9.5" apply false
+    id("com.google.firebase.crashlytics") version "2.9.6" apply false
     id("com.google.firebase.firebase-perf") version "1.4.2" apply false
     id("androidx.navigation.safeargs") version "2.6.0" apply false
-    id("com.github.ben-manes.versions") version "0.46.0" apply true
+    id("com.github.ben-manes.versions") version "0.47.0" apply true
 }
 
 allprojects {
