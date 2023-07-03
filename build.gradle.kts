@@ -9,6 +9,7 @@ plugins {
     id("com.google.firebase.firebase-perf") version "1.4.2" apply false
     id("androidx.navigation.safeargs") version "2.5.3" apply false
     id("com.github.ben-manes.versions") version "0.46.0" apply true
+    id("com.osacky.doctor") version "0.8.1"
 }
 
 allprojects {
@@ -27,6 +28,11 @@ dependencies {
             attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
         }
     }
+}
+
+doctor {
+    allowBuildingAllAndroidAppsSimultaneously.set(true)
+    negativeAvoidanceThreshold.set(9500)
 }
 
 tasks.register<JavaExec>("ktlintCheck") {
