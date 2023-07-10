@@ -152,8 +152,8 @@ class MultiFactorFragment : BaseFragment() {
             .setTitle("Warning")
             .setMessage(
                 "Multi-factor authentication with SMS is currently only available for " +
-                    "Google Cloud Identity Platform projects. For more information see: " +
-                    "https://cloud.google.com/identity-platform/docs/android/mfa",
+                        "Google Cloud Identity Platform projects. For more information see: " +
+                        "https://cloud.google.com/identity-platform/docs/android/mfa",
             )
             .setPositiveButton("OK", null)
             .show()

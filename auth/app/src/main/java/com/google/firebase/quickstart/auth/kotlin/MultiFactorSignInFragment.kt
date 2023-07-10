@@ -131,14 +131,14 @@ class MultiFactorSignInFragment : BaseFragment() {
             )
         }
         multiFactorResolver
-                .resolveSignIn(PhoneMultiFactorGenerator.getAssertion(lastPhoneAuthCredential!!))
-                .addOnSuccessListener {
-                    findNavController().navigate(R.id.action_mfasignin_to_mfa)
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(context, "Error: " + e.message, Toast.LENGTH_SHORT)
-                            .show()
-                }
+            .resolveSignIn(PhoneMultiFactorGenerator.getAssertion(lastPhoneAuthCredential!!))
+            .addOnSuccessListener {
+                findNavController().navigate(R.id.action_mfasignin_to_mfa)
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Error: " + e.message, Toast.LENGTH_SHORT)
+                    .show()
+            }
     }
 
     override fun onDestroyView() {

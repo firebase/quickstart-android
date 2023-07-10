@@ -233,7 +233,7 @@ class EmailPasswordFragment : BaseFragment() {
             Log.w(TAG, "multiFactorFailure", e)
             val resolver = e.resolver
             val args = bundleOf(
-                    MultiFactorSignInFragment.EXTRA_MFA_RESOLVER to resolver
+                MultiFactorSignInFragment.EXTRA_MFA_RESOLVER to resolver
             )
             findNavController().navigate(R.id.action_emailpassword_to_mfasignin, args)
         }
