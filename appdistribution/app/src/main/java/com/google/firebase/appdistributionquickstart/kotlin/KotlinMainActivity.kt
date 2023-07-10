@@ -34,8 +34,6 @@ class KotlinMainActivity : AppCompatActivity() {
             }
     }
 
-
-
     companion object {
 
         private const val TAG = "AppDistribution-Quickstart"

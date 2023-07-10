@@ -166,13 +166,15 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.buttonSearch:
-                onSearchClicked();
-                break;
-            case R.id.buttonCancel:
-                onCancelClicked();
-                break;
+        //Due to bump in Java version, we can not use view ids in switch
+        //(see: http://tools.android.com/tips/non-constant-fields), so we
+        //need to use if/else:
+
+        int viewId = v.getId();
+        if (viewId == R.id.buttonSearch) {
+            onSearchClicked();
+        } else if (viewId == R.id.buttonCancel) {
+            onCancelClicked();
         }
     }
 }

@@ -43,8 +43,12 @@ class MultiFactorSignInFragment : BaseFragment() {
 
         // Users are currently limited to having 5 second factors
         val phoneFactorButtonList = listOf(
-                binding.phoneFactor1, binding.phoneFactor2, binding.phoneFactor3,
-                binding.phoneFactor4, binding.phoneFactor5)
+            binding.phoneFactor1,
+            binding.phoneFactor2,
+            binding.phoneFactor3,
+            binding.phoneFactor4,
+            binding.phoneFactor5,
+        )
         for (button in phoneFactorButtonList) {
             button.visibility = View.GONE
         }
@@ -78,13 +82,14 @@ class MultiFactorSignInFragment : BaseFragment() {
     private fun generateFactorOnClickListener(phoneMultiFactorInfo: PhoneMultiFactorInfo): View.OnClickListener {
         return View.OnClickListener {
             PhoneAuthProvider.verifyPhoneNumber(
-                    PhoneAuthOptions.newBuilder()
-                            .setActivity(requireActivity())
-                            .setMultiFactorSession(multiFactorResolver.session)
-                            .setMultiFactorHint(phoneMultiFactorInfo)
-                            .setCallbacks(generateCallbacks()) // A timeout of 0 disables SMS-auto-retrieval.
-                            .setTimeout(0L, TimeUnit.SECONDS)
-                            .build())
+                PhoneAuthOptions.newBuilder()
+                    .setActivity(requireActivity())
+                    .setMultiFactorSession(multiFactorResolver.session)
+                    .setMultiFactorHint(phoneMultiFactorInfo)
+                    .setCallbacks(generateCallbacks()) // A timeout of 0 disables SMS-auto-retrieval.
+                    .setTimeout(0L, TimeUnit.SECONDS)
+                    .build(),
+            )
         }
     }
 
@@ -94,7 +99,7 @@ class MultiFactorSignInFragment : BaseFragment() {
                 lastPhoneAuthCredential = phoneAuthCredential
                 binding.finishMfaSignIn.performClick()
                 Toast.makeText(context, "Verification complete!", Toast.LENGTH_SHORT)
-                        .show()
+                    .show()
             }
 
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
@@ -104,7 +109,7 @@ class MultiFactorSignInFragment : BaseFragment() {
 
             override fun onVerificationFailed(e: FirebaseException) {
                 Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT)
-                        .show()
+                    .show()
             }
         }
     }
@@ -117,11 +122,13 @@ class MultiFactorSignInFragment : BaseFragment() {
         if (lastPhoneAuthCredential == null) {
             if (TextUtils.isEmpty(binding.smsCode.text.toString())) {
                 Toast.makeText(context, "You need to enter an SMS code.", Toast.LENGTH_SHORT)
-                        .show()
+                    .show()
                 return
             }
             lastPhoneAuthCredential = PhoneAuthProvider.getCredential(
-                    lastVerificationId!!, binding.smsCode.text.toString())
+                lastVerificationId!!,
+                binding.smsCode.text.toString(),
+            )
         }
         multiFactorResolver
                 .resolveSignIn(PhoneMultiFactorGenerator.getAssertion(lastPhoneAuthCredential!!))

@@ -282,16 +282,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.buttonCalculate:
-                onCalculateClicked();
-                break;
-            case R.id.buttonAddMessage:
-                onAddMessageClicked();
-                break;
-            case R.id.buttonSignIn:
-                onSignInClicked();
-                break;
+        //Due to bump in Java version, we can not use view ids in switch
+        //(see: http://tools.android.com/tips/non-constant-fields), so we
+        //need to use if/else:
+
+        int viewId = view.getId();
+        if (viewId == R.id.buttonCalculate) {
+            onCalculateClicked();
+        } else if (viewId == R.id.buttonAddMessage) {
+            onAddMessageClicked();
+        } else if (viewId == R.id.buttonSignIn) {
+            onSignInClicked();
         }
     }
 

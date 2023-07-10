@@ -168,14 +168,18 @@ public class MainFragment extends Fragment implements
 
     @Override
     public boolean onMenuItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_add_items:
-                onAddItemsClicked();
-                return true;
-            case R.id.menu_sign_out:
-                AuthUI.getInstance().signOut(requireContext());
-                startSignIn();
-                return true;
+        //Due to bump in Java version, we can not use view ids in switch
+        //(see: http://tools.android.com/tips/non-constant-fields), so we
+        //need to use if/else:
+
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_add_items) {
+            onAddItemsClicked();
+            return true;
+        } else if (itemId == R.id.menu_sign_out) {
+            AuthUI.getInstance().signOut(requireContext());
+            startSignIn();
+            return true;
         }
         return false;
     }
@@ -334,13 +338,15 @@ public class MainFragment extends Fragment implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.filterBar:
-                onFilterClicked();
-                break;
-            case R.id.buttonClearFilter:
-                onClearFilterClicked();
-                break;
+        //Due to bump in Java version, we can not use view ids in switch
+        //(see: http://tools.android.com/tips/non-constant-fields), so we
+        //need to use if/else:
+
+        int viewId = v.getId();
+        if (viewId == R.id.filterBar) {
+            onFilterClicked();
+        } else if (viewId == R.id.buttonClearFilter) {
+            onClearFilterClicked();
         }
     }
 }
