@@ -101,6 +101,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Log.d(TAG, "Short lived task is done.")
     }
 
+    // [START send_token_to_server]
     /**
      * Persist token to third-party servers.
      *
@@ -122,6 +123,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Firebase.firestore.collection("fcmTokens").document("myuserid")
             .set(deviceToken)
     }
+    // [END send_token_to_server]
 
     /**
      * Create and show a simple notification containing the received FCM message.
