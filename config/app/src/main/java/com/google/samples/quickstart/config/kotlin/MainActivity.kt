@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             override fun onUpdate(configUpdate: ConfigUpdate) {
                 Log.d(TAG, "Updated keys: " + configUpdate.updatedKeys)
 
-                if (configUpdate.updatedKeys.contains("welcome_message")) {
+                if (configUpdate.updatedKeys.contains(WELCOME_MESSAGE_KEY)) {
                     remoteConfig.activate().addOnCompleteListener {
                         displayWelcomeMessage()
                     }
