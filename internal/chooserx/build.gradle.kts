@@ -24,6 +24,6 @@ android {
 
 dependencies {
     api("com.google.android.material:material:1.9.0")
-    api("androidx.recyclerview:recyclerview:1.3.0")
+    api("androidx.recyclerview:recyclerview:1.3.1")
     api("androidx.constraintlayout:constraintlayout:2.1.4")
 }

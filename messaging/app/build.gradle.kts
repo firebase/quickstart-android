@@ -59,7 +59,7 @@ dependencies {
 
     // Required when asking for permission to post notifications (starting in Android 13)
     implementation("androidx.activity:activity-ktx:1.7.2")
-    implementation("androidx.fragment:fragment-ktx:1.6.0")
+    implementation("androidx.fragment:fragment-ktx:1.6.1")
 
     implementation("com.google.android.material:material:1.9.0")
 
