@@ -52,7 +52,7 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
 
     // FIAM (Java)
     implementation("com.google.firebase:firebase-inappmessaging-display")
@@ -67,7 +67,7 @@ dependencies {
     // Analytics (Kotlin)
     implementation("com.google.firebase:firebase-analytics-ktx")
 
-    implementation("com.google.firebase:firebase-installations-ktx:17.1.3")
+    implementation("com.google.firebase:firebase-installations-ktx:17.1.4")
 
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
