@@ -12,12 +12,12 @@ tasks {
 
 android {
     namespace = "com.google.firebase.quickstart.firebasestorage"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.firebasestorage"
         minSdk = 19
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -48,7 +48,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
 
     // Cloud Storage for Firebase (Java)
     implementation("com.google.firebase:firebase-storage")

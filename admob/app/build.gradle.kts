@@ -12,12 +12,12 @@ tasks {
 
 android {
     namespace = "com.google.samples.quickstart.admobexample"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.google.samples.quickstart.admobexample"
         minSdk = 19
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -52,13 +52,13 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.browser:browser:1.5.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.1")
 
-    implementation("com.google.android.gms:play-services-ads:22.2.0")
+    implementation("com.google.android.gms:play-services-ads:22.3.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
 
     // For an optimal experience using AdMob, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
