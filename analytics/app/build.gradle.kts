@@ -12,12 +12,12 @@ tasks {
 
 android {
     namespace = "com.google.firebase.quickstart.analytics"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.analytics"
         minSdk = 19
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -51,12 +51,12 @@ dependencies {
 
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation("androidx.preference:preference-ktx:1.2.1")
     // Needed to override the version used by preference-ktx
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
 
     // Firebase Analytics (Java)
     implementation("com.google.firebase:firebase-analytics")

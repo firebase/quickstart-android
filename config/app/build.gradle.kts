@@ -12,12 +12,12 @@ tasks {
 
 android {
     namespace = "com.google.samples.quickstart.config"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.google.samples.quickstart.config"
         minSdk = 19
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -50,7 +50,7 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.2.2"))
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
 
     // Firebase Remote Config (Java)
     implementation("com.google.firebase:firebase-config")
