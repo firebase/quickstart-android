@@ -69,7 +69,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
 
     // Google Play services
-    implementation("com.google.android.gms:play-services-auth:20.6.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // FirebaseUI (for authentication)
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
