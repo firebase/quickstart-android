@@ -7,12 +7,12 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
 import com.google.firebase.quickstart.firebasestorage.R
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.component1
-import com.google.firebase.storage.ktx.component2
-import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.component1
+import com.google.firebase.storage.component2
+import com.google.firebase.storage.storage
 
 /**
  * Service to handle uploading files to Firebase Storage.

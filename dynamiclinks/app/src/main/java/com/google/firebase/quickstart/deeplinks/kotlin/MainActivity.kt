@@ -10,13 +10,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
-import com.google.firebase.dynamiclinks.ktx.androidParameters
-import com.google.firebase.dynamiclinks.ktx.component1
-import com.google.firebase.dynamiclinks.ktx.component2
-import com.google.firebase.dynamiclinks.ktx.dynamicLink
-import com.google.firebase.dynamiclinks.ktx.dynamicLinks
-import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.dynamiclinks.androidParameters
+import com.google.firebase.dynamiclinks.component1
+import com.google.firebase.dynamiclinks.component2
+import com.google.firebase.dynamiclinks.dynamicLink
+import com.google.firebase.dynamiclinks.dynamicLinks
+import com.google.firebase.dynamiclinks.shortLinkAsync
+import com.google.firebase.Firebase
 import com.google.firebase.quickstart.deeplinks.R
 import com.google.firebase.quickstart.deeplinks.databinding.ActivityMainBinding
 
