@@ -62,7 +62,7 @@ dependencies {
     // Firebase Authentication (Kotlin)
     implementation("com.google.firebase:firebase-auth-ktx")
 
-    implementation("androidx.activity:activity-ktx:1.7.2")
+    implementation("androidx.activity:activity-ktx:1.8.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
