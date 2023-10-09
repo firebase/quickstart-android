@@ -1,14 +1,14 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    id("com.android.application") version "8.1.1" apply false
-    id("com.android.library") version "8.1.1" apply false
+    id("com.android.application") version "8.1.2" apply false
+    id("com.android.library") version "8.1.2" apply false
     id("org.jetbrains.kotlin.android") version "1.9.10" apply false
     id("com.google.gms.google-services") version "4.4.0" apply false
     id("com.google.firebase.crashlytics") version "2.9.9" apply false
     id("com.google.firebase.firebase-perf") version "1.4.2" apply false
-    id("androidx.navigation.safeargs") version "2.7.3" apply false
-    id("com.github.ben-manes.versions") version "0.48.0" apply true
+    id("androidx.navigation.safeargs") version "2.7.4" apply false
+    id("com.github.ben-manes.versions") version "0.49.0" apply true
 }
 
 allprojects {
