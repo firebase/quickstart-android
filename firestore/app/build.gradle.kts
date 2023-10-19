@@ -56,16 +56,10 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
 
-    // Firestore (Java)
+    // Firestore
     implementation("com.google.firebase:firebase-firestore")
 
-    // Firestore (Kotlin)
-    implementation("com.google.firebase:firebase-firestore")
-
-    // Firebase Authentication (Java)
-    implementation("com.google.firebase:firebase-auth")
-
-    // Firebase Authentication (Kotlin)
+    // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
 
     // Google Play services

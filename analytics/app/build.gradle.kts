@@ -58,10 +58,7 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
 
-    // Firebase Analytics (Java)
-    implementation("com.google.firebase:firebase-analytics")
-
-    // Firebase Analytics (Kotlin)
+    // Firebase Analytics
     implementation("com.google.firebase:firebase-analytics")
 
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

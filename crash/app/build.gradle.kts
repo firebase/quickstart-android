@@ -58,7 +58,7 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
 
-    // Firebase Crashlytics (Kotlin)
+    // Firebase Crashlytics
     implementation("com.google.firebase:firebase-crashlytics")
 
     // For an optimal experience using Crashlytics, add the Firebase SDK

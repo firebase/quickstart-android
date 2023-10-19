@@ -66,10 +66,7 @@ dependencies {
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
 
-    // Firebase Cloud Messaging (Java)
-    implementation("com.google.firebase:firebase-messaging")
-
-    // Firebase Cloud Messaging (Kotlin)
+    // Firebase Cloud Messaging
     implementation("com.google.firebase:firebase-messaging")
 
     // For an optimal experience using FCM, add the Firebase SDK
