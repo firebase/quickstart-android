@@ -77,6 +77,10 @@ dependencies {
 
     implementation("androidx.work:work-runtime:2.8.1")
 
+    // Needed to fix the error:
+    // Cannot access class 'com.google.common.util.concurrent.ListenableFuture'
+    implementation("com.google.guava:guava:32.1.3-android")
+
     // Testing dependencies
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test:runner:1.5.2")
