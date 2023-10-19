@@ -58,13 +58,13 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
 
     // Required when asking for permission to post notifications (starting in Android 13)
-    implementation("androidx.activity:activity-ktx:1.7.2")
+    implementation("androidx.activity:activity-ktx:1.8.0")
     implementation("androidx.fragment:fragment-ktx:1.6.1")
 
     implementation("com.google.android.material:material:1.9.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
 
     // Firebase Cloud Messaging (Java)
     implementation("com.google.firebase:firebase-messaging")
@@ -76,7 +76,7 @@ dependencies {
     // for Google Analytics. This is recommended, but not required.
     implementation("com.google.firebase:firebase-analytics")
 
-    implementation("com.google.firebase:firebase-installations-ktx:17.1.4")
+    implementation("com.google.firebase:firebase-installations-ktx:17.2.0")
 
     implementation("androidx.work:work-runtime:2.8.1")
 
