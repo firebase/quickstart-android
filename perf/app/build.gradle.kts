@@ -67,7 +67,7 @@ dependencies {
     implementation("com.google.firebase:firebase-perf")
 
     // Firebase Performance Monitoring (Kotlin)
-    implementation("com.google.firebase:firebase-perf-ktx")
+    implementation("com.google.firebase:firebase-perf")
 
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")

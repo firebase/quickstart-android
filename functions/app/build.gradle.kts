@@ -57,13 +57,13 @@ dependencies {
     implementation("com.google.firebase:firebase-functions")
 
     // Cloud Functions for Firebase (Kotlin)
-    implementation("com.google.firebase:firebase-functions-ktx")
+    implementation("com.google.firebase:firebase-functions")
 
     // Firebase Authentication (Java)
     implementation("com.google.firebase:firebase-auth")
 
     // Firebase Authentication (Kotlin)
-    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-auth")
 
     // Firebase Cloud Messaging
     implementation("com.google.firebase:firebase-messaging")

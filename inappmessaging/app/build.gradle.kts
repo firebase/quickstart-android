@@ -58,16 +58,16 @@ dependencies {
     implementation("com.google.firebase:firebase-inappmessaging-display")
 
     // FIAM (Kotlin)
-    implementation("com.google.firebase:firebase-inappmessaging-display-ktx")
+    implementation("com.google.firebase:firebase-inappmessaging-display")
 
     // The Firebase SDK for Google Analytics is required to use In-App Messaging
     // Analytics (Java)
     implementation("com.google.firebase:firebase-analytics")
 
     // Analytics (Kotlin)
-    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-analytics")
 
-    implementation("com.google.firebase:firebase-installations-ktx:17.2.0")
+    implementation("com.google.firebase:firebase-installations:17.2.0")
 
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

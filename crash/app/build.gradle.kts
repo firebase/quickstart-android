@@ -59,7 +59,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
 
     // Firebase Crashlytics (Kotlin)
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics")
 
     // For an optimal experience using Crashlytics, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.

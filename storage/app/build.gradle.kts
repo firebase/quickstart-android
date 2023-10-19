@@ -54,13 +54,13 @@ dependencies {
     implementation("com.google.firebase:firebase-storage")
 
     // Cloud Storage for Firebase (Kotlin)
-    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-storage")
 
     // Firebase Authentication (Java)
     implementation("com.google.firebase:firebase-auth")
 
     // Firebase Authentication (Kotlin)
-    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-auth")
 
     implementation("androidx.activity:activity-ktx:1.8.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

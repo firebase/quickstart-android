@@ -61,13 +61,13 @@ dependencies {
     implementation("com.google.firebase:firebase-database")
 
     // Firebase Realtime Database (Kotlin)
-    implementation("com.google.firebase:firebase-database-ktx")
+    implementation("com.google.firebase:firebase-database")
 
     // Firebase Authentication (Java)
     implementation("com.google.firebase:firebase-auth")
 
     // Firebase Authentication (Kotlin)
-    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-auth")
 
     implementation("com.firebaseui:firebase-ui-database:8.0.2")
 

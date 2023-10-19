@@ -56,7 +56,7 @@ dependencies {
     implementation("com.google.firebase:firebase-config")
 
     // Firebase Remote Config (Kotlin)
-    implementation("com.google.firebase:firebase-config-ktx")
+    implementation("com.google.firebase:firebase-config")
 
     // For an optimal experience using Remote Config, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.

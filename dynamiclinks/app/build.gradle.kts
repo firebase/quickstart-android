@@ -68,7 +68,7 @@ dependencies {
     implementation("com.google.firebase:firebase-dynamic-links")
 
     // Firebase Dynamic Links (Kotlin)
-    implementation("com.google.firebase:firebase-dynamic-links-ktx")
+    implementation("com.google.firebase:firebase-dynamic-links")
 
     // For an optimal experience using Dynamic Links, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.

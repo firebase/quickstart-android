@@ -60,13 +60,13 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
 
     // Firestore (Kotlin)
-    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-firestore")
 
     // Firebase Authentication (Java)
     implementation("com.google.firebase:firebase-auth")
 
     // Firebase Authentication (Kotlin)
-    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-auth")
 
     // Google Play services
     implementation("com.google.android.gms:play-services-auth:20.7.0")

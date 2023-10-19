@@ -70,13 +70,13 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging")
 
     // Firebase Cloud Messaging (Kotlin)
-    implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.firebase:firebase-messaging")
 
     // For an optimal experience using FCM, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
     implementation("com.google.firebase:firebase-analytics")
 
-    implementation("com.google.firebase:firebase-installations-ktx:17.2.0")
+    implementation("com.google.firebase:firebase-installations:17.2.0")
 
     implementation("androidx.work:work-runtime:2.8.1")
 
