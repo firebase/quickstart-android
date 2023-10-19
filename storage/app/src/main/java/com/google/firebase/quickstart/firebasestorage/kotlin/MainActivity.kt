@@ -21,8 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.Firebase
 import com.google.firebase.quickstart.firebasestorage.R
 import com.google.firebase.quickstart.firebasestorage.databinding.ActivityMainBinding
 import java.util.Locale

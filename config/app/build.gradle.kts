@@ -50,13 +50,10 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
 
-    // Firebase Remote Config (Java)
+    // Firebase Remote Config
     implementation("com.google.firebase:firebase-config")
-
-    // Firebase Remote Config (Kotlin)
-    implementation("com.google.firebase:firebase-config-ktx")
 
     // For an optimal experience using Remote Config, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.

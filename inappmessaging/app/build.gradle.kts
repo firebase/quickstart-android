@@ -52,22 +52,16 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
 
-    // FIAM (Java)
+    // FIAM
     implementation("com.google.firebase:firebase-inappmessaging-display")
 
-    // FIAM (Kotlin)
-    implementation("com.google.firebase:firebase-inappmessaging-display-ktx")
-
     // The Firebase SDK for Google Analytics is required to use In-App Messaging
-    // Analytics (Java)
+    // Analytics
     implementation("com.google.firebase:firebase-analytics")
 
-    // Analytics (Kotlin)
-    implementation("com.google.firebase:firebase-analytics-ktx")
-
-    implementation("com.google.firebase:firebase-installations-ktx:17.1.4")
+    implementation("com.google.firebase:firebase-installations:17.2.0")
 
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

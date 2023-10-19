@@ -16,8 +16,8 @@ import com.bumptech.glide.request.target.Target
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.perf.ktx.performance
+import com.google.firebase.Firebase
+import com.google.firebase.perf.performance
 import com.google.firebase.perf.metrics.Trace
 import com.google.firebase.quickstart.perfmon.R
 import com.google.firebase.quickstart.perfmon.databinding.ActivityMainBinding

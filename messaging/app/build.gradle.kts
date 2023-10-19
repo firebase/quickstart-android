@@ -64,21 +64,22 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
 
-    // Firebase Cloud Messaging (Java)
+    // Firebase Cloud Messaging
     implementation("com.google.firebase:firebase-messaging")
-
-    // Firebase Cloud Messaging (Kotlin)
-    implementation("com.google.firebase:firebase-messaging-ktx")
 
     // For an optimal experience using FCM, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
     implementation("com.google.firebase:firebase-analytics")
 
-    implementation("com.google.firebase:firebase-installations-ktx:17.1.4")
+    implementation("com.google.firebase:firebase-installations:17.2.0")
 
     implementation("androidx.work:work-runtime:2.8.1")
+
+    // Needed to fix the error:
+    // Cannot access class 'com.google.common.util.concurrent.ListenableFuture'
+    implementation("com.google.guava:guava:32.1.3-android")
 
     // Testing dependencies
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.auth
 import com.google.firebase.example.fireeats.databinding.DialogRatingBinding
 import com.google.firebase.example.fireeats.kotlin.model.Rating
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
 
 /**
  * Dialog Fragment containing rating form.

@@ -13,9 +13,9 @@ import android.telephony.TelephonyManager
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.crashlytics.ktx.setCustomKeys
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.crashlytics.crashlytics
+import com.google.firebase.crashlytics.setCustomKeys
+import com.google.firebase.Firebase
 import kotlinx.coroutines.internal.synchronized
 
 /**

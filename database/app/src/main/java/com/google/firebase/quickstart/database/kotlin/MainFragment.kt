@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.Firebase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.databinding.FragmentMainBinding
 import com.google.firebase.quickstart.database.kotlin.listfragments.MyPostsFragment

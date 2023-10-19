@@ -56,10 +56,10 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.8.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
 
-    // Firebase Crashlytics (Kotlin)
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    // Firebase Crashlytics
+    implementation("com.google.firebase:firebase-crashlytics")
 
     // For an optimal experience using Crashlytics, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
