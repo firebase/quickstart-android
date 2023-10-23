@@ -55,7 +55,7 @@ tasks.register<JavaExec>("ktlintCheck") {
 }
 
 fun isNonStable(candidate: ModuleComponentIdentifier): Boolean {
-    return listOf("alpha", "beta", "rc", "snapshot", "-m").any { keyword ->
+    return listOf("alpha", "beta", "rc", "snapshot", "-m", "final").any { keyword ->
         keyword in candidate.version.lowercase()
     }
 }
