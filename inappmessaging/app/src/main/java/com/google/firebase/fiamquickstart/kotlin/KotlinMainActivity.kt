@@ -5,13 +5,13 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.fiamquickstart.R
 import com.google.firebase.fiamquickstart.databinding.ActivityMainBinding
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.inappmessaging.inAppMessaging
 import com.google.firebase.installations.installations
 import com.google.firebase.Firebase
+import com.google.firebase.analytics.analytics
 
 class KotlinMainActivity : AppCompatActivity() {
 
@@ -23,7 +23,7 @@ class KotlinMainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        firebaseAnalytics = com.google.firebase.ktx.Firebase.analytics
+        firebaseAnalytics = Firebase.analytics
         firebaseIam = Firebase.inAppMessaging
 
         firebaseIam.isAutomaticDataCollectionEnabled = true
