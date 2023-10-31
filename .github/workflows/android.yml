@@ -14,6 +14,8 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: 17
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
     - name: Check Snippets
       run: python scripts/checksnippets.py
     - name: Copy mock google_services.json
@@ -22,5 +24,5 @@ jobs:
       run: ./build_pull_request.sh
       if: github.event_name == 'pull_request'
     - name: Build with Gradle (Push)
-      run: ./gradlew clean ktlint build
+      run: ./gradlew clean ktlint assemble
       if: github.event_name != 'pull_request'
