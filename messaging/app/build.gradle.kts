@@ -75,7 +75,7 @@ dependencies {
 
     implementation("com.google.firebase:firebase-installations:17.2.0")
 
-    implementation("androidx.work:work-runtime:2.8.1")
+    implementation("androidx.work:work-runtime:2.9.0")
 
     // Testing dependencies
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
