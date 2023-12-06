@@ -55,7 +55,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
 
-    implementation("com.google.android.gms:play-services-ads:22.5.0")
+    implementation("com.google.android.gms:play-services-ads:22.6.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
