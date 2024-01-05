@@ -66,7 +66,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
     // For use in the CustomKeySamples -- for testing Google Api Availability.
-    implementation("com.google.android.gms:play-services-base:18.2.0")
+    implementation("com.google.android.gms:play-services-base:18.3.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
