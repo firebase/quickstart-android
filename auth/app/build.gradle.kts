@@ -55,11 +55,11 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.1.0")
     implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
 
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
