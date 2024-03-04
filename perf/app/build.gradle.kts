@@ -66,7 +66,7 @@ dependencies {
     // Firebase Performance Monitoring
     implementation("com.google.firebase:firebase-perf")
 
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
