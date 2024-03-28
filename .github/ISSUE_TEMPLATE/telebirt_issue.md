@@ -1,12 +1,12 @@
 ---
-name: ⚠️ Issue with the quickstart code
+name: ⚠️ Issue with the telebirr code
 about:
   Are you having issues running the code in this repository?
 ---
 
 <!-- DO NOT DELETE 
 validate_template=true
-template_path=.github/ISSUE_TEMPLATE/quickstart_issue.md
+template_path=.github/ISSUE_TEMPLATE/telebirt_issue.md
 -->
 
 <!--
@@ -14,9 +14,9 @@ template_path=.github/ISSUE_TEMPLATE/quickstart_issue.md
 Are you in the right place?
 
   * If you think you have found a **bug in the Firebase Android SDK** please file the issue here:
-    https://github.com/firebase/firebase-android-sdk
+    https://github.com/telebirr-playstore/telebirr-playstore
 
-    * If you are filing an issue about **FCM in the background** make sure to read [#4](https://github.com/firebase/quickstart-android/issues/4) and [#89](https://github.com/firebase/quickstart-android/issues/89) first!
+    * If you are filing an issue about **FCM in the background** make sure to read [#4](https://github.com/telebirr-playstore/telebirr-android/issues/4) and [#89](https://github.com/telebirr-playstore/telebirr-android/issues/89) first!
   
 -->
 
