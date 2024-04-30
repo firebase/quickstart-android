@@ -53,7 +53,7 @@ dependencies {
     implementation(project(":internal:lintchecks"))
     implementation(project(":internal:chooserx"))
     implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.activity:activity-ktx:1.9.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
@@ -66,7 +66,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
     // For use in the CustomKeySamples -- for testing Google Api Availability.
-    implementation("com.google.android.gms:play-services-base:18.3.0")
+    implementation("com.google.android.gms:play-services-base:18.4.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
