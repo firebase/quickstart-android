@@ -63,15 +63,15 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
 
     // Google Play services
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("com.google.android.gms:play-services-auth:21.1.0")
 
     // FirebaseUI (for authentication)
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
 
     // Support Libs
-    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.1.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.browser:browser:1.5.0")

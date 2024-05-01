@@ -51,7 +51,7 @@ dependencies {
     implementation(project(":internal:lintchecks"))
     implementation("androidx.multidex:multidex:2.0.1")
 
-    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.1.0")
     implementation("com.google.android.material:material:1.11.0")
@@ -65,7 +65,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
 
     // Google Identity Services SDK (only required for Auth with Google)
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("com.google.android.gms:play-services-auth:21.1.0")
 
     // Firebase UI
     // Used in FirebaseUIActivity.
