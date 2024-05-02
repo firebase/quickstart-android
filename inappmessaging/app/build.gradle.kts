@@ -47,12 +47,12 @@ dependencies {
     implementation(project(":internal:lintchecks"))
     implementation(project(":internal:chooserx"))
 
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.multidex:multidex:2.0.1")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
 
     // FIAM
     implementation("com.google.firebase:firebase-inappmessaging-display")
@@ -61,7 +61,7 @@ dependencies {
     // Analytics
     implementation("com.google.firebase:firebase-analytics")
 
-    implementation("com.google.firebase:firebase-installations:17.2.0")
+    implementation("com.google.firebase:firebase-installations:18.0.0")
 
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
