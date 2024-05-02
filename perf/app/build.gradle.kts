@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.perfmon"
-        minSdk = 19
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

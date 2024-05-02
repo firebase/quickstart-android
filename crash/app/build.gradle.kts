@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId = "com.google.samples.quickstart.crash"
-        minSdk = 19
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
