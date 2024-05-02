@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.deeplinks"
-        minSdk = 19
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -59,10 +59,10 @@ dependencies {
     implementation(project(":internal:lintchecks"))
     implementation(project(":internal:chooserx"))
 
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
 
     // Firebase Dynamic Links
     implementation("com.google.firebase:firebase-dynamic-links")
