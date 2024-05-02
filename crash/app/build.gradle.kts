@@ -47,6 +47,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    // TODO(thatfiredev): Investigate why this is needed in M147
+    //   (this is not Crashlytics specific)
+    packaging {
+        resources.excludes.add("META-INF/kotlinx_coroutines_core.version")
+    }
 }
 
 dependencies {
