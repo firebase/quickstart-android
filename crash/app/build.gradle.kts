@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId = "com.google.samples.quickstart.crash"
-        minSdk = 19
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -56,7 +56,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.9.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
 
     // Firebase Crashlytics
     implementation("com.google.firebase:firebase-crashlytics")
