@@ -111,7 +111,7 @@ fun FunctionChatBubbleItem(
     chatMessage: FunctionsChatMessage
 ) {
     val isModelMessage = chatMessage.participant == Participant.MODEL ||
-            chatMessage.participant == Participant.ERROR
+        chatMessage.participant == Participant.ERROR
 
     val backgroundColor = when (chatMessage.participant) {
         Participant.MODEL -> MaterialTheme.colorScheme.primaryContainer
@@ -187,7 +187,7 @@ fun FunctionMessageInput(
                 label = { Text(stringResource(R.string.chat_label)) },
                 onValueChange = { userMessage = it },
                 keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.Sentences,
+                    capitalization = KeyboardCapitalization.Sentences
                 ),
                 modifier = Modifier
                     .align(Alignment.CenterVertically)

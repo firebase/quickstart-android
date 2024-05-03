@@ -64,8 +64,8 @@ import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.google.firebase.quickstart.vertexai.GenerativeViewModelFactory
 import coil.size.Precision
+import com.google.firebase.quickstart.vertexai.GenerativeViewModelFactory
 import com.google.firebase.quickstart.vertexai.R
 import com.google.firebase.quickstart.vertexai.util.UriSaver
 import kotlinx.coroutines.launch
@@ -147,7 +147,7 @@ fun PhotoReasoningScreen(
                 ) {
                     Icon(
                         Icons.Rounded.Add,
-                        contentDescription = stringResource(R.string.add_image),
+                        contentDescription = stringResource(R.string.add_image)
                     )
                 }
                 OutlinedTextField(

@@ -19,7 +19,6 @@ package com.google.firebase.quickstart.vertexai.feature.functioncalling
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.vertexai.GenerativeModel
-import com.google.firebase.vertexai.type.FunctionCallPart
 import com.google.firebase.vertexai.type.FunctionResponsePart
 import com.google.firebase.vertexai.type.InvalidStateException
 import com.google.firebase.vertexai.type.asTextOrNull
@@ -34,23 +33,30 @@ class FunctionsChatViewModel(
 ) : ViewModel() {
     private val chat = generativeModel.startChat(
         history = listOf(
-            content(role = "user") { text("Hello, what can you do?.") },
-            content(role = "model") { text("Great to meet you. I can return the upper case version of the text you send me") }
+            content(role = "user") {
+                text("Hello, what can you do?.")
+            },
+            content(role = "model") {
+                text("Great to meet you. I can return the upper case version of the text you send me")
+            }
         )
     )
 
     private val _uiState: MutableStateFlow<FunctionsChatUiState> =
-        MutableStateFlow(FunctionsChatUiState(chat.history.map { content ->
-            // Map the initial messages
-            FunctionsChatMessage(
-                text = content.parts.first().asTextOrNull() ?: "",
-                participant = if (content.role == "user") Participant.USER else Participant.MODEL,
-                isPending = false
+        MutableStateFlow(
+            FunctionsChatUiState(
+                chat.history.map { content ->
+                    // Map the initial messages
+                    FunctionsChatMessage(
+                        text = content.parts.first().asTextOrNull() ?: "",
+                        participant = if (content.role == "user") Participant.USER else Participant.MODEL,
+                        isPending = false
+                    )
+                }
             )
-        }))
+        )
     val uiState: StateFlow<FunctionsChatUiState> =
         _uiState.asStateFlow()
-
 
     fun sendMessage(userMessage: String) {
         // Add a pending message
@@ -71,13 +77,17 @@ class FunctionsChatViewModel(
                     val matchingFunction =
                         generativeModel.tools?.flatMap { it.functionDeclarations }
                             ?.first { it.name == response.functionCall?.name }
-                            ?: throw InvalidStateException("Model requested nonexistent function \"${response.functionCall?.name}\" ")
+                            ?: throw InvalidStateException(
+                                "Model requested nonexistent function \"${response.functionCall?.name}\" "
+                            )
 
                     val funResult = matchingFunction.execute(response.functionCall!!)
 
-                    response = chat.sendMessage(content(role = "function") {
-                        part(FunctionResponsePart("output", funResult))
-                    })
+                    response = chat.sendMessage(
+                        content(role = "function") {
+                            part(FunctionResponsePart("output", funResult))
+                        }
+                    )
                 }
 
                 _uiState.value.replaceLastPendingMessage()

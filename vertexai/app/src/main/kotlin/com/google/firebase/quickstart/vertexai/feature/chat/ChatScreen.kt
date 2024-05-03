@@ -52,13 +52,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.quickstart.vertexai.GenerativeViewModelFactory
 import com.google.firebase.quickstart.vertexai.R
-import com.google.firebase.quickstart.vertexai.ui.theme.GenerativeAISample
 import kotlinx.coroutines.launch
 
 @Composable
@@ -114,7 +111,7 @@ fun ChatBubbleItem(
     chatMessage: ChatMessage
 ) {
     val isModelMessage = chatMessage.participant == Participant.MODEL ||
-            chatMessage.participant == Participant.ERROR
+        chatMessage.participant == Participant.ERROR
 
     val backgroundColor = when (chatMessage.participant) {
         Participant.MODEL -> MaterialTheme.colorScheme.primaryContainer
@@ -190,7 +187,7 @@ fun MessageInput(
                 label = { Text(stringResource(R.string.chat_label)) },
                 onValueChange = { userMessage = it },
                 keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.Sentences,
+                    capitalization = KeyboardCapitalization.Sentences
                 ),
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
