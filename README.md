@@ -35,6 +35,7 @@ the sample you wish to run.
 - [ML Kit Translate](mlkit-translate/README.md)
 - [Performance Monitoring](perf/README.md)
 - [Storage](storage/README.md)
+- [Vertex AI](vertexai/README.md)
 
 ## How to make contributions?
 Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
