@@ -73,15 +73,18 @@ class FunctionsChatViewModel(
                 var response =
                     chat.sendMessage("What would be the uppercase representation of the following text: $userMessage")
 
-                if (response.functionCall != null) {
+                // Getting the first matched function call
+                val firstFunctionCall = response.functionCalls.firstOrNull()
+
+                if (firstFunctionCall != null) {
                     val matchingFunction =
                         generativeModel.tools?.flatMap { it.functionDeclarations }
-                            ?.first { it.name == response.functionCall?.name }
+                            ?.first { it.name == firstFunctionCall.name }
                             ?: throw InvalidStateException(
-                                "Model requested nonexistent function \"${response.functionCall?.name}\" "
+                                "Model requested nonexistent function \"${firstFunctionCall.name}\" "
                             )
 
-                    val funResult = matchingFunction.execute(response.functionCall!!)
+                    val funResult = matchingFunction.execute(firstFunctionCall)
 
                     response = chat.sendMessage(
                         content(role = "function") {
