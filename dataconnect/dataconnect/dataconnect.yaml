@@ -1,0 +1,10 @@
+specVersion: "v1alpha"
+serviceId: "dataconnect"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "postgres"
+      cloudSql:
+        instanceId: "cloud-sql-instance"
+connectorDirs: ["./connectors"]
