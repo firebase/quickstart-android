@@ -957,6 +957,25 @@
           "test_interstitial_ad_unit_id": "ca-app-pub-3940256099942544/1033173712"
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474448463284:android:c76572afd2f0ba8d97e8e1",
+        "android_client_info": {
+          "package_name": "com.google.firebase.quickstart.vertexai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPndbsEs_QWumL5_B0BpNLuMkvVSecvL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "client_info": [],
