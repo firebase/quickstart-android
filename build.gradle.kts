@@ -54,6 +54,10 @@ tasks.register<JavaExec>("ktlintCheck") {
     jvmArgs("--add-opens=java.base/java.lang=ALL-UNNAMED")
 }
 
+fun notFromFirebase(candidate: ModuleComponentIdentifier): Boolean {
+    return candidate.group != "com.google.firebase"
+}
+
 fun isNonStable(candidate: ModuleComponentIdentifier): Boolean {
     return listOf("alpha", "beta", "rc", "snapshot", "-m", "final").any { keyword ->
         keyword in candidate.version.lowercase()
@@ -73,7 +77,7 @@ fun isBlockListed(candidate: ModuleComponentIdentifier): Boolean {
 
 tasks.withType<DependencyUpdatesTask> {
     rejectVersionIf {
-        isNonStable(candidate) || isBlockListed(candidate)
+        (isNonStable(candidate) && notFromFirebase(candidate)) || isBlockListed(candidate)
     }
 }
 
