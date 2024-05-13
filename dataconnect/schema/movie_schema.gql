@@ -1,0 +1,70 @@
+# Movies
+type Movie
+  @table(name: "Movies", singular: "movie", plural: "movies", key: ["id"]) {
+  id: UUID! @col(name: "movie_id") @default(expr: "uuidV4()")
+  title: String!
+  releaseYear: Int @col(name: "release_year")
+  genre: String
+  rating: Int @col(name: "rating")
+}
+# Movie Metadata
+# Movie - MovieMetadata is a one-to-one relationship
+type MovieMetadata
+  @table(
+    name: "MovieMetadata"
+  ) {
+  # @ref creates a field in the current table (MovieMetadata) that holds the primary key of the referenced type
+  # In this case, @ref(fields: "id") is implied
+  movie: Movie! @ref
+  # movieId: UUID <- this is created by the above @ref
+  director: String @col(name: "director")
+}
+# Actors
+# Suppose an actor can participate in multiple movies and movies can have multiple actors
+# Movie - Actors (or vice versa) is a many to many relationship
+type Actor @table(name: "Actors", singular: "actor", plural: "actors") {
+  id: UUID! @col(name: "actor_id") @default(expr: "uuidV4()")
+  name: String! @col(name: "name", dataType: "varchar(30)")
+}
+# Join table for many-to-many relationship for movies and actors
+# The 'key' param signifies the primary key(s) of this table
+# In this case, the keys are [movieId, actorId], the generated fields of the reference types [movie, actor]
+type MovieActor @table(key: ["movie", "actor"]) {
+  # @ref creates a field in the current table (MovieActor) that holds the primary key of the referenced type
+  # In this case, @ref(fields: "id") is implied
+  movie: Movie! @ref
+  # movieId: UUID! <- this is created by the above @ref, see: implicit.gql
+  actor: Actor! @ref
+  # actorId: UUID! <- this is created by the above @ref, see: implicit.gql
+  role: String! @col(name: "role") # "main" or "supporting"
+  # TODO: optional other fields
+}
+# Users
+# Suppose a user can leave reviews for movies
+# user:reviews is a one to many relationship, movie:reviews is a one to many relationship, movie:user is a many to many relationship
+type User
+  @table(name: "Users", singular: "user", plural: "users", key: ["id"]) {
+  id: UUID! @col(name: "user_id") @default(expr: "uuidV4()")
+  auth: String @col(name: "user_auth") @default(expr: "auth.uid")
+  username: String! @col(name: "username", dataType: "varchar(30)")
+  # The following are generated from the @ref in the Review table
+  # reviews_on_user
+  # movies_via_Review
+}
+# Reviews
+type Review @table(name: "Reviews", key: ["movie", "user"]) {
+  id: UUID! @col(name: "review_id") @default(expr: "uuidV4()")
+  user: User!
+  movie: Movie!
+  rating: Int
+  reviewText: String
+  reviewDate: Date! @default(expr: "request.time")
+}
+# Self Joins
+extend type Movie {
+    sequelTo: Movie
+}
+
+type Hello @table {
+    id: UUID!
+}

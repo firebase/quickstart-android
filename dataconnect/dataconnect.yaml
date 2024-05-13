@@ -1,0 +1,7 @@
+specVersion: v1alpha
+serviceId: local
+schema:
+  source: /schema
+connectorDirs: [
+  "./dataconnect/connectors",
+]

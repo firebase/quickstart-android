@@ -1,0 +1,6 @@
+connectorId: movies
+authMode: PUBLIC
+generate:
+  kotlinSdk:
+    outputDir: ../../app/build/generated/sources/com/google/firebase/dataconnect/movies
+    package: com.google.firebase.dataconnect.movies
