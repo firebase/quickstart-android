@@ -46,17 +46,17 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                     // Initialize a GenerativeModel with the `gemini-pro` AI model
                     // for text generation
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.0-pro",
+                        modelName = "gemini-1.5-pro-preview-0409",
                         generationConfig = config
                     )
                     SummarizeViewModel(generativeModel)
                 }
 
                 isAssignableFrom(PhotoReasoningViewModel::class.java) -> {
-                    // Initialize a GenerativeModel with the `gemini-pro-vision` AI model
+                    // Initialize a GenerativeModel with the `gemini-pro` AI model
                     // for multimodal text generation
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.0-pro-vision",
+                        modelName = "gemini-1.5-pro-preview-0409",
                         generationConfig = config
                     )
                     PhotoReasoningViewModel(generativeModel)
@@ -65,7 +65,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                 isAssignableFrom(ChatViewModel::class.java) -> {
                     // Initialize a GenerativeModel with the `gemini-pro` AI model for chat
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.0-pro",
+                        modelName = "gemini-1.5-pro-preview-0409",
                         generationConfig = config
                     )
                     ChatViewModel(generativeModel)
@@ -89,7 +89,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
 
                     // Initialize a GenerativeModel with the `gemini-pro` AI model for function calling chat
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.0-pro",
+                        modelName = "gemini-1.5-pro-preview-0409",
                         generationConfig = config,
                         tools = tools
                     )
