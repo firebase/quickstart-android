@@ -66,7 +66,7 @@ dependencies {
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
     
     // Google Play services
-    implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
