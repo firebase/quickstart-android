@@ -87,9 +87,9 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                         )
                     )
 
-                    // Initialize a GenerativeModel with the `gemini-flash` AI model for function calling chat
+                    // Initialize a GenerativeModel with the `gemini-pro` AI model for function calling chat
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.5-flash-preview-0514",
+                        modelName = "gemini-1.5-pro-preview-0514",
                         generationConfig = config,
                         tools = tools
                     )
