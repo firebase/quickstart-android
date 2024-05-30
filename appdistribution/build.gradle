@@ -2,6 +2,10 @@
 
 buildscript {
 
+    ext{
+        compose_version="1.6.7"
+    }
+
     repositories {
         mavenLocal()
         google()
