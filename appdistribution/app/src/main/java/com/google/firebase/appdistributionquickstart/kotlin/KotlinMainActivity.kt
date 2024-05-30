@@ -10,6 +10,8 @@ import com.google.firebase.ktx.Firebase
 
 class KotlinMainActivity : AppCompatActivity() {
 
+    var test = "test"
+
     private lateinit var firebaseAppDistribution: FirebaseAppDistribution
 
     override fun onCreate(savedInstanceState: Bundle?) {
