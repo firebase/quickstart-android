@@ -32,8 +32,14 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
+
+
     buildFeatures {
         viewBinding = true
+        compose = true
     }
     lint {
         warning.add("InvalidPackage")
@@ -51,6 +57,14 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.multidex:multidex:2.0.1")
+    implementation ("androidx.activity:activity-compose:1.9.0")
+
+    // Jetpack Compose
+    implementation ("androidx.compose.ui:ui:1.6.7")
+    implementation ("androidx.compose.material:material:1.6.7")
+    implementation ("androidx.compose.ui:ui-tooling-preview:1.6.7")
+    implementation ("androidx.activity:activity-compose:1.5.1")
+
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
@@ -61,6 +75,9 @@ dependencies {
     // For an optimal experience using App Distribution, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
     implementation("com.google.firebase:firebase-analytics")
+    implementation("androidx.compose.foundation:foundation-android:1.6.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose-android:2.8.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
 
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
