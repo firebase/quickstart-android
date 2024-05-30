@@ -48,7 +48,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
 
     // Cloud Storage for Firebase
     implementation("com.google.firebase:firebase-storage")
@@ -57,7 +57,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
 
     implementation("androidx.activity:activity-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
