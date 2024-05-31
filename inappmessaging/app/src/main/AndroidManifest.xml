@@ -10,16 +10,11 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.google.firebase.fiamquickstart.java.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme">
-        </activity>
-
+            android:name="com.google.firebase.fiamquickstart.java.MainActivity"/>
         <activity
-            android:name="com.google.firebase.fiamquickstart.kotlin.KotlinMainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:name="com.google.firebase.fiamquickstart.kotlin.KotlinMainActivity"/>
+        <activity
+            android:name="com.google.firebase.fiamquickstart.kotlin.ComposeMainActivity"/>
 
         <activity android:name="com.google.firebase.fiamquickstart.EntryChoiceActivity"
             android:exported="true">
