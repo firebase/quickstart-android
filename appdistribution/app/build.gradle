@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace 'com.google.firebase.appdistributionquickstart'
-    compileSdk 33
+    compileSdk 34
     defaultConfig {
         applicationId "com.google.firebase.appdistributionquickstart"
         minSdk 21 // minSdk would be 19 without compose
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -66,7 +66,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
 
     // ADD the SDK to the "prerelease" variant only (example)
-    implementation 'com.google.firebase:firebase-appdistribution-ktx:16.0.0-beta01'
+    implementation 'com.google.firebase:firebase-appdistribution:16.0.0-beta12'
 
     // For an optimal experience using App Distribution, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
@@ -77,6 +77,7 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.activity:activity-compose:1.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
 
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
