@@ -1,4 +1,4 @@
-connectorId: movie-connector
+connectorId: movies
 # Required. Accepted values are either "PUBLIC" or "ADMIN" (only "PUBLIC" for gated private
 # preview). If "ADMIN", the connector in this directory is an AdminConnector and its operations
 # are gated by IAM.
