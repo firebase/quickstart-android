@@ -87,7 +87,7 @@ fun MainAppView(
             Spacer(modifier = Modifier.height(30.dp))
             Image(
                 painterResource(R.drawable.firebase_lockup_400),
-                contentDescription = "",
+                contentDescription = "Firebase logo",
                 contentScale = ContentScale.Crop,
             )
             Text(

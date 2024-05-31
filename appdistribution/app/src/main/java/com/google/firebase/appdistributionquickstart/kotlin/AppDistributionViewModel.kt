@@ -17,7 +17,6 @@ class AppDistributionViewModel(
 
         // Used to inject this ViewModel's dependencies
         // See also: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories
-
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(
