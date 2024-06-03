@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Firebase Data Connect</string>
+
+    <!-- NavBar labels -->
+    <string name="label_movies">Movies</string>
+    <string name="label_genres">Genres</string>
+    <string name="label_search">Search</string>
+    <string name="label_profile">Profile</string>
 </resources>
