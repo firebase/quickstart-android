@@ -1,5 +1,6 @@
 [versions]
 agp = "8.4.0"
+coilCompose = "2.6.0"
 firebaseAuth = "23.0.0"
 firebaseDataConnect = "16.0.0-alpha03"
 kotlin = "1.9.23"
@@ -15,7 +16,9 @@ composeNavigation = "2.7.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime-compose-android = { module = "androidx.lifecycle:lifecycle-runtime-compose-android", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-android = { module = "androidx.lifecycle:lifecycle-viewmodel-android", version.ref = "lifecycle" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
 firebase-dataconnect = { module = "com.google.firebase:firebase-dataconnect", version.ref = "firebaseDataConnect" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

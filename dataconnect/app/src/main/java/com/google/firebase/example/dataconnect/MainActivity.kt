@@ -1,7 +1,6 @@
 package com.google.firebase.example.dataconnect
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,16 +19,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.dataconnect.movies.MoviesConnector
-import com.google.firebase.dataconnect.movies.execute
-import com.google.firebase.dataconnect.movies.instance
 import com.google.firebase.example.dataconnect.feature.genres.GENRES_ROUTE
 import com.google.firebase.example.dataconnect.feature.genres.genresScreen
 import com.google.firebase.example.dataconnect.feature.movies.MOVIES_ROUTE
@@ -40,8 +35,6 @@ import com.google.firebase.example.dataconnect.feature.profile.profileScreen
 import com.google.firebase.example.dataconnect.feature.search.SEARCH_ROUTE
 import com.google.firebase.example.dataconnect.feature.search.searchScreen
 import com.google.firebase.example.dataconnect.ui.theme.FirebaseDataConnectTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,23 +105,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-        }
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            val connector = MoviesConnector.instance
-
-            val response = connector.listMovies.execute()
-//            val response = connector.createMovie.execute(
-//                title = "Empire Strikes Back",
-//                releaseYear = 1980,
-//                genre = "Sci-Fi",
-//                imageUrl = ""
-//            ) {
-//                description = "Hello World"
-//                tags = emptyList()
-//                rating = 0.0
-//            }
-            Log.e("Main", "$response")
         }
     }
 }

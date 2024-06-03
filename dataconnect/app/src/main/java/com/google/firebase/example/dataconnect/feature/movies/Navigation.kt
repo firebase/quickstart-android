@@ -14,7 +14,7 @@ fun NavGraphBuilder.moviesScreen(
 
 ) {
     composable(route = MOVIES_ROUTE) {
-        // TODO: Add Movies composable
+        MoviesScreen()
     }
 }
 

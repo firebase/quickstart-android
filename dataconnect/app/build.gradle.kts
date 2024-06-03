@@ -66,6 +66,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.compose.navigation)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
+    implementation(libs.coil.compose)
 
     // Firebase dependencies
     implementation(libs.firebase.auth)
