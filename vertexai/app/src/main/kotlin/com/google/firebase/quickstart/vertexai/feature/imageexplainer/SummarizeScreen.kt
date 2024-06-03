@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.vertexai.feature.text
+package com.google.firebase.quickstart.vertexai.feature.imageexplainer
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -43,31 +40,35 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.firebase.quickstart.vertexai.GenerativeViewModelFactory
+import coil.compose.AsyncImage
+import com.google.firebase.Firebase
 import com.google.firebase.quickstart.vertexai.R
 import com.google.firebase.quickstart.vertexai.ui.theme.GenerativeAISample
+import com.google.firebase.storage.storage
 
 @Composable
 internal fun SummarizeRoute(
-    summarizeViewModel: SummarizeViewModel = viewModel(factory = GenerativeViewModelFactory)
+    summarizeViewModel: ImageViewModel = viewModel()
 ) {
     val summarizeUiState by summarizeViewModel.uiState.collectAsState()
 
-    SummarizeScreen(summarizeUiState, onSummarizeClicked = { inputText ->
-        summarizeViewModel.summarize(inputText)
+    SummarizeScreen(summarizeUiState, onSummarizeClicked = { textPrompt ->
+        val storageRef = Firebase.storage.getReference("marc_rebillet_io.jpeg")
+        summarizeViewModel.explainImage(storageRef, textPrompt)
     })
 }
 
 @Composable
 fun SummarizeScreen(
-    uiState: SummarizeUiState = SummarizeUiState.Loading,
-    onSummarizeClicked: (String) -> Unit = {}
+    uiState: ImageUiState = ImageUiState.Loading,
+    onSummarizeClicked: (textPrompt: String) -> Unit = { }
 ) {
     var textToSummarize by rememberSaveable { mutableStateOf("") }
 
@@ -81,6 +82,22 @@ fun SummarizeScreen(
                 .fillMaxWidth(),
             shape = MaterialTheme.shapes.large
         ) {
+            AsyncImage(
+                model = "https://firebasestorage.googleapis.com/v0/b/vertex-ai-devrel.appspot.com/o/marc_rebillet_io.jpeg?alt=media&token=fadb4450-21c6-438b-97d6-d14522b0fe7b",
+                contentDescription = "",
+                modifier = Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            )
+            Text(
+                text = "(Image loaded from Cloud Storage for Firebase)",
+                style = MaterialTheme.typography.bodySmall,
+                fontStyle = FontStyle.Italic,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top = 4.dp)
+            )
             OutlinedTextField(
                 value = textToSummarize,
                 label = { Text(stringResource(R.string.summarize_label)) },
@@ -105,11 +122,11 @@ fun SummarizeScreen(
         }
 
         when (uiState) {
-            SummarizeUiState.Initial -> {
+            ImageUiState.Initial -> {
                 // Nothing is shown
             }
 
-            SummarizeUiState.Loading -> {
+            ImageUiState.Loading -> {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
@@ -120,7 +137,7 @@ fun SummarizeScreen(
                 }
             }
 
-            is SummarizeUiState.Success -> {
+            is ImageUiState.Success -> {
                 Card(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
@@ -135,18 +152,8 @@ fun SummarizeScreen(
                             .padding(all = 16.dp)
                             .fillMaxWidth()
                     ) {
-                        Icon(
-                            Icons.Outlined.Person,
-                            contentDescription = "Person Icon",
-                            tint = MaterialTheme.colorScheme.onSecondary,
-                            modifier = Modifier
-                                .requiredSize(36.dp)
-                                .drawBehind {
-                                    drawCircle(color = Color.White)
-                                }
-                        )
                         Text(
-                            text = uiState.outputText, // TODO(thatfiredev): Figure out Markdown support
+                            text = uiState.outputText,
                             color = MaterialTheme.colorScheme.onSecondary,
                             modifier = Modifier
                                 .padding(start = 16.dp)
@@ -156,7 +163,7 @@ fun SummarizeScreen(
                 }
             }
 
-            is SummarizeUiState.Error -> {
+            is ImageUiState.Error -> {
                 Card(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)

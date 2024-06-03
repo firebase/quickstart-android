@@ -17,26 +17,45 @@
 package com.google.firebase.quickstart.vertexai
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.quickstart.vertexai.feature.chat.ChatRoute
-import com.google.firebase.quickstart.vertexai.feature.functioncalling.FunctionsChatRoute
-import com.google.firebase.quickstart.vertexai.feature.multimodal.PhotoReasoningRoute
-import com.google.firebase.quickstart.vertexai.feature.text.SummarizeRoute
+import com.google.firebase.Firebase
+import com.google.firebase.appcheck.appCheck
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
+import com.google.firebase.auth.auth
+import com.google.firebase.quickstart.vertexai.feature.imageexplainer.SummarizeRoute
 import com.google.firebase.quickstart.vertexai.ui.theme.GenerativeAISample
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        lifecycleScope.launch(Dispatchers.IO) {
+            Firebase.appCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance())
+            val firebaseUser = Firebase.auth.currentUser
+            if (firebaseUser == null) {
+                try {
+                    val result = Firebase.auth.signInAnonymously().await()
+                    Log.w("Main", "result=${result.user}")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            Log.w("Main", "FirebaseUser = $${firebaseUser?.uid}")
+        }
         setContent {
             GenerativeAISample {
                 // A surface container using the 'background' color from the theme
@@ -46,23 +65,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
-                    NavHost(navController = navController, startDestination = "menu") {
-                        composable("menu") {
-                            MenuScreen(onItemClicked = { routeId ->
-                                navController.navigate(routeId)
-                            })
-                        }
+                    NavHost(navController = navController, startDestination = "summarize") {
                         composable("summarize") {
                             SummarizeRoute()
-                        }
-                        composable("photo_reasoning") {
-                            PhotoReasoningRoute()
-                        }
-                        composable("chat") {
-                            ChatRoute()
-                        }
-                        composable("functions_chat") {
-                            FunctionsChatRoute()
                         }
                     }
                 }

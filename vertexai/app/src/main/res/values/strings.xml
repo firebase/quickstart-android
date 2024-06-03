@@ -13,8 +13,8 @@
      limitations under the License.
 -->
 <resources>
-    <string name="app_name">Firebase Vertex AI Sample App</string>
-    <string name="action_go">Go</string>
+    <string name="app_name">Vertex AI for Firebase Sample App</string>
+    <string name="action_go">Ask</string>
     <string name="action_try">Try it</string>
 
     <!-- Menu strings -->
@@ -26,8 +26,8 @@
     <string name="menu_chat_description">Sample app demonstrating a conversational UI</string>
 
     <!-- Summarize sample strings -->
-    <string name="summarize_label">Text</string>
-    <string name="summarize_hint">Enter text to summarize</string>
+    <string name="summarize_label">Question</string>
+    <string name="summarize_hint">Ask any question about the shown image</string>
 
     <!-- Photo Reasoning sample strings -->
     <string name="reason_label">Question</string>

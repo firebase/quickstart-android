@@ -14,34 +14,34 @@
  * limitations under the License.
  */
 
-package com.google.firebase.quickstart.vertexai.feature.text
+package com.google.firebase.quickstart.vertexai.feature.imageexplainer
 
 /**
  * A sealed hierarchy describing the state of the text generation.
  */
-sealed interface SummarizeUiState {
+sealed interface ImageUiState {
 
     /**
      * Empty state when the screen is first shown
      */
-    data object Initial : SummarizeUiState
+    data object Initial : ImageUiState
 
     /**
      * Still loading
      */
-    data object Loading : SummarizeUiState
+    data object Loading : ImageUiState
 
     /**
      * Text has been generated
      */
     data class Success(
         val outputText: String
-    ) : SummarizeUiState
+    ) : ImageUiState
 
     /**
      * There was an error generating text
      */
     data class Error(
         val errorMessage: String
-    ) : SummarizeUiState
+    ) : ImageUiState
 }
