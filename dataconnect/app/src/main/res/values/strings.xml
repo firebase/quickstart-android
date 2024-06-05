@@ -6,4 +6,8 @@
     <string name="label_genres">Genres</string>
     <string name="label_search">Search</string>
     <string name="label_profile">Profile</string>
+
+    <!-- Movies Screen -->
+    <string name="title_top_10_movies">Top 10 Movies</string>
+    <string name="title_latest_movies">Latest Movies</string>
 </resources>
