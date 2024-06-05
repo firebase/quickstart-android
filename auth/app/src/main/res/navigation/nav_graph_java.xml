@@ -50,6 +50,10 @@
             android:id="@+id/action_passwordless"
             app:destination="@id/PasswordlessActivity" />
 
+        <action
+            android:id="@+id/action_passkeys"
+            app:destination="@id/PassKeysAuthFragment" />
+
     </fragment>
 
     <fragment
@@ -142,5 +146,10 @@
         android:id="@+id/PasswordlessActivity"
         android:name="com.google.firebase.quickstart.auth.java.PasswordlessActivity"
         tools:layout="@layout/activity_passwordless"/>
+
+    <fragment
+        android:id="@+id/PassKeysAuthFragment"
+        android:name="com.google.firebase.quickstart.auth.java.PasskeysAuthFragment"
+        tools:layout="@layout/fragment_passkeys_auth"/>
 
 </navigation>

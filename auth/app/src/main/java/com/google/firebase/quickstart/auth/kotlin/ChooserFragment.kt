@@ -98,6 +98,7 @@ class ChooserFragment : Fragment() {
             R.id.action_customauth,
             R.id.action_genericidp,
             R.id.action_mfa,
+            R.id.action_passkeys,
         )
         private val CLASS_NAMES = arrayOf(
             "GoogleSignInFragment",
@@ -110,6 +111,7 @@ class ChooserFragment : Fragment() {
             "CustomAuthFragment",
             "GenericIdpFragment",
             "MultiFactorFragment",
+            "PasskeysAuthFragment",
         )
         private val DESCRIPTION_IDS = intArrayOf(
             R.string.desc_google_sign_in,
@@ -122,6 +124,7 @@ class ChooserFragment : Fragment() {
             R.string.desc_custom_auth,
             R.string.desc_generic_idp,
             R.string.desc_multi_factor,
+            R.string.desc_passkeys,
         )
     }
 }

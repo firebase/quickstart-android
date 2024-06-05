@@ -107,4 +107,14 @@
     <string name="error_sign_in_failed">Sign in failed, see logs for details.</string>
     <string name="multi_factor_signed_out">You are not signed in. To use this sample, first navigate to the Email/Password example to sign in and then return here to enroll in multi-factor auth.</string>
 
+    <string name="passkeys_title">Passkeys Authentication</string>
+
+    <string name="sign_in_with_passkey_button">SignIn with passkey</string>
+    <string name="enroll_passkey_for_user_button">Enroll passkey for current user</string>
+    <string name="unenroll_passkey_for_user_button">Unenroll an existing passkey for user</string>
+    <string name="unenroll_credential_id">Credential id to unenroll a user</string>
+    <string name="get_enrolled_passkeys_for_user_button">Get all passkeys enrolled for current user</string>
+    <string name="unenroll_all_passkeys_for_user_button">Unenroll all existing passkeys for this user</string>
+    <string name="no_passkeys_found">No existing passkeys for this user</string>
+    <string name="desc_passkeys">Use Passkeys for authentication. Note: this feature is only available in Private Preview.</string>
 </resources>

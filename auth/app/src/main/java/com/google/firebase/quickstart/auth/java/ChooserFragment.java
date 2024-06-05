@@ -60,6 +60,7 @@ public class ChooserFragment extends Fragment {
             R.id.action_customauth,
             R.id.action_genericidp,
             R.id.action_mfa,
+            R.id.action_passkeys,
     };
 
     private static final String [] CLASS_NAMES = new String[] {
@@ -73,6 +74,7 @@ public class ChooserFragment extends Fragment {
             "CustomAuthFragment",
             "GenericIdpFragment",
             "MultiFactorFragment",
+            "PasskeysAuthFragment",
     };
 
     private static final int[] DESCRIPTION_IDS = new int[] {
@@ -86,6 +88,7 @@ public class ChooserFragment extends Fragment {
             R.string.desc_custom_auth,
             R.string.desc_generic_idp,
             R.string.desc_multi_factor,
+            R.string.desc_passkeys,
     };
 
     private FragmentChooserBinding mBinding;
