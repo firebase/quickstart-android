@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +21,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -51,8 +54,10 @@ fun MoviesScreen(
             Text(uiState.errorMessage)
         }
         is MoviesUIState.Success -> {
+            val scrollState = rememberScrollState()
             Column(
                 modifier = Modifier.padding(16.dp)
+                    .verticalScroll(scrollState)
             ) {
                 Text(
                     text = stringResource(R.string.title_top_10_movies),
@@ -78,22 +83,25 @@ fun HorizontalMovieList(
     LazyRow {
         items(movies) { movie ->
             Card(
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier
+                    .padding(4.dp)
                     .fillParentMaxWidth(0.3f),
             ) {
                 AsyncImage(
                     model = movie.imageUrl,
                     contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
                     text = movie.title,
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(8.dp)
+                    modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
                 )
                 Text(
                     text = "Rating: ${movie.rating}",
-                    modifier = Modifier.padding(bottom = 8.dp, start = 8.dp)
+                    modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         }

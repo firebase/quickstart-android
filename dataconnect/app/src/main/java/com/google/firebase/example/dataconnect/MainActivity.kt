@@ -27,6 +27,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.example.dataconnect.feature.genredetail.genreDetailScreen
+import com.google.firebase.example.dataconnect.feature.genredetail.navigateToGenreDetail
 import com.google.firebase.example.dataconnect.feature.genres.GENRES_ROUTE
 import com.google.firebase.example.dataconnect.feature.genres.genresScreen
 import com.google.firebase.example.dataconnect.feature.genres.navigateToGenres
@@ -59,7 +61,7 @@ class MainActivity : ComponentActivity() {
                                 label = { Text(stringResource(R.string.label_movies)) },
                                 selected = isRouteSelected(currentDestination, MOVIES_ROUTE),
                                 onClick = {
-                                    navController.navigateToMovies { }
+                                    navController.navigateToMovies { launchSingleTop = true }
                                 }
                             )
                             NavigationBarItem(
@@ -67,7 +69,7 @@ class MainActivity : ComponentActivity() {
                                 label = { Text(stringResource(R.string.label_genres)) },
                                 selected = isRouteSelected(currentDestination, GENRES_ROUTE),
                                 onClick = {
-                                    navController.navigateToGenres { }
+                                    navController.navigateToGenres { launchSingleTop = true }
                                 }
                             )
                             NavigationBarItem(
@@ -75,7 +77,7 @@ class MainActivity : ComponentActivity() {
                                 label = { Text(stringResource(R.string.label_search)) },
                                 selected = isRouteSelected(currentDestination, SEARCH_ROUTE),
                                 onClick = {
-                                    navController.navigateToSearch {  }
+                                    navController.navigateToSearch { launchSingleTop = true }
                                 }
                             )
                             NavigationBarItem(
@@ -83,7 +85,7 @@ class MainActivity : ComponentActivity() {
                                 label = { Text(stringResource(R.string.label_profile)) },
                                 selected = isRouteSelected(currentDestination, PROFILE_ROUTE),
                                 onClick = {
-                                    navController.navigateToProfile {  }
+                                    navController.navigateToProfile { launchSingleTop = true }
                                 }
                             )
                         }
@@ -96,7 +98,14 @@ class MainActivity : ComponentActivity() {
                             .consumeWindowInsets(innerPadding),
                     ) {
                         moviesScreen()
-                        genresScreen()
+                        genresScreen(
+                            onGenreClicked = { genre ->
+                                navController.navigateToGenreDetail(genre) {
+                                    launchSingleTop = true
+                                }
+                            }
+                        )
+                        genreDetailScreen()
                         searchScreen()
                         profileScreen()
                     }
@@ -107,4 +116,4 @@ class MainActivity : ComponentActivity() {
 }
 
 private fun isRouteSelected(currentDestination: NavDestination?, route: String) =
-    currentDestination?.hierarchy?.any { it.route == route } == true
+    currentDestination?.hierarchy?.any { it.route?.startsWith(route) ?: false } == true

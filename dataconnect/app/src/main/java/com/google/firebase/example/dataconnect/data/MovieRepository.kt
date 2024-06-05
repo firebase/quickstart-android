@@ -21,5 +21,12 @@ class MovieRepository(
         return moviesConnector.moviesRecentlyReleased.execute().data.movies.map { it.toMovie() }
     }
 
+    suspend fun getMoviesByGenre(genre: String): MoviesByGenre {
+        val data = moviesConnector.listMoviesByGenre.execute(genre).data
+        val mostPopular = data.mostPopular.map { it.toMovie() }
+        val mostRecent = data.mostRecent.map { it.toMovie() }
+        return MoviesByGenre(mostPopular, mostRecent)
+    }
+
     // Mutations
 }

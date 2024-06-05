@@ -10,4 +10,9 @@
     <!-- Movies Screen -->
     <string name="title_top_10_movies">Top 10 Movies</string>
     <string name="title_latest_movies">Latest Movies</string>
+
+    <!-- Genre Detail Title -->
+    <string name="title_genre_detail">%s Movies</string>
+    <string name="title_most_popular">Most Popular</string>
+    <string name="title_most_recent">Most Recent</string>
 </resources>
