@@ -14,7 +14,7 @@ fun NavGraphBuilder.genresScreen(
 
 ) {
     composable(route = GENRES_ROUTE) {
-        // TODO: Call composable
+        GenresScreen()
     }
 }
 

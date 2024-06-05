@@ -29,12 +29,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.example.dataconnect.feature.genres.GENRES_ROUTE
 import com.google.firebase.example.dataconnect.feature.genres.genresScreen
+import com.google.firebase.example.dataconnect.feature.genres.navigateToGenres
 import com.google.firebase.example.dataconnect.feature.movies.MOVIES_ROUTE
 import com.google.firebase.example.dataconnect.feature.movies.moviesScreen
 import com.google.firebase.example.dataconnect.feature.movies.navigateToMovies
 import com.google.firebase.example.dataconnect.feature.profile.PROFILE_ROUTE
+import com.google.firebase.example.dataconnect.feature.profile.navigateToProfile
 import com.google.firebase.example.dataconnect.feature.profile.profileScreen
 import com.google.firebase.example.dataconnect.feature.search.SEARCH_ROUTE
+import com.google.firebase.example.dataconnect.feature.search.navigateToSearch
 import com.google.firebase.example.dataconnect.feature.search.searchScreen
 import com.google.firebase.example.dataconnect.ui.theme.FirebaseDataConnectTheme
 
@@ -56,19 +59,7 @@ class MainActivity : ComponentActivity() {
                                 label = { Text(stringResource(R.string.label_movies)) },
                                 selected = isRouteSelected(currentDestination, MOVIES_ROUTE),
                                 onClick = {
-                                    navController.navigateToMovies {
-                                        // Pop up to the start destination of the graph to
-                                        // avoid building up a large stack of destinations
-                                        // on the back stack as users select items
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
-                                        }
-                                        // Avoid multiple copies of the same destination when
-                                        // reselecting the same item
-                                        launchSingleTop = true
-                                        // Restore state when reselecting a previously selected item
-                                        restoreState = true
-                                    }
+                                    navController.navigateToMovies { }
                                 }
                             )
                             NavigationBarItem(
@@ -76,6 +67,7 @@ class MainActivity : ComponentActivity() {
                                 label = { Text(stringResource(R.string.label_genres)) },
                                 selected = isRouteSelected(currentDestination, GENRES_ROUTE),
                                 onClick = {
+                                    navController.navigateToGenres { }
                                 }
                             )
                             NavigationBarItem(
@@ -83,6 +75,7 @@ class MainActivity : ComponentActivity() {
                                 label = { Text(stringResource(R.string.label_search)) },
                                 selected = isRouteSelected(currentDestination, SEARCH_ROUTE),
                                 onClick = {
+                                    navController.navigateToSearch {  }
                                 }
                             )
                             NavigationBarItem(
@@ -90,6 +83,7 @@ class MainActivity : ComponentActivity() {
                                 label = { Text(stringResource(R.string.label_profile)) },
                                 selected = isRouteSelected(currentDestination, PROFILE_ROUTE),
                                 onClick = {
+                                    navController.navigateToProfile {  }
                                 }
                             )
                         }
