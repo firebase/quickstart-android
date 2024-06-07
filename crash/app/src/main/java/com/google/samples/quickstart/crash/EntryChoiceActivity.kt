@@ -16,7 +16,14 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
                 Choice(
                         "Kotlin",
                         "Run the Firebase Crash quickstart written in Kotlin.",
-                        Intent(this, com.google.samples.quickstart.crash.kotlin.MainActivity::class.java))
+                        Intent(this, com.google.samples.quickstart.crash.kotlin.MainActivity::class.java)),
+                Choice(
+                        "Compose",
+                    "Run the Firebase Remote Crash quickstart written in Compose.",
+                    Intent(
+                        this,
+                        com.google.samples.quickstart.crash.kotlin.MainComposeActivity::class.java)
+                )
         )
     }
 }

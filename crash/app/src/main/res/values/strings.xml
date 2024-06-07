@@ -2,4 +2,5 @@
     <string name="app_name">Firebase Crashlytics</string>
     <string name="crash_button_label">Cause Crash</string>
     <string name="catch_crash_checkbox_label">Catch Crash</string>
+    <string name="title_activity_main_compose_activity.kt">MainComposeActivity.kt</string>
 </resources>
