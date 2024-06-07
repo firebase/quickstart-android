@@ -11,8 +11,12 @@
     <string name="title_top_10_movies">Top 10 Movies</string>
     <string name="title_latest_movies">Latest Movies</string>
 
-    <!-- Genre Detail Title -->
+    <!-- Genre Detail Screen -->
     <string name="title_genre_detail">%s Movies</string>
     <string name="title_most_popular">Most Popular</string>
     <string name="title_most_recent">Most Recent</string>
+
+    <!-- Movie Detail Screen -->
+    <string name="error_movie_not_found">Couldnt find movie in the database</string>
+    <string name="description_not_available">Description not available</string>
 </resources>

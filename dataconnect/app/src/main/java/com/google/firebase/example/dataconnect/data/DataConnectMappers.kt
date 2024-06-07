@@ -1,5 +1,6 @@
 package com.google.firebase.example.dataconnect.data
 
+import com.google.firebase.dataconnect.movies.GetMovieByIdQuery
 import com.google.firebase.dataconnect.movies.ListMoviesByGenreQuery
 import com.google.firebase.dataconnect.movies.ListMoviesQuery
 import com.google.firebase.dataconnect.movies.MoviesRecentlyReleasedQuery
@@ -59,4 +60,14 @@ fun ListMoviesByGenreQuery.Data.MostPopularItem.toMovie(): Movie {
     )
 }
 
-
+fun GetMovieByIdQuery.Data.Movie.toMovie(): Movie {
+    return Movie(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        imageUrl = this.imageUrl,
+        rating = this.rating,
+        genre = this.genre,
+        tags = this.tags
+    )
+}

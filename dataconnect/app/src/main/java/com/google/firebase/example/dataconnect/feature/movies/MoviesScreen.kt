@@ -1,14 +1,12 @@
 package com.google.firebase.example.dataconnect.feature.movies
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -31,15 +29,17 @@ import com.google.firebase.example.dataconnect.data.Movie
 
 @Composable
 fun MoviesScreen(
+    onMovieClicked: (movie: String) -> Unit,
     moviesViewModel: MoviesViewModel = viewModel()
 ) {
     val movies by moviesViewModel.uiState.collectAsState()
-    MoviesScreen(movies)
+    MoviesScreen(movies, onMovieClicked)
 }
 
 @Composable
 fun MoviesScreen(
-    uiState: MoviesUIState
+    uiState: MoviesUIState,
+    onMovieClicked: (movie: String) -> Unit
 ) {
     when (uiState) {
         MoviesUIState.Loading -> {
@@ -64,13 +64,13 @@ fun MoviesScreen(
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
-                HorizontalMovieList(uiState.top10movies)
+                HorizontalMovieList(uiState.top10movies, onMovieClicked)
                 Text(
                     text = stringResource(R.string.title_latest_movies),
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
-                HorizontalMovieList(uiState.latestMovies)
+                HorizontalMovieList(uiState.latestMovies, onMovieClicked)
             }
         }
     }
@@ -78,14 +78,18 @@ fun MoviesScreen(
 
 @Composable
 fun HorizontalMovieList(
-    movies: List<Movie>
+    movies: List<Movie>,
+    onMovieClicked: (movie: String) -> Unit
 ) {
     LazyRow {
         items(movies) { movie ->
             Card(
                 modifier = Modifier
                     .padding(4.dp)
-                    .fillParentMaxWidth(0.3f),
+                    .fillParentMaxWidth(0.4f)
+                    .clickable {
+                        onMovieClicked(movie.id.toString())
+                    },
             ) {
                 AsyncImage(
                     model = movie.imageUrl,

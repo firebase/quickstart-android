@@ -64,13 +64,23 @@ fun GenreDetailScreen(
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
-                HorizontalMovieList(uiState.moviesByGenre.mostPopular)
+                HorizontalMovieList(
+                    uiState.moviesByGenre.mostPopular,
+                    onMovieClicked = {
+                        // TODO(thatfiredev)
+                    }
+                )
                 Text(
                     text = stringResource(R.string.title_most_recent),
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
-                HorizontalMovieList(uiState.moviesByGenre.mostRecent)
+                HorizontalMovieList(
+                    uiState.moviesByGenre.mostRecent,
+                    onMovieClicked = {
+                        // TODO(thatfiredev)
+                    }
+                )
             }
         }
     }

@@ -9,6 +9,6 @@ data class Movie(
     val releaseYear: Int? = 1970,
     val genre: String? = "",
     val rating: Double? = 0.0,
-    val description: String? = "",
+    val description: String? = null,
     val tags: List<String?>? = emptyList()
 )

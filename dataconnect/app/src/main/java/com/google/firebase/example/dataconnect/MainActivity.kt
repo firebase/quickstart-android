@@ -32,6 +32,8 @@ import com.google.firebase.example.dataconnect.feature.genredetail.navigateToGen
 import com.google.firebase.example.dataconnect.feature.genres.GENRES_ROUTE
 import com.google.firebase.example.dataconnect.feature.genres.genresScreen
 import com.google.firebase.example.dataconnect.feature.genres.navigateToGenres
+import com.google.firebase.example.dataconnect.feature.moviedetail.movieDetailScreen
+import com.google.firebase.example.dataconnect.feature.moviedetail.navigateToMovieDetail
 import com.google.firebase.example.dataconnect.feature.movies.MOVIES_ROUTE
 import com.google.firebase.example.dataconnect.feature.movies.moviesScreen
 import com.google.firebase.example.dataconnect.feature.movies.navigateToMovies
@@ -94,17 +96,21 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController,
                         startDestination = MOVIES_ROUTE,
-                        Modifier.padding(innerPadding)
+                        Modifier
+                            .padding(innerPadding)
                             .consumeWindowInsets(innerPadding),
                     ) {
-                        moviesScreen()
-                        genresScreen(
-                            onGenreClicked = { genre ->
-                                navController.navigateToGenreDetail(genre) {
-                                    launchSingleTop = true
-                                }
+                        moviesScreen(onMovieClicked = { movieId ->
+                            navController.navigateToMovieDetail(movieId) {
+                                launchSingleTop = true
                             }
-                        )
+                        })
+                        movieDetailScreen()
+                        genresScreen(onGenreClicked = { genre ->
+                            navController.navigateToGenreDetail(genre) {
+                                launchSingleTop = true
+                            }
+                        })
                         genreDetailScreen()
                         searchScreen()
                         profileScreen()
