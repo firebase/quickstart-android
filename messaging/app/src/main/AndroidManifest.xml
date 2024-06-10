@@ -55,6 +55,7 @@
             </intent-filter>
         </service>
         <!-- [END firebase_service] -->
+
     </application>
 
 </manifest>
