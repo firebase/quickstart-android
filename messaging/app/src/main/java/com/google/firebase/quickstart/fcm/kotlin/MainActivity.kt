@@ -1,23 +1,23 @@
 package com.google.firebase.quickstart.fcm.kotlin
 
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.quickstart.fcm.R
 import com.google.firebase.quickstart.fcm.databinding.ActivityMainBinding
+import com.google.firebase.quickstart.fcm.kotlin.data.SubscriptionState
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel: FirebaseMessagingViewModel by viewModels { FirebaseMessagingViewModel.Factory }
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -38,11 +38,11 @@ class MainActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
-            val channelId = getString(R.string.default_notification_channel_id)
-            val channelName = getString(R.string.default_notification_channel_name)
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            notificationManager?.createNotificationChannel(NotificationChannel(channelId,
-                    channelName, NotificationManager.IMPORTANCE_LOW))
+            viewModel.setNotificationChannel(
+                this,
+                getString(R.string.default_notification_channel_id),
+                getString(R.string.default_notification_channel_name)
+            )
         }
 
         // If a notification message is tapped, any data accompanying the notification
@@ -54,49 +54,46 @@ class MainActivity : AppCompatActivity() {
         //
         // Handle possible data accompanying notification message.
         // [START handle_data_extras]
-        intent.extras?.let {
-            for (key in it.keySet()) {
-                val value = intent.extras?.get(key)
-                Log.d(TAG, "Key: $key Value: $value")
-            }
-        }
+        viewModel.getNotificationData(intent)
         // [END handle_data_extras]
 
         binding.subscribeButton.setOnClickListener {
-            Log.d(TAG, "Subscribing to weather topic")
             // [START subscribe_topics]
-            Firebase.messaging.subscribeToTopic("weather")
-                    .addOnCompleteListener { task ->
-                        var msg = getString(R.string.msg_subscribed)
-                        if (!task.isSuccessful) {
-                            msg = getString(R.string.msg_subscribe_failed)
-                        }
-                        Log.d(TAG, msg)
-                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    }
+            viewModel.getSubscribe("weather")
             // [END subscribe_topics]
         }
 
         binding.logTokenButton.setOnClickListener {
             // Get token
             // [START log_reg_token]
-            Firebase.messaging.getToken().addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
-
-                // Get new FCM registration token
-                val token = task.result
-
-                // Log and toast
-                val msg = getString(R.string.msg_token_fmt, token)
-                Log.d(TAG, msg)
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-            })
+            viewModel.getToken()
             // [END log_reg_token]
         }
 
+        lifecycleScope.launch {
+            viewModel.token.collect { token ->
+                if(token.isNotEmpty()){
+                    val msg = getString(R.string.msg_token_fmt, token)
+                    Snackbar.make(findViewById(android.R.id.content),
+                        msg, Snackbar.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.subscriptionState.collect { state ->
+                when (state) {
+                    SubscriptionState.Success -> {
+                        Snackbar.make(findViewById(android.R.id.content),
+                            getString(R.string.msg_subscribed), Snackbar.LENGTH_LONG).show()
+                    }
+                    SubscriptionState.Failed -> { Snackbar.make(findViewById(android.R.id.content),
+                        getString(R.string.msg_subscribe_failed), Snackbar.LENGTH_LONG).show()
+                    }
+                    SubscriptionState.Loading -> { }
+                }
+            }
+        }
         Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
         askNotificationPermission()
     }
@@ -116,7 +113,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-
         private const val TAG = "MainActivity"
     }
 }
