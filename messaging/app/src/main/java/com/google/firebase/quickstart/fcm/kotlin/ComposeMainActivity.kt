@@ -254,7 +254,7 @@ fun MainContent(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MainAppViewPreview() {
     FirebaseMessagingTheme {
         MainAppView()
     }
