@@ -8,12 +8,12 @@ check.dependsOn 'assembleDebugAndroidTest'
 
 android {
     namespace 'com.google.firebase.quickstart.fcm'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.fcm"
         minSdk 21 // minSdk would be 19 without compose
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -96,6 +96,9 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.activity:activity-compose:1.5.1'
+
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0'
+    implementation("com.google.accompanist:accompanist-permissions:0.30.1")
 
     // Testing dependencies
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
