@@ -64,8 +64,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("io.coil-kt:coil-compose:2.6.0")
     
-    implementation("com.google.firebase:firebase-analytics:22.0.1")
-    implementation("com.google.firebase:firebase-vertexai:16.0.0-beta01")
+    implementation("com.google.firebase:firebase-analytics:22.0.2")
+    implementation("com.google.firebase:firebase-vertexai:16.0.0-beta02")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
