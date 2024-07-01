@@ -59,7 +59,7 @@ dependencies {
 
     // Required when asking for permission to post notifications (starting in Android 13)
     implementation("androidx.activity:activity-ktx:1.9.0")
-    implementation("androidx.fragment:fragment-ktx:1.8.0")
+    implementation("androidx.fragment:fragment-ktx:1.8.1")
 
     implementation("com.google.android.material:material:1.12.0")
 
@@ -78,8 +78,8 @@ dependencies {
     implementation("androidx.work:work-runtime:2.9.0")
 
     // Testing dependencies
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0")
-    androidTestImplementation("androidx.test:runner:1.6.0")
-    androidTestImplementation("androidx.test:rules:1.6.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
     androidTestImplementation("androidx.annotation:annotation:1.8.0")
 }
