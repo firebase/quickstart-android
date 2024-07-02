@@ -85,16 +85,16 @@ dependencies {
     // Android architecture components
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    annotationProcessor("androidx.lifecycle:lifecycle-compiler:2.8.2")
+    annotationProcessor("androidx.lifecycle:lifecycle-compiler:2.8.3")
 
     // Third-party libraries
     implementation("me.zhanghai.android.materialratingbar:library:1.4.0")
     implementation("com.github.bumptech.glide:glide:4.12.0")
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.0")
-    androidTestImplementation("androidx.test:rules:1.6.0")
-    androidTestImplementation("androidx.test:runner:1.6.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.1")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
     androidTestImplementation("junit:junit:4.13.2")
     androidTestImplementation("org.hamcrest:hamcrest-library:2.2")
