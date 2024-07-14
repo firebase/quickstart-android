@@ -5,20 +5,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.facebook.AccessToken
+import androidx.core.view.isGone
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
-import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.quickstart.auth.R
 import com.google.firebase.quickstart.auth.databinding.FragmentFacebookBinding
+import kotlinx.coroutines.launch
 
 /**
  * Demonstrate Firebase Authentication using a Facebook access token.
@@ -31,7 +31,7 @@ class FacebookLoginFragment : BaseFragment() {
     private val binding: FragmentFacebookBinding
         get() = _binding!!
 
-    private lateinit var callbackManager: CallbackManager
+    private val viewModel by viewModels<FacebookLoginViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFacebookBinding.inflate(layoutInflater, container, false)
@@ -42,85 +42,48 @@ class FacebookLoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setProgressBar(binding.progressBar)
 
-        binding.buttonFacebookSignout.setOnClickListener { signOut() }
+        binding.buttonFacebookSignout.setOnClickListener { viewModel.signOut() }
 
         // Initialize Firebase Auth
         auth = Firebase.auth
 
         // Initialize Facebook Login button
-        callbackManager = CallbackManager.Factory.create()
+        val callbackManager = CallbackManager.Factory.create()
 
         binding.buttonFacebookLogin.setPermissions("email", "public_profile")
         binding.buttonFacebookLogin.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-            override fun onSuccess(loginResult: LoginResult) {
-                Log.d(TAG, "facebook:onSuccess:$loginResult")
-                handleFacebookAccessToken(loginResult.accessToken)
+            override fun onSuccess(result: LoginResult) {
+                Log.d(TAG, "facebook:onSuccess:$result")
+                viewModel.handleFacebookAccessToken(result.accessToken)
             }
 
             override fun onCancel() {
                 Log.d(TAG, "facebook:onCancel")
-                updateUI(null)
+                viewModel.showInitialState()
             }
 
             override fun onError(error: FacebookException) {
                 Log.d(TAG, "facebook:onError", error)
-                updateUI(null)
+                viewModel.showInitialState()
             }
         })
-    }
 
-    override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
-    }
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    binding.status.text = uiState.status
+                    binding.detail.text = uiState.detail
 
-    private fun handleFacebookAccessToken(token: AccessToken) {
-        Log.d(TAG, "handleFacebookAccessToken:$token")
-        showProgressBar()
+                    binding.buttonFacebookLogin.isGone = !uiState.isSignInVisible
+                    binding.buttonFacebookSignout.isGone = uiState.isSignInVisible
 
-        val credential = FacebookAuthProvider.getCredential(token.token)
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithCredential:success")
-                        val user = auth.currentUser
-                        updateUI(user)
+                    if (uiState.isProgressBarVisible) {
+                        showProgressBar()
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithCredential:failure", task.exception)
-                        Toast.makeText(context, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show()
-                        updateUI(null)
+                        hideProgressBar()
                     }
-
-                    hideProgressBar()
                 }
-    }
-
-    fun signOut() {
-        auth.signOut()
-        LoginManager.getInstance().logOut()
-
-        updateUI(null)
-    }
-
-    private fun updateUI(user: FirebaseUser?) {
-        hideProgressBar()
-        if (user != null) {
-            binding.status.text = getString(R.string.facebook_status_fmt, user.displayName)
-            binding.detail.text = getString(R.string.firebase_status_fmt, user.uid)
-
-            binding.buttonFacebookLogin.visibility = View.GONE
-            binding.buttonFacebookSignout.visibility = View.VISIBLE
-        } else {
-            binding.status.setText(R.string.signed_out)
-            binding.detail.text = null
-
-            binding.buttonFacebookLogin.visibility = View.VISIBLE
-            binding.buttonFacebookSignout.visibility = View.GONE
+            }
         }
     }
 
@@ -130,6 +93,6 @@ class FacebookLoginFragment : BaseFragment() {
     }
 
     companion object {
-        private const val TAG = "FacebookLogin"
+        private const val TAG = "FacebookLoginFragment"
     }
 }
