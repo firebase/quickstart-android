@@ -40,7 +40,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imagePagerAdapter: ImagePagerAdapter
 
     private lateinit var context: Context
+
+    // Injects FirebaseAnalytics and app measurement configuration from the factory for centralized management.
+    // [START declare_analytics and shared_app_measurement]
     private val viewModel: FirebaseAnalyticsViewModel by viewModels { FirebaseAnalyticsViewModel.Factory }
+    // [END declare_analytics and shared_app_measurement]
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +59,9 @@ class MainActivity : AppCompatActivity() {
         if (viewModel.userFavoriteFood.value == null) {
             askFavoriteFood()
         } else {
+            // [START user_property]
             viewModel.setUserFavoriteFood(context, viewModel.userFavoriteFood.value)
+            // [END user_property]
         }
 
         // Create the adapter that will return a fragment for each image.
@@ -98,7 +104,10 @@ class MainActivity : AppCompatActivity() {
                 .setTitle(R.string.food_dialog_title)
                 .setItems(choices) { _, which ->
                     val food = choices[which]
+
+                    // [START user_property]
                     viewModel.setUserFavoriteFood(context, food)
+                    // [END user_property]
                 }.create()
         ad.show()
     }
@@ -120,7 +129,9 @@ class MainActivity : AppCompatActivity() {
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
 
+            // [START custom_event]
             viewModel.recordShare(name, text)
+            // [END custom_event]
         }
         return false
     }
@@ -155,7 +166,9 @@ class MainActivity : AppCompatActivity() {
         val id = getCurrentImageId()
         val name = getCurrentImageTitle()
 
+        // [START image_view_event]
         viewModel.recordImageView(id, name)
+        // [END image_view_event]
     }
 
     /**
@@ -166,7 +179,9 @@ class MainActivity : AppCompatActivity() {
         // This string must be <= 36 characters long.
         val screenName = "${getCurrentImageId()}-${getCurrentImageTitle()}"
 
+        // [START set_current_screen]
         viewModel.recordScreenView(screenName)
+        // [END set_current_screen]
     }
 
     /**

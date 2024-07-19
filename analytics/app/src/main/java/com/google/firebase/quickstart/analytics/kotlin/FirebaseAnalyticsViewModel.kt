@@ -36,9 +36,7 @@ class FirebaseAnalyticsViewModel (
             .putString(Constants.KEY_FAVORITE_FOOD, food)
             .apply()
 
-        // [START user_property]
         firebaseAnalytics.setUserProperty("favorite_food", food)
-        // [END user_property]
     }
 
     fun getUserFavoriteFood(context: Context) {
@@ -54,22 +52,18 @@ class FirebaseAnalyticsViewModel (
     }
 
     fun recordScreenView(screenName: String) {
-        // [START set_current_screen]
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
             param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
             param(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity")
         }
-        // [END set_current_screen]
     }
 
     fun recordImageView(id: String, name: String) {
-        // [START image_view_event]
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
             param(FirebaseAnalytics.Param.ITEM_ID, id)
             param(FirebaseAnalytics.Param.ITEM_NAME, name)
             param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
         }
-        // [END image_view_event]
     }
 
     companion object {
