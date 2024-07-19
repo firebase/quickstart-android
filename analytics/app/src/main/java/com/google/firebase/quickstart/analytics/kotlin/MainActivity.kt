@@ -42,9 +42,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var context: Context
 
     // Injects FirebaseAnalytics and app measurement configuration from the factory for centralized management.
-    // [START declare_analytics and shared_app_measurement]
+    // [START declare_analytics]
+    // [START shared_app_measurement]
     private val viewModel: FirebaseAnalyticsViewModel by viewModels { FirebaseAnalyticsViewModel.Factory }
-    // [END declare_analytics and shared_app_measurement]
+    // [END shared_app_measurement]
+    // [END declare_analytics]
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
