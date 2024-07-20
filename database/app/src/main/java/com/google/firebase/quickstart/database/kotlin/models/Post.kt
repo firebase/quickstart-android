@@ -6,6 +6,7 @@ import java.util.HashMap
 
 @IgnoreExtraProperties
 data class Post(
+    var key: String? = "",
     var uid: String? = "",
     var author: String? = "",
     var title: String? = "",
@@ -17,12 +18,13 @@ data class Post(
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
-                "uid" to uid,
-                "author" to author,
-                "title" to title,
-                "body" to body,
-                "starCount" to starCount,
-                "stars" to stars
+            "key" to key,
+            "uid" to uid,
+            "author" to author,
+            "title" to title,
+            "body" to body,
+            "starCount" to starCount,
+            "stars" to stars
         )
     }
 }
