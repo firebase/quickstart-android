@@ -29,6 +29,6 @@
     *;
 }
 
--keepclassmembers class com.google.firebase.quickstart.database.kotlin_old.models.** {
+-keepclassmembers class com.google.firebase.quickstart.database.kotlin.models.** {
     *;
 }
