@@ -35,6 +35,7 @@ class DatabaseProviderViewModel(
     private val postList = mutableStateListOf<Post>()
     private val postDetails = mutableStateOf(Post())
     private val commentList = mutableStateListOf<Comment>()
+    private val postId = mutableStateOf("")
 
     //variables for flow of loading data
     private val _dataLoadFlow = MutableStateFlow<LoadDataStatus<String>?>(null)
@@ -245,6 +246,14 @@ class DatabaseProviderViewModel(
         })
     }
 
+
+    fun getPostID():String{
+        return postId.value
+    }
+
+    fun setPostID(id: String){
+        postId.value = id
+    }
 
 }
 

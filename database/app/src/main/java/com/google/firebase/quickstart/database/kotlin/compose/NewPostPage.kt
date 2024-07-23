@@ -23,14 +23,15 @@ import com.google.firebase.quickstart.database.kotlin.compose.navigation.content
 @Composable
 fun NewPostPage(
     rootNavController: NavHostController,
-    databaseProviderViewModel: DatabaseProviderViewModel = viewModel(factory = DatabaseProviderViewModel.Factory)
+    databaseProviderViewModel: DatabaseProviderViewModel,
+    authProviderViewModel: AuthProviderViewModel
 ) {
     Scaffold(
         content = {
             Column(
                 modifier = androidx.compose.ui.Modifier.padding(it)
             ) {
-                NewPost(databaseProviderViewModel)
+                NewPost(databaseProviderViewModel,authProviderViewModel)
             }
         },
         floatingActionButton = {
@@ -50,7 +51,7 @@ fun NewPostPage(
 @Composable
 fun NewPost(
     databaseProviderViewModel: DatabaseProviderViewModel,
-    authProviderViewModel: AuthProviderViewModel = viewModel(factory = AuthProviderViewModel.Factory)
+    authProviderViewModel: AuthProviderViewModel
 ) {
 
     val title = remember { mutableStateOf<String>("") }

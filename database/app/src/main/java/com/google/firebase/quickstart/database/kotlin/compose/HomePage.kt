@@ -97,7 +97,7 @@ fun displayList(
                     .padding(1.dp, 2.dp, 5.dp, 0.dp)
                     .fillMaxWidth(),
                 onClick = {
-                    onCardClick(rootNavController, post.key!!)
+                    onCardClick(rootNavController, post.key!!,databaseProviderViewModel)
                 }
             ) {
                 Column(
@@ -166,11 +166,8 @@ fun onStarClick(databaseProviderViewModel: DatabaseProviderViewModel, uid: Strin
 }
 
 @SuppressLint("RestrictedApi")
-fun onCardClick(rootNavController: NavHostController, uid: String) {
+fun onCardClick(rootNavController: NavHostController, uid: String, databaseProviderViewModel: DatabaseProviderViewModel) {
 
-    val bundle = bundleOf("uid" to uid)
-    val destination = rootNavController.findDestination(Screen.CommentScreen.route)
-    if (destination != null) {
-        rootNavController.navigate(destination.id, bundle)
-    }
+    databaseProviderViewModel.setPostID(uid)
+    rootNavController.navigate(Screen.CommentScreen.route)
 }

@@ -6,8 +6,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
@@ -43,12 +45,16 @@ import com.google.firebase.quickstart.database.kotlin.compose.flowcontrol.LogInS
 import com.google.firebase.quickstart.database.kotlin.theme.RealtimeDatabaseTheme
 
 @Composable
-fun LoginPage(rootNavController: NavHostController) {
+fun LoginPage(
+    rootNavController: NavHostController,
+    databaseProviderViewModel: DatabaseProviderViewModel,
+    authProviderViewModel: AuthProviderViewModel
+) {
     RealtimeDatabaseTheme {
         Surface(
             modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background
         ) {
-            Authenticate(rootNavController)
+            Authenticate(rootNavController,databaseProviderViewModel,authProviderViewModel)
         }
     }
 }
@@ -58,8 +64,8 @@ fun LoginPage(rootNavController: NavHostController) {
 @Composable
 fun Authenticate(
     rootNavController: NavHostController,
-    authProviderViewModel: AuthProviderViewModel = viewModel(factory = AuthProviderViewModel.Factory),
-    databaseProviderViewModel: DatabaseProviderViewModel = viewModel(factory = DatabaseProviderViewModel.Factory)
+    databaseProviderViewModel: DatabaseProviderViewModel,
+    authProviderViewModel: AuthProviderViewModel
 ) {
     val database = databaseProviderViewModel.database
     val loginFlow = authProviderViewModel.loginFlow.collectAsState()
@@ -76,9 +82,6 @@ fun Authenticate(
 
     val email = remember { mutableStateOf<String>("") }
     val password = remember { mutableStateOf<String>("") }
-
-
-    val context = LocalContext.current
 
     Scaffold(
         modifier = Modifier
@@ -100,13 +103,18 @@ fun Authenticate(
             Row()
             {
                 OutlinedTextField(
-                    modifier = Modifier.width(150.dp),
+                    modifier = Modifier
+                        .width(150.dp)
+                        .height(60.dp),
                     value = email.value,
                     onValueChange = { email.value = it },
                     label = { Text("email") }
                 )
+                Spacer(modifier = Modifier.width(2.dp))
                 OutlinedTextField(
-                    modifier = Modifier.width(150.dp),
+                    modifier = Modifier
+                        .width(150.dp)
+                        .height(60.dp),
                     label = { Text(text = "password") },
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -127,6 +135,7 @@ fun Authenticate(
                     Text("SignIn")
                 }
                 login(loginFlow, rootNavController)
+                Spacer(modifier = Modifier.width(2.dp))
                 Button(
                     onClick = {
                         authProviderViewModel.signUp(email.value, password.value, database)

@@ -32,10 +32,11 @@ import com.google.firebase.quickstart.database.kotlin.compose.navigation.content
 import com.google.firebase.quickstart.database.kotlin.compose.topbar.TabLayout
 
 @Composable
-fun MainPage(rootNavController: NavHostController) {
-
-    val databaseProviderViewModel: DatabaseProviderViewModel = viewModel(factory = DatabaseProviderViewModel.Factory)
-    val authProviderViewModel: AuthProviderViewModel = viewModel(factory = AuthProviderViewModel.Factory)
+fun MainPage(
+    rootNavController: NavHostController,
+    databaseProviderViewModel: DatabaseProviderViewModel,
+    authProviderViewModel: AuthProviderViewModel
+) {
 
     if(authProviderViewModel.auth.currentUser == null){return}
 

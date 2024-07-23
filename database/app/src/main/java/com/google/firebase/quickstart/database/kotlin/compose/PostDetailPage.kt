@@ -41,10 +41,12 @@ import com.google.firebase.quickstart.database.kotlin.compose.navigation.content
 @Composable
 fun PostDetailPage(
     rootNavController: NavHostController,
+    databaseProviderViewModel: DatabaseProviderViewModel,
+    authProviderViewModel: AuthProviderViewModel,
 ) {
 
-   BackHandler {
-            rootNavController.navigate(Screen.HomeScreen.route)
+    BackHandler {
+        rootNavController.navigate(Screen.HomeScreen.route)
     }
 
 
@@ -54,7 +56,7 @@ fun PostDetailPage(
             Column(
                 modifier = Modifier.padding(it)
             ) {
-                PostDetail(rootNavController)
+                PostDetail(rootNavController, databaseProviderViewModel, authProviderViewModel)
             }
         },
     )
@@ -63,13 +65,12 @@ fun PostDetailPage(
 @Composable
 fun PostDetail(
     rootNavController: NavHostController,
-    databaseProviderViewModel: DatabaseProviderViewModel = viewModel(factory = DatabaseProviderViewModel.Factory),
-    authProviderViewModel: AuthProviderViewModel = viewModel(factory = AuthProviderViewModel.Factory)
+    databaseProviderViewModel: DatabaseProviderViewModel,
+    authProviderViewModel: AuthProviderViewModel
 ) {
     val comment = remember { mutableStateOf("") }
 
-    // Extracting the argument
-    val commentId = rootNavController.currentBackStackEntry?.arguments?.getString("uid")
+    val commentId = databaseProviderViewModel.getPostID()
     val post = databaseProviderViewModel.getPostDetail(commentId!!)
     databaseProviderViewModel.initCommentLists(commentId)
 
