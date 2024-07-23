@@ -41,18 +41,7 @@ class AuthProviderViewModel(
     }
 
     fun validateForm(email: String, password: String): Boolean {
-        var result = true
-        if (email.isEmpty()) {
-            result = false
-        } else {
-        }
-
-        if (password.isEmpty()) {
-            result = false
-        } else {
-        }
-
-        return result
+        return email.isNotEmpty() && password.isNotEmpty()
     }
 
 
