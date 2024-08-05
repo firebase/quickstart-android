@@ -53,7 +53,7 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
 
     // ADD the SDK to the "prerelease" variant only (example)
     implementation("com.google.firebase:firebase-appdistribution:16.0.0-beta13")
