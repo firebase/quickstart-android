@@ -58,13 +58,13 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:23.2.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
 
     // For an optimal experience using AdMob, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
     implementation("com.google.firebase:firebase-analytics")
 
-    debugImplementation("androidx.fragment:fragment-testing:1.8.1")
+    debugImplementation("androidx.fragment:fragment-testing:1.8.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.test:rules:1.6.1")
     androidTestImplementation("androidx.test:runner:1.6.1")
