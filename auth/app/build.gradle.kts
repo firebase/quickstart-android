@@ -12,13 +12,13 @@ tasks {
 
 android {
     namespace= "com.google.firebase.quickstart.auth"
-    compileSdk = 34
+    compileSdk = 35
     flavorDimensions += "minSdkVersion"
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.auth"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
