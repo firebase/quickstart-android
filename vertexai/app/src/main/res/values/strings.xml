@@ -24,6 +24,8 @@
     <string name="menu_reason_description">Sample app for uploading images and asking about them</string>
     <string name="menu_chat_title">Build multi-turn conversations (chat)</string>
     <string name="menu_chat_description">Sample app demonstrating a conversational UI</string>
+    <string name="menu_audio_title">Generate text from text-and-audio input</string>
+    <string name="menu_audio_description">Sample app for recording audio and generating text</string>
 
     <!-- Summarize sample strings -->
     <string name="summarize_label">Text</string>
@@ -39,4 +41,12 @@
     <string name="action_send">Send</string>
     <string name="menu_functions_description">Sample code demonstrating a conversational UI that supports function calling</string>
     <string name="menu_functions_title">Function calling enabled chat</string>
+
+    <!-- Audio sample strings -->
+    <string name="audio_label">Question</string>
+    <string name="audio_hint">Record a clip and then ask a question</string>
+    <string name="grant_record">Grant Permission to Record</string>
+    <string name="start_recording">Start Recording</string>
+    <string name="stop_recording">Stop Recording</string>
+    <string name="delete_clip">Delete Recorded Clip</string>
 </resources>

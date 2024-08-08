@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.quickstart.vertexai.feature.audio.AudioRoute
 import com.google.firebase.quickstart.vertexai.feature.chat.ChatRoute
 import com.google.firebase.quickstart.vertexai.feature.functioncalling.FunctionsChatRoute
 import com.google.firebase.quickstart.vertexai.feature.multimodal.PhotoReasoningRoute
@@ -63,6 +64,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("functions_chat") {
                             FunctionsChatRoute()
+                        }
+                        composable("audio") {
+                            AudioRoute()
                         }
                     }
                 }
