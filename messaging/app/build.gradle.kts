@@ -53,7 +53,7 @@ android {
 dependencies {
     implementation(project(":internal:lintchecks"))
     implementation(project(":internal:chooserx"))
-    implementation("androidx.annotation:annotation:1.8.1")
+    implementation("androidx.annotation:annotation:1.8.2")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
     implementation("androidx.core:core-ktx:1.13.1")
 
@@ -75,11 +75,11 @@ dependencies {
 
     implementation("com.google.firebase:firebase-installations:18.0.0")
 
-    implementation("androidx.work:work-runtime:2.9.0")
+    implementation("androidx.work:work-runtime:2.9.1")
 
     // Testing dependencies
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.test:runner:1.6.1")
     androidTestImplementation("androidx.test:rules:1.6.1")
-    androidTestImplementation("androidx.annotation:annotation:1.8.1")
+    androidTestImplementation("androidx.annotation:annotation:1.8.2")
 }
