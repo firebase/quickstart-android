@@ -131,8 +131,14 @@ fun AudioScreen(
                             .align(Alignment.CenterVertically),
                     ) {
                         Icon(
-                            imageVector = if (isRecording) Icons.Filled.Stop else if (audioData == null) Icons.Filled.Mic else Icons.Filled.Delete,
-                            contentDescription = stringResource(if (isRecording) R.string.stop_recording else if (audioData == null) R.string.start_recording else R.string.delete_clip),
+                            imageVector = if (isRecording) Icons.Filled.Stop
+                            else if (audioData == null) Icons.Filled.Mic
+                            else Icons.Filled.Delete,
+                            contentDescription = stringResource(
+                                if (isRecording) R.string.stop_recording
+                                else if (audioData == null) R.string.start_recording
+                                else R.string.delete_clip
+                            ),
                         )
                     }
                     OutlinedTextField(
