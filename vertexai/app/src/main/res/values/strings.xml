@@ -43,7 +43,7 @@
     <string name="menu_functions_title">Function calling enabled chat</string>
 
     <!-- Audio sample strings -->
-    <string name="audio_label">Audio</string>
+    <string name="audio_label">Question</string>
     <string name="audio_hint">Record a clip and then ask a question</string>
     <string name="grant_record">Grant Permission to Record</string>
     <string name="start_recording">Start Recording</string>
