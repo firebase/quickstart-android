@@ -8,12 +8,12 @@ plugins {
 android {
     namespace = "com.google.firebase.example.fireeats"
     testBuildType = "release"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.google.firebase.example.fireeats"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
