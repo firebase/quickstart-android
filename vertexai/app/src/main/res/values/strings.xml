@@ -25,7 +25,7 @@
     <string name="menu_chat_title">Build multi-turn conversations (chat)</string>
     <string name="menu_chat_description">Sample app demonstrating a conversational UI</string>
     <string name="menu_audio_title">Generate text from text-and-audio input</string>
-    <string name="menu_audio_description">Sample app for recording audio and generating text</string>
+    <string name="menu_audio_description">Sample app for recording audio and generating text from it</string>
 
     <!-- Summarize sample strings -->
     <string name="summarize_label">Text</string>
