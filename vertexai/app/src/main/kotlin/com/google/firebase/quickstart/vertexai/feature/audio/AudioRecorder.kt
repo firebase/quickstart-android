@@ -16,11 +16,11 @@
 
 package com.google.firebase.quickstart.vertexai.feature.audio
 
-import android.content.ContentValues
 import android.content.Context
 import android.media.MediaRecorder
+import android.os.Build
 import android.os.Environment
-import android.provider.MediaStore
+import java.io.File
 
 class AudioRecorder(private val context: Context) {
     val mimeType = "audio/aac"
@@ -29,40 +29,31 @@ class AudioRecorder(private val context: Context) {
 
     fun startRecording() {
         val audioFileName = "recording_${System.currentTimeMillis()}.m4a"
-        val values = ContentValues().apply {
-            put(MediaStore.Audio.Media.RELATIVE_PATH, Environment.DIRECTORY_MUSIC)
-            put(MediaStore.Audio.Media.TITLE, audioFileName)
-            put(MediaStore.Audio.Media.MIME_TYPE, "audio/mp4")
-            put(MediaStore.Audio.Media.IS_PENDING, 1)
-        }
+        val musicDir = context.getExternalFilesDir(Environment.DIRECTORY_MUSIC)
+        outputFilePath = File(musicDir, audioFileName).absolutePath
 
-        val audioCollection = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
-        val audioUri = context.contentResolver.insert(audioCollection, values)
-            ?: throw RuntimeException("Failed to create audio file")
-        outputFilePath = audioUri.toString()
-        context.contentResolver.openFileDescriptor(audioUri, "w")?.use { pfd ->
-            recorder = MediaRecorder(context).apply {
-                setAudioSource(MediaRecorder.AudioSource.MIC)
-                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-                setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-                setOutputFile(pfd.fileDescriptor)
-                prepare()
-                start()
-            }
+        recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            MediaRecorder(context)
+        } else {
+            MediaRecorder()
+        }.apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+            setOutputFile(outputFilePath)
+            prepare()
+            start()
         }
     }
 
-    fun stopRecording(): ByteArray? {
+    fun stopRecording(): ByteArray {
         recorder?.stop()
         recorder?.release()
         recorder = null
 
-        val uri = android.net.Uri.parse(outputFilePath)
-        val values = ContentValues()
-        values.put(MediaStore.Audio.Media.IS_PENDING, 0)
-        context.contentResolver.update(uri, values, null, null)
-        val audioBytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
-        context.contentResolver.delete(uri, null, null)
+        val audioFile = File(outputFilePath ?: throw IllegalStateException("Output file path not set"))
+        val audioBytes = audioFile.readBytes()
+        audioFile.delete()
         return audioBytes
     }
 }
