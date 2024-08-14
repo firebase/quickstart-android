@@ -19,7 +19,6 @@ package com.google.firebase.quickstart.vertexai.feature.audio
 import android.content.Context
 import android.media.MediaRecorder
 import android.os.Build
-import android.os.Environment
 import java.io.File
 
 class AudioRecorder(private val context: Context) {
@@ -28,9 +27,9 @@ class AudioRecorder(private val context: Context) {
     private var outputFilePath: String? = null
 
     fun startRecording() {
-        val audioFileName = "recording_${System.currentTimeMillis()}.m4a"
-        val musicDir = context.getExternalFilesDir(Environment.DIRECTORY_MUSIC)
-        outputFilePath = File(musicDir, audioFileName).absolutePath
+        outputFilePath = File.createTempFile(
+            "recording_${System.currentTimeMillis()}", ".m4a", context.cacheDir
+        ).absolutePath
 
         recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             MediaRecorder(context)
