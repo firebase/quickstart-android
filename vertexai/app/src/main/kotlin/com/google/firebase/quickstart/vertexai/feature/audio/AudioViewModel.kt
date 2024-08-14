@@ -39,8 +39,11 @@ class AudioViewModel(
         audioBytes: ByteArray,
     ) {
         _uiState.value = AudioUiState.Loading
-        val prompt = if (userInput.isBlank()) "Answer the question in the audio."
-        else "Listen to the audio, and then answer the following question: $userInput"
+        val prompt = if (userInput.isBlank()) {
+          "Answer the question in the audio."
+        } else {
+          "Listen to the audio, and then answer the following question: $userInput"
+        }
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val inputContent = content {
