@@ -22,7 +22,6 @@ import android.os.Build
 import java.io.File
 
 class AudioRecorder(private val context: Context) {
-    val mimeType = "audio/aac"
     private var recorder: MediaRecorder? = null
     private var outputFilePath: String? = null
 

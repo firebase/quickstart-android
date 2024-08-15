@@ -73,8 +73,8 @@ internal fun AudioRoute(
 
     AudioScreen(
         uiState = audioUiState,
-        onReasonClicked = { inputText, mimeType, audioData ->
-            coroutineScope.launch { viewModel.reason(inputText, mimeType, audioData) }
+        onReasonClicked = { inputText, audioData ->
+            coroutineScope.launch { viewModel.reason(inputText, audioData) }
         },
     )
 }
@@ -82,7 +82,7 @@ internal fun AudioRoute(
 @Composable
 fun AudioScreen(
     uiState: AudioUiState = AudioUiState.Loading,
-    onReasonClicked: (String, String, ByteArray) -> Unit = { _, _, _ -> },
+    onReasonClicked: (String, ByteArray) -> Unit = { _, _ -> },
 ) {
     val context = LocalContext.current
     val audioRecorder = remember { AudioRecorder(context) }
@@ -150,7 +150,7 @@ fun AudioScreen(
                     )
                     TextButton(
                         onClick = {
-                            if (audioData != null) onReasonClicked(userQuestion, audioRecorder.mimeType, audioData!!)
+                            if (audioData != null) onReasonClicked(userQuestion, audioData!!)
                         },
                         modifier = Modifier
                             .padding(all = 4.dp)

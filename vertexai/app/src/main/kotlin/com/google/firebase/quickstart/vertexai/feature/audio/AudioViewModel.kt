@@ -35,7 +35,6 @@ class AudioViewModel(
 
     fun reason(
         userInput: String,
-        mimeType: String,
         audioBytes: ByteArray,
     ) {
         _uiState.value = AudioUiState.Loading
@@ -47,7 +46,7 @@ class AudioViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val inputContent = content {
-                    blob(mimeType, audioBytes)
+                    blob("audio/aac", audioBytes)
                     text(prompt)
                 }
 
