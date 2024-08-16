@@ -29,8 +29,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Mic
-import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -52,8 +50,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -131,8 +131,8 @@ fun AudioScreen(
                             .align(Alignment.CenterVertically),
                     ) {
                         Icon(
-                            imageVector = if (isRecording) Icons.Filled.Stop
-                            else if (audioData == null) Icons.Filled.Mic
+                            imageVector = if (isRecording) ImageVector.vectorResource(R.drawable.stop)
+                            else if (audioData == null) ImageVector.vectorResource(R.drawable.mic)
                             else Icons.Filled.Delete,
                             contentDescription = stringResource(
                                 if (isRecording) R.string.stop_recording
