@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.google.firebase.Firebase
+import com.google.firebase.quickstart.vertexai.feature.audio.AudioViewModel
 import com.google.firebase.quickstart.vertexai.feature.chat.ChatViewModel
 import com.google.firebase.quickstart.vertexai.feature.functioncalling.FunctionsChatViewModel
 import com.google.firebase.quickstart.vertexai.feature.multimodal.PhotoReasoningViewModel
@@ -94,6 +95,15 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                         tools = tools
                     )
                     FunctionsChatViewModel(generativeModel)
+                }
+
+                isAssignableFrom(AudioViewModel::class.java) -> {
+                    // Initialize a GenerativeModel with the `gemini-pro` AI model for audio generation
+                    val generativeModel = Firebase.vertexAI.generativeModel(
+                        modelName = "gemini-1.5-pro-001",
+                        generationConfig = config
+                    )
+                    AudioViewModel(generativeModel)
                 }
 
                 else ->
