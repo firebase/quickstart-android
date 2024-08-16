@@ -131,9 +131,13 @@ fun AudioScreen(
                             .align(Alignment.CenterVertically),
                     ) {
                         Icon(
-                            imageVector = if (isRecording) ImageVector.vectorResource(R.drawable.stop)
-                            else if (audioData == null) ImageVector.vectorResource(R.drawable.mic)
-                            else Icons.Filled.Delete,
+                            imageVector = if (isRecording) {
+                                ImageVector.vectorResource(R.drawable.stop)
+                            } else if (audioData == null) {
+                                ImageVector.vectorResource(R.drawable.mic)
+                            } else {
+                                Icons.Filled.Delete
+                            },
                             contentDescription = stringResource(
                                 if (isRecording) R.string.stop_recording
                                 else if (audioData == null) R.string.start_recording
