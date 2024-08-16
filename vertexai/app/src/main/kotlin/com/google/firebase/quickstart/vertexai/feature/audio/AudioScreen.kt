@@ -124,7 +124,9 @@ fun AudioScreen(
                             } else if (audioData == null) {
                                 audioRecorder.startRecording(context)
                                 isRecording = true
-                            } else audioData = null
+                            } else {
+                                audioData = null
+                            }
                         },
                         modifier = Modifier
                             .padding(all = 4.dp)
@@ -139,9 +141,13 @@ fun AudioScreen(
                                 Icons.Filled.Delete
                             },
                             contentDescription = stringResource(
-                                if (isRecording) R.string.stop_recording
-                                else if (audioData == null) R.string.start_recording
-                                else R.string.delete_clip
+                                if (isRecording) {
+                                    R.string.stop_recording
+                                } else if (audioData == null) {
+                                    R.string.start_recording
+                                } else {
+                                    R.string.delete_clip
+                                }
                             ),
                         )
                     }
@@ -162,8 +168,11 @@ fun AudioScreen(
                     ) {
                         Text(
                             stringResource(R.string.action_go),
-                            color = if (audioData == null) MaterialTheme.colorScheme.secondary
-                            else MaterialTheme.colorScheme.primary
+                            color = if (audioData == null) {
+                                MaterialTheme.colorScheme.secondary
+                            } else {
+                                MaterialTheme.colorScheme.primary
+                            }
                         )
                     }
                 }
