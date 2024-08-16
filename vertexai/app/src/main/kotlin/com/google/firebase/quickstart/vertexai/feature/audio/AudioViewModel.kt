@@ -32,6 +32,7 @@ class AudioViewModel(
 
     private val _uiState: MutableStateFlow<AudioUiState> = MutableStateFlow(AudioUiState.Initial)
     val uiState: StateFlow<AudioUiState> = _uiState.asStateFlow()
+    val audioRecorder = AudioRecorder()
 
     fun reason(
         userInput: String,

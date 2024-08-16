@@ -45,7 +45,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -72,6 +71,7 @@ internal fun AudioRoute(
     val coroutineScope = rememberCoroutineScope()
 
     AudioScreen(
+        viewModel.audioRecorder,
         uiState = audioUiState,
         onReasonClicked = { inputText, audioData ->
             coroutineScope.launch { viewModel.reason(inputText, audioData) }
@@ -81,11 +81,11 @@ internal fun AudioRoute(
 
 @Composable
 fun AudioScreen(
+    audioRecorder: AudioRecorder = AudioRecorder(),
     uiState: AudioUiState = AudioUiState.Loading,
     onReasonClicked: (String, ByteArray) -> Unit = { _, _ -> },
 ) {
     val context = LocalContext.current
-    val audioRecorder = remember { AudioRecorder(context) }
 
     var userQuestion by rememberSaveable { mutableStateOf("") }
     var recordGranted by rememberSaveable {
@@ -122,7 +122,7 @@ fun AudioScreen(
                                 audioData = audioRecorder.stopRecording()
                                 isRecording = false
                             } else if (audioData == null) {
-                                audioRecorder.startRecording()
+                                audioRecorder.startRecording(context)
                                 isRecording = true
                             } else audioData = null
                         },

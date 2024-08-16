@@ -21,11 +21,11 @@ import android.media.MediaRecorder
 import android.os.Build
 import java.io.File
 
-class AudioRecorder(private val context: Context) {
+class AudioRecorder {
     private var recorder: MediaRecorder? = null
     private var outputFilePath: String? = null
 
-    fun startRecording() {
+    fun startRecording(context: Context) {
         outputFilePath = File.createTempFile(
             "recording_${System.currentTimeMillis()}", ".m4a", context.cacheDir
         ).absolutePath
