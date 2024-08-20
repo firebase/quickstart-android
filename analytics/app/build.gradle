@@ -8,12 +8,12 @@ check.dependsOn 'assembleDebugAndroidTest'
 
 android {
     namespace 'com.google.firebase.quickstart.analytics'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.google.firebase.quickstart.analytics"
         minSdk 21 // minSdk would be 19 without compose
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -76,6 +76,9 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.activity:activity-compose:1.5.1'
+
+    implementation 'androidx.compose.foundation:foundation-android:1.6.8'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0'
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'

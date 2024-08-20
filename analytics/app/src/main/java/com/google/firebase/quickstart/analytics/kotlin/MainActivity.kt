@@ -1,47 +1,34 @@
 package com.google.firebase.quickstart.analytics.kotlin
 
-import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
-import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.ktx.logEvent
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.analytics.R
 import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding
-import com.google.firebase.quickstart.analytics.java.MainActivity
-import com.google.firebase.quickstart.analytics.kotlin.MainActivity.Companion.IMAGE_INFOS
+import com.google.firebase.quickstart.analytics.kotlin.data.Constants
+import com.google.firebase.quickstart.analytics.kotlin.data.ImageInfo
 import java.util.Locale
-
 
 /**
  * Activity which displays numerous background images that may be viewed. These background images
  * are shown via {@link ImageFragment}.
  */
 class MainActivity : AppCompatActivity() {
+
     companion object {
         private const val TAG = "MainActivity"
-        private const val KEY_FAVORITE_FOOD = "favorite_food"
-
-        private val IMAGE_INFOS = arrayOf(
-            ImageInfo(R.drawable.favorite, R.string.pattern1_title, R.string.pattern1_id),
-            ImageInfo(R.drawable.flash, R.string.pattern2_title, R.string.pattern2_id),
-            ImageInfo(R.drawable.face, R.string.pattern3_title, R.string.pattern3_id),
-            ImageInfo(R.drawable.whitebalance, R.string.pattern4_title, R.string.pattern4_id)
-        )
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -52,11 +39,13 @@ class MainActivity : AppCompatActivity() {
      */
     private lateinit var imagePagerAdapter: ImagePagerAdapter
 
-    /**
-     * The `FirebaseAnalytics` used to record screen views.
-     */
+    private lateinit var context: Context
+
+    // Injects FirebaseAnalytics and app measurement configuration from the factory for centralized management.
     // [START declare_analytics]
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
+    // [START shared_app_measurement]
+    private val viewModel: FirebaseAnalyticsViewModel by viewModels { FirebaseAnalyticsViewModel.Factory }
+    // [END shared_app_measurement]
     // [END declare_analytics]
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,22 +53,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // [START shared_app_measurement]
-        // Obtain the FirebaseAnalytics instance.
-        firebaseAnalytics = Firebase.analytics
-        // [END shared_app_measurement]
+        context = applicationContext
 
         // On first app open, ask the user his/her favorite food. Then set this as a user property
         // on all subsequent opens.
-        val userFavoriteFood = getUserFavoriteFood()
-        if (userFavoriteFood == null) {
+        viewModel.getUserFavoriteFood(context)
+        if (viewModel.userFavoriteFood.value == null) {
             askFavoriteFood()
         } else {
-            setUserFavoriteFood(userFavoriteFood)
+            // [START user_property]
+            viewModel.setUserFavoriteFood(context, viewModel.userFavoriteFood.value)
+            // [END user_property]
         }
 
         // Create the adapter that will return a fragment for each image.
-        imagePagerAdapter = ImagePagerAdapter(supportFragmentManager, IMAGE_INFOS, lifecycle)
+        imagePagerAdapter = ImagePagerAdapter(supportFragmentManager, Constants.IMAGE_INFOS, lifecycle)
 
         // Set up the ViewPager with the pattern adapter.
         binding.viewPager.adapter = imagePagerAdapter
@@ -95,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
         val tabLayout: TabLayout = binding.tabLayout
         TabLayoutMediator(tabLayout, binding.viewPager) { tab, position ->
-            tab.setText(IMAGE_INFOS[position].title)
+            tab.setText(Constants.IMAGE_INFOS[position].title)
         }.attach()
 
         // Send initial screen screen view hit.
@@ -118,35 +106,12 @@ class MainActivity : AppCompatActivity() {
                 .setTitle(R.string.food_dialog_title)
                 .setItems(choices) { _, which ->
                     val food = choices[which]
-                    setUserFavoriteFood(food)
+
+                    // [START user_property]
+                    viewModel.setUserFavoriteFood(context, food)
+                    // [END user_property]
                 }.create()
-
         ad.show()
-    }
-
-    /**
-     * Get the user's favorite food from shared preferences.
-     * @return favorite food, as a string.
-     */
-    private fun getUserFavoriteFood(): String? {
-        return PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(KEY_FAVORITE_FOOD, null)
-    }
-
-    /**
-     * Set the user's favorite food as an app measurement user property and in shared preferences.
-     * @param food the user's favorite food.
-     */
-    private fun setUserFavoriteFood(food: String) {
-        Log.d(TAG, "setFavoriteFood: $food")
-
-        PreferenceManager.getDefaultSharedPreferences(this).edit()
-                .putString(KEY_FAVORITE_FOOD, food)
-                .apply()
-
-        // [START user_property]
-        firebaseAnalytics.setUserProperty("favorite_food", food)
-        // [END user_property]
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -167,10 +132,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(sendIntent)
 
             // [START custom_event]
-            firebaseAnalytics.logEvent("share_image") {
-                param("image_name", name)
-                param("full_text", text)
-            }
+            viewModel.recordShareEvent(name, text)
             // [END custom_event]
         }
         return false
@@ -183,7 +145,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun getCurrentImageTitle(): String {
         val position = binding.viewPager.currentItem
-        val info = IMAGE_INFOS[position]
+        val info = Constants.IMAGE_INFOS[position]
         return getString(info.title)
     }
 
@@ -194,7 +156,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun getCurrentImageId(): String {
         val position = binding.viewPager.currentItem
-        val info = IMAGE_INFOS[position]
+        val info = Constants.IMAGE_INFOS[position]
         return getString(info.id)
     }
 
@@ -207,11 +169,7 @@ class MainActivity : AppCompatActivity() {
         val name = getCurrentImageTitle()
 
         // [START image_view_event]
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
-            param(FirebaseAnalytics.Param.ITEM_ID, id)
-            param(FirebaseAnalytics.Param.ITEM_NAME, name)
-            param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
-        }
+        viewModel.recordImageView(id, name)
         // [END image_view_event]
     }
 
@@ -224,10 +182,7 @@ class MainActivity : AppCompatActivity() {
         val screenName = "${getCurrentImageId()}-${getCurrentImageTitle()}"
 
         // [START set_current_screen]
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
-            param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-            param(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity")
-        }
+        viewModel.recordScreenView(screenName, "MainActivity")
         // [END set_current_screen]
     }
 
