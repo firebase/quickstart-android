@@ -44,17 +44,17 @@ class FirebaseAnalyticsViewModel (
             .getString(Constants.KEY_FAVORITE_FOOD, null)
     }
 
-    fun recordShare(imageTitle: String, text: String) {
+    fun recordShareEvent(imageTitle: String, text: String) {
         firebaseAnalytics.logEvent("share_image") {
             param("image_name", imageTitle)
             param("full_text", text)
         }
     }
 
-    fun recordScreenView(screenName: String) {
+    fun recordScreenView(screenName: String, screenClass: String) {
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
             param(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-            param(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity")
+            param(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass)
         }
     }
 
@@ -67,7 +67,6 @@ class FirebaseAnalyticsViewModel (
     }
 
     companion object {
-        const val TAG = "AnalyticsViewModel"
         // Used to inject this ViewModel's dependencies
         // See also: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {

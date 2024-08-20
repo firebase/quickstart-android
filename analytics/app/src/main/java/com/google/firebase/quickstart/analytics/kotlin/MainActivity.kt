@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(sendIntent)
 
             // [START custom_event]
-            viewModel.recordShare(name, text)
+            viewModel.recordShareEvent(name, text)
             // [END custom_event]
         }
         return false
@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         val screenName = "${getCurrentImageId()}-${getCurrentImageTitle()}"
 
         // [START set_current_screen]
-        viewModel.recordScreenView(screenName)
+        viewModel.recordScreenView(screenName, "MainActivity")
         // [END set_current_screen]
     }
 

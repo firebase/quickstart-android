@@ -163,7 +163,7 @@ fun MainAppBar(analyticsViewModel: FirebaseAnalyticsViewModel) {
                     .setText(text)
                     .startChooser()
 
-                analyticsViewModel.recordShare(imageTitle, text)
+                analyticsViewModel.recordShareEvent(imageTitle, text)
             }) {
                 Icon(Icons.Filled.Share, contentDescription = "Share")
             }
@@ -301,7 +301,7 @@ private fun recordScreenView(analyticsViewModel: FirebaseAnalyticsViewModel, con
     val imageId = getCurrentImageId(context, position)
     val imageTitle = getCurrentImageTitle(context, position)
 
-    analyticsViewModel.recordScreenView("${imageId}-${imageTitle}")
+    analyticsViewModel.recordScreenView("${imageId}-${imageTitle}", "ComposeMainActivity")
 }
 
 private fun recordImageView(analyticsViewModel: FirebaseAnalyticsViewModel, context: Context) {
