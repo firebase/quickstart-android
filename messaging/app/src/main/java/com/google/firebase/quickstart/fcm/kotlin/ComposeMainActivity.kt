@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.fcm.kotlin
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
@@ -10,7 +9,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,13 +46,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import com.google.firebase.quickstart.fcm.R
 import com.google.firebase.quickstart.fcm.kotlin.data.SubscriptionState
 import com.google.firebase.quickstart.fcm.kotlin.ui.theme.FirebaseMessagingTheme
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class ComposeMainActivity : ComponentActivity() {
@@ -68,45 +62,15 @@ class ComposeMainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainAppView()
+                    MainScreen()
                 }
             }
         }
     }
 }
 
-
-@OptIn(ExperimentalPermissionsApi::class)
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-private fun RequestNotificationPermissionDialog(
-    scope: CoroutineScope,
-    snackbarHostState: SnackbarHostState
-) {
-    val permissionState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
-
-    val requestPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        var message = "Notifications permission granted"
-        if (!isGranted) {
-            message = "FCM can't post notifications without POST_NOTIFICATIONS permission"
-        }
-
-        scope.launch {
-            snackbarHostState.showSnackbar(message)
-        }
-    }
-
-    LaunchedEffect(permissionState) {
-        if (!permissionState.status.isGranted) {
-            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-    }
-}
-
-@Composable
-fun MainAppView(
+fun MainScreen(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     fcmViewModel: FirebaseMessagingViewModel = viewModel(factory = FirebaseMessagingViewModel.Factory)
 ) {
@@ -117,8 +81,17 @@ fun MainAppView(
     val activity = context.findActivity()
     val intent = activity?.intent
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        RequestNotificationPermissionDialog(scope, snackbarHostState)
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        var message = context.getString(R.string.msg_permission_granted)
+        if (!isGranted) {
+            message = context.getString(R.string.msg_permission_failed)
+        }
+
+        scope.launch {
+            snackbarHostState.showSnackbar(message)
+        }
     }
 
     DisposableEffect(lifecycleOwner) {
@@ -133,9 +106,15 @@ fun MainAppView(
                     )
                 }
 
-                if (intent != null) {
-                    fcmViewModel.getNotificationData(intent)
+                intent?.let { intentData ->
+                    fcmViewModel.logNotificationData(intentData)
                 }
+
+                scope.launch {
+                    snackbarHostState.showSnackbar(context.getString(R.string.msg_setup_readme_instructions))
+                }
+
+                fcmViewModel.askNotificationPermission(context, requestPermissionLauncher)
             }
         }
 
@@ -146,7 +125,7 @@ fun MainAppView(
         }
     }
 
-    LaunchedEffect(key1 = fcmViewModel.token) {
+    LaunchedEffect(fcmViewModel.token) {
         fcmViewModel.token.collect {
             if(it.isNotEmpty()) {
                 snackbarHostState.showSnackbar(context.getString(R.string.msg_token_fmt, it))
@@ -154,7 +133,7 @@ fun MainAppView(
         }
     }
 
-    LaunchedEffect(key1 = fcmViewModel.subscriptionState) {
+    LaunchedEffect(fcmViewModel.subscriptionState) {
         fcmViewModel.subscriptionState.collect { state ->
             when (state) {
                 SubscriptionState.Success -> { snackbarHostState.showSnackbar(context.getString(R.string.msg_subscribed)) }
@@ -183,11 +162,11 @@ fun MainAppView(
                 )
             }
         },
-        content = { it ->
+        content = { innerPadding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(it)
+                    .padding(innerPadding)
             ) {
                 MainContent(fcmViewModel)
             }
@@ -225,7 +204,7 @@ fun MainContent(
                 .padding(0.dp, 20.dp, 0.dp, 0.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.colorPrimary)),
             onClick = {
-                fcmViewModel.getSubscribe("weather")
+                fcmViewModel.subscribeToTopic("weather")
             }
         ) {
             Text(
@@ -256,7 +235,7 @@ fun MainContent(
 @Composable
 fun MainAppViewPreview() {
     FirebaseMessagingTheme {
-        MainAppView()
+        MainScreen()
     }
 }
 

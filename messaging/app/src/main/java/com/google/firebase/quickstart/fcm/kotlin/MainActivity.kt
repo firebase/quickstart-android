@@ -1,14 +1,11 @@
 package com.google.firebase.quickstart.fcm.kotlin
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.quickstart.fcm.R
@@ -54,17 +51,16 @@ class MainActivity : AppCompatActivity() {
         //
         // Handle possible data accompanying notification message.
         // [START handle_data_extras]
-        viewModel.getNotificationData(intent)
+        viewModel.logNotificationData(intent)
         // [END handle_data_extras]
 
         binding.subscribeButton.setOnClickListener {
             // [START subscribe_topics]
-            viewModel.getSubscribe("weather")
+            viewModel.subscribeToTopic("weather")
             // [END subscribe_topics]
         }
 
         binding.logTokenButton.setOnClickListener {
-            // Get token
             // [START log_reg_token]
             viewModel.getToken()
             // [END log_reg_token]
@@ -87,28 +83,18 @@ class MainActivity : AppCompatActivity() {
                         Snackbar.make(findViewById(android.R.id.content),
                             getString(R.string.msg_subscribed), Snackbar.LENGTH_LONG).show()
                     }
-                    SubscriptionState.Failed -> { Snackbar.make(findViewById(android.R.id.content),
-                        getString(R.string.msg_subscribe_failed), Snackbar.LENGTH_LONG).show()
+                    SubscriptionState.Failed -> {
+                        Snackbar.make(findViewById(android.R.id.content),
+                            getString(R.string.msg_subscribe_failed), Snackbar.LENGTH_LONG).show()
                     }
                     SubscriptionState.Loading -> { }
                 }
             }
         }
-        Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
-        askNotificationPermission()
-    }
+        Toast.makeText(this, getString(R.string.msg_setup_readme_instructions), Toast.LENGTH_SHORT).show()
 
-    private fun askNotificationPermission() {
-        // This is only necessary for API Level > 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                // FCM SDK (and your app) can post notifications.
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
+        lifecycleScope.launch {
+            viewModel.askNotificationPermission(applicationContext, requestPermissionLauncher)
         }
     }
 
