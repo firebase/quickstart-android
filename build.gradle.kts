@@ -69,7 +69,8 @@ fun isBlockListed(candidate: ModuleComponentIdentifier): Boolean {
             "androidx.browser:browser",
             "com.facebook.android",
             "com.google.guava",
-            "com.github.bumptech.glide"
+            "com.github.bumptech.glide",
+            "com.google.android.gms"
     ).any { keyword ->
         keyword in candidate.toString().lowercase()
     }

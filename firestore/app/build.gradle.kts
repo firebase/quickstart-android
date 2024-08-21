@@ -63,9 +63,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
 
     // Google Play services
-    // implementation("com.google.android.gms:play-services-auth:21.2.0")
-
-    // Temp fix for issue https://github.com/firebase/quickstart-android/issues/1647
+    // Pinned to 20.7.0 as a workaround for issue https://github.com/firebase/quickstart-android/issues/1647
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // FirebaseUI (for authentication)
