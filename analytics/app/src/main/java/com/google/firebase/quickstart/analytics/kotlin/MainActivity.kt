@@ -2,6 +2,7 @@ package com.google.firebase.quickstart.analytics.kotlin
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,14 +12,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import androidx.preference.PreferenceManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.analytics.R
 import com.google.firebase.quickstart.analytics.databinding.ActivityMainBinding
-import com.google.firebase.quickstart.analytics.kotlin.data.Constants
-import com.google.firebase.quickstart.analytics.kotlin.data.ImageInfo
 import java.util.Locale
 
 /**
@@ -40,13 +42,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imagePagerAdapter: ImagePagerAdapter
 
     private lateinit var context: Context
+    private lateinit var sharedPrefs: SharedPreferences
 
     // Injects FirebaseAnalytics and app measurement configuration from the factory for centralized management.
-    // [START declare_analytics]
-    // [START shared_app_measurement]
-    private val viewModel: FirebaseAnalyticsViewModel by viewModels { FirebaseAnalyticsViewModel.Factory }
-    // [END shared_app_measurement]
-    // [END declare_analytics]
+    private lateinit var viewModel: FirebaseAnalyticsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,16 +53,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         context = applicationContext
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        // [START declare_analytics]
+        // [START shared_app_measurement]
+        viewModel = viewModels<FirebaseAnalyticsViewModel> {
+                FirebaseAnalyticsViewModel.Factory(Firebase.analytics, sharedPrefs)
+            }.value
+        // [END shared_app_measurement]
+        // [END declare_analytics]
 
         // On first app open, ask the user his/her favorite food. Then set this as a user property
         // on all subsequent opens.
-        viewModel.getUserFavoriteFood(context)
-        if (viewModel.userFavoriteFood.value == null) {
+        if (viewModel.showFavoriteFoodDialog.value) {
             askFavoriteFood()
-        } else {
-            // [START user_property]
-            viewModel.setUserFavoriteFood(context, viewModel.userFavoriteFood.value)
-            // [END user_property]
         }
 
         // Create the adapter that will return a fragment for each image.
@@ -108,7 +110,7 @@ class MainActivity : AppCompatActivity() {
                     val food = choices[which]
 
                     // [START user_property]
-                    viewModel.setUserFavoriteFood(context, food)
+                    viewModel.setUserFavoriteFood(food)
                     // [END user_property]
                 }.create()
         ad.show()

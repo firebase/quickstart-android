@@ -61,9 +61,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.preference.PreferenceManager
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.quickstart.analytics.R
-import com.google.firebase.quickstart.analytics.kotlin.data.Constants
-import com.google.firebase.quickstart.analytics.kotlin.data.ImageInfo
 import com.google.firebase.quickstart.analytics.kotlin.ui.theme.FirebaseAnalyticsTheme
 import kotlinx.coroutines.launch
 
@@ -87,17 +88,19 @@ class ComposeMainActivity : ComponentActivity() {
 
 @Composable
 fun MainAppView(
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    analyticsViewModel: FirebaseAnalyticsViewModel = viewModel(factory = FirebaseAnalyticsViewModel.Factory)
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 ) {
     val context = LocalContext.current
+    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    val analyticsViewModel: FirebaseAnalyticsViewModel = viewModel(
+        factory = FirebaseAnalyticsViewModel.Factory(Firebase.analytics, sharedPreferences)
+    )
     val snackbarHostState = remember { SnackbarHostState() }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_CREATE) {
                 recordImageView(analyticsViewModel, context)
-
             } else if (event == Lifecycle.Event.ON_RESUME) {
                 recordScreenView(analyticsViewModel, context)
             }
@@ -112,11 +115,8 @@ fun MainAppView(
 
     // Load favorite food on initial composition
     LaunchedEffect(Unit) {
-        analyticsViewModel.getUserFavoriteFood(context)
         if(analyticsViewModel.userFavoriteFood.value == null)
             analyticsViewModel.showFavoriteFoodDialog.value = true
-        else
-            analyticsViewModel.setUserFavoriteFood(context, analyticsViewModel.userFavoriteFood.value)
     }
 
     Scaffold(
@@ -244,7 +244,6 @@ fun FavoriteFoodDialog(
     snackbarHostState: SnackbarHostState
 ) {
     if (analyticsViewModel.showFavoriteFoodDialog.value) {
-        val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
         val choices = stringArrayResource(id = R.array.food_items)
         var selectedItem by remember { mutableIntStateOf(0) }
@@ -272,9 +271,8 @@ fun FavoriteFoodDialog(
             },
             confirmButton = {
                 Button(onClick = {
-                    analyticsViewModel.showFavoriteFoodDialog.value = false
                     val selectedFood = choices[selectedItem]
-                    analyticsViewModel.setUserFavoriteFood(context, selectedFood)
+                    analyticsViewModel.setUserFavoriteFood(selectedFood)
                     coroutineScope.launch {
                         snackbarHostState.showSnackbar("Favorite Food selected: $selectedFood")
                     }
@@ -316,6 +314,6 @@ private fun recordImageView(analyticsViewModel: FirebaseAnalyticsViewModel, cont
 @Composable
 fun MainAppPreview() {
     FirebaseAnalyticsTheme {
-        MainAppView(viewModel(factory = FirebaseAnalyticsViewModel.Factory))
+        MainAppView()
     }
 }

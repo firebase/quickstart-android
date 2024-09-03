@@ -1,24 +1,21 @@
 package com.google.firebase.quickstart.analytics.kotlin
 
-import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.preference.PreferenceManager
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.quickstart.analytics.kotlin.data.Constants
 
 class FirebaseAnalyticsViewModel (
-    private val firebaseAnalytics: FirebaseAnalytics
+    private val firebaseAnalytics: FirebaseAnalytics,
+    private val sharedPreferences: SharedPreferences
 ): ViewModel() {
-
-    val showFavoriteFoodDialog = mutableStateOf(false)
 
     private val _selectedImageIndex = mutableIntStateOf(0)
     val selectedImageIndex: MutableState<Int> = _selectedImageIndex
@@ -26,22 +23,34 @@ class FirebaseAnalyticsViewModel (
     private val _userFavoriteFood = mutableStateOf<String?>(null)
     val userFavoriteFood: MutableState<String?> = _userFavoriteFood
 
+    private val _showFavoriteFoodDialog = mutableStateOf(false)
+    val showFavoriteFoodDialog: MutableState<Boolean> = _showFavoriteFoodDialog
+
+    init {
+        getUserFavoriteFood()
+        if(_userFavoriteFood.value == null) {
+            _showFavoriteFoodDialog.value = true
+        } else {
+            setUserFavoriteFood(_userFavoriteFood.value)
+        }
+    }
+
     fun setSelectedImageIndex(index: Int) {
         _selectedImageIndex.intValue = index
     }
 
-    fun setUserFavoriteFood(context: Context, food: String?) {
+    fun setUserFavoriteFood(food: String?) {
+        _showFavoriteFoodDialog.value = false
         _userFavoriteFood.value = food
-        PreferenceManager.getDefaultSharedPreferences(context).edit()
+        sharedPreferences.edit()
             .putString(Constants.KEY_FAVORITE_FOOD, food)
             .apply()
 
         firebaseAnalytics.setUserProperty("favorite_food", food)
     }
 
-    fun getUserFavoriteFood(context: Context) {
-        _userFavoriteFood.value = PreferenceManager.getDefaultSharedPreferences(context)
-            .getString(Constants.KEY_FAVORITE_FOOD, null)
+    private fun getUserFavoriteFood() {
+        _userFavoriteFood.value = sharedPreferences.getString(Constants.KEY_FAVORITE_FOOD, null)
     }
 
     fun recordShareEvent(imageTitle: String, text: String) {
@@ -69,14 +78,16 @@ class FirebaseAnalyticsViewModel (
     companion object {
         // Used to inject this ViewModel's dependencies
         // See also: https://developer.android.com/topic/libraries/architecture/viewmodel/viewmodel-factories
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+        fun Factory(
+            firebaseAnalytics: FirebaseAnalytics = Firebase.analytics,
+            sharedPreferences: SharedPreferences
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(
                 modelClass: Class<T>,
                 extras: CreationExtras
             ): T {
-                val firebaseAnalytics = Firebase.analytics
-                return FirebaseAnalyticsViewModel(firebaseAnalytics) as T
+                return FirebaseAnalyticsViewModel(firebaseAnalytics, sharedPreferences) as T
             }
         }
     }

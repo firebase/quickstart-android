@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.analytics.kotlin.data
+package com.google.firebase.quickstart.analytics.kotlin
 
 /**
  * Pair of resource IDs representing an image and its title.

@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.analytics.kotlin.data
+package com.google.firebase.quickstart.analytics.kotlin
 
 import com.google.firebase.quickstart.analytics.R
 
