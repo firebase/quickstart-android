@@ -36,6 +36,7 @@
         </activity>
 
         <activity android:name=".kotlin.MainActivity" />
+        <activity android:name=".kotlin.ComposeMainActivity"/>
         <activity android:name=".java.MainActivity" />
 
         <service

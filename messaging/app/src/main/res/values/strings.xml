@@ -19,4 +19,9 @@
     <!-- [END fcm_default_icon_string] -->
     <string name="msg_subscribe_failed">Failed to subscribe to weather topic</string>
     <string name="fcm_message">FCM Message</string>
+
+    <string name="msg_permission_granted">Notifications permission granted</string>
+    <string name="msg_permission_failed">FCM can\'t post notifications without POST_NOTIFICATIONS permission</string>
+
+    <string name="msg_setup_readme_instructions">See README for setup instructions</string>"
 </resources>
