@@ -14,7 +14,7 @@ fun NavGraphBuilder.profileScreen(
 
 ) {
     composable(route = PROFILE_ROUTE) {
-        // TODO: Call composable
+        ProfileScreen()
     }
 }
 
