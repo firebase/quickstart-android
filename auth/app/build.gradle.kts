@@ -12,13 +12,13 @@ tasks {
 
 android {
     namespace= "com.google.firebase.quickstart.auth"
-    compileSdk = 34
+    compileSdk = 35
     flavorDimensions += "minSdkVersion"
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.auth"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -51,21 +51,21 @@ dependencies {
     implementation(project(":internal:lintchecks"))
     implementation("androidx.multidex:multidex:2.0.1")
 
-    implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.activity:activity-ktx:1.9.2")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
     implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
 
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
 
     // Google Identity Services SDK (only required for Auth with Google)
-    implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
 
     // Firebase UI
     // Used in FirebaseUIActivity.
@@ -76,7 +76,7 @@ dependencies {
     implementation("com.facebook.android:facebook-login:13.2.0")
     implementation("androidx.browser:browser:1.5.0")
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
 }

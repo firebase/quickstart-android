@@ -12,12 +12,12 @@ tasks {
 
 android {
     namespace = "com.google.firebase.quickstart.deeplinks"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.deeplinks"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -62,7 +62,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
 
     // Firebase Dynamic Links
     implementation("com.google.firebase:firebase-dynamic-links")
@@ -71,8 +71,8 @@ dependencies {
     // for Google Analytics. This is recommended, but not required.
     implementation("com.google.firebase:firebase-analytics")
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
 }

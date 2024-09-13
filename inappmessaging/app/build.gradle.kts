@@ -6,11 +6,11 @@ plugins {
 
 android {
     namespace = "com.google.firebase.fiamquickstart"
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         applicationId = "com.google.firebase.fiamquickstart"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -52,7 +52,7 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
 
     // FIAM
     implementation("com.google.firebase:firebase-inappmessaging-display")
@@ -63,8 +63,8 @@ dependencies {
 
     implementation("com.google.firebase:firebase-installations:18.0.0")
 
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test:rules:1.6.1")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
 }

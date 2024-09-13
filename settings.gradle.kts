@@ -23,5 +23,6 @@ include(":admob:app",
         ":inappmessaging:app",
         ":messaging:app",
         ":perf:app",
-        ":storage:app"
+        ":storage:app",
+        ":vertexai:app"
 )

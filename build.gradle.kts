@@ -1,13 +1,13 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    id("com.android.application") version "8.4.0" apply false
-    id("com.android.library") version "8.4.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.9.23" apply false
-    id("com.google.gms.google-services") version "4.4.1" apply false
-    id("com.google.firebase.crashlytics") version "2.9.9" apply false
+    id("com.android.application") version "8.6.0" apply false
+    id("com.android.library") version "8.6.0" apply false
+    id("org.jetbrains.kotlin.android") version "2.0.20" apply false
+    id("com.google.gms.google-services") version "4.4.2" apply false
+    id("com.google.firebase.crashlytics") version "3.0.2" apply false
     id("com.google.firebase.firebase-perf") version "1.4.2" apply false
-    id("androidx.navigation.safeargs") version "2.7.7" apply false
+    id("androidx.navigation.safeargs") version "2.8.0" apply false
     id("com.github.ben-manes.versions") version "0.51.0" apply true
 }
 
@@ -54,6 +54,10 @@ tasks.register<JavaExec>("ktlintCheck") {
     jvmArgs("--add-opens=java.base/java.lang=ALL-UNNAMED")
 }
 
+fun notFromFirebase(candidate: ModuleComponentIdentifier): Boolean {
+    return candidate.group != "com.google.firebase"
+}
+
 fun isNonStable(candidate: ModuleComponentIdentifier): Boolean {
     return listOf("alpha", "beta", "rc", "snapshot", "-m", "final").any { keyword ->
         keyword in candidate.version.lowercase()
@@ -65,7 +69,8 @@ fun isBlockListed(candidate: ModuleComponentIdentifier): Boolean {
             "androidx.browser:browser",
             "com.facebook.android",
             "com.google.guava",
-            "com.github.bumptech.glide"
+            "com.github.bumptech.glide",
+            "com.google.android.gms"
     ).any { keyword ->
         keyword in candidate.toString().lowercase()
     }
@@ -73,7 +78,7 @@ fun isBlockListed(candidate: ModuleComponentIdentifier): Boolean {
 
 tasks.withType<DependencyUpdatesTask> {
     rejectVersionIf {
-        isNonStable(candidate) || isBlockListed(candidate)
+        (isNonStable(candidate) && notFromFirebase(candidate)) || isBlockListed(candidate)
     }
 }
 

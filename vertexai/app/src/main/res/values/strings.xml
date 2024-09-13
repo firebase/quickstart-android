@@ -1,0 +1,52 @@
+<!-- Copyright 2023 Google LLC
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="app_name">Firebase Vertex AI Sample App</string>
+    <string name="action_go">Go</string>
+    <string name="action_try">Try it</string>
+
+    <!-- Menu strings -->
+    <string name="menu_summarize_title">Generate text from text-only input (non streaming)</string>
+    <string name="menu_summarize_description">Sample app that summarizes text</string>
+    <string name="menu_reason_title">Generate text from text-and-image input (multimodal)</string>
+    <string name="menu_reason_description">Sample app for uploading images and asking about them</string>
+    <string name="menu_chat_title">Build multi-turn conversations (chat)</string>
+    <string name="menu_chat_description">Sample app demonstrating a conversational UI</string>
+    <string name="menu_audio_title">Generate text from text-and-audio input</string>
+    <string name="menu_audio_description">Sample app for recording audio and generating text from it</string>
+
+    <!-- Summarize sample strings -->
+    <string name="summarize_label">Text</string>
+    <string name="summarize_hint">Enter text to summarize</string>
+
+    <!-- Photo Reasoning sample strings -->
+    <string name="reason_label">Question</string>
+    <string name="reason_hint">Upload an image and then ask a question</string>
+    <string name="add_image">Add Image</string>
+
+    <!-- Chat sample strings -->
+    <string name="chat_label">Message</string>
+    <string name="action_send">Send</string>
+    <string name="menu_functions_description">Sample code demonstrating a conversational UI that supports function calling</string>
+    <string name="menu_functions_title">Function calling enabled chat</string>
+
+    <!-- Audio sample strings -->
+    <string name="audio_label">Question</string>
+    <string name="audio_hint">Record a clip and then ask a question</string>
+    <string name="grant_record">Grant Permission to Record</string>
+    <string name="start_recording">Start Recording</string>
+    <string name="stop_recording">Stop Recording</string>
+    <string name="delete_clip">Delete Recorded Clip</string>
+</resources>
