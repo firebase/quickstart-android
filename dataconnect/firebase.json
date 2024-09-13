@@ -1,6 +1,5 @@
 {
   "dataconnect": {
-    "source": "dataconnect",
-    "location": "us-central1"
+    "source": "dataconnect"
   }
 }

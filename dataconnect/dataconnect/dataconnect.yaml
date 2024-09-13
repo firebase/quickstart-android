@@ -1,5 +1,6 @@
 specVersion: "v1alpha"
 serviceId: "dataconnect"
+location: "us-central1"
 schema:
   source: "./schema"
   datasource:
