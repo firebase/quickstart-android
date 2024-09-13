@@ -1,9 +1,9 @@
 [versions]
-agp = "8.4.0"
+agp = "8.6.0"
 coilCompose = "2.6.0"
 firebaseAuth = "23.0.0"
 firebaseDataConnect = "16.0.0-alpha03"
-kotlin = "1.9.23"
+kotlin = "2.0.20"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -11,7 +11,7 @@ espressoCore = "3.5.1"
 lifecycle = "2.8.1"
 activityCompose = "1.9.0"
 composeBom = "2023.08.00"
-googleServices = "4.4.1"
+googleServices = "4.4.2"
 composeNavigation = "2.7.7"
 
 [libraries]
