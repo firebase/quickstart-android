@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.google.firebase.example.dataconnect.R
-import com.google.firebase.example.dataconnect.data.Movie
 import com.google.firebase.example.dataconnect.ui.components.MovieTile
 
 @Composable

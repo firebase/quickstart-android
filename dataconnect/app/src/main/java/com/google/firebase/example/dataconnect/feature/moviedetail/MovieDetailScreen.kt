@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
@@ -28,8 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.google.firebase.dataconnect.movies.GetMovieByIdQuery
 import com.google.firebase.example.dataconnect.R
-import com.google.firebase.example.dataconnect.data.Movie
 
 @Composable
 fun MovieDetailScreen(
@@ -89,7 +88,7 @@ fun MovieDetailScreen(
 @Composable
 fun MovieInformation(
     modifier: Modifier = Modifier,
-    movie: Movie?
+    movie: GetMovieByIdQuery.Data.Movie?
 ) {
     if (movie == null) {
         ErrorMessage(stringResource(R.string.error_movie_not_found))

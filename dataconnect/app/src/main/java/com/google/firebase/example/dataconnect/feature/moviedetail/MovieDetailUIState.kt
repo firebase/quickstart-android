@@ -1,6 +1,7 @@
 package com.google.firebase.example.dataconnect.feature.moviedetail
 
-import com.google.firebase.example.dataconnect.data.Movie
+import com.google.firebase.dataconnect.movies.GetMovieByIdQuery
+
 
 sealed class MovieDetailUIState {
     data object Loading: MovieDetailUIState()
@@ -9,6 +10,6 @@ sealed class MovieDetailUIState {
 
     data class Success(
         // Movie is null if it can't be found on the DB
-        val movie: Movie?
+        val movie: GetMovieByIdQuery.Data.Movie?
     ) : MovieDetailUIState()
 }

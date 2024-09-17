@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.dataconnect.movies.MoviesConnector
 import com.google.firebase.dataconnect.movies.execute
 import com.google.firebase.dataconnect.movies.instance
-import com.google.firebase.example.dataconnect.data.toMovie
 import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +25,7 @@ class MovieDetailViewModel(
             try {
                 val movie =  moviesConnector.getMovieById.execute(
                     id = UUID.fromString(movieId)
-                ).data.movie?.toMovie()
+                ).data.movie
                 _uiState.value = MovieDetailUIState.Success(movie)
             } catch (e: Exception) {
                 _uiState.value = MovieDetailUIState.Error(e.message ?: "")

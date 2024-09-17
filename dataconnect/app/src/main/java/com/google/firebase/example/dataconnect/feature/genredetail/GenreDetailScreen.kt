@@ -69,7 +69,7 @@ fun GenreDetailScreen(
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
                 LazyRow {
-                    items(uiState.moviesByGenre.mostPopular) { movie ->
+                    items(uiState.mostPopular) { movie ->
                         MovieTile(
                             movieId = movie.id.toString(),
                             movieTitle = movie.title,
@@ -88,7 +88,7 @@ fun GenreDetailScreen(
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
                 LazyRow {
-                    items(uiState.moviesByGenre.mostRecent) { movie ->
+                    items(uiState.mostRecent) { movie ->
                         MovieTile(
                             movieId = movie.id.toString(),
                             movieTitle = movie.title,
