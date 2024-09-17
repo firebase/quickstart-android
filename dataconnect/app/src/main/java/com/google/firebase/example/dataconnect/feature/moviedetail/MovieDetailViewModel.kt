@@ -27,4 +27,14 @@ class MovieDetailViewModel(
             }
         }
     }
+
+    fun addToFavorite() {
+        viewModelScope.launch {
+            try {
+                repository.addMovieToFavorites(movieId)
+            } catch (e: Exception) {
+                _uiState.value = MovieDetailUIState.Error(e.message ?: "")
+            }
+        }
+    }
 }

@@ -7,11 +7,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -24,7 +29,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.dataconnect.movies.GetUserByIdQuery
-import com.google.firebase.dataconnect.movies.ListUsersQuery
+import com.google.firebase.example.dataconnect.ui.components.MovieTile
 
 @Composable
 fun ProfileScreen(
@@ -41,19 +46,23 @@ fun ProfileScreen(
                 onSignUp = { email, password, displayName ->
                     profileViewModel.signUp(email, password, displayName)
                 },
-                onSignIn = {email, password ->
+                onSignIn = { email, password ->
                     profileViewModel.signIn(email, password)
                 }
             )
         }
 
         is ProfileUIState.ProfileState -> {
-            val userName = (uiState as ProfileUIState.ProfileState).username
+            val uiState = uiState as ProfileUIState.ProfileState
             ProfileScreen(
-                userName ?: "User",
-                emptyList(),
-                emptyList(),
-                emptyList()
+                uiState.username ?: "User",
+                uiState.reviews,
+                uiState.watchedMovies,
+                uiState.favoriteMovies,
+                uiState.favoriteActors,
+                onSignOut = {
+                    profileViewModel.signOut()
+                }
             )
         }
 
@@ -72,17 +81,32 @@ fun ProfileScreen(
 fun ProfileScreen(
     name: String,
     reviews: List<GetUserByIdQuery.Data.User.ReviewsItem>,
-    favoriteMovies: List<ListUsersQuery.Data.UsersItem.FavoriteMoviesOnUserItem.Movie>,
-    favoriteActors: List<ListUsersQuery.Data.UsersItem.FavoriteActorsOnUserItem.Actor>
+    watchedMovies: List<GetUserByIdQuery.Data.User.WatchedItem>,
+    favoriteMovies: List<GetUserByIdQuery.Data.User.FavoriteMoviesItem>,
+    favoriteActors: List<GetUserByIdQuery.Data.User.FavoriteActorsItem>,
+    onSignOut: () -> Unit
 ) {
-    Column(modifier = Modifier.padding(16.dp)) {
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .verticalScroll(scrollState)
+    ) {
         Text(
             text = "Welcome back, $name!",
             style = MaterialTheme.typography.titleLarge
         )
+        TextButton(onClick = {
+            onSignOut()
+        }) {
+            Text("Sign out")
+        }
         Spacer(modifier = Modifier.height(16.dp))
 
         ProfileSection(title = "Reviews", content = { ReviewsList(reviews) })
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ProfileSection(title = "Watched Movies", content = { WatchedMoviesList(watchedMovies) })
         Spacer(modifier = Modifier.height(16.dp))
 
         ProfileSection(title = "Favorite Movies", content = { FavoriteMoviesList(favoriteMovies) })
@@ -107,12 +131,43 @@ fun ReviewsList(reviews: List<GetUserByIdQuery.Data.User.ReviewsItem>) {
 }
 
 @Composable
-fun FavoriteMoviesList(movies: List<ListUsersQuery.Data.UsersItem.FavoriteMoviesOnUserItem.Movie>) {
-    // Display the list of favorite movies
+fun WatchedMoviesList(watchedItems: List<GetUserByIdQuery.Data.User.WatchedItem>) {
+    LazyRow {
+        items(watchedItems) { watchedItem ->
+            MovieTile(
+                modifier = Modifier.fillParentMaxWidth(0.4f),
+                movieId = watchedItem.movie.id.toString(),
+                movieImageUrl = watchedItem.movie.imageUrl,
+                movieTitle = watchedItem.movie.title,
+                movieRating = watchedItem.movie.rating ?: 0.0,
+                onMovieClicked = {
+                    // TODO
+                }
+            )
+        }
+    }
 }
 
 @Composable
-fun FavoriteActorsList(actors: List<ListUsersQuery.Data.UsersItem.FavoriteActorsOnUserItem.Actor>) {
+fun FavoriteMoviesList(favoriteItems: List<GetUserByIdQuery.Data.User.FavoriteMoviesItem>) {
+    LazyRow {
+        items(favoriteItems) { favoriteItem ->
+            MovieTile(
+                modifier = Modifier.fillParentMaxWidth(0.4f),
+                movieId = favoriteItem.movie.id.toString(),
+                movieImageUrl = favoriteItem.movie.imageUrl,
+                movieTitle = favoriteItem.movie.title,
+                movieRating = favoriteItem.movie.rating ?: 0.0,
+                onMovieClicked = {
+                    // TODO
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun FavoriteActorsList(actors: List<GetUserByIdQuery.Data.User.FavoriteActorsItem>) {
     // Display the list of favorite actors
 }
 
@@ -160,11 +215,12 @@ fun AuthScreen(
             }
         }) {
             Text(
-                text= if (isSignUp) {
+                text = if (isSignUp) {
                     "Sign up"
                 } else {
                     "Sign in"
-                })
+                }
+            )
         }
 //        Spacer(modifier = Modifier.height(8.dp))
 //        Button(onClick = { /* Handle Google Sign-in */ }) {

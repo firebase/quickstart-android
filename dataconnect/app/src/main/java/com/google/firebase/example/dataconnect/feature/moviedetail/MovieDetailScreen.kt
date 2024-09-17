@@ -8,8 +8,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,11 +38,28 @@ fun MovieDetailScreen(
 ) {
     movieDetailViewModel.setMovieId(movieId)
     val uiState by movieDetailViewModel.uiState.collectAsState()
-    MovieDetailScreen(uiState)
+    // TODO: Create a movie favorited toggle
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    movieDetailViewModel.addToFavorite()
+                }
+            ) {
+                Icon(Icons.Filled.FavoriteBorder, "Favorite")
+            }
+        }
+    ) { padding ->
+        MovieDetailScreen(
+            modifier = Modifier.padding(padding),
+            uiState = uiState
+        )
+    }
 }
 
 @Composable
 fun MovieDetailScreen(
+    modifier: Modifier = Modifier,
     uiState: MovieDetailUIState
 ) {
     when (uiState) {
@@ -47,7 +70,7 @@ fun MovieDetailScreen(
         MovieDetailUIState.Loading -> {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
+                modifier = modifier.fillMaxSize()
             ) {
                 CircularProgressIndicator()
             }
@@ -55,19 +78,25 @@ fun MovieDetailScreen(
 
         is MovieDetailUIState.Success -> {
             val movie = uiState.movie
-            MovieInformation(movie)
+            MovieInformation(
+                modifier = modifier,
+                movie = movie
+            )
         }
     }
 }
 
 @Composable
-fun MovieInformation(movie: Movie?) {
+fun MovieInformation(
+    modifier: Modifier = Modifier,
+    movie: Movie?
+) {
     if (movie == null) {
         ErrorMessage(stringResource(R.string.error_movie_not_found))
     } else {
         val scrollState = rememberScrollState()
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .padding(16.dp)
                 .verticalScroll(scrollState)
         ) {

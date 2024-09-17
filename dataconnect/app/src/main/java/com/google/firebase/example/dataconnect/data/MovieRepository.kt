@@ -9,7 +9,7 @@ class MovieRepository(
     private val moviesConnector: MoviesConnector = MoviesConnector.instance
 ) {
 
-    // Repositories
+    // Queries
     suspend fun listMovies(): List<Movie> {
         return moviesConnector.listMovies.execute().data.movies.map { it.toMovie() }
     }
@@ -35,4 +35,7 @@ class MovieRepository(
     }
 
     // Mutations
+    suspend fun addMovieToFavorites(movieID: String) {
+        moviesConnector.addFavoritedMovie.execute(UUID.fromString(movieID))
+    }
 }
