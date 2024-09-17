@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.google.firebase.example.dataconnect.R
 import com.google.firebase.example.dataconnect.data.Movie
+import com.google.firebase.example.dataconnect.ui.components.MovieTile
 
 @Composable
 fun MoviesScreen(
@@ -64,49 +65,38 @@ fun MoviesScreen(
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
-                HorizontalMovieList(uiState.top10movies, onMovieClicked)
+                LazyRow {
+                    items(uiState.top10movies) { movie ->
+                        MovieTile(
+                            movieId = movie.id.toString(),
+                            movieTitle = movie.title,
+                            movieImageUrl = movie.imageUrl,
+                            movieRating = movie.rating ?: 0.0,
+                            onMovieClicked = {
+                                onMovieClicked(movie.id.toString())
+                            }
+                        )
+                    }
+                }
+
                 Text(
                     text = stringResource(R.string.title_latest_movies),
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
-                HorizontalMovieList(uiState.latestMovies, onMovieClicked)
-            }
-        }
-    }
-}
-
-@Composable
-fun HorizontalMovieList(
-    movies: List<Movie>,
-    onMovieClicked: (movie: String) -> Unit
-) {
-    LazyRow {
-        items(movies) { movie ->
-            Card(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .fillParentMaxWidth(0.4f)
-                    .clickable {
-                        onMovieClicked(movie.id.toString())
-                    },
-            ) {
-                AsyncImage(
-                    model = movie.imageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = movie.title,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
-                )
-                Text(
-                    text = "Rating: ${movie.rating}",
-                    modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
-                    style = MaterialTheme.typography.bodySmall
-                )
+                LazyRow {
+                    items(uiState.latestMovies) { movie ->
+                        MovieTile(
+                            movieId = movie.id.toString(),
+                            movieTitle = movie.title,
+                            movieImageUrl = movie.imageUrl,
+                            movieRating = movie.rating ?: 0.0,
+                            onMovieClicked = {
+                                onMovieClicked(movie.id.toString())
+                            }
+                        )
+                    }
+                }
             }
         }
     }
