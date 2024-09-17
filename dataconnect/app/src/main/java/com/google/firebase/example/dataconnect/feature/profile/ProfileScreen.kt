@@ -89,16 +89,20 @@ fun ProfileScreen(
     val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(vertical = 16.dp)
             .verticalScroll(scrollState)
     ) {
         Text(
             text = "Welcome back, $name!",
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.displaySmall,
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
-        TextButton(onClick = {
-            onSignOut()
-        }) {
+        TextButton(
+            onClick = {
+                onSignOut()
+            },
+            modifier = Modifier.padding(horizontal = 16.dp)
+        ) {
             Text("Sign out")
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -119,7 +123,11 @@ fun ProfileScreen(
 @Composable
 fun ProfileSection(title: String, content: @Composable () -> Unit) {
     Column {
-        Text(text = title, style = MaterialTheme.typography.titleMedium)
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
         Spacer(modifier = Modifier.height(8.dp))
         content()
     }
@@ -135,7 +143,6 @@ fun WatchedMoviesList(watchedItems: List<GetUserByIdQuery.Data.User.WatchedItem>
     LazyRow {
         items(watchedItems) { watchedItem ->
             MovieTile(
-                modifier = Modifier.fillParentMaxWidth(0.4f),
                 movieId = watchedItem.movie.id.toString(),
                 movieImageUrl = watchedItem.movie.imageUrl,
                 movieTitle = watchedItem.movie.title,
@@ -153,7 +160,6 @@ fun FavoriteMoviesList(favoriteItems: List<GetUserByIdQuery.Data.User.FavoriteMo
     LazyRow {
         items(favoriteItems) { favoriteItem ->
             MovieTile(
-                modifier = Modifier.fillParentMaxWidth(0.4f),
                 movieId = favoriteItem.movie.id.toString(),
                 movieImageUrl = favoriteItem.movie.imageUrl,
                 movieTitle = favoriteItem.movie.title,
