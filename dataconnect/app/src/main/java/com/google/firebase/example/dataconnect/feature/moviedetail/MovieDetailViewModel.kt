@@ -2,13 +2,17 @@ package com.google.firebase.example.dataconnect.feature.moviedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.example.dataconnect.data.MovieRepository
+import com.google.firebase.dataconnect.movies.MoviesConnector
+import com.google.firebase.dataconnect.movies.execute
+import com.google.firebase.dataconnect.movies.instance
+import com.google.firebase.example.dataconnect.data.toMovie
+import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel(
-    private val repository: MovieRepository = MovieRepository()
+    private val moviesConnector: MoviesConnector = MoviesConnector.instance
 ) : ViewModel() {
     private var movieId: String = ""
 
@@ -20,7 +24,9 @@ class MovieDetailViewModel(
         movieId = id
         viewModelScope.launch {
             try {
-                val movie = repository.getMovieByID(movieId)
+                val movie =  moviesConnector.getMovieById.execute(
+                    id = UUID.fromString(movieId)
+                ).data.movie?.toMovie()
                 _uiState.value = MovieDetailUIState.Success(movie)
             } catch (e: Exception) {
                 _uiState.value = MovieDetailUIState.Error(e.message ?: "")
@@ -31,7 +37,7 @@ class MovieDetailViewModel(
     fun addToFavorite() {
         viewModelScope.launch {
             try {
-                repository.addMovieToFavorites(movieId)
+                moviesConnector.addFavoritedMovie.execute(UUID.fromString(movieId))
             } catch (e: Exception) {
                 _uiState.value = MovieDetailUIState.Error(e.message ?: "")
             }
