@@ -10,7 +10,9 @@ import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
-import com.google.firebase.example.dataconnect.data.UserRepository
+import com.google.firebase.dataconnect.movies.MoviesConnector
+import com.google.firebase.dataconnect.movies.execute
+import com.google.firebase.dataconnect.movies.instance
 import com.google.firebase.example.dataconnect.feature.moviedetail.MovieDetailUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +21,7 @@ import kotlinx.coroutines.tasks.await
 
 class ProfileViewModel(
     private val auth: FirebaseAuth = Firebase.auth,
-    private val repository: UserRepository = UserRepository()
+    private val moviesConnector: MoviesConnector = MoviesConnector.instance
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<ProfileUIState>(ProfileUIState.Loading)
     val uiState: StateFlow<ProfileUIState>
@@ -54,7 +56,7 @@ class ProfileViewModel(
                         .setDisplayName(displayName)
                         .build()
                 )?.await()
-                repository.addUser(displayName)
+                moviesConnector.upsertUser.execute(username = displayName)
             } catch (e: Exception) {
                 _uiState.value = ProfileUIState.Error(e.message ?: "")
                 e.printStackTrace()
@@ -81,7 +83,7 @@ class ProfileViewModel(
     ) {
         viewModelScope.launch {
             try {
-                val user = repository.getUserById(userId)
+                val user = moviesConnector.getUserById.execute(id = userId).data.user
                 _uiState.value = ProfileUIState.ProfileState(
                     user?.username,
                     favoriteMovies = user?.favoriteMovies ?: emptyList()
