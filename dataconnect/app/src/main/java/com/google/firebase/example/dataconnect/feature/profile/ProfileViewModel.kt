@@ -3,17 +3,14 @@ package com.google.firebase.example.dataconnect.feature.profile
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
-import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.dataconnect.movies.MoviesConnector
 import com.google.firebase.dataconnect.movies.execute
 import com.google.firebase.dataconnect.movies.instance
-import com.google.firebase.example.dataconnect.feature.moviedetail.MovieDetailUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -36,7 +33,7 @@ class ProfileViewModel(
                 if (currentUser != null) {
                     displayUser(currentUser.uid)
                 } else {
-                    _uiState.value = ProfileUIState.SignUpState
+                    _uiState.value = ProfileUIState.AuthState
                 }
             }
         }

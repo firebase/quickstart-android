@@ -7,7 +7,7 @@ sealed class ProfileUIState {
 
     data class Error(val errorMessage: String): ProfileUIState()
 
-    data object SignUpState: ProfileUIState()
+    data object AuthState: ProfileUIState()
 
     data class ProfileState(
         val username: String?,
