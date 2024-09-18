@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -29,7 +30,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.dataconnect.movies.GetUserByIdQuery
+import com.google.firebase.example.dataconnect.ui.components.ActorTile
 import com.google.firebase.example.dataconnect.ui.components.MovieTile
+import com.google.firebase.example.dataconnect.ui.components.ReviewCard
 
 @Composable
 fun ProfileScreen(
@@ -107,9 +110,6 @@ fun ProfileScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileSection(title = "Reviews", content = { ReviewsList(reviews) })
-        Spacer(modifier = Modifier.height(16.dp))
-
         ProfileSection(title = "Watched Movies", content = { WatchedMoviesList(watchedMovies) })
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -117,6 +117,9 @@ fun ProfileScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         ProfileSection(title = "Favorite Actors", content = { FavoriteActorsList(favoriteActors) })
+
+        ProfileSection(title = "Reviews", content = { ReviewsList(name, reviews) })
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
@@ -134,8 +137,21 @@ fun ProfileSection(title: String, content: @Composable () -> Unit) {
 }
 
 @Composable
-fun ReviewsList(reviews: List<GetUserByIdQuery.Data.User.ReviewsItem>) {
-    // Display the list of reviews
+fun ReviewsList(
+    userName: String,
+    reviews: List<GetUserByIdQuery.Data.User.ReviewsItem>
+) {
+    Column {
+        // TODO(thatfiredev): Handle cases where the list is too long to display
+        reviews.forEach { review ->
+            ReviewCard(
+                userName = userName,
+                date = review.reviewDate.toString(),
+                rating = review.rating?.toDouble() ?: 0.0,
+                text = review.reviewText ?: ""
+            )
+        }
+    }
 }
 
 @Composable
@@ -174,7 +190,14 @@ fun FavoriteMoviesList(favoriteItems: List<GetUserByIdQuery.Data.User.FavoriteMo
 
 @Composable
 fun FavoriteActorsList(actors: List<GetUserByIdQuery.Data.User.FavoriteActorsItem>) {
-    // Display the list of favorite actors
+    LazyRow {
+        items(actors) { favoriteActor ->
+            ActorTile(
+                actorName = favoriteActor.actor.name,
+                actorImageUrl = favoriteActor.actor.imageUrl
+            )
+        }
+    }
 }
 
 @Composable
