@@ -10,17 +10,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -65,10 +67,51 @@ fun MovieDetailScreen(
 //            }
 //        }
     ) { padding ->
-        MovieDetailScreen(
-            modifier = Modifier.padding(padding),
-            uiState = uiState
-        )
+        when (uiState) {
+            is MovieDetailUIState.Error -> {
+                ErrorMessage((uiState as MovieDetailUIState.Error).errorMessage)
+            }
+
+            MovieDetailUIState.Loading -> {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            is MovieDetailUIState.Success -> {
+                val ui = uiState as MovieDetailUIState.Success
+                val movie = ui.movie
+                val scrollState = rememberScrollState()
+                Column(
+                    modifier = Modifier.verticalScroll(scrollState)
+                ) {
+                    MovieInformation(
+                        modifier = Modifier.padding(padding),
+                        movie = movie,
+                        isMovieWatched = ui.isWatched,
+                        isMovieFavorite = ui.isFavorite,
+                        onFavoriteToggled = { newValue ->
+                            movieDetailViewModel.toggleFavorite(newValue)
+                        },
+                        onWatchToggled = { newValue ->
+                            movieDetailViewModel.toggleWatched(newValue)
+                        }
+                    )
+                    MainActorsList(movie?.mainActors ?: emptyList())
+                    SupportingActorsList(movie?.supportingActors ?: emptyList())
+                    UserReviews(
+                        onReviewSubmitted = {
+
+                        },
+                        movie?.reviews ?: emptyList()
+                    )
+                }
+
+            }
+        }
     }
 }
 
@@ -77,48 +120,17 @@ fun MovieDetailScreen(
     modifier: Modifier = Modifier,
     uiState: MovieDetailUIState
 ) {
-    when (uiState) {
-        is MovieDetailUIState.Error -> {
-            ErrorMessage(uiState.errorMessage)
-        }
 
-        MovieDetailUIState.Loading -> {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = modifier.fillMaxSize()
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-
-        is MovieDetailUIState.Success -> {
-            val movie = uiState.movie
-            val scrollState = rememberScrollState()
-            Column(
-                modifier = Modifier.verticalScroll(scrollState)
-            ) {
-                MovieInformation(
-                    modifier = modifier,
-                    movie = movie
-                )
-                MainActorsList(movie?.mainActors ?: emptyList())
-                SupportingActorsList(movie?.supportingActors ?: emptyList())
-                UserReviews(
-                    onReviewSubmitted = {
-
-                    },
-                    movie?.reviews ?: emptyList()
-                )
-            }
-
-        }
-    }
 }
 
 @Composable
 fun MovieInformation(
     modifier: Modifier = Modifier,
-    movie: GetMovieByIdQuery.Data.Movie?
+    movie: GetMovieByIdQuery.Data.Movie?,
+    isMovieWatched: Boolean,
+    isMovieFavorite: Boolean,
+    onWatchToggled: (newValue: Boolean) -> Unit,
+    onFavoriteToggled: (newValue: Boolean) -> Unit
 ) {
     if (movie == null) {
         ErrorMessage(stringResource(R.string.error_movie_not_found))
@@ -180,18 +192,36 @@ fun MovieInformation(
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row {
-                OutlinedButton(onClick = {
-
-                }) {
-                    Icon(Icons.Outlined.Check, "Watched")
-                    Text("Mark as watched", modifier = Modifier.padding(start = 4.dp))
+                if (isMovieWatched) {
+                    FilledTonalButton(onClick = {
+                        onWatchToggled(false)
+                    }) {
+                        Icon(Icons.Filled.CheckCircle, "Watched")
+                        Text("Watched", modifier = Modifier.padding(start = 4.dp))
+                    }
+                } else {
+                    OutlinedButton(onClick = {
+                        onWatchToggled(true)
+                    }) {
+                        Icon(Icons.Outlined.Check, "Watched")
+                        Text("Mark as watched", modifier = Modifier.padding(start = 4.dp))
+                    }
                 }
                 Spacer(modifier = Modifier.width(8.dp))
-                OutlinedButton(onClick = {
-
-                }) {
-                    Icon(Icons.Outlined.Favorite, "Favorite")
-                    Text("Add to Favorites", modifier = Modifier.padding(start = 4.dp))
+                if (isMovieFavorite) {
+                    FilledTonalButton(onClick = {
+                        onFavoriteToggled(false)
+                    }) {
+                        Icon(Icons.Filled.Favorite, "Favorite")
+                        Text("Favorite", modifier = Modifier.padding(start = 4.dp))
+                    }
+                } else {
+                    OutlinedButton(onClick = {
+                        onFavoriteToggled(true)
+                    }) {
+                        Icon(Icons.Outlined.FavoriteBorder, "Favorite")
+                        Text("Add to Favorites", modifier = Modifier.padding(start = 4.dp))
+                    }
                 }
             }
         }

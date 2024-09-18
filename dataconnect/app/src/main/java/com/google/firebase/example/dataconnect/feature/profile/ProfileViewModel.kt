@@ -86,7 +86,10 @@ class ProfileViewModel(
                 val user = moviesConnector.getUserById.execute(id = userId).data.user
                 _uiState.value = ProfileUIState.ProfileState(
                     user?.username,
-                    favoriteMovies = user?.favoriteMovies ?: emptyList()
+                    favoriteMovies = user?.favoriteMovies ?: emptyList(),
+                    watchedMovies = user?.watched ?: emptyList(),
+                    favoriteActors = user?.favoriteActors ?: emptyList(),
+                    reviews = user?.reviews ?: emptyList()
                 )
                 Log.d("DisplayUser", "$user")
             } catch (e: Exception) {
