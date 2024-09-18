@@ -3,9 +3,14 @@ package com.google.firebase.example.dataconnect.feature.moviedetail
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -29,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.google.firebase.dataconnect.movies.GetMovieByIdQuery
 import com.google.firebase.example.dataconnect.R
+import com.google.firebase.example.dataconnect.ui.components.ActorTile
 
 @Composable
 fun MovieDetailScreen(
@@ -77,10 +83,18 @@ fun MovieDetailScreen(
 
         is MovieDetailUIState.Success -> {
             val movie = uiState.movie
-            MovieInformation(
-                modifier = modifier,
-                movie = movie
-            )
+            val scrollState = rememberScrollState()
+            Column(
+                modifier = Modifier.verticalScroll(scrollState)
+            ) {
+                MovieInformation(
+                    modifier = modifier,
+                    movie = movie
+                )
+                MainActorsList(movie?.mainActors ?: emptyList())
+                SupportingActorsList(movie?.supportingActors ?: emptyList())
+            }
+
         }
     }
 }
@@ -93,11 +107,9 @@ fun MovieInformation(
     if (movie == null) {
         ErrorMessage(stringResource(R.string.error_movie_not_found))
     } else {
-        val scrollState = rememberScrollState()
         Column(
             modifier = modifier
                 .padding(16.dp)
-                .verticalScroll(scrollState)
         ) {
             Text(
                 text = movie.title,
@@ -142,6 +154,44 @@ fun MovieInformation(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun MainActorsList(
+    actors: List<GetMovieByIdQuery.Data.Movie.MainActorsItem?>
+) {
+    Text(
+        text = "Main Actors",
+        style = MaterialTheme.typography.headlineMedium,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    LazyRow {
+        items(actors) { actor ->
+            actor?.let {
+                ActorTile(it.name, it.imageUrl)
+            }
+        }
+    }
+}
+
+@Composable
+fun SupportingActorsList(
+    actors: List<GetMovieByIdQuery.Data.Movie.SupportingActorsItem?>
+) {
+    Text(
+        text = "Supporting Actors",
+        style = MaterialTheme.typography.headlineMedium,
+        modifier = Modifier.padding(horizontal = 16.dp)
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    LazyRow {
+        items(actors) { actor ->
+            actor?.let {
+                ActorTile(it.name, it.imageUrl)
             }
         }
     }
