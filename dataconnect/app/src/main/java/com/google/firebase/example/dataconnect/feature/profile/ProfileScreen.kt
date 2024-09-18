@@ -146,7 +146,7 @@ fun ReviewsList(
         reviews.forEach { review ->
             ReviewCard(
                 userName = userName,
-                date = review.reviewDate.toString(),
+                date = review.reviewDate,
                 rating = review.rating?.toDouble() ?: 0.0,
                 text = review.reviewText ?: ""
             )

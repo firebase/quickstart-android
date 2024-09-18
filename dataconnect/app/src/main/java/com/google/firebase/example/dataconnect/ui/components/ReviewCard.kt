@@ -17,22 +17,28 @@ import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.Date
+import java.util.Locale
+
 
 @Composable
 fun ReviewCard(
     userName: String,
-    date: String,
+    date: Date,
     rating: Double,
     text: String
 ) {
     Card(
         modifier = Modifier
-            .background(color = MaterialTheme.colorScheme.onSecondaryContainer)
             .fillMaxWidth()
             .padding(8.dp)
     ) {
         Column(
             modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.secondaryContainer)
                 .padding(16.dp)
         ) {
             Text(
@@ -43,7 +49,12 @@ fun ReviewCard(
             Row(
                 modifier = Modifier.padding(bottom = 8.dp)
             ) {
-                Text(text = date)
+                Text(
+                    text = SimpleDateFormat(
+                        "dd MMM, yyyy",
+                        Locale.getDefault()
+                    ).format(date)
+                )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "Rating: ")
                 Text(text = "$rating")

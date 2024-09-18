@@ -208,7 +208,9 @@ fun MainActorsList(
         modifier = Modifier.padding(horizontal = 16.dp)
     )
     Spacer(modifier = Modifier.height(8.dp))
-    LazyRow {
+    LazyRow(
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
         items(actors) { actor ->
             actor?.let {
                 ActorTile(it.name, it.imageUrl)
@@ -227,7 +229,9 @@ fun SupportingActorsList(
         modifier = Modifier.padding(horizontal = 16.dp)
     )
     Spacer(modifier = Modifier.height(8.dp))
-    LazyRow {
+    LazyRow(
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
         items(actors) { actor ->
             actor?.let {
                 ActorTile(it.name, it.imageUrl)
@@ -272,7 +276,7 @@ fun UserReviews(
         reviews.forEach {
             ReviewCard(
                 userName = it.user.username,
-                date = it.reviewDate.toString(),
+                date = it.reviewDate,
                 rating = it.rating?.toDouble() ?: 0.0,
                 text = it.reviewText ?: ""
             )
