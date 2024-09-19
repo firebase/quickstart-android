@@ -9,6 +9,7 @@ import com.google.firebase.dataconnect.movies.MoviesConnector
 import com.google.firebase.dataconnect.movies.execute
 import com.google.firebase.dataconnect.movies.instance
 import java.util.UUID
+import kotlin.math.roundToInt
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -93,6 +94,25 @@ class MovieDetailViewModel(
                         movieId = UUID.fromString(movieId)
                     )
                 }
+                // Re-run the query to fetch movie
+                setMovieId(movieId)
+            } catch (e: Exception) {
+                _uiState.value = MovieDetailUIState.Error(e.message ?: "")
+            }
+        }
+    }
+
+    fun addRating(rating: Float, text: String) {
+        viewModelScope.launch {
+            try {
+                moviesConnector.addReview.execute(
+                    movieId = UUID.fromString(movieId),
+                    // TODO(thatfiredev): this might have been an error in the mutation definition
+                    //   rating shouldn't be an Int!!
+                    rating = rating.roundToInt(),
+                    reviewText = text
+                )
+                // TODO(thatfiredev): should we have a way of only refetching the reviews?
                 // Re-run the query to fetch movie
                 setMovieId(movieId)
             } catch (e: Exception) {

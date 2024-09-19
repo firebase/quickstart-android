@@ -64,7 +64,7 @@ This app is still missing some features which will be added before Public Previe
 
 - [ ] Search
 - [ ] Movie review
-  - [ ] Add a new review 
+  - [x] Add a new review 
   - [ ] Update a review
   - [ ] Delete a review
 - [ ] Actors

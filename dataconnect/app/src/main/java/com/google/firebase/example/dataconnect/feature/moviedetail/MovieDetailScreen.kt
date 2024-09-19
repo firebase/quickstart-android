@@ -27,12 +27,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -55,18 +57,7 @@ fun MovieDetailScreen(
 ) {
     movieDetailViewModel.setMovieId(movieId)
     val uiState by movieDetailViewModel.uiState.collectAsState()
-    // TODO: Create a movie favorited toggle
-    Scaffold(
-//        floatingActionButton = {
-//            FloatingActionButton(
-//                onClick = {
-//                    movieDetailViewModel.addToFavorite()
-//                }
-//            ) {
-//                Icon(Icons.Filled.FavoriteBorder, "Favorite")
-//            }
-//        }
-    ) { padding ->
+    Scaffold { padding ->
         when (uiState) {
             is MovieDetailUIState.Error -> {
                 ErrorMessage((uiState as MovieDetailUIState.Error).errorMessage)
@@ -103,8 +94,8 @@ fun MovieDetailScreen(
                     MainActorsList(movie?.mainActors ?: emptyList())
                     SupportingActorsList(movie?.supportingActors ?: emptyList())
                     UserReviews(
-                        onReviewSubmitted = {
-
+                        onReviewSubmitted = { rating, text ->
+                            movieDetailViewModel.addRating(rating, text)
                         },
                         movie?.reviews ?: emptyList()
                     )
@@ -113,14 +104,6 @@ fun MovieDetailScreen(
             }
         }
     }
-}
-
-@Composable
-fun MovieDetailScreen(
-    modifier: Modifier = Modifier,
-    uiState: MovieDetailUIState
-) {
-
 }
 
 @Composable
@@ -272,7 +255,7 @@ fun SupportingActorsList(
 
 @Composable
 fun UserReviews(
-    onReviewSubmitted: (String) -> Unit,
+    onReviewSubmitted: (rating: Float, text: String) -> Unit,
     reviews: List<GetMovieByIdQuery.Data.Movie.ReviewsItem>
 ) {
     var reviewText by remember { mutableStateOf("") }
@@ -288,6 +271,15 @@ fun UserReviews(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        var rating by remember { mutableFloatStateOf(3f) }
+        Text("Rating: ${rating}")
+        Slider(
+            value = rating,
+            // Round the value to the nearest 0.5
+            onValueChange = { rating = (Math.round(it * 2) / 2.0).toFloat() },
+            steps = 9,
+            valueRange = 1f..5f
+        )
         TextField(
             value = reviewText,
             onValueChange = { reviewText = it },
@@ -297,7 +289,12 @@ fun UserReviews(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = { onReviewSubmitted(reviewText) }) {
+        Button(
+            onClick = {
+                onReviewSubmitted(rating, reviewText)
+                reviewText = ""
+            }
+        ) {
             Text("Submit Review")
         }
     }
