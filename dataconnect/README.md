@@ -67,8 +67,8 @@ This app is still missing some features which will be added before Public Previe
   - [x] Add a new review 
   - [ ] Update a review
   - [ ] Delete a review
-- [ ] Actors
-  - [ ] Show actor profile
-  - [ ] Mark actor as favorite
+- [x] Actors
+  - [x] Show actor profile
+  - [x] Mark actor as favorite
 - [ ] Error handling
-  - (Some errors may cause the app to crash at the moment) 
+  Some errors may cause the app to crash, especially if there's no user logged in. 

@@ -17,24 +17,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-
-val MAX_MOVIE_CARD_WIDTH = 150.dp
 
 @Composable
 fun MovieTile(
     modifier: Modifier = Modifier,
+    tileWidth: Dp = 150.dp,
     movieId: String,
     movieImageUrl: String,
     movieTitle: String,
-    movieRating: Double,
+    movieRating: Double? = null,
     onMovieClicked: (movieId: String) -> Unit
 ) {
     Card(
         modifier = modifier
             .padding(vertical = 16.dp, horizontal = 4.dp)
-            .sizeIn(maxWidth = MAX_MOVIE_CARD_WIDTH)
+            .sizeIn(maxWidth = tileWidth)
             .clickable {
                 onMovieClicked(movieId)
             },
@@ -48,14 +48,16 @@ fun MovieTile(
         Text(
             text = movieTitle,
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
+            modifier = Modifier.padding(8.dp),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Text(
-            text = "Rating: $movieRating",
-            modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
-            style = MaterialTheme.typography.bodySmall
-        )
+        movieRating?.let {
+            Text(
+                text = "Rating: $movieRating",
+                modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
     }
 }

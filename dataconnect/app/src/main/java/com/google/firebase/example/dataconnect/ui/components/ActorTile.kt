@@ -1,6 +1,7 @@
 package com.google.firebase.example.dataconnect.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -28,15 +29,22 @@ val ACTOR_CARD_SIZE = 80.dp
 
 @Composable
 fun ActorTile(
+    actorId: String,
     actorName: String,
-    actorImageUrl: String
+    actorImageUrl: String,
+    onActorClicked: (actorId: String) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.sizeIn(
-            maxWidth = ACTOR_CARD_SIZE,
-            maxHeight = ACTOR_CARD_SIZE + 32.dp
-        ).padding(4.dp)
+        modifier = Modifier
+            .sizeIn(
+                maxWidth = ACTOR_CARD_SIZE,
+                maxHeight = ACTOR_CARD_SIZE + 32.dp
+            )
+            .padding(4.dp)
+            .clickable {
+                onActorClicked(actorId)
+            }
     ) {
         AsyncImage(
             model = actorImageUrl,

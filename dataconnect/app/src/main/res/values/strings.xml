@@ -19,4 +19,5 @@
     <!-- Movie Detail Screen -->
     <string name="error_movie_not_found">Couldnt find movie in the database</string>
     <string name="description_not_available">Description not available</string>
+    <string name="biography_not_available">Biography not available</string>
 </resources>

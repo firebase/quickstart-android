@@ -27,6 +27,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.example.dataconnect.feature.actordetail.actorDetailScreen
+import com.google.firebase.example.dataconnect.feature.actordetail.navigateToActorDetail
 import com.google.firebase.example.dataconnect.feature.genredetail.genreDetailScreen
 import com.google.firebase.example.dataconnect.feature.genredetail.navigateToGenreDetail
 import com.google.firebase.example.dataconnect.feature.genres.GENRES_ROUTE
@@ -105,7 +107,14 @@ class MainActivity : ComponentActivity() {
                                 launchSingleTop = true
                             }
                         })
-                        movieDetailScreen()
+                        movieDetailScreen(
+                            onActorClicked = { actorId ->
+                                navController.navigateToActorDetail(actorId) {
+                                    launchSingleTop = true
+                                }
+                            }
+                        )
+                        actorDetailScreen()
                         genresScreen(onGenreClicked = { genre ->
                             navController.navigateToGenreDetail(genre) {
                                 launchSingleTop = true

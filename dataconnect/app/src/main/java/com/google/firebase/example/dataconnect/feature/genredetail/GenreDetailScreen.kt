@@ -74,7 +74,7 @@ fun GenreDetailScreen(
                             movieId = movie.id.toString(),
                             movieTitle = movie.title,
                             movieImageUrl = movie.imageUrl,
-                            movieRating = movie.rating ?: 0.0,
+                            movieRating = movie.rating,
                             onMovieClicked = {
                                 // TODO
                             }
@@ -93,7 +93,7 @@ fun GenreDetailScreen(
                             movieId = movie.id.toString(),
                             movieTitle = movie.title,
                             movieImageUrl = movie.imageUrl,
-                            movieRating = movie.rating ?: 0.0,
+                            movieRating = movie.rating,
                             onMovieClicked = {
                                 // TODO(thatfiredev)
                             }

@@ -53,6 +53,7 @@ import com.google.firebase.example.dataconnect.ui.components.ReviewCard
 @Composable
 fun MovieDetailScreen(
     movieId: String,
+    onActorClicked: (actorId: String) -> Unit,
     movieDetailViewModel: MovieDetailViewModel = viewModel()
 ) {
     movieDetailViewModel.setMovieId(movieId)
@@ -91,8 +92,14 @@ fun MovieDetailScreen(
                             movieDetailViewModel.toggleWatched(newValue)
                         }
                     )
-                    MainActorsList(movie?.mainActors ?: emptyList())
-                    SupportingActorsList(movie?.supportingActors ?: emptyList())
+                    MainActorsList(
+                        movie?.mainActors ?: emptyList(),
+                        onActorClicked
+                    )
+                    SupportingActorsList(
+                        movie?.supportingActors ?: emptyList(),
+                        onActorClicked
+                    )
                     UserReviews(
                         onReviewSubmitted = { rating, text ->
                             movieDetailViewModel.addRating(rating, text)
@@ -213,7 +220,8 @@ fun MovieInformation(
 
 @Composable
 fun MainActorsList(
-    actors: List<GetMovieByIdQuery.Data.Movie.MainActorsItem?>
+    actors: List<GetMovieByIdQuery.Data.Movie.MainActorsItem?>,
+    onActorClicked: (actorId: String) -> Unit
 ) {
     Text(
         text = "Main Actors",
@@ -226,7 +234,7 @@ fun MainActorsList(
     ) {
         items(actors) { actor ->
             actor?.let {
-                ActorTile(it.name, it.imageUrl)
+                ActorTile(it.id.toString(), it.name, it.imageUrl, onActorClicked)
             }
         }
     }
@@ -234,7 +242,8 @@ fun MainActorsList(
 
 @Composable
 fun SupportingActorsList(
-    actors: List<GetMovieByIdQuery.Data.Movie.SupportingActorsItem?>
+    actors: List<GetMovieByIdQuery.Data.Movie.SupportingActorsItem?>,
+    onActorClicked: (actorId: String) -> Unit,
 ) {
     Text(
         text = "Supporting Actors",
@@ -247,7 +256,7 @@ fun SupportingActorsList(
     ) {
         items(actors) { actor ->
             actor?.let {
-                ActorTile(it.name, it.imageUrl)
+                ActorTile(it.id.toString(), it.name, it.imageUrl, onActorClicked)
             }
         }
     }

@@ -70,7 +70,7 @@ fun MoviesScreen(
                             movieId = movie.id.toString(),
                             movieTitle = movie.title,
                             movieImageUrl = movie.imageUrl,
-                            movieRating = movie.rating ?: 0.0,
+                            movieRating = movie.rating,
                             onMovieClicked = {
                                 onMovieClicked(movie.id.toString())
                             }
@@ -89,7 +89,7 @@ fun MoviesScreen(
                             movieId = movie.id.toString(),
                             movieTitle = movie.title,
                             movieImageUrl = movie.imageUrl,
-                            movieRating = movie.rating ?: 0.0,
+                            movieRating = movie.rating,
                             onMovieClicked = {
                                 onMovieClicked(movie.id.toString())
                             }

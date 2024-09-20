@@ -12,14 +12,16 @@ fun NavController.navigateToMovieDetail(
     navOptions: NavOptionsBuilder.() -> Unit = { }
 ) = navigate(MOVIE_DETAIL_ROUTE.replace("{movie}", movieId), navOptions)
 
-fun NavGraphBuilder.movieDetailScreen() {
+fun NavGraphBuilder.movieDetailScreen(
+    onActorClicked: (actorId: String) -> Unit
+) {
     composable(
         route = MOVIE_DETAIL_ROUTE
     ) { backStackEntry ->
         backStackEntry.arguments?.let {
             val movieId = it.getString("movie")
             movieId?.let { id ->
-                MovieDetailScreen(id)
+                MovieDetailScreen(id, onActorClicked)
             }
 
         }

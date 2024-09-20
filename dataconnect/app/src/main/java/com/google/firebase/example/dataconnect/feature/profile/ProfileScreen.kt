@@ -154,7 +154,8 @@ fun WatchedMoviesList(watchedItems: List<GetUserByIdQuery.Data.User.WatchedItem>
                 movieId = watchedItem.movie.id.toString(),
                 movieImageUrl = watchedItem.movie.imageUrl,
                 movieTitle = watchedItem.movie.title,
-                movieRating = watchedItem.movie.rating ?: 0.0,
+                movieRating = watchedItem.movie.rating,
+                tileWidth = 120.dp,
                 onMovieClicked = {
                     // TODO
                 }
@@ -171,7 +172,8 @@ fun FavoriteMoviesList(favoriteItems: List<GetUserByIdQuery.Data.User.FavoriteMo
                 movieId = favoriteItem.movie.id.toString(),
                 movieImageUrl = favoriteItem.movie.imageUrl,
                 movieTitle = favoriteItem.movie.title,
-                movieRating = favoriteItem.movie.rating ?: 0.0,
+                movieRating = favoriteItem.movie.rating,
+                tileWidth = 120.dp,
                 onMovieClicked = {
                     // TODO
                 }
@@ -185,8 +187,12 @@ fun FavoriteActorsList(actors: List<GetUserByIdQuery.Data.User.FavoriteActorsIte
     LazyRow {
         items(actors) { favoriteActor ->
             ActorTile(
+                actorId = favoriteActor.actor.id.toString(),
                 actorName = favoriteActor.actor.name,
-                actorImageUrl = favoriteActor.actor.imageUrl
+                actorImageUrl = favoriteActor.actor.imageUrl,
+                onActorClicked = {
+                    // TODO
+                }
             )
         }
     }
