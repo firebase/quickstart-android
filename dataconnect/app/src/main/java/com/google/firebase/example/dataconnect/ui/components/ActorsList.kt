@@ -2,6 +2,7 @@ package com.google.firebase.example.dataconnect.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
-val ACTOR_CARD_SIZE = 80.dp
+val ACTOR_CARD_SIZE = 64.dp
 
 /**
  * Used to represent an actor in a list UI
@@ -68,31 +70,38 @@ fun ActorTile(
     actor: Actor,
     onActorClicked: (actorId: String) -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Card(
         modifier = Modifier
-            .sizeIn(
-                maxWidth = ACTOR_CARD_SIZE,
-                maxHeight = ACTOR_CARD_SIZE + 32.dp
-            )
-            .padding(4.dp)
+            .padding(end = 8.dp)
             .clickable {
                 onActorClicked(actor.id)
             }
     ) {
-        AsyncImage(
-            model = actor.imageUrl,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .size(ACTOR_CARD_SIZE)
-                .clip(CircleShape)
-        )
-        Text(
-            text = actor.name,
-            style = MaterialTheme.typography.bodyLarge,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+                .sizeIn(
+                    maxWidth = 160.dp,
+                    maxHeight = ACTOR_CARD_SIZE + 16.dp
+                )
+                .padding(8.dp)
+                .fillMaxWidth()
+        ) {
+            AsyncImage(
+                model = actor.imageUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .size(ACTOR_CARD_SIZE)
+                    .clip(CircleShape)
+            )
+            Text(
+                text = actor.name,
+                style = MaterialTheme.typography.bodyLarge,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }
