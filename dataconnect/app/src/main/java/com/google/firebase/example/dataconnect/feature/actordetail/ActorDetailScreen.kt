@@ -34,7 +34,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.google.firebase.dataconnect.movies.GetActorByIdQuery
 import com.google.firebase.example.dataconnect.R
-import com.google.firebase.example.dataconnect.feature.moviedetail.ErrorMessage
+import com.google.firebase.example.dataconnect.ui.components.ErrorCard
+import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.Movie
 import com.google.firebase.example.dataconnect.ui.components.MoviesList
 
@@ -48,17 +49,10 @@ fun ActorDetailScreen(
     Scaffold { innerPadding ->
         when (uiState) {
             is ActorDetailUIState.Error -> {
-                ErrorMessage((uiState as ActorDetailUIState.Error).errorMessage)
+                ErrorCard((uiState as ActorDetailUIState.Error).errorMessage)
             }
 
-            ActorDetailUIState.Loading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
+            ActorDetailUIState.Loading -> LoadingScreen()
 
             is ActorDetailUIState.Success -> {
                 val ui = uiState as ActorDetailUIState.Success
@@ -88,7 +82,7 @@ fun ActorInformation(
     onFavoriteToggled: (newValue: Boolean) -> Unit
 ) {
     if (actor == null) {
-        ErrorMessage(stringResource(R.string.error_movie_not_found))
+        ErrorCard(stringResource(R.string.error_movie_not_found))
     } else {
         Column(
             modifier = modifier

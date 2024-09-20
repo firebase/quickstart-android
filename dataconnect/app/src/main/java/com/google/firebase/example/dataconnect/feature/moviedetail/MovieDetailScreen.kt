@@ -47,6 +47,8 @@ import com.google.firebase.dataconnect.movies.GetMovieByIdQuery
 import com.google.firebase.example.dataconnect.R
 import com.google.firebase.example.dataconnect.ui.components.Actor
 import com.google.firebase.example.dataconnect.ui.components.ActorsList
+import com.google.firebase.example.dataconnect.ui.components.ErrorCard
+import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.ReviewCard
 
 @Composable
@@ -60,17 +62,10 @@ fun MovieDetailScreen(
     Scaffold { padding ->
         when (uiState) {
             is MovieDetailUIState.Error -> {
-                ErrorMessage((uiState as MovieDetailUIState.Error).errorMessage)
+                ErrorCard((uiState as MovieDetailUIState.Error).errorMessage)
             }
 
-            MovieDetailUIState.Loading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
+            MovieDetailUIState.Loading -> LoadingScreen()
 
             is MovieDetailUIState.Success -> {
                 val ui = uiState as MovieDetailUIState.Success
@@ -130,7 +125,7 @@ fun MovieInformation(
     onFavoriteToggled: (newValue: Boolean) -> Unit
 ) {
     if (movie == null) {
-        ErrorMessage(stringResource(R.string.error_movie_not_found))
+        ErrorCard(stringResource(R.string.error_movie_not_found))
     } else {
         Column(
             modifier = modifier
@@ -281,11 +276,4 @@ fun UserReviews(
             )
         }
     }
-}
-
-@Composable
-fun ErrorMessage(
-    message: String
-) {
-    Text(message)
 }

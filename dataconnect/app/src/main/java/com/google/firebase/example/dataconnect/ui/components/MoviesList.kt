@@ -3,6 +3,7 @@ package com.google.firebase.example.dataconnect.ui.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyRow
@@ -40,6 +41,7 @@ fun MoviesList(
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp)
+            .fillMaxWidth()
     ) {
         Text(
             text = listTitle,

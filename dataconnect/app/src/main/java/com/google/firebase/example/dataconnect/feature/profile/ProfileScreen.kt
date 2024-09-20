@@ -24,6 +24,8 @@ import com.google.firebase.dataconnect.movies.GetUserByIdQuery
 import com.google.firebase.example.dataconnect.R
 import com.google.firebase.example.dataconnect.ui.components.Actor
 import com.google.firebase.example.dataconnect.ui.components.ActorsList
+import com.google.firebase.example.dataconnect.ui.components.ErrorCard
+import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.Movie
 import com.google.firebase.example.dataconnect.ui.components.MoviesList
 import com.google.firebase.example.dataconnect.ui.components.ReviewCard
@@ -35,7 +37,7 @@ fun ProfileScreen(
     val uiState by profileViewModel.uiState.collectAsState()
     when (uiState) {
         is ProfileUIState.Error -> {
-            Text((uiState as ProfileUIState.Error).errorMessage)
+            ErrorCard((uiState as ProfileUIState.Error).errorMessage)
         }
 
         is ProfileUIState.AuthState -> {
@@ -63,14 +65,7 @@ fun ProfileScreen(
             )
         }
 
-        ProfileUIState.Loading -> {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                CircularProgressIndicator()
-            }
-        }
+        ProfileUIState.Loading -> LoadingScreen()
     }
 }
 
