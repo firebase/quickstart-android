@@ -11,9 +11,9 @@ sealed class ProfileUIState {
 
     data class ProfileState(
         val username: String?,
-        val reviews: List<GetUserByIdQuery.Data.User.ReviewsItem> = emptyList(),
-        val watchedMovies: List<GetUserByIdQuery.Data.User.WatchedItem> = emptyList(),
-        val favoriteMovies: List<GetUserByIdQuery.Data.User.FavoriteMoviesItem> = emptyList(),
-        val favoriteActors: List<GetUserByIdQuery.Data.User.FavoriteActorsItem> = emptyList()
+        val reviews: List<GetUserByIdQuery.Data.User.ReviewsItem>? = emptyList(),
+        val watchedMovies: List<GetUserByIdQuery.Data.User.WatchedItem>? = emptyList(),
+        val favoriteMovies: List<GetUserByIdQuery.Data.User.FavoriteMoviesItem>? = emptyList(),
+        val favoriteActors: List<GetUserByIdQuery.Data.User.FavoriteActorsItem>? = emptyList()
     ) : ProfileUIState()
 }

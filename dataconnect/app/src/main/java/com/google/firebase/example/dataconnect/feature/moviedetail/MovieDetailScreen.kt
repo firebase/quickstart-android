@@ -88,7 +88,7 @@ fun MovieDetailScreen(
                         listTitle = stringResource(R.string.title_main_actors),
                         actors = movie?.mainActors?.mapNotNull {
                             Actor(it.id.toString(), it.name, it.imageUrl)
-                        }.orEmpty(),
+                        },
                         onActorClicked = { onActorClicked(it) }
                     )
                     // Supporting Actors list
@@ -96,14 +96,14 @@ fun MovieDetailScreen(
                         listTitle = stringResource(R.string.title_supporting_actors),
                         actors = movie?.supportingActors?.mapNotNull {
                             Actor(it.id.toString(), it.name, it.imageUrl)
-                        }.orEmpty(),
+                        },
                         onActorClicked = { onActorClicked(it) }
                     )
                     UserReviews(
                         onReviewSubmitted = { rating, text ->
                             movieDetailViewModel.addRating(rating, text)
                         },
-                        movie?.reviews ?: emptyList()
+                        movie?.reviews
                     )
                 }
 
@@ -199,64 +199,6 @@ fun MovieInformation(
                     onToggle = onFavoriteToggled
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun UserReviews(
-    onReviewSubmitted: (rating: Float, text: String) -> Unit,
-    reviews: List<GetMovieByIdQuery.Data.Movie.ReviewsItem>
-) {
-    var reviewText by remember { mutableStateOf("") }
-    Text(
-        text = "User Reviews",
-        style = MaterialTheme.typography.headlineMedium,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        var rating by remember { mutableFloatStateOf(3f) }
-        Text("Rating: ${rating}")
-        Slider(
-            value = rating,
-            // Round the value to the nearest 0.5
-            onValueChange = { rating = (Math.round(it * 2) / 2.0).toFloat() },
-            steps = 9,
-            valueRange = 1f..5f
-        )
-        TextField(
-            value = reviewText,
-            onValueChange = { reviewText = it },
-            label = { Text(stringResource(R.string.hint_write_review)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                onReviewSubmitted(rating, reviewText)
-                reviewText = ""
-            }
-        ) {
-            Text(stringResource(R.string.button_submit_review))
-        }
-    }
-    Column {
-        // TODO(thatfiredev): Handle cases where the list is too long to display
-        reviews.forEach {
-            ReviewCard(
-                userName = it.user.username,
-                date = it.reviewDate,
-                rating = it.rating?.toDouble() ?: 0.0,
-                text = it.reviewText ?: ""
-            )
         }
     }
 }

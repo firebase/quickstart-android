@@ -55,10 +55,10 @@ fun ProfileScreen(
             val ui = uiState as ProfileUIState.ProfileState
             ProfileScreen(
                 ui.username ?: "User",
-                ui.reviews,
-                ui.watchedMovies,
-                ui.favoriteMovies,
-                ui.favoriteActors,
+                ui.reviews.orEmpty(),
+                ui.watchedMovies.orEmpty(),
+                ui.favoriteMovies.orEmpty(),
+                ui.favoriteActors.orEmpty(),
                 onSignOut = {
                     profileViewModel.signOut()
                 }
