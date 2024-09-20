@@ -19,5 +19,23 @@
     <!-- Movie Detail Screen -->
     <string name="error_movie_not_found">Couldnt find movie in the database</string>
     <string name="description_not_available">Description not available</string>
+    <string name="button_mark_watched">Mark as watched</string>
+    <string name="button_unmark_watched">Watched</string>
+    <string name="button_favorite">Add to favorites</string>
+    <string name="button_remove_favorite">Favorite</string>
+    <string name="title_main_actors">Main Actors</string>
+    <string name="title_supporting_actors">Supporting Actors</string>
+    <string name="title_user_reviews">User Reviews</string>
+    <string name="hint_write_review">Write your review</string>
+    <string name="button_submit_review">Submit Review</string>
+
+    <!-- Actor Detail Screen -->
     <string name="biography_not_available">Biography not available</string>
+
+    <!-- Profile Screen -->
+    <string name="title_watched_movies">Watched Movies</string>
+    <string name="title_favorite_movies">Favorite Movies</string>
+    <string name="title_favorite_actors">Favorite Actors</string>
+    <string name="title_reviews">Reviews</string>
+
 </resources>

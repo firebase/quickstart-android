@@ -37,7 +37,6 @@ import coil.compose.AsyncImage
 import com.google.firebase.dataconnect.movies.GetActorByIdQuery
 import com.google.firebase.example.dataconnect.R
 import com.google.firebase.example.dataconnect.feature.moviedetail.ErrorMessage
-import com.google.firebase.example.dataconnect.ui.components.ActorTile
 import com.google.firebase.example.dataconnect.ui.components.MovieTile
 
 @Composable

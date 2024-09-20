@@ -23,7 +23,6 @@ fun NavGraphBuilder.movieDetailScreen(
             movieId?.let { id ->
                 MovieDetailScreen(id, onActorClicked)
             }
-
         }
     }
 }

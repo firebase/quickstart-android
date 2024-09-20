@@ -19,10 +19,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.dataconnect.movies.GetUserByIdQuery
-import com.google.firebase.example.dataconnect.ui.components.ActorTile
+import com.google.firebase.example.dataconnect.R
+import com.google.firebase.example.dataconnect.ui.components.Actor
+import com.google.firebase.example.dataconnect.ui.components.ActorsList
 import com.google.firebase.example.dataconnect.ui.components.MovieTile
 import com.google.firebase.example.dataconnect.ui.components.ReviewCard
 
@@ -108,7 +111,15 @@ fun ProfileScreen(
         ProfileSection(title = "Favorite Movies", content = { FavoriteMoviesList(favoriteMovies) })
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileSection(title = "Favorite Actors", content = { FavoriteActorsList(favoriteActors) })
+        ActorsList(
+            listTitle = stringResource(R.string.title_favorite_actors),
+            actors = favoriteActors.mapNotNull {
+                Actor(it.actor.id.toString(), it.actor.name, it.actor.imageUrl)
+            },
+            onActorClicked = {
+                // TODO
+            }
+        )
 
         ProfileSection(title = "Reviews", content = { ReviewsList(name, reviews) })
         Spacer(modifier = Modifier.height(16.dp))
@@ -181,21 +192,3 @@ fun FavoriteMoviesList(favoriteItems: List<GetUserByIdQuery.Data.User.FavoriteMo
         }
     }
 }
-
-@Composable
-fun FavoriteActorsList(actors: List<GetUserByIdQuery.Data.User.FavoriteActorsItem>) {
-    LazyRow {
-        items(actors) { favoriteActor ->
-            ActorTile(
-                actorId = favoriteActor.actor.id.toString(),
-                actorName = favoriteActor.actor.name,
-                actorImageUrl = favoriteActor.actor.imageUrl,
-                onActorClicked = {
-                    // TODO
-                }
-            )
-        }
-    }
-}
-
-

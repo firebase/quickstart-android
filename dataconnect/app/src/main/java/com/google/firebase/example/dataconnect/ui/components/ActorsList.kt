@@ -1,16 +1,14 @@
 package com.google.firebase.example.dataconnect.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,18 +18,52 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 
 val ACTOR_CARD_SIZE = 80.dp
 
+/**
+ * Used to represent an actor in a list UI
+ */
+data class Actor(
+    val id: String,
+    val name: String,
+    val imageUrl: String
+)
+
+/**
+ * Displays a scrollable horizontal list of actors.
+ */
+@Composable
+fun ActorsList(
+    modifier: Modifier = Modifier,
+    listTitle: String,
+    actors: List<Actor>? = emptyList(),
+    onActorClicked: (actorId: String) -> Unit
+) {
+    Column(
+        modifier = modifier.padding(horizontal = 16.dp)
+    ) {
+        Text(
+            text = listTitle,
+            style = MaterialTheme.typography.headlineMedium
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        LazyRow {
+            items(actors.orEmpty()) { actor ->
+                ActorTile(actor, onActorClicked)
+            }
+        }
+    }
+}
+
+/**
+ * Used to display each actor item in the list.
+ */
 @Composable
 fun ActorTile(
-    actorId: String,
-    actorName: String,
-    actorImageUrl: String,
+    actor: Actor,
     onActorClicked: (actorId: String) -> Unit
 ) {
     Column(
@@ -43,11 +75,11 @@ fun ActorTile(
             )
             .padding(4.dp)
             .clickable {
-                onActorClicked(actorId)
+                onActorClicked(actor.id)
             }
     ) {
         AsyncImage(
-            model = actorImageUrl,
+            model = actor.imageUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -55,7 +87,7 @@ fun ActorTile(
                 .clip(CircleShape)
         )
         Text(
-            text = actorName,
+            text = actor.name,
             style = MaterialTheme.typography.bodyLarge,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis

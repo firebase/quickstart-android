@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -47,7 +45,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.google.firebase.dataconnect.movies.GetMovieByIdQuery
 import com.google.firebase.example.dataconnect.R
-import com.google.firebase.example.dataconnect.ui.components.ActorTile
+import com.google.firebase.example.dataconnect.ui.components.Actor
+import com.google.firebase.example.dataconnect.ui.components.ActorsList
 import com.google.firebase.example.dataconnect.ui.components.ReviewCard
 
 @Composable
@@ -92,13 +91,21 @@ fun MovieDetailScreen(
                             movieDetailViewModel.toggleWatched(newValue)
                         }
                     )
-                    MainActorsList(
-                        movie?.mainActors ?: emptyList(),
-                        onActorClicked
+                    // Main Actors list
+                    ActorsList(
+                        listTitle = stringResource(R.string.title_main_actors),
+                        actors = movie?.mainActors?.mapNotNull {
+                            Actor(it.id.toString(), it.name, it.imageUrl)
+                        }.orEmpty(),
+                        onActorClicked = { onActorClicked(it) }
                     )
-                    SupportingActorsList(
-                        movie?.supportingActors ?: emptyList(),
-                        onActorClicked
+                    // Supporting Actors list
+                    ActorsList(
+                        listTitle = stringResource(R.string.title_supporting_actors),
+                        actors = movie?.supportingActors?.mapNotNull {
+                            Actor(it.id.toString(), it.name, it.imageUrl)
+                        }.orEmpty(),
+                        onActorClicked = { onActorClicked(it) }
                     )
                     UserReviews(
                         onReviewSubmitted = { rating, text ->
@@ -219,50 +226,6 @@ fun MovieInformation(
 }
 
 @Composable
-fun MainActorsList(
-    actors: List<GetMovieByIdQuery.Data.Movie.MainActorsItem?>,
-    onActorClicked: (actorId: String) -> Unit
-) {
-    Text(
-        text = "Main Actors",
-        style = MaterialTheme.typography.headlineMedium,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    LazyRow(
-        modifier = Modifier.padding(horizontal = 16.dp)
-    ) {
-        items(actors) { actor ->
-            actor?.let {
-                ActorTile(it.id.toString(), it.name, it.imageUrl, onActorClicked)
-            }
-        }
-    }
-}
-
-@Composable
-fun SupportingActorsList(
-    actors: List<GetMovieByIdQuery.Data.Movie.SupportingActorsItem?>,
-    onActorClicked: (actorId: String) -> Unit,
-) {
-    Text(
-        text = "Supporting Actors",
-        style = MaterialTheme.typography.headlineMedium,
-        modifier = Modifier.padding(horizontal = 16.dp)
-    )
-    Spacer(modifier = Modifier.height(8.dp))
-    LazyRow(
-        modifier = Modifier.padding(horizontal = 16.dp)
-    ) {
-        items(actors) { actor ->
-            actor?.let {
-                ActorTile(it.id.toString(), it.name, it.imageUrl, onActorClicked)
-            }
-        }
-    }
-}
-
-@Composable
 fun UserReviews(
     onReviewSubmitted: (rating: Float, text: String) -> Unit,
     reviews: List<GetMovieByIdQuery.Data.Movie.ReviewsItem>
@@ -292,7 +255,7 @@ fun UserReviews(
         TextField(
             value = reviewText,
             onValueChange = { reviewText = it },
-            label = { Text("Write your review") },
+            label = { Text(stringResource(R.string.hint_write_review)) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -304,7 +267,7 @@ fun UserReviews(
                 reviewText = ""
             }
         ) {
-            Text("Submit Review")
+            Text(stringResource(R.string.button_submit_review))
         }
     }
     Column {
