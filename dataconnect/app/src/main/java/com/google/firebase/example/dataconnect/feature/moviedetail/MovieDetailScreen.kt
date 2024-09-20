@@ -1,6 +1,5 @@
 package com.google.firebase.example.dataconnect.feature.moviedetail
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,11 +18,8 @@ import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SuggestionChip
@@ -50,6 +46,7 @@ import com.google.firebase.example.dataconnect.ui.components.ActorsList
 import com.google.firebase.example.dataconnect.ui.components.ErrorCard
 import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.ReviewCard
+import com.google.firebase.example.dataconnect.ui.components.ToggleButton
 
 @Composable
 fun MovieDetailScreen(
@@ -184,37 +181,23 @@ fun MovieInformation(
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row {
-                if (isMovieWatched) {
-                    FilledTonalButton(onClick = {
-                        onWatchToggled(false)
-                    }) {
-                        Icon(Icons.Filled.CheckCircle, "Watched")
-                        Text("Watched", modifier = Modifier.padding(start = 4.dp))
-                    }
-                } else {
-                    OutlinedButton(onClick = {
-                        onWatchToggled(true)
-                    }) {
-                        Icon(Icons.Outlined.Check, "Watched")
-                        Text("Mark as watched", modifier = Modifier.padding(start = 4.dp))
-                    }
-                }
+                ToggleButton(
+                    iconEnabled = Icons.Filled.CheckCircle,
+                    iconDisabled = Icons.Outlined.Check,
+                    textEnabled = stringResource(R.string.button_unmark_watched),
+                    textDisabled = stringResource(R.string.button_mark_watched),
+                    isEnabled = isMovieWatched,
+                    onToggle = onWatchToggled
+                )
                 Spacer(modifier = Modifier.width(8.dp))
-                if (isMovieFavorite) {
-                    FilledTonalButton(onClick = {
-                        onFavoriteToggled(false)
-                    }) {
-                        Icon(Icons.Filled.Favorite, "Favorite")
-                        Text("Favorite", modifier = Modifier.padding(start = 4.dp))
-                    }
-                } else {
-                    OutlinedButton(onClick = {
-                        onFavoriteToggled(true)
-                    }) {
-                        Icon(Icons.Outlined.FavoriteBorder, "Favorite")
-                        Text("Add to Favorites", modifier = Modifier.padding(start = 4.dp))
-                    }
-                }
+                ToggleButton(
+                    iconEnabled = Icons.Filled.Favorite,
+                    iconDisabled = Icons.Outlined.FavoriteBorder,
+                    textEnabled = stringResource(R.string.button_remove_favorite),
+                    textDisabled = stringResource(R.string.button_favorite),
+                    isEnabled = isMovieFavorite,
+                    onToggle = onFavoriteToggled
+                )
             }
         }
     }

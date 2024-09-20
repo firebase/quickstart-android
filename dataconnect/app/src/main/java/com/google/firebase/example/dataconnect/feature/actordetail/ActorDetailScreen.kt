@@ -1,11 +1,9 @@
 package com.google.firebase.example.dataconnect.feature.actordetail
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,17 +13,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -38,6 +31,7 @@ import com.google.firebase.example.dataconnect.ui.components.ErrorCard
 import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.Movie
 import com.google.firebase.example.dataconnect.ui.components.MoviesList
+import com.google.firebase.example.dataconnect.ui.components.ToggleButton
 
 @Composable
 fun ActorDetailScreen(
@@ -66,6 +60,25 @@ fun ActorDetailScreen(
                         isActorFavorite = ui.isFavorite,
                         onFavoriteToggled = {
                             actorDetailViewModel.toggleFavorite(it)
+                        }
+                    )
+                    MoviesList(
+                        listTitle = stringResource(R.string.title_main_roles),
+                        movies = ui.actor?.mainActors?.mapNotNull {
+                            Movie(it.id.toString(), it.imageUrl, it.title)
+                        },
+                        onMovieClicked = { movieId ->
+                            // TODO(thatfiredev): Support navigating to movie
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    MoviesList(
+                        listTitle = stringResource(R.string.title_supporting_actors),
+                        movies = ui.actor?.supportingActors?.mapNotNull {
+                            Movie(it.id.toString(), it.imageUrl, it.title)
+                        },
+                        onMovieClicked = { movieId ->
+                            // TODO(thatfiredev): Support navigating to movie
                         }
                     )
                 }
@@ -102,52 +115,21 @@ fun ActorInformation(
                         .aspectRatio(9f / 16f)
                         .padding(vertical = 8.dp)
                 )
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                ) {
-                    Text(
-                        text = actor.biography ?: stringResource(R.string.biography_not_available),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                Text(
+                    text = actor.biography ?: stringResource(R.string.biography_not_available),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row {
-                Spacer(modifier = Modifier.width(8.dp))
-                if (isActorFavorite) {
-                    FilledTonalButton(onClick = {
-                        onFavoriteToggled(false)
-                    }) {
-                        Icon(Icons.Filled.Favorite, "Favorite")
-                        Text("Favorite", modifier = Modifier.padding(start = 4.dp))
-                    }
-                } else {
-                    OutlinedButton(onClick = {
-                        onFavoriteToggled(true)
-                    }) {
-                        Icon(Icons.Outlined.FavoriteBorder, "Favorite")
-                        Text("Add to Favorites", modifier = Modifier.padding(start = 4.dp))
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            MoviesList(
-                listTitle = stringResource(R.string.title_main_roles),
-                movies = actor.mainActors.mapNotNull {
-                    Movie(it.id.toString(), it.imageUrl, it.title)
-                },
-                onMovieClicked = { movieId ->
-                    // TODO(thatfiredev): Support navigating to movie
-                }
-            )
-            MoviesList(
-                listTitle = stringResource(R.string.title_supporting_actors),
-                movies = actor.supportingActors.mapNotNull {
-                    Movie(it.id.toString(), it.imageUrl, it.title)
-                },
-                onMovieClicked = { movieId ->
-                    // TODO(thatfiredev): Support navigating to movie
-                }
+            ToggleButton(
+                iconEnabled = Icons.Filled.Favorite,
+                iconDisabled = Icons.Outlined.FavoriteBorder,
+                textEnabled = stringResource(R.string.button_remove_favorite),
+                textDisabled = stringResource(R.string.button_favorite),
+                isEnabled = isActorFavorite,
+                onToggle = onFavoriteToggled
             )
         }
     }
