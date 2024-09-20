@@ -1,13 +1,9 @@
 package com.google.firebase.example.dataconnect.feature.genredetail
 
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,7 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.example.dataconnect.R
-import com.google.firebase.example.dataconnect.ui.components.MovieTile
+import com.google.firebase.example.dataconnect.ui.components.Movie
+import com.google.firebase.example.dataconnect.ui.components.MoviesList
 
 @Composable
 fun GenreDetailScreen(
@@ -63,43 +60,24 @@ fun GenreDetailScreen(
                     text = stringResource(R.string.title_genre_detail, uiState.genreName),
                     style = MaterialTheme.typography.headlineLarge
                 )
-                Text(
-                    text = stringResource(R.string.title_most_popular),
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.padding(vertical = 16.dp)
-                )
-                LazyRow {
-                    items(uiState.mostPopular) { movie ->
-                        MovieTile(
-                            movieId = movie.id.toString(),
-                            movieTitle = movie.title,
-                            movieImageUrl = movie.imageUrl,
-                            movieRating = movie.rating,
-                            onMovieClicked = {
-                                // TODO
-                            }
-                        )
+                MoviesList(
+                    listTitle = stringResource(R.string.title_most_popular),
+                    movies = uiState.mostPopular.mapNotNull {
+                        Movie(it.id.toString(), it.imageUrl, it.title, it.rating?.toFloat())
+                    },
+                    onMovieClicked = {
+                        // TODO
                     }
-                }
-
-                Text(
-                    text = stringResource(R.string.title_most_recent),
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.padding(vertical = 16.dp)
                 )
-                LazyRow {
-                    items(uiState.mostRecent) { movie ->
-                        MovieTile(
-                            movieId = movie.id.toString(),
-                            movieTitle = movie.title,
-                            movieImageUrl = movie.imageUrl,
-                            movieRating = movie.rating,
-                            onMovieClicked = {
-                                // TODO(thatfiredev)
-                            }
-                        )
+                MoviesList(
+                    listTitle = stringResource(R.string.title_most_recent),
+                    movies = uiState.mostRecent.mapNotNull {
+                        Movie(it.id.toString(), it.imageUrl, it.title, it.rating?.toFloat())
+                    },
+                    onMovieClicked = {
+                        // TODO
                     }
-                }
+                )
             }
         }
     }

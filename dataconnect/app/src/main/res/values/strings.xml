@@ -31,6 +31,8 @@
 
     <!-- Actor Detail Screen -->
     <string name="biography_not_available">Biography not available</string>
+    <string name="title_main_roles">Main Roles</string>
+    <string name="title_supporting_roles">Supporting Roles</string>
 
     <!-- Profile Screen -->
     <string name="title_watched_movies">Watched Movies</string>

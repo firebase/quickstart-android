@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -37,7 +35,8 @@ import coil.compose.AsyncImage
 import com.google.firebase.dataconnect.movies.GetActorByIdQuery
 import com.google.firebase.example.dataconnect.R
 import com.google.firebase.example.dataconnect.feature.moviedetail.ErrorMessage
-import com.google.firebase.example.dataconnect.ui.components.MovieTile
+import com.google.firebase.example.dataconnect.ui.components.Movie
+import com.google.firebase.example.dataconnect.ui.components.MoviesList
 
 @Composable
 fun ActorDetailScreen(
@@ -138,71 +137,24 @@ fun ActorInformation(
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            MainRoles(
-                movies = actor.mainActors,
+            MoviesList(
+                listTitle = stringResource(R.string.title_main_roles),
+                movies = actor.mainActors.mapNotNull {
+                    Movie(it.id.toString(), it.imageUrl, it.title)
+                },
                 onMovieClicked = { movieId ->
                     // TODO(thatfiredev): Support navigating to movie
                 }
             )
-            SupportingRoles(
-                movies = actor.supportingActors,
+            MoviesList(
+                listTitle = stringResource(R.string.title_supporting_actors),
+                movies = actor.supportingActors.mapNotNull {
+                    Movie(it.id.toString(), it.imageUrl, it.title)
+                },
                 onMovieClicked = { movieId ->
                     // TODO(thatfiredev): Support navigating to movie
                 }
             )
-        }
-    }
-}
-
-@Composable
-fun MainRoles(
-    movies: List<GetActorByIdQuery.Data.Actor.MainActorsItem?>,
-    onMovieClicked: (movieId: String) -> Unit
-) {
-    Text(
-        text = "Main Roles",
-        style = MaterialTheme.typography.headlineSmall
-    )
-    Spacer(modifier = Modifier.height(4.dp))
-    LazyRow {
-        items(movies) { movie ->
-            movie?.let {
-                MovieTile(
-                    movieId = it.id.toString(),
-                    movieTitle = it.title,
-                    movieImageUrl = it.imageUrl,
-                    tileWidth = 120.dp,
-                    onMovieClicked = onMovieClicked,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun SupportingRoles(
-    movies: List<GetActorByIdQuery.Data.Actor.SupportingActorsItem?>,
-    onMovieClicked: (movieId: String) -> Unit
-) {
-    Text(
-        text = "Supporting Roles",
-        style = MaterialTheme.typography.headlineSmall,
-        modifier = Modifier.padding(horizontal = 8.dp)
-    )
-    Spacer(modifier = Modifier.height(4.dp))
-    LazyRow(
-        modifier = Modifier.padding(horizontal = 8.dp)
-    ) {
-        items(movies) { movie ->
-            movie?.let {
-                MovieTile(
-                    movieId = it.id.toString(),
-                    movieTitle = it.title,
-                    movieImageUrl = it.imageUrl,
-                    tileWidth = 120.dp,
-                    onMovieClicked = onMovieClicked,
-                )
-            }
         }
     }
 }

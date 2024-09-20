@@ -3,13 +3,10 @@ package com.google.firebase.example.dataconnect.ui.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,40 +18,81 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
+/**
+ * Used to represent a movie in a list UI
+ */
+data class Movie(
+    val id: String,
+    val imageUrl: String,
+    val title: String,
+    val rating: Float? = null
+)
+
+/**
+ * Displays a scrollable horizontal list of movies.
+ */
+@Composable
+fun MoviesList(
+    modifier: Modifier = Modifier,
+    listTitle: String,
+    movies: List<Movie>? = emptyList(),
+    onMovieClicked: (movieId: String) -> Unit
+) {
+    Column(
+        modifier = modifier.padding(horizontal = 16.dp)
+    ) {
+        Text(
+            text = listTitle,
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        LazyRow {
+            items(movies.orEmpty()) { movie ->
+                MovieTile(
+                    movie = movie,
+                    onMovieClicked = {
+                        onMovieClicked(movie.id.toString())
+                    }
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Used to display each movie item in the list.
+ */
 @Composable
 fun MovieTile(
     modifier: Modifier = Modifier,
     tileWidth: Dp = 150.dp,
-    movieId: String,
-    movieImageUrl: String,
-    movieTitle: String,
-    movieRating: Double? = null,
+    movie: Movie,
     onMovieClicked: (movieId: String) -> Unit
 ) {
     Card(
         modifier = modifier
-            .padding(vertical = 16.dp, horizontal = 4.dp)
+            .padding(4.dp)
             .sizeIn(maxWidth = tileWidth)
             .clickable {
-                onMovieClicked(movieId)
+                onMovieClicked(movie.id)
             },
     ) {
         AsyncImage(
-            model = movieImageUrl,
+            model = movie.imageUrl,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.aspectRatio(9f / 16f)
         )
         Text(
-            text = movieTitle,
+            text = movie.title,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(8.dp),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        movieRating?.let {
+        movie.rating?.let {
             Text(
-                text = "Rating: $movieRating",
+                text = "Rating: $it",
                 modifier = Modifier.padding(bottom = 8.dp, start = 8.dp, end = 8.dp),
                 style = MaterialTheme.typography.bodySmall
             )

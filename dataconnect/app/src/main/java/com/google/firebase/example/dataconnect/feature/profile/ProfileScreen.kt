@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -26,7 +24,8 @@ import com.google.firebase.dataconnect.movies.GetUserByIdQuery
 import com.google.firebase.example.dataconnect.R
 import com.google.firebase.example.dataconnect.ui.components.Actor
 import com.google.firebase.example.dataconnect.ui.components.ActorsList
-import com.google.firebase.example.dataconnect.ui.components.MovieTile
+import com.google.firebase.example.dataconnect.ui.components.Movie
+import com.google.firebase.example.dataconnect.ui.components.MoviesList
 import com.google.firebase.example.dataconnect.ui.components.ReviewCard
 
 @Composable
@@ -105,10 +104,26 @@ fun ProfileScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileSection(title = "Watched Movies", content = { WatchedMoviesList(watchedMovies) })
+        MoviesList(
+            listTitle = stringResource(R.string.title_watched_movies),
+            movies = watchedMovies.mapNotNull {
+                Movie(it.movie.id.toString(), it.movie.imageUrl, it.movie.title, it.movie.rating?.toFloat())
+            },
+            onMovieClicked = {
+                // TODO
+            }
+        )
         Spacer(modifier = Modifier.height(16.dp))
 
-        ProfileSection(title = "Favorite Movies", content = { FavoriteMoviesList(favoriteMovies) })
+        MoviesList(
+            listTitle = stringResource(R.string.title_favorite_movies),
+            movies = favoriteMovies.mapNotNull {
+                Movie(it.movie.id.toString(), it.movie.imageUrl, it.movie.title, it.movie.rating?.toFloat())
+            },
+            onMovieClicked = {
+                // TODO
+            }
+        )
         Spacer(modifier = Modifier.height(16.dp))
 
         ActorsList(
@@ -120,6 +135,7 @@ fun ProfileScreen(
                 // TODO
             }
         )
+        Spacer(modifier = Modifier.height(16.dp))
 
         ProfileSection(title = "Reviews", content = { ReviewsList(name, reviews) })
         Spacer(modifier = Modifier.height(16.dp))
@@ -152,42 +168,6 @@ fun ReviewsList(
                 date = review.reviewDate,
                 rating = review.rating?.toDouble() ?: 0.0,
                 text = review.reviewText ?: ""
-            )
-        }
-    }
-}
-
-@Composable
-fun WatchedMoviesList(watchedItems: List<GetUserByIdQuery.Data.User.WatchedItem>) {
-    LazyRow {
-        items(watchedItems) { watchedItem ->
-            MovieTile(
-                movieId = watchedItem.movie.id.toString(),
-                movieImageUrl = watchedItem.movie.imageUrl,
-                movieTitle = watchedItem.movie.title,
-                movieRating = watchedItem.movie.rating,
-                tileWidth = 120.dp,
-                onMovieClicked = {
-                    // TODO
-                }
-            )
-        }
-    }
-}
-
-@Composable
-fun FavoriteMoviesList(favoriteItems: List<GetUserByIdQuery.Data.User.FavoriteMoviesItem>) {
-    LazyRow {
-        items(favoriteItems) { favoriteItem ->
-            MovieTile(
-                movieId = favoriteItem.movie.id.toString(),
-                movieImageUrl = favoriteItem.movie.imageUrl,
-                movieTitle = favoriteItem.movie.title,
-                movieRating = favoriteItem.movie.rating,
-                tileWidth = 120.dp,
-                onMovieClicked = {
-                    // TODO
-                }
             )
         }
     }
