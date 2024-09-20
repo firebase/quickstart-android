@@ -40,36 +40,48 @@ fun ActorDetailScreen(
 ) {
     actorDetailViewModel.setActorId(actorId)
     val uiState by actorDetailViewModel.uiState.collectAsState()
-    Scaffold { innerPadding ->
-        when (uiState) {
-            is ActorDetailUIState.Error -> {
-                ErrorCard((uiState as ActorDetailUIState.Error).errorMessage)
-            }
+    ActorDetailScreen(
+        uiState = uiState,
+        onMovieClicked = {
+            // TODO
+        },
+        onFavoriteToggled = {
+            actorDetailViewModel.toggleFavorite(it)
+        }
+    )
+}
 
-            ActorDetailUIState.Loading -> LoadingScreen()
+@Composable
+fun ActorDetailScreen(
+    uiState: ActorDetailUIState,
+    onMovieClicked: (actorId: String) -> Unit,
+    onFavoriteToggled: (newValue: Boolean) -> Unit
+) {
+    when (uiState) {
+        is ActorDetailUIState.Error -> ErrorCard(uiState.errorMessage)
 
-            is ActorDetailUIState.Success -> {
-                val ui = uiState as ActorDetailUIState.Success
+        ActorDetailUIState.Loading -> LoadingScreen()
+
+        is ActorDetailUIState.Success -> {
+            val ui = uiState
+            Scaffold { innerPadding ->
                 val scrollState = rememberScrollState()
                 Column(
-                    modifier = Modifier.verticalScroll(scrollState)
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .verticalScroll(scrollState)
                 ) {
                     ActorInformation(
-                        modifier = Modifier.padding(innerPadding),
                         actor = ui.actor,
                         isActorFavorite = ui.isFavorite,
-                        onFavoriteToggled = {
-                            actorDetailViewModel.toggleFavorite(it)
-                        }
+                        onFavoriteToggled = onFavoriteToggled
                     )
                     MoviesList(
                         listTitle = stringResource(R.string.title_main_roles),
                         movies = ui.actor?.mainActors?.mapNotNull {
                             Movie(it.id.toString(), it.imageUrl, it.title)
                         },
-                        onMovieClicked = { movieId ->
-                            // TODO(thatfiredev): Support navigating to movie
-                        }
+                        onMovieClicked = onMovieClicked
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     MoviesList(
@@ -77,12 +89,11 @@ fun ActorDetailScreen(
                         movies = ui.actor?.supportingActors?.mapNotNull {
                             Movie(it.id.toString(), it.imageUrl, it.title)
                         },
-                        onMovieClicked = { movieId ->
-                            // TODO(thatfiredev): Support navigating to movie
-                        }
+                        onMovieClicked = onMovieClicked
                     )
                 }
             }
+
         }
     }
 }
@@ -95,7 +106,7 @@ fun ActorInformation(
     onFavoriteToggled: (newValue: Boolean) -> Unit
 ) {
     if (actor == null) {
-        ErrorCard(stringResource(R.string.error_movie_not_found))
+        ErrorCard(stringResource(R.string.error_actor_not_found))
     } else {
         Column(
             modifier = modifier
