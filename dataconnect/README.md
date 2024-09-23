@@ -27,17 +27,17 @@ check out the [official documentation](https://firebase.google.com/docs/data-con
 
 3. Navigate to the [Data Connect section](https://console.firebase.google.com/u/0/project/_/dataconnect)
     of the Firebase console and follow the setup workflow:
-     - Select a location for your Cloud SQL for PostgreSQL database.
+     - Select a location for your Cloud SQL for PostgreSQL database (this sample uses `us-central1`). If you choose a different location, you'll also need to change the `quickstart-android/dataconnect/dataconnect/dataconnect.yaml` file. 
      - Fill in the following fields:
        - Service ID: `dataconnect`
-       - Cloud SQL Instance: `cloud-sql-instance`
-       - Database name: `postgres`
+       - Cloud SQL Instance: `fdc-sql`
+       - Database name: `fdcdb`
 4. Allow some time for the Cloud SQL instance to be provisioned. After it's provisioned, the instance
    can be managed in the [Cloud Console](https://console.cloud.google.com/sql).
 
 5. Download and then add the Firebase Android configuration file (`google-services.json`) to your app:
     1. Click **Download google-services.json** to obtain your Firebase Android config file.
-    2. Move your config file into the module (app-level) root directory of your app.
+    2. Move your config file into the `quickstart-android/dataconnect/app` directory.
 
 ### 2. Set Up Firebase CLI
 
