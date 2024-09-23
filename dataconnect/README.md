@@ -21,7 +21,7 @@ check out the [official documentation](https://firebase.google.com/docs/data-con
     for PostgreSQL instance.
 
     > Note: Though you set up billing in your Blaze upgrade, you won't be
-    charged for usage of {{data_connect_short}} or the
+    charged for usage of Firebase Data Connect or the
     [default Cloud SQL for PostgreSQL configuration](https://firebase.google.com/docs/data-connect/#pricing)
     during the preview.
 
