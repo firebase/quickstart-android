@@ -6,7 +6,7 @@ sealed class GenreDetailUIState {
 
     data object Loading: GenreDetailUIState()
 
-    data class Error(val errorMessage: String): GenreDetailUIState()
+    data class Error(val errorMessage: String?): GenreDetailUIState()
 
     data class Success(
         val genreName: String,

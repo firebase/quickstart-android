@@ -54,7 +54,7 @@ class ProfileViewModel(
                 )?.await()
                 moviesConnector.upsertUser.execute(username = displayName)
             } catch (e: Exception) {
-                _uiState.value = ProfileUIState.Error(e.message ?: "")
+                _uiState.value = ProfileUIState.Error(e.message)
                 e.printStackTrace()
             }
         }
@@ -65,7 +65,7 @@ class ProfileViewModel(
             try {
                 auth.signInWithEmailAndPassword(email, password).await()
             } catch (e: Exception) {
-                _uiState.value = ProfileUIState.Error(e.message ?: "")
+                _uiState.value = ProfileUIState.Error(e.message)
             }
         }
     }
@@ -89,7 +89,7 @@ class ProfileViewModel(
                 )
                 Log.d("DisplayUser", "$user")
             } catch (e: Exception) {
-                _uiState.value = ProfileUIState.Error(e.message ?: "")
+                _uiState.value = ProfileUIState.Error(e.message)
             }
         }
     }

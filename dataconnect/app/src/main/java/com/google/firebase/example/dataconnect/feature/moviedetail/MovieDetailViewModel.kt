@@ -63,7 +63,7 @@ class MovieDetailViewModel(
                     )
                 }
             } catch (e: Exception) {
-                _uiState.value = MovieDetailUIState.Error(e.message ?: "")
+                _uiState.value = MovieDetailUIState.Error(e.message)
             }
         }
     }
@@ -84,7 +84,7 @@ class MovieDetailViewModel(
                 // Re-run the query to fetch movie
                 fetchMovie()
             } catch (e: Exception) {
-                _uiState.value = MovieDetailUIState.Error(e.message ?: "")
+                _uiState.value = MovieDetailUIState.Error(e.message)
             }
         }
     }
@@ -105,7 +105,7 @@ class MovieDetailViewModel(
                 // Re-run the query to fetch movie
                 fetchMovie()
             } catch (e: Exception) {
-                _uiState.value = MovieDetailUIState.Error(e.message ?: "")
+                _uiState.value = MovieDetailUIState.Error(e.message)
             }
         }
     }
@@ -124,7 +124,7 @@ class MovieDetailViewModel(
                 // Re-run the query to fetch movie
                 fetchMovie()
             } catch (e: Exception) {
-                _uiState.value = MovieDetailUIState.Error(e.message ?: "")
+                _uiState.value = MovieDetailUIState.Error(e.message)
             }
         }
     }
