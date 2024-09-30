@@ -63,8 +63,10 @@ fun UserReviews(
 
         Button(
             onClick = {
-                onReviewSubmitted(rating, reviewText)
-                reviewText = ""
+                if (!reviewText.isNullOrEmpty()) {
+                    onReviewSubmitted(rating, reviewText)
+                    reviewText = ""
+                }
             }
         ) {
             Text(stringResource(R.string.button_submit_review))
