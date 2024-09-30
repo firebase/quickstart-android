@@ -69,6 +69,8 @@ class MovieDetailViewModel(
     }
 
     fun toggleFavorite(newValue: Boolean) {
+        // TODO(thatfiredev): hide the button if there's no user logged in
+        val uid = firebaseAuth.currentUser?.uid ?: return
         viewModelScope.launch {
             try {
                 if (newValue) {
@@ -77,7 +79,7 @@ class MovieDetailViewModel(
                     // TODO(thatfiredev): investigate whether this is a schema error
                     //    userId probably shouldn't be here.
                     moviesConnector.deleteFavoritedMovie.execute(
-                        userId = firebaseAuth.currentUser?.uid ?: "",
+                        userId = uid,
                         movieId = UUID.fromString(movieId)
                     )
                 }
@@ -90,6 +92,8 @@ class MovieDetailViewModel(
     }
 
     fun toggleWatched(newValue: Boolean) {
+        // TODO(thatfiredev): hide the button if there's no user logged in
+        val uid = firebaseAuth.currentUser?.uid ?: return
         viewModelScope.launch {
             try {
                 if (newValue) {
@@ -98,7 +102,7 @@ class MovieDetailViewModel(
                     // TODO(thatfiredev): investigate whether this is a schema error
                     //    userId probably shouldn't be here.
                     moviesConnector.deleteWatchedMovie.execute(
-                        userId = firebaseAuth.currentUser?.uid ?: "",
+                        userId = uid,
                         movieId = UUID.fromString(movieId)
                     )
                 }
@@ -111,6 +115,8 @@ class MovieDetailViewModel(
     }
 
     fun addRating(rating: Float, text: String) {
+        // TODO(thatfiredev): hide the button if there's no user logged in
+        if (firebaseAuth.currentUser?.uid == null) return
         viewModelScope.launch {
             try {
                 moviesConnector.addReview.execute(

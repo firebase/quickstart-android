@@ -63,13 +63,15 @@ class ActorDetailViewModel(
     }
 
     fun toggleFavorite(newValue: Boolean) {
+        // TODO(thatfiredev): hide the button if there's no user logged in
+        val uid = firebaseAuth.currentUser?.uid ?: return
         viewModelScope.launch {
             try {
                 if (newValue) {
                     moviesConnector.addFavoritedActor.execute(UUID.fromString(actorId))
                 } else {
                     moviesConnector.deleteFavoriteActor.execute(
-                        userId = firebaseAuth.currentUser?.uid ?: "",
+                        userId = uid,
                         actorId = UUID.fromString(actorId)
                     )
                 }
