@@ -1,6 +1,7 @@
 package com.google.firebase.example.dataconnect.feature.profile
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
@@ -27,14 +28,12 @@ class ProfileViewModel(
     private val authStateListener: AuthStateListener
 
     init {
-        authStateListener = object : AuthStateListener {
-            override fun onAuthStateChanged(auth: FirebaseAuth) {
-                val currentUser = auth.currentUser
-                if (currentUser != null) {
-                    displayUser(currentUser.uid)
-                } else {
-                    _uiState.value = ProfileUIState.AuthState
-                }
+        authStateListener = AuthStateListener {
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                displayUser(currentUser.uid)
+            } else {
+                _uiState.value = ProfileUIState.AuthState
             }
         }
         auth.addAuthStateListener(authStateListener)

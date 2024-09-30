@@ -1,7 +1,9 @@
 package com.google.firebase.example.dataconnect.feature.actordetail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -14,17 +16,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ActorDetailViewModel(
-    private val firebaseAuth: FirebaseAuth = Firebase.auth,
-    private val moviesConnector: MoviesConnector = MoviesConnector.instance
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private var actorId: String = ""
+    private val actorDetailRoute = savedStateHandle.toRoute<ActorDetailRoute>()
+    private val actorId: String = actorDetailRoute.actorId
+
+    private val firebaseAuth: FirebaseAuth = Firebase.auth
+    private val moviesConnector: MoviesConnector = MoviesConnector.instance
 
     private val _uiState = MutableStateFlow<ActorDetailUIState>(ActorDetailUIState.Loading)
     val uiState: StateFlow<ActorDetailUIState>
         get() = _uiState
 
-    fun setActorId(id: String) {
-        actorId = id
+    init {
+        fetchActor()
+    }
+
+    private fun fetchActor() {
         viewModelScope.launch {
             try {
                 val user = firebaseAuth.currentUser
@@ -64,7 +72,7 @@ class ActorDetailViewModel(
                     )
                 }
                 // Re-run the query to fetch the actor details
-                setActorId(actorId)
+                fetchActor()
             } catch (e: Exception) {
                 _uiState.value = ActorDetailUIState.Error(e.message ?: "")
             }

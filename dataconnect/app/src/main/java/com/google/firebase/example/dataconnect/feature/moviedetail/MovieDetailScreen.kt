@@ -47,14 +47,16 @@ import com.google.firebase.example.dataconnect.ui.components.ErrorCard
 import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.ReviewCard
 import com.google.firebase.example.dataconnect.ui.components.ToggleButton
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class MovieDetailRoute(val movieId: String)
 
 @Composable
 fun MovieDetailScreen(
-    movieId: String,
     onActorClicked: (actorId: String) -> Unit,
     movieDetailViewModel: MovieDetailViewModel = viewModel()
 ) {
-    movieDetailViewModel.setMovieId(movieId)
     val uiState by movieDetailViewModel.uiState.collectAsState()
     Scaffold { padding ->
         when (uiState) {
