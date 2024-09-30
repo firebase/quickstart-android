@@ -63,10 +63,9 @@ fun ActorDetailScreen(
     when (uiState) {
         is ActorDetailUIState.Error -> ErrorCard(uiState.errorMessage)
 
-        ActorDetailUIState.Loading -> LoadingScreen()
+        is ActorDetailUIState.Loading -> LoadingScreen()
 
         is ActorDetailUIState.Success -> {
-            val ui = uiState
             Scaffold { innerPadding ->
                 val scrollState = rememberScrollState()
                 Column(
@@ -75,13 +74,13 @@ fun ActorDetailScreen(
                         .verticalScroll(scrollState)
                 ) {
                     ActorInformation(
-                        actor = ui.actor,
-                        isActorFavorite = ui.isFavorite,
+                        actor = uiState.actor,
+                        isActorFavorite = uiState.isFavorite,
                         onFavoriteToggled = onFavoriteToggled
                     )
                     MoviesList(
                         listTitle = stringResource(R.string.title_main_roles),
-                        movies = ui.actor?.mainActors?.mapNotNull {
+                        movies = uiState.actor?.mainActors?.mapNotNull {
                             Movie(it.id.toString(), it.imageUrl, it.title)
                         },
                         onMovieClicked = onMovieClicked
@@ -89,7 +88,7 @@ fun ActorDetailScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                     MoviesList(
                         listTitle = stringResource(R.string.title_supporting_actors),
-                        movies = ui.actor?.supportingActors?.mapNotNull {
+                        movies = uiState.actor?.supportingActors?.mapNotNull {
                             Movie(it.id.toString(), it.imageUrl, it.title)
                         },
                         onMovieClicked = onMovieClicked
