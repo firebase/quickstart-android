@@ -18,13 +18,15 @@ import com.google.firebase.example.dataconnect.ui.components.ErrorCard
 import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.Movie
 import com.google.firebase.example.dataconnect.ui.components.MoviesList
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class GenreDetailRoute(val genre: String)
 
 @Composable
 fun GenreDetailScreen(
-    genre: String,
     moviesViewModel: GenreDetailViewModel = viewModel()
 ) {
-    moviesViewModel.setGenre(genre)
     val movies by moviesViewModel.uiState.collectAsState()
     GenreDetailScreen(movies)
 }

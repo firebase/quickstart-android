@@ -1,7 +1,9 @@
 package com.google.firebase.example.dataconnect.feature.moviedetail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -16,17 +18,23 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel(
-    private val firebaseAuth: FirebaseAuth = Firebase.auth,
-    private val moviesConnector: MoviesConnector = MoviesConnector.instance
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private var movieId: String = ""
+    private val movieDetailRoute = savedStateHandle.toRoute<MovieDetailRoute>()
+    private val movieId: String = movieDetailRoute.movieId
+
+    private val firebaseAuth: FirebaseAuth = Firebase.auth
+    private val moviesConnector: MoviesConnector = MoviesConnector.instance
 
     private val _uiState = MutableStateFlow<MovieDetailUIState>(MovieDetailUIState.Loading)
     val uiState: StateFlow<MovieDetailUIState>
         get() = _uiState
 
-    fun setMovieId(id: String) {
-        movieId = id
+    init {
+        fetchMovie()
+    }
+
+    private fun fetchMovie() {
         viewModelScope.launch {
             try {
                 val user = firebaseAuth.currentUser
@@ -74,7 +82,7 @@ class MovieDetailViewModel(
                     )
                 }
                 // Re-run the query to fetch movie
-                setMovieId(movieId)
+                fetchMovie()
             } catch (e: Exception) {
                 _uiState.value = MovieDetailUIState.Error(e.message ?: "")
             }
@@ -95,7 +103,7 @@ class MovieDetailViewModel(
                     )
                 }
                 // Re-run the query to fetch movie
-                setMovieId(movieId)
+                fetchMovie()
             } catch (e: Exception) {
                 _uiState.value = MovieDetailUIState.Error(e.message ?: "")
             }
@@ -114,7 +122,7 @@ class MovieDetailViewModel(
                 )
                 // TODO(thatfiredev): should we have a way of only refetching the reviews?
                 // Re-run the query to fetch movie
-                setMovieId(movieId)
+                fetchMovie()
             } catch (e: Exception) {
                 _uiState.value = MovieDetailUIState.Error(e.message ?: "")
             }

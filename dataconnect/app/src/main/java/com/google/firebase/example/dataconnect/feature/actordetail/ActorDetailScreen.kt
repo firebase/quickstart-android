@@ -32,13 +32,16 @@ import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.Movie
 import com.google.firebase.example.dataconnect.ui.components.MoviesList
 import com.google.firebase.example.dataconnect.ui.components.ToggleButton
+import kotlinx.serialization.Serializable
+
+
+@Serializable
+data class ActorDetailRoute(val actorId: String)
 
 @Composable
 fun ActorDetailScreen(
-    actorId: String,
     actorDetailViewModel: ActorDetailViewModel = viewModel()
 ) {
-    actorDetailViewModel.setActorId(actorId)
     val uiState by actorDetailViewModel.uiState.collectAsState()
     ActorDetailScreen(
         uiState = uiState,

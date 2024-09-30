@@ -1,7 +1,9 @@
 package com.google.firebase.example.dataconnect.feature.genredetail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.google.firebase.dataconnect.movies.MoviesConnector
 import com.google.firebase.dataconnect.movies.execute
 import com.google.firebase.dataconnect.movies.instance
@@ -10,17 +12,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class GenreDetailViewModel(
-    private val moviesConnector: MoviesConnector = MoviesConnector.instance
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private var genre = ""
+    private val genre = savedStateHandle.toRoute<GenreDetailRoute>().genre
+    private val moviesConnector: MoviesConnector = MoviesConnector.instance
 
     private val _uiState = MutableStateFlow<GenreDetailUIState>(GenreDetailUIState.Loading)
     val uiState: StateFlow<GenreDetailUIState>
         get() = _uiState
 
-    // TODO(thatfiredev): Create a ViewModelFactory to set genre
-    fun setGenre(genre: String) {
-        this.genre = genre
+    init {
+        fetchGenre()
+    }
+
+    private fun fetchGenre() {
         viewModelScope.launch {
             try {
                 val data = moviesConnector.listMoviesByGenre.execute(genre.lowercase()).data

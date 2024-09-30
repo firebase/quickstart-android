@@ -17,6 +17,10 @@ import com.google.firebase.example.dataconnect.ui.components.ErrorCard
 import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.Movie
 import com.google.firebase.example.dataconnect.ui.components.MoviesList
+import kotlinx.serialization.Serializable
+
+@Serializable
+object MoviesRoute
 
 @Composable
 fun MoviesScreen(

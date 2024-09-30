@@ -29,6 +29,10 @@ import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.Movie
 import com.google.firebase.example.dataconnect.ui.components.MoviesList
 import com.google.firebase.example.dataconnect.ui.components.ReviewCard
+import kotlinx.serialization.Serializable
+
+@Serializable
+object ProfileRoute
 
 @Composable
 fun ProfileScreen(
