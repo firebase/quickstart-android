@@ -27,6 +27,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.dataconnect.movies.MoviesConnector
+import com.google.firebase.dataconnect.movies.instance
 import com.google.firebase.example.dataconnect.feature.actordetail.actorDetailScreen
 import com.google.firebase.example.dataconnect.feature.actordetail.navigateToActorDetail
 import com.google.firebase.example.dataconnect.feature.genredetail.genreDetailScreen
@@ -51,6 +53,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Comment the line below to use a production environment instead
+        MoviesConnector.instance.dataConnect.useEmulator("10.0.2.2", 9399)
         setContent {
             FirebaseDataConnectTheme {
                 val navController = rememberNavController()
