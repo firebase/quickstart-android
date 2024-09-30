@@ -19,6 +19,7 @@ package com.google.firebase.quickstart.vertexai.feature.functioncalling
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.vertexai.GenerativeModel
+import com.google.firebase.vertexai.type.FunctionResponse
 import com.google.firebase.vertexai.type.FunctionResponsePart
 import com.google.firebase.vertexai.type.InvalidStateException
 import com.google.firebase.vertexai.type.asTextOrNull
@@ -27,6 +28,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 
 class FunctionsChatViewModel(
     private val generativeModel: GenerativeModel
@@ -77,18 +80,23 @@ class FunctionsChatViewModel(
                 val firstFunctionCall = response.functionCalls.firstOrNull()
 
                 if (firstFunctionCall != null) {
-                    val matchingFunction =
-                        generativeModel.tools?.flatMap { it.functionDeclarations }
-                            ?.first { it.name == firstFunctionCall.name }
-                            ?: throw InvalidStateException(
-                                "Model requested nonexistent function \"${firstFunctionCall.name}\" "
+                    val functionCall = firstFunctionCall.functionCall
+                    val result = when (functionCall.name) {
+                        "upperCase" -> buildJsonObject {
+                            put(
+                                "result",
+                                JsonPrimitive(functionCall.args["text"].toString().uppercase() ?: "")
                             )
+                        }
 
-                    val funResult = matchingFunction.execute(firstFunctionCall)
+                        else -> throw InvalidStateException(
+                            "Model requested nonexistent function \"${firstFunctionCall.functionCall.name}\" "
+                        )
+                    }
 
                     response = chat.sendMessage(
                         content(role = "function") {
-                            part(FunctionResponsePart("output", funResult))
+                            part(FunctionResponsePart(FunctionResponse("upperCase", result)))
                         }
                     )
                 }

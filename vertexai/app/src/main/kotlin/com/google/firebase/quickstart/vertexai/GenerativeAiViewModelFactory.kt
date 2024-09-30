@@ -74,19 +74,17 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
 
                 isAssignableFrom(FunctionsChatViewModel::class.java) -> {
                     // Declare the functions you want to make available to the model
+                    val functionDeclaration = FunctionDeclaration(
+                        "upperCase", "Returns the upper case version of the input string", mapOf(
+                            "input" to Schema.string( "Text to transform")))
                     val tools = listOf(
-                        Tool(
+                        Tool.functionDeclarations(
                             listOf(
-                                defineFunction(
-                                    "upperCase",
-                                    "Returns the upper case version of the input string",
-                                    Schema.str("input", "Text to transform")
-                                ) { input ->
-                                    JSONObject("{\"response\": \"${input.uppercase()}\"}")
-                                }
+                                functionDeclaration
                             )
                         )
                     )
+
 
                     // Initialize a GenerativeModel with the `gemini-pro` AI model for function calling chat
                     val generativeModel = Firebase.vertexAI.generativeModel(

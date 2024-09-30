@@ -47,7 +47,7 @@ class AudioViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val inputContent = content {
-                    blob("audio/aac", audioBytes)
+                    inlineData("audio/aac", audioBytes)
                     text(prompt)
                 }
 
