@@ -57,7 +57,7 @@ class ActorDetailViewModel(
                     )
                 }
             } catch (e: Exception) {
-                _uiState.value = ActorDetailUIState.Error(e.message ?: "")
+                _uiState.value = ActorDetailUIState.Error(e.message)
             }
         }
     }
@@ -76,7 +76,7 @@ class ActorDetailViewModel(
                 // Re-run the query to fetch the actor details
                 fetchActor()
             } catch (e: Exception) {
-                _uiState.value = ActorDetailUIState.Error(e.message ?: "")
+                _uiState.value = ActorDetailUIState.Error(e.message)
             }
         }
     }

@@ -5,7 +5,7 @@ import com.google.firebase.dataconnect.movies.GetUserByIdQuery
 sealed class ProfileUIState {
     data object Loading: ProfileUIState()
 
-    data class Error(val errorMessage: String): ProfileUIState()
+    data class Error(val errorMessage: String?): ProfileUIState()
 
     data object AuthState: ProfileUIState()
 

@@ -37,7 +37,7 @@ class GenreDetailViewModel(
                     mostRecent = mostRecent
                 )
             } catch (e: Exception) {
-                _uiState.value = GenreDetailUIState.Error(e.message ?: "")
+                _uiState.value = GenreDetailUIState.Error(e.message)
             }
         }
     }

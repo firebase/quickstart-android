@@ -7,7 +7,7 @@ sealed class MoviesUIState {
 
     data object Loading: MoviesUIState()
 
-    data class Error(val errorMessage: String): MoviesUIState()
+    data class Error(val errorMessage: String?): MoviesUIState()
 
     data class Success(
         val top10movies: List<MoviesTop10Query.Data.MoviesItem>,
