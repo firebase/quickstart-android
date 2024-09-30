@@ -43,10 +43,12 @@ class ActorDetailViewModel(
                 _uiState.value = if (user == null) {
                     ActorDetailUIState.Success(actor, isUserSignedIn = false)
                 } else {
-                    val isFavorite = moviesConnector.getIfFavoritedActor.execute(
+                    val favoriteActor = moviesConnector.getIfFavoritedActor.execute(
                         id = user.uid,
                         actorId = UUID.fromString(actorId)
-                    ).data.favoriteActor != null
+                    ).data.favoriteActor
+
+                    val isFavorite = favoriteActor != null
 
                     ActorDetailUIState.Success(
                         actor,
