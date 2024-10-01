@@ -97,6 +97,9 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
     }
 
     protected DocumentSnapshot getSnapshot(int index) {
+        if (mQuery != null) {
+            mQuery.get();
+        }
         return mSnapshots.get(index);
     }
 

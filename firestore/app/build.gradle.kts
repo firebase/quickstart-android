@@ -49,6 +49,11 @@ android {
     }
 }
 
+repositories {
+    mavenLocal() // This line tells Gradle to look in your local Maven repository
+    mavenCentral()
+}
+
 dependencies {
     implementation(project(":internal:lintchecks"))
     implementation(project(":internal:chooserx"))
@@ -57,7 +62,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
 
     // Firestore
-    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-firestore:25.1.1")
 
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
