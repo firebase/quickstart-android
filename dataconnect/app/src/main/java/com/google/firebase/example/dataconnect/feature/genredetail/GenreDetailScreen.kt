@@ -36,7 +36,7 @@ fun GenreDetailScreen(
     uiState: GenreDetailUIState
 ) {
     when (uiState) {
-        GenreDetailUIState.Loading -> LoadingScreen()
+        is GenreDetailUIState.Loading -> LoadingScreen()
 
         is GenreDetailUIState.Error -> ErrorCard(uiState.errorMessage)
 
