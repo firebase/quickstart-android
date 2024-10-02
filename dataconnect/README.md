@@ -61,29 +61,13 @@ check out the [official documentation](https://firebase.google.com/docs/data-con
 3. Click on "Connect a Firebase project" and choose the project where you have set up Data Connect.
 4. Click on "Start Emulators" - this should generate the Kotlin SDK for you and start the emulators.
 
-### 4. Deploy the service to Firebase and generate SDKs
-
-1. Open the `quickstart-android/dataconnect/dataconnect` directory and deploy the schema with
-    the following command:
-    ```bash
-    firebase deploy
-    ```
-2. Once the deploy is complete, you should be able to see the movie schema in the
- [Data Connect section](https://console.firebase.google.com/u/0/project/_/dataconnect)
- of the Firebase console.
-
-3. Generate the Kotlin SDK by running:
-   ```bash
-   firebase dataconnect:sdk:generate
-   ```
-
-### 5. Populate the database
+### 4. Populate the database
 In VS Code, open the `quickstart-android/dataconnect/dataconnect/data_seed.gql` file and click the
  `Run (local)` button at the top of the file.
 
 If you’d like to confirm that the data was correctly inserted,
 open `quickstart-android/dataconnect/connectors/queries.gql` and run the `ListMovies` query.
 
-### 6. Running the app
+### 5. Running the app
 
 Press the Run button in Android Studio to run the sample app on your device.
