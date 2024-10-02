@@ -20,11 +20,6 @@ jobs:
       run: python scripts/checksnippets.py
     - name: Copy mock google_services.json
       run: ./copy_mock_google_services_json.sh
-    # TODO(thatfiredev): remove this once github.com/firebase/quickstart-android/issues/1672 is fixed
-    - name: Remove Data Connect from the CI build
-      run: sed "s/\":dataconnect:app\",//g" settings.gradle.kts > settings.gradle.kts
-    - name: Testing
-      run: cat settings.gradle.kts
     - name: Build with Gradle (Pull Request)
       run: ./build_pull_request.sh
       if: github.event_name == 'pull_request'
