@@ -2,12 +2,13 @@
 agp = "8.6.0"
 coilCompose = "2.6.0"
 firebaseAuth = "23.0.0"
-firebaseDataConnect = "16.0.0-alpha05"
+firebaseDataConnect = "16.0.0-beta01"
 kotlin = "2.0.20"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
+kotlinxSerializationCore = "1.6.3"
 lifecycle = "2.8.1"
 activityCompose = "1.9.0"
 composeBom = "2023.08.00"
@@ -35,6 +36,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation"}
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
