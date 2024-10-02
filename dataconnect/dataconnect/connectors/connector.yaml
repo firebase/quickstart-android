@@ -1,0 +1,13 @@
+connectorId: movies
+# Required. Accepted values are either "PUBLIC" or "ADMIN" (only "PUBLIC" for gated private
+# preview). If "ADMIN", the connector in this directory is an AdminConnector and its operations
+# are gated by IAM.
+authMode: PUBLIC
+generate:
+  # (Web SDK generation omitted, but can be found in https://github.com/firebase/quickstart-js)
+  kotlinSdk:
+    # Create a custom package name for your generated SDK
+    package: com.google.firebase.dataconnect.movies
+    # Specify where to store the generated SDK
+    # We're using the build/ directory so that generated code doesn't get checked into git
+    outputDir: ../../app/build/generated/sources/com/google/firebase/dataconnect/movies

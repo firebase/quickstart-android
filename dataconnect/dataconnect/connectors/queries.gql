@@ -1,0 +1,565 @@
+# List subset of fields for movies
+query ListMovies @auth(level: PUBLIC) {
+  movies {
+    id
+    title
+    imageUrl
+    releaseYear
+    genre
+    rating
+    tags
+  }
+}
+
+# List subset of fields for users
+query ListUsers @auth(level: PUBLIC) {
+  users {
+    id
+    username
+    favoriteActors_on_user {
+      actor {
+        id
+        name
+        imageUrl
+      }
+    }
+    favoriteMovies_on_user {
+      movie {
+        id
+        title
+        genre
+        imageUrl
+        tags
+      }
+    }
+    reviews_on_user {
+      id
+      rating
+      reviewText
+      reviewDate
+      movie {
+        id
+        title
+      }
+    }
+    watchedMovies_on_user {
+      movie {
+        id
+        title
+        genre
+        imageUrl
+      }
+    }
+  }
+}
+
+# List movies of a certain genre
+query ListMoviesByGenre($genre: String!) @auth(level: PUBLIC) {
+  mostPopular: movies(
+    where: { genre: { eq: $genre } }
+    orderBy: { rating: DESC }
+  ) {
+    id
+    title
+    imageUrl
+    rating
+    tags
+  }
+  mostRecent: movies(
+    where: { genre: { eq: $genre } }
+    orderBy: { releaseYear: DESC }
+  ) {
+    id
+    title
+    imageUrl
+    rating
+    tags
+  }
+}
+
+# List movies by the order of release
+query ListMoviesByReleaseYear @auth(level: PUBLIC) {
+  movies(orderBy: [{ releaseYear: DESC }]) {
+    id
+    title
+    imageUrl
+  }
+}
+
+# Get movie by id
+query GetMovieById($id: UUID!) @auth(level: PUBLIC) {
+  movie(id: $id) {
+    id
+    title
+    imageUrl
+    releaseYear
+    genre
+    rating
+    description
+    tags
+    metadata: movieMetadatas_on_movie {
+      director
+    }
+    mainActors: actors_via_MovieActor(where: { role: { eq: "main" } }) {
+      id
+      name
+      imageUrl
+    }
+    supportingActors: actors_via_MovieActor(
+      where: { role: { eq: "supporting" } }
+    ) {
+      id
+      name
+      imageUrl
+    }
+    sequelTo {
+      id
+      title
+      imageUrl
+    }
+    reviews: reviews_on_movie {
+      id
+      reviewText
+      reviewDate
+      rating
+      user {
+        id
+        username
+      }
+    }
+  }
+}
+
+# Get actor by id
+query GetActorById($id: UUID!) @auth(level: PUBLIC) {
+  actor(id: $id) {
+    id
+    name
+    imageUrl
+    biography
+    mainActors: movies_via_MovieActor(where: { role: { eq: "main" } }) {
+      id
+      title
+      genre
+      tags
+      imageUrl
+    }
+    supportingActors: movies_via_MovieActor(
+      where: { role: { eq: "supporting" } }
+    ) {
+      id
+      title
+      genre
+      tags
+      imageUrl
+    }
+  }
+}
+
+# User movie preferences
+query UserMoviePreferences($username: String!) @auth(level: USER) {
+  users(where: { username: { eq: $username } }) {
+    likedMovies: movies_via_Review(where: { rating: { ge: 4 } }) {
+      title
+      imageUrl
+      genre
+      description
+    }
+    dislikedMovies: movies_via_Review(where: { rating: { le: 2 } }) {
+      title
+      imageUrl
+      genre
+      description
+    }
+  }
+}
+
+# Get movie metadata
+query GetMovieMetadata($id: UUID!) @auth(level: PUBLIC) {
+  movie(id: $id) {
+    movieMetadatas_on_movie {
+      director
+    }
+  }
+}
+
+# Get movie cast and actor roles
+query GetMovieCast($movieId: UUID!, $actorId: UUID!) @auth(level: PUBLIC) {
+  movie(id: $movieId) {
+    mainActors: actors_via_MovieActor(where: { role: { eq: "main" } }) {
+      id
+      name
+      imageUrl
+    }
+    supportingActors: actors_via_MovieActor(
+      where: { role: { eq: "supporting" } }
+    ) {
+      id
+      name
+      imageUrl
+    }
+  }
+  actor(id: $actorId) {
+    mainRoles: movies_via_MovieActor(where: { role: { eq: "main" } }) {
+      id
+      title
+      imageUrl
+    }
+    supportingRoles: movies_via_MovieActor(
+      where: { role: { eq: "supporting" } }
+    ) {
+      id
+      title
+      imageUrl
+    }
+  }
+}
+
+# List movies by partial title match
+query ListMoviesByPartialTitle($input: String!) @auth(level: PUBLIC) {
+  movies(where: { title: { contains: $input } }) {
+    id
+    title
+    genre
+    rating
+    imageUrl
+  }
+}
+
+# Fetch a single movie using key scalars (same as get movie by id)
+query MovieByKey($key: Movie_Key!) @auth(level: PUBLIC) {
+  movie(key: $key) {
+    title
+    imageUrl
+  }
+}
+
+# Fetch movies by title
+query MovieByTitle($title: String!) @auth(level: PUBLIC) {
+  movies(where: { title: { eq: $title } }) {
+    id
+    title
+    imageUrl
+    genre
+    rating
+  }
+}
+
+# Fetch top-rated movies by genre
+query MovieByTopRating($genre: String) @auth(level: PUBLIC) {
+  mostPopular: movies(
+    where: { genre: { eq: $genre } }
+    orderBy: { rating: DESC }
+  ) {
+    id
+    title
+    imageUrl
+    rating
+    tags
+  }
+}
+
+# List movies by tag
+query ListMoviesByTag($tag: String!) @auth(level: PUBLIC) {
+  movies(where: { tags: { includes: $tag } }) {
+    id
+    title
+    imageUrl
+    genre
+    rating
+  }
+}
+
+# List top 10 movies
+query MoviesTop10 @auth(level: PUBLIC) {
+  movies(orderBy: [{ rating: DESC }], limit: 10) {
+    id
+    title
+    imageUrl
+    rating
+    genre
+    tags
+    metadata: movieMetadatas_on_movie {
+      director
+    }
+    mainActors: actors_via_MovieActor(where: { role: { eq: "main" } }) {
+      id
+      name
+      imageUrl
+    }
+    supportingActors: actors_via_MovieActor(where: { role: { eq: "supporting" } }) {
+      id
+      name
+      imageUrl
+    }
+  }
+}
+
+# List movies by release year range
+query MoviesByReleaseYear($min: Int, $max: Int) @auth(level: PUBLIC) {
+  movies(
+    where: { releaseYear: { le: $max, ge: $min } }
+    orderBy: [{ releaseYear: ASC }]
+  ) {
+    id
+    rating
+    title
+    imageUrl
+  }
+}
+
+# List recently released movies
+query MoviesRecentlyReleased @auth(level: PUBLIC) {
+  movies(where: { releaseYear: { ge: 2010 } }) {
+    id
+    title
+    rating
+    imageUrl
+    genre
+    tags
+  }
+}
+
+# List movies with filtering on fields
+query ListMoviesFilter($genre: String, $limit: Int) @auth(level: PUBLIC) {
+  movies(where: { genre: { eq: $genre } }, limit: $limit) {
+    title
+    imageUrl
+  }
+}
+
+# List movies by partial title string match
+query ListMoviesByTitleString(
+  $prefix: String
+  $suffix: String
+  $contained: String
+) @auth(level: PUBLIC) {
+  prefixed: movies(where: { description: { startsWith: $prefix } }) {
+    title
+  }
+  suffixed: movies(where: { description: { endsWith: $suffix } }) {
+    title
+  }
+  contained: movies(where: { description: { contains: $contained } }) {
+    title
+  }
+}
+
+# List movies by rating and genre with OR/AND filters
+query ListMoviesByRatingAndGenre($minRating: Float!, $genre: String)
+@auth(level: PUBLIC) {
+  movies(
+    where: { _or: [{ rating: { ge: $minRating } }, { genre: { eq: $genre } }] }
+  ) {
+    title
+    imageUrl
+  }
+}
+
+# Get favorite movies by user ID
+query GetFavoriteMoviesById($id: String!) @auth(level: USER) {
+  user(id: $id) {
+    favoriteMovies_on_user {
+      movie {
+        id
+        title
+        genre
+        imageUrl
+        releaseYear
+        rating
+        description
+      }
+    }
+  }
+}
+
+# Get favorite actors by user ID
+query GetFavoriteActorsById($id: String!) @auth(level: USER) {
+  user(id: $id) {
+    favoriteActors_on_user {
+      actor {
+        id
+        name
+        imageUrl
+      }
+    }
+  }
+}
+
+# Get watched movies by user ID
+query GetWatchedMoviesByAuthId($id: String!) @auth(level: USER) {
+  user(id: $id) {
+    watchedMovies_on_user {
+      movie {
+        id
+        title
+        genre
+        imageUrl
+        releaseYear
+        rating
+        description
+      }
+    }
+  }
+}
+
+# Get user by ID
+query GetUserById($id: String!) @auth(level: USER) {
+  user(id: $id) {
+    id
+    username
+    reviews: reviews_on_user {
+      id
+      rating
+      reviewDate
+      reviewText
+      movie {
+        id
+        title
+      }
+    }
+    watched: watchedMovies_on_user {
+      movie {
+        id
+        title
+        genre
+        imageUrl
+        releaseYear
+        rating
+        description
+        tags
+        metadata: movieMetadatas_on_movie {
+          director
+        }
+      }
+    }
+    favoriteMovies: favoriteMovies_on_user {
+      movie {
+        id
+        title
+        genre
+        imageUrl
+        releaseYear
+        rating
+        description
+        tags
+        metadata: movieMetadatas_on_movie {
+          director
+        }
+      }
+    }
+    favoriteActors: favoriteActors_on_user {
+      actor {
+        id
+        name
+        imageUrl
+      }
+    }
+  }
+}
+
+# Check if a movie is watched by user
+query GetIfWatched($id: String!, $movieId: UUID!) @auth(level: USER) {
+  watchedMovie(key: { userId: $id, movieId: $movieId }) {
+    movieId
+  }
+}
+
+# Check if a movie is favorited by user
+query GetIfFavoritedMovie($id: String!, $movieId: UUID!) @auth(level: USER) {
+  favoriteMovie(key: { userId: $id, movieId: $movieId }) {
+    movieId
+  }
+}
+
+# Check if an actor is favorited by user
+query GetIfFavoritedActor($id: String!, $actorId: UUID!) @auth(level: USER) {
+  favoriteActor(key: { userId: $id, actorId: $actorId }) {
+    actorId
+  }
+}
+
+# Fuzzy search for movies, actors, and reviews
+query fuzzySearch(
+  $input: String
+  $minYear: Int!
+  $maxYear: Int!
+  $minRating: Float!
+  $maxRating: Float!
+  $genre: String!
+) @auth(level: PUBLIC) {
+  moviesMatchingTitle: movies(
+    where: {
+      _and: [
+        { releaseYear: { ge: $minYear } }
+        { releaseYear: { le: $maxYear } }
+        { rating: { ge: $minRating } }
+        { rating: { le: $maxRating } }
+        { genre: { contains: $genre } }
+        { title: { contains: $input } }
+      ]
+    }
+  ) {
+    id
+    title
+    genre
+    rating
+    imageUrl
+  }
+  moviesMatchingDescription: movies(
+    where: {
+      _and: [
+        { releaseYear: { ge: $minYear } }
+        { releaseYear: { le: $maxYear } }
+        { rating: { ge: $minRating } }
+        { rating: { le: $maxRating } }
+        { genre: { contains: $genre } }
+        { description: { contains: $input } }
+      ]
+    }
+  ) {
+    id
+    title
+    genre
+    rating
+    imageUrl
+  }
+  actorsMatchingName: actors(where: { name: { contains: $input } }) {
+    id
+    name
+    imageUrl
+  }
+  reviewsMatchingText: reviews(where: { reviewText: { contains: $input } }) {
+    id
+    rating
+    reviewText
+    reviewDate
+    movie {
+      id
+      title
+    }
+    user {
+      id
+      username
+    }
+  }
+}
+
+# Search movie descriptions using L2 similarity with Vertex AI
+query searchMovieDescriptionUsingL2Similarity($query: String!)
+@auth(level: PUBLIC) {
+  movies_descriptionEmbedding_similarity(
+    compare_embed: { model: "textembedding-gecko@001", text: $query }
+    method: L2
+    within: 2
+    where: { description: { ne: "" } }
+    limit: 5
+  ) {
+    id
+    title
+    description
+    tags
+    rating
+    imageUrl
+  }
+}
