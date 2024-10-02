@@ -11,6 +11,11 @@ For more information about Firebase Data Connect visit [the docs](https://fireba
 Follow these steps to get up and running with Firebase Data Connect. For more detailed instructions,
 check out the [official documentation](https://firebase.google.com/docs/data-connect/quickstart).
 
+### 0. Prerequisites
+- Latest version of [Android Studio](https://developer.android.com/studio)
+- Latest version of [Visual Studio Code](https://code.visualstudio.com/)
+- The [Firebase Data Connect VS Code Extension](https://marketplace.visualstudio.com/items?itemName=GoogleCloudTools.firebase-dataconnect-vscode)
+
 ### 1. Connect to your Firebase project
 
 1. If you haven't already, create a Firebase project.
@@ -35,28 +40,26 @@ check out the [official documentation](https://firebase.google.com/docs/data-con
 4. Allow some time for the Cloud SQL instance to be provisioned. After it's provisioned, the instance
    can be managed in the [Cloud Console](https://console.cloud.google.com/sql).
 
-5. If you haven’t already, add an Android app to your Firebase project, with the android package name `com.google.firebase.example.dataconnect`. Download and then add the Firebase Android configuration file (`google-services.json`) to your app:
-    1. Click **Download google-services.json** to obtain your Firebase Android config file.
-    2. Move your config file into the `quickstart-android/dataconnect/app` directory.
+5. If you haven’t already, add an Android app to your Firebase project, with the android package name `com.google.firebase.example.dataconnect`.
+ Click **Download google-services.json** to obtain your Firebase Android config file.
 
-### 2. Set Up Firebase CLI
-
-Ensure the Firebase CLI is installed and up to date:
-
-```bash
-npm install -g firebase-tools
-```
-
-### 3. Cloning the repository
-This repository contains the quickstart to get started with the functionalities of Data Connect.
+### 2. Cloning the repository
 
 1. Clone this repository to your local machine:
    ```sh
    git clone https://github.com/firebase/quickstart-android.git
    ```
 
-2. (Private Preview only) Checkout the `fdc-quickstart` branch (`git checkout fdc-quickstart`)
-   and open the project in Android Studio.
+2. Move the `google-services.json` config file (downloaded in the previous step) into the
+  `quickstart-android/dataconnect/app/` directory.
+
+### 3. Open in Visual Studio Code (VS Code)
+
+1. Open the `quickstart-android/dataconnect` directory in VS Code.
+2. Click on the Firebase Data Connect icon on the VS Code sidebar to load the Extension.
+   a. Sign in with your Google Account if you haven't already.
+3. Click on "Connect a Firebase project" and choose the project where you have set up Data Connect.
+4. Click on "Start Emulators" - this should generate the Kotlin SDK for you and start the emulators.
 
 ### 4. Deploy the service to Firebase and generate SDKs
 
@@ -74,24 +77,13 @@ This repository contains the quickstart to get started with the functionalities 
    firebase dataconnect:sdk:generate
    ```
 
-### 5. Populating the database
-1. Run `1_movie_insert.gql`, `2_actor_insert.gql`, `3_movie_actor_insert.gql`, and `4_user_favorites_review_insert.gql` files in the `./dataconnect` directory in order using the VS code extension,
+### 5. Populate the database
+In VS Code, open the `quickstart-android/dataconnect/dataconnect/data_seed.gql` file and click the
+ `Run (local)` button at the top of the file.
+
+If you’d like to confirm that the data was correctly inserted,
+open `quickstart-android/dataconnect/connectors/queries.gql` and run the `ListMovies` query.
 
 ### 6. Running the app
 
 Press the Run button in Android Studio to run the sample app on your device.
-
-## 🚧 Work in Progress
-
-This app is still missing some features which will be added before Public Preview:
-
-- [ ] Search
-- [ ] Movie review
-  - [x] Add a new review 
-  - [ ] Update a review
-  - [ ] Delete a review
-- [x] Actors
-  - [x] Show actor profile
-  - [x] Mark actor as favorite
-- [ ] Error handling
-  Some errors may cause the app to crash, especially if there's no user logged in. 
