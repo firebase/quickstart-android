@@ -79,12 +79,10 @@ class ProfileViewModel(
     ) {
         viewModelScope.launch {
             try {
-                val user = moviesConnector.getUserById.execute(id = userId).data.user
+                val user = moviesConnector.getCurrentUser.execute().data.user
                 _uiState.value = ProfileUIState.ProfileState(
                     user?.username,
                     favoriteMovies = user?.favoriteMovies,
-                    watchedMovies = user?.watched,
-                    favoriteActors = user?.favoriteActors,
                     reviews = user?.reviews
                 )
                 Log.d("DisplayUser", "$user")

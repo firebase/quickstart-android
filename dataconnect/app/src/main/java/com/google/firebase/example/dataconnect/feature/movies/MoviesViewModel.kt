@@ -3,6 +3,7 @@ package com.google.firebase.example.dataconnect.feature.movies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.dataconnect.movies.MoviesConnector
+import com.google.firebase.dataconnect.movies.OrderDirection
 import com.google.firebase.dataconnect.movies.execute
 import com.google.firebase.dataconnect.movies.instance
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,8 +21,13 @@ class MoviesViewModel(
     init {
         viewModelScope.launch {
             try {
-                val top10Movies = moviesConnector.moviesTop10.execute().data.movies
-                val latestMovies = moviesConnector.moviesRecentlyReleased.execute().data.movies
+                val top10Movies = moviesConnector.listMovies.execute {
+                    orderByRating = OrderDirection.DESC
+                    limit = 10
+                }.data.movies
+                val latestMovies = moviesConnector.listMovies.execute {
+                    orderByReleaseYear = OrderDirection.DESC
+                }.data.movies
 
                 _uiState.value = MoviesUIState.Success(top10Movies, latestMovies)
             } catch (e: Exception) {

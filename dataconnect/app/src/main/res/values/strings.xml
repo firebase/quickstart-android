@@ -37,9 +37,7 @@
     <string name="title_supporting_roles">Supporting Roles</string>
 
     <!-- Profile Screen -->
-    <string name="title_watched_movies">Watched Movies</string>
     <string name="title_favorite_movies">Favorite Movies</string>
-    <string name="title_favorite_actors">Favorite Actors</string>
     <string name="title_reviews">Reviews</string>
 
 </resources>

@@ -40,43 +40,10 @@ class ActorDetailViewModel(
                     id = UUID.fromString(actorId)
                 ).data.actor
 
-                _uiState.value = if (user == null) {
-                    ActorDetailUIState.Success(actor, isUserSignedIn = false)
-                } else {
-                    val favoriteActor = moviesConnector.getIfFavoritedActor.execute(
-                        id = user.uid,
-                        actorId = UUID.fromString(actorId)
-                    ).data.favoriteActor
-
-                    val isFavorite = favoriteActor != null
-
-                    ActorDetailUIState.Success(
-                        actor,
-                        isUserSignedIn = true,
-                        isFavorite = isFavorite
-                    )
-                }
-            } catch (e: Exception) {
-                _uiState.value = ActorDetailUIState.Error(e.message)
-            }
-        }
-    }
-
-    fun toggleFavorite(newValue: Boolean) {
-        // TODO(thatfiredev): hide the button if there's no user logged in
-        val uid = firebaseAuth.currentUser?.uid ?: return
-        viewModelScope.launch {
-            try {
-                if (newValue) {
-                    moviesConnector.addFavoritedActor.execute(UUID.fromString(actorId))
-                } else {
-                    moviesConnector.deleteFavoriteActor.execute(
-                        userId = uid,
-                        actorId = UUID.fromString(actorId)
-                    )
-                }
-                // Re-run the query to fetch the actor details
-                fetchActor()
+                _uiState.value = ActorDetailUIState.Success(
+                    actor = actor,
+                    isUserSignedIn = user != null
+                )
             } catch (e: Exception) {
                 _uiState.value = ActorDetailUIState.Error(e.message)
             }

@@ -1,7 +1,6 @@
 package com.google.firebase.example.dataconnect.feature.movies
 
-import com.google.firebase.dataconnect.movies.MoviesRecentlyReleasedQuery
-import com.google.firebase.dataconnect.movies.MoviesTop10Query
+import com.google.firebase.dataconnect.movies.ListMoviesQuery
 
 sealed class MoviesUIState {
 
@@ -10,7 +9,7 @@ sealed class MoviesUIState {
     data class Error(val errorMessage: String?): MoviesUIState()
 
     data class Success(
-        val top10movies: List<MoviesTop10Query.Data.MoviesItem>,
-        val latestMovies: List<MoviesRecentlyReleasedQuery.Data.MoviesItem>
+        val top10movies: List<ListMoviesQuery.Data.MoviesItem>,
+        val latestMovies: List<ListMoviesQuery.Data.MoviesItem>
     ) : MoviesUIState()
 }

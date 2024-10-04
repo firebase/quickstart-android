@@ -5,7 +5,8 @@ schema:
   source: "./schema"
   datasource:
     postgresql:
-      database: "fdcdb"
+      database: "fdcdb2"
       cloudSql:
         instanceId: "fdc-sql"
 connectorDirs: ["./connectors"]
+

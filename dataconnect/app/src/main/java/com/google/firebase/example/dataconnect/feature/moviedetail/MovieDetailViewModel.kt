@@ -45,20 +45,14 @@ class MovieDetailViewModel(
                 _uiState.value = if (user == null) {
                     MovieDetailUIState.Success(movie, isUserSignedIn = false)
                 } else {
-                    val isWatched = moviesConnector.getIfWatched.execute(
-                        id = user.uid,
-                        movieId = UUID.fromString(movieId)
-                    ).data.watchedMovie != null
 
                     val isFavorite = moviesConnector.getIfFavoritedMovie.execute(
-                        id = user.uid,
                         movieId = UUID.fromString(movieId)
-                    ).data.favoriteMovie != null
+                    ).data.favorite_movie != null
 
                     MovieDetailUIState.Success(
                         movie = movie,
                         isUserSignedIn = true,
-                        isWatched = isWatched,
                         isFavorite = isFavorite
                     )
                 }
@@ -76,33 +70,7 @@ class MovieDetailViewModel(
                 if (newValue) {
                     moviesConnector.addFavoritedMovie.execute(UUID.fromString(movieId))
                 } else {
-                    // TODO(thatfiredev): investigate whether this is a schema error
-                    //    userId probably shouldn't be here.
                     moviesConnector.deleteFavoritedMovie.execute(
-                        userId = uid,
-                        movieId = UUID.fromString(movieId)
-                    )
-                }
-                // Re-run the query to fetch movie
-                fetchMovie()
-            } catch (e: Exception) {
-                _uiState.value = MovieDetailUIState.Error(e.message)
-            }
-        }
-    }
-
-    fun toggleWatched(newValue: Boolean) {
-        // TODO(thatfiredev): hide the button if there's no user logged in
-        val uid = firebaseAuth.currentUser?.uid ?: return
-        viewModelScope.launch {
-            try {
-                if (newValue) {
-                    moviesConnector.addWatchedMovie.execute(UUID.fromString(movieId))
-                } else {
-                    // TODO(thatfiredev): investigate whether this is a schema error
-                    //    userId probably shouldn't be here.
-                    moviesConnector.deleteWatchedMovie.execute(
-                        userId = uid,
                         movieId = UUID.fromString(movieId)
                     )
                 }

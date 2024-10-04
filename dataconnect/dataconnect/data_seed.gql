@@ -1,546 +1,687 @@
 mutation {
-  # Insert movies
-  movie_insertMany(data: [
+  movie_insertMany(
+    data: [
+      {
+        id: "550e8400-e29b-41d4-a716-446655440000"
+        title: "Quantum Paradox"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fquantum_paradox.jpeg?alt=media&token=4142e2a1-bf43-43b5-b7cf-6616be3fd4e3"
+        releaseYear: 2025
+        genre: "sci-fi"
+        rating: 7.9
+        description: "A group of scientists accidentally open a portal to a parallel universe, causing a rift in time. As the team races to close the portal, they encounter alternate versions of themselves, leading to shocking revelations."
+        tags: ["thriller", "adventure"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440001"
+        title: "The Lone Outlaw"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Flone_outlaw.jpeg?alt=media&token=15525ffc-208f-4b59-b506-ae8348e06e85"
+        releaseYear: 2023
+        genre: "western"
+        rating: 8.2
+        description: "In the lawless Wild West, a mysterious gunslinger with a hidden past takes on a corrupt sheriff and his band of outlaws to bring justice to a small town."
+        tags: ["action", "drama"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440002"
+        title: "Celestial Harmony"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fcelestial_harmony.jpeg?alt=media&token=3edf1cf9-c2f5-4c75-9819-36ff6a734c9a"
+        releaseYear: 2024
+        genre: "romance"
+        rating: 7.5
+        description: "Two astronauts, stationed on a remote space station, fall in love amidst the isolation of deep space. But when a mysterious signal disrupts their communication, they must find a way to reconnect and survive."
+        tags: ["romance", "sci-fi"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440003"
+        title: "Noir Mystique"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fnoir_mystique.jpeg?alt=media&token=3299adba-cb98-4302-8b23-aeb679a4f913"
+        releaseYear: 2022
+        genre: "mystery"
+        rating: 8.0
+        description: "A private detective gets caught up in a web of lies, deception, and betrayal while investigating the disappearance of a famous actress in 1940s Hollywood."
+        tags: ["crime", "thriller"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440004"
+        title: "The Forgotten Island"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fforgotten_island.jpeg?alt=media&token=bc2b16e1-caed-4649-952c-73b6113f205c"
+        releaseYear: 2025
+        genre: "adventure"
+        rating: 7.6
+        description: "An explorer leads an expedition to a remote island rumored to be home to mythical creatures. As the team ventures deeper into the island, they uncover secrets that change the course of history."
+        tags: ["adventure", "fantasy"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440005"
+        title: "Digital Nightmare"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fdigital_nightmare.jpeg?alt=media&token=335ec842-1ca4-4b09-abd1-e96d9f5c0c2f"
+        releaseYear: 2024
+        genre: "horror"
+        rating: 6.9
+        description: "A tech-savvy teenager discovers a cursed app that brings nightmares to life. As the horrors of the digital world cross into reality, she must find a way to break the curse before it's too late."
+        tags: ["horror", "thriller"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440006"
+        title: "Eclipse of Destiny"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Feclipse_destiny.jpeg?alt=media&token=346649b3-cb5c-4d7e-b0d4-6f02e3df5959"
+        releaseYear: 2026
+        genre: "fantasy"
+        rating: 8.1
+        description: "In a kingdom on the brink of war, a prophecy speaks of an eclipse that will grant power to the rightful ruler. As factions vie for control, a young warrior must decide where his true loyalty lies."
+        tags: ["fantasy", "adventure"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440007"
+        title: "Heart of Steel"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fheart_steel.jpeg?alt=media&token=17883d71-329b-415a-86f8-dd4d9e941d7f"
+        releaseYear: 2023
+        genre: "sci-fi"
+        rating: 7.7
+        description: "A brilliant scientist creates a robot with a human heart. As the robot struggles to understand emotions, it becomes entangled in a plot that could change the fate of humanity."
+        tags: ["sci-fi", "drama"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440008"
+        title: "Rise of the Crimson Empire"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Frise_crimson_empire.jpeg?alt=media&token=6faa73ad-7504-4146-8f3a-50b90f607f33"
+        releaseYear: 2025
+        genre: "action"
+        rating: 8.4
+        description: "A legendary warrior rises to challenge the tyrannical rule of a powerful empire. As rebellion brews, the warrior must unite different factions to lead an uprising."
+        tags: ["action", "adventure"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440009"
+        title: "Silent Waves"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fsilent_waves.jpeg?alt=media&token=bd626bf1-ec60-4e57-aa07-87ba14e35bb7"
+        releaseYear: 2024
+        genre: "drama"
+        rating: 8.2
+        description: "A talented pianist, who loses his hearing in a tragic accident, must rediscover his passion for music with the help of a young music teacher who believes in him."
+        tags: ["drama", "music"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440010"
+        title: "Echoes of the Past"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fecho_of_past.jpeg?alt=media&token=d866aa27-8534-4d72-8988-9da4a1b9e452"
+        releaseYear: 2023
+        genre: "historical"
+        rating: 7.8
+        description: "A historian stumbles upon an ancient artifact that reveals hidden truths about an empire long forgotten. As she deciphers the clues, a shadowy organization tries to stop her from unearthing the past."
+        tags: ["drama", "mystery"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440011"
+        title: "Beyond the Horizon"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fbeyond_horizon.jpeg?alt=media&token=31493973-0692-4e6e-8b88-afb1aaea17ee"
+        releaseYear: 2026
+        genre: "sci-fi"
+        rating: 8.5
+        description: "In the future, Earth's best pilots are sent on a mission to explore a mysterious planet beyond the solar system. What they find changes humanity's understanding of the universe forever."
+        tags: ["sci-fi", "adventure"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440012"
+        title: "Shadows and Lies"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fshadows_lies.jpeg?alt=media&token=01afb80d-caee-47f8-a00e-aea8b9e459a2"
+        releaseYear: 2022
+        genre: "crime"
+        rating: 7.9
+        description: "A young detective with a dark past investigates a series of mysterious murders in a city plagued by corruption. As she digs deeper, she realizes nothing is as it seems."
+        tags: ["crime", "thriller"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440013"
+        title: "The Last Symphony"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Flast_symphony.jpeg?alt=media&token=f9bf80cd-3d8e-4e24-8503-7feb11f4e397"
+        releaseYear: 2024
+        genre: "drama"
+        rating: 8.0
+        description: "An aging composer struggling with memory loss attempts to complete his final symphony. With the help of a young prodigy, he embarks on an emotional journey through his memories and legacy."
+        tags: ["drama", "music"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440014"
+        title: "Moonlit Crusade"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fmoonlit_crusade.jpeg?alt=media&token=b13241f5-d7d0-4370-b651-07847ad99dc2"
+        releaseYear: 2025
+        genre: "fantasy"
+        rating: 8.3
+        description: "A knight is chosen by an ancient order to embark on a quest under the light of the full moon. Facing mythical beasts and treacherous landscapes, he seeks a relic that could save his kingdom."
+        tags: ["fantasy", "adventure"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440015"
+        title: "Abyss of the Deep"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fabyss_deep.jpeg?alt=media&token=2417321d-2451-4ec0-9ed6-6297042170e6"
+        releaseYear: 2023
+        genre: "horror"
+        rating: 7.2
+        description: "When a group of marine biologists descends into the unexplored depths of the ocean, they encounter a terrifying and ancient force. Now, they must survive as the abyss comes alive."
+        tags: ["horror", "thriller"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440016"
+        title: "Phoenix Rising"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fpheonix_rising.jpeg?alt=media&token=7298b1fd-833c-471c-a55d-e8fc798b4ab2"
+        releaseYear: 2025
+        genre: "action"
+        rating: 8.6
+        description: "A special forces operative, presumed dead, returns to avenge his fallen comrades. With nothing to lose, he faces a powerful enemy in a relentless pursuit for justice."
+        tags: ["action", "thriller"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440017"
+        title: "The Infinite Knot"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Finfinite_knot.jpeg?alt=media&token=93d54d93-d933-4663-a6fe-26b707ef823e"
+        releaseYear: 2026
+        genre: "romance"
+        rating: 7.4
+        description: "Two souls destined to meet across multiple lifetimes struggle to find each other in a chaotic world. With each incarnation, they get closer, but time itself becomes their greatest obstacle."
+        tags: ["romance", "fantasy"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440018"
+        title: "Parallel Justice"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fparalel_justice.jpeg?alt=media&token=4544b5e2-7a1d-46ca-a97f-eb6a490d4288"
+        releaseYear: 2024
+        genre: "crime"
+        rating: 8.1
+        description: "A lawyer who can see the outcomes of different timelines must choose between justice and personal gain. When a high-stakes case arises, he faces a moral dilemma that could alter his life forever."
+        tags: ["crime", "thriller"]
+      }
+      {
+        id: "550e8400-e29b-41d4-a716-446655440019"
+        title: "Veil of Illusion"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/movie%2Fveil_illusion.jpeg?alt=media&token=7bf09a3c-c531-478a-9d02-5d99fca9393b"
+        releaseYear: 2022
+        genre: "mystery"
+        rating: 7.8
+        description: "A magician-turned-detective uses his skills in illusion to solve crimes. When a series of murders leaves the city in fear, he must reveal the truth hidden behind a veil of deceit."
+        tags: ["mystery", "crime"]
+      }
+    ]
+  )
+  actor_insertMany(
+    data: [
+      {
+        id: "123e4567-e89b-12d3-a456-426614174020"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Foliver_blackwood.jpeg?alt=media&token=79cdbc29-c2c6-4dc3-b87f-f6dc4f1a8208"
+        name: "Oliver Blackwood"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174021"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Femma_westfield.jpeg?alt=media&token=2991c3c9-cfa8-4067-8b26-c5239b6894c4"
+        name: "Emma Westfield"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174022"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fjack_stone.jpeg?alt=media&token=74a564aa-d840-4bdd-a8a6-c6b17bbde608"
+        name: "Jack Stone"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174023"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fclara_woods.jpeg?alt=media&token=b4ff2a15-ef6d-4f20-86c9-07d67015fb29"
+        name: "Clara Woods"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174024"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fnoah_frost.jpeg?alt=media&token=0d08179a-7778-405e-9501-feac43b77a99"
+        name: "Noah Frost"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174025"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fisabelle_hart.jpeg?alt=media&token=d4fdf896-0f5b-4c32-91a4-7a541a95e77d"
+        name: "Isabella Hart"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174026"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fliam_hale.jpeg?alt=media&token=08e8eeee-b8ef-4e7b-8f97-a1e0b59321cc"
+        name: "Liam Hale"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174027"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fsophia_knight.jpeg?alt=media&token=7a79ef21-93e0-46f9-934c-6bbef7b5d430"
+        name: "Sophia Knight"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174028"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Falex_clay.jpeg?alt=media&token=2a798cdb-f44f-48d5-91bc-9d26a758944e"
+        name: "Alexander Clay"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174029"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Famelia_stone.jpeg?alt=media&token=34f21ba9-9e28-4708-9e55-f123634ab506"
+        name: "Amelia Stone"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174030"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fethan_blake.jpeg?alt=media&token=41352170-a5cd-4088-b8fd-1c4ee0d52cad"
+        name: "Ethan Blake"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174031"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fmia_gray.jpeg?alt=media&token=1ba1831a-3ada-485a-b5c9-2d018bf1862b"
+        name: "Mia Gray"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174032"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Flucas_reed.jpeg?alt=media&token=c74f44f3-ae98-4208-8e67-18c2db65a5c1"
+        name: "Lucas Reed"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174033"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fevelyn_harper.jpeg?alt=media&token=b138b308-9589-4dfe-8c50-a6d70f06dfb1"
+        name: "Evelyn Harper"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174034"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Foscar_smith.jpeg?alt=media&token=d493da85-644d-4d45-a09d-ecb5416645e4"
+        name: "Oscar Smith"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174035"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fava_winter.jpeg?alt=media&token=757e4b11-0372-401e-8fa0-61797e90312a"
+        name: "Ava Winter"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174036"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fleo_hunt.jpeg?alt=media&token=2cb14738-b39b-47b1-87f9-b45f38245179"
+        name: "Leo Hunt"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174037"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Flucy_walsh.jpeg?alt=media&token=016a216c-f329-4c10-bbe8-b31425f73c69"
+        name: "Lucy Walsh"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174038"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Fmason_ford.jpeg?alt=media&token=55388be9-fdc8-483f-8352-c29755ed3574"
+        name: "Mason Ford"
+      }
+      {
+        id: "123e4567-e89b-12d3-a456-426614174039"
+        imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-web-quickstart.appspot.com/o/actor%2Flily_moore.jpeg?alt=media&token=19538aa6-1baf-4033-8fd7-d2a62aa79f51"
+        name: "Lily Moore"
+      }
+    ]
+  )
+  movieMetadata_insertMany(
+    data: [
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440000"
+        director: "Henry Caldwell"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440001"
+        director: "Juliana Mason, Clark Avery"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440002"
+        director: "Diana Rivers"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440003"
+        director: "Liam Thatcher"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440004"
+        director: "Evelyn Hart"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440005"
+        director: "Grayson Brooks"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440006"
+        director: "Isabella Quinn"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440007"
+        director: "Vincent Hale"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440008"
+        director: "Amelia Sutton"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440009"
+        director: "Lucas Stone"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440010"
+        director: "Sophia Langford"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440011"
+        director: "Noah Bennett"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440012"
+        director: "Chloe Armstrong"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440013"
+        director: "Sebastian Crane"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440014"
+        director: "Isla Fitzgerald"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440015"
+        director: "Oliver Hayes"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440016"
+        director: "Mila Donovan"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440017"
+        director: "Carter Monroe, Elise Turner"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440018"
+        director: "Adrian Blake"
+      }
+      {
+        movieId: "550e8400-e29b-41d4-a716-446655440019"
+        director: "Hazel Carter"
+      }
+    ]
+  )
+movieActor_insertMany(
+  data: [
     {
-      id: "550e8400-e29b-41d4-a716-446655440000",
-      title: "Inception",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Finception.jpg?alt=media&token=07b09781-b302-4623-a5c3-1956d0143168",
-      releaseYear: 2010,
-      genre: "sci-fi",
-      rating: 8.8,
-      description: "Dom Cobb (Leonardo DiCaprio) is a thief with the rare ability to enter people's dreams and steal their secrets from their subconscious. His skill has made him a valuable player in the world of corporate espionage but has also cost him everything he loves. Cobb gets a chance at redemption when he is offered a seemingly impossible task: plant an idea in someone's mind. If he succeeds, it will be the perfect crime, but a dangerous enemy anticipates Cobb's every move.",
-      tags: ["thriller", "action"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440001",
-      title: "The Matrix",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fthe_matrix.jpg?alt=media&token=4975645d-fef8-409e-84a5-bcc1046e2059",
-      releaseYear: 1999,
-      genre: "action",
-      rating: 8.7,
-      description: "Thomas Anderson, a computer programmer, discovers that the world is actually a simulation controlled by malevolent machines in a dystopian future. Known as Neo, he joins a group of underground rebels led by Morpheus to fight the machines and free humanity. Along the way, Neo learns to manipulate the simulated reality, uncovering his true destiny.",
-      tags: ["sci-fi", "adventure"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440002",
-      title: "John Wick 4",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fjohn_wick_4.jpg?alt=media&token=463ed467-9daa-4281-965d-44e7cc4172d5",
-      releaseYear: 2023,
-      genre: "action",
-      rating: 8.1,
-      description: "John Wick (Keanu Reeves) uncovers a path to defeating The High Table, but before he can earn his freedom, he must face off against a new enemy with powerful alliances across the globe. The film follows Wick as he battles through various international locations, facing relentless adversaries and forming new alliances.",
-      tags: ["action", "thriller"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440003",
-      title: "The Dark Knight",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fthe_dark_knight.jpg?alt=media&token=a9803c59-40d5-4758-a6f4-9a7c274a1218",
-      releaseYear: 2008,
-      genre: "action",
-      rating: 9.0,
-      description: "When the menace known as the Joker (Heath Ledger) emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham. The Dark Knight (Christian Bale) must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
-      tags: ["action", "drama"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440004",
-      title: "Fight Club",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Ffight_club.jpg?alt=media&token=a4bc1933-2607-42cd-a860-e44c4587fd9c",
-      releaseYear: 1999,
-      genre: "drama",
-      rating: 8.8,
-      description: "An insomniac office worker (Edward Norton) and a devil-may-care soapmaker (Brad Pitt) form an underground fight club that evolves into something much more. The story explores themes of consumerism, masculinity, and the search for identity.",
-      tags: ["drama", "thriller"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440005",
-      title: "Pulp Fiction",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fpulp_fiction.jpg?alt=media&token=0df86e18-5cb1-45b3-a6d9-3f41563c3465",
-      releaseYear: 1994,
-      genre: "crime",
-      rating: 8.9,
-      description: "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption. The film is known for its eclectic dialogue, ironic mix of humor and violence, and a host of cinematic allusions and pop culture references.",
-      tags: ["crime", "drama"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440006",
-      title: "The Lord of the Rings: The Fellowship of the Ring",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Flotr_fellowship.jpg?alt=media&token=92641d2d-6c52-4172-bd66-95fb86b4b96b",
-      releaseYear: 2001,
-      genre: "fantasy",
-      rating: 8.8,
-      description: "A meek Hobbit from the Shire, Frodo Baggins, and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron. The epic adventure begins the quest that will test their courage and bond.",
-      tags: ["fantasy", "adventure"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440007",
-      title: "The Shawshank Redemption",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fthe_shawshanks_redemption.jpg?alt=media&token=f67b5ab2-a435-48b2-8251-5bf866b183e9",
-      releaseYear: 1994,
-      genre: "drama",
-      rating: 9.3,
-      description: "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency. The film follows Andy Dufresne (Tim Robbins), a banker sentenced to life in Shawshank State Penitentiary, and his friendship with Red (Morgan Freeman).",
-      tags: ["drama", "crime"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440008",
-      title: "Forrest Gump",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fforrest_gump.jpeg?alt=media&token=f21e88ce-6fab-4218-aa55-94738acc9b8f",
-      releaseYear: 1994,
-      genre: "drama",
-      rating: 8.8,
-      description: "The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate, and other historical moments unfold from the perspective of an Alabama man with a low IQ. Forrest Gump (Tom Hanks) becomes an unwitting participant in many key moments of 20th-century U.S. history, all while maintaining his love for his childhood sweetheart Jenny (Robin Wright).",
-      tags: ["drama", "romance"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440009",
-      title: "The Godfather",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fthe_godfather.jpg?alt=media&token=5297fd94-ae87-4995-9de5-3755232bad52",
-      releaseYear: 1972,
-      genre: "crime",
-      rating: 9.2,
-      description: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son. The story follows the powerful Corleone family as they navigate power, loyalty, and betrayal.",
-      tags: ["crime", "drama"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440010",
-      title: "The Silence of the Lambs",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fthe_silence_of_the_lambs.jpg?alt=media&token=7ca6abeb-b15c-4f5e-9280-5a590e89fe54",
-      releaseYear: 1991,
-      genre: "thriller",
-      rating: 8.6,
-      description: "A young F.B.I. cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer. Clarice Starling (Jodie Foster) seeks the assistance of Hannibal Lecter (Anthony Hopkins) to understand the mind of a killer.",
-      tags: ["thriller", "crime"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440011",
-      title: "Saving Private Ryan",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fsaving_private_ryan.jpg?alt=media&token=58ed877e-7ae0-4e30-9aee-d45c2deb7a00",
-      releaseYear: 1998,
-      genre: "war",
-      rating: 8.6,
-      description: "Following the Normandy Landings, a group of U.S. soldiers go behind enemy lines to retrieve a paratrooper whose brothers have been killed in action. The harrowing journey of Captain John H. Miller (Tom Hanks) and his men highlights the brutal reality of war.",
-      tags: ["war", "drama"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440012",
-      title: "The Avengers",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fthe_avengers.jpg?alt=media&token=3d68ccad-2fa1-48da-a83e-7941e246c9f9",
-      releaseYear: 2012,
-      genre: "action",
-      rating: 8.0,
-      description: "Earth's mightiest heroes, including Iron Man, Captain America, Thor, Hulk, Black Widow, and Hawkeye, must come together to stop Loki and his alien army from enslaving humanity. Directed by Joss Whedon, the film is known for its witty dialogue, intense action sequences, and the chemistry among its ensemble cast.",
-      tags: ["action", "sci-fi"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440013",
-      title: "Gladiator",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fgladiator.jpg?alt=media&token=61d75825-b79f-4add-afdb-7da5eed53407",
-      releaseYear: 2000,
-      genre: "action",
-      rating: 8.5,
-      description: "A former Roman General, Maximus Decimus Meridius, seeks vengeance against the corrupt emperor Commodus who murdered his family and sent him into slavery. Directed by Ridley Scott, the film is known for its epic scale, intense battle scenes, and Russell Crowe's powerful performance.",
-      tags: ["action", "drama"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440014",
-      title: "Titanic",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Ftitanic.png?alt=media&token=dd03dc83-486e-4b03-9b03-2f9ed83fd9d0",
-      releaseYear: 1997,
-      genre: "romance",
-      rating: 7.8,
-      description: "A romantic drama recounting the ill-fated voyage of the R.M.S. Titanic through the eyes of Jack Dawson, a poor artist, and Rose DeWitt Bukater, a wealthy aristocrat. Their forbidden romance unfolds aboard the luxurious ship, which tragically sinks after striking an iceberg. Directed by James Cameron, the film is known for its epic scale, emotional depth, and stunning visuals.",
-      tags: ["romance", "drama"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440015",
-      title: "Avatar",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Favatar.jpg?alt=media&token=1c75b09d-7c7a-44bf-b7ad-e7da4d0b7193",
-      releaseYear: 2009,
-      genre: "sci-fi",
-      rating: 7.8,
-      description: "A paraplegic Marine named Jake Sully is sent on a unique mission to Pandora, an alien world, to bridge relations with the native Na'vi people. Torn between following his orders and protecting the world he feels is his home, Jake's journey becomes a battle for survival. Directed by James Cameron, 'Avatar' is renowned for its groundbreaking special effects and immersive 3D experience.",
-      tags: ["sci-fi", "adventure"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440016",
-      title: "Jurassic Park",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fjurassic_park.jpg?alt=media&token=1731ce71-3384-4435-8a5b-821d4fd286d3",
-      releaseYear: 1993,
-      genre: "adventure",
-      rating: 8.1,
-      description: "During a preview tour, a theme park suffers a major power breakdown that allows its cloned dinosaur exhibits to run amok. Directed by Steven Spielberg, 'Jurassic Park' is known for its groundbreaking special effects, thrilling storyline, and the suspenseful chaos unleashed by its prehistoric creatures.",
-      tags: ["adventure", "sci-fi"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440017",
-      title: "The Lion King",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fthe_lion_king.jpg?alt=media&token=3e4e4265-6ae7-47d6-a5ba-584de126ef00",
-      releaseYear: 1994,
-      genre: "animation",
-      rating: 8.5,
-      description: "A young lion prince, Simba, must overcome betrayal and tragedy to reclaim his rightful place as king. 'The Lion King' is a beloved animated musical known for its memorable songs, stunning animation, and a timeless tale of courage, loyalty, and redemption.",
-      tags: ["animation", "drama"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440018",
-      title: "Star Wars: Episode IV - A New Hope",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fstar_wars_4.jpg?alt=media&token=b4ea7e0c-707f-43dd-8633-9d962e77b5a4",
-      releaseYear: 1977,
-      genre: "sci-fi",
-      rating: 8.6,
-      description: "Luke Skywalker joins forces with a Jedi Knight, a cocky pilot, a Wookiee, and two droids to save the galaxy from the Empire's world-destroying battle station, the Death Star. Directed by George Lucas, 'A New Hope' revolutionized the sci-fi genre with its groundbreaking special effects and unforgettable characters.",
-      tags: ["sci-fi", "adventure"]
-    },
-    {
-      id: "550e8400-e29b-41d4-a716-446655440019",
-      title: "Blade Runner",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/movies%2Fblade_runner.jpg?alt=media&token=d8e94bdd-1477-49f3-b244-dd7a9c059fc1",
-      releaseYear: 1982,
-      genre: "sci-fi",
-      rating: 8.1,
-      description: "In a dystopian future, synthetic humans known as replicants are created by powerful corporations. A blade runner named Rick Deckard is tasked with hunting down and 'retiring' four replicants who have escaped to Earth. Directed by Ridley Scott, 'Blade Runner' is a seminal sci-fi thriller that explores themes of humanity and identity.",
-      tags: ["sci-fi", "thriller"]
+      movieId: "550e8400-e29b-41d4-a716-446655440000"
+      actorId: "123e4567-e89b-12d3-a456-426614174020"
+      role: "main"
     }
-  ])
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440000"
+      actorId: "123e4567-e89b-12d3-a456-426614174021"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440001"
+      actorId: "123e4567-e89b-12d3-a456-426614174021"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440001"
+      actorId: "123e4567-e89b-12d3-a456-426614174022"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440002"
+      actorId: "123e4567-e89b-12d3-a456-426614174022"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440002"
+      actorId: "123e4567-e89b-12d3-a456-426614174023"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440003"
+      actorId: "123e4567-e89b-12d3-a456-426614174023"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440003"
+      actorId: "123e4567-e89b-12d3-a456-426614174024"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440004"
+      actorId: "123e4567-e89b-12d3-a456-426614174024"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440004"
+      actorId: "123e4567-e89b-12d3-a456-426614174025"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440005"
+      actorId: "123e4567-e89b-12d3-a456-426614174025"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440005"
+      actorId: "123e4567-e89b-12d3-a456-426614174026"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440006"
+      actorId: "123e4567-e89b-12d3-a456-426614174026"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440006"
+      actorId: "123e4567-e89b-12d3-a456-426614174027"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440007"
+      actorId: "123e4567-e89b-12d3-a456-426614174027"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440007"
+      actorId: "123e4567-e89b-12d3-a456-426614174028"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440008"
+      actorId: "123e4567-e89b-12d3-a456-426614174028"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440008"
+      actorId: "123e4567-e89b-12d3-a456-426614174029"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440009"
+      actorId: "123e4567-e89b-12d3-a456-426614174029"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440009"
+      actorId: "123e4567-e89b-12d3-a456-426614174030"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440010"
+      actorId: "123e4567-e89b-12d3-a456-426614174030"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440010"
+      actorId: "123e4567-e89b-12d3-a456-426614174031"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440011"
+      actorId: "123e4567-e89b-12d3-a456-426614174031"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440011"
+      actorId: "123e4567-e89b-12d3-a456-426614174032"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440012"
+      actorId: "123e4567-e89b-12d3-a456-426614174032"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440012"
+      actorId: "123e4567-e89b-12d3-a456-426614174033"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440013"
+      actorId: "123e4567-e89b-12d3-a456-426614174033"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440013"
+      actorId: "123e4567-e89b-12d3-a456-426614174034"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440014"
+      actorId: "123e4567-e89b-12d3-a456-426614174034"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440014"
+      actorId: "123e4567-e89b-12d3-a456-426614174035"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440015"
+      actorId: "123e4567-e89b-12d3-a456-426614174035"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440015"
+      actorId: "123e4567-e89b-12d3-a456-426614174036"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440016"
+      actorId: "123e4567-e89b-12d3-a456-426614174036"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440016"
+      actorId: "123e4567-e89b-12d3-a456-426614174037"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440017"
+      actorId: "123e4567-e89b-12d3-a456-426614174037"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440017"
+      actorId: "123e4567-e89b-12d3-a456-426614174038"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440018"
+      actorId: "123e4567-e89b-12d3-a456-426614174038"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440018"
+      actorId: "123e4567-e89b-12d3-a456-426614174039"
+      role: "supporting"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440019"
+      actorId: "123e4567-e89b-12d3-a456-426614174039"
+      role: "main"
+    }
+    {
+      movieId: "550e8400-e29b-41d4-a716-446655440019"
+      actorId: "123e4567-e89b-12d3-a456-426614174020"
+      role: "supporting"
+    }
+  ]
+)
+  user_insertMany(
+    data: [
+      { id: "SnLgOC3lN4hcIl69s53cW0Q8R1T2", username: "sherlock_h" }
+      { id: "fep4fXpGWsaRpuphq9CIrBIXQ0S2", username: "hercule_p" }
+      { id: "TBedjwCX0Jf955Uuoxk6k74sY0l1", username: "jane_d" }
+    ]
+  )
 
-  # Insert Actors
-  actor_insertMany(data: [
-    {
-      id: "123e4567-e89b-12d3-a456-426614174000",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fdicaprio.jpeg?alt=media&token=452e030a-efa5-4ef4-bb81-502b23241316",
-      name: "Leonardo DiCaprio"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174001",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fkeanu.jpg?alt=media&token=6056520c-ef3e-4823-aad0-108aab163115",
-      name: "Keanu Reeves"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174002",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fmcconaoghey.jpg?alt=media&token=d340ca18-ef51-44ac-a160-08e45b242cd7",
-      name: "Matthew McConaughey"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174003",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fbale.jpg?alt=media&token=666f1690-a550-458f-a1cf-9505b7d1af7d",
-      name: "Christian Bale"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174004",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fpitt.jpeg?alt=media&token=3a5283d4-f85c-4ba7-be72-51bc87ca4133",
-      name: "Brad Pitt"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174005",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fjackson.jpg?alt=media&token=07be0601-19fe-4b5d-b111-84fa71f32139",
-      name: "Samuel L. Jackson"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174006",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fmortensen.jpeg?alt=media&token=e3d1ec99-b8e7-42e9-9d1c-03f56f61ecf7",
-      name: "Viggo Mortensen"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174007",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Ffreeman.jpg?alt=media&token=94bc6227-119e-4ab0-b350-55fac7aeb062",
-      name: "Morgan Freeman"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174008",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fhanks.jpeg?alt=media&token=d92979ce-da62-4b28-afbe-b8740bbb9d32",
-      name: "Tom Hanks"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174009",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fpacino.jpg?alt=media&token=9c0c54b1-6913-48b5-8e5e-d6551dd2f182",
-      name: "Al Pacino"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174010",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Ffoster.jpg?alt=media&token=b429734c-0f2d-4840-b75b-6857eac7bb4f",
-      name: "Jodie Foster"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174011",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fcruise.jpg?alt=media&token=d34b0326-a8d1-4f01-86e5-f3f094594e5a",
-      name: "Tom Cruise"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174012",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fdowney.jpg?alt=media&token=dd291c96-6ef0-42fc-841c-902c80748b37",
-      name: "Robert Downey Jr."
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174013",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fcrowe.jpg?alt=media&token=46d413d5-ace8-404e-b018-8d7e6fe0d362",
-      name: "Russell Crowe"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174014",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fwinslet.jpg?alt=media&token=b675585e-356e-4361-a041-5ac1a6ee5922",
-      name: "Kate Winslet"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174015",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fweaver.jpeg?alt=media&token=263b5c3d-e0ee-43c3-854d-9b236c6df391",
-      name: "Sigourney Weaver"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174016",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fgoldblume.jpeg?alt=media&token=18277dd1-166c-4934-a02e-19ef141c86e2",
-      name: "Jeff Goldblum"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174017",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fjones.jpg?alt=media&token=f7ac9bc4-6e26-4b25-9a73-7a90f699424e",
-      name: "James Earl Jones"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174018",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fford.jpg?alt=media&token=928434c0-d492-4c8e-bdf0-0db585008d87",
-      name: "Harrison Ford"
-    },
-    {
-      id: "123e4567-e89b-12d3-a456-426614174019",
-      imageUrl: "https://firebasestorage.googleapis.com/v0/b/fdc-quickstart-web.appspot.com/o/actors%2Fschwarzenegger.jpeg?alt=media&token=c46fb249-41ef-4084-b4ad-9517bee6ab46",
-      name: "Arnold Schwarzenegger"
-    }
-  ])
-  # Insert Movie Actor Joins
-  movieMetadata_insertMany(data: [
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440000",
-      director: "Christopher Nolan"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440001",
-      director: "Lana Wachowski, Lilly Wachowski"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440002",
-      director: "Chad Stahelski"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440003",
-      director: "Christopher Nolan"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440004",
-      director: "David Fincher"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440005",
-      director: "Quentin Tarantino"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440006",
-      director: "Peter Jackson"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440007",
-      director: "Frank Darabont"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440008",
-      director: "Robert Zemeckis"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440009",
-      director: "Francis Ford Coppola"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440010",
-      director: "Jonathan Demme"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440011",
-      director: "Steven Spielberg"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440012",
-      director: "Joss Whedon"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440013",
-      director: "Ridley Scott"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440014",
-      director: "James Cameron"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440015",
-      director: "James Cameron"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440016",
-      director: "Steven Spielberg"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440017",
-      director: "Roger Allers, Rob Minkoff"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440018",
-      director: "George Lucas"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440019",
-      director: "Ridley Scott"
-    }
-  ])
+  review_insertMany(
+    data: [
+      {
+        id: "345e4567-e89b-12d3-a456-426614174000"
+        userId: "SnLgOC3lN4hcIl69s53cW0Q8R1T2"
+        movieId: "550e8400-e29b-41d4-a716-446655440000"
+        rating: 5
+        reviewText: "An incredible movie with a mind-blowing plot!"
+        reviewDate_date: { today: true }
+      }
+      {
+        id: "345e4567-e89b-12d3-a456-426614174001"
+        userId: "fep4fXpGWsaRpuphq9CIrBIXQ0S2"
+        movieId: "550e8400-e29b-41d4-a716-446655440001"
+        rating: 5
+        reviewText: "A revolutionary film that changed cinema forever."
+        reviewDate_date: { today: true }
+      }
+      {
+        id: "345e4567-e89b-12d3-a456-426614174002"
+        userId: "TBedjwCX0Jf955Uuoxk6k74sY0l1"
+        movieId: "550e8400-e29b-41d4-a716-446655440002"
+        rating: 5
+        reviewText: "A visually stunning and emotionally impactful movie."
+        reviewDate_date: { today: true }
+      }
+      {
+        id: "345e4567-e89b-12d3-a456-426614174003"
+        userId: "SnLgOC3lN4hcIl69s53cW0Q8R1T2"
+        movieId: "550e8400-e29b-41d4-a716-446655440003"
+        rating: 4
+        reviewText: "A fantastic superhero film with great performances."
+        reviewDate_date: { today: true }
+      }
+      {
+        id: "345e4567-e89b-12d3-a456-426614174004"
+        userId: "fep4fXpGWsaRpuphq9CIrBIXQ0S2"
+        movieId: "550e8400-e29b-41d4-a716-446655440004"
+        rating: 5
+        reviewText: "An amazing film that keeps you on the edge of your seat."
+        reviewDate_date: { today: true }
+      }
+      {
+        id: "345e4567-e89b-12d3-a456-426614174005"
+        userId: "TBedjwCX0Jf955Uuoxk6k74sY0l1"
+        movieId: "550e8400-e29b-41d4-a716-446655440005"
+        rating: 5
+        reviewText: "An absolute classic with unforgettable dialogue."
+        reviewDate_date: { today: true }
+      }
+    ]
+  )
 
-  movieActor_insertMany(data: [
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440000",
-      actorId: "123e4567-e89b-12d3-a456-426614174000",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440001",
-      actorId: "123e4567-e89b-12d3-a456-426614174001",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440002",
-      actorId: "123e4567-e89b-12d3-a456-426614174001",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440003",
-      actorId: "123e4567-e89b-12d3-a456-426614174003",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440004",
-      actorId: "123e4567-e89b-12d3-a456-426614174004",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440005",
-      actorId: "123e4567-e89b-12d3-a456-426614174005",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440006",
-      actorId: "123e4567-e89b-12d3-a456-426614174006",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440007",
-      actorId: "123e4567-e89b-12d3-a456-426614174007",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440008",
-      actorId: "123e4567-e89b-12d3-a456-426614174008",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440009",
-      actorId: "123e4567-e89b-12d3-a456-426614174009",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440010",
-      actorId: "123e4567-e89b-12d3-a456-426614174010",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440011",
-      actorId: "123e4567-e89b-12d3-a456-426614174011",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440012",
-      actorId: "123e4567-e89b-12d3-a456-426614174012",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440013",
-      actorId: "123e4567-e89b-12d3-a456-426614174013",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440014",
-      actorId: "123e4567-e89b-12d3-a456-426614174014",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440015",
-      actorId: "123e4567-e89b-12d3-a456-426614174015",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440016",
-      actorId: "123e4567-e89b-12d3-a456-426614174016",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440017",
-      actorId: "123e4567-e89b-12d3-a456-426614174017",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440018",
-      actorId: "123e4567-e89b-12d3-a456-426614174018",
-      role: "main"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440019",
-      actorId: "123e4567-e89b-12d3-a456-426614174019",
-      role: "main"
-    },
-    # Supporting actors
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440000",
-      actorId: "123e4567-e89b-12d3-a456-426614174001",
-      role: "supporting"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440001",
-      actorId: "123e4567-e89b-12d3-a456-426614174002",
-      role: "supporting"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440002",
-      actorId: "123e4567-e89b-12d3-a456-426614174003",
-      role: "supporting"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440003",
-      actorId: "123e4567-e89b-12d3-a456-426614174004",
-      role: "supporting"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440004",
-      actorId: "123e4567-e89b-12d3-a456-426614174005",
-      role: "supporting"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440005",
-      actorId: "123e4567-e89b-12d3-a456-426614174006",
-      role: "supporting"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440006",
-      actorId: "123e4567-e89b-12d3-a456-426614174007",
-      role: "supporting"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440007",
-      actorId: "123e4567-e89b-12d3-a456-426614174008",
-      role: "supporting"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440008",
-      actorId: "123e4567-e89b-12d3-a456-426614174009",
-      role: "supporting"
-    },
-    {
-      movieId: "550e8400-e29b-41d4-a716-446655440009",
-      actorId: "123e4567-e89b-12d3-a456-426614174010",
-      role: "supporting"
-    }
-  ])
+  favorite_movie_insertMany(
+    data: [
+      {
+        userId: "SnLgOC3lN4hcIl69s53cW0Q8R1T2"
+        movieId: "550e8400-e29b-41d4-a716-446655440000"
+      }
+      {
+        userId: "fep4fXpGWsaRpuphq9CIrBIXQ0S2"
+        movieId: "550e8400-e29b-41d4-a716-446655440001"
+      }
+      {
+        userId: "TBedjwCX0Jf955Uuoxk6k74sY0l1"
+        movieId: "550e8400-e29b-41d4-a716-446655440002"
+      }
+      {
+        userId: "SnLgOC3lN4hcIl69s53cW0Q8R1T2"
+        movieId: "550e8400-e29b-41d4-a716-446655440003"
+      }
+      {
+        userId: "fep4fXpGWsaRpuphq9CIrBIXQ0S2"
+        movieId: "550e8400-e29b-41d4-a716-446655440004"
+      }
+      {
+        userId: "TBedjwCX0Jf955Uuoxk6k74sY0l1"
+        movieId: "550e8400-e29b-41d4-a716-446655440005"
+      }
+    ]
+  )
 }
