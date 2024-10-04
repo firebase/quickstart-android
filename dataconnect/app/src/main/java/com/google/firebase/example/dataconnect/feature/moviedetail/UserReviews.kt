@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.firebase.dataconnect.movies.GetMovieByIdQuery
 import com.google.firebase.example.dataconnect.R
@@ -43,18 +44,25 @@ fun UserReviews(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var rating by remember { mutableFloatStateOf(3f) }
+        var rating by remember { mutableFloatStateOf(5f) }
         Text("Rating: ${rating}")
         Slider(
             value = rating,
             onValueChange = { rating = Math.round(it).toFloat() },
-            steps = 5,
-            valueRange = 1f..5f
+            steps = 10,
+            valueRange = 1f..10f
         )
         TextField(
             value = reviewText,
-            onValueChange = { reviewText = it },
+            onValueChange = { if (it.length <= 280) reviewText = it },
             label = { Text(stringResource(R.string.hint_write_review)) },
+            supportingText = {
+                Text(
+                    "${reviewText.length} / 280",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.End
+                )
+            },
             modifier = Modifier.fillMaxWidth()
         )
 
