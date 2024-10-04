@@ -36,7 +36,8 @@ object ProfileRoute
 
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel = viewModel()
+    profileViewModel: ProfileViewModel = viewModel(),
+    onMovieClicked: (String) -> Unit,
 ) {
     val uiState by profileViewModel.uiState.collectAsState()
     when (uiState) {
@@ -61,6 +62,7 @@ fun ProfileScreen(
                 ui.username ?: "User",
                 ui.reviews.orEmpty(),
                 ui.favoriteMovies.orEmpty(),
+                onMovieClicked = onMovieClicked,
                 onSignOut = {
                     profileViewModel.signOut()
                 }
@@ -76,6 +78,7 @@ fun ProfileScreen(
     name: String,
     reviews: List<GetCurrentUserQuery.Data.User.ReviewsItem>,
     favoriteMovies: List<GetCurrentUserQuery.Data.User.FavoriteMoviesItem>,
+    onMovieClicked: (String) -> Unit,
     onSignOut: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -104,9 +107,7 @@ fun ProfileScreen(
             movies = favoriteMovies.mapNotNull {
                 Movie(it.movie.id.toString(), it.movie.imageUrl, it.movie.title, it.movie.rating?.toFloat())
             },
-            onMovieClicked = {
-                // TODO
-            }
+            onMovieClicked = onMovieClicked
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -140,7 +141,8 @@ fun ReviewsList(
                 userName = userName,
                 date = review.reviewDate,
                 rating = review.rating?.toDouble() ?: 0.0,
-                text = review.reviewText ?: ""
+                text = review.reviewText ?: "",
+                movieName = review.movie.title
             )
         }
     }
