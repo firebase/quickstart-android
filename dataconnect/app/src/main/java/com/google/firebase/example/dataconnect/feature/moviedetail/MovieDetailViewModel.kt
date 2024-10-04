@@ -89,8 +89,6 @@ class MovieDetailViewModel(
             try {
                 moviesConnector.addReview.execute(
                     movieId = UUID.fromString(movieId),
-                    // TODO(thatfiredev): this might have been an error in the mutation definition
-                    //   rating shouldn't be an Int!!
                     rating = rating.roundToInt(),
                     reviewText = text
                 )
