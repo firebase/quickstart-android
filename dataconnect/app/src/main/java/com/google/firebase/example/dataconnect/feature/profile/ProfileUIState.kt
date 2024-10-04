@@ -1,6 +1,6 @@
 package com.google.firebase.example.dataconnect.feature.profile
 
-import com.google.firebase.dataconnect.movies.GetUserByIdQuery
+import com.google.firebase.dataconnect.movies.GetCurrentUserQuery
 
 sealed class ProfileUIState {
     data object Loading: ProfileUIState()
@@ -11,9 +11,7 @@ sealed class ProfileUIState {
 
     data class ProfileState(
         val username: String?,
-        val reviews: List<GetUserByIdQuery.Data.User.ReviewsItem>? = emptyList(),
-        val watchedMovies: List<GetUserByIdQuery.Data.User.WatchedItem>? = emptyList(),
-        val favoriteMovies: List<GetUserByIdQuery.Data.User.FavoriteMoviesItem>? = emptyList(),
-        val favoriteActors: List<GetUserByIdQuery.Data.User.FavoriteActorsItem>? = emptyList()
+        val reviews: List<GetCurrentUserQuery.Data.User.ReviewsItem>? = emptyList(),
+        val favoriteMovies: List<GetCurrentUserQuery.Data.User.FavoriteMoviesItem>? = emptyList(),
     ) : ProfileUIState()
 }

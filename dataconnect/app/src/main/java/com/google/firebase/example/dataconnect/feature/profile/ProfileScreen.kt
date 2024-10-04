@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.firebase.dataconnect.movies.GetUserByIdQuery
+import com.google.firebase.dataconnect.movies.GetCurrentUserQuery
 import com.google.firebase.example.dataconnect.R
 import com.google.firebase.example.dataconnect.ui.components.Actor
 import com.google.firebase.example.dataconnect.ui.components.ActorsList
@@ -60,9 +60,7 @@ fun ProfileScreen(
             ProfileScreen(
                 ui.username ?: "User",
                 ui.reviews.orEmpty(),
-                ui.watchedMovies.orEmpty(),
                 ui.favoriteMovies.orEmpty(),
-                ui.favoriteActors.orEmpty(),
                 onSignOut = {
                     profileViewModel.signOut()
                 }
@@ -76,10 +74,8 @@ fun ProfileScreen(
 @Composable
 fun ProfileScreen(
     name: String,
-    reviews: List<GetUserByIdQuery.Data.User.ReviewsItem>,
-    watchedMovies: List<GetUserByIdQuery.Data.User.WatchedItem>,
-    favoriteMovies: List<GetUserByIdQuery.Data.User.FavoriteMoviesItem>,
-    favoriteActors: List<GetUserByIdQuery.Data.User.FavoriteActorsItem>,
+    reviews: List<GetCurrentUserQuery.Data.User.ReviewsItem>,
+    favoriteMovies: List<GetCurrentUserQuery.Data.User.FavoriteMoviesItem>,
     onSignOut: () -> Unit
 ) {
     val scrollState = rememberScrollState()
@@ -104,33 +100,11 @@ fun ProfileScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         MoviesList(
-            listTitle = stringResource(R.string.title_watched_movies),
-            movies = watchedMovies.mapNotNull {
-                Movie(it.movie.id.toString(), it.movie.imageUrl, it.movie.title, it.movie.rating?.toFloat())
-            },
-            onMovieClicked = {
-                // TODO
-            }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        MoviesList(
             listTitle = stringResource(R.string.title_favorite_movies),
             movies = favoriteMovies.mapNotNull {
                 Movie(it.movie.id.toString(), it.movie.imageUrl, it.movie.title, it.movie.rating?.toFloat())
             },
             onMovieClicked = {
-                // TODO
-            }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        ActorsList(
-            listTitle = stringResource(R.string.title_favorite_actors),
-            actors = favoriteActors.mapNotNull {
-                Actor(it.actor.id.toString(), it.actor.name, it.actor.imageUrl)
-            },
-            onActorClicked = {
                 // TODO
             }
         )
@@ -157,7 +131,7 @@ fun ProfileSection(title: String, content: @Composable () -> Unit) {
 @Composable
 fun ReviewsList(
     userName: String,
-    reviews: List<GetUserByIdQuery.Data.User.ReviewsItem>
+    reviews: List<GetCurrentUserQuery.Data.User.ReviewsItem>
 ) {
     Column {
         // TODO(thatfiredev): Handle cases where the list is too long to display

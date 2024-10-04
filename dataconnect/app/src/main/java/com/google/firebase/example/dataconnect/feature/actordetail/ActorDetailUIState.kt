@@ -13,6 +13,5 @@ sealed class ActorDetailUIState {
         // Actor is null if it can't be found on the DB
         val actor: GetActorByIdQuery.Data.Actor?,
         val isUserSignedIn: Boolean = false,
-        var isFavorite: Boolean = false
     ) : ActorDetailUIState()
 }

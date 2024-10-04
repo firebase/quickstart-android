@@ -8,4 +8,5 @@ schema:
       database: "fdcdb"
       cloudSql:
         instanceId: "fdc-sql"
-connectorDirs: ["./connectors"]
+connectorDirs: ["./movie-connector"]
+

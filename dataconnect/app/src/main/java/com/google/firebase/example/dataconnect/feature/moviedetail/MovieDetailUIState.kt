@@ -12,7 +12,6 @@ sealed class MovieDetailUIState {
         // Movie is null if it can't be found on the DB
         val movie: GetMovieByIdQuery.Data.Movie?,
         val isUserSignedIn: Boolean = false,
-        var isWatched: Boolean = false,
         var isFavorite: Boolean = false
     ) : MovieDetailUIState()
 }

@@ -47,9 +47,8 @@ fun UserReviews(
         Text("Rating: ${rating}")
         Slider(
             value = rating,
-            // Round the value to the nearest 0.5
-            onValueChange = { rating = (Math.round(it * 2) / 2.0).toFloat() },
-            steps = 9,
+            onValueChange = { rating = Math.round(it).toFloat() },
+            steps = 5,
             valueRange = 1f..5f
         )
         TextField(

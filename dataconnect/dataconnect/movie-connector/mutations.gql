@@ -1,0 +1,102 @@
+mutation UpsertUser($username: String!) @auth(level: USER) {
+  user_upsert(
+    data: {
+      id_expr: "auth.uid"
+      username: $username
+    }
+  )
+}
+
+# Add a movie to the user's favorites list
+mutation AddFavoritedMovie($movieId: UUID!) @auth(level: USER) {
+  favorite_movie_upsert(data: { userId_expr: "auth.uid", movieId: $movieId })
+}
+
+# Remove a movie from the user's favorites list
+mutation DeleteFavoritedMovie($movieId: UUID!) @auth(level: USER) {
+  favorite_movie_delete(key: { userId_expr: "auth.uid", movieId: $movieId })
+}
+
+# Add a review for a movie
+mutation AddReview($movieId: UUID!, $rating: Int!, $reviewText: String!)
+@auth(level: USER) {
+  review_insert(
+    data: {
+      userId_expr: "auth.uid"
+      movieId: $movieId
+      rating: $rating
+      reviewText: $reviewText
+      reviewDate_date: { today: true }
+    }
+  )
+}
+
+# Update a user's review for a movie
+mutation UpdateReview($movieId: UUID!, $rating: Int!, $reviewText: String!)
+@auth(level: USER) {
+  review_update(
+    key: { userId_expr: "auth.uid", movieId: $movieId }
+    data: {
+      userId_expr: "auth.uid"
+      movieId: $movieId
+      rating: $rating
+      reviewText: $reviewText
+      reviewDate_date: { today: true }
+    }
+  )
+}
+
+# Delete a user's review for a movie
+mutation DeleteReview($movieId: UUID!) @auth(level: USER) {
+  review_delete(key: { userId_expr: "auth.uid", movieId: $movieId })
+}
+
+# The mutations below are unused by the application, but are useful examples for more complex cases
+
+# Create a movie based on user input
+# mutation CreateMovie(
+#   $title: String!
+#   $releaseYear: Int!
+#   $genre: String!
+#   $rating: Float
+#   $description: String
+#   $imageUrl: String!
+#   $tags: [String!] = []
+# ) @auth(expr: "auth.token.isAdmin == true") {
+
+# }
+# Update movie information based on the provided ID
+# mutation UpdateMovie(
+#   $id: UUID!
+#   $title: String
+#   $releaseYear: Int
+#   $genre: String
+#   $rating: Float
+#   $description: String
+#   $imageUrl: String
+#   $tags: [String!] = []
+# ) @auth(level: USER_EMAIL_VERIFIED) {
+#   movie_update(
+#     id: $id
+#     data: {
+#       title: $title
+#       releaseYear: $releaseYear
+#       genre: $genre
+#       rating: $rating
+#       description: $description
+#       imageUrl: $imageUrl
+#       tags: $tags
+#     }
+#   )
+# }
+
+# Delete a movie by its ID
+# mutation DeleteMovie($id: UUID!) @auth(level: USER_EMAIL_VERIFIED) {
+#   movie_delete(id: $id)
+# }
+
+# Delete movies with a rating lower than the specified minimum rating
+# mutation DeleteUnpopularMovies($minRating: Float!) @auth(level: USER_EMAIL_VERIFIED) {
+#   movie_deleteMany(where: { rating: { le: $minRating } })
+# }
+# End of example mutations

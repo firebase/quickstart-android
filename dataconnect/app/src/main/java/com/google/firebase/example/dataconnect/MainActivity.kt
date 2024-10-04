@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -30,10 +29,6 @@ import com.google.firebase.dataconnect.movies.MoviesConnector
 import com.google.firebase.dataconnect.movies.instance
 import com.google.firebase.example.dataconnect.feature.actordetail.ActorDetailRoute
 import com.google.firebase.example.dataconnect.feature.actordetail.ActorDetailScreen
-import com.google.firebase.example.dataconnect.feature.genredetail.GenreDetailRoute
-import com.google.firebase.example.dataconnect.feature.genredetail.GenreDetailScreen
-import com.google.firebase.example.dataconnect.feature.genres.GenresRoute
-import com.google.firebase.example.dataconnect.feature.genres.GenresScreen
 import com.google.firebase.example.dataconnect.feature.moviedetail.MovieDetailRoute
 import com.google.firebase.example.dataconnect.feature.moviedetail.MovieDetailScreen
 import com.google.firebase.example.dataconnect.feature.movies.MoviesRoute
@@ -47,7 +42,6 @@ data class TopLevelRoute<T : Any>(val labelResId: Int, val route: T, val icon: I
 
 val TOP_LEVEL_ROUTES = listOf(
     TopLevelRoute(R.string.label_movies, MoviesRoute, Icons.Filled.Home),
-    TopLevelRoute(R.string.label_genres, GenresRoute, Icons.Filled.Menu),
     TopLevelRoute(R.string.label_profile, ProfileRoute, Icons.Filled.Person)
 )
 
@@ -116,15 +110,6 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable<ActorDetailRoute>() { ActorDetailScreen() }
-                        composable<GenresRoute> {
-                            GenresScreen(onGenreClicked = { genre ->
-                                navController.navigate(
-                                    GenreDetailRoute(genre),
-                                    { launchSingleTop = true }
-                                )
-                            })
-                        }
-                        composable<GenreDetailRoute> { GenreDetailScreen() }
                         searchScreen()
                         composable<ProfileRoute> { ProfileScreen() }
                     }

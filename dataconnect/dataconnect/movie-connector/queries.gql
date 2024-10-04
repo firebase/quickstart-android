@@ -1,0 +1,329 @@
+# List subset of fields for movies
+query ListMovies($orderByRating: OrderDirection, $orderByReleaseYear: OrderDirection, $limit: Int) @auth(level: PUBLIC) {
+  movies(
+    orderBy: [
+      { rating: $orderByRating },
+      { releaseYear: $orderByReleaseYear }
+    ]
+    limit: $limit
+  ) {
+    id
+    title
+    imageUrl
+    releaseYear
+    genre
+    rating
+    tags
+    description
+  }
+}
+
+# Get movie by id
+query GetMovieById($id: UUID!) @auth(level: PUBLIC) {
+ movie(id: $id) {
+    id
+    title
+    imageUrl
+    releaseYear
+    genre
+    rating
+    description
+    tags
+    metadata: movieMetadatas_on_movie {
+      director
+    }
+    mainActors: actors_via_MovieActor(where: { role: { eq: "main" } }) {
+      id
+      name
+      imageUrl
+    }
+    supportingActors: actors_via_MovieActor(
+      where: { role: { eq: "supporting" } }
+    ) {
+      id
+      name
+      imageUrl
+    }
+    reviews: reviews_on_movie {
+      id
+      reviewText
+      reviewDate
+      rating
+      user {
+        id
+        username
+      }
+    }
+  }
+ }
+
+# Get actor by id
+query GetActorById($id: UUID!) @auth(level: PUBLIC) {
+  actor(id: $id) {
+    id
+    name
+    imageUrl
+    mainActors: movies_via_MovieActor(where: { role: { eq: "main" } }) {
+      id
+      title
+      genre
+      tags
+      imageUrl
+    }
+    supportingActors: movies_via_MovieActor(
+      where: { role: { eq: "supporting" } }
+    ) {
+      id
+      title
+      genre
+      tags
+      imageUrl
+    }
+  }
+}
+
+
+# Get user by ID
+query GetCurrentUser @auth(level: USER) {
+  user(key: { id_expr: "auth.uid" }) {
+    id
+    username
+    reviews: reviews_on_user {
+      id
+      rating
+      reviewDate
+      reviewText
+      movie {
+        id
+        title
+      }
+    }
+    favoriteMovies: favorite_movies_on_user {
+      movie {
+        id
+        title
+        genre
+        imageUrl
+        releaseYear
+        rating
+        description
+        tags
+        metadata: movieMetadatas_on_movie {
+          director
+        }
+      }
+    }
+  }
+}
+
+query GetIfFavoritedMovie($movieId: UUID!) @auth(level: USER) {
+  favorite_movie(key: { userId_expr: "auth.uid", movieId: $movieId }) {
+    movieId
+  }
+}
+
+# Search for movies, actors, and reviews
+query SearchAll(
+  $input: String
+  $minYear: Int!
+  $maxYear: Int!
+  $minRating: Float!
+  $maxRating: Float!
+  $genre: String!
+) @auth(level: PUBLIC) {
+  moviesMatchingTitle: movies(
+    where: {
+      _and: [
+        { releaseYear: { ge: $minYear } }
+        { releaseYear: { le: $maxYear } }
+        { rating: { ge: $minRating } }
+        { rating: { le: $maxRating } }
+        { genre: { contains: $genre } }
+        { title: { contains: $input } }
+      ]
+    }
+  ) {
+    id
+    title
+    genre
+    rating
+    imageUrl
+  }
+  moviesMatchingDescription: movies(
+    where: {
+      _and: [
+        { releaseYear: { ge: $minYear } }
+        { releaseYear: { le: $maxYear } }
+        { rating: { ge: $minRating } }
+        { rating: { le: $maxRating } }
+        { genre: { contains: $genre } }
+        { description: { contains: $input } }
+      ]
+    }
+  ) {
+    id
+    title
+    genre
+    rating
+    imageUrl
+  }
+  actorsMatchingName: actors(where: { name: { contains: $input } }) {
+    id
+    name
+    imageUrl
+  }
+  reviewsMatchingText: reviews(where: { reviewText: { contains: $input } }) {
+    id
+    rating
+    reviewText
+    reviewDate
+    movie {
+      id
+      title
+    }
+    user {
+      id
+      username
+    }
+  }
+}
+
+# Search movie descriptions using L2 similarity with Vertex AI
+# query SearchMovieDescriptionUsingL2Similarity($query: String!)
+# @auth(level: PUBLIC) {
+#   movies_descriptionEmbedding_similarity(
+#     compare_embed: { model: "textembedding-gecko@003", text: $query }
+#     method: L2
+#     within: 2
+#     limit: 5
+#   ) {
+#     id
+#     title
+#     description
+#     tags
+#     rating
+#     imageUrl
+#   }
+# }
+
+
+
+# # The queries below are unused by the application, but are useful examples for more complex cases
+
+# # List movies by partial title match
+# query ListMoviesByPartialTitle($input: String!) @auth(level: PUBLIC) {
+#   movies(where: { title: { contains: $input } }) {
+#     id
+#     title
+#     genre
+#     rating
+#     imageUrl
+#   }
+# }
+
+# # List movies by tag
+# query ListMoviesByTag($tag: String!) @auth(level: PUBLIC) {
+#   movies(where: { tags: { includes: $tag } }) {
+#     id
+#     title
+#     imageUrl
+#     genre
+#     rating
+#   }
+# }
+
+# # List movies by release year range
+# query MoviesByReleaseYear($min: Int, $max: Int) @auth(level: PUBLIC) {
+#   movies(
+#     where: { releaseYear: { le: $max, ge: $min } }
+#     orderBy: { releaseYear: ASC }
+#   ) {
+#     id
+#     rating
+#     title
+#     imageUrl
+#   }
+# }
+
+# # List movies by rating and genre with OR filters
+# query SearchMovieOr(
+#   $minRating: Float
+#   $maxRating: Float
+#   $genre: String
+#   $tag: String
+#   $input: String
+# ) @auth(level: PUBLIC) {
+#   movies(
+#     where: {
+#       _or: [
+#         { rating: { ge: $minRating } }
+#         { rating: { le: $maxRating } }
+#         { genre: { eq: $genre } }
+#         { tags: { includes: $tag } }
+#         { title: { contains: $input } }
+#       ]
+#     }
+#   ) {
+#     id
+#     rating
+#     title
+#     imageUrl
+#   }
+# }
+
+# # List movies by rating and genre with AND filters
+# query SearchMovieAnd(
+#   $minRating: Float
+#   $maxRating: Float
+#   $genre: String
+#   $tag: String
+#   $input: String
+# ) @auth(level: PUBLIC) {
+#   movies(
+#     where: {
+#       _and: [
+#         { rating: { ge: $minRating } }
+#         { rating: { le: $maxRating } }
+#         { genre: { eq: $genre } }
+#         { tags: { includes: $tag } }
+#         { title: { contains: $input } }
+#       ]
+#     }
+#   ) {
+#     id
+#     rating
+#     title
+#     imageUrl
+#   }
+# }
+
+# # Get favorite actors by user ID
+# query GetFavoriteActors @auth(level: USER) {
+#   user(key: {id_expr: "auth.uid"}) {
+#     favorite_actors_on_user {
+#       actor {
+#         id
+#         name
+#         imageUrl
+#       }
+#     }
+#   }
+# }
+
+# # Get favorite movies by user ID
+# query GetUserFavoriteMovies @auth(level: USER) {
+#   user(id_expr: "auth.uid") {
+#     favorite_movies_on_user {
+#       movie {
+#         id
+#         title
+#         genre
+#         imageUrl
+#         releaseYear
+#         rating
+#         description
+#       }
+#     }
+#   }
+# }
+# # end of example queries

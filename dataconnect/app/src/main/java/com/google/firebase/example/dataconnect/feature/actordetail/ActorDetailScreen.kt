@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,7 +28,6 @@ import com.google.firebase.example.dataconnect.ui.components.ErrorCard
 import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.Movie
 import com.google.firebase.example.dataconnect.ui.components.MoviesList
-import com.google.firebase.example.dataconnect.ui.components.ToggleButton
 import kotlinx.serialization.Serializable
 
 
@@ -47,9 +43,6 @@ fun ActorDetailScreen(
         uiState = uiState,
         onMovieClicked = {
             // TODO
-        },
-        onFavoriteToggled = {
-            actorDetailViewModel.toggleFavorite(it)
         }
     )
 }
@@ -57,8 +50,7 @@ fun ActorDetailScreen(
 @Composable
 fun ActorDetailScreen(
     uiState: ActorDetailUIState,
-    onMovieClicked: (actorId: String) -> Unit,
-    onFavoriteToggled: (newValue: Boolean) -> Unit
+    onMovieClicked: (actorId: String) -> Unit
 ) {
     when (uiState) {
         is ActorDetailUIState.Error -> ErrorCard(uiState.errorMessage)
@@ -75,8 +67,6 @@ fun ActorDetailScreen(
                 ) {
                     ActorInformation(
                         actor = uiState.actor,
-                        isActorFavorite = uiState.isFavorite,
-                        onFavoriteToggled = onFavoriteToggled
                     )
                     MoviesList(
                         listTitle = stringResource(R.string.title_main_roles),
@@ -103,9 +93,7 @@ fun ActorDetailScreen(
 @Composable
 fun ActorInformation(
     modifier: Modifier = Modifier,
-    actor: GetActorByIdQuery.Data.Actor?,
-    isActorFavorite: Boolean,
-    onFavoriteToggled: (newValue: Boolean) -> Unit
+    actor: GetActorByIdQuery.Data.Actor?
 ) {
     if (actor == null) {
         ErrorCard(stringResource(R.string.error_actor_not_found))
@@ -128,22 +116,14 @@ fun ActorInformation(
                         .aspectRatio(9f / 16f)
                         .padding(vertical = 8.dp)
                 )
+                // TODO(thatfiredev): Remove biography
                 Text(
-                    text = actor.biography ?: stringResource(R.string.biography_not_available),
+                    text = stringResource(R.string.biography_not_available),
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            ToggleButton(
-                iconEnabled = Icons.Filled.Favorite,
-                iconDisabled = Icons.Outlined.FavoriteBorder,
-                textEnabled = stringResource(R.string.button_remove_favorite),
-                textDisabled = stringResource(R.string.button_favorite),
-                isEnabled = isActorFavorite,
-                onToggle = onFavoriteToggled
-            )
         }
     }
 }

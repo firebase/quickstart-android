@@ -62,11 +62,11 @@ check out the [official documentation](https://firebase.google.com/docs/data-con
 4. Click on "Start Emulators" - this should generate the Kotlin SDK for you and start the emulators.
 
 ### 4. Populate the database
-In VS Code, open the `quickstart-android/dataconnect/dataconnect/data_seed.gql` file and click the
+In VS Code, open the `quickstart-android/dataconnect/dataconnect/moviedata_insert.gql` file and click the
  `Run (local)` button at the top of the file.
 
 If you’d like to confirm that the data was correctly inserted,
-open `quickstart-android/dataconnect/connectors/queries.gql` and run the `ListMovies` query.
+open `quickstart-android/dataconnect/movie-connector/queries.gql` and run the `ListMovies` query.
 
 ### 5. Running the app
 

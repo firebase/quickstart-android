@@ -76,14 +76,10 @@ fun MovieDetailScreen(
                     MovieInformation(
                         modifier = Modifier.padding(padding),
                         movie = movie,
-                        isMovieWatched = ui.isWatched,
                         isMovieFavorite = ui.isFavorite,
                         onFavoriteToggled = { newValue ->
                             movieDetailViewModel.toggleFavorite(newValue)
                         },
-                        onWatchToggled = { newValue ->
-                            movieDetailViewModel.toggleWatched(newValue)
-                        }
                     )
                     // Main Actors list
                     ActorsList(
@@ -118,9 +114,7 @@ fun MovieDetailScreen(
 fun MovieInformation(
     modifier: Modifier = Modifier,
     movie: GetMovieByIdQuery.Data.Movie?,
-    isMovieWatched: Boolean,
     isMovieFavorite: Boolean,
-    onWatchToggled: (newValue: Boolean) -> Unit,
     onFavoriteToggled: (newValue: Boolean) -> Unit
 ) {
     if (movie == null) {
@@ -182,25 +176,14 @@ fun MovieInformation(
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row {
-                ToggleButton(
-                    iconEnabled = Icons.Filled.CheckCircle,
-                    iconDisabled = Icons.Outlined.Check,
-                    textEnabled = stringResource(R.string.button_unmark_watched),
-                    textDisabled = stringResource(R.string.button_mark_watched),
-                    isEnabled = isMovieWatched,
-                    onToggle = onWatchToggled
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                ToggleButton(
-                    iconEnabled = Icons.Filled.Favorite,
-                    iconDisabled = Icons.Outlined.FavoriteBorder,
-                    textEnabled = stringResource(R.string.button_remove_favorite),
-                    textDisabled = stringResource(R.string.button_favorite),
-                    isEnabled = isMovieFavorite,
-                    onToggle = onFavoriteToggled
-                )
-            }
+            ToggleButton(
+                iconEnabled = Icons.Filled.Favorite,
+                iconDisabled = Icons.Outlined.FavoriteBorder,
+                textEnabled = stringResource(R.string.button_remove_favorite),
+                textDisabled = stringResource(R.string.button_favorite),
+                isEnabled = isMovieFavorite,
+                onToggle = onFavoriteToggled
+            )
         }
     }
 }
