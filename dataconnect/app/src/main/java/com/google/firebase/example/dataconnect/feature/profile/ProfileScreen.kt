@@ -140,7 +140,8 @@ fun ReviewsList(
                 userName = userName,
                 date = review.reviewDate,
                 rating = review.rating?.toDouble() ?: 0.0,
-                text = review.reviewText ?: ""
+                text = review.reviewText ?: "",
+                movieName = review.movie.title
             )
         }
     }

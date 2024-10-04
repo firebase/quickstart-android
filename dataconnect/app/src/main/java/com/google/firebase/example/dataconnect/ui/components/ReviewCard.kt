@@ -29,7 +29,8 @@ fun ReviewCard(
     userName: String,
     date: Date,
     rating: Double,
-    text: String
+    text: String,
+    movieName: String? = null
 ) {
     Card(
         modifier = Modifier
@@ -42,9 +43,13 @@ fun ReviewCard(
                 .padding(16.dp)
         ) {
             Text(
-                text = userName,
+                text = if (movieName != null) {
+                    userName + " on " + movieName
+                } else {
+                    userName
+                },
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleLarge
             )
             Row(
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -53,11 +58,18 @@ fun ReviewCard(
                     text = SimpleDateFormat(
                         "dd MMM, yyyy",
                         Locale.getDefault()
-                    ).format(date)
+                    ).format(date),
+                    style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "Rating: ")
-                Text(text = "$rating")
+                Text(
+                    text = "Rating: ",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = "$rating",
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
             Text(
                 text = text,

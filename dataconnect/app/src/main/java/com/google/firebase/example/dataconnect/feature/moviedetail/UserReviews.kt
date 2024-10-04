@@ -86,7 +86,7 @@ fun UserReviews(
                 userName = it.user.username,
                 date = it.reviewDate,
                 rating = it.rating?.toDouble() ?: 0.0,
-                text = it.reviewText ?: ""
+                text = it.reviewText ?: "",
             )
         }
     }
