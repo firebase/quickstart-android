@@ -32,7 +32,6 @@
 
     <!-- Actor Detail Screen -->
     <string name="error_actor_not_found">Couldn\'t find actor in the database</string>
-    <string name="biography_not_available">Biography not available</string>
     <string name="title_main_roles">Main Roles</string>
     <string name="title_supporting_roles">Supporting Roles</string>
 
