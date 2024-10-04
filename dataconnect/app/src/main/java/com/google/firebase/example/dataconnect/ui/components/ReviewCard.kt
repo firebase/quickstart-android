@@ -39,7 +39,6 @@ fun ReviewCard(
     ) {
         Column(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.secondaryContainer)
                 .padding(16.dp)
         ) {
             Text(

@@ -1,6 +1,5 @@
 package com.google.firebase.example.dataconnect.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -12,9 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Blue80,
+    onPrimary = Ink1,
+    secondary = BlueGrey80,
+    tertiary = Pink80,
+    background = Ink1,
+    surfaceVariant = Ink2
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -37,7 +39,7 @@ private val LightColorScheme = lightColorScheme(
 fun FirebaseDataConnectTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
