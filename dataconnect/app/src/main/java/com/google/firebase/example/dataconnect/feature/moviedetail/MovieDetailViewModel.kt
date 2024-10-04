@@ -91,7 +91,6 @@ class MovieDetailViewModel(
                     rating = rating.roundToInt(),
                     reviewText = text
                 )
-                // TODO(thatfiredev): should we have a way of only refetching the reviews?
                 // Re-run the query to fetch movie
                 fetchMovie()
             } catch (e: Exception) {
