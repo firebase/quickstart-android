@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "dataconnect"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "fdc-sql"
+connectorDirs: ["./movie-connector"]
+
