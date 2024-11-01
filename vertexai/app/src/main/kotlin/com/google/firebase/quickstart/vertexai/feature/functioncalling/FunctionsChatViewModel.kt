@@ -19,7 +19,6 @@ package com.google.firebase.quickstart.vertexai.feature.functioncalling
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.vertexai.GenerativeModel
-import com.google.firebase.vertexai.type.FunctionResponse
 import com.google.firebase.vertexai.type.FunctionResponsePart
 import com.google.firebase.vertexai.type.InvalidStateException
 import com.google.firebase.vertexai.type.asTextOrNull
@@ -30,6 +29,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import java.lang.IllegalArgumentException
 
 class FunctionsChatViewModel(
     private val generativeModel: GenerativeModel
@@ -80,7 +80,7 @@ class FunctionsChatViewModel(
                 val firstFunctionCall = response.functionCalls.firstOrNull()
 
                 if (firstFunctionCall != null) {
-                    val functionCall = firstFunctionCall.functionCall
+                    val functionCall = firstFunctionCall
                     val result = when (functionCall.name) {
                         "upperCase" -> buildJsonObject {
                             put(
@@ -89,14 +89,14 @@ class FunctionsChatViewModel(
                             )
                         }
 
-                        else -> throw InvalidStateException(
-                            "Model requested nonexistent function \"${firstFunctionCall.functionCall.name}\" "
+                        else -> throw IllegalArgumentException(
+                            "Model requested nonexistent function \"${firstFunctionCall.name}\" "
                         )
                     }
 
                     response = chat.sendMessage(
                         content(role = "function") {
-                            part(FunctionResponsePart(FunctionResponse("upperCase", result)))
+                            part(FunctionResponsePart("upperCase", result))
                         }
                     )
                 }
