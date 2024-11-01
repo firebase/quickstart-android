@@ -109,9 +109,25 @@ class MainActivity : ComponentActivity() {
                                 }
                             )
                         }
-                        composable<ActorDetailRoute>() { ActorDetailScreen() }
+                        composable<ActorDetailRoute>() {
+                            ActorDetailScreen(
+                                onMovieClicked = { movieId ->
+                                    navController.navigate(
+                                        MovieDetailRoute(movieId),
+                                        { launchSingleTop = true }
+                                    )
+                                }
+                            )
+                        }
                         searchScreen()
-                        composable<ProfileRoute> { ProfileScreen() }
+                        composable<ProfileRoute> { ProfileScreen(
+                            onMovieClicked = { movieId ->
+                                navController.navigate(
+                                    MovieDetailRoute(movieId),
+                                    { launchSingleTop = true }
+                                )
+                            }
+                        ) }
                     }
                 }
             }
