@@ -27,6 +27,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import java.lang.IllegalArgumentException
 
 class FunctionsChatViewModel(
     private val generativeModel: GenerativeModel
@@ -77,18 +80,23 @@ class FunctionsChatViewModel(
                 val firstFunctionCall = response.functionCalls.firstOrNull()
 
                 if (firstFunctionCall != null) {
-                    val matchingFunction =
-                        generativeModel.tools?.flatMap { it.functionDeclarations }
-                            ?.first { it.name == firstFunctionCall.name }
-                            ?: throw InvalidStateException(
-                                "Model requested nonexistent function \"${firstFunctionCall.name}\" "
+                    val functionCall = firstFunctionCall
+                    val result = when (functionCall.name) {
+                        "upperCase" -> buildJsonObject {
+                            put(
+                                "result",
+                                JsonPrimitive(functionCall.args["text"].toString().uppercase() ?: "")
                             )
+                        }
 
-                    val funResult = matchingFunction.execute(firstFunctionCall)
+                        else -> throw IllegalArgumentException(
+                            "Model requested nonexistent function \"${firstFunctionCall.name}\" "
+                        )
+                    }
 
                     response = chat.sendMessage(
                         content(role = "function") {
-                            part(FunctionResponsePart("output", funResult))
+                            part(FunctionResponsePart("upperCase", result))
                         }
                     )
                 }
