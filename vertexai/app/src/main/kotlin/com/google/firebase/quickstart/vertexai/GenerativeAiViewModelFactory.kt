@@ -27,10 +27,9 @@ import com.google.firebase.quickstart.vertexai.feature.multimodal.PhotoReasoning
 import com.google.firebase.quickstart.vertexai.feature.text.SummarizeViewModel
 import com.google.firebase.vertexai.type.Schema
 import com.google.firebase.vertexai.type.Tool
-import com.google.firebase.vertexai.type.defineFunction
+import com.google.firebase.vertexai.type.FunctionDeclaration
 import com.google.firebase.vertexai.type.generationConfig
 import com.google.firebase.vertexai.vertexAI
-import org.json.JSONObject
 
 val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(
@@ -47,7 +46,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                     // Initialize a GenerativeModel with the `gemini-flash` AI model
                     // for text generation
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.5-flash-preview-0514",
+                        modelName = "gemini-1.5-flash",
                         generationConfig = config
                     )
                     SummarizeViewModel(generativeModel)
@@ -57,7 +56,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                     // Initialize a GenerativeModel with the `gemini-flash` AI model
                     // for multimodal text generation
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.5-flash-preview-0514",
+                        modelName = "gemini-1.5-flash",
                         generationConfig = config
                     )
                     PhotoReasoningViewModel(generativeModel)
@@ -66,7 +65,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                 isAssignableFrom(ChatViewModel::class.java) -> {
                     // Initialize a GenerativeModel with the `gemini-flash` AI model for chat
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.5-flash-preview-0514",
+                        modelName = "gemini-1.5-flash",
                         generationConfig = config
                     )
                     ChatViewModel(generativeModel)
@@ -74,23 +73,24 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
 
                 isAssignableFrom(FunctionsChatViewModel::class.java) -> {
                     // Declare the functions you want to make available to the model
+                    val functionDeclaration = FunctionDeclaration(
+                        name = "upperCase",
+                        description = "Returns the upper case version of the input string",
+                        parameters = mapOf(
+                            "input" to Schema.string( "Text to transform"))
+                    )
                     val tools = listOf(
-                        Tool(
+                        Tool.functionDeclarations(
                             listOf(
-                                defineFunction(
-                                    "upperCase",
-                                    "Returns the upper case version of the input string",
-                                    Schema.str("input", "Text to transform")
-                                ) { input ->
-                                    JSONObject("{\"response\": \"${input.uppercase()}\"}")
-                                }
+                                functionDeclaration
                             )
                         )
                     )
 
+
                     // Initialize a GenerativeModel with the `gemini-pro` AI model for function calling chat
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.5-pro-preview-0514",
+                        modelName = "gemini-1.5-flash",
                         generationConfig = config,
                         tools = tools
                     )
