@@ -2,7 +2,7 @@
   "name": "functions",
   "description": "Cloud Functions for Android Functions Quickstart",
   "engines": {
-    "node": "22"
+    "node": "20"
   },
   "dependencies": {
     "bad-words": "^1.3.1",
