@@ -17,17 +17,16 @@ import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.firebase.dataconnect.LocalDate
+import com.google.firebase.dataconnect.toJavaLocalDate
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.Date
 import java.util.Locale
 
 
 @Composable
 fun ReviewCard(
     userName: String,
-    date: Date,
+    date: LocalDate,
     rating: Double,
     text: String,
     movieName: String? = null
@@ -58,7 +57,7 @@ fun ReviewCard(
                     text = SimpleDateFormat(
                         "dd MMM, yyyy",
                         Locale.getDefault()
-                    ).format(date),
+                    ).format(date.toJavaLocalDate()),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.width(8.dp))
