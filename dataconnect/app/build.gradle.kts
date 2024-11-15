@@ -1,3 +1,6 @@
+import com.android.build.api.variant.AndroidComponentsExtension
+import java.util.Locale
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -82,4 +85,77 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+abstract class GenerateDataConnectSourcesTask : DefaultTask() {
+  @get:InputFiles abstract val inputDirectory: DirectoryProperty
+  @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
+  @get:Internal abstract val workDirectory: DirectoryProperty
+
+  @TaskAction
+  fun run() {
+    val inputDirectory = inputDirectory.get().asFile
+    val outputDirectory = outputDirectory.get().asFile
+    val workDirectory = workDirectory.get().asFile
+
+    project.delete(outputDirectory)
+    project.delete(workDirectory)
+
+    project.copy {
+      from(inputDirectory)
+      into(workDirectory)
+    }
+
+    val connectorYamlFile = workDirectory.resolve("movie-connector/connector.yaml")
+    val outputFileLineRegex = Regex("""(\s*outputDir:\s*).*""")
+    val connectorYamlOriginalLines = connectorYamlFile.readLines(Charsets.UTF_8)
+    val connectorYamlUpdatedLines = connectorYamlOriginalLines.map {
+      val matchResult = outputFileLineRegex.matchEntire(it)
+      if (matchResult === null) {
+        it
+      } else {
+        matchResult.groupValues[1] + outputDirectory.absolutePath
+      }
+    }
+    connectorYamlFile.writeText(connectorYamlUpdatedLines.joinToString("") { it + "\n" }, Charsets.UTF_8)
+
+    val logFile = if (logger.isInfoEnabled) null else workDirectory.resolve("generate.log.txt")
+    val logFileStream = logFile?.outputStream()
+    try {
+      project.exec {
+        isIgnoreExitValue = false
+        if (logFileStream !== null) {
+          standardOutput = logFileStream
+          errorOutput = logFileStream
+        }
+        workingDir(workDirectory)
+        executable("firebase")
+        args("--debug")
+        args("dataconnect:sdk:generate")
+        // Specify a fake project because dataconnect:sdk:generate unnecessarily
+        // requires one. The actual value does not matter.
+        args("--project", "zzyzx")
+      }
+    } catch (e: Exception) {
+      logFileStream?.close()
+      logFile?.forEachLine { logger.error(it.trimEnd()) }
+    } finally {
+      logFileStream?.close()
+    }
+  }
+}
+
+val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
+androidComponents.onVariants { variant ->
+  val variantNameTitleCase = variant.name.replaceFirstChar { it.titlecase(Locale.US) }
+  val generateCodeTaskName = "generate${variantNameTitleCase}DataConnectSources"
+  val generateCodeTask = tasks.register<GenerateDataConnectSourcesTask>(generateCodeTaskName) {
+    inputDirectory.set(layout.projectDirectory.dir("../dataconnect"))
+    outputDirectory.set(layout.buildDirectory.dir("generated/dataconnect/${variant.name}"))
+    workDirectory.set(layout.buildDirectory.dir("intermediates/dataconnect/${variant.name}"))
+  }
+  variant.sources.java!!.addGeneratedSourceDirectory(
+    generateCodeTask,
+    GenerateDataConnectSourcesTask::outputDirectory,
+  )
 }

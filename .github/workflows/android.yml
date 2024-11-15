@@ -22,8 +22,6 @@ jobs:
         node-version: 22
     - name: Install Data Connect Toolkit
       run: npm install -g firebase-tools@13.23.0
-    - name: Generate Data Connect Sources
-      run: cd dataconnect && firebase dataconnect:sdk:generate --project foo
     - name: Check Snippets
       run: python scripts/checksnippets.py
     # TODO(thatfiredev): remove this once github.com/firebase/quickstart-android/issues/1672 is fixed
