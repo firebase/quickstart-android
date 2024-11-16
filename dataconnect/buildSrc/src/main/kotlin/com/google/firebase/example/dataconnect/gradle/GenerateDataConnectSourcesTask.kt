@@ -21,6 +21,8 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.kotlin.dsl.*
+
 import org.gradle.api.tasks.TaskAction
 
 abstract class GenerateDataConnectSourcesTask : DefaultTask() {
@@ -44,8 +46,8 @@ abstract class GenerateDataConnectSourcesTask : DefaultTask() {
         project.delete(workDirectory)
 
         project.copy {
-            it.from(inputDirectory)
-            it.into(workDirectory)
+            from(inputDirectory)
+            into(workDirectory)
         }
 
         val connectorYamlFile = workDirectory.resolve("movie-connector/connector.yaml")
@@ -64,19 +66,19 @@ abstract class GenerateDataConnectSourcesTask : DefaultTask() {
         val logFile = if (logger.isInfoEnabled) null else workDirectory.resolve("generate.log.txt")
         val logFileStream = logFile?.outputStream()
         try {
-            project.exec { execSpec ->
-                execSpec.isIgnoreExitValue = false
+            project.exec {
+                isIgnoreExitValue = false
                 if (logFileStream !== null) {
-                    execSpec.standardOutput = logFileStream
-                    execSpec.errorOutput = logFileStream
+                    standardOutput = logFileStream
+                    errorOutput = logFileStream
                 }
-                execSpec.workingDir(workDirectory)
-                execSpec.executable("firebase")
-                execSpec.args("--debug")
-                execSpec.args("dataconnect:sdk:generate")
+                workingDir(workDirectory)
+                executable("firebase")
+                args("--debug")
+                args("dataconnect:sdk:generate")
                 // Specify a fake project because dataconnect:sdk:generate unnecessarily
                 // requires one. The actual value does not matter.
-                execSpec.args("--project", "zzyzx")
+                args("--project", "zzyzx")
             }
         } catch (e: Exception) {
             logFileStream?.close()

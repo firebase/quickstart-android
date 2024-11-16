@@ -15,8 +15,7 @@
  */
 
 plugins {
-  `java-gradle-plugin`
-  alias(libs.plugins.kotlin.jvm)
+  `kotlin-dsl` // See https://docs.gradle.org/current/userguide/kotlin_dsl.html#sec:kotlin-dsl_plugin
 }
 
 java {
@@ -26,8 +25,7 @@ java {
 }
 
 dependencies {
-  compileOnly(libs.android.gradlePlugin.api)
-  implementation(gradleKotlinDsl())
+  implementation(libs.android.gradlePlugin.api)
 }
 
 gradlePlugin {
