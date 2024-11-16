@@ -1,7 +1,3 @@
-import com.android.build.api.variant.AndroidComponentsExtension
-import com.google.firebase.example.dataconnect.gradle.GenerateDataConnectSourcesTask
-import java.util.Locale
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -55,13 +51,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    sourceSets.getByName("main") {
-        java.srcDirs("build/generated/sources")
-    }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -87,26 +79,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-}
-
-val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
-val generateDataConnectSourcesVariantTasks = mutableListOf<TaskProvider<GenerateDataConnectSourcesTask>>()
-androidComponents.onVariants { variant ->
-    val variantNameTitleCase = variant.name.replaceFirstChar { it.titlecase(Locale.US) }
-    val generateCodeTaskName = "generateDataConnectSources$variantNameTitleCase"
-    val generateCodeTask = tasks.register<GenerateDataConnectSourcesTask>(generateCodeTaskName) {
-        inputDirectory.set(layout.projectDirectory.dir("../dataconnect"))
-        workDirectory.set(layout.buildDirectory.dir("intermediates/dataconnect/${variant.name}"))
-    }
-    generateDataConnectSourcesVariantTasks.add(generateCodeTask)
-    variant.sources.java!!.addGeneratedSourceDirectory(
-        generateCodeTask,
-        GenerateDataConnectSourcesTask::outputDirectory,
-    )
-}
-
-tasks.register("generateDataConnectSources") {
-    generateDataConnectSourcesVariantTasks.forEach {
-        dependsOn(it)
-    }
 }
