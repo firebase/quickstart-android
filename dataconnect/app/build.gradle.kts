@@ -1,6 +1,7 @@
 import com.android.build.api.variant.AndroidComponentsExtension
-import java.util.Locale
 import com.google.firebase.example.dataconnect.gradle.GenerateDataConnectSourcesTask
+import java.util.Locale
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -88,18 +89,24 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 }
 
-
 val androidComponents = project.extensions.getByType(AndroidComponentsExtension::class.java)
+val generateDataConnectSourcesVariantTasks = mutableListOf<TaskProvider<GenerateDataConnectSourcesTask>>()
 androidComponents.onVariants { variant ->
-  val variantNameTitleCase = variant.name.replaceFirstChar { it.titlecase(Locale.US) }
-  val generateCodeTaskName = "generate${variantNameTitleCase}DataConnectSources"
-  val generateCodeTask = tasks.register<GenerateDataConnectSourcesTask>(generateCodeTaskName) {
-    inputDirectory.set(layout.projectDirectory.dir("../dataconnect"))
-    outputDirectory.set(layout.buildDirectory.dir("generated/dataconnect/${variant.name}"))
-    workDirectory.set(layout.buildDirectory.dir("intermediates/dataconnect/${variant.name}"))
-  }
-  variant.sources.java!!.addGeneratedSourceDirectory(
-    generateCodeTask,
-    GenerateDataConnectSourcesTask::outputDirectory,
-  )
+    val variantNameTitleCase = variant.name.replaceFirstChar { it.titlecase(Locale.US) }
+    val generateCodeTaskName = "generateDataConnectSources$variantNameTitleCase"
+    val generateCodeTask = tasks.register<GenerateDataConnectSourcesTask>(generateCodeTaskName) {
+        inputDirectory.set(layout.projectDirectory.dir("../dataconnect"))
+        workDirectory.set(layout.buildDirectory.dir("intermediates/dataconnect/${variant.name}"))
+    }
+    generateDataConnectSourcesVariantTasks.add(generateCodeTask)
+    variant.sources.java!!.addGeneratedSourceDirectory(
+        generateCodeTask,
+        GenerateDataConnectSourcesTask::outputDirectory,
+    )
+}
+
+tasks.register("generateDataConnectSources") {
+    generateDataConnectSourcesVariantTasks.forEach {
+        dependsOn(it)
+    }
 }
