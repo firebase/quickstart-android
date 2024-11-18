@@ -25,50 +25,45 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
-import org.yaml.snakeyaml.Yaml
 
 abstract class GenerateCodeTask : DefaultTask() {
 
-    @get:InputDirectory
-    abstract val inputDirectory: DirectoryProperty
+  @get:InputDirectory abstract val inputDirectory: DirectoryProperty
 
-    @get:InputFile
-    abstract val firebaseExecutable: RegularFileProperty
+  @get:InputFile abstract val firebaseExecutable: RegularFileProperty
 
-    @get:OutputDirectory
-    abstract val outputDirectory: DirectoryProperty
+  @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
 
-    @get:Internal
-    abstract val tweakedConnectorsDirectory: DirectoryProperty
+  @get:Internal abstract val tweakedConnectorsDirectory: DirectoryProperty
 
-    @TaskAction
-    fun run() {
-        val inputDirectory = inputDirectory.get().asFile
-        val firebaseExecutable = firebaseExecutable.get().asFile
-        val outputDirectory = outputDirectory.get().asFile
-        val tweakedConnectorsDirectory = tweakedConnectorsDirectory.get().asFile
+  @TaskAction
+  fun run() {
+    val inputDirectory = inputDirectory.get().asFile
+    val firebaseExecutable = firebaseExecutable.get().asFile
+    val outputDirectory = outputDirectory.get().asFile
+    val tweakedConnectorsDirectory = tweakedConnectorsDirectory.get().asFile
 
-        logger.info("inputDirectory: {}", inputDirectory)
-        logger.info("firebaseExecutable: {}", firebaseExecutable)
-        logger.info("outputDirectory: {}", outputDirectory)
-        logger.info("tweakedConnectorsDirectory: {}", tweakedConnectorsDirectory)
+    logger.info("inputDirectory: {}", inputDirectory)
+    logger.info("firebaseExecutable: {}", firebaseExecutable)
+    logger.info("outputDirectory: {}", outputDirectory)
+    logger.info("tweakedConnectorsDirectory: {}", tweakedConnectorsDirectory)
 
-        project.delete(outputDirectory)
-        project.delete(tweakedConnectorsDirectory)
-        project.mkdir(tweakedConnectorsDirectory)
+    project.delete(outputDirectory)
+    project.delete(tweakedConnectorsDirectory)
+    project.mkdir(tweakedConnectorsDirectory)
 
-        project.copy {
-            from(inputDirectory)
-            into(tweakedConnectorsDirectory)
-        }
-        tweakConnectorYamlFiles(tweakedConnectorsDirectory, outputDirectory.absolutePath)
-
-        runCommand(File(tweakedConnectorsDirectory, "generate.log.txt")) {
-            commandLine(firebaseExecutable.absolutePath, "--debug", "dataconnect:sdk:generate")
-            // Specify a fake project because dataconnect:sdk:generate unnecessarily
-            // requires one. The actual value does not matter.
-            args("--project", "zzyzx")
-            workingDir(tweakedConnectorsDirectory)
-        }
+    project.copy {
+      from(inputDirectory)
+      into(tweakedConnectorsDirectory)
     }
+    tweakConnectorYamlFiles(tweakedConnectorsDirectory, outputDirectory.absolutePath)
+
+    runCommand(File(tweakedConnectorsDirectory, "generate.log.txt")) {
+      commandLine(firebaseExecutable.absolutePath, "--debug", "dataconnect:sdk:generate")
+      // Specify a fake project because dataconnect:sdk:generate unnecessarily
+      // requires one. The actual value does not matter.
+      args("--project", "zzyzx")
+      workingDir(tweakedConnectorsDirectory)
+    }
+  }
 }
