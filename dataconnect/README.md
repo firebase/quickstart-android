@@ -71,3 +71,20 @@ open `quickstart-android/dataconnect/movie-connector/queries.gql` and run the `L
 ### 5. Running the app
 
 Press the Run button in Android Studio to run the sample app on your device.
+
+### 6. Re-generating the source code for Data Connect connectors
+
+This project defines a custom Gradle plugin that looks after generating the Kotlin code for the
+queries and mutations defined in the GraphQL files. The code will be generated on-demand when
+needed by a build. To generate the code manually, run:
+
+```
+../gradlew generateDebugDataConnectSources
+```
+
+If you are making frequent changes to the GraphQL files, it may be convenient to run the code
+generation upon _every_ change, without waiting for a build. To do that, run:
+
+```
+../gradlew generateDebugDataConnectSources --continuous
+```

@@ -8,6 +8,8 @@ generate:
   kotlinSdk:
     # Create a custom package name for your generated SDK
     package: com.google.firebase.dataconnect.movies
-    # Use an arbitrary directory for generating the code, as the custom task in
-    # app/build.gradle.kts will generate into the appropriate directory.
+    # Use an arbitrary directory for generating the code, as the
+    # "com.google.firebase.example.dataconnect.gradle" custom Gradle plugin applied by
+    # app/build.gradle.kts will look after generating the code on-demand into the
+    # appropriate directory.
     outputDir: ../.generated
