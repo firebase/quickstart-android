@@ -20,47 +20,48 @@ import java.io.File
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 abstract class GenerateCodeTask : DefaultTask() {
 
-    @get:InputFiles
+    @get:InputDirectory
     abstract val inputDirectory: DirectoryProperty
 
-    @get:InputFiles
+    @get:InputFile
     abstract val firebaseExecutable: RegularFileProperty
 
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
 
     @get:Internal
-    abstract val workDirectory: DirectoryProperty
+    abstract val tweakedConnectorsDirectory: DirectoryProperty
 
     @TaskAction
     fun run() {
         val inputDirectory = inputDirectory.get().asFile
         val firebaseExecutable = firebaseExecutable.get().asFile
         val outputDirectory = outputDirectory.get().asFile
-        val workDirectory = workDirectory.get().asFile
+        val tweakedConnectorsDirectory = tweakedConnectorsDirectory.get().asFile
 
         logger.info("inputDirectory: {}", inputDirectory)
         logger.info("firebaseExecutable: {}", firebaseExecutable)
         logger.info("outputDirectory: {}", outputDirectory)
-        logger.info("workDirectory: {}", workDirectory)
+        logger.info("tweakedConnectorsDirectory: {}", tweakedConnectorsDirectory)
 
         project.delete(outputDirectory)
-        project.delete(workDirectory)
-        project.mkdir(workDirectory)
+        project.delete(tweakedConnectorsDirectory)
+        project.mkdir(tweakedConnectorsDirectory)
 
         project.copy {
             from(inputDirectory)
-            into(workDirectory)
+            into(tweakedConnectorsDirectory)
         }
 
-        val connectorYamlFile = workDirectory.resolve("movie-connector/connector.yaml")
+        val connectorYamlFile = tweakedConnectorsDirectory.resolve("movie-connector/connector.yaml")
         val outputFileLineRegex = Regex("""(\s*outputDir:\s*).*""")
         val connectorYamlOriginalLines = connectorYamlFile.readLines(Charsets.UTF_8)
         val connectorYamlUpdatedLines = connectorYamlOriginalLines.map {
@@ -81,7 +82,7 @@ abstract class GenerateCodeTask : DefaultTask() {
                     // Specify a fake project because dataconnect:sdk:generate unnecessarily
                     // requires one. The actual value does not matter.
                     args("--project", "zzyzx")
-                    workingDir(workDirectory)
+                    workingDir(tweakedConnectorsDirectory)
                     isIgnoreExitValue = false
                     if (logStream !== null) {
                         standardOutput = logStream

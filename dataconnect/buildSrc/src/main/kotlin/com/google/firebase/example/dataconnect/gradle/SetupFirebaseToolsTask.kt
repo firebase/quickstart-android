@@ -23,8 +23,8 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 abstract class SetupFirebaseToolsTask : DefaultTask() {
@@ -35,20 +35,17 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
 
-    @get:OutputFile
-    val firebaseExecutable: Provider<RegularFile> = project.providers.provider {
-        outputDirectory.file("node_modules/.bin/firebase").get()
-    }
+    @get:Internal
+    val firebaseExecutable: Provider<RegularFile> get() =
+        outputDirectory.map { it.file("node_modules/.bin/firebase") }
 
     @TaskAction
     fun run() {
         val version: String = version.get()
         val outputDirectory: File = outputDirectory.get().asFile
-        val firebaseExecutable: File = firebaseExecutable.get().asFile
 
         logger.info("version: {}", version)
         logger.info("outputDirectory: {}", outputDirectory.absolutePath)
-        logger.info("firebaseExecutable: {}", firebaseExecutable.absolutePath)
 
         project.delete(outputDirectory)
         project.mkdir(outputDirectory)
@@ -74,13 +71,5 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
             npmInstallLogFile?.let { logger.warn("{}", it.readText()) }
             throw exception
         }
-
-        if (!firebaseExecutable.exists()) {
-            throw SetupFirebaseToolsTaskException("npm install was expected to create the file " +
-            "${firebaseExecutable.absolutePath}, but it does not exist " +
-            "(error code mr7dwmhwtv)")
-        }
     }
-
-    class SetupFirebaseToolsTaskException(message: String): Exception(message)
 }
