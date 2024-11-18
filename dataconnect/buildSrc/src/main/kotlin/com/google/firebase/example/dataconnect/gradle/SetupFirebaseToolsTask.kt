@@ -53,23 +53,9 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
         val packageJsonFile = File(outputDirectory, "package.json")
         packageJsonFile.writeText("{}", Charsets.UTF_8)
 
-        val npmInstallLogFile = if (logger.isInfoEnabled) null else File(outputDirectory, "install.log.txt")
-        val npmInstallResult = npmInstallLogFile?.outputStream().use { logStream ->
-            project.runCatching {
-                exec {
-                    commandLine("npm", "install", "firebase-tools@$version")
-                    workingDir(outputDirectory)
-                    isIgnoreExitValue = false
-                    if (logStream !== null) {
-                        standardOutput = logStream
-                        errorOutput = logStream
-                    }
-                }
-            }
-        }
-        npmInstallResult.onFailure { exception ->
-            npmInstallLogFile?.let { logger.warn("{}", it.readText()) }
-            throw exception
+        runCommand(File(outputDirectory, "install.log.txt")) {
+            commandLine("npm", "install", "firebase-tools@$version")
+            workingDir(outputDirectory)
         }
     }
 }

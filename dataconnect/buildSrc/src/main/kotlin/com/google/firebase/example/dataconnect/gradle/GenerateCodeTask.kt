@@ -61,90 +61,14 @@ abstract class GenerateCodeTask : DefaultTask() {
             from(inputDirectory)
             into(tweakedConnectorsDirectory)
         }
-
         tweakConnectorYamlFiles(tweakedConnectorsDirectory, outputDirectory.absolutePath)
 
-        val logFile = if (logger.isInfoEnabled) null else File(tweakedConnectorsDirectory, "generate.log.txt")
-        val result = logFile?.outputStream().use { logStream ->
-            project.runCatching {
-                exec {
-                    commandLine(firebaseExecutable.absolutePath, "--debug", "dataconnect:sdk:generate")
-                    // Specify a fake project because dataconnect:sdk:generate unnecessarily
-                    // requires one. The actual value does not matter.
-                    args("--project", "zzyzx")
-                    workingDir(tweakedConnectorsDirectory)
-                    isIgnoreExitValue = false
-                    if (logStream !== null) {
-                        standardOutput = logStream
-                        errorOutput = logStream
-                    }
-                }
-            }
-        }
-        result.onFailure { exception ->
-            logFile?.let { logger.warn("{}", it.readText()) }
-            throw exception
-        }
-    }
-
-    private fun tweakConnectorYamlFiles(dir: File, newOutputDir: String) {
-        logger.info("Tweaking connector.yaml files in {}", dir.absolutePath)
-        dir.walk().forEach { file ->
-            if (file.isFile && file.name == "connector.yaml") {
-                tweakConnectorYamlFile(file, newOutputDir)
-            } else {
-                logger.debug("skipping file: {}", file.absolutePath)
-            }
-        }
-    }
-
-    private fun tweakConnectorYamlFile(file: File, newOutputDir: String) {
-        logger.info("Tweaking connector.yaml file: {}", file.absolutePath)
-
-        fun Map<*,*>.withTweakedKotlinSdk() = filterKeys { it == "kotlinSdk" }
-            .mapValues { (_, value) ->
-                val kotlinSdkMap = value as? Map<*,*> ?:
-                throw Exception("Parsing ${file.absolutePath} failed: \"kotlinSdk\" is " +
-                    (if (value === null) "null" else value::class.qualifiedName) +
-                    ", but expected ${Map::class.qualifiedName} " +
-                    "(error code m697s27yxn)")
-                kotlinSdkMap.mapValues { (key, value) ->
-                    if (key == "outputDir") {
-                        newOutputDir
-                    } else {
-                        value
-                    }
-                }
-            }
-
-        fun Map<*,*>.withTweakedGenerateNode() = mapValues { (key, value) ->
-            if (key != "generate") {
-                value
-            } else {
-                val generateMap = value as? Map<*,*> ?:
-                    throw Exception("Parsing ${file.absolutePath} failed: \"generate\" is " +
-                        (if (value === null) "null" else value::class.qualifiedName) +
-                        ", but expected ${Map::class.qualifiedName} " +
-                        "(error code 9c2p857gq6)")
-                generateMap.withTweakedKotlinSdk()
-            }
-        }
-
-        val yaml = Yaml()
-        val rootObject = file.reader(Charsets.UTF_8).use { reader ->
-            yaml.load<Any?>(reader)
-        }
-
-        val rootMap = rootObject as? Map<*,*> ?:
-            throw Exception("Parsing ${file.absolutePath} failed: root is " +
-                    (if (rootObject === null) "null" else rootObject::class.qualifiedName) +
-                    ", but expected ${Map::class.qualifiedName} " +
-                    "(error code 45dw8jx8jd)")
-
-        val newRootMap = rootMap.withTweakedGenerateNode()
-
-        file.writer(Charsets.UTF_8).use { writer ->
-            yaml.dump(newRootMap, writer)
+        runCommand(File(tweakedConnectorsDirectory, "generate.log.txt")) {
+            commandLine(firebaseExecutable.absolutePath, "--debug", "dataconnect:sdk:generate")
+            // Specify a fake project because dataconnect:sdk:generate unnecessarily
+            // requires one. The actual value does not matter.
+            args("--project", "zzyzx")
+            workingDir(tweakedConnectorsDirectory)
         }
     }
 }
