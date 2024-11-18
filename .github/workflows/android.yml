@@ -20,11 +20,8 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 22
-    - name: Install Data Connect Toolkit
-      run: npm install -g firebase-tools@13.23.0
     - name: Check Snippets
       run: python scripts/checksnippets.py
-    # TODO(thatfiredev): remove this once github.com/firebase/quickstart-android/issues/1672 is fixed
     - name: Copy mock google_services.json
       run: ./copy_mock_google_services_json.sh
     - name: Build with Gradle (Pull Request)
