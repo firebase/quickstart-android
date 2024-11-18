@@ -80,3 +80,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+
+dataconnect {
+    // The version of https://www.npmjs.com/package/firebase-tools to use to perform the
+    // Data Connect code generation.
+    firebaseToolsVersion = "13.23.0"
+}
