@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.services)
     alias(libs.plugins.compose.compiler)
+    id("com.google.firebase.example.dataconnect.gradle")
 }
 
 android {
@@ -50,13 +51,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    sourceSets.getByName("main") {
-        java.srcDirs("build/generated/sources")
-    }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -82,4 +79,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+dataconnect {
+    // The version of https://www.npmjs.com/package/firebase-tools to use to perform the
+    // Data Connect code generation.
+    firebaseToolsVersion = "13.23.0"
+
+    // The directory that contains dataconnect.yaml to use as input when performing
+    // the Data Connect code generation.
+    dataConnectConfigDir = file("../dataconnect")
 }

@@ -16,11 +16,12 @@ jobs:
         java-version: 17
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
     - name: Check Snippets
       run: python scripts/checksnippets.py
-    # TODO(thatfiredev): remove this once github.com/firebase/quickstart-android/issues/1672 is fixed
-    - name: Remove Firebase Data Connect from CI
-      run: python scripts/ci_remove_fdc.py
     - name: Copy mock google_services.json
       run: ./copy_mock_google_services_json.sh
     - name: Build with Gradle (Pull Request)
