@@ -15,3 +15,7 @@
 local.properties
 .dataconnect/
 .firebaserc
+.firebase/
+dataconnect-debug.log
+firebase-debug.log
+ui-debug.log
