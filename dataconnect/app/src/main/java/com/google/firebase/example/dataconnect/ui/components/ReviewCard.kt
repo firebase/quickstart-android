@@ -58,7 +58,7 @@ fun ReviewCard(
                 Text(
                     text =
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val dateFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.getDefault())
+                            val dateFormatter = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.getDefault())
                             date.toJavaLocalDate().format(dateFormatter)
                         } else {
                             val parseableDateString = date.run {
@@ -70,7 +70,7 @@ fun ReviewCard(
                             val dateParser = SimpleDateFormat("y-M-d", Locale.US)
                             val parsedDate = dateParser.parse(parseableDateString) ?:
                               throw Exception("INTERNAL ERROR: unparseable date string: $parseableDateString")
-                            val dateFormatter = SimpleDateFormat("MMM d, yyyy", Locale.getDefault())
+                            val dateFormatter = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
                             dateFormatter.format(parsedDate)
                         },
                     style = MaterialTheme.typography.titleMedium
