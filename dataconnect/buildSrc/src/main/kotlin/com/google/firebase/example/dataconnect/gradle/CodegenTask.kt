@@ -26,44 +26,50 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-abstract class GenerateCodeTask : DefaultTask() {
+abstract class CodegenTask : DefaultTask() {
 
-  @get:InputDirectory abstract val inputDirectory: DirectoryProperty
+  @get:InputDirectory abstract val dataConnectConfigDir: DirectoryProperty
 
   @get:InputFile abstract val firebaseExecutable: RegularFileProperty
 
   @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
 
-  @get:Internal abstract val tweakedConnectorsDirectory: DirectoryProperty
+  @get:Internal abstract val tweakedDataConnectConfigDir: DirectoryProperty
 
   @TaskAction
   fun run() {
-    val inputDirectory = inputDirectory.get().asFile
+    val dataConnectConfigDir = dataConnectConfigDir.get().asFile
     val firebaseExecutable = firebaseExecutable.get().asFile
     val outputDirectory = outputDirectory.get().asFile
-    val tweakedConnectorsDirectory = tweakedConnectorsDirectory.get().asFile
+    val tweakedDataConnectConfigDir = tweakedDataConnectConfigDir.get().asFile
 
-    logger.info("inputDirectory: {}", inputDirectory)
+    logger.info("dataConnectConfigDir: {}", dataConnectConfigDir)
     logger.info("firebaseExecutable: {}", firebaseExecutable)
     logger.info("outputDirectory: {}", outputDirectory)
-    logger.info("tweakedConnectorsDirectory: {}", tweakedConnectorsDirectory)
+    logger.info("tweakedDataConnectConfigDir: {}", tweakedDataConnectConfigDir)
 
     project.delete(outputDirectory)
-    project.delete(tweakedConnectorsDirectory)
-    project.mkdir(tweakedConnectorsDirectory)
+    project.delete(tweakedDataConnectConfigDir)
+    project.mkdir(tweakedDataConnectConfigDir)
 
     project.copy {
-      from(inputDirectory)
-      into(tweakedConnectorsDirectory)
+      from(dataConnectConfigDir)
+      into(tweakedDataConnectConfigDir)
     }
-    tweakConnectorYamlFiles(tweakedConnectorsDirectory, outputDirectory.absolutePath)
+    tweakConnectorYamlFiles(tweakedDataConnectConfigDir, outputDirectory.absolutePath)
 
-    runCommand(File(tweakedConnectorsDirectory, "generate.log.txt")) {
+    runCommand(File(tweakedDataConnectConfigDir, "generate.log.txt")) {
       commandLine(firebaseExecutable.absolutePath, "--debug", "dataconnect:sdk:generate")
       // Specify a fake project because dataconnect:sdk:generate unnecessarily
       // requires one. The actual value does not matter.
       args("--project", "zzyzx")
-      workingDir(tweakedConnectorsDirectory)
+      workingDir(tweakedDataConnectConfigDir)
     }
+  }
+
+  internal fun configureFrom(providers: MyVariantProviders) {
+    dataConnectConfigDir.set(providers.dataConnectConfigDir)
+    firebaseExecutable.set(providers.firebaseExecutable)
+    tweakedDataConnectConfigDir.set(providers.buildDirectory.map { it.dir("config") })
   }
 }

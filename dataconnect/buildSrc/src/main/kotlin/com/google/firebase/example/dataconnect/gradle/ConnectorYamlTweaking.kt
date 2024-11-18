@@ -17,10 +17,11 @@
 package com.google.firebase.example.dataconnect.gradle
 
 import java.io.File
+import org.gradle.api.GradleException
 import org.gradle.api.Task
 import org.yaml.snakeyaml.Yaml
 
-fun Task.tweakConnectorYamlFiles(dir: File, newOutputDir: String) {
+internal fun Task.tweakConnectorYamlFiles(dir: File, newOutputDir: String) {
   logger.info("Tweaking connector.yaml files in {}", dir.absolutePath)
   dir.walk().forEach { file ->
     if (file.isFile && file.name == "connector.yaml") {
@@ -31,7 +32,7 @@ fun Task.tweakConnectorYamlFiles(dir: File, newOutputDir: String) {
   }
 }
 
-fun Task.tweakConnectorYamlFile(file: File, newOutputDir: String) {
+internal fun Task.tweakConnectorYamlFile(file: File, newOutputDir: String) {
   logger.info("Tweaking connector.yaml file: {}", file.absolutePath)
 
   fun Map<*, *>.withTweakedKotlinSdk() =
@@ -39,7 +40,7 @@ fun Task.tweakConnectorYamlFile(file: File, newOutputDir: String) {
       .mapValues { (_, value) ->
         val kotlinSdkMap =
           value as? Map<*, *>
-            ?: throw Exception(
+            ?: throw GradleException(
               "Parsing ${file.absolutePath} failed: \"kotlinSdk\" is " +
                 (if (value === null) "null" else value::class.qualifiedName) +
                 ", but expected ${Map::class.qualifiedName} " +
@@ -60,7 +61,7 @@ fun Task.tweakConnectorYamlFile(file: File, newOutputDir: String) {
     } else {
       val generateMap =
         value as? Map<*, *>
-          ?: throw Exception(
+          ?: throw GradleException(
             "Parsing ${file.absolutePath} failed: \"generate\" is " +
               (if (value === null) "null" else value::class.qualifiedName) +
               ", but expected ${Map::class.qualifiedName} " +
@@ -75,7 +76,7 @@ fun Task.tweakConnectorYamlFile(file: File, newOutputDir: String) {
 
   val rootMap =
     rootObject as? Map<*, *>
-      ?: throw Exception(
+      ?: throw GradleException(
         "Parsing ${file.absolutePath} failed: root is " +
           (if (rootObject === null) "null" else rootObject::class.qualifiedName) +
           ", but expected ${Map::class.qualifiedName} " +

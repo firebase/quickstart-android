@@ -20,7 +20,7 @@ import java.io.File
 import org.gradle.api.Task
 import org.gradle.process.ExecSpec
 
-fun Task.runCommand(logFile: File, configure: ExecSpec.() -> Unit) {
+internal fun Task.runCommand(logFile: File, configure: ExecSpec.() -> Unit) {
   val effectiveLogFile = if (logger.isInfoEnabled) null else logFile
   val result =
     effectiveLogFile?.outputStream().use { logStream ->

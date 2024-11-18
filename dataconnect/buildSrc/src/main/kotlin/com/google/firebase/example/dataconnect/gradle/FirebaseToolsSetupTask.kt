@@ -27,7 +27,7 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-abstract class SetupFirebaseToolsTask : DefaultTask() {
+abstract class FirebaseToolsSetupTask : DefaultTask() {
 
   @get:Input abstract val version: Property<String>
 
@@ -55,5 +55,10 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
       commandLine("npm", "install", "firebase-tools@$version")
       workingDir(outputDirectory)
     }
+  }
+
+  internal fun configureFrom(providers: MyProjectProviders) {
+    version.set(providers.firebaseToolsVersion)
+    outputDirectory.set(providers.buildDirectory.map { it.dir("firebase-tools") })
   }
 }
