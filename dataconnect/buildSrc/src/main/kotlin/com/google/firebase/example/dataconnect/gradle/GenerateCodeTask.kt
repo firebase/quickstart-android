@@ -25,6 +25,7 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.yaml.snakeyaml.Yaml
 
 abstract class GenerateCodeTask : DefaultTask() {
 
@@ -61,20 +62,9 @@ abstract class GenerateCodeTask : DefaultTask() {
             into(tweakedConnectorsDirectory)
         }
 
-        val connectorYamlFile = tweakedConnectorsDirectory.resolve("movie-connector/connector.yaml")
-        val outputFileLineRegex = Regex("""(\s*outputDir:\s*).*""")
-        val connectorYamlOriginalLines = connectorYamlFile.readLines(Charsets.UTF_8)
-        val connectorYamlUpdatedLines = connectorYamlOriginalLines.map {
-            val matchResult = outputFileLineRegex.matchEntire(it)
-            if (matchResult === null) {
-                it
-            } else {
-                matchResult.groupValues[1] + outputDirectory.absolutePath
-            }
-        }
-        connectorYamlFile.writeText(connectorYamlUpdatedLines.joinToString("") { it + "\n" }, Charsets.UTF_8)
+        tweakConnectorYamlFiles(tweakedConnectorsDirectory, outputDirectory.absolutePath)
 
-        val logFile = if (logger.isInfoEnabled) null else File(outputDirectory, "generate.log.txt")
+        val logFile = if (logger.isInfoEnabled) null else File(tweakedConnectorsDirectory, "generate.log.txt")
         val result = logFile?.outputStream().use { logStream ->
             project.runCatching {
                 exec {
@@ -94,6 +84,67 @@ abstract class GenerateCodeTask : DefaultTask() {
         result.onFailure { exception ->
             logFile?.let { logger.warn("{}", it.readText()) }
             throw exception
+        }
+    }
+
+    private fun tweakConnectorYamlFiles(dir: File, newOutputDir: String) {
+        logger.info("Tweaking connector.yaml files in {}", dir.absolutePath)
+        dir.walk().forEach { file ->
+            if (file.isFile && file.name == "connector.yaml") {
+                tweakConnectorYamlFile(file, newOutputDir)
+            } else {
+                logger.debug("skipping file: {}", file.absolutePath)
+            }
+        }
+    }
+
+    private fun tweakConnectorYamlFile(file: File, newOutputDir: String) {
+        logger.info("Tweaking connector.yaml file: {}", file.absolutePath)
+
+        fun Map<*,*>.withTweakedKotlinSdk() = filterKeys { it == "kotlinSdk" }
+            .mapValues { (_, value) ->
+                val kotlinSdkMap = value as? Map<*,*> ?:
+                throw Exception("Parsing ${file.absolutePath} failed: \"kotlinSdk\" is " +
+                    (if (value === null) "null" else value::class.qualifiedName) +
+                    ", but expected ${Map::class.qualifiedName} " +
+                    "(error code m697s27yxn)")
+                kotlinSdkMap.mapValues { (key, value) ->
+                    if (key == "outputDir") {
+                        newOutputDir
+                    } else {
+                        value
+                    }
+                }
+            }
+
+        fun Map<*,*>.withTweakedGenerateNode() = mapValues { (key, value) ->
+            if (key != "generate") {
+                value
+            } else {
+                val generateMap = value as? Map<*,*> ?:
+                    throw Exception("Parsing ${file.absolutePath} failed: \"generate\" is " +
+                        (if (value === null) "null" else value::class.qualifiedName) +
+                        ", but expected ${Map::class.qualifiedName} " +
+                        "(error code 9c2p857gq6)")
+                generateMap.withTweakedKotlinSdk()
+            }
+        }
+
+        val yaml = Yaml()
+        val rootObject = file.reader(Charsets.UTF_8).use { reader ->
+            yaml.load<Any?>(reader)
+        }
+
+        val rootMap = rootObject as? Map<*,*> ?:
+            throw Exception("Parsing ${file.absolutePath} failed: root is " +
+                    (if (rootObject === null) "null" else rootObject::class.qualifiedName) +
+                    ", but expected ${Map::class.qualifiedName} " +
+                    "(error code 45dw8jx8jd)")
+
+        val newRootMap = rootMap.withTweakedGenerateNode()
+
+        file.writer(Charsets.UTF_8).use { writer ->
+            yaml.dump(newRootMap, writer)
         }
     }
 }

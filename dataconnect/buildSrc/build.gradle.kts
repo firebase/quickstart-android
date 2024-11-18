@@ -16,6 +16,7 @@
 
 plugins {
   `kotlin-dsl` // See https://docs.gradle.org/current/userguide/kotlin_dsl.html#sec:kotlin-dsl_plugin
+  kotlin("plugin.serialization") version embeddedKotlinVersion
 }
 
 java {
@@ -26,6 +27,7 @@ java {
 
 dependencies {
   implementation(libs.android.gradlePlugin.api)
+  implementation(libs.snakeyaml)
 }
 
 gradlePlugin {
