@@ -19,15 +19,19 @@ package com.google.firebase.example.dataconnect.gradle
 import java.io.File
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-abstract class GenerateDataConnectSourcesTask : DefaultTask() {
+abstract class GenerateCodeTask : DefaultTask() {
 
     @get:InputFiles
     abstract val inputDirectory: DirectoryProperty
+
+    @get:InputFiles
+    abstract val firebaseExecutable: RegularFileProperty
 
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
@@ -38,11 +42,18 @@ abstract class GenerateDataConnectSourcesTask : DefaultTask() {
     @TaskAction
     fun run() {
         val inputDirectory = inputDirectory.get().asFile
+        val firebaseExecutable = firebaseExecutable.get().asFile
         val outputDirectory = outputDirectory.get().asFile
         val workDirectory = workDirectory.get().asFile
 
+        logger.info("inputDirectory: {}", inputDirectory)
+        logger.info("firebaseExecutable: {}", firebaseExecutable)
+        logger.info("outputDirectory: {}", outputDirectory)
+        logger.info("workDirectory: {}", workDirectory)
+
         project.delete(outputDirectory)
         project.delete(workDirectory)
+        project.mkdir(workDirectory)
 
         project.copy {
             from(inputDirectory)
@@ -66,11 +77,11 @@ abstract class GenerateDataConnectSourcesTask : DefaultTask() {
         val result = logFile?.outputStream().use { logStream ->
             project.runCatching {
                 exec {
-                    commandLine("firebase", "--debug", "dataconnect:sdk:generate")
+                    commandLine(firebaseExecutable.absolutePath, "--debug", "dataconnect:sdk:generate")
                     // Specify a fake project because dataconnect:sdk:generate unnecessarily
                     // requires one. The actual value does not matter.
                     args("--project", "zzyzx")
-                    workingDir(outputDirectory)
+                    workingDir(workDirectory)
                     isIgnoreExitValue = false
                     if (logStream !== null) {
                         standardOutput = logStream

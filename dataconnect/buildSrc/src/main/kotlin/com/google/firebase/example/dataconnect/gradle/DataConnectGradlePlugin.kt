@@ -23,36 +23,35 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
 import java.util.Locale
-import org.gradle.api.tasks.TaskProvider
 
 @Suppress("unused")
 abstract class DataConnectGradlePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        val buildDirectory = project.layout.buildDirectory.dir("dataconnect")
-        val getFirebaseToolsTask = project.tasks.register<GetFirebaseToolsTask>("getFirebaseTools") {
+        val androidComponents = project.extensions.getByType<ApplicationAndroidComponentsExtension>()
+        androidComponents.onVariants {
+            this@DataConnectGradlePlugin.registerTasks(project, it)
+        }
+    }
+
+    private fun registerTasks(project: Project, variant: ApplicationVariant) {
+        val variantNameTitleCase = variant.name.replaceFirstChar { it.titlecase(Locale.US) }
+        val buildDirectory = project.layout.buildDirectory.dir("dataconnect/${variant.name}")
+
+        val setupFirebaseToolsTask = project.tasks.register<SetupFirebaseToolsTask>("setupFirebaseTools$variantNameTitleCase") {
             version.set("13.23.0")
             outputDirectory.set(buildDirectory.map { it.dir("firebase-tools") })
         }
 
-        val androidComponents = project.extensions.getByType<ApplicationAndroidComponentsExtension>()
-        androidComponents.onVariants {
-            this@DataConnectGradlePlugin.registerTasks(project, it, getFirebaseToolsTask)
-        }
-    }
-
-    private fun registerTasks(project: Project, variant: ApplicationVariant, getFirebaseToolsTask: TaskProvider<GetFirebaseToolsTask>) {
-        val variantNameTitleCase = variant.name.replaceFirstChar { it.titlecase(Locale.US) }
-        val generateCodeTaskName = "generateDataConnectSources$variantNameTitleCase"
-
-        val generateCodeTask = project.tasks.register<GenerateDataConnectSourcesTask>(generateCodeTaskName) {
+        val generateCodeTask = project.tasks.register<GenerateCodeTask>("generateDataConnectSources${variantNameTitleCase}") {
             inputDirectory.set(project.layout.projectDirectory.dir("../dataconnect"))
-            workDirectory.set(project.layout.buildDirectory.dir("intermediates/dataconnect/${variant.name}"))
+            firebaseExecutable.set(setupFirebaseToolsTask.flatMap { it.firebaseExecutable })
+            workDirectory.set(buildDirectory.map { it.dir("generateCodeTaskWorkDir") })
         }
 
         variant.sources.java!!.addGeneratedSourceDirectory(
             generateCodeTask,
-            GenerateDataConnectSourcesTask::outputDirectory,
+            GenerateCodeTask::outputDirectory,
         )
     }
 }
