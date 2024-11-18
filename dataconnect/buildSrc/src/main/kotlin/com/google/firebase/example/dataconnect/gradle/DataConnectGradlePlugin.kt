@@ -23,18 +23,25 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
 import java.util.Locale
+import org.gradle.api.tasks.TaskProvider
 
 @Suppress("unused")
 abstract class DataConnectGradlePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
+        val buildDirectory = project.layout.buildDirectory.dir("dataconnect")
+        val getFirebaseToolsTask = project.tasks.register<GetFirebaseToolsTask>("getFirebaseTools") {
+            version.set("13.23.0")
+            outputDirectory.set(buildDirectory.map { it.dir("firebase-tools") })
+        }
+
         val androidComponents = project.extensions.getByType<ApplicationAndroidComponentsExtension>()
         androidComponents.onVariants {
-            this@DataConnectGradlePlugin.registerTasks(project, it)
+            this@DataConnectGradlePlugin.registerTasks(project, it, getFirebaseToolsTask)
         }
     }
 
-    private fun registerTasks(project: Project, variant: ApplicationVariant) {
+    private fun registerTasks(project: Project, variant: ApplicationVariant, getFirebaseToolsTask: TaskProvider<GetFirebaseToolsTask>) {
         val variantNameTitleCase = variant.name.replaceFirstChar { it.titlecase(Locale.US) }
         val generateCodeTaskName = "generateDataConnectSources$variantNameTitleCase"
 

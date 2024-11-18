@@ -16,13 +16,12 @@
 
 package com.google.firebase.example.dataconnect.gradle
 
+import java.io.File
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.kotlin.dsl.*
-
 import org.gradle.api.tasks.TaskAction
 
 abstract class GenerateDataConnectSourcesTask : DefaultTask() {
@@ -63,28 +62,26 @@ abstract class GenerateDataConnectSourcesTask : DefaultTask() {
         }
         connectorYamlFile.writeText(connectorYamlUpdatedLines.joinToString("") { it + "\n" }, Charsets.UTF_8)
 
-        val logFile = if (logger.isInfoEnabled) null else workDirectory.resolve("generate.log.txt")
-        val logFileStream = logFile?.outputStream()
-        try {
-            project.exec {
-                isIgnoreExitValue = false
-                if (logFileStream !== null) {
-                    standardOutput = logFileStream
-                    errorOutput = logFileStream
+        val logFile = if (logger.isInfoEnabled) null else File(outputDirectory, "generate.log.txt")
+        val result = logFile?.outputStream().use { logStream ->
+            project.runCatching {
+                exec {
+                    commandLine("firebase", "--debug", "dataconnect:sdk:generate")
+                    // Specify a fake project because dataconnect:sdk:generate unnecessarily
+                    // requires one. The actual value does not matter.
+                    args("--project", "zzyzx")
+                    workingDir(outputDirectory)
+                    isIgnoreExitValue = false
+                    if (logStream !== null) {
+                        standardOutput = logStream
+                        errorOutput = logStream
+                    }
                 }
-                workingDir(workDirectory)
-                executable("firebase")
-                args("--debug")
-                args("dataconnect:sdk:generate")
-                // Specify a fake project because dataconnect:sdk:generate unnecessarily
-                // requires one. The actual value does not matter.
-                args("--project", "zzyzx")
             }
-        } catch (e: Exception) {
-            logFileStream?.close()
-            logFile?.forEachLine { logger.error(it.trimEnd()) }
-        } finally {
-            logFileStream?.close()
+        }
+        result.onFailure { exception ->
+            logFile?.let { logger.warn("{}", it.readText()) }
+            throw exception
         }
     }
 }
