@@ -21,7 +21,11 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
 @Serializable
-internal data class LocalConfig(val npmExecutable: String? = null, @Transient val srcFile: File? = null) :
+internal data class LocalConfig(
+    val npmExecutable: String? = null,
+    val nodeExecutable: String? = null,
+    @Transient val srcFile: File? = null
+) :
     java.io.Serializable {
     companion object {
         @Suppress("ConstPropertyName")

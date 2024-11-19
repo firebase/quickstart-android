@@ -6,5 +6,20 @@
 # path of the npm executable to use works around that problem. Setting it to null
 # uses "npm" as found in the PATH.
 #
+# NOTE: If this value is set then you almost certainly want to set nodeExecutable
+# as well.
+#
 # eg. npmExecutable = "/home/myusername/local/nvm/versions/node/v20.13.1/bin/npm"
 npmExecutable = null
+
+# The path of the "node" executable to use to run the "firebase" command.
+# Setting this is normally not necessary; however, if "node" is not in the global
+# PATH, or the wrong version is in the global PATH, then setting this to the absolute
+# path of the node executable to use works around that problem. Setting it to null
+# uses "node" as found in the PATH.
+#
+# NOTE: If this value is set then you almost certainly want to set npmExecutable
+# as well.
+#
+# eg. nodeExecutable = "/home/myusername/local/nvm/versions/node/v20.13.1/bin/node"
+nodeExecutable = null
