@@ -10,6 +10,6 @@ generate:
     package: com.google.firebase.dataconnect.movies
     # Use an arbitrary directory for generating the code, as the
     # "com.google.firebase.example.dataconnect.gradle" custom Gradle plugin applied by
-    # app/build.gradle.kts will look after generating the code on-demand into the
-    # appropriate directory.
+    # app/build.gradle.kts will look after generating the code on-demand into the directory
+    # prescribed by Gradle (e.g. app/build/generated/java/generateDebugDataConnectSources).
     outputDir: ../.generated
