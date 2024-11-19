@@ -85,7 +85,7 @@ dependencies {
 dataconnect {
     // The version of https://www.npmjs.com/package/firebase-tools to use to perform the
     // Data Connect code generation.
-    firebaseToolsVersion = "13.23.0"
+    firebaseToolsVersion = "13.25.0"
 
     // The directory that contains dataconnect.yaml to use as input when performing
     // the Data Connect code generation.
