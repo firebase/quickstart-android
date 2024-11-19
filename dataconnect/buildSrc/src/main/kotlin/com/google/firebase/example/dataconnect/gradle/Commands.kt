@@ -21,22 +21,22 @@ import org.gradle.api.Task
 import org.gradle.process.ExecSpec
 
 internal fun Task.runCommand(logFile: File, configure: ExecSpec.() -> Unit) {
-  val effectiveLogFile = if (logger.isInfoEnabled) null else logFile
-  val result =
-    effectiveLogFile?.outputStream().use { logStream ->
-      project.runCatching {
-        exec {
-          isIgnoreExitValue = false
-          if (logStream !== null) {
-            standardOutput = logStream
-            errorOutput = logStream
-          }
-          configure(this)
+    val effectiveLogFile = if (logger.isInfoEnabled) null else logFile
+    val result =
+        effectiveLogFile?.outputStream().use { logStream ->
+            project.runCatching {
+                exec {
+                    isIgnoreExitValue = false
+                    if (logStream !== null) {
+                        standardOutput = logStream
+                        errorOutput = logStream
+                    }
+                    configure(this)
+                }
+            }
         }
-      }
+    result.onFailure { exception ->
+        effectiveLogFile?.let { logger.warn("{}", it.readText()) }
+        throw exception
     }
-  result.onFailure { exception ->
-    effectiveLogFile?.let { logger.warn("{}", it.readText()) }
-    throw exception
-  }
 }

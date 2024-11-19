@@ -28,36 +28,36 @@ import org.gradle.kotlin.dsl.register
 @Suppress("unused")
 abstract class DataConnectGradlePlugin : Plugin<Project> {
 
-  override fun apply(project: Project) {
-    project.extensions.create("dataconnect", DataConnectExtension::class.java)
-    val providers = project.objects.newInstance<MyProjectProviders>()
+    override fun apply(project: Project) {
+        project.extensions.create("dataconnect", DataConnectExtension::class.java)
+        val providers = project.objects.newInstance<MyProjectProviders>()
 
-    project.tasks.register<FirebaseToolsSetupTask>("setupFirebaseToolsForDataConnect") {
-      configureFrom(providers)
+        project.tasks.register<FirebaseToolsSetupTask>("setupFirebaseToolsForDataConnect") {
+            configureFrom(providers)
+        }
+
+        val androidComponents = project.extensions.getByType<ApplicationAndroidComponentsExtension>()
+        androidComponents.onVariants { variant ->
+            val variantProviders = project.objects.newInstance<MyVariantProviders>(variant)
+            registerVariantTasks(project, variant, variantProviders)
+        }
     }
 
-    val androidComponents = project.extensions.getByType<ApplicationAndroidComponentsExtension>()
-    androidComponents.onVariants { variant ->
-      val variantProviders = project.objects.newInstance<MyVariantProviders>(variant)
-      registerVariantTasks(project, variant, variantProviders)
+    private fun registerVariantTasks(
+        project: Project,
+        variant: ApplicationVariant,
+        providers: MyVariantProviders
+    ) {
+        val variantNameTitleCase = variant.name.replaceFirstChar { it.titlecase(Locale.US) }
+
+        val generateCodeTask =
+            project.tasks.register<CodegenTask>("generate${variantNameTitleCase}DataConnectSources") {
+                configureFrom(providers)
+            }
+
+        variant.sources.java!!.addGeneratedSourceDirectory(
+            generateCodeTask,
+            CodegenTask::outputDirectory
+        )
     }
-  }
-
-  private fun registerVariantTasks(
-    project: Project,
-    variant: ApplicationVariant,
-    providers: MyVariantProviders,
-  ) {
-    val variantNameTitleCase = variant.name.replaceFirstChar { it.titlecase(Locale.US) }
-
-    val generateCodeTask =
-      project.tasks.register<CodegenTask>("generate${variantNameTitleCase}DataConnectSources") {
-        configureFrom(providers)
-      }
-
-    variant.sources.java!!.addGeneratedSourceDirectory(
-      generateCodeTask,
-      CodegenTask::outputDirectory,
-    )
-  }
 }

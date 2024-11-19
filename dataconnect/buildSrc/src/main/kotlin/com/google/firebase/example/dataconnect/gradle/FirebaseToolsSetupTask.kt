@@ -29,36 +29,36 @@ import org.gradle.api.tasks.TaskAction
 
 abstract class FirebaseToolsSetupTask : DefaultTask() {
 
-  @get:Input abstract val version: Property<String>
+    @get:Input abstract val version: Property<String>
 
-  @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
+    @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
 
-  @get:Internal
-  val firebaseExecutable: Provider<RegularFile>
-    get() = outputDirectory.map { it.file("node_modules/.bin/firebase") }
+    @get:Internal
+    val firebaseExecutable: Provider<RegularFile>
+        get() = outputDirectory.map { it.file("node_modules/.bin/firebase") }
 
-  @TaskAction
-  fun run() {
-    val version: String = version.get()
-    val outputDirectory: File = outputDirectory.get().asFile
+    @TaskAction
+    fun run() {
+        val version: String = version.get()
+        val outputDirectory: File = outputDirectory.get().asFile
 
-    logger.info("version: {}", version)
-    logger.info("outputDirectory: {}", outputDirectory.absolutePath)
+        logger.info("version: {}", version)
+        logger.info("outputDirectory: {}", outputDirectory.absolutePath)
 
-    project.delete(outputDirectory)
-    project.mkdir(outputDirectory)
+        project.delete(outputDirectory)
+        project.mkdir(outputDirectory)
 
-    val packageJsonFile = File(outputDirectory, "package.json")
-    packageJsonFile.writeText("{}", Charsets.UTF_8)
+        val packageJsonFile = File(outputDirectory, "package.json")
+        packageJsonFile.writeText("{}", Charsets.UTF_8)
 
-    runCommand(File(outputDirectory, "install.log.txt")) {
-      commandLine("npm", "install", "firebase-tools@$version")
-      workingDir(outputDirectory)
+        runCommand(File(outputDirectory, "install.log.txt")) {
+            commandLine("npm", "install", "firebase-tools@$version")
+            workingDir(outputDirectory)
+        }
     }
-  }
 
-  internal fun configureFrom(providers: MyProjectProviders) {
-    version.set(providers.firebaseToolsVersion)
-    outputDirectory.set(providers.buildDirectory.map { it.dir("firebase-tools") })
-  }
+    internal fun configureFrom(providers: MyProjectProviders) {
+        version.set(providers.firebaseToolsVersion)
+        outputDirectory.set(providers.buildDirectory.map { it.dir("firebase-tools") })
+    }
 }

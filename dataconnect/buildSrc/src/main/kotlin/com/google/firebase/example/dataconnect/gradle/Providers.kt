@@ -30,78 +30,78 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.newInstance
 
 internal open class MyProjectProviders(
-  projectBuildDirectory: DirectoryProperty,
-  providerFactory: ProviderFactory,
-  ext: DataConnectExtension,
+    projectBuildDirectory: DirectoryProperty,
+    providerFactory: ProviderFactory,
+    ext: DataConnectExtension
 ) {
 
-  @Suppress("unused")
-  @Inject
-  constructor(
-    project: Project,
-  ) : this(
-    projectBuildDirectory = project.layout.buildDirectory,
-    providerFactory = project.providers,
-    ext = project.extensions.getByType<DataConnectExtension>(),
-  )
+    @Suppress("unused")
+    @Inject
+    constructor(
+        project: Project
+    ) : this(
+        projectBuildDirectory = project.layout.buildDirectory,
+        providerFactory = project.providers,
+        ext = project.extensions.getByType<DataConnectExtension>()
+    )
 
-  val buildDirectory: Provider<Directory> = projectBuildDirectory.map { it.dir("dataconnect") }
+    val buildDirectory: Provider<Directory> = projectBuildDirectory.map { it.dir("dataconnect") }
 
-  val firebaseToolsVersion: Provider<String> =
-    providerFactory.provider {
-      ext.firebaseToolsVersion
-        ?: throw GradleException(
-          "dataconnect.firebaseToolsVersion must be set in your build.gradle or build.gradle.kts " +
-            "(error code xbmvkc3mtr)"
-        )
-    }
+    val firebaseToolsVersion: Provider<String> =
+        providerFactory.provider {
+            ext.firebaseToolsVersion
+                ?: throw GradleException(
+                    "dataconnect.firebaseToolsVersion must be set in your build.gradle or build.gradle.kts " +
+                        "(error code xbmvkc3mtr)"
+                )
+        }
 }
 
 internal open class MyVariantProviders(
-  variant: ApplicationVariant,
-  myProjectProviders: MyProjectProviders,
-  ext: DataConnectExtension,
-  firebaseToolsSetupTask: FirebaseToolsSetupTask,
-  objectFactory: ObjectFactory,
+    variant: ApplicationVariant,
+    myProjectProviders: MyProjectProviders,
+    ext: DataConnectExtension,
+    firebaseToolsSetupTask: FirebaseToolsSetupTask,
+    objectFactory: ObjectFactory
 ) {
 
-  @Suppress("unused")
-  @Inject
-  constructor(
-    variant: ApplicationVariant,
-    project: Project
-  ) : this(
-    variant = variant,
-    myProjectProviders = project.objects.newInstance<MyProjectProviders>(),
-    ext = project.extensions.getByType<DataConnectExtension>(),
-    firebaseToolsSetupTask = project.firebaseToolsSetupTask,
-    objectFactory = project.objects,
-  )
+    @Suppress("unused")
+    @Inject
+    constructor(
+        variant: ApplicationVariant,
+        project: Project
+    ) : this(
+        variant = variant,
+        myProjectProviders = project.objects.newInstance<MyProjectProviders>(),
+        ext = project.extensions.getByType<DataConnectExtension>(),
+        firebaseToolsSetupTask = project.firebaseToolsSetupTask,
+        objectFactory = project.objects
+    )
 
-  val buildDirectory: Provider<Directory> =
-    myProjectProviders.buildDirectory.map { it.dir("variants/${variant.name}") }
+    val buildDirectory: Provider<Directory> =
+        myProjectProviders.buildDirectory.map { it.dir("variants/${variant.name}") }
 
-  val dataConnectConfigDir: Provider<Directory> = run {
-    val dir =
-      ext.dataConnectConfigDir
-        ?: throw GradleException(
-          "dataconnect.dataConnectConfigDir must be set in your build.gradle or build.gradle.kts " +
-            "(error code xbmvkc3mtr)"
-        )
-    objectFactory.directoryProperty().also { property -> property.set(dir) }
-  }
+    val dataConnectConfigDir: Provider<Directory> = run {
+        val dir =
+            ext.dataConnectConfigDir
+                ?: throw GradleException(
+                    "dataconnect.dataConnectConfigDir must be set in your build.gradle or build.gradle.kts " +
+                        "(error code xbmvkc3mtr)"
+                )
+        objectFactory.directoryProperty().also { property -> property.set(dir) }
+    }
 
-  val firebaseExecutable: Provider<RegularFile> = firebaseToolsSetupTask.firebaseExecutable
+    val firebaseExecutable: Provider<RegularFile> = firebaseToolsSetupTask.firebaseExecutable
 }
 
 private val Project.firebaseToolsSetupTask: FirebaseToolsSetupTask
-  get() {
-    val tasks = tasks.filterIsInstance<FirebaseToolsSetupTask>()
-    if (tasks.size != 1) {
-      throw GradleException(
-        "expected exactly 1 FirebaseToolsSetupTask task to be registered, but found " +
-          "${tasks.size}: [${tasks.map { it.name }.sorted().joinToString(", ")}]"
-      )
+    get() {
+        val tasks = tasks.filterIsInstance<FirebaseToolsSetupTask>()
+        if (tasks.size != 1) {
+            throw GradleException(
+                "expected exactly 1 FirebaseToolsSetupTask task to be registered, but found " +
+                    "${tasks.size}: [${tasks.map { it.name }.sorted().joinToString(", ")}]"
+            )
+        }
+        return tasks.single()
     }
-    return tasks.single()
-  }
