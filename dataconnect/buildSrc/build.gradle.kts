@@ -17,6 +17,7 @@
 plugins {
   // See https://docs.gradle.org/current/userguide/kotlin_dsl.html#sec:kotlin-dsl_plugin
   `kotlin-dsl`
+  kotlin("plugin.serialization") version embeddedKotlinVersion
 }
 
 java { toolchain { languageVersion.set(JavaLanguageVersion.of(17)) } }
@@ -24,6 +25,14 @@ java { toolchain { languageVersion.set(JavaLanguageVersion.of(17)) } }
 dependencies {
   implementation(libs.android.gradlePlugin.api)
   implementation(libs.snakeyaml)
+
+  // TODO: Upgrade the `tomlkt` dependency to 0.4.0 or later once the gradle
+  //  wrapper version used by this project uses a sufficiently-recent version
+  //  of kotlin. At the time of writing, `embeddedKotlinVersion` is 1.9.22,
+  //  which requires an older version of `tomlkt` because the newer versions
+  //  depend on a newer version of the `kotlinx.serialization` plugin, which
+  //  requires a newer version of Kotlin.
+  implementation("net.peanuuutz.tomlkt:tomlkt:0.3.7")
 }
 
 gradlePlugin {

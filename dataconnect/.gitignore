@@ -15,3 +15,7 @@
 local.properties
 .dataconnect/
 .firebaserc
+
+# The file used by our custom gradle plugin to specify _local_ settings.
+# Since the settings are "local", they should *not* be checked into source control.
+dataconnect.local.toml

@@ -1,0 +1,10 @@
+[dataconnect]
+
+# The path of the "npm" executable to use to install firebase-tools.
+# Setting this is normally not necessary; however, if "npm" is not in the global
+# PATH, or the wrong version is in the global PATH, then setting this to the absolute
+# path of the npm executable to use works around that problem. Setting it to null
+# uses "npm" as found in the PATH.
+#
+# eg. npmExecutable = "/home/myusername/local/nvm/versions/node/v20.13.1/bin/npm"
+npmExecutable = null

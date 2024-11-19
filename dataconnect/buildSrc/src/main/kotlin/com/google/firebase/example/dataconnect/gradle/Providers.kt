@@ -17,7 +17,10 @@
 package com.google.firebase.example.dataconnect.gradle
 
 import com.android.build.api.variant.ApplicationVariant
+import java.io.FileNotFoundException
 import javax.inject.Inject
+import net.peanuuutz.tomlkt.Toml
+import net.peanuuutz.tomlkt.decodeFromString
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
@@ -32,6 +35,7 @@ import org.gradle.kotlin.dsl.newInstance
 internal open class MyProjectProviders(
     projectBuildDirectory: DirectoryProperty,
     providerFactory: ProviderFactory,
+    projectDirectoryHierarchy: List<Directory>,
     ext: DataConnectExtension
 ) {
 
@@ -42,6 +46,7 @@ internal open class MyProjectProviders(
     ) : this(
         projectBuildDirectory = project.layout.buildDirectory,
         providerFactory = project.providers,
+        projectDirectoryHierarchy = project.projectDirectoryHierarchy(),
         ext = project.extensions.getByType<DataConnectExtension>()
     )
 
@@ -51,10 +56,54 @@ internal open class MyProjectProviders(
         providerFactory.provider {
             ext.firebaseToolsVersion
                 ?: throw GradleException(
-                    "dataconnect.firebaseToolsVersion must be set in your build.gradle or build.gradle.kts " +
+                    "dataconnect.firebaseToolsVersion must be set in your " +
+                        "build.gradle or build.gradle.kts " +
                         "(error code xbmvkc3mtr)"
                 )
         }
+
+    val localConfigFiles: Provider<List<RegularFile>> = providerFactory.provider {
+        projectDirectoryHierarchy.map { it.file("dataconnect.local.toml") }
+    }
+
+    val localConfigs: Provider<List<LocalConfig>> = run {
+        val lazyResult = lazy(LazyThreadSafetyMode.PUBLICATION) {
+            projectDirectoryHierarchy
+                .map { it.file("dataconnect.local.toml").asFile }
+                .mapNotNull { file ->
+                    val text = file.runCatching { readText() }.fold(
+                        onSuccess = { it },
+                        onFailure = { exception ->
+                            if (exception is FileNotFoundException) {
+                                null // ignore non-existent config files
+                            } else {
+                                throw GradleException(
+                                    "reading file failed: ${file.absolutePath} ($exception)" +
+                                        " (error code bj7dxvvw5p)",
+                                    exception
+                                )
+                            }
+                        }
+                    )
+                    if (text === null) null else Pair(file, text)
+                }.map { (file, text) ->
+                    val toml = Toml { this.ignoreUnknownKeys = true }
+                    toml.runCatching {
+                        decodeFromString<LocalConfig>(text, "dataconnect").copy(srcFile = file)
+                    }.fold(
+                        onSuccess = { it },
+                        onFailure = { exception ->
+                            throw GradleException(
+                                "parsing toml file failed: ${file.absolutePath} ($exception)" +
+                                    " (error code 44dkc2vvpq)",
+                                exception
+                            )
+                        }
+                    )
+                }
+        }
+        providerFactory.provider { lazyResult.value }
+    }
 }
 
 internal open class MyVariantProviders(
@@ -105,3 +154,11 @@ private val Project.firebaseToolsSetupTask: FirebaseToolsSetupTask
         }
         return tasks.single()
     }
+
+private fun Project.projectDirectoryHierarchy(): List<Directory> = buildList {
+    var curProject: Project? = this@projectDirectoryHierarchy
+    while (curProject !== null) {
+        add(curProject.layout.projectDirectory)
+        curProject = curProject.parent
+    }
+}
