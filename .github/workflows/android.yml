@@ -19,7 +19,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 22
+        node-version: 20
     - name: Check Snippets
       run: python scripts/checksnippets.py
     - name: Copy mock google_services.json
