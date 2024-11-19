@@ -14,7 +14,6 @@ activityCompose = "1.9.3"
 composeBom = "2024.11.00"
 googleServices = "4.4.2"
 composeNavigation = "2.8.4"
-ktfmt = "0.43"
 
 [libraries]
 android-gradlePlugin-api = { group = "com.android.tools.build", name = "gradle-api", version.ref = "agp" }
@@ -47,4 +46,3 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-spotless = { id = "com.diffplug.spotless", version = "7.0.0.BETA3" }

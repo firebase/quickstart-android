@@ -17,7 +17,6 @@
 plugins {
   // See https://docs.gradle.org/current/userguide/kotlin_dsl.html#sec:kotlin-dsl_plugin
   `kotlin-dsl`
-  alias(libs.plugins.spotless)
 }
 
 java { toolchain { languageVersion.set(JavaLanguageVersion.of(17)) } }
@@ -33,13 +32,5 @@ gradlePlugin {
       id = "com.google.firebase.example.dataconnect.gradle"
       implementationClass = "com.google.firebase.example.dataconnect.gradle.DataConnectGradlePlugin"
     }
-  }
-}
-
-spotless {
-  kotlin { ktfmt(libs.versions.ktfmt.get()).googleStyle() }
-  kotlinGradle {
-    target("*.gradle.kts")
-    ktfmt(libs.versions.ktfmt.get()).googleStyle()
   }
 }
