@@ -33,10 +33,11 @@ import org.gradle.kotlin.dsl.getByType
 
 internal open class MyProjectProviders(
     projectBuildDirectory: DirectoryProperty,
-    private val providerFactory: ProviderFactory,
+    val providerFactory: ProviderFactory,
+    val objectFactory: ObjectFactory,
     projectDirectoryHierarchy: List<Directory>,
     ext: DataConnectExtension,
-    private val logger: Logger
+    logger: Logger
 ) {
 
     @Suppress("unused")
@@ -46,10 +47,13 @@ internal open class MyProjectProviders(
     ) : this(
         projectBuildDirectory = project.layout.buildDirectory,
         providerFactory = project.providers,
+        objectFactory = project.objects,
         projectDirectoryHierarchy = project.projectDirectoryHierarchy(),
         ext = project.extensions.getByType<DataConnectExtension>(),
         project.logger
     )
+
+    val operatingSystem: Provider<OperatingSystem> = OperatingSystem.provider(objectFactory, providerFactory, logger)
 
     val pathEnvironmentVariable: Provider<String> = providerFactory.environmentVariable("PATH")
 
