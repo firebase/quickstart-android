@@ -173,11 +173,21 @@ internal val DownloadOfficialVersion.downloadFileName: String
         return "node-v$nodeVersion-$osType-$osArch.$fileExtension"
     }
 
+private data class DownloadedNodeJsFiles(
+    val binaryDistribution: File,
+    val shasums: File,
+)
+
 private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, outputDirectory: File) {
+    val downloadedFiles = downloadNodeJsBinaryDistribution(source, outputDirectory)
+    verifyNodeJSShaSumsSignature(downloadedFiles.shasums)
+}
+
+private fun Task.downloadNodeJsBinaryDistribution(source: DownloadOfficialVersion, outputDirectory: File): DownloadedNodeJsFiles {
     val httpClient = HttpClient(CIO) {
         expectSuccess = true
         install(Logging) {
-            val gradleLogger = this@downloadOfficialVersion.logger
+            val gradleLogger = this@downloadNodeJsBinaryDistribution.logger
 
             level = if (gradleLogger.isDebugEnabled) {
                 LogLevel.HEADERS
@@ -197,7 +207,7 @@ private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, output
         }
     }
 
-    val nodejsBinaryDistributionFile = File(outputDirectory, source.downloadFileName)
+    val binaryDistributionFile = File(outputDirectory, source.downloadFileName)
     val shasumsFile = File(outputDirectory, shasumsFileName)
 
     httpClient.use {
@@ -207,11 +217,14 @@ private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, output
         }
         runBlocking {
             val url = source.downloadUrl
-            downloadFile(httpClient, url, nodejsBinaryDistributionFile, maxNumDownloadBytes = 200_000_000L)
+            downloadFile(httpClient, url, binaryDistributionFile, maxNumDownloadBytes = 200_000_000L)
         }
     }
 
-    verifyNodeJSShaSumsSignature(shasumsFile)
+    return DownloadedNodeJsFiles(
+        binaryDistribution = binaryDistributionFile,
+        shasums = shasumsFile,
+    )
 }
 
 private suspend fun Task.downloadFile(httpClient: HttpClient, url: String, destFile: File, maxNumDownloadBytes: Long) {
