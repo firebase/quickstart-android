@@ -1,3 +1,7 @@
+# This is an example dataconnect.local.toml file.
+# Copy it to dataconnect.local.toml file in order for it to be picked up by the
+# com.google.firebase.example.dataconnect.gradle custom plugin.
+
 [dataconnect]
 
 # The path of the "npm" executable to use to install firebase-tools.
@@ -6,8 +10,8 @@
 # path of the npm executable to use works around that problem. Setting it to null
 # uses "npm" as found in the PATH.
 #
-# NOTE: If this value is set then you almost certainly want to set nodeExecutable
-# as well.
+# NOTE: If this value is set to a value other than null then you almost certainly
+# want to set nodeExecutable as well.
 #
 # eg. npmExecutable = "/home/myusername/local/nvm/versions/node/v20.13.1/bin/npm"
 npmExecutable = null
@@ -18,8 +22,8 @@ npmExecutable = null
 # path of the node executable to use works around that problem. Setting it to null
 # uses "node" as found in the PATH.
 #
-# NOTE: If this value is set then you almost certainly want to set npmExecutable
-# as well.
+# NOTE: If this value is set to a value other than null then you almost certainly
+# want to set npmExecutable as well.
 #
 # eg. nodeExecutable = "/home/myusername/local/nvm/versions/node/v20.13.1/bin/node"
 nodeExecutable = null
