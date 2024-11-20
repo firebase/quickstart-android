@@ -18,6 +18,8 @@ package com.google.firebase.example.dataconnect.gradle
 
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.ApplicationVariant
+import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
+import com.google.firebase.example.dataconnect.gradle.providers.MyVariantProviders
 import com.google.firebase.example.dataconnect.gradle.tasks.GenerateDataConnectSourcesTask
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
 import com.google.firebase.example.dataconnect.gradle.tasks.configureFrom

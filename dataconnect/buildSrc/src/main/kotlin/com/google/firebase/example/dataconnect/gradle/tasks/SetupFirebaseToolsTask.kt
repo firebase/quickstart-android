@@ -16,8 +16,7 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
-import com.google.firebase.example.dataconnect.gradle.MyProjectProviders
-import com.google.firebase.example.dataconnect.gradle.runCommand
+import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import java.io.File
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty

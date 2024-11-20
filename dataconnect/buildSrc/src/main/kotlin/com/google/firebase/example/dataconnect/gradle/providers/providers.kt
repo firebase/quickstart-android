@@ -1,0 +1,132 @@
+/*
+ * Copyright 2024 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.google.firebase.example.dataconnect.gradle.providers
+
+import com.android.build.api.variant.ApplicationVariant
+import com.google.firebase.example.dataconnect.gradle.DataConnectExtension
+import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
+import net.peanuuutz.tomlkt.Toml
+import org.gradle.api.GradleException
+import org.gradle.api.Project
+import org.gradle.api.file.Directory
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFile
+import org.gradle.api.logging.Logger
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
+import org.gradle.kotlin.dsl.getByType
+import java.io.File
+import java.io.FileNotFoundException
+import javax.inject.Inject
+
+internal open class MyProjectProviders(
+    projectBuildDirectory: DirectoryProperty,
+    private val providerFactory: ProviderFactory,
+    projectDirectoryHierarchy: List<Directory>,
+    ext: DataConnectExtension,
+    private val logger: Logger
+) {
+
+    @Suppress("unused")
+    @Inject
+    constructor(
+        project: Project
+    ) : this(
+        projectBuildDirectory = project.layout.buildDirectory,
+        providerFactory = project.providers,
+        projectDirectoryHierarchy = project.projectDirectoryHierarchy(),
+        ext = project.extensions.getByType<DataConnectExtension>(),
+        project.logger
+    )
+
+    val pathEnvironmentVariable: Provider<String> = providerFactory.environmentVariable("PATH")
+
+    val buildDirectory: Provider<Directory> = projectBuildDirectory.map { it.dir("dataconnect") }
+
+    val firebaseToolsVersion: Provider<String> =
+        providerFactory.provider {
+            ext.firebaseToolsVersion
+                ?: throw GradleException(
+                    "dataconnect.firebaseToolsVersion must be set in your " +
+                        "build.gradle or build.gradle.kts " +
+                        "(error code xbmvkc3mtr)"
+                )
+        }
+
+    private val localConfigProviders = LocalConfigProviders(projectDirectoryHierarchy, providerFactory, logger)
+
+    val npmExecutable: Provider<RegularFile> by localConfigProviders::npmExecutable
+
+    val nodeExecutable: Provider<RegularFile> by localConfigProviders::nodeExecutable
+}
+
+internal open class MyVariantProviders(
+    variant: ApplicationVariant,
+    val projectProviders: MyProjectProviders,
+    val firebaseExecutable: Provider<RegularFile>,
+    ext: DataConnectExtension,
+    objectFactory: ObjectFactory
+) {
+
+    @Suppress("unused")
+    @Inject
+    constructor(
+        variant: ApplicationVariant,
+        project: Project,
+        projectProviders: MyProjectProviders
+    ) : this(
+        variant = variant,
+        projectProviders = projectProviders,
+        firebaseExecutable = project.firebaseToolsSetupTask.firebaseExecutable,
+        ext = project.extensions.getByType<DataConnectExtension>(),
+        objectFactory = project.objects
+    )
+
+    val buildDirectory: Provider<Directory> =
+        projectProviders.buildDirectory.map { it.dir("variants/${variant.name}") }
+
+    val dataConnectConfigDir: Provider<Directory> = run {
+        val dir =
+            ext.dataConnectConfigDir
+                ?: throw GradleException(
+                    "dataconnect.dataConnectConfigDir must be set in your build.gradle or build.gradle.kts " +
+                        "(error code xbmvkc3mtr)"
+                )
+        objectFactory.directoryProperty().also { property -> property.set(dir) }
+    }
+}
+
+private val Project.firebaseToolsSetupTask: SetupFirebaseToolsTask
+    get() {
+        val tasks = tasks.filterIsInstance<SetupFirebaseToolsTask>()
+        if (tasks.size != 1) {
+            throw GradleException(
+                "expected exactly 1 SetupFirebaseToolsTask task to be registered, but found " +
+                    "${tasks.size}: [${tasks.map { it.name }.sorted().joinToString(", ")}]"
+            )
+        }
+        return tasks.single()
+    }
+
+private fun Project.projectDirectoryHierarchy(): List<Directory> = buildList {
+    var curProject: Project? = this@projectDirectoryHierarchy
+    while (curProject !== null) {
+        add(curProject.layout.projectDirectory)
+        curProject = curProject.parent
+    }
+}

@@ -16,19 +16,21 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
-import com.google.firebase.example.dataconnect.gradle.MyVariantProviders
-import com.google.firebase.example.dataconnect.gradle.runCommand
-import com.google.firebase.example.dataconnect.gradle.tweakConnectorYamlFiles
+
+import com.google.firebase.example.dataconnect.gradle.providers.MyVariantProviders
 import java.io.File
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.yaml.snakeyaml.Yaml
 
 abstract class GenerateDataConnectSourcesTask : DefaultTask() {
 
@@ -68,7 +70,7 @@ abstract class GenerateDataConnectSourcesTask : DefaultTask() {
             from(dataConnectConfigDir)
             into(tweakedDataConnectConfigDir)
         }
-        tweakConnectorYamlFiles(tweakedDataConnectConfigDir, outputDirectory.absolutePath)
+        tweakConnectorYamlFiles(tweakedDataConnectConfigDir, outputDirectory.absolutePath, logger)
 
         runCommand(File(tweakedDataConnectConfigDir, "generate.log.txt")) {
             if (nodeExecutable === null) {
@@ -93,4 +95,71 @@ internal fun GenerateDataConnectSourcesTask.configureFrom(providers: MyVariantPr
     firebaseExecutable.set(providers.firebaseExecutable)
     nodeExecutable.set(providers.projectProviders.nodeExecutable)
     tweakedDataConnectConfigDir.set(providers.buildDirectory.map { it.dir("config") })
+}
+
+private fun tweakConnectorYamlFiles(dir: File, newOutputDir: String, logger: Logger) {
+    logger.info("Tweaking connector.yaml files in {}", dir.absolutePath)
+    dir.walk().forEach { file ->
+        if (file.isFile && file.name == "connector.yaml") {
+            tweakConnectorYamlFile(file, newOutputDir, logger)
+        } else {
+            logger.debug("skipping file: {}", file.absolutePath)
+        }
+    }
+}
+
+private fun tweakConnectorYamlFile(file: File, newOutputDir: String, logger: Logger) {
+    logger.info("Tweaking connector.yaml file: {}", file.absolutePath)
+
+    fun Map<*, *>.withTweakedKotlinSdk() =
+        filterKeys { it == "kotlinSdk" }
+            .mapValues { (_, value) ->
+                val kotlinSdkMap =
+                    value as? Map<*, *>
+                        ?: throw GradleException(
+                            "Parsing ${file.absolutePath} failed: \"kotlinSdk\" is " +
+                                    (if (value === null) "null" else value::class.qualifiedName) +
+                                    ", but expected ${Map::class.qualifiedName} " +
+                                    "(error code m697s27yxn)"
+                        )
+                kotlinSdkMap.mapValues { (key, value) ->
+                    if (key == "outputDir") {
+                        newOutputDir
+                    } else {
+                        value
+                    }
+                }
+            }
+
+    fun Map<*, *>.withTweakedGenerateNode() = mapValues { (key, value) ->
+        if (key != "generate") {
+            value
+        } else {
+            val generateMap =
+                value as? Map<*, *>
+                    ?: throw GradleException(
+                        "Parsing ${file.absolutePath} failed: \"generate\" is " +
+                                (if (value === null) "null" else value::class.qualifiedName) +
+                                ", but expected ${Map::class.qualifiedName} " +
+                                "(error code 9c2p857gq6)"
+                    )
+            generateMap.withTweakedKotlinSdk()
+        }
+    }
+
+    val yaml = Yaml()
+    val rootObject = file.reader(Charsets.UTF_8).use { reader -> yaml.load<Any?>(reader) }
+
+    val rootMap =
+        rootObject as? Map<*, *>
+            ?: throw GradleException(
+                "Parsing ${file.absolutePath} failed: root is " +
+                        (if (rootObject === null) "null" else rootObject::class.qualifiedName) +
+                        ", but expected ${Map::class.qualifiedName} " +
+                        "(error code 45dw8jx8jd)"
+            )
+
+    val newRootMap = rootMap.withTweakedGenerateNode()
+
+    file.writer(Charsets.UTF_8).use { writer -> yaml.dump(newRootMap, writer) }
 }
