@@ -56,6 +56,8 @@ internal open class MyProjectProviders(
         project.logger
     )
 
+    val pathEnvironmentVariable: Provider<String> = providerFactory.environmentVariable("PATH")
+
     val buildDirectory: Provider<Directory> = projectBuildDirectory.map { it.dir("dataconnect") }
 
     val firebaseToolsVersion: Provider<String> =
@@ -70,13 +72,19 @@ internal open class MyProjectProviders(
 
     private val localConfigs: Provider<List<LocalConfigInfo>> = run {
         val lazyResult: Lazy<List<LocalConfigInfo>> = lazy {
+            val localConfigFiles = projectDirectoryHierarchy.map {
+                val regularFile = it.file("dataconnect.local.toml")
+                Triple(it, regularFile, regularFile.asFile)
+            }
+            logger.info(
+                "Loading {} local config files: {}",
+                localConfigFiles.size,
+                localConfigFiles.joinToString(", ") { it.third.absolutePath }
+            )
             val toml = Toml { this.ignoreUnknownKeys = true }
 
-            projectDirectoryHierarchy
-                .map { it.file("dataconnect.local.toml") }
-                .map { regularFile ->
-                    val file = regularFile.asFile
-                    logger.info("Loading local config file: ${file.absolutePath}")
+            localConfigFiles
+                .map { (directory: Directory, regularFile: RegularFile, file: File) ->
                     val text = file.runCatching { readText() }.fold(
                         onSuccess = { it },
                         onFailure = { exception ->
@@ -85,15 +93,15 @@ internal open class MyProjectProviders(
                                 null // ignore non-existent config files
                             } else {
                                 throw GradleException(
-                                    "reading file failed: ${file.absolutePath} ($exception)" +
+                                    "reading local config file failed: ${file.absolutePath} ($exception)" +
                                         " (error code bj7dxvvw5p)",
                                     exception
                                 )
                             }
                         }
                     )
-                    Triple(text, file, regularFile)
-                }.map { (text, file, regularFile) ->
+                    LocalConfigTextInfo(text, file, directory, regularFile)
+                }.map { (text, file, directory, regularFile) ->
                     val localConfig = if (text === null) {
                         null
                     } else {
@@ -101,19 +109,19 @@ internal open class MyProjectProviders(
                             decodeFromString<LocalConfig>(text, "dataconnect")
                         }.fold(
                             onSuccess = {
-                                logger.info("Loaded local config file ${file.absolutePath}: $it")
+                                logger.info("Loaded local config file {}: {}", file.absolutePath, it)
                                 it
                             },
                             onFailure = { exception ->
                                 throw GradleException(
-                                    "parsing toml file failed: ${file.absolutePath} ($exception)" +
+                                    "parsing local config file failed: ${file.absolutePath} ($exception)" +
                                         " (error code 44dkc2vvpq)",
                                     exception
                                 )
                             }
                         )
                     }
-                    LocalConfigInfo(localConfig, file, regularFile)
+                    LocalConfigInfo(localConfig, file, directory, regularFile)
                 }
         }
         providerFactory.provider { lazyResult.value }
@@ -136,15 +144,22 @@ internal open class MyProjectProviders(
                 if (value === null) {
                     null
                 } else {
-                    val regularFile = projectLayout.projectDirectory.file(value)
-                    val regularFileAbsolutePath = regularFile.asFile.absolutePath
+                    val regularFile = localConfigInfo.directory.file(value)
+                    val file = regularFile.asFile
                     logger.info(
                         "Found {} defined in {}: {} (which resolves to: {})",
                         name,
                         localConfigInfo.file.absolutePath,
                         value,
-                        regularFileAbsolutePath
+                        file.absolutePath
                     )
+                    if (!file.exists()) {
+                        throw GradleException(
+                            "file not found: ${file.absolutePath} " +
+                                "as specified for \"$name\" in ${localConfigInfo.file.absolutePath} " +
+                                "(error code g3b59pdate)"
+                        )
+                    }
                     regularFile
                 }
             }
@@ -218,8 +233,16 @@ private fun Project.projectDirectoryHierarchy(): List<Directory> = buildList {
     }
 }
 
+private data class LocalConfigTextInfo(
+    val localConfigText: String?,
+    val file: File,
+    val directory: Directory,
+    val regularFile: RegularFile
+)
+
 private data class LocalConfigInfo(
     val localConfig: LocalConfig?,
     val file: File,
+    val directory: Directory,
     val regularFile: RegularFile
 )

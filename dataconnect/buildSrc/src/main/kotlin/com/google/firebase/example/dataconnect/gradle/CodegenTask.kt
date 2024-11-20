@@ -20,6 +20,7 @@ import java.io.File
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
@@ -34,6 +35,9 @@ abstract class CodegenTask : DefaultTask() {
 
     @get:Internal
     abstract val nodeExecutable: RegularFileProperty
+
+    @get:Internal
+    abstract val pathEnvironmentVariable: Property<String>
 
     @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
 
@@ -64,8 +68,15 @@ abstract class CodegenTask : DefaultTask() {
         tweakConnectorYamlFiles(tweakedDataConnectConfigDir, outputDirectory.absolutePath)
 
         runCommand(File(tweakedDataConnectConfigDir, "generate.log.txt")) {
-            val arg0 = if (nodeExecutable === null) "node" else nodeExecutable.absolutePath
-            commandLine(arg0, firebaseExecutable.absolutePath, "--debug", "dataconnect:sdk:generate")
+            if (nodeExecutable === null) {
+                commandLine("node")
+            } else {
+                val oldPath = pathEnvironmentVariable.orElse("")
+                val newPath = nodeExecutable.absoluteFile.parent + File.pathSeparator + oldPath
+                environment("PATH", newPath)
+            }
+
+            commandLine(firebaseExecutable.absolutePath, "--debug", "dataconnect:sdk:generate")
             // Specify a fake project because dataconnect:sdk:generate unnecessarily
             // requires one. The actual value does not matter.
             args("--project", "zzyzx")

@@ -30,25 +30,35 @@ import org.gradle.api.tasks.TaskAction
 
 abstract class FirebaseToolsSetupTask : DefaultTask() {
 
-    @get:Input abstract val version: Property<String>
+    @get:Input
+    abstract val version: Property<String>
 
     @get:Internal
     abstract val npmExecutable: RegularFileProperty
 
-    @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
+    @get:Internal
+    abstract val nodeExecutable: RegularFileProperty
+
+    @get:OutputDirectory
+    abstract val outputDirectory: DirectoryProperty
 
     @get:Internal
     val firebaseExecutable: Provider<RegularFile>
         get() = outputDirectory.map { it.file("node_modules/.bin/firebase") }
 
+    @get:Internal
+    abstract val pathEnvironmentVariable: Property<String>
+
     @TaskAction
     fun run() {
         val version: String = version.get()
         val npmExecutable: File? = npmExecutable.orNull?.asFile
+        val nodeExecutable: File? = nodeExecutable.orNull?.asFile
         val outputDirectory: File = outputDirectory.get().asFile
 
         logger.info("version: {}", version)
         logger.info("npmExecutable: {}", npmExecutable?.absolutePath)
+        logger.info("nodeExecutable: {}", nodeExecutable?.absolutePath)
         logger.info("outputDirectory: {}", outputDirectory.absolutePath)
 
         project.delete(outputDirectory)
@@ -58,15 +68,31 @@ abstract class FirebaseToolsSetupTask : DefaultTask() {
         packageJsonFile.writeText("{}", Charsets.UTF_8)
 
         runCommand(File(outputDirectory, "install.log.txt")) {
-            val arg0 = npmExecutable?.absolutePath ?: "npm"
-            commandLine(arg0, "install", "firebase-tools@$version")
+            if (nodeExecutable !== null) {
+                val oldPath = pathEnvironmentVariable.getOrElse("")
+                val newPath = nodeExecutable.absoluteFile.parent + File.pathSeparator + oldPath
+                environment("PATH", newPath)
+                if (npmExecutable !== null) {
+                    commandLine(npmExecutable.absolutePath)
+                } else {
+                    commandLine(File(nodeExecutable.absoluteFile.parentFile, "npm"))
+                }
+            } else if (npmExecutable !== null) {
+                commandLine(npmExecutable.absolutePath)
+            } else {
+                commandLine("npm")
+            }
+
+            args("install", "firebase-tools@$version")
             workingDir(outputDirectory)
         }
     }
+}
 
-    internal fun configureFrom(providers: MyProjectProviders) {
-        version.set(providers.firebaseToolsVersion)
-        npmExecutable.set(providers.npmExecutable)
-        outputDirectory.set(providers.buildDirectory.map { it.dir("firebase-tools") })
-    }
+internal fun FirebaseToolsSetupTask.configureFrom(providers: MyProjectProviders) {
+    version.set(providers.firebaseToolsVersion)
+    npmExecutable.set(providers.npmExecutable)
+    nodeExecutable.set(providers.nodeExecutable)
+    outputDirectory.set(providers.buildDirectory.map { it.dir("firebase-tools") })
+    pathEnvironmentVariable.set(providers.pathEnvironmentVariable)
 }

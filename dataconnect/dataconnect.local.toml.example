@@ -4,26 +4,27 @@
 
 [dataconnect]
 
-# The path of the "npm" executable to use to install firebase-tools.
-# Setting this is normally not necessary; however, if "npm" is not in the global
-# PATH, or the wrong version is in the global PATH, then setting this to the absolute
-# path of the npm executable to use works around that problem. Setting it to null
-# uses "npm" as found in the PATH.
+# The path of the "node" executable to use.
 #
-# NOTE: If this value is set to a value other than null then you almost certainly
-# want to set nodeExecutable as well.
+# Setting this is normally not necessary; however, if "node" is not in the PATH
+# environment variable, or the node version in the PATH is not the desired one,
+# then setting this to the absolute path of the node executable to use works
+# around that problem. A relative path is calculated relative to the directory
+# containing this file.
 #
-# eg. npmExecutable = "/home/myusername/local/nvm/versions/node/v20.13.1/bin/npm"
-npmExecutable = null
-
-# The path of the "node" executable to use to run the "firebase" command.
-# Setting this is normally not necessary; however, if "node" is not in the global
-# PATH, or the wrong version is in the global PATH, then setting this to the absolute
-# path of the node executable to use works around that problem. Setting it to null
-# uses "node" as found in the PATH.
-#
-# NOTE: If this value is set to a value other than null then you almost certainly
-# want to set npmExecutable as well.
+# If not set or set to null, "node" is used.
 #
 # eg. nodeExecutable = "/home/myusername/local/nvm/versions/node/v20.13.1/bin/node"
 nodeExecutable = null
+
+# The path of the "npm" executable to use.
+#
+# Setting this is normally not necessary, as its value is usually inferred
+# correctly. If not set, or set to null, then its value is inferred by first
+# checking the value of `nodeExecutable`; if `nodeExecutable` is set to a non-
+# null value, the the "npm" exectuable from the same directory is used.
+# Otherwise, "npm" is used. A relative path is calculated relative to the
+# directory containing this file.
+#
+# eg. npmExecutable = "/home/myusername/local/nvm/versions/node/v20.13.1/bin/npm"
+npmExecutable = null
