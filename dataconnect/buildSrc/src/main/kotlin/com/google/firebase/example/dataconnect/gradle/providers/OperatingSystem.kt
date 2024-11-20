@@ -28,7 +28,7 @@ import org.gradle.kotlin.dsl.property
 data class OperatingSystem(
     @get:Input val type: Type,
     @get:Input val arch: Architecture,
-    @get:Internal val description: String?,
+    @get:Internal val description: String?
 ) : java.io.Serializable {
 
     enum class Type {
@@ -73,15 +73,16 @@ fun OperatingSystem.Companion.provider(
         val arch = osArch?.let { OperatingSystem.Architecture.forName(it) }
 
         if (type === null || arch === null) {
-            throw GradleException("unable to determine operating system from $description " +
-                " (type=$type, arch=$arch) (error code qecxcvcf8n)"
+            throw GradleException(
+                "unable to determine operating system from $description " +
+                    " (type=$type, arch=$arch) (error code qecxcvcf8n)"
             )
         }
 
         OperatingSystem(
             type = OperatingSystem.Type.Linux,
             arch = OperatingSystem.Architecture.X86_64,
-            description=description,
+            description = description
         )
     }
 
@@ -135,4 +136,3 @@ private fun OperatingSystem.Architecture.Companion.forLowerCaseName(osArch: Stri
         "aarch64", "arm-v8", "arm64" -> OperatingSystem.Architecture.Arm64
         else -> null
     }
-
