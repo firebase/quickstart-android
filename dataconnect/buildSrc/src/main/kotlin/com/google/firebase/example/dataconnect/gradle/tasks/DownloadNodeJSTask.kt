@@ -15,7 +15,6 @@
  */
 
 package com.google.firebase.example.dataconnect.gradle.tasks
-
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJSTask.Source
@@ -30,6 +29,7 @@ import io.ktor.client.request.prepareGet
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.jvm.javaio.copyTo
 import kotlinx.coroutines.runBlocking
+import org.bouncycastle.util.encoders.Hex
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Task
@@ -43,6 +43,7 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
 import org.pgpainless.sop.SOPImpl
 import java.io.File
+import java.security.MessageDigest
 import java.text.NumberFormat
 
 abstract class DownloadNodeJSTask : DefaultTask() {
@@ -180,10 +181,66 @@ private data class DownloadedNodeJsFiles(
 
 private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, outputDirectory: File) {
     val downloadedFiles = downloadNodeJsBinaryDistribution(source, outputDirectory)
-    verifyNodeJSShaSumsSignature(downloadedFiles.shasums)
+    val shasums = verifyNodeJSShaSumsSignature(downloadedFiles.shasums)
+    val expectedSha256Digest =
+        getExpectedSha256DigestFromShasumsFile(downloadedFiles.shasums.absolutePath, shasums, source.downloadFileName)
+    verifySha256Digest(downloadedFiles.binaryDistribution, expectedSha256Digest)
 }
 
-private fun Task.downloadNodeJsBinaryDistribution(source: DownloadOfficialVersion, outputDirectory: File): DownloadedNodeJsFiles {
+private fun Task.verifySha256Digest(file: File, expectedSha256Digest: String) {
+    val actualSha256Digest = file.inputStream().use { inputStream ->
+        val messageDigest = MessageDigest.getInstance("SHA-256")
+        val buffer = ByteArray(8192)
+        while (true) {
+            val readCount = inputStream.read(buffer)
+            if (readCount < 0) {
+                break
+            }
+            messageDigest.update(buffer, 0, readCount)
+        }
+        val digest = messageDigest.digest()
+        Hex.toHexString(digest)
+    }
+
+    if (expectedSha256Digest == actualSha256Digest) {
+        logger.info("{} had the expected SHA256 digest: {}", file.absolutePath, expectedSha256Digest)
+    } else {
+        throw GradleException("Incorrect SHA256 digest of ${file.absolutePath}: " +
+                "$actualSha256Digest (expected $expectedSha256Digest)")
+    }
+}
+
+private fun Task.getExpectedSha256DigestFromShasumsFile(
+    shasumsFilePath: String,
+    shasumsFileBytes: ByteArray,
+    desiredFileName: String
+): String {
+    logger.info("Looking for SHA256 sum of {} in {}", desiredFileName, shasumsFilePath)
+    val lines = String(shasumsFileBytes).lines()
+    val regex = Regex("""\s*(\w+)\s+(.*)\s*""")
+    val shas = lines.mapNotNull { line ->
+        regex.matchEntire(line)?.let { matchResult ->
+            if (matchResult.groupValues[2] == desiredFileName) {
+                matchResult.groupValues[1]
+            } else {
+                null
+            }
+        }
+    }.distinct()
+
+    val sha = shas.singleOrNull() ?: throw GradleException(
+        "$shasumsFilePath defines ${shas.size} SHA256 hashes for "
+                + "$desiredFileName, but expected exactly 1"
+    )
+
+    logger.info("Found SHA256 sum of {} in {}: {}", desiredFileName, shasumsFilePath, sha)
+    return sha
+}
+
+private fun Task.downloadNodeJsBinaryDistribution(
+    source: DownloadOfficialVersion,
+    outputDirectory: File
+): DownloadedNodeJsFiles {
     val httpClient = HttpClient(CIO) {
         expectSuccess = true
         install(Logging) {
@@ -253,17 +310,20 @@ private suspend fun Task.downloadFile(httpClient: HttpClient, url: String, destF
 }
 
 private fun Task.verifyNodeJSShaSumsSignature(file: File): ByteArray {
-    logger.info("Verifying that ${file.absolutePath} has a valid signature " +
-            "from the node.js release signing keys")
+    logger.info(
+        "Verifying that ${file.absolutePath} has a valid signature " +
+                "from the node.js release signing keys"
+    )
 
     val keysListPath = "com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/keys.list"
-    val keyNames: List<String> = String(loadResource(keysListPath)).lines().map{it.trim()}.filter { it.isNotBlank() }
+    val keyNames: List<String> = String(loadResource(keysListPath)).lines().map { it.trim() }.filter { it.isNotBlank() }
     logger.info("Loaded the names of ${keyNames.size} keys from resource: $keysListPath")
 
     val sop = SOPImpl()
     val inlineVerify = sop.inlineVerify()
     keyNames.forEach { keyName ->
-        val certificateBytes = loadResource("com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/$keyName.asc")
+        val certificateBytes =
+            loadResource("com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/$keyName.asc")
         inlineVerify.cert(certificateBytes)
     }
     logger.info("Loading {} to verify its signature", file.absolutePath)

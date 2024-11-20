@@ -40,6 +40,7 @@ dependencies {
   implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
   implementation("org.pgpainless:pgpainless-sop:1.7.2")
+  implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
 }
 
 gradlePlugin {
