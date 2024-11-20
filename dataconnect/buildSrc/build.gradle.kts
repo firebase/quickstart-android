@@ -38,6 +38,8 @@ dependencies {
   implementation("io.ktor:ktor-client-core:$ktorVersion")
   implementation("io.ktor:ktor-client-cio:$ktorVersion")
   implementation("io.ktor:ktor-client-logging:$ktorVersion")
+
+  implementation("org.pgpainless:pgpainless-sop:1.7.2")
 }
 
 gradlePlugin {

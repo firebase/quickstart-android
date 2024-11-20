@@ -41,6 +41,7 @@ import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
+import org.pgpainless.sop.SOPImpl
 import java.io.File
 import java.text.NumberFormat
 
@@ -196,18 +197,21 @@ private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, output
         }
     }
 
+    val nodejsBinaryDistributionFile = File(outputDirectory, source.downloadFileName)
+    val shasumsFile = File(outputDirectory, shasumsFileName)
+
     httpClient.use {
         runBlocking {
-            val url = source.downloadUrl
-            val destFile = File(outputDirectory, source.downloadFileName)
-            downloadFile(httpClient, url, destFile, maxNumDownloadBytes = 200_000_000L)
+            val url = source.shasumsDownloadUrl
+            downloadFile(httpClient, url, shasumsFile, maxNumDownloadBytes = 100_000L)
         }
         runBlocking {
-            val url = source.shasumsDownloadUrl
-            val destFile = File(outputDirectory, shasumsFileName)
-            downloadFile(httpClient, url, destFile, maxNumDownloadBytes = 100_000L)
+            val url = source.downloadUrl
+            downloadFile(httpClient, url, nodejsBinaryDistributionFile, maxNumDownloadBytes = 200_000_000L)
         }
     }
+
+    verifyNodeJSShaSumsSignature(shasumsFile)
 }
 
 private suspend fun Task.downloadFile(httpClient: HttpClient, url: String, destFile: File, maxNumDownloadBytes: Long) {
@@ -234,3 +238,63 @@ private suspend fun Task.downloadFile(httpClient: HttpClient, url: String, destF
 
     logger.info("Successfully downloaded {} to {} ({} bytes)", url, destFile.absolutePath, actualNumBytesDownloadedStr)
 }
+
+private fun Task.verifyNodeJSShaSumsSignature(file: File): ByteArray {
+    logger.info("Verifying that ${file.absolutePath} has a valid signature " +
+            "from the node.js release signing keys")
+
+    val keysListPath = "com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/keys.list"
+    val keyNames: List<String> = String(loadResource(keysListPath)).lines().map{it.trim()}.filter { it.isNotBlank() }
+    logger.info("Loaded the names of ${keyNames.size} keys from resource: $keysListPath")
+
+    val sop = SOPImpl()
+    val inlineVerify = sop.inlineVerify()
+    keyNames.forEach { keyName ->
+        val certificateBytes = loadResource("com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/$keyName.asc")
+        inlineVerify.cert(certificateBytes)
+    }
+    logger.info("Loading {} to verify its signature", file.absolutePath)
+    val verificationResult = file.inputStream().use { inputStream ->
+        inlineVerify.data(inputStream).toByteArrayAndResult()
+    }
+    logger.info("Signature of {} successfully verified", file.absolutePath)
+
+    return verificationResult.bytes
+}
+
+private fun Task.loadResource(path: String): ByteArray {
+    val classLoader = this::class.java.classLoader
+    logger.info("Loading resource: {}", path)
+    return classLoader.getResourceAsStream(path).let { unmanagedInputStream ->
+        unmanagedInputStream.use { inputStream ->
+            if (inputStream === null) {
+                throw GradleException("resource not found: $path (error code 6ygyz2dj2n)")
+            }
+            inputStream.readAllBytes()
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
