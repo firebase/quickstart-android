@@ -17,8 +17,8 @@
 package com.google.firebase.example.dataconnect.gradle.tasks
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
-import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJSTask.Source
-import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJSTask.Source.DownloadOfficialVersion
+import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask.Source
+import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask.Source.DownloadOfficialVersion
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -46,7 +46,7 @@ import java.io.File
 import java.security.MessageDigest
 import java.text.NumberFormat
 
-abstract class DownloadNodeJSTask : DefaultTask() {
+abstract class DownloadNodeJsTask : DefaultTask() {
 
     @get:Nested
     abstract val source: Property<Source>
@@ -84,7 +84,7 @@ abstract class DownloadNodeJSTask : DefaultTask() {
     }
 }
 
-internal fun DownloadNodeJSTask.configureFrom(providers: MyProjectProviders) {
+internal fun DownloadNodeJsTask.configureFrom(providers: MyProjectProviders) {
     source.set(Source.providerFrom(providers))
     outputDirectory.set(providers.buildDirectory.map { it.dir("node") })
 }
@@ -107,7 +107,7 @@ internal fun DownloadOfficialVersion.Companion.describe(source: DownloadOfficial
     if (source === null) {
         "null"
     } else source.run {
-        "DownloadNodeJSTask.Source.DownloadOfficialVersion(" +
+        "DownloadNodeJsTask.Source.DownloadOfficialVersion(" +
                 "version=${version.orNull}, operatingSystem=${operatingSystem.orNull})"
     }
 
@@ -181,7 +181,7 @@ private data class DownloadedNodeJsFiles(
 
 private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, outputDirectory: File) {
     val downloadedFiles = downloadNodeJsBinaryDistribution(source, outputDirectory)
-    val shasums = verifyNodeJSShaSumsSignature(downloadedFiles.shasums)
+    val shasums = verifyNodeJsShaSumsSignature(downloadedFiles.shasums)
     val expectedSha256Digest =
         getExpectedSha256DigestFromShasumsFile(downloadedFiles.shasums.absolutePath, shasums, source.downloadFileName)
     verifySha256Digest(downloadedFiles.binaryDistribution, expectedSha256Digest)
@@ -309,7 +309,7 @@ private suspend fun Task.downloadFile(httpClient: HttpClient, url: String, destF
     logger.info("Successfully downloaded {} to {} ({} bytes)", url, destFile.absolutePath, actualNumBytesDownloadedStr)
 }
 
-private fun Task.verifyNodeJSShaSumsSignature(file: File): ByteArray {
+private fun Task.verifyNodeJsShaSumsSignature(file: File): ByteArray {
     logger.info(
         "Verifying that ${file.absolutePath} has a valid signature " +
                 "from the node.js release signing keys"
