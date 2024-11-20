@@ -29,6 +29,9 @@ import io.ktor.client.request.prepareGet
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.jvm.javaio.copyTo
 import kotlinx.coroutines.runBlocking
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
 import org.bouncycastle.util.encoders.Hex
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -43,6 +46,10 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
 import org.pgpainless.sop.SOPImpl
 import java.io.File
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.attribute.FileTime
+import java.nio.file.attribute.PosixFilePermission
 import java.security.MessageDigest
 import java.text.NumberFormat
 
@@ -185,6 +192,61 @@ private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, output
     val expectedSha256Digest =
         getExpectedSha256DigestFromShasumsFile(downloadedFiles.shasums.absolutePath, shasums, source.downloadFileName)
     verifySha256Digest(downloadedFiles.binaryDistribution, expectedSha256Digest)
+    untar(downloadedFiles.binaryDistribution, outputDirectory)
+}
+
+private fun Task.untar(file: File, destDir: File) {
+    logger.info("Extracting {} to {}", file.absolutePath, destDir.absolutePath)
+    var extractedFileCount = 0
+    var extractedByteCount = 0L
+    file.inputStream().use { fileInputStream ->
+        GzipCompressorInputStream(fileInputStream).use { gzipInputStream ->
+            TarArchiveInputStream(gzipInputStream).use { tarInputStream ->
+                while (true) {
+                    val tarEntry: TarArchiveEntry = tarInputStream.nextEntry ?: break
+                    if (!tarEntry.isFile) {
+                        continue
+                    }
+                    val outputFile = File(destDir, tarEntry.name).absoluteFile
+                    logger.debug("Extracting {}", outputFile.absolutePath)
+                    outputFile.parentFile.mkdirs()
+                    outputFile.outputStream().use { fileOutputStream ->
+                        extractedByteCount += tarInputStream.copyTo(fileOutputStream)
+                    }
+                    extractedFileCount++
+
+                    val lastModifiedTime = FileTime.from(tarEntry.lastModifiedTime.toInstant())
+                    try {
+                        Files.setLastModifiedTime(outputFile.toPath(), lastModifiedTime)
+                    } catch (e: IOException) {
+                        logger.debug("Ignoring error from Files.setLastModifiedTime({}, {}): {}", outputFile.absolutePath, lastModifiedTime, e.toString())
+                    }
+
+                    val newPermissions = buildSet {
+                        add(PosixFilePermission.OWNER_READ)
+                        add(PosixFilePermission.OWNER_WRITE)
+
+                        add(PosixFilePermission.GROUP_READ)
+                        add(PosixFilePermission.OTHERS_READ)
+
+                        val mode = tarEntry.mode
+                        if ((mode and 0x100) == 0x100) {
+                            add(PosixFilePermission.OWNER_EXECUTE)
+                            add(PosixFilePermission.GROUP_EXECUTE)
+                            add(PosixFilePermission.OTHERS_EXECUTE)
+                        }
+                    }
+                    try {
+                        Files.setPosixFilePermissions(outputFile.toPath(), newPermissions)
+                    } catch (e: UnsupportedOperationException) {
+                        logger.debug("Ignoring error from Files.setPosixFilePermissions({}, {}}): {}", outputFile.absolutePath, newPermissions, e.toString())
+                    }
+                }
+            }
+        }
+    }
+    val extractedByteCountStr = NumberFormat.getNumberInstance().format(extractedByteCount)
+    logger.info("Extracted {} files ({} bytes) from {} to {}", extractedFileCount, extractedByteCountStr, file.absolutePath, destDir.absolutePath)
 }
 
 private fun Task.verifySha256Digest(file: File, expectedSha256Digest: String) {
