@@ -17,6 +17,7 @@
 package com.google.firebase.example.dataconnect.gradle
 
 import com.android.build.api.variant.ApplicationVariant
+import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
 import java.io.File
 import java.io.FileNotFoundException
 import javax.inject.Inject

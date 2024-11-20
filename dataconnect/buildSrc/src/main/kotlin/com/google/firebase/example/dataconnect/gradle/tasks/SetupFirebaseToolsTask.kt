@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.firebase.example.dataconnect.gradle
+package com.google.firebase.example.dataconnect.gradle.tasks
 
+import com.google.firebase.example.dataconnect.gradle.MyProjectProviders
+import com.google.firebase.example.dataconnect.gradle.runCommand
 import java.io.File
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
