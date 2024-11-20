@@ -25,11 +25,26 @@ import com.google.firebase.example.dataconnect.gradle.tasks.GenerateDataConnectS
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
 import com.google.firebase.example.dataconnect.gradle.tasks.configureFrom
 import java.util.Locale
+import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.newInstance
 import org.gradle.kotlin.dsl.register
+
+abstract class FooTask : DefaultTask() {
+
+    @get:InputFile
+    abstract val nodeExecutable: RegularFileProperty
+
+    @TaskAction
+    fun run() {
+        throw Exception("in task $name, nodeExecutable=${nodeExecutable.get().asFile}")
+    }
+}
 
 @Suppress("unused")
 abstract class DataConnectGradlePlugin : Plugin<Project> {
@@ -38,8 +53,12 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
         project.extensions.create("dataconnect", DataConnectExtension::class.java)
         val providers = project.objects.newInstance<MyProjectProviders>()
 
-        project.tasks.register<DownloadNodeJsTask>("downloadNodeJs") {
+        val x = project.tasks.register<DownloadNodeJsTask>("downloadNodeJs") {
             configureFrom(providers)
+        }
+
+        project.tasks.register<FooTask>("foo") {
+            nodeExecutable.set(x.flatMap { it.nodeExecutable })
         }
 
         project.tasks.register<SetupFirebaseToolsTask>("setupFirebaseToolsForDataConnect") {

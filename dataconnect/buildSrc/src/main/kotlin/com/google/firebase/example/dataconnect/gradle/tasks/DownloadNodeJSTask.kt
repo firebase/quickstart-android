@@ -46,13 +46,16 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
+import org.gradle.kotlin.dsl.property
 import org.pgpainless.sop.SOPImpl
 
 abstract class DownloadNodeJsTask : DefaultTask() {
@@ -63,10 +66,18 @@ abstract class DownloadNodeJsTask : DefaultTask() {
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
 
+    @get:Internal
+    val nodeExecutable: Provider<RegularFile> by lazy {
+        outputDirectory.map { it.file(nodeExecutablePathUnderOutputDirectory.get()) }
+    }
+
+    private val nodeExecutablePathUnderOutputDirectory: Property<String> = project.objects.property()
+
     @TaskAction
     fun run() {
         val source = source.get()
-        val outputDirectory = outputDirectory.get().asFile
+        val outputDirectoryRegularFile = outputDirectory.get()
+        val outputDirectory = outputDirectoryRegularFile.asFile
 
         logger.info("source: {}", Source.describe(source))
         logger.info("outputDirectory: {}", outputDirectory.absolutePath)
@@ -75,6 +86,21 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
         when (source) {
             is DownloadOfficialVersion -> downloadOfficialVersion(source, outputDirectory)
+        }
+
+        val nodeExecutableFiles = outputDirectory.walk().filter {
+            it.isFile && it.name == "node"
+        }.toList()
+        val nodeExecutableFile = nodeExecutableFiles.singleOrNull() ?: throw GradleException(
+            "Found ${nodeExecutableFiles.size} node executable files " +
+                "in ${outputDirectory.absolutePath}, but expected exactly 1: " +
+                nodeExecutableFiles.joinToString(", ") { it.absolutePath } +
+                "(error code v6n2g6my3y)"
+        )
+
+        nodeExecutablePathUnderOutputDirectory.apply {
+            set(outputDirectory.toPath().relativize(nodeExecutableFile.toPath()).toString())
+            finalizeValue()
         }
     }
 
