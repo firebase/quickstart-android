@@ -16,6 +16,8 @@
 
 package com.google.firebase.example.dataconnect.gradle.providers
 
+import java.io.File
+import java.io.FileNotFoundException
 import kotlinx.serialization.Serializable
 import net.peanuuutz.tomlkt.Toml
 import net.peanuuutz.tomlkt.decodeFromString
@@ -25,13 +27,11 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
-import java.io.File
-import java.io.FileNotFoundException
 
 internal class LocalConfigProviders(
     projectDirectoryHierarchy: List<Directory>,
     private val providerFactory: ProviderFactory,
-    private val logger: Logger,
+    private val logger: Logger
 ) {
 
     val npmExecutable: Provider<RegularFile> = provideFileFromLocalSettings("npmExecutable") {
@@ -63,8 +63,8 @@ internal class LocalConfigProviders(
                     if (!file.exists()) {
                         throw GradleException(
                             "file not found: ${file.absolutePath} " +
-                                    "as specified for \"$name\" in ${localConfigInfo.file.absolutePath} " +
-                                    "(error code g3b59pdate)"
+                                "as specified for \"$name\" in ${localConfigInfo.file.absolutePath} " +
+                                "(error code g3b59pdate)"
                         )
                     }
                     regularFile
@@ -105,7 +105,7 @@ internal class LocalConfigProviders(
                             } else {
                                 throw GradleException(
                                     "reading local config file failed: ${file.absolutePath} ($exception)" +
-                                            " (error code bj7dxvvw5p)",
+                                        " (error code bj7dxvvw5p)",
                                     exception
                                 )
                             }
@@ -126,7 +126,7 @@ internal class LocalConfigProviders(
                             onFailure = { exception ->
                                 throw GradleException(
                                     "parsing local config file failed: ${file.absolutePath} ($exception)" +
-                                            " (error code 44dkc2vvpq)",
+                                        " (error code 44dkc2vvpq)",
                                     exception
                                 )
                             }
@@ -137,7 +137,6 @@ internal class LocalConfigProviders(
         }
         providerFactory.provider { lazyResult.value }
     }
-
 }
 
 @Serializable

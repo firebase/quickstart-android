@@ -19,7 +19,7 @@ package com.google.firebase.example.dataconnect.gradle.providers
 import com.android.build.api.variant.ApplicationVariant
 import com.google.firebase.example.dataconnect.gradle.DataConnectExtension
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
-import net.peanuuutz.tomlkt.Toml
+import javax.inject.Inject
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
@@ -30,9 +30,6 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.kotlin.dsl.getByType
-import java.io.File
-import java.io.FileNotFoundException
-import javax.inject.Inject
 
 internal open class MyProjectProviders(
     projectBuildDirectory: DirectoryProperty,

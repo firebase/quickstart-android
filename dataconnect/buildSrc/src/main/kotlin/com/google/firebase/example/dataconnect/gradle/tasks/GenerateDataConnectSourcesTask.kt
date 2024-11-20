@@ -16,7 +16,6 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
-
 import com.google.firebase.example.dataconnect.gradle.providers.MyVariantProviders
 import java.io.File
 import org.gradle.api.DefaultTask
@@ -118,9 +117,9 @@ private fun tweakConnectorYamlFile(file: File, newOutputDir: String, logger: Log
                     value as? Map<*, *>
                         ?: throw GradleException(
                             "Parsing ${file.absolutePath} failed: \"kotlinSdk\" is " +
-                                    (if (value === null) "null" else value::class.qualifiedName) +
-                                    ", but expected ${Map::class.qualifiedName} " +
-                                    "(error code m697s27yxn)"
+                                (if (value === null) "null" else value::class.qualifiedName) +
+                                ", but expected ${Map::class.qualifiedName} " +
+                                "(error code m697s27yxn)"
                         )
                 kotlinSdkMap.mapValues { (key, value) ->
                     if (key == "outputDir") {
@@ -139,9 +138,9 @@ private fun tweakConnectorYamlFile(file: File, newOutputDir: String, logger: Log
                 value as? Map<*, *>
                     ?: throw GradleException(
                         "Parsing ${file.absolutePath} failed: \"generate\" is " +
-                                (if (value === null) "null" else value::class.qualifiedName) +
-                                ", but expected ${Map::class.qualifiedName} " +
-                                "(error code 9c2p857gq6)"
+                            (if (value === null) "null" else value::class.qualifiedName) +
+                            ", but expected ${Map::class.qualifiedName} " +
+                            "(error code 9c2p857gq6)"
                     )
             generateMap.withTweakedKotlinSdk()
         }
@@ -154,9 +153,9 @@ private fun tweakConnectorYamlFile(file: File, newOutputDir: String, logger: Log
         rootObject as? Map<*, *>
             ?: throw GradleException(
                 "Parsing ${file.absolutePath} failed: root is " +
-                        (if (rootObject === null) "null" else rootObject::class.qualifiedName) +
-                        ", but expected ${Map::class.qualifiedName} " +
-                        "(error code 45dw8jx8jd)"
+                    (if (rootObject === null) "null" else rootObject::class.qualifiedName) +
+                    ", but expected ${Map::class.qualifiedName} " +
+                    "(error code 45dw8jx8jd)"
             )
 
     val newRootMap = rootMap.withTweakedGenerateNode()
