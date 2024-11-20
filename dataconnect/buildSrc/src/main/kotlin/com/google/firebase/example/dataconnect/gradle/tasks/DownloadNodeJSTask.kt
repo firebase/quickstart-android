@@ -31,6 +31,8 @@ import io.ktor.utils.io.jvm.javaio.copyTo
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
+import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
 import org.bouncycastle.util.encoders.Hex
 import org.gradle.api.DefaultTask
@@ -93,7 +95,9 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
 internal fun DownloadNodeJsTask.configureFrom(providers: MyProjectProviders) {
     source.set(Source.providerFrom(providers))
+    source.disallowUnsafeRead()
     outputDirectory.set(providers.buildDirectory.map { it.dir("node") })
+    outputDirectory.disallowUnsafeRead()
 }
 
 internal fun Source.Companion.providerFrom(providers: MyProjectProviders): Provider<Source> {
@@ -107,7 +111,9 @@ internal fun Source.Companion.providerFrom(providers: MyProjectProviders): Provi
 
 internal fun DownloadOfficialVersion.updateFrom(providers: MyProjectProviders) {
     version.set("20.9.0")
+    version.disallowUnsafeRead()
     operatingSystem.set(providers.operatingSystem)
+    operatingSystem.disallowUnsafeRead()
 }
 
 internal fun DownloadOfficialVersion.Companion.describe(source: DownloadOfficialVersion?): String =
@@ -192,7 +198,15 @@ private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, output
     val expectedSha256Digest =
         getExpectedSha256DigestFromShasumsFile(downloadedFiles.shasums.absolutePath, shasums, source.downloadFileName)
     verifySha256Digest(downloadedFiles.binaryDistribution, expectedSha256Digest)
-    untar(downloadedFiles.binaryDistribution, outputDirectory)
+
+    if (downloadedFiles.binaryDistribution.name.endsWith(".tar.gz")) {
+        untar(downloadedFiles.binaryDistribution, outputDirectory)
+    } else if (downloadedFiles.binaryDistribution.name.endsWith(".zip")) {
+        unzip(downloadedFiles.binaryDistribution, outputDirectory)
+    } else {
+        throw GradleException("Unsupported archive: ${downloadedFiles.binaryDistribution.absolutePath} " +
+                "(only .tar.gz and .zip extensions are supported) (error code pvrvw8sk9t)")
+    }
 }
 
 private fun Task.untar(file: File, destDir: File) {
@@ -242,6 +256,58 @@ private fun Task.untar(file: File, destDir: File) {
                         logger.debug("Ignoring error from Files.setPosixFilePermissions({}, {}}): {}", outputFile.absolutePath, newPermissions, e.toString())
                     }
                 }
+            }
+        }
+    }
+    val extractedByteCountStr = NumberFormat.getNumberInstance().format(extractedByteCount)
+    logger.info("Extracted {} files ({} bytes) from {} to {}", extractedFileCount, extractedByteCountStr, file.absolutePath, destDir.absolutePath)
+}
+private fun Task.unzip(file: File, destDir: File) {
+    logger.info("Extracting {} to {}", file.absolutePath, destDir.absolutePath)
+    var extractedFileCount = 0
+    var extractedByteCount = 0L
+    file.inputStream().use { fileInputStream ->
+        ZipArchiveInputStream(fileInputStream).use { zipInputStream ->
+                while (true) {
+                    val zipEntry: ZipArchiveEntry = zipInputStream.nextEntry ?: break
+                    if (zipEntry.isDirectory) {
+                        continue
+                    }
+                    val outputFile = File(destDir, zipEntry.name).absoluteFile
+                    logger.debug("Extracting {}", outputFile.absolutePath)
+                    outputFile.parentFile.mkdirs()
+                    outputFile.outputStream().use { fileOutputStream ->
+                        extractedByteCount += zipInputStream.copyTo(fileOutputStream)
+                    }
+                    extractedFileCount++
+
+                    val lastModifiedTime = FileTime.from(zipEntry.lastModifiedTime.toInstant())
+                    try {
+                        Files.setLastModifiedTime(outputFile.toPath(), lastModifiedTime)
+                    } catch (e: IOException) {
+                        logger.debug("Ignoring error from Files.setLastModifiedTime({}, {}): {}", outputFile.absolutePath, lastModifiedTime, e.toString())
+                    }
+
+                    val newPermissions = buildSet {
+                        add(PosixFilePermission.OWNER_READ)
+                        add(PosixFilePermission.OWNER_WRITE)
+
+                        add(PosixFilePermission.GROUP_READ)
+                        add(PosixFilePermission.OTHERS_READ)
+
+                        val mode = zipEntry.unixMode
+                        if ((mode and 0x100) == 0x100) {
+                            add(PosixFilePermission.OWNER_EXECUTE)
+                            add(PosixFilePermission.GROUP_EXECUTE)
+                            add(PosixFilePermission.OTHERS_EXECUTE)
+                        }
+                    }
+                    try {
+                        Files.setPosixFilePermissions(outputFile.toPath(), newPermissions)
+                    } catch (e: UnsupportedOperationException) {
+                        logger.debug("Ignoring error from Files.setPosixFilePermissions({}, {}}): {}", outputFile.absolutePath, newPermissions, e.toString())
+                    }
+
             }
         }
     }
