@@ -178,8 +178,8 @@ internal open class MyProjectProviders(
 internal open class MyVariantProviders(
     variant: ApplicationVariant,
     val projectProviders: MyProjectProviders,
+    val firebaseExecutable: Provider<RegularFile>,
     ext: DataConnectExtension,
-    firebaseToolsSetupTask: FirebaseToolsSetupTask,
     objectFactory: ObjectFactory
 ) {
 
@@ -192,8 +192,8 @@ internal open class MyVariantProviders(
     ) : this(
         variant = variant,
         projectProviders = projectProviders,
+        firebaseExecutable = project.firebaseToolsSetupTask.firebaseExecutable,
         ext = project.extensions.getByType<DataConnectExtension>(),
-        firebaseToolsSetupTask = project.firebaseToolsSetupTask,
         objectFactory = project.objects
     )
 
@@ -209,16 +209,14 @@ internal open class MyVariantProviders(
                 )
         objectFactory.directoryProperty().also { property -> property.set(dir) }
     }
-
-    val firebaseExecutable: Provider<RegularFile> = firebaseToolsSetupTask.firebaseExecutable
 }
 
-private val Project.firebaseToolsSetupTask: FirebaseToolsSetupTask
+private val Project.firebaseToolsSetupTask: SetupFirebaseToolsTask
     get() {
-        val tasks = tasks.filterIsInstance<FirebaseToolsSetupTask>()
+        val tasks = tasks.filterIsInstance<SetupFirebaseToolsTask>()
         if (tasks.size != 1) {
             throw GradleException(
-                "expected exactly 1 FirebaseToolsSetupTask task to be registered, but found " +
+                "expected exactly 1 SetupFirebaseToolsTask task to be registered, but found " +
                     "${tasks.size}: [${tasks.map { it.name }.sorted().joinToString(", ")}]"
             )
         }

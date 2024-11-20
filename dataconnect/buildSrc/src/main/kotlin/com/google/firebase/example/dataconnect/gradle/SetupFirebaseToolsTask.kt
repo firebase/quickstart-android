@@ -28,7 +28,7 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-abstract class FirebaseToolsSetupTask : DefaultTask() {
+abstract class SetupFirebaseToolsTask : DefaultTask() {
 
     @get:Input
     abstract val version: Property<String>
@@ -89,7 +89,7 @@ abstract class FirebaseToolsSetupTask : DefaultTask() {
     }
 }
 
-internal fun FirebaseToolsSetupTask.configureFrom(providers: MyProjectProviders) {
+internal fun SetupFirebaseToolsTask.configureFrom(providers: MyProjectProviders) {
     version.set(providers.firebaseToolsVersion)
     npmExecutable.set(providers.npmExecutable)
     nodeExecutable.set(providers.nodeExecutable)

@@ -32,7 +32,7 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
         project.extensions.create("dataconnect", DataConnectExtension::class.java)
         val providers = project.objects.newInstance<MyProjectProviders>()
 
-        project.tasks.register<FirebaseToolsSetupTask>("setupFirebaseToolsForDataConnect") {
+        project.tasks.register<SetupFirebaseToolsTask>("setupFirebaseToolsForDataConnect") {
             configureFrom(providers)
         }
 
@@ -50,14 +50,14 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
     ) {
         val variantNameTitleCase = variant.name.replaceFirstChar { it.titlecase(Locale.US) }
 
-        val generateCodeTask =
-            project.tasks.register<CodegenTask>("generate${variantNameTitleCase}DataConnectSources") {
-                configureFrom(providers)
-            }
+        val generateCodeTaskName = "generate${variantNameTitleCase}DataConnectSources"
+        val generateCodeTask = project.tasks.register<GenerateDataConnectSourcesTask>(generateCodeTaskName) {
+            configureFrom(providers)
+        }
 
         variant.sources.java!!.addGeneratedSourceDirectory(
             generateCodeTask,
-            CodegenTask::outputDirectory
+            GenerateDataConnectSourcesTask::outputDirectory
         )
     }
 }

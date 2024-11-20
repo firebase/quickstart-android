@@ -27,7 +27,7 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-abstract class CodegenTask : DefaultTask() {
+abstract class GenerateDataConnectSourcesTask : DefaultTask() {
 
     @get:InputDirectory abstract val dataConnectConfigDir: DirectoryProperty
 
@@ -83,11 +83,11 @@ abstract class CodegenTask : DefaultTask() {
             workingDir(tweakedDataConnectConfigDir)
         }
     }
+}
 
-    internal fun configureFrom(providers: MyVariantProviders) {
-        dataConnectConfigDir.set(providers.dataConnectConfigDir)
-        firebaseExecutable.set(providers.firebaseExecutable)
-        nodeExecutable.set(providers.projectProviders.nodeExecutable)
-        tweakedDataConnectConfigDir.set(providers.buildDirectory.map { it.dir("config") })
-    }
+internal fun GenerateDataConnectSourcesTask.configureFrom(providers: MyVariantProviders) {
+    dataConnectConfigDir.set(providers.dataConnectConfigDir)
+    firebaseExecutable.set(providers.firebaseExecutable)
+    nodeExecutable.set(providers.projectProviders.nodeExecutable)
+    tweakedDataConnectConfigDir.set(providers.buildDirectory.map { it.dir("config") })
 }
