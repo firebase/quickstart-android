@@ -33,6 +33,11 @@ dependencies {
   //  depend on a newer version of the `kotlinx.serialization` plugin, which
   //  requires a newer version of Kotlin.
   implementation("net.peanuuutz.tomlkt:tomlkt:0.3.7")
+
+  val ktorVersion = "2.3.12"
+  implementation("io.ktor:ktor-client-core:$ktorVersion")
+  implementation("io.ktor:ktor-client-cio:$ktorVersion")
+  implementation("io.ktor:ktor-client-logging:$ktorVersion")
 }
 
 gradlePlugin {
