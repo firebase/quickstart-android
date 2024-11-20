@@ -26,14 +26,9 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.get
 import io.ktor.client.request.prepareGet
-import io.ktor.http.contentLength
 import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.core.isEmpty
-import io.ktor.utils.io.core.readBytes
 import io.ktor.utils.io.jvm.javaio.copyTo
-import io.ktor.utils.io.readRemaining
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -80,6 +75,7 @@ abstract class DownloadNodeJSTask : DefaultTask() {
 
             @get:Input
             val version: Property<String>
+
             @get:Nested
             val operatingSystem: Property<OperatingSystem>
         }
@@ -118,6 +114,12 @@ internal fun Source.Companion.describe(source: Source?): String = when (source) 
     is DownloadOfficialVersion -> DownloadOfficialVersion.describe(source)
 }
 
+internal val DownloadOfficialVersion.downloadUrlPrefix: String get() = "https://nodejs.org/dist/v${version.get()}"
+
+private const val shasumsFileName = "SHASUMS256.txt.asc"
+
+internal val DownloadOfficialVersion.shasumsDownloadUrl: String get() = "$downloadUrlPrefix/$shasumsFileName"
+
 /**
  * The URL to download the Node.js binary distribution.
  *
@@ -131,7 +133,7 @@ internal fun Source.Companion.describe(source: Source?): String = when (source) 
  * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x64.zip
  * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x86.zip
  */
-internal val DownloadOfficialVersion.downloadUrl: String get() = "https://nodejs.org/dist/v${version.get()}/$downloadFileName"
+internal val DownloadOfficialVersion.downloadUrl: String get() = "$downloadUrlPrefix/$downloadFileName"
 
 /**
  * The file name of the download for the Node.js binary distribution.
@@ -171,57 +173,64 @@ internal val DownloadOfficialVersion.downloadFileName: String
     }
 
 private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, outputDirectory: File) {
-    val url = source.downloadUrl
-    val destFile = File(outputDirectory, source.downloadFileName)
-    logger.info("Downloading {} to {}", url, destFile.absolutePath)
+    val httpClient = HttpClient(CIO) {
+        expectSuccess = true
+        install(Logging) {
+            val gradleLogger = this@downloadOfficialVersion.logger
 
-    runBlocking {
-        val httpClient = HttpClient(CIO) {
-            expectSuccess = true
-            install(Logging) {
-                val gradleLogger = this@downloadOfficialVersion.logger
+            level = if (gradleLogger.isDebugEnabled) {
+                LogLevel.HEADERS
+            } else if (gradleLogger.isInfoEnabled) {
+                LogLevel.INFO
+            } else {
+                LogLevel.NONE
+            }
 
-                level = if (gradleLogger.isDebugEnabled) {
-                    LogLevel.HEADERS
-                } else if (gradleLogger.isInfoEnabled) {
-                    LogLevel.INFO
-                } else {
-                    LogLevel.NONE
-                }
-
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        message.lines().forEach { line ->
-                            gradleLogger.info("ktor: {}", line.trimEnd())
-                        }
+            logger = object : Logger {
+                override fun log(message: String) {
+                    message.lines().forEach { line ->
+                        gradleLogger.info("ktor: {}", line.trimEnd())
                     }
                 }
             }
         }
-
-        // Set a limit to avoid DoS; the largest package size seems to be around 50MB
-        // so set the limit to a value significantly larger than that.
-        val maxNumBytesToDownload = 200_000_000L
-        val actualNumBytesDownloaded = httpClient.use {
-            httpClient.prepareGet(url).execute { httpResponse ->
-                val downloadChannel: ByteReadChannel = httpResponse.body()
-                destFile.parentFile.mkdirs()
-                destFile.outputStream().use { destFileOutputStream ->
-                    downloadChannel.copyTo(destFileOutputStream, limit=maxNumBytesToDownload)
-                }
-            }
-        }
-
-        val numberFormat = NumberFormat.getNumberInstance()
-        val actualNumBytesDownloadedStr = numberFormat.format(actualNumBytesDownloaded)
-        if (actualNumBytesDownloaded >= maxNumBytesToDownload) {
-            val maxNumBytesToDownloadStr = numberFormat.format(maxNumBytesToDownload)
-            throw GradleException("Downloading $url failed: maximum file size $maxNumBytesToDownloadStr bytes exceeded; " +
-            "cancelled after downloading $actualNumBytesDownloadedStr bytes " +
-                "(error code hvmhysn5vy)"
-            )
-        }
-
-        logger.info("Successfully downloaded {} to {} ({} bytes)", url, destFile.absolutePath, actualNumBytesDownloadedStr)
     }
+
+    httpClient.use {
+        runBlocking {
+            val url = source.downloadUrl
+            val destFile = File(outputDirectory, source.downloadFileName)
+            downloadFile(httpClient, url, destFile, maxNumDownloadBytes = 200_000_000L)
+        }
+        runBlocking {
+            val url = source.shasumsDownloadUrl
+            val destFile = File(outputDirectory, shasumsFileName)
+            downloadFile(httpClient, url, destFile, maxNumDownloadBytes = 100_000L)
+        }
+    }
+}
+
+private suspend fun Task.downloadFile(httpClient: HttpClient, url: String, destFile: File, maxNumDownloadBytes: Long) {
+    logger.info("Downloading {} to {}", url, destFile.absolutePath)
+
+    val actualNumBytesDownloaded = httpClient.prepareGet(url).execute { httpResponse ->
+        val downloadChannel: ByteReadChannel = httpResponse.body()
+        destFile.parentFile.mkdirs()
+        destFile.outputStream().use { destFileOutputStream ->
+            downloadChannel.copyTo(destFileOutputStream, limit = maxNumDownloadBytes)
+        }
+    }
+
+    val numberFormat = NumberFormat.getNumberInstance()
+    val actualNumBytesDownloadedStr = numberFormat.format(actualNumBytesDownloaded)
+    if (actualNumBytesDownloaded >= maxNumDownloadBytes) {
+        val maxNumDownloadBytesStr = numberFormat.format(maxNumDownloadBytes)
+        throw GradleException(
+            "Downloading $url failed: maximum file size $maxNumDownloadBytesStr bytes exceeded; " +
+                    "cancelled after downloading $actualNumBytesDownloadedStr bytes " +
+                    "(error code hvmhysn5vy)"
+        )
+    }
+
+    logger.info("Successfully downloaded {} to {} ({} bytes)", url, destFile.absolutePath, actualNumBytesDownloadedStr)
 }
