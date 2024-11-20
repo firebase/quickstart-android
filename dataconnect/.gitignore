@@ -15,3 +15,5 @@
 local.properties
 .dataconnect/
 .firebaserc
+.firebase/
+*.log
