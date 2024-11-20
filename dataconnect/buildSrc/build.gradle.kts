@@ -33,6 +33,8 @@ dependencies {
   //  depend on a newer version of the `kotlinx.serialization` plugin, which
   //  requires a newer version of Kotlin.
   implementation("net.peanuuutz.tomlkt:tomlkt:0.3.7")
+
+  implementation("com.github.oshi:oshi-core:6.6.5")
 }
 
 gradlePlugin {

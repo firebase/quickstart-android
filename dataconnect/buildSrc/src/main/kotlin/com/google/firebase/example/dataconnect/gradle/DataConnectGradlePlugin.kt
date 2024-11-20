@@ -29,11 +29,40 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.newInstance
 import org.gradle.kotlin.dsl.register
+import oshi.SystemInfo
 
 @Suppress("unused")
 abstract class DataConnectGradlePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
+        val si = SystemInfo()
+        si.operatingSystem.let {
+            println("family: ${it.family}")
+            println("bitness: ${it.bitness}")
+            println("manufacturer: ${it.manufacturer}")
+            println("versionInfo.version: ${it.versionInfo.version}")
+            println("versionInfo.codeName: ${it.versionInfo.codeName}")
+            println("versionInfo.buildNumber: ${it.versionInfo.buildNumber}")
+        }
+        si.hardware.let {
+            println("computerSystem.model: ${it.computerSystem.model}")
+            println("computerSystem.manufacturer: ${it.computerSystem.manufacturer}")
+            println("computerSystem.firmware: ${it.computerSystem.firmware}")
+            println("computerSystem.baseboard: ${it.computerSystem.baseboard}")
+            println("computerSystem.hardwareUUID: ${it.computerSystem.hardwareUUID}")
+            println("computerSystem.serialNumber: ${it.computerSystem.serialNumber}")
+            println("processorIdentifier.family: ${it.processor.processorIdentifier.family}")
+            println("processorIdentifier.name: ${it.processor.processorIdentifier.name}")
+            println("processorIdentifier.model: ${it.processor.processorIdentifier.model}")
+            println("processorIdentifier.identifier: ${it.processor.processorIdentifier.identifier}")
+            println("processorIdentifier.processorID: ${it.processor.processorIdentifier.processorID}")
+            println("processorIdentifier.isCpu64bit: ${it.processor.processorIdentifier.isCpu64bit}")
+            println("processorIdentifier.microarchitecture: ${it.processor.processorIdentifier.microarchitecture}")
+            println("processorIdentifier.stepping: ${it.processor.processorIdentifier.stepping}")
+            println("processorIdentifier.vendor: ${it.processor.processorIdentifier.vendor}")
+            println("processorIdentifier.vendorFreq: ${it.processor.processorIdentifier.vendorFreq}")
+        }
+
         project.extensions.create("dataconnect", DataConnectExtension::class.java)
         val providers = project.objects.newInstance<MyProjectProviders>()
 
