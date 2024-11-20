@@ -16,19 +16,16 @@
 
 package com.google.firebase.example.dataconnect.gradle
 
-import java.io.File
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
 
 @Serializable
 internal data class LocalConfig(
     val npmExecutable: String? = null,
-    val nodeExecutable: String? = null,
-    @Transient val srcFile: File? = null
+    val nodeExecutable: String? = null
 ) :
     java.io.Serializable {
     companion object {
         @Suppress("ConstPropertyName")
-        private const val serialVersionUID = 6103369922496556758L
+        private const val serialVersionUID = 6103369929496556758L
     }
 }

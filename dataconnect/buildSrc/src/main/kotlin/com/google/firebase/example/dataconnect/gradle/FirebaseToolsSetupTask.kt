@@ -18,15 +18,13 @@ package com.google.firebase.example.dataconnect.gradle
 
 import java.io.File
 import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFile
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
@@ -34,8 +32,8 @@ abstract class FirebaseToolsSetupTask : DefaultTask() {
 
     @get:Input abstract val version: Property<String>
 
-    @get:InputFile @get:Optional
-    abstract val npmExecutable: Property<File>
+    @get:Internal
+    abstract val npmExecutable: RegularFileProperty
 
     @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
 
@@ -46,7 +44,7 @@ abstract class FirebaseToolsSetupTask : DefaultTask() {
     @TaskAction
     fun run() {
         val version: String = version.get()
-        val npmExecutable: File? = npmExecutable.orNull
+        val npmExecutable: File? = npmExecutable.orNull?.asFile
         val outputDirectory: File = outputDirectory.get().asFile
 
         logger.info("version: {}", version)
@@ -68,27 +66,7 @@ abstract class FirebaseToolsSetupTask : DefaultTask() {
 
     internal fun configureFrom(providers: MyProjectProviders) {
         version.set(providers.firebaseToolsVersion)
+        npmExecutable.set(providers.npmExecutable)
         outputDirectory.set(providers.buildDirectory.map { it.dir("firebase-tools") })
-
-        npmExecutable.set(
-            providers.localConfigs.map(
-                TransformerInterop { localConfigs ->
-                    val result = localConfigs.filter {
-                        it.npmExecutable !== null
-                    }.map { Pair(it.srcFile, it.npmExecutable!!) }.firstOrNull()
-                    result?.let { (configFile, npmExecutablePath) ->
-                        File(npmExecutablePath).also {
-                            if (!it.exists()) {
-                                throw GradleException(
-                                    "npmExecutable specified in ${configFile?.absolutePath} " +
-                                        "does not exist: ${it.absolutePath} " +
-                                        "(error code eaw5gppkep)"
-                                )
-                            }
-                        }
-                    }
-                }
-            )
-        )
     }
 }

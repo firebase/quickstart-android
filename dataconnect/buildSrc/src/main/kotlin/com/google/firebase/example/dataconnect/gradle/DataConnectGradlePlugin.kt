@@ -38,7 +38,7 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
 
         val androidComponents = project.extensions.getByType<ApplicationAndroidComponentsExtension>()
         androidComponents.onVariants { variant ->
-            val variantProviders = project.objects.newInstance<MyVariantProviders>(variant)
+            val variantProviders = project.objects.newInstance<MyVariantProviders>(variant, providers)
             registerVariantTasks(project, variant, variantProviders)
         }
     }

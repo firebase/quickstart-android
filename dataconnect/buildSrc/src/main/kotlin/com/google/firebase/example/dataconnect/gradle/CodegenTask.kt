@@ -32,6 +32,9 @@ abstract class CodegenTask : DefaultTask() {
 
     @get:InputFile abstract val firebaseExecutable: RegularFileProperty
 
+    @get:Internal
+    abstract val nodeExecutable: RegularFileProperty
+
     @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
 
     @get:Internal abstract val tweakedDataConnectConfigDir: DirectoryProperty
@@ -40,11 +43,13 @@ abstract class CodegenTask : DefaultTask() {
     fun run() {
         val dataConnectConfigDir = dataConnectConfigDir.get().asFile
         val firebaseExecutable = firebaseExecutable.get().asFile
+        val nodeExecutable = nodeExecutable.orNull?.asFile
         val outputDirectory = outputDirectory.get().asFile
         val tweakedDataConnectConfigDir = tweakedDataConnectConfigDir.get().asFile
 
         logger.info("dataConnectConfigDir: {}", dataConnectConfigDir)
         logger.info("firebaseExecutable: {}", firebaseExecutable)
+        logger.info("nodeExecutable: {}", nodeExecutable)
         logger.info("outputDirectory: {}", outputDirectory)
         logger.info("tweakedDataConnectConfigDir: {}", tweakedDataConnectConfigDir)
 
@@ -59,7 +64,8 @@ abstract class CodegenTask : DefaultTask() {
         tweakConnectorYamlFiles(tweakedDataConnectConfigDir, outputDirectory.absolutePath)
 
         runCommand(File(tweakedDataConnectConfigDir, "generate.log.txt")) {
-            commandLine(firebaseExecutable.absolutePath, "--debug", "dataconnect:sdk:generate")
+            val arg0 = if (nodeExecutable === null) "node" else nodeExecutable.absolutePath
+            commandLine(arg0, firebaseExecutable.absolutePath, "--debug", "dataconnect:sdk:generate")
             // Specify a fake project because dataconnect:sdk:generate unnecessarily
             // requires one. The actual value does not matter.
             args("--project", "zzyzx")
@@ -70,6 +76,7 @@ abstract class CodegenTask : DefaultTask() {
     internal fun configureFrom(providers: MyVariantProviders) {
         dataConnectConfigDir.set(providers.dataConnectConfigDir)
         firebaseExecutable.set(providers.firebaseExecutable)
+        nodeExecutable.set(providers.projectProviders.nodeExecutable)
         tweakedDataConnectConfigDir.set(providers.buildDirectory.map { it.dir("config") })
     }
 }
