@@ -21,11 +21,19 @@ import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJSTask.Source
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJSTask.Source.DownloadOfficialVersion
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
+import io.ktor.client.request.prepareGet
+import io.ktor.http.contentLength
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.core.isEmpty
+import io.ktor.utils.io.core.readBytes
+import io.ktor.utils.io.jvm.javaio.copyTo
+import io.ktor.utils.io.readRemaining
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -39,6 +47,7 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
 import java.io.File
+import java.text.NumberFormat
 
 abstract class DownloadNodeJSTask : DefaultTask() {
 
@@ -190,9 +199,29 @@ private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, output
             }
         }
 
-        httpClient.use {
-            val response = httpClient.get(url)
+        // Set a limit to avoid DoS; the largest package size seems to be around 50MB
+        // so set the limit to a value significantly larger than that.
+        val maxNumBytesToDownload = 200_000_000L
+        val actualNumBytesDownloaded = httpClient.use {
+            httpClient.prepareGet(url).execute { httpResponse ->
+                val downloadChannel: ByteReadChannel = httpResponse.body()
+                destFile.parentFile.mkdirs()
+                destFile.outputStream().use { destFileOutputStream ->
+                    downloadChannel.copyTo(destFileOutputStream, limit=maxNumBytesToDownload)
+                }
+            }
         }
 
+        val numberFormat = NumberFormat.getNumberInstance()
+        val actualNumBytesDownloadedStr = numberFormat.format(actualNumBytesDownloaded)
+        if (actualNumBytesDownloaded >= maxNumBytesToDownload) {
+            val maxNumBytesToDownloadStr = numberFormat.format(maxNumBytesToDownload)
+            throw GradleException("Downloading $url failed: maximum file size $maxNumBytesToDownloadStr bytes exceeded; " +
+            "cancelled after downloading $actualNumBytesDownloadedStr bytes " +
+                "(error code hvmhysn5vy)"
+            )
+        }
+
+        logger.info("Successfully downloaded {} to {} ({} bytes)", url, destFile.absolutePath, actualNumBytesDownloadedStr)
     }
 }
