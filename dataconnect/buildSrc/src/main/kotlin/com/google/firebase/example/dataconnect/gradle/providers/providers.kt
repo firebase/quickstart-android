@@ -18,8 +18,8 @@ package com.google.firebase.example.dataconnect.gradle.providers
 
 import com.android.build.api.variant.ApplicationVariant
 import com.google.firebase.example.dataconnect.gradle.DataConnectExtension
+import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
-import javax.inject.Inject
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
@@ -29,6 +29,7 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.getByType
 
 internal open class MyProjectProviders(
@@ -36,26 +37,27 @@ internal open class MyProjectProviders(
     val providerFactory: ProviderFactory,
     val objectFactory: ObjectFactory,
     projectDirectoryHierarchy: List<Directory>,
+    val nodeExecutable: Provider<RegularFile>,
+    val npmExecutable: Provider<RegularFile>,
     ext: DataConnectExtension,
     logger: Logger
 ) {
 
-    @Suppress("unused")
-    @Inject
     constructor(
-        project: Project
+        project: Project,
+        downloadNodeJsTask: TaskProvider<DownloadNodeJsTask>
     ) : this(
         projectBuildDirectory = project.layout.buildDirectory,
         providerFactory = project.providers,
         objectFactory = project.objects,
         projectDirectoryHierarchy = project.projectDirectoryHierarchy(),
+        nodeExecutable = downloadNodeJsTask.flatMap { it.nodeExecutable },
+        npmExecutable = downloadNodeJsTask.flatMap { it.npmExecutable },
         ext = project.extensions.getByType<DataConnectExtension>(),
         project.logger
     )
 
     val operatingSystem: Provider<OperatingSystem> = OperatingSystem.provider(objectFactory, providerFactory, logger)
-
-    val pathEnvironmentVariable: Provider<String> = providerFactory.environmentVariable("PATH")
 
     val buildDirectory: Provider<Directory> = projectBuildDirectory.map { it.dir("dataconnect") }
 
@@ -70,10 +72,6 @@ internal open class MyProjectProviders(
         }
 
     private val localConfigProviders = LocalConfigProviders(projectDirectoryHierarchy, providerFactory, logger)
-
-    val npmExecutable: Provider<RegularFile> by localConfigProviders::npmExecutable
-
-    val nodeExecutable: Provider<RegularFile> by localConfigProviders::nodeExecutable
 }
 
 internal open class MyVariantProviders(
@@ -84,16 +82,15 @@ internal open class MyVariantProviders(
     objectFactory: ObjectFactory
 ) {
 
-    @Suppress("unused")
-    @Inject
     constructor(
-        variant: ApplicationVariant,
         project: Project,
+        variant: ApplicationVariant,
+        setupFirebaseToolsTask: TaskProvider<SetupFirebaseToolsTask>,
         projectProviders: MyProjectProviders
     ) : this(
         variant = variant,
         projectProviders = projectProviders,
-        firebaseExecutable = project.firebaseToolsSetupTask.firebaseExecutable,
+        firebaseExecutable = setupFirebaseToolsTask.flatMap { it.firebaseExecutable },
         ext = project.extensions.getByType<DataConnectExtension>(),
         objectFactory = project.objects
     )
@@ -111,18 +108,6 @@ internal open class MyVariantProviders(
         objectFactory.directoryProperty().also { property -> property.set(dir) }
     }
 }
-
-private val Project.firebaseToolsSetupTask: SetupFirebaseToolsTask
-    get() {
-        val tasks = tasks.filterIsInstance<SetupFirebaseToolsTask>()
-        if (tasks.size != 1) {
-            throw GradleException(
-                "expected exactly 1 SetupFirebaseToolsTask task to be registered, but found " +
-                    "${tasks.size}: [${tasks.map { it.name }.sorted().joinToString(", ")}]"
-            )
-        }
-        return tasks.single()
-    }
 
 private fun Project.projectDirectoryHierarchy(): List<Directory> = buildList {
     var curProject: Project? = this@projectDirectoryHierarchy

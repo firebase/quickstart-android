@@ -25,6 +25,7 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
@@ -32,68 +33,57 @@ import org.gradle.api.tasks.TaskAction
 abstract class SetupFirebaseToolsTask : DefaultTask() {
 
     @get:Input
-    abstract val version: Property<String>
+    abstract val firebaseToolsVersion: Property<String>
 
-    @get:Internal
+    @get:InputFile
     abstract val npmExecutable: RegularFileProperty
 
-    @get:Internal
+    @get:InputFile
     abstract val nodeExecutable: RegularFileProperty
 
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
 
     @get:Internal
-    val firebaseExecutable: Provider<RegularFile>
-        get() = outputDirectory.map { it.file("node_modules/.bin/firebase") }
+    val firebaseExecutable: Provider<RegularFile> by lazy {
+        outputDirectory.map { it.file("node_modules/.bin/firebase") }
+    }
 
-    @get:Internal
-    abstract val pathEnvironmentVariable: Property<String>
+    private val pathEnvironmentVariable: Provider<String> get() = project.providers.environmentVariable("PATH")
 
     @TaskAction
     fun run() {
-        val version: String = version.get()
-        val npmExecutable: File? = npmExecutable.orNull?.asFile
-        val nodeExecutable: File? = nodeExecutable.orNull?.asFile
+        val firebaseToolsVersion: String = firebaseToolsVersion.get()
+        val npmExecutable: File = npmExecutable.get().asFile
+        val nodeExecutable: File = nodeExecutable.get().asFile
         val outputDirectory: File = outputDirectory.get().asFile
 
-        logger.info("version: {}", version)
-        logger.info("npmExecutable: {}", npmExecutable?.absolutePath)
-        logger.info("nodeExecutable: {}", nodeExecutable?.absolutePath)
+        logger.info("firebaseToolsVersion: {}", firebaseToolsVersion)
+        logger.info("npmExecutable: {}", npmExecutable.absolutePath)
+        logger.info("nodeExecutable: {}", nodeExecutable.absolutePath)
         logger.info("outputDirectory: {}", outputDirectory.absolutePath)
 
         project.delete(outputDirectory)
         project.mkdir(outputDirectory)
 
+        val oldPath = pathEnvironmentVariable.getOrElse("")
+        val newPath = nodeExecutable.absoluteFile.parent + File.pathSeparator + oldPath
+
         val packageJsonFile = File(outputDirectory, "package.json")
         packageJsonFile.writeText("{}", Charsets.UTF_8)
 
-        runCommand(File(outputDirectory, "install.log.txt")) {
-            if (nodeExecutable !== null) {
-                val oldPath = pathEnvironmentVariable.getOrElse("")
-                val newPath = nodeExecutable.absoluteFile.parent + File.pathSeparator + oldPath
-                environment("PATH", newPath)
-                if (npmExecutable !== null) {
-                    commandLine(npmExecutable.absolutePath)
-                } else {
-                    commandLine(File(nodeExecutable.absoluteFile.parentFile, "npm"))
-                }
-            } else if (npmExecutable !== null) {
-                commandLine(npmExecutable.absolutePath)
-            } else {
-                commandLine("npm")
-            }
-
-            args("install", "firebase-tools@$version")
+        val installLogFile = File(outputDirectory, "install.log.txt")
+        runCommand(installLogFile) {
+            environment("PATH", newPath)
+            commandLine(npmExecutable.absolutePath, "install", "firebase-tools@$firebaseToolsVersion")
             workingDir(outputDirectory)
         }
     }
 }
 
 internal fun SetupFirebaseToolsTask.configureFrom(providers: MyProjectProviders) {
-    version.set(providers.firebaseToolsVersion)
+    firebaseToolsVersion.set(providers.firebaseToolsVersion)
     npmExecutable.set(providers.npmExecutable)
     nodeExecutable.set(providers.nodeExecutable)
     outputDirectory.set(providers.buildDirectory.map { it.dir("firebase-tools") })
-    pathEnvironmentVariable.set(providers.pathEnvironmentVariable)
 }

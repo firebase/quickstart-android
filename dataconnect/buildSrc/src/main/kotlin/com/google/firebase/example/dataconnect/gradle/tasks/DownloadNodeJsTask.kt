@@ -68,10 +68,16 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
     @get:Internal
     val nodeExecutable: Provider<RegularFile> by lazy {
-        outputDirectory.map { it.file(nodeExecutablePathUnderOutputDirectory.get()) }
+        outputDirectory.map { it.file(nodeExecutableRelativePath.get()) }
     }
 
-    private val nodeExecutablePathUnderOutputDirectory: Property<String> = project.objects.property()
+    @get:Internal
+    val npmExecutable: Provider<RegularFile> by lazy {
+        outputDirectory.map { it.file(npmExecutableRelativePath.get()) }
+    }
+
+    private val nodeExecutableRelativePath: Property<String> = project.objects.property()
+    private val npmExecutableRelativePath: Property<String> = project.objects.property()
 
     @TaskAction
     fun run() {
@@ -91,15 +97,21 @@ abstract class DownloadNodeJsTask : DefaultTask() {
         val nodeExecutableFiles = outputDirectory.walk().filter {
             it.isFile && it.name == "node"
         }.toList()
+
         val nodeExecutableFile = nodeExecutableFiles.singleOrNull() ?: throw GradleException(
             "Found ${nodeExecutableFiles.size} node executable files " +
                 "in ${outputDirectory.absolutePath}, but expected exactly 1: " +
                 nodeExecutableFiles.joinToString(", ") { it.absolutePath } +
                 "(error code v6n2g6my3y)"
         )
+        val npmExecutableFile = File(nodeExecutableFile.absoluteFile.parent, "npm")
 
-        nodeExecutablePathUnderOutputDirectory.apply {
+        nodeExecutableRelativePath.apply {
             set(outputDirectory.toPath().relativize(nodeExecutableFile.toPath()).toString())
+            finalizeValue()
+        }
+        npmExecutableRelativePath.apply {
+            set(outputDirectory.toPath().relativize(npmExecutableFile.toPath()).toString())
             finalizeValue()
         }
     }
@@ -120,10 +132,14 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 }
 
 internal fun DownloadNodeJsTask.configureFrom(providers: MyProjectProviders) {
-    source.set(Source.providerFrom(providers))
-    source.disallowUnsafeRead()
-    outputDirectory.set(providers.buildDirectory.map { it.dir("node") })
-    outputDirectory.disallowUnsafeRead()
+    source.run {
+        set(Source.providerFrom(providers))
+        disallowUnsafeRead()
+    }
+    outputDirectory.run {
+        set(providers.buildDirectory.map { it.dir("node") })
+        disallowUnsafeRead()
+    }
 }
 
 internal fun Source.Companion.providerFrom(providers: MyProjectProviders): Provider<Source> {
