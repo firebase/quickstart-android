@@ -29,14 +29,6 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.prepareGet
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.jvm.javaio.copyTo
-import java.io.File
-import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.attribute.FileTime
-import java.nio.file.attribute.PosixFilePermission
-import java.security.MessageDigest
-import java.text.NumberFormat
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
@@ -48,17 +40,26 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.RegularFile
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.OutputFiles
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
-import org.gradle.kotlin.dsl.property
 import org.pgpainless.sop.SOPImpl
+import java.io.File
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.attribute.FileTime
+import java.nio.file.attribute.PosixFilePermission
+import java.security.MessageDigest
+import java.text.NumberFormat
 
 abstract class DownloadNodeJsTask : DefaultTask() {
 
@@ -68,18 +69,11 @@ abstract class DownloadNodeJsTask : DefaultTask() {
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
 
-    @get:Internal
-    val nodeExecutable: Provider<RegularFile> by lazy {
-        outputDirectory.map { it.file(nodeExecutableRelativePath.get()) }
-    }
+    @get:OutputFile
+    abstract val nodeExecutable: RegularFileProperty
 
-    @get:Internal
-    val npmExecutable: Provider<RegularFile> by lazy {
-        outputDirectory.map { it.file(npmExecutableRelativePath.get()) }
-    }
-
-    private val nodeExecutableRelativePath: Property<String> = project.objects.property()
-    private val npmExecutableRelativePath: Property<String> = project.objects.property()
+    @get:OutputFile
+    abstract val npmExecutable: RegularFileProperty
 
     @TaskAction
     fun run() {
@@ -94,27 +88,6 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
         when (source) {
             is DownloadOfficialVersion -> downloadOfficialVersion(source, outputDirectory)
-        }
-
-        val nodeExecutableFiles = outputDirectory.walk().filter {
-            it.isFile && it.name == "node"
-        }.toList()
-
-        val nodeExecutableFile = nodeExecutableFiles.singleOrNull() ?: throw GradleException(
-            "Found ${nodeExecutableFiles.size} node executable files " +
-                "in ${outputDirectory.absolutePath}, but expected exactly 1: " +
-                nodeExecutableFiles.joinToString(", ") { it.absolutePath } +
-                "(error code v6n2g6my3y)"
-        )
-        val npmExecutableFile = File(nodeExecutableFile.absoluteFile.parent, "npm")
-
-        nodeExecutableRelativePath.apply {
-            set(outputDirectory.toPath().relativize(nodeExecutableFile.toPath()).toString())
-            finalizeValue()
-        }
-        npmExecutableRelativePath.apply {
-            set(outputDirectory.toPath().relativize(npmExecutableFile.toPath()).toString())
-            finalizeValue()
         }
     }
 
@@ -135,22 +108,30 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
 internal fun DownloadNodeJsTask.configureFrom(providers: MyProjectProviders) {
     source.run {
-        set(Source.providerFrom(providers))
+        set(providers.source)
         disallowUnsafeRead()
     }
     outputDirectory.run {
         set(providers.buildDirectory.map { it.dir("node") })
         disallowUnsafeRead()
     }
+    nodeExecutable.run {
+        set(providers.buildDirectory.map { it.file("node/node-v20.9.0-linux-x64/bin/node") })
+        disallowUnsafeRead()
+    }
+    npmExecutable.run {
+        set(providers.buildDirectory.map { it.file("node/node-v20.9.0-linux-x64/bin/npm") })
+        disallowUnsafeRead()
+    }
 }
 
-internal fun Source.Companion.providerFrom(providers: MyProjectProviders): Provider<Source> {
-    val lazySource: Lazy<Source> = lazy(LazyThreadSafetyMode.PUBLICATION) {
-        val source = providers.objectFactory.newInstance<DownloadOfficialVersion>()
-        source.updateFrom(providers)
-        source
+internal val MyProjectProviders.source: Provider<Source> get() {
+    val lazySource: Lazy<Source> = lazy {
+        objectFactory.newInstance<DownloadOfficialVersion>().also {
+            it.updateFrom(this@source)
+        }
     }
-    return providers.providerFactory.provider { lazySource.value }
+    return providerFactory.provider { lazySource.value }
 }
 
 internal fun DownloadOfficialVersion.updateFrom(providers: MyProjectProviders) {
