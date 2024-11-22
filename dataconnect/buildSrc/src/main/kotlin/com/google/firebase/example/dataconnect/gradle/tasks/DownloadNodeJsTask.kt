@@ -29,6 +29,15 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.prepareGet
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.jvm.javaio.copyTo
+import java.io.File
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.attribute.FileTime
+import java.nio.file.attribute.PosixFilePermission
+import java.security.MessageDigest
+import java.text.NumberFormat
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
@@ -50,15 +59,6 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
 import org.pgpainless.sop.SOPImpl
-import java.io.File
-import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.attribute.FileTime
-import java.nio.file.attribute.PosixFilePermission
-import java.security.MessageDigest
-import java.text.NumberFormat
 
 abstract class DownloadNodeJsTask : DefaultTask() {
 
@@ -118,7 +118,7 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
         override val npmExecutable: String get() = nodePathOf { it.npmExecutable }
 
-        private fun nodePathOf(block: (OperatingSystem.Type) -> Path): String  {
+        private fun nodePathOf(block: (OperatingSystem.Type) -> Path): String {
             val osType: OperatingSystem.Type = operatingSystem.get().type
             val relativePath: Path = block(osType)
             val path: Path = Path.of(downloadFileNameBase).resolve(relativePath)
@@ -127,9 +127,19 @@ abstract class DownloadNodeJsTask : DefaultTask() {
     }
 }
 
-private val OperatingSystem.Type.nodeExecutable: Path get() = if (this == OperatingSystem.Type.Windows) { Path.of("node.exe") } else { Path.of("bin", "node") }
+private val OperatingSystem.Type.nodeExecutable: Path get() =
+    if (this == OperatingSystem.Type.Windows) {
+        Path.of("node.exe")
+    } else {
+        Path.of("bin", "node")
+    }
 
-private val OperatingSystem.Type.npmExecutable: Path get() = if (this == OperatingSystem.Type.Windows) { Path.of("npm.cmd") } else { Path.of("bin", "npm") }
+private val OperatingSystem.Type.npmExecutable: Path get() =
+    if (this == OperatingSystem.Type.Windows) {
+        Path.of("npm.cmd")
+    } else {
+        Path.of("bin", "npm")
+    }
 
 internal fun DownloadNodeJsTask.configureFrom(providers: MyProjectProviders) {
     source.set(providers.source)
@@ -235,7 +245,7 @@ internal val DownloadOfficialVersion.downloadFileNameBase: String
             OperatingSystem.Type.Linux -> "linux"
             else -> throw GradleException(
                 "unable to determine node.js download base file name for operating system type: $type " +
-                        "(operatingSystem=$os) (error code m2grw3h7xz)"
+                    "(operatingSystem=$os) (error code m2grw3h7xz)"
             )
         }
 
