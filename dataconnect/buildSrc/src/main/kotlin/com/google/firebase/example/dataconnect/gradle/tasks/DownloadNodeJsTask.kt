@@ -18,8 +18,8 @@ package com.google.firebase.example.dataconnect.gradle.tasks
 
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
+import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask.DownloadOfficialVersion
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask.Source
-import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask.Source.DownloadOfficialVersion
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
@@ -40,21 +40,20 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Task
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.OutputFiles
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
 import org.pgpainless.sop.SOPImpl
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.attribute.FileTime
 import java.nio.file.attribute.PosixFilePermission
@@ -69,11 +68,21 @@ abstract class DownloadNodeJsTask : DefaultTask() {
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
 
-    @get:OutputFile
-    abstract val nodeExecutable: RegularFileProperty
+    interface NodeOutputFiles {
+        val nodeExecutable: RegularFile
+        val npmExecutable: RegularFile
+    }
 
-    @get:OutputFile
-    abstract val npmExecutable: RegularFileProperty
+    @get:Internal
+    val nodeOutputFiles: NodeOutputFiles = object : NodeOutputFiles {
+        override val nodeExecutable: RegularFile get() = nodePathOf { it.nodeExecutable }
+        override val npmExecutable: RegularFile get() = nodePathOf { it.npmExecutable }
+
+        private fun nodePathOf(block: (Source) -> String): RegularFile {
+            val executable: String = block(source.get())
+            return outputDirectory.map { it.file(executable) }.get()
+        }
+    }
 
     @TaskAction
     fun run() {
@@ -94,35 +103,42 @@ abstract class DownloadNodeJsTask : DefaultTask() {
     sealed interface Source : java.io.Serializable {
         companion object
 
-        interface DownloadOfficialVersion : Source {
-            companion object
+        @get:Internal
+        val nodeExecutable: String
 
-            @get:Input
-            val version: Property<String>
+        @get:Internal
+        val npmExecutable: String
+    }
 
-            @get:Nested
-            val operatingSystem: Property<OperatingSystem>
+    abstract class DownloadOfficialVersion : Source {
+        companion object
+
+        @get:Input
+        abstract val version: Property<String>
+
+        @get:Nested
+        abstract val operatingSystem: Property<OperatingSystem>
+
+        override val nodeExecutable: String get() = nodePathOf { it.nodeExecutable }
+
+        override val npmExecutable: String get() = nodePathOf { it.npmExecutable }
+
+        private fun nodePathOf(block: (OperatingSystem.Type) -> Path): String  {
+            val osType: OperatingSystem.Type = operatingSystem.get().type
+            val relativePath: Path = block(osType)
+            val path: Path = Path.of(downloadFileNameBase).resolve(relativePath)
+            return path.toString()
         }
     }
 }
 
+private val OperatingSystem.Type.nodeExecutable: Path get() = if (this == OperatingSystem.Type.Windows) { Path.of("node.exe") } else { Path.of("bin", "node") }
+
+private val OperatingSystem.Type.npmExecutable: Path get() = if (this == OperatingSystem.Type.Windows) { Path.of("npm.cmd") } else { Path.of("bin", "npm") }
+
 internal fun DownloadNodeJsTask.configureFrom(providers: MyProjectProviders) {
-    source.run {
-        set(providers.source)
-        disallowUnsafeRead()
-    }
-    outputDirectory.run {
-        set(providers.buildDirectory.map { it.dir("node") })
-        disallowUnsafeRead()
-    }
-    nodeExecutable.run {
-        set(providers.buildDirectory.map { it.file("node/node-v20.9.0-linux-x64/bin/node") })
-        disallowUnsafeRead()
-    }
-    npmExecutable.run {
-        set(providers.buildDirectory.map { it.file("node/node-v20.9.0-linux-x64/bin/npm") })
-        disallowUnsafeRead()
-    }
+    source.set(providers.source)
+    outputDirectory.set(providers.buildDirectory.map { it.dir("node") })
 }
 
 internal val MyProjectProviders.source: Provider<Source> get() {
@@ -136,9 +152,7 @@ internal val MyProjectProviders.source: Provider<Source> get() {
 
 internal fun DownloadOfficialVersion.updateFrom(providers: MyProjectProviders) {
     version.set("20.9.0")
-    version.disallowUnsafeRead()
     operatingSystem.set(providers.operatingSystem)
-    operatingSystem.disallowUnsafeRead()
 }
 
 internal fun DownloadOfficialVersion.Companion.describe(source: DownloadOfficialVersion?): String =
@@ -190,26 +204,55 @@ internal val DownloadOfficialVersion.downloadUrl: String get() = "$downloadUrlPr
  */
 internal val DownloadOfficialVersion.downloadFileName: String
     get() {
-        val nodeVersion = version.get()
-
         val os = operatingSystem.get()
-        val (osType, fileExtension) = when (val type = os.type) {
-            OperatingSystem.Type.Windows -> Pair("win", "zip")
-            OperatingSystem.Type.MacOS -> Pair("darwin", "tar.gz")
-            OperatingSystem.Type.Linux -> Pair("linux", "tar.gz")
+        val fileExtension: String = when (val type = os.type) {
+            OperatingSystem.Type.Windows -> "zip"
+            OperatingSystem.Type.MacOS -> "tar.gz"
+            OperatingSystem.Type.Linux -> "tar.gz"
             else -> throw GradleException(
-                "unable to determine node.js download URL for operating system type: $type " +
+                "unable to determine node.js download file extension for operating system type: $type " +
                     "(operatingSystem=$os) (error code ead53smf45)"
             )
         }
-        val osArch = when (os.arch) {
+        return "$downloadFileNameBase.$fileExtension"
+    }
+
+/**
+ * The base file name of the download for the Node.js binary distribution;
+ * that is, the file name without the ".zip" or ".tar.gz" extension.
+ *
+ * Here are some examples:
+ * * node-v20.9.0-darwin-arm64
+ * * node-v20.9.0-darwin-x64
+ * * node-v20.9.0-linux-arm64
+ * * node-v20.9.0-linux-armv7l
+ * * node-v20.9.0-linux-x64
+ * * node-v20.9.0-win-arm64
+ * * node-v20.9.0-win-x64
+ * * node-v20.9.0-win-x86
+ */
+internal val DownloadOfficialVersion.downloadFileNameBase: String
+    get() {
+        val os: OperatingSystem = operatingSystem.get()
+        val osType: String = when (val type = os.type) {
+            OperatingSystem.Type.Windows -> "win"
+            OperatingSystem.Type.MacOS -> "darwin"
+            OperatingSystem.Type.Linux -> "linux"
+            else -> throw GradleException(
+                "unable to determine node.js download base file name for operating system type: $type " +
+                        "(operatingSystem=$os) (error code m2grw3h7xz)"
+            )
+        }
+
+        val osArch: String = when (os.arch) {
             OperatingSystem.Architecture.Arm64 -> "arm64"
             OperatingSystem.Architecture.ArmV7 -> "armv7l"
             OperatingSystem.Architecture.X86 -> "x86"
             OperatingSystem.Architecture.X86_64 -> "x64"
         }
 
-        return "node-v$nodeVersion-$osType-$osArch.$fileExtension"
+        val nodeVersion = version.get()
+        return "node-v$nodeVersion-$osType-$osArch"
     }
 
 private data class DownloadedNodeJsFiles(
