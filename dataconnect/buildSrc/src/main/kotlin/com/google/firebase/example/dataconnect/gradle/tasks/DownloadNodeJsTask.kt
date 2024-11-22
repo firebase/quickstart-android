@@ -68,20 +68,15 @@ abstract class DownloadNodeJsTask : DefaultTask() {
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
 
-    interface NodeOutputFiles {
-        val nodeExecutable: RegularFile
-        val npmExecutable: RegularFile
-    }
+    @get:Internal
+    val nodeExecutable: RegularFile get() = nodePathOf { it.nodeExecutable }
 
     @get:Internal
-    val nodeOutputFiles: NodeOutputFiles = object : NodeOutputFiles {
-        override val nodeExecutable: RegularFile get() = nodePathOf { it.nodeExecutable }
-        override val npmExecutable: RegularFile get() = nodePathOf { it.npmExecutable }
+    val npmExecutable: RegularFile get() = nodePathOf { it.npmExecutable }
 
-        private fun nodePathOf(block: (Source) -> String): RegularFile {
-            val executable: String = block(source.get())
-            return outputDirectory.map { it.file(executable) }.get()
-        }
+    private fun nodePathOf(block: (Source) -> String): RegularFile {
+        val executable: String = block(source.get())
+        return outputDirectory.map { it.file(executable) }.get()
     }
 
     @TaskAction

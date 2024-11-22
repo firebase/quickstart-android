@@ -51,8 +51,8 @@ internal open class MyProjectProviders(
         providerFactory = project.providers,
         objectFactory = project.objects,
         projectDirectoryHierarchy = project.projectDirectoryHierarchy(),
-        nodeExecutable = downloadNodeJsTask.map { it.nodeOutputFiles.nodeExecutable },
-        npmExecutable = downloadNodeJsTask.map { it.nodeOutputFiles.npmExecutable },
+        nodeExecutable = downloadNodeJsTask.map { it.nodeExecutable },
+        npmExecutable = downloadNodeJsTask.map { it.npmExecutable },
         ext = project.extensions.getByType<DataConnectExtension>(),
         project.logger
     )
