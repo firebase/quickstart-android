@@ -79,11 +79,7 @@ fun OperatingSystem.Companion.provider(
             )
         }
 
-        OperatingSystem(
-            type = OperatingSystem.Type.Linux,
-            arch = OperatingSystem.Architecture.X86_64,
-            description = description
-        )
+        OperatingSystem(type = type, arch = arch, description = description)
     }
 
     return objectFactory.property<OperatingSystem>().apply {
