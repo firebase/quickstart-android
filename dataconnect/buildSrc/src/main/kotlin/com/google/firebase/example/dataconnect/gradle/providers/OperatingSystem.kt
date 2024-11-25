@@ -126,8 +126,8 @@ fun OperatingSystem.Architecture.Companion.forName(osArch: String): OperatingSys
 // https://github.com/gradle/gradle/blob/e745e6d369/platforms/native/platform-native/src/main/java/org/gradle/nativeplatform/platform/internal/Architectures.java#L26-L42
 private fun OperatingSystem.Architecture.Companion.forLowerCaseName(osArch: String): OperatingSystem.Architecture? =
     when (osArch) {
-        "x86", "i386", "ia-32", "i686" -> OperatingSystem.Architecture.X86_64
-        "x86-64", "x86_64", "amd64", "x64" -> OperatingSystem.Architecture.X86
+        "x86", "i386", "ia-32", "i686" -> OperatingSystem.Architecture.X86
+        "x86-64", "x86_64", "amd64", "x64" -> OperatingSystem.Architecture.X86_64
         "arm-v7", "armv7", "arm", "arm32" -> OperatingSystem.Architecture.ArmV7
         "aarch64", "arm-v8", "arm64" -> OperatingSystem.Architecture.Arm64
         else -> null
