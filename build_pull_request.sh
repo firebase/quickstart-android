@@ -31,4 +31,4 @@ done
 # Build
 echo "Building Pull Request with"
 echo $build_commands
-eval "./gradlew clean ktlint ${build_commands}"
+eval "./gradlew --stacktrace clean ktlint ${build_commands}"
