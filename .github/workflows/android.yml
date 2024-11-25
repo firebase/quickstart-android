@@ -16,10 +16,6 @@ jobs:
         java-version: 17
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
     - name: Check Snippets
       run: python scripts/checksnippets.py
     - name: Copy mock google_services.json
