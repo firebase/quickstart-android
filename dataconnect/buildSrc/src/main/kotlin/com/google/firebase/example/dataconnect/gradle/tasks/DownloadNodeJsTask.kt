@@ -40,6 +40,7 @@ import java.security.MessageDigest
 import java.text.NumberFormat
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.compress.archivers.ArchiveEntry
+import org.apache.commons.compress.archivers.ArchiveInputStream
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
@@ -291,7 +292,8 @@ private fun Task.untar(file: File, destDir: File) {
     var extractedByteCount = 0L
     file.inputStream().use { fileInputStream ->
         GzipCompressorInputStream(fileInputStream).use { gzipInputStream ->
-            TarArchiveInputStream(gzipInputStream).use { tarInputStream ->
+            val archiveInputStream: ArchiveInputStream<*> = TarArchiveInputStream(gzipInputStream)
+            archiveInputStream.use { tarInputStream ->
                 while (true) {
                     val tarEntry: ArchiveEntry = tarInputStream.nextEntry ?: break
                     if (tarEntry !is TarArchiveEntry) {
@@ -368,7 +370,8 @@ private fun Task.unzip(file: File, destDir: File) {
     var extractedFileCount = 0
     var extractedByteCount = 0L
     file.inputStream().use { fileInputStream ->
-        ZipArchiveInputStream(fileInputStream).use { zipInputStream ->
+        val archiveInputStream: ArchiveInputStream<*> = ZipArchiveInputStream(fileInputStream)
+        archiveInputStream.use { zipInputStream ->
             while (true) {
                 val zipEntry: ArchiveEntry = zipInputStream.nextEntry ?: break
                 if (zipEntry.isDirectory || zipEntry !is ZipArchiveEntry) {
