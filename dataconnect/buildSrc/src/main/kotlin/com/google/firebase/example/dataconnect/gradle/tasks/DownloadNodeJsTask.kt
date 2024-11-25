@@ -39,6 +39,7 @@ import java.nio.file.attribute.PosixFilePermission
 import java.security.MessageDigest
 import java.text.NumberFormat
 import kotlinx.coroutines.runBlocking
+import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
@@ -292,7 +293,10 @@ private fun Task.untar(file: File, destDir: File) {
         GzipCompressorInputStream(fileInputStream).use { gzipInputStream ->
             TarArchiveInputStream(gzipInputStream).use { tarInputStream ->
                 while (true) {
-                    val tarEntry: TarArchiveEntry = tarInputStream.nextEntry ?: break
+                    val tarEntry: ArchiveEntry = tarInputStream.nextEntry ?: break
+                    if (tarEntry !is TarArchiveEntry) {
+                        continue
+                    }
                     val outputFile = File(destDir, tarEntry.name).absoluteFile
                     if (tarEntry.isSymbolicLink) {
                         logger.debug("Creating symlink {} -> {}", outputFile.absolutePath, tarEntry.linkName)
@@ -306,7 +310,7 @@ private fun Task.untar(file: File, destDir: File) {
                         }
                         extractedFileCount++
 
-                        val lastModifiedTime = FileTime.from(tarEntry.lastModifiedTime.toInstant())
+                        val lastModifiedTime = FileTime.from(tarEntry.lastModifiedDate.toInstant())
                         try {
                             Files.setLastModifiedTime(outputFile.toPath(), lastModifiedTime)
                         } catch (e: IOException) {
@@ -366,8 +370,8 @@ private fun Task.unzip(file: File, destDir: File) {
     file.inputStream().use { fileInputStream ->
         ZipArchiveInputStream(fileInputStream).use { zipInputStream ->
             while (true) {
-                val zipEntry: ZipArchiveEntry = zipInputStream.nextEntry ?: break
-                if (zipEntry.isDirectory) {
+                val zipEntry: ArchiveEntry = zipInputStream.nextEntry ?: break
+                if (zipEntry.isDirectory || zipEntry !is ZipArchiveEntry) {
                     continue
                 }
                 val outputFile = File(destDir, zipEntry.name).absoluteFile
@@ -378,7 +382,7 @@ private fun Task.unzip(file: File, destDir: File) {
                 }
                 extractedFileCount++
 
-                val lastModifiedTime = FileTime.from(zipEntry.lastModifiedTime.toInstant())
+                val lastModifiedTime = FileTime.from(zipEntry.lastModifiedDate.toInstant())
                 try {
                     Files.setLastModifiedTime(outputFile.toPath(), lastModifiedTime)
                 } catch (e: IOException) {
