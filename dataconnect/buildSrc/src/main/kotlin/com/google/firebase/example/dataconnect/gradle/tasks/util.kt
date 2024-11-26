@@ -17,6 +17,7 @@
 package com.google.firebase.example.dataconnect.gradle.tasks
 
 import java.io.File
+import javax.inject.Inject
 import org.gradle.api.Task
 import org.gradle.kotlin.dsl.newInstance
 import org.gradle.process.ExecOperations
@@ -24,10 +25,10 @@ import org.gradle.process.ExecSpec
 
 internal fun Task.runCommand(logFile: File, configure: ExecSpec.() -> Unit) {
     val effectiveLogFile = if (logger.isInfoEnabled) null else logFile
-    val execOperations: ExecOperations = project.objects.newInstance()
+    val runCommandObjects: RunCommandObjects = project.objects.newInstance()
     val result =
         effectiveLogFile?.outputStream().use { logStream ->
-            execOperations.runCatching {
+            runCommandObjects.execOperations.runCatching {
                 exec {
                     isIgnoreExitValue = false
                     if (logStream !== null) {
@@ -42,4 +43,9 @@ internal fun Task.runCommand(logFile: File, configure: ExecSpec.() -> Unit) {
         effectiveLogFile?.let { logger.warn("{}", it.readText()) }
         throw exception
     }
+}
+
+private interface RunCommandObjects {
+    @get:Inject
+    val execOperations: ExecOperations
 }
