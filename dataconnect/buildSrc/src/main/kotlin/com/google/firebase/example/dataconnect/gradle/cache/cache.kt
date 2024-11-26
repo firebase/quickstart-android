@@ -29,18 +29,11 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.StandardOpenOption
 import java.util.UUID
 
-class CacheManager(val rootDirectory: File) {
+class CacheManager(private val rootDirectory: File) {
 
     private val entriesFile: File  = File(rootDirectory, ENTRIES_FILENAME)
 
     private var allocatedDirectories = mutableListOf<AllocatedDirectory>()
-
-    fun isAllocated(dir: File): Boolean {
-        val allocatedEntry: AllocatedDirectory? = synchronized(allocatedDirectories) {
-            allocatedDirectories.firstOrNull {it.directory == dir}
-        }
-        return allocatedEntry !== null
-    }
 
     fun isCommitted(dir: File, logger: Logger): Boolean {
         if (dir.parentFile != rootDirectory) {
@@ -53,7 +46,7 @@ class CacheManager(val rootDirectory: File) {
 
     fun getOrAllocateDir(domain: String, key: String, logger: Logger): File = findDir(domain=domain, key=key, logger) ?: allocateDir(domain=domain, key=key)
 
-    fun findDir(domain: String, key: String, logger: Logger): File? {
+    private fun findDir(domain: String, key: String, logger: Logger): File? {
         val globalEntries = loadGlobalEntries(logger)
         return globalEntries
             .filter { it.domain == domain && it.key == key }
@@ -61,7 +54,7 @@ class CacheManager(val rootDirectory: File) {
             .singleOrNull()
     }
 
-    fun allocateDir(domain: String, key: String): File {
+    private fun allocateDir(domain: String, key: String): File {
         val directory = File(rootDirectory, UUID.randomUUID().toString())
         val allocatedDirectory = AllocatedDirectory(domain=domain, key=key, directory=directory)
         synchronized(allocatedDirectories) {
@@ -149,16 +142,16 @@ class CacheManager(val rootDirectory: File) {
 private fun ReadableByteChannel.readAllBytes(): ByteArray {
     val buffer = ByteArray(8192)
     val byteBuffer = ByteBuffer.wrap(buffer)
-    val baos = ByteArrayOutputStream()
+    val byteArrayOutputStream = ByteArrayOutputStream()
 
     while (true) {
         val numBytesRead = read(byteBuffer)
         if (numBytesRead < 0) {
             break
         }
-        baos.write(buffer, 0, numBytesRead)
+        byteArrayOutputStream.write(buffer, 0, numBytesRead)
         byteBuffer.flip()
     }
 
-    return baos.toByteArray()
+    return byteArrayOutputStream.toByteArray()
 }
