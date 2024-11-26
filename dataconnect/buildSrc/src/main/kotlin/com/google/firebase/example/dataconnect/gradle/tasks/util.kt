@@ -18,13 +18,16 @@ package com.google.firebase.example.dataconnect.gradle.tasks
 
 import java.io.File
 import org.gradle.api.Task
+import org.gradle.kotlin.dsl.newInstance
+import org.gradle.process.ExecOperations
 import org.gradle.process.ExecSpec
 
 internal fun Task.runCommand(logFile: File, configure: ExecSpec.() -> Unit) {
     val effectiveLogFile = if (logger.isInfoEnabled) null else logFile
+    val execOperations: ExecOperations = project.objects.newInstance()
     val result =
         effectiveLogFile?.outputStream().use { logStream ->
-            project.runCatching {
+            execOperations.runCatching {
                 exec {
                     isIgnoreExitValue = false
                     if (logStream !== null) {
