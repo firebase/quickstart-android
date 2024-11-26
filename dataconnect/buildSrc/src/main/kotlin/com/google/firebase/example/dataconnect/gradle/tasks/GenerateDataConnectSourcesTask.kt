@@ -18,9 +18,11 @@ package com.google.firebase.example.dataconnect.gradle.tasks
 
 import com.google.firebase.example.dataconnect.gradle.providers.MyVariantProviders
 import java.io.File
+import javax.inject.Inject
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
@@ -29,6 +31,7 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.process.ExecOperations
 import org.yaml.snakeyaml.Yaml
 
 abstract class GenerateDataConnectSourcesTask : DefaultTask() {
@@ -47,6 +50,12 @@ abstract class GenerateDataConnectSourcesTask : DefaultTask() {
 
     @get:Internal abstract val tweakedDataConnectConfigDir: DirectoryProperty
 
+    @get:Inject
+    protected abstract val fileSystemOperations: FileSystemOperations
+
+    @get:Inject
+    protected abstract val execOperations: ExecOperations
+
     @TaskAction
     fun run() {
         val dataConnectConfigDir = dataConnectConfigDir.get().asFile
@@ -61,17 +70,27 @@ abstract class GenerateDataConnectSourcesTask : DefaultTask() {
         logger.info("outputDirectory: {}", outputDirectory)
         logger.info("tweakedDataConnectConfigDir: {}", tweakedDataConnectConfigDir)
 
-        project.delete(outputDirectory)
-        project.delete(tweakedDataConnectConfigDir)
-        project.mkdir(tweakedDataConnectConfigDir)
+        fileSystemOperations.delete {
+            delete(outputDirectory)
+            delete(tweakedDataConnectConfigDir)
+        }
 
-        project.copy {
+        if (!tweakedDataConnectConfigDir.mkdirs()) {
+            throw GradleException(
+                "Could not create directory: ${tweakedDataConnectConfigDir.absolutePath} " +
+                    "(error code q6dyy7vhbc)"
+            )
+        }
+
+        fileSystemOperations.copy {
             from(dataConnectConfigDir)
             into(tweakedDataConnectConfigDir)
         }
+
         tweakConnectorYamlFiles(tweakedDataConnectConfigDir, outputDirectory.absolutePath, logger)
 
-        runCommand(File(tweakedDataConnectConfigDir, "generate.log.txt")) {
+        val commandLogFile = File(tweakedDataConnectConfigDir, "generate.log.txt")
+        execOperations.runCommand(commandLogFile, logger) {
             if (nodeExecutable === null) {
                 commandLine("node")
             } else {

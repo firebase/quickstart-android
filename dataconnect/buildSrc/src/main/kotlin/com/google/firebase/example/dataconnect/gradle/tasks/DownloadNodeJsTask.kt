@@ -55,13 +55,14 @@ import org.gradle.api.GradleException
 import org.gradle.api.Task
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.RegularFile
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
 import org.pgpainless.sop.SOPImpl
@@ -77,16 +78,11 @@ abstract class DownloadNodeJsTask : DefaultTask() {
     @get:Internal
     abstract val cacheManager: Property<CacheManager>
 
-    @get:Internal
-    val nodeExecutable: RegularFile get() = nodePathOf { it.nodeExecutable }
+    @get:OutputFile
+    abstract val nodeExecutable: RegularFileProperty
 
-    @get:Internal
-    val npmExecutable: RegularFile get() = nodePathOf { it.npmExecutable }
-
-    private fun nodePathOf(block: (Source) -> String): RegularFile {
-        val executable: String = block(source.get())
-        return outputDirectory.map { it.file(executable) }.get()
-    }
+    @get:OutputFile
+    abstract val npmExecutable: RegularFileProperty
 
     @TaskAction
     fun run() {
@@ -183,6 +179,22 @@ private val OperatingSystem.Type.npmExecutable: Path
 internal fun DownloadNodeJsTask.configureFrom(providers: MyProjectProviders) {
     source.set(providers.source)
     cacheManager.set(providers.cacheManager)
+
+    nodeExecutable.set(
+        project.provider {
+            val source = source.get()
+            val outputDirectory = outputDirectory.get()
+            outputDirectory.file(source.nodeExecutable)
+        }
+    )
+
+    npmExecutable.set(
+        project.provider {
+            val source = source.get()
+            val outputDirectory = outputDirectory.get()
+            outputDirectory.file(source.npmExecutable)
+        }
+    )
 
     outputDirectory.set(
         providers.providerFactory.provider {

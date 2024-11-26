@@ -19,6 +19,7 @@ package com.google.firebase.example.dataconnect.gradle.tasks
 import com.google.firebase.example.dataconnect.gradle.cache.CacheManager
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import java.io.File
+import javax.inject.Inject
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -31,6 +32,7 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.process.ExecOperations
 
 abstract class SetupFirebaseToolsTask : DefaultTask() {
 
@@ -53,6 +55,9 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
     val firebaseExecutable: Provider<RegularFile> by lazy {
         outputDirectory.map { it.file("node_modules/.bin/firebase") }
     }
+
+    @get:Inject
+    protected abstract val execOperations: ExecOperations
 
     private val pathEnvironmentVariable: Provider<String> get() = project.providers.environmentVariable("PATH")
 
@@ -86,7 +91,7 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
         packageJsonFile.writeText("{}", Charsets.UTF_8)
 
         val installLogFile = File(outputDirectory, "install.log.txt")
-        runCommand(installLogFile) {
+        execOperations.runCommand(installLogFile, logger) {
             environment("PATH", newPath)
             commandLine(npmExecutable.absolutePath, "install", "firebase-tools@$firebaseCliVersion")
             workingDir(outputDirectory)
