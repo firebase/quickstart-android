@@ -21,15 +21,12 @@ import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProvide
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinaryDistributionArchiveTask.Inputs
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.CacheableTask
@@ -37,7 +34,6 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 import javax.inject.Inject
@@ -65,16 +61,6 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DefaultTask() {
      */
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
-
-    /**
-     * The object to use to manage this task's cached data.
-     *
-     * The property is _optional_; however, if it _is_ set (that is, [Property.isPresent] returns
-     * `true`) then the [outputDirectory] must be either a "committed" or "allocated" directory
-     * returned by the [CacheManager].
-     */
-    @get:Internal
-    abstract val cacheManager: Property<CacheManager>
 
     /**
      * The path of the downloaded Node.js binary distribution archive.
@@ -106,24 +92,14 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DefaultTask() {
         val inputs: Inputs = inputData.get()
         val outputDirectory: File = outputDirectory.get().asFile
         val downloadedFile: File = downloadedFile.asFile
-        val cacheManager: CacheManager? = cacheManager.orNull
 
         logger.info("inputs: {}", inputs)
         logger.info("outputDirectory: {}", outputDirectory.absolutePath)
         logger.info("downloadedFile: {}", downloadedFile.absolutePath)
-        logger.info("cacheManager: {}", cacheManager)
-
-        if (cacheManager !== null && cacheManager.isCommitted(outputDirectory, logger)) {
-            logger.info("Using cached data from directory: {}", outputDirectory.absolutePath)
-            didWork = false
-            return
-        }
 
         fileSystemOperations.delete {
             delete(outputDirectory)
         }
-
-        cacheManager?.commitDir(outputDirectory, logger)
     }
 
     /**
@@ -141,26 +117,19 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DefaultTask() {
 }
 
 internal fun DownloadNodeJsBinaryDistributionArchiveTask.configureFrom(myProviders: MyProjectProviders) {
-    cacheManager.set(myProviders.cacheManager)
+    inputData.run {
+        finalizeValueOnRead()
+        set(providerFactory.provider {
+            val operatingSystem = myProviders.operatingSystem.get()
+            val nodeVersion = myProviders.nodeVersion.get()
+            Inputs(operatingSystem, nodeVersion)
+        })
+    }
 
-    inputData.set(providerFactory.provider {
-        Inputs(
-            myProviders.operatingSystem.get(),
-            myProviders.nodeVersion.get()
-        )
-    })
-
-    outputDirectory.set(providerFactory.provider {
-        val cacheManager = cacheManager.orNull
-        val cacheDomain = "DownloadNodeJsBinaryDistributionArchive"
-        if (cacheManager === null) {
-            myProviders.buildDirectory.get().dir(cacheDomain)
-        } else {
-            val cacheKey = Json.encodeToString(inputData.get())
-            val cacheDir = cacheManager.getOrAllocateDir(domain = cacheDomain, key = cacheKey, logger)
-            projectLayout.projectDirectory.dir(cacheDir.path)
-        }
-    })
+    outputDirectory.run {
+        finalizeValueOnRead()
+        set(myProviders.buildDirectory.map { it.dir("DownloadNodeJsBinaryDistributionArchive") })
+    }
 
     setOnlyIf("inputData was specified", {
         inputData.isPresent

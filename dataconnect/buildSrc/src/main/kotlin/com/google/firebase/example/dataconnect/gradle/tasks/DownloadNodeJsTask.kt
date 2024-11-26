@@ -188,23 +188,33 @@ private val OperatingSystem.Type.npmExecutable: Path
         }
 
 internal fun DownloadNodeJsTask.configureFrom(providers: MyProjectProviders) {
-    source.set(providers.source)
-    cacheManager.set(providers.cacheManager)
+    source.run {
+        set(providers.source)
+        finalizeValueOnRead()
+    }
 
-    outputDirectory.set(
-        providers.providerFactory.provider {
-            val cacheManager = cacheManager.orNull
-            val directoryProvider: Provider<Directory> = if (cacheManager === null) {
-                providers.buildDirectory.map { it.dir("node") }
-            } else {
-                val cacheDomain = "DownloadNodeJsTask"
-                val cacheKey = source.get().cacheKey
-                val cacheDir = cacheManager.getOrAllocateDir(domain = cacheDomain, key = cacheKey, logger)
-                providers.objectFactory.directoryProperty().also { it.set(cacheDir) }
+    cacheManager.run {
+        set(providers.cacheManager)
+        finalizeValueOnRead()
+    }
+
+    outputDirectory.run {
+        set(
+            providers.providerFactory.provider {
+                val cacheManager = cacheManager.orNull
+                val directoryProvider: Provider<Directory> = if (cacheManager === null) {
+                    providers.buildDirectory.map { it.dir("node") }
+                } else {
+                    val cacheDomain = "DownloadNodeJsTask"
+                    val cacheKey = source.get().cacheKey
+                    val cacheDir = cacheManager.getOrAllocateDir(domain = cacheDomain, key = cacheKey, logger)
+                    providers.objectFactory.directoryProperty().also { it.set(cacheDir) }
+                }
+                directoryProvider.get()
             }
-            directoryProvider.get()
-        }
-    )
+        )
+        finalizeValueOnRead()
+    }
 }
 
 internal val MyProjectProviders.source: Provider<Source>

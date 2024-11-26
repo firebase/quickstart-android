@@ -16,6 +16,10 @@
 
 package com.google.firebase.example.dataconnect.gradle.cache
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.gradle.api.logging.Logger
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.nio.ByteBuffer
@@ -24,42 +28,35 @@ import java.nio.channels.ReadableByteChannel
 import java.nio.charset.StandardCharsets
 import java.nio.file.StandardOpenOption
 import java.util.UUID
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.gradle.api.logging.Logger
 
 class CacheManager(private val rootDirectory: File) {
 
     private val entriesFile: File = File(rootDirectory, ENTRIES_FILENAME)
 
-    private var allocatedDirectories = mutableListOf<AllocatedDirectory>()
+    private val allocatedDirectories = mutableListOf<AllocatedDirectory>()
 
     fun isCommitted(dir: File, logger: Logger): Boolean {
         if (dir.parentFile != rootDirectory) {
             return false
         }
         val directoryName = dir.name
-        val globalEntry: GlobalEntry? = loadGlobalEntries(logger).firstOrNull { it.directory == directoryName }
-        return globalEntry !== null
+        val cacheEntry: CacheEntry? = loadCacheEntries(logger).firstOrNull { it.directory == directoryName }
+        return cacheEntry !== null
     }
 
-    fun getOrAllocateDir(domain: String, key: String, logger: Logger): File = findDir(
-        domain = domain,
-        key = key,
-        logger
-    ) ?: allocateDir(domain = domain, key = key)
+    fun getOrAllocateDir(domain: String, key: String, logger: Logger): File {
+        val committedDir = findDir(domain = domain, key = key, logger)
+        return committedDir ?: allocateDir(domain = domain, key = key)
+    }
 
-    private fun findDir(domain: String, key: String, logger: Logger): File? {
-        val globalEntries = loadGlobalEntries(logger)
-        return globalEntries
+    private fun findDir(domain: String, key: String, logger: Logger): File? =
+        loadCacheEntries(logger)
             .filter { it.domain == domain && it.key == key }
             .map { File(rootDirectory, it.directory) }
             .singleOrNull()
-    }
 
     private fun allocateDir(domain: String, key: String): File {
-        val directory = File(rootDirectory, UUID.randomUUID().toString())
+        val directory = File(rootDirectory, UUID.randomUUID().toString()).absoluteFile.normalize()
         val allocatedDirectory = AllocatedDirectory(domain = domain, key = key, directory = directory)
         synchronized(allocatedDirectories) {
             allocatedDirectories.add(allocatedDirectory)
@@ -69,27 +66,33 @@ class CacheManager(private val rootDirectory: File) {
 
     fun commitDir(dir: File, logger: Logger) {
         val allocatedDirectory: AllocatedDirectory = synchronized(allocatedDirectories) {
-            val index = allocatedDirectories.indexOfFirst { it.directory == dir }
+            val normalizedDir = dir.absoluteFile.normalize()
+            val index = allocatedDirectories.indexOfFirst { it.directory == normalizedDir }
             require(index >= 0) {
-                "The given directory, $dir, has not been allocated or was already committed"
+                val allocatedDirectoriesStr = synchronized(allocatedDirectories) {
+                    allocatedDirectories.map { it.directory.path }.sorted().joinToString(", ")
+                }
+                "The given directory, $dir, has not been allocated or was already committed; " +
+                        "there are currently ${allocatedDirectories.size} allocated directories: " +
+                        "$allocatedDirectoriesStr (error code k2gr9g36wh)"
             }
             allocatedDirectories.removeAt(index)
         }
 
-        val newGlobalEntry = GlobalEntry(
+        val newCacheEntry = CacheEntry(
             domain = allocatedDirectory.domain,
             key = allocatedDirectory.key,
             directory = dir.name
         )
 
         withEntriesFile(logger) { entriesFile, channel ->
-            logger.info("Inserting or updating cache entry {} in file: {}", newGlobalEntry, entriesFile.absolutePath)
-            val globalEntries = loadGlobalEntries(channel).filterNot {
-                it.domain == newGlobalEntry.domain && it.key == newGlobalEntry.key
+            logger.info("Inserting or updating cache entry {} in file: {}", newCacheEntry, entriesFile.absolutePath)
+            val cacheEntries = loadCacheEntries(channel).filterNot {
+                it.domain == newCacheEntry.domain && it.key == newCacheEntry.key
             }
 
             val json = Json { prettyPrint = true }
-            val newText = json.encodeToString(globalEntries + listOf(newGlobalEntry))
+            val newText = json.encodeToString(cacheEntries + listOf(newCacheEntry))
 
             channel.truncate(0)
             channel.position(0)
@@ -112,24 +115,24 @@ class CacheManager(private val rootDirectory: File) {
         }
     }
 
-    private fun loadGlobalEntries(logger: Logger): List<GlobalEntry> =
+    private fun loadCacheEntries(logger: Logger): List<CacheEntry> =
         withEntriesFile(logger) { _, channel ->
-            loadGlobalEntries(channel)
+            loadCacheEntries(channel)
         }
 
-    private fun loadGlobalEntries(channel: FileChannel): List<GlobalEntry> {
+    private fun loadCacheEntries(channel: FileChannel): List<CacheEntry> {
         val fileBytes = channel.readAllBytes()
         val fileText = String(fileBytes, StandardCharsets.UTF_8)
         if (fileText.isBlank()) {
             return emptyList()
         }
-        return Json.decodeFromString<List<GlobalEntry>>(fileText)
+        return Json.decodeFromString<List<CacheEntry>>(fileText)
     }
 
     override fun toString() = "CacheManager(${rootDirectory.absolutePath})"
 
     @Serializable
-    private data class GlobalEntry(
+    private data class CacheEntry(
         val domain: String,
         val key: String,
         val directory: String
