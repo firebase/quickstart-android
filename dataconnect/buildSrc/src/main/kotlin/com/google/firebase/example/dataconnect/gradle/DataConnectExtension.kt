@@ -19,7 +19,32 @@ package com.google.firebase.example.dataconnect.gradle
 import java.io.File
 
 interface DataConnectExtension {
-    var firebaseCliVersion: String?
+
+    /**
+    * The version of Node.js (https://nodejs.org) to use to install and run the
+    * Firebase CLI. This version of Node.js will be downloaded and extracted
+    * for exclusive use of the Data Connect Gradle plugin.
+     */
     var nodeVersion: String?
+
+    /**
+     * The version of the Firebase CLI (https://www.npmjs.com/package/firebase-tools)
+     * to use to perform the Data Connect Kotlin code generation.
+     */
+    var firebaseCliVersion: String?
+
+    /**
+     * The directory that contains dataconnect.yaml that specifies the Data
+     *  Connect schema and connectors whose code to generate.
+     */
     var dataConnectConfigDir: File?
+
+    /**
+     * The directory into which cached data for the Data Connect plugin will be
+     * stored. This property may be `null`. If it is not `null` then the
+     * directory will be created on-demand when it is needed. The contents of
+     * this directory are never deleted; therefore, it is prudent to
+     * periodically delete the contents of this directory.
+     */
+    var cacheDir: File?
 }

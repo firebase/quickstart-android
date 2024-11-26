@@ -16,6 +16,7 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
+import com.google.firebase.example.dataconnect.gradle.cache.CacheManager
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask.DownloadOfficialVersion
@@ -29,16 +30,9 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.prepareGet
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.jvm.javaio.copyTo
-import java.io.File
-import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.attribute.FileTime
-import java.nio.file.attribute.PosixFilePermission
-import java.security.MessageDigest
-import java.text.NumberFormat
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.ArchiveInputStream
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
@@ -50,6 +44,7 @@ import org.bouncycastle.util.encoders.Hex
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Task
+import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Property
@@ -61,6 +56,15 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
 import org.pgpainless.sop.SOPImpl
+import java.io.File
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.attribute.FileTime
+import java.nio.file.attribute.PosixFilePermission
+import java.security.MessageDigest
+import java.text.NumberFormat
 
 abstract class DownloadNodeJsTask : DefaultTask() {
 
@@ -69,6 +73,9 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
+
+    @get:Internal
+    abstract val cacheManager: Property<CacheManager>
 
     @get:Internal
     val nodeExecutable: RegularFile get() = nodePathOf { it.nodeExecutable }
@@ -83,18 +90,27 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
     @TaskAction
     fun run() {
-        val source = source.get()
-        val outputDirectoryRegularFile = outputDirectory.get()
-        val outputDirectory = outputDirectoryRegularFile.asFile
+        val source: Source = source.get()
+        val outputDirectoryRegularFile: Directory = outputDirectory.get()
+        val outputDirectory: File = outputDirectoryRegularFile.asFile
+        val cacheManager: CacheManager? = cacheManager.orNull
 
         logger.info("source: {}", Source.describe(source))
         logger.info("outputDirectory: {}", outputDirectory.absolutePath)
+        logger.info("cacheManager: {}", cacheManager)
+
+        if (cacheManager !== null && cacheManager.isCommitted(outputDirectory, logger)) {
+            logger.info("Using cached data from directory: {}", outputDirectory.absolutePath)
+            return
+        }
 
         project.delete(outputDirectory)
 
         when (source) {
             is DownloadOfficialVersion -> downloadOfficialVersion(source, outputDirectory)
         }
+
+        cacheManager?.commitDir(outputDirectory, logger)
     }
 
     sealed interface Source : java.io.Serializable {
@@ -105,6 +121,9 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
         @get:Internal
         val npmExecutable: String
+
+        @get:Internal
+        val cacheKey: String
     }
 
     abstract class DownloadOfficialVersion : Source {
@@ -120,6 +139,21 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
         override val npmExecutable: String get() = nodePathOf { it.npmExecutable }
 
+        override val cacheKey: String
+            get() {
+                val os: OperatingSystem = operatingSystem.get()
+                return buildString {
+                    append("DownloadOfficialVersion{")
+                    append("nodeVersion=")
+                    append(Json.encodeToString(version.get()))
+                    append(", os=")
+                    append(Json.encodeToString(os.type.name.lowercase()))
+                    append(", arch=")
+                    append(Json.encodeToString(os.arch.name.lowercase()))
+                    append("}")
+                }
+            }
+
         private fun nodePathOf(block: (OperatingSystem.Type) -> Path): String {
             val osType: OperatingSystem.Type = operatingSystem.get().type
             val relativePath: Path = block(osType)
@@ -129,33 +163,49 @@ abstract class DownloadNodeJsTask : DefaultTask() {
     }
 }
 
-private val OperatingSystem.Type.nodeExecutable: Path get() =
-    if (this == OperatingSystem.Type.Windows) {
-        Path.of("node.exe")
-    } else {
-        Path.of("bin", "node")
-    }
+private val OperatingSystem.Type.nodeExecutable: Path
+    get() =
+        if (this == OperatingSystem.Type.Windows) {
+            Path.of("node.exe")
+        } else {
+            Path.of("bin", "node")
+        }
 
-private val OperatingSystem.Type.npmExecutable: Path get() =
-    if (this == OperatingSystem.Type.Windows) {
-        Path.of("npm.cmd")
-    } else {
-        Path.of("bin", "npm")
-    }
+private val OperatingSystem.Type.npmExecutable: Path
+    get() =
+        if (this == OperatingSystem.Type.Windows) {
+            Path.of("npm.cmd")
+        } else {
+            Path.of("bin", "npm")
+        }
 
 internal fun DownloadNodeJsTask.configureFrom(providers: MyProjectProviders) {
     source.set(providers.source)
-    outputDirectory.set(providers.buildDirectory.map { it.dir("node") })
+    cacheManager.set(providers.cacheManager)
+
+    outputDirectory.set(providers.providerFactory.provider {
+        val cacheManager = cacheManager.orNull
+        val directoryProvider: Provider<Directory> = if (cacheManager === null) {
+            providers.buildDirectory.map { it.dir("node") }
+        } else {
+            val cacheDomain = "DownloadNodeJsTask"
+            val cacheKey = source.get().cacheKey
+            val cacheDir = cacheManager.getOrAllocateDir(domain = cacheDomain, key = cacheKey, logger)
+            providers.objectFactory.directoryProperty().also { it.set(cacheDir) }
+        }
+        directoryProvider.get()
+    })
 }
 
-internal val MyProjectProviders.source: Provider<Source> get() {
-    val lazySource: Lazy<Source> = lazy {
-        objectFactory.newInstance<DownloadOfficialVersion>().also {
-            it.updateFrom(this@source)
+internal val MyProjectProviders.source: Provider<Source>
+    get() {
+        val lazySource: Lazy<Source> = lazy {
+            objectFactory.newInstance<DownloadOfficialVersion>().also {
+                it.updateFrom(this@source)
+            }
         }
+        return providerFactory.provider { lazySource.value }
     }
-    return providerFactory.provider { lazySource.value }
-}
 
 internal fun DownloadOfficialVersion.updateFrom(providers: MyProjectProviders) {
     version.set(providers.nodeVersion)
@@ -167,7 +217,7 @@ internal fun DownloadOfficialVersion.Companion.describe(source: DownloadOfficial
         "null"
     } else source.run {
         "DownloadNodeJsTask.Source.DownloadOfficialVersion(" +
-            "version=${version.orNull}, operatingSystem=${operatingSystem.orNull})"
+                "version=${version.orNull}, operatingSystem=${operatingSystem.orNull})"
     }
 
 internal fun Source.Companion.describe(source: Source?): String = when (source) {
@@ -218,7 +268,7 @@ internal val DownloadOfficialVersion.downloadFileName: String
             OperatingSystem.Type.Linux -> "tar.gz"
             else -> throw GradleException(
                 "unable to determine node.js download file extension for operating system type: $type " +
-                    "(operatingSystem=$os) (error code ead53smf45)"
+                        "(operatingSystem=$os) (error code ead53smf45)"
             )
         }
         return "$downloadFileNameBase.$fileExtension"
@@ -247,7 +297,7 @@ internal val DownloadOfficialVersion.downloadFileNameBase: String
             OperatingSystem.Type.Linux -> "linux"
             else -> throw GradleException(
                 "unable to determine node.js download base file name for operating system type: $type " +
-                    "(operatingSystem=$os) (error code m2grw3h7xz)"
+                        "(operatingSystem=$os) (error code m2grw3h7xz)"
             )
         }
 
@@ -281,7 +331,7 @@ private fun Task.downloadOfficialVersion(source: DownloadOfficialVersion, output
     } else {
         throw GradleException(
             "Unsupported archive: ${downloadedFiles.binaryDistribution.absolutePath} " +
-                "(only .tar.gz and .zip extensions are supported) (error code pvrvw8sk9t)"
+                    "(only .tar.gz and .zip extensions are supported) (error code pvrvw8sk9t)"
         )
     }
 }
@@ -454,7 +504,7 @@ private fun Task.verifySha256Digest(file: File, expectedSha256Digest: String) {
     } else {
         throw GradleException(
             "Incorrect SHA256 digest of ${file.absolutePath}: " +
-                "$actualSha256Digest (expected $expectedSha256Digest)"
+                    "$actualSha256Digest (expected $expectedSha256Digest)"
         )
     }
 }
@@ -479,7 +529,7 @@ private fun Task.getExpectedSha256DigestFromShasumsFile(
 
     val sha = shas.singleOrNull() ?: throw GradleException(
         "$shasumsFilePath defines ${shas.size} SHA256 hashes for " +
-            "$desiredFileName, but expected exactly 1"
+                "$desiredFileName, but expected exactly 1"
     )
 
     logger.info("Found SHA256 sum of {} in {}: {}", desiredFileName, shasumsFilePath, sha)
@@ -488,8 +538,11 @@ private fun Task.getExpectedSha256DigestFromShasumsFile(
 
 private fun Task.downloadNodeJsBinaryDistribution(
     source: DownloadOfficialVersion,
-    outputDirectory: File
+    outputDirectory: File,
 ): DownloadedNodeJsFiles {
+    val shasumsFile = File(outputDirectory, shasumsFileName)
+    val binaryDistributionFile = File(outputDirectory, source.downloadFileName)
+
     val httpClient = HttpClient(CIO) {
         expectSuccess = true
         install(Logging) {
@@ -513,17 +566,10 @@ private fun Task.downloadNodeJsBinaryDistribution(
         }
     }
 
-    val binaryDistributionFile = File(outputDirectory, source.downloadFileName)
-    val shasumsFile = File(outputDirectory, shasumsFileName)
-
     httpClient.use {
         runBlocking {
-            val url = source.shasumsDownloadUrl
-            downloadFile(httpClient, url, shasumsFile, maxNumDownloadBytes = 100_000L)
-        }
-        runBlocking {
-            val url = source.downloadUrl
-            downloadFile(httpClient, url, binaryDistributionFile, maxNumDownloadBytes = 200_000_000L)
+            downloadFile(httpClient, source.shasumsDownloadUrl, shasumsFile, maxNumDownloadBytes = 100_000L)
+            downloadFile(httpClient, source.downloadUrl, binaryDistributionFile, maxNumDownloadBytes = 200_000_000L)
         }
     }
 
@@ -550,8 +596,8 @@ private suspend fun Task.downloadFile(httpClient: HttpClient, url: String, destF
         val maxNumDownloadBytesStr = numberFormat.format(maxNumDownloadBytes)
         throw GradleException(
             "Downloading $url failed: maximum file size $maxNumDownloadBytesStr bytes exceeded; " +
-                "cancelled after downloading $actualNumBytesDownloadedStr bytes " +
-                "(error code hvmhysn5vy)"
+                    "cancelled after downloading $actualNumBytesDownloadedStr bytes " +
+                    "(error code hvmhysn5vy)"
         )
     }
 
@@ -561,7 +607,7 @@ private suspend fun Task.downloadFile(httpClient: HttpClient, url: String, destF
 private fun Task.verifyNodeJsShaSumsSignature(file: File): ByteArray {
     logger.info(
         "Verifying that ${file.absolutePath} has a valid signature " +
-            "from the node.js release signing keys"
+                "from the node.js release signing keys"
     )
 
     val keysListPath = "com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/keys.list"

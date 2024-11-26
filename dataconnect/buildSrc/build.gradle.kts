@@ -25,6 +25,7 @@ java { toolchain { languageVersion.set(JavaLanguageVersion.of(17)) } }
 dependencies {
   implementation(libs.android.gradlePlugin.api)
   implementation(libs.snakeyaml)
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
   val ktorVersion = "2.3.13"
   implementation("io.ktor:ktor-client-core:$ktorVersion")
