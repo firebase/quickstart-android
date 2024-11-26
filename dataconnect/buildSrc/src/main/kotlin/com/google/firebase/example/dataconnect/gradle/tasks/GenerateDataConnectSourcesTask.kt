@@ -26,6 +26,7 @@ import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
@@ -34,19 +35,20 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
 import org.yaml.snakeyaml.Yaml
 
+@CacheableTask
 abstract class GenerateDataConnectSourcesTask : DefaultTask() {
 
     @get:InputDirectory abstract val dataConnectConfigDir: DirectoryProperty
 
     @get:InputFile abstract val firebaseExecutable: RegularFileProperty
 
+    @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
+
     @get:Internal
     abstract val nodeExecutable: RegularFileProperty
 
     @get:Internal
     abstract val pathEnvironmentVariable: Property<String>
-
-    @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
 
     @get:Internal abstract val tweakedDataConnectConfigDir: DirectoryProperty
 

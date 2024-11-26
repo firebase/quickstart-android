@@ -53,8 +53,8 @@ internal open class MyProjectProviders(
         providerFactory = project.providers,
         objectFactory = project.objects,
         projectLayout = project.layout,
-        nodeExecutable = downloadNodeJsTask.flatMap { it.nodeExecutable },
-        npmExecutable = downloadNodeJsTask.flatMap { it.npmExecutable },
+        nodeExecutable = downloadNodeJsTask.map { it.nodeExecutable },
+        npmExecutable = downloadNodeJsTask.map { it.npmExecutable },
         ext = project.extensions.getByType<DataConnectExtension>(),
         project.logger
     )
@@ -131,7 +131,7 @@ internal open class MyVariantProviders(
     ) : this(
         variant = variant,
         projectProviders = projectProviders,
-        firebaseExecutable = setupFirebaseToolsTask.flatMap { it.firebaseExecutable }
+        firebaseExecutable = setupFirebaseToolsTask.map { it.firebaseExecutable }
     )
 
     val buildDirectory: Provider<Directory> =

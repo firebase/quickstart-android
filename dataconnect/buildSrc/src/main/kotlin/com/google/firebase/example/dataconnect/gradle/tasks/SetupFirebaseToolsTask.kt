@@ -27,34 +27,35 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
 
+@CacheableTask
 abstract class SetupFirebaseToolsTask : DefaultTask() {
 
     @get:Input
     abstract val firebaseCliVersion: Property<String>
 
-    @get:InputFile
-    abstract val npmExecutable: RegularFileProperty
-
-    @get:InputFile
-    abstract val nodeExecutable: RegularFileProperty
-
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
+
+    @get:Internal
+    abstract val npmExecutable: RegularFileProperty
+
+    @get:Internal
+    abstract val nodeExecutable: RegularFileProperty
 
     @get:Internal
     abstract val cacheManager: Property<CacheManager>
 
     @get:Internal
-    val firebaseExecutable: Provider<RegularFile> by lazy {
-        outputDirectory.map { it.file("node_modules/.bin/firebase") }
-    }
+    val firebaseExecutable: RegularFile get() = outputDirectory.get().file("node_modules/.bin/firebase")
 
     @get:Inject
     protected abstract val execOperations: ExecOperations
