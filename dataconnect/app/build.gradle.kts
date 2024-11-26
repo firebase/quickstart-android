@@ -103,5 +103,5 @@ dataconnect {
     // This can be set with the "DataConnectGradleCacheDir" project property,
     // such as by specifying -PDataConnectGradleCacheDir=myCacheDir on the
     // Gradle command line.
-    cacheDir = findProperty("DataConnectGradleCacheDir")?.let { file(it) }
+    cacheDir = findProperty("dataconnect.gradleCacheDir")?.let { file(it) }
 }
