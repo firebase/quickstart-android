@@ -20,10 +20,12 @@ import com.android.build.api.variant.ApplicationVariant
 import com.google.firebase.example.dataconnect.gradle.DataConnectExtension
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
+import java.io.File
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
 import org.gradle.api.logging.Logger
 import org.gradle.api.model.ObjectFactory
@@ -36,7 +38,7 @@ internal open class MyProjectProviders(
     projectBuildDirectory: DirectoryProperty,
     val providerFactory: ProviderFactory,
     val objectFactory: ObjectFactory,
-    projectDirectoryHierarchy: List<Directory>,
+    val projectLayout: ProjectLayout,
     val nodeExecutable: Provider<RegularFile>,
     val npmExecutable: Provider<RegularFile>,
     ext: DataConnectExtension,
@@ -50,7 +52,7 @@ internal open class MyProjectProviders(
         projectBuildDirectory = project.layout.buildDirectory,
         providerFactory = project.providers,
         objectFactory = project.objects,
-        projectDirectoryHierarchy = project.projectDirectoryHierarchy(),
+        projectLayout = project.layout,
         nodeExecutable = downloadNodeJsTask.map { it.nodeExecutable },
         npmExecutable = downloadNodeJsTask.map { it.npmExecutable },
         ext = project.extensions.getByType<DataConnectExtension>(),
@@ -61,58 +63,69 @@ internal open class MyProjectProviders(
 
     val buildDirectory: Provider<Directory> = projectBuildDirectory.map { it.dir("dataconnect") }
 
-    val firebaseToolsVersion: Provider<String> =
-        providerFactory.provider {
-            ext.firebaseToolsVersion
+    val firebaseCliVersion: Provider<String> = run {
+        val lazyFirebaseCliVersion: Lazy<String> = lazy {
+            ext.firebaseCliVersion
                 ?: throw GradleException(
-                    "dataconnect.firebaseToolsVersion must be set in your " +
-                        "build.gradle or build.gradle.kts " +
-                        "(error code xbmvkc3mtr)"
+                    "dataconnect.firebaseCliVersion must be set in " +
+                        "build.gradle or build.gradle.kts to " +
+                        "specify the version of the Firebase CLI npm package " +
+                        "(https://www.npmjs.com/package/firebase-tools) to use " +
+                        "(e.g. \"13.25.0\") (error code xbmvkc3mtr)"
                 )
         }
+        providerFactory.provider { lazyFirebaseCliVersion.value }
+    }
 
-    private val localConfigProviders = LocalConfigProviders(projectDirectoryHierarchy, providerFactory, logger)
+    val nodeVersion: Provider<String> = run {
+        val lazyNodeVersion: Lazy<String> = lazy {
+            ext.nodeVersion
+                ?: throw GradleException(
+                    "dataconnect.nodeVersion must be set in " +
+                        "build.gradle or build.gradle.kts to " +
+                        "specify the version of Node.js (https://nodejs.org) " +
+                        "to install (e.g. \"20.9.0\") (error code 3acj27az2c)"
+                )
+        }
+        providerFactory.provider { lazyNodeVersion.value }
+    }
+
+    val dataConnectConfigDir: Provider<Directory> = run {
+        val lazyDataConnectConfigDir: Lazy<Directory> = lazy {
+            @Suppress("ktlint:standard:max-line-length")
+            val dataConnectConfigDirFile: File =
+                ext.dataConnectConfigDir
+                    ?: throw GradleException(
+                        "dataconnect.dataConnectConfigDir must be set in " +
+                            "build.gradle or build.gradle.kts to " +
+                            "specify the directory that defines the Data Connect schema and " +
+                            "connectors whose Kotlin code to generate code. That is, the directory " +
+                            "containing the dataconnect.yaml file. For details, see " +
+                            "https://firebase.google.com/docs/data-connect/configuration-reference#dataconnect.yaml-configuration " +
+                            "(e.g. file(\"../dataconnect\")) (error code a3ch245mbd)"
+                    )
+            projectLayout.projectDirectory.dir(dataConnectConfigDirFile.path)
+        }
+        providerFactory.provider { lazyDataConnectConfigDir.value }
+    }
 }
 
 internal open class MyVariantProviders(
     variant: ApplicationVariant,
     val projectProviders: MyProjectProviders,
-    val firebaseExecutable: Provider<RegularFile>,
-    ext: DataConnectExtension,
-    objectFactory: ObjectFactory
+    val firebaseExecutable: Provider<RegularFile>
 ) {
 
     constructor(
-        project: Project,
         variant: ApplicationVariant,
         setupFirebaseToolsTask: TaskProvider<SetupFirebaseToolsTask>,
         projectProviders: MyProjectProviders
     ) : this(
         variant = variant,
         projectProviders = projectProviders,
-        firebaseExecutable = setupFirebaseToolsTask.flatMap { it.firebaseExecutable },
-        ext = project.extensions.getByType<DataConnectExtension>(),
-        objectFactory = project.objects
+        firebaseExecutable = setupFirebaseToolsTask.flatMap { it.firebaseExecutable }
     )
 
     val buildDirectory: Provider<Directory> =
         projectProviders.buildDirectory.map { it.dir("variants/${variant.name}") }
-
-    val dataConnectConfigDir: Provider<Directory> = run {
-        val dir =
-            ext.dataConnectConfigDir
-                ?: throw GradleException(
-                    "dataconnect.dataConnectConfigDir must be set in your build.gradle or build.gradle.kts " +
-                        "(error code xbmvkc3mtr)"
-                )
-        objectFactory.directoryProperty().also { property -> property.set(dir) }
-    }
-}
-
-private fun Project.projectDirectoryHierarchy(): List<Directory> = buildList {
-    var curProject: Project? = this@projectDirectoryHierarchy
-    while (curProject !== null) {
-        add(curProject.layout.projectDirectory)
-        curProject = curProject.parent
-    }
 }

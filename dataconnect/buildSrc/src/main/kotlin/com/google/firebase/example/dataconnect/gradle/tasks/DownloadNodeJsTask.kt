@@ -158,7 +158,7 @@ internal val MyProjectProviders.source: Provider<Source> get() {
 }
 
 internal fun DownloadOfficialVersion.updateFrom(providers: MyProjectProviders) {
-    version.set("20.9.0")
+    version.set(providers.nodeVersion)
     operatingSystem.set(providers.operatingSystem)
 }
 

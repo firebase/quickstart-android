@@ -82,12 +82,20 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 }
 
+// This "dataconnect" section is a Gradle "extension" that is added by the
+// "com.google.firebase.example.dataconnect.gradle" Gradle plugin. It must be
+// present to specify configuration details for the Data Connect Gradle plugin.
 dataconnect {
-    // The version of https://www.npmjs.com/package/firebase-tools to use to perform the
-    // Data Connect code generation.
-    firebaseToolsVersion = "13.25.0"
+    // The version of Node.js (https://nodejs.org) to use to install and run the
+    // Firebase CLI. This version of Node.js will be downloaded and extracted
+    // for exclusive use of the Data Connect Gradle plugin.
+    nodeVersion = "20.18.1"
 
-    // The directory that contains dataconnect.yaml to use as input when performing
-    // the Data Connect code generation.
+    // The version of the Firebase CLI (https://www.npmjs.com/package/firebase-tools)
+    // to use to perform the Data Connect Kotlin code generation.
+    firebaseCliVersion = "13.25.0"
+
+    // The directory that contains dataconnect.yaml that specifies the Data
+    // Connect schema and connectors whose code to generate.
     dataConnectConfigDir = file("../dataconnect")
 }

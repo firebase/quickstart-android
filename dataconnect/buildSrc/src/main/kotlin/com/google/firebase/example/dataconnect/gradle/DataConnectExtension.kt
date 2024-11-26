@@ -19,6 +19,7 @@ package com.google.firebase.example.dataconnect.gradle
 import java.io.File
 
 interface DataConnectExtension {
-    var firebaseToolsVersion: String?
+    var firebaseCliVersion: String?
+    var nodeVersion: String?
     var dataConnectConfigDir: File?
 }

@@ -45,7 +45,7 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
 
         val androidComponents = project.extensions.getByType<ApplicationAndroidComponentsExtension>()
         androidComponents.onVariants { variant ->
-            val variantProviders = MyVariantProviders(project, variant, setupFirebaseToolsTask, providers)
+            val variantProviders = MyVariantProviders(variant, setupFirebaseToolsTask, providers)
             registerVariantTasks(project, variant, variantProviders)
         }
     }

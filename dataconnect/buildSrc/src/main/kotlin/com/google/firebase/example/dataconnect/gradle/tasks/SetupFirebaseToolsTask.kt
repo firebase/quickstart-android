@@ -33,7 +33,7 @@ import org.gradle.api.tasks.TaskAction
 abstract class SetupFirebaseToolsTask : DefaultTask() {
 
     @get:Input
-    abstract val firebaseToolsVersion: Property<String>
+    abstract val firebaseCliVersion: Property<String>
 
     @get:InputFile
     abstract val npmExecutable: RegularFileProperty
@@ -53,12 +53,12 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
 
     @TaskAction
     fun run() {
-        val firebaseToolsVersion: String = firebaseToolsVersion.get()
+        val firebaseCliVersion: String = firebaseCliVersion.get()
         val npmExecutable: File = npmExecutable.get().asFile
         val nodeExecutable: File = nodeExecutable.get().asFile
         val outputDirectory: File = outputDirectory.get().asFile
 
-        logger.info("firebaseToolsVersion: {}", firebaseToolsVersion)
+        logger.info("firebaseCliVersion: {}", firebaseCliVersion)
         logger.info("npmExecutable: {}", npmExecutable.absolutePath)
         logger.info("nodeExecutable: {}", nodeExecutable.absolutePath)
         logger.info("outputDirectory: {}", outputDirectory.absolutePath)
@@ -75,14 +75,14 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
         val installLogFile = File(outputDirectory, "install.log.txt")
         runCommand(installLogFile) {
             environment("PATH", newPath)
-            commandLine(npmExecutable.absolutePath, "install", "firebase-tools@$firebaseToolsVersion")
+            commandLine(npmExecutable.absolutePath, "install", "firebase-tools@$firebaseCliVersion")
             workingDir(outputDirectory)
         }
     }
 }
 
 internal fun SetupFirebaseToolsTask.configureFrom(providers: MyProjectProviders) {
-    firebaseToolsVersion.set(providers.firebaseToolsVersion)
+    firebaseCliVersion.set(providers.firebaseCliVersion)
     npmExecutable.set(providers.npmExecutable)
     nodeExecutable.set(providers.nodeExecutable)
     outputDirectory.set(providers.buildDirectory.map { it.dir("firebase-tools") })

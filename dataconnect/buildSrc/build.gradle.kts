@@ -26,15 +26,7 @@ dependencies {
   implementation(libs.android.gradlePlugin.api)
   implementation(libs.snakeyaml)
 
-  // TODO: Upgrade the `tomlkt` dependency to 0.4.0 or later once the gradle
-  //  wrapper version used by this project uses a sufficiently-recent version
-  //  of kotlin. At the time of writing, `embeddedKotlinVersion` is 1.9.22,
-  //  which requires an older version of `tomlkt` because the newer versions
-  //  depend on a newer version of the `kotlinx.serialization` plugin, which
-  //  requires a newer version of Kotlin.
-  implementation("net.peanuuutz.tomlkt:tomlkt:0.3.7")
-
-  val ktorVersion = "2.3.12"
+  val ktorVersion = "2.3.13"
   implementation("io.ktor:ktor-client-core:$ktorVersion")
   implementation("io.ktor:ktor-client-cio:$ktorVersion")
   implementation("io.ktor:ktor-client-logging:$ktorVersion")
