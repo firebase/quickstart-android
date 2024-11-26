@@ -21,7 +21,6 @@ import com.google.firebase.example.dataconnect.gradle.DataConnectExtension
 import com.google.firebase.example.dataconnect.gradle.cache.CacheManager
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
-import java.io.File
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.file.Directory

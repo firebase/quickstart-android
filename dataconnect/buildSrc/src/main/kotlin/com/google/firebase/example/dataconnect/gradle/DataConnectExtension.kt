@@ -21,9 +21,9 @@ import java.io.File
 interface DataConnectExtension {
 
     /**
-    * The version of Node.js (https://nodejs.org) to use to install and run the
-    * Firebase CLI. This version of Node.js will be downloaded and extracted
-    * for exclusive use of the Data Connect Gradle plugin.
+     * The version of Node.js (https://nodejs.org) to use to install and run the
+     * Firebase CLI. This version of Node.js will be downloaded and extracted
+     * for exclusive use of the Data Connect Gradle plugin.
      */
     var nodeVersion: String?
 

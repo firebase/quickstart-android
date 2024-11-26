@@ -103,17 +103,18 @@ internal fun SetupFirebaseToolsTask.configureFrom(providers: MyProjectProviders)
     cacheManager.set(providers.cacheManager)
     cacheManager.set(providers.cacheManager)
 
-    outputDirectory.set(providers.providerFactory.provider {
-        val cacheManager = cacheManager.orNull
-        val directoryProvider: Provider<Directory> = if (cacheManager === null) {
-            providers.buildDirectory.map { it.dir("firebase-tools") }
-        } else {
-            val cacheDomain = "SetupFirebaseToolsTask"
-            val cacheKey = "firebaseCliVersion=${firebaseCliVersion.get()}"
-            val cacheDir = cacheManager.getOrAllocateDir(domain = cacheDomain, key = cacheKey, logger)
-            providers.objectFactory.directoryProperty().also { it.set(cacheDir) }
+    outputDirectory.set(
+        providers.providerFactory.provider {
+            val cacheManager = cacheManager.orNull
+            val directoryProvider: Provider<Directory> = if (cacheManager === null) {
+                providers.buildDirectory.map { it.dir("firebase-tools") }
+            } else {
+                val cacheDomain = "SetupFirebaseToolsTask"
+                val cacheKey = "firebaseCliVersion=${firebaseCliVersion.get()}"
+                val cacheDir = cacheManager.getOrAllocateDir(domain = cacheDomain, key = cacheKey, logger)
+                providers.objectFactory.directoryProperty().also { it.set(cacheDir) }
+            }
+            directoryProvider.get()
         }
-        directoryProvider.get()
-    })
-    
+    )
 }

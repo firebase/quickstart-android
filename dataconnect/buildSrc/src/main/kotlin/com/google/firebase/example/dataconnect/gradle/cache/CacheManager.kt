@@ -16,10 +16,6 @@
 
 package com.google.firebase.example.dataconnect.gradle.cache
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.gradle.api.logging.Logger
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.nio.ByteBuffer
@@ -28,10 +24,14 @@ import java.nio.channels.ReadableByteChannel
 import java.nio.charset.StandardCharsets
 import java.nio.file.StandardOpenOption
 import java.util.UUID
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.gradle.api.logging.Logger
 
 class CacheManager(private val rootDirectory: File) {
 
-    private val entriesFile: File  = File(rootDirectory, ENTRIES_FILENAME)
+    private val entriesFile: File = File(rootDirectory, ENTRIES_FILENAME)
 
     private var allocatedDirectories = mutableListOf<AllocatedDirectory>()
 
@@ -44,7 +44,11 @@ class CacheManager(private val rootDirectory: File) {
         return globalEntry !== null
     }
 
-    fun getOrAllocateDir(domain: String, key: String, logger: Logger): File = findDir(domain=domain, key=key, logger) ?: allocateDir(domain=domain, key=key)
+    fun getOrAllocateDir(domain: String, key: String, logger: Logger): File = findDir(
+        domain = domain,
+        key = key,
+        logger
+    ) ?: allocateDir(domain = domain, key = key)
 
     private fun findDir(domain: String, key: String, logger: Logger): File? {
         val globalEntries = loadGlobalEntries(logger)
@@ -56,7 +60,7 @@ class CacheManager(private val rootDirectory: File) {
 
     private fun allocateDir(domain: String, key: String): File {
         val directory = File(rootDirectory, UUID.randomUUID().toString())
-        val allocatedDirectory = AllocatedDirectory(domain=domain, key=key, directory=directory)
+        val allocatedDirectory = AllocatedDirectory(domain = domain, key = key, directory = directory)
         synchronized(allocatedDirectories) {
             allocatedDirectories.add(allocatedDirectory)
         }
@@ -73,14 +77,16 @@ class CacheManager(private val rootDirectory: File) {
         }
 
         val newGlobalEntry = GlobalEntry(
-            domain=allocatedDirectory.domain,
-            key=allocatedDirectory.key,
+            domain = allocatedDirectory.domain,
+            key = allocatedDirectory.key,
             directory = dir.name
         )
 
         withEntriesFile(logger) { entriesFile, channel ->
             logger.info("Inserting or updating cache entry {} in file: {}", newGlobalEntry, entriesFile.absolutePath)
-            val globalEntries = loadGlobalEntries(channel).filterNot { it.domain == newGlobalEntry.domain && it.key == newGlobalEntry.key }
+            val globalEntries = loadGlobalEntries(channel).filterNot {
+                it.domain == newGlobalEntry.domain && it.key == newGlobalEntry.key
+            }
 
             val json = Json { prettyPrint = true }
             val newText = json.encodeToString(globalEntries + listOf(newGlobalEntry))
@@ -89,13 +95,17 @@ class CacheManager(private val rootDirectory: File) {
             channel.position(0)
             channel.write(ByteBuffer.wrap(newText.toByteArray(StandardCharsets.UTF_8)))
         }
-
     }
 
     private fun <T> withEntriesFile(logger: Logger, block: (File, FileChannel) -> T): T {
         logger.debug("Opening Data Connect cache metadata file: {}", entriesFile.absolutePath)
         entriesFile.parentFile.mkdirs()
-        return FileChannel.open(entriesFile.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE).use { channel ->
+        return FileChannel.open(
+            entriesFile.toPath(),
+            StandardOpenOption.READ,
+            StandardOpenOption.WRITE,
+            StandardOpenOption.CREATE
+        ).use { channel ->
             channel.lock().use {
                 block(entriesFile, channel)
             }
@@ -106,7 +116,6 @@ class CacheManager(private val rootDirectory: File) {
         withEntriesFile(logger) { _, channel ->
             loadGlobalEntries(channel)
         }
-
 
     private fun loadGlobalEntries(channel: FileChannel): List<GlobalEntry> {
         val fileBytes = channel.readAllBytes()
@@ -135,7 +144,6 @@ class CacheManager(private val rootDirectory: File) {
     companion object {
 
         private const val ENTRIES_FILENAME = "entries.json"
-
     }
 }
 

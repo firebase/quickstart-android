@@ -60,6 +60,7 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
         val generateCodeTaskName = "generate${variantNameTitleCase}DataConnectSources"
         val generateCodeTask = project.tasks.register<GenerateDataConnectSourcesTask>(generateCodeTaskName) {
             configureFrom(providers)
+            @Suppress("ktlint:standard:max-line-length")
             setOnlyIf(
                 "dataconnect.dataConnectConfigDir is null; to enable the \"$name\" task, " +
                     "set dataconnect.dataConnectConfigDir in build.gradle or build.gradle.kts to " +
