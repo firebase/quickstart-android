@@ -35,16 +35,24 @@ interface DataConnectExtension {
 
     /**
      * The directory that contains dataconnect.yaml that specifies the Data
-     *  Connect schema and connectors whose code to generate.
+     * Connect schema and connectors whose code to generate. If the file is a
+     * relative directory (as opposed to an absolute directory) then it will be
+     * calculated relative to the evaluating project's directory.
+     *
+     * If this value is null then no Data Connect code generation will occur
+     * as part of the build.
      */
     var dataConnectConfigDir: File?
 
     /**
      * The directory into which cached data for the Data Connect plugin will be
-     * stored. This property may be `null`. If it is not `null` then the
-     * directory will be created on-demand when it is needed. The contents of
-     * this directory are never deleted; therefore, it is prudent to
-     * periodically delete the contents of this directory.
+     * stored, and from which cached data will be read. This property may be
+     * `null` (the default) to _not_ perform any explicit caching. If it is not
+     * `null` then the directory will be created on-demand when it is needed.
+     * The contents of this directory are never deleted; therefore, it is
+     * prudent to periodically delete the contents of this directory. If the
+     * file is a relative directory (as opposed to an absolute directory) then
+     * it will be calculated relative to the evaluating project's directory.
      */
     var cacheDir: File?
 }

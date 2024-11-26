@@ -60,6 +60,15 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
         val generateCodeTaskName = "generate${variantNameTitleCase}DataConnectSources"
         val generateCodeTask = project.tasks.register<GenerateDataConnectSourcesTask>(generateCodeTaskName) {
             configureFrom(providers)
+            setOnlyIf(
+                "dataconnect.dataConnectConfigDir is null; to enable the \"$name\" task, " +
+                    "set dataconnect.dataConnectConfigDir in build.gradle or build.gradle.kts to " +
+                    "the directory that defines the Data Connect schema and " +
+                    "connectors whose Kotlin code to generate code. That is, the directory " +
+                    "containing the dataconnect.yaml file. For details, see " +
+                    "https://firebase.google.com/docs/data-connect/configuration-reference#dataconnect.yaml-configuration " +
+                    "(e.g. file(\"../dataconnect\")) (message code a3ch245mbd)"
+            ) { dataConnectConfigDir.isPresent }
         }
 
         variant.sources.java!!.addGeneratedSourceDirectory(

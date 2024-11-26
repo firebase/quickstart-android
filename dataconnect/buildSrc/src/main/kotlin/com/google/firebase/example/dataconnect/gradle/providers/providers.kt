@@ -92,20 +92,10 @@ internal open class MyProjectProviders(
     }
 
     val dataConnectConfigDir: Provider<Directory> = run {
-        val lazyDataConnectConfigDir: Lazy<Directory> = lazy {
-            @Suppress("ktlint:standard:max-line-length")
-            val dataConnectConfigDirFile: File =
-                ext.dataConnectConfigDir
-                    ?: throw GradleException(
-                        "dataconnect.dataConnectConfigDir must be set in " +
-                            "build.gradle or build.gradle.kts to " +
-                            "specify the directory that defines the Data Connect schema and " +
-                            "connectors whose Kotlin code to generate code. That is, the directory " +
-                            "containing the dataconnect.yaml file. For details, see " +
-                            "https://firebase.google.com/docs/data-connect/configuration-reference#dataconnect.yaml-configuration " +
-                            "(e.g. file(\"../dataconnect\")) (error code a3ch245mbd)"
-                    )
-            projectLayout.projectDirectory.dir(dataConnectConfigDirFile.path)
+        val lazyDataConnectConfigDir: Lazy<Directory?> = lazy {
+            ext.dataConnectConfigDir?.let {
+                projectLayout.projectDirectory.dir(it.path)
+            }
         }
         providerFactory.provider { lazyDataConnectConfigDir.value }
     }

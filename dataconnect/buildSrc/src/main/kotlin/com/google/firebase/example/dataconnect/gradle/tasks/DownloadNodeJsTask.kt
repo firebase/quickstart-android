@@ -101,6 +101,7 @@ abstract class DownloadNodeJsTask : DefaultTask() {
 
         if (cacheManager !== null && cacheManager.isCommitted(outputDirectory, logger)) {
             logger.info("Using cached data from directory: {}", outputDirectory.absolutePath)
+            didWork = false
             return
         }
 
