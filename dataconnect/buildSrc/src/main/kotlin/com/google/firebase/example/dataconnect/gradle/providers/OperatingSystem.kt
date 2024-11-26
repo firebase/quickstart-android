@@ -16,6 +16,8 @@
 
 package com.google.firebase.example.dataconnect.gradle.providers
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import org.gradle.api.GradleException
 import org.gradle.api.logging.Logger
 import org.gradle.api.model.ObjectFactory
@@ -25,11 +27,27 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.kotlin.dsl.property
 
+@Serializable
 data class OperatingSystem(
     @get:Input val type: Type,
     @get:Input val arch: Architecture,
-    @get:Internal val description: String?
-) : java.io.Serializable {
+) {
+    constructor(
+        type: Type,
+        arch: Architecture,
+        description: String
+    ) : this(type, arch) {
+        this.description = description
+    }
+
+    // Declare `description` outside the primary constructor so that it does
+    // not get serialized or included in equals() and hashCode() computations.
+    @get:Internal
+    var description: String? = null
+        private set
+
+    // Override toString() to include the description
+    override fun toString(): String = "OperatingSystem(type=$type, arch=$arch, description=$description)"
 
     enum class Type {
         Windows,

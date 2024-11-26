@@ -20,6 +20,7 @@ import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.ApplicationVariant
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.providers.MyVariantProviders
+import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinaryDistributionArchiveTask
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask
 import com.google.firebase.example.dataconnect.gradle.tasks.GenerateDataConnectSourcesTask
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
@@ -39,6 +40,10 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
 
         project.extensions.create("dataconnect", DataConnectExtension::class.java)
         val providers = MyProjectProviders(project, downloadNodeJsTask)
+
+        project.tasks.register<DownloadNodeJsBinaryDistributionArchiveTask>("downloadNodeJsBinaryDistributionArchive") {
+            configureFrom(providers)
+        }
 
         downloadNodeJsTask.configure { configureFrom(providers) }
         setupFirebaseToolsTask.configure { configureFrom(providers) }
