@@ -88,14 +88,19 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase
 
     override fun doRun() {
         val (operatingSystem: OperatingSystem, nodeJsVersion: String) = inputData.get()
-        NodeJsTarballDownloader(
+
+        val nodeJsTarballDownloader = NodeJsTarballDownloader(
             operatingSystemType = operatingSystem.type,
             operatingSystemArchitecture = operatingSystem.architecture,
             nodeJsVersion = nodeJsVersion,
             outputDirectory = outputDirectory.get().asFile,
             fileSystemOperations = fileSystemOperations,
             logger = dataConnectLogger
-        ).run()
+        )
+
+        nodeJsTarballDownloader.use {
+            it.run()
+        }
     }
 
     /**
@@ -151,9 +156,15 @@ private class NodeJsTarballDownloader(
     val outputDirectory: File,
     val fileSystemOperations: FileSystemOperations,
     override val logger: DataConnectGradleLogger
-) : DataConnectGradleLoggerProvider {
+) : DataConnectGradleLoggerProvider, AutoCloseable {
     val nodeJsPaths: NodeJsPaths =
         NodeJsPaths.from(nodeJsVersion, operatingSystemType, operatingSystemArchitecture)
+
+    val fileDownloader: FileDownloader = FileDownloader(logger)
+
+    override fun close() {
+        fileDownloader.close()
+    }
 }
 
 private fun NodeJsTarballDownloader.run() {
@@ -166,12 +177,25 @@ private fun NodeJsTarballDownloader.run() {
     createDirectory(outputDirectory)
 
     val destFile = File(outputDirectory, nodeJsPaths.downloadFileName)
-    download(nodeJsPaths.downloadUrl, destFile)
+    downloadNodeJsBinaryArchive(destFile)
+    verifyNodeJsReleaseSignature(destFile)
 }
 
-private fun NodeJsTarballDownloader.download(url: String, destFile: File) {
-    val downloader = FileDownloader(logger)
+private fun NodeJsTarballDownloader.downloadNodeJsBinaryArchive(destFile: File) {
+    val url = nodeJsPaths.downloadUrl
     runBlocking {
-        downloader.download(url, destFile, maxNumDownloadBytes = 200_000_000)
+        fileDownloader.download(url, destFile, maxNumDownloadBytes = 200_000_000)
     }
+}
+
+private fun NodeJsTarballDownloader.downloadShasumsFile(destFile: File) {
+    val url = nodeJsPaths.shasumsUrl
+    runBlocking {
+        fileDownloader.download(url, destFile, maxNumDownloadBytes = 100_000)
+    }
+}
+
+private fun NodeJsTarballDownloader.verifyNodeJsReleaseSignature(file: File) {
+    val shasumsFile = File(outputDirectory, nodeJsPaths.shasumsFileName)
+    downloadShasumsFile(shasumsFile)
 }

@@ -21,7 +21,9 @@ import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 
 class NodeJsPaths(
     val downloadUrl: String,
-    val downloadFileName: String
+    val downloadFileName: String,
+    val shasumsUrl: String,
+    val shasumsFileName: String,
 ) {
     companion object
 }
@@ -34,7 +36,9 @@ fun NodeJsPaths.Companion.from(
     val calculator = NodeJsPathsCalculator(nodeJsVersion, operatingSystemType, operatingSystemArchitecture)
     return NodeJsPaths(
         downloadUrl = calculator.downloadUrl(),
-        downloadFileName = calculator.downloadFileName()
+        downloadFileName = calculator.downloadFileName(),
+        shasumsUrl = calculator.shasumsDownloadUrl(),
+        shasumsFileName = calculator.shasumsDownloadFileName()
     )
 }
 
@@ -62,6 +66,15 @@ private fun NodeJsPathsCalculator.downloadUrlPrefix(): String = "https://nodejs.
 private fun NodeJsPathsCalculator.downloadUrl(): String {
     val downloadUrlPrefix = downloadUrlPrefix()
     val downloadFileName = downloadFileName()
+    return "$downloadUrlPrefix/$downloadFileName"
+}
+
+@Suppress("UnusedReceiverParameter")
+private fun NodeJsPathsCalculator.shasumsDownloadFileName(): String = "SHASUMS256.txt.asc"
+
+private fun NodeJsPathsCalculator.shasumsDownloadUrl(): String {
+    val downloadUrlPrefix = downloadUrlPrefix()
+    val downloadFileName = shasumsDownloadFileName()
     return "$downloadUrlPrefix/$downloadFileName"
 }
 
