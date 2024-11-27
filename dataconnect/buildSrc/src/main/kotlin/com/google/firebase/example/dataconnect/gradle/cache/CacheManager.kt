@@ -16,10 +16,6 @@
 
 package com.google.firebase.example.dataconnect.gradle.cache
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.gradle.api.logging.Logger
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.nio.ByteBuffer
@@ -28,6 +24,10 @@ import java.nio.channels.ReadableByteChannel
 import java.nio.charset.StandardCharsets
 import java.nio.file.StandardOpenOption
 import java.util.UUID
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.gradle.api.logging.Logger
 
 class CacheManager(private val rootDirectory: File) {
 
@@ -73,8 +73,8 @@ class CacheManager(private val rootDirectory: File) {
                     allocatedDirectories.map { it.directory.path }.sorted().joinToString(", ")
                 }
                 "The given directory, $dir, has not been allocated or was already committed; " +
-                        "there are currently ${allocatedDirectories.size} allocated directories: " +
-                        "$allocatedDirectoriesStr (error code k2gr9g36wh)"
+                    "there are currently ${allocatedDirectories.size} allocated directories: " +
+                    "$allocatedDirectoriesStr (error code k2gr9g36wh)"
             }
             allocatedDirectories.removeAt(index)
         }

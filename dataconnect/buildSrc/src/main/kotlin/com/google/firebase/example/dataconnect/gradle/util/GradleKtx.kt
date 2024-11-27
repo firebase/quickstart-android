@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.firebase.example.dataconnect.gradle.tasks
+package com.google.firebase.example.dataconnect.gradle.util
 
 import java.io.File
 import org.gradle.api.logging.Logger

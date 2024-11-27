@@ -20,12 +20,17 @@ import com.google.firebase.example.dataconnect.gradle.cache.CacheManager
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinaryDistributionArchiveTask.Inputs
+import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
+import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLoggerProvider
+import com.google.firebase.example.dataconnect.gradle.util.FileDownloader
+import com.google.firebase.example.dataconnect.gradle.util.createDirectory
+import com.google.firebase.example.dataconnect.gradle.util.deleteDirectory
+import java.io.File
+import javax.inject.Inject
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
-import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemOperations
-import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.ProviderFactory
@@ -34,12 +39,9 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.TaskAction
-import java.io.File
-import javax.inject.Inject
 
 @CacheableTask
-abstract class DownloadNodeJsBinaryDistributionArchiveTask : DefaultTask() {
+abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
 
     /**
      * The inputs required to execute this task.
@@ -65,7 +67,7 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DefaultTask() {
     /**
      * The path of the downloaded Node.js binary distribution archive.
      *
-     * This property's value is computed from [inputs] and [outputDirectory].
+     * This property's value is computed from [inputData] and [outputDirectory].
      *
      * This property must not be accessed until after the task executes.
      */
@@ -74,7 +76,7 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DefaultTask() {
         get() {
             val inputs = inputData.get()
             val outputDirectory = outputDirectory.get()
-            val downloadedFileName = inputs.calculateDownloadFileName()
+            val downloadedFileName = inputs.calculateNodeJsPaths().downloadFileName
             return outputDirectory.file(downloadedFileName)
         }
 
@@ -82,24 +84,18 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DefaultTask() {
     abstract val providerFactory: ProviderFactory
 
     @get:Inject
-    abstract val projectLayout: ProjectLayout
-
-    @get:Inject
     abstract val fileSystemOperations: FileSystemOperations
 
-    @TaskAction
-    fun run() {
-        val inputs: Inputs = inputData.get()
-        val outputDirectory: File = outputDirectory.get().asFile
-        val downloadedFile: File = downloadedFile.asFile
-
-        logger.info("inputs: {}", inputs)
-        logger.info("outputDirectory: {}", outputDirectory.absolutePath)
-        logger.info("downloadedFile: {}", downloadedFile.absolutePath)
-
-        fileSystemOperations.delete {
-            delete(outputDirectory)
-        }
+    override fun doRun() {
+        val (operatingSystem: OperatingSystem, nodeJsVersion: String) = inputData.get()
+        NodeJsTarballDownloader(
+            operatingSystemType = operatingSystem.type,
+            operatingSystemArchitecture = operatingSystem.architecture,
+            nodeJsVersion = nodeJsVersion,
+            outputDirectory = outputDirectory.get().asFile,
+            fileSystemOperations = fileSystemOperations,
+            logger = dataConnectLogger
+        ).run()
     }
 
     /**
@@ -112,18 +108,24 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DefaultTask() {
     @Serializable
     data class Inputs(
         @get:Nested val operatingSystem: OperatingSystem,
-        @get:Input val nodeJsVersion: String,
+        @get:Input val nodeJsVersion: String
     )
+
+    companion object {
+        private const val LOGGER_ID_PREFIX = "dnb"
+    }
 }
 
 internal fun DownloadNodeJsBinaryDistributionArchiveTask.configureFrom(myProviders: MyProjectProviders) {
     inputData.run {
         finalizeValueOnRead()
-        set(providerFactory.provider {
-            val operatingSystem = myProviders.operatingSystem.get()
-            val nodeVersion = myProviders.nodeVersion.get()
-            Inputs(operatingSystem, nodeVersion)
-        })
+        set(
+            providerFactory.provider {
+                val operatingSystem = myProviders.operatingSystem.get()
+                val nodeVersion = myProviders.nodeVersion.get()
+                Inputs(operatingSystem, nodeVersion)
+            }
+        )
     }
 
     outputDirectory.run {
@@ -136,86 +138,40 @@ internal fun DownloadNodeJsBinaryDistributionArchiveTask.configureFrom(myProvide
     })
 }
 
-internal fun Inputs.calculateDownloadUrlPrefix(): String = "https://nodejs.org/dist/v$nodeJsVersion"
+private fun Inputs.calculateNodeJsPaths(): NodeJsPaths = NodeJsPaths.from(
+    nodeJsVersion,
+    operatingSystem.type,
+    operatingSystem.architecture
+)
 
-/**
- * The URL to download the Node.js binary distribution.
- *
- * Here are some examples:
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-darwin-arm64.tar.gz
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-darwin-x64.tar.gz
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-arm64.tar.gz
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-armv7l.tar.gz
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-x64.tar.gz
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-arm64.zip
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x64.zip
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x86.zip
- */
-internal fun Inputs.calculateDownloadUrl(): String {
-    val downloadUrlPrefix = calculateDownloadUrlPrefix()
-    val downloadFileName = calculateDownloadFileName()
-    return "$downloadUrlPrefix/$downloadFileName"
+private class NodeJsTarballDownloader(
+    val operatingSystemType: OperatingSystem.Type,
+    val operatingSystemArchitecture: OperatingSystem.Architecture,
+    val nodeJsVersion: String,
+    val outputDirectory: File,
+    val fileSystemOperations: FileSystemOperations,
+    override val logger: DataConnectGradleLogger
+) : DataConnectGradleLoggerProvider {
+    val nodeJsPaths: NodeJsPaths =
+        NodeJsPaths.from(nodeJsVersion, operatingSystemType, operatingSystemArchitecture)
 }
 
-/**
- * The file name of the download for the Node.js binary distribution.
- *
- * Here are some examples:
- * * node-v20.9.0-darwin-arm64.tar.gz
- * * node-v20.9.0-darwin-x64.tar.gz
- * * node-v20.9.0-linux-arm64.tar.gz
- * * node-v20.9.0-linux-armv7l.tar.gz
- * * node-v20.9.0-linux-x64.tar.gz
- * * node-v20.9.0-win-arm64.zip
- * * node-v20.9.0-win-x64.zip
- * * node-v20.9.0-win-x86.zip
- */
-internal fun Inputs.calculateDownloadFileName(): String {
-    val fileExtension: String = when (val type = operatingSystem.type) {
-        OperatingSystem.Type.Windows -> "zip"
-        OperatingSystem.Type.MacOS -> "tar.gz"
-        OperatingSystem.Type.Linux -> "tar.gz"
-        else -> throw GradleException(
-            "unable to determine Node.js download file extension for operating system type: $type " +
-                    "(operatingSystem=$operatingSystem) (error code ead53smf45)"
-        )
-    }
+private fun NodeJsTarballDownloader.run() {
+    logger.info("operatingSystemType: $operatingSystemType")
+    logger.info("operatingSystemArchitecture: $operatingSystemArchitecture")
+    logger.info("nodeJsVersion: $nodeJsVersion")
+    logger.info("outputDirectory: $outputDirectory")
 
-    val downloadFileNameBase = calculateDownloadFileNameBase()
-    return "$downloadFileNameBase.$fileExtension"
+    deleteDirectory(outputDirectory, fileSystemOperations)
+    createDirectory(outputDirectory)
+
+    val destFile = File(outputDirectory, nodeJsPaths.downloadFileName)
+    download(nodeJsPaths.downloadUrl, destFile)
 }
 
-/**
- * The base file name of the download for the Node.js binary distribution;
- * that is, the file name without the ".zip" or ".tar.gz" extension.
- *
- * Here are some examples:
- * * node-v20.9.0-darwin-arm64
- * * node-v20.9.0-darwin-x64
- * * node-v20.9.0-linux-arm64
- * * node-v20.9.0-linux-armv7l
- * * node-v20.9.0-linux-x64
- * * node-v20.9.0-win-arm64
- * * node-v20.9.0-win-x64
- * * node-v20.9.0-win-x86
- */
-internal fun Inputs.calculateDownloadFileNameBase(): String {
-    val osType: String = when (val type = operatingSystem.type) {
-        OperatingSystem.Type.Windows -> "win"
-        OperatingSystem.Type.MacOS -> "darwin"
-        OperatingSystem.Type.Linux -> "linux"
-        else -> throw GradleException(
-            "unable to determine Node.js download base file name for operating system type: $type " +
-                    "(operatingSystem=$operatingSystem) (error code m2grw3h7xz)"
-        )
+private fun NodeJsTarballDownloader.download(url: String, destFile: File) {
+    val downloader = FileDownloader(logger)
+    runBlocking {
+        downloader.download(url, destFile, maxNumDownloadBytes = 200_000_000)
     }
-
-    val osArch: String = when (operatingSystem.arch) {
-        OperatingSystem.Architecture.Arm64 -> "arm64"
-        OperatingSystem.Architecture.ArmV7 -> "armv7l"
-        OperatingSystem.Architecture.X86 -> "x86"
-        OperatingSystem.Architecture.X86_64 -> "x64"
-    }
-
-    return "node-v$nodeJsVersion-$osType-$osArch"
 }

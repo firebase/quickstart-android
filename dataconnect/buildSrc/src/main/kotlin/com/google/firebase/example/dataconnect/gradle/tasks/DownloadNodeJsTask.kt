@@ -56,7 +56,6 @@ import org.gradle.api.Task
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFile
-import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
@@ -64,7 +63,6 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.newInstance
 import org.pgpainless.sop.SOPImpl
@@ -156,8 +154,8 @@ abstract class DownloadNodeJsTask : DefaultTask() {
                     append(Json.encodeToString(version.get()))
                     append(", os=")
                     append(Json.encodeToString(os.type.name.lowercase()))
-                    append(", arch=")
-                    append(Json.encodeToString(os.arch.name.lowercase()))
+                    append(", architecture=")
+                    append(Json.encodeToString(os.architecture.name.lowercase()))
                     append("}")
                 }
             }
@@ -321,7 +319,7 @@ internal val DownloadOfficialVersion.downloadFileNameBase: String
             )
         }
 
-        val osArch: String = when (os.arch) {
+        val osArch: String = when (os.architecture) {
             OperatingSystem.Architecture.Arm64 -> "arm64"
             OperatingSystem.Architecture.ArmV7 -> "armv7l"
             OperatingSystem.Architecture.X86 -> "x86"
