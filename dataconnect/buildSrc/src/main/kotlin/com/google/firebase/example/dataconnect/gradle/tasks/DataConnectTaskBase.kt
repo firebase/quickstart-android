@@ -32,17 +32,17 @@ abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask() {
 
     init {
         val superTypeNames = this::class.allSupertypes.map { it.toString() }.sorted().joinToString(", ")
-        dataConnectLogger.info(
+        dataConnectLogger.info {
             "Task $path created: class=${this::class.qualifiedName} (supertypes are: $superTypeNames)"
-        )
+        }
     }
 
     @TaskAction
     fun run() {
-        dataConnectLogger.info("Task $path starting execution")
+        dataConnectLogger.info { "Task $path starting execution" }
         runCatching { doRun() }.fold(
             onSuccess = {
-                dataConnectLogger.info("Task $path execution completed successfully")
+                dataConnectLogger.info { "Task $path execution completed successfully" }
             },
             onFailure = {
                 dataConnectLogger.warn("Task $path execution failed: $it")

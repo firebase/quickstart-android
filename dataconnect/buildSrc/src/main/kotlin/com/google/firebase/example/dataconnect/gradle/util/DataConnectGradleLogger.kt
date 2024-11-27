@@ -43,11 +43,29 @@ class DataConnectGradleLogger(loggerIdPrefix: String, private val logger: Logger
 
     val isInfoEnabled: Boolean get() = logger.isInfoEnabled
 
-    fun info(message: String): Unit = log(LogLevel.INFO, message)
+    val isWarnEnabled: Boolean get() = logger.isWarnEnabled
+
+    inline fun debug(block: () -> String): Unit {
+        if (isDebugEnabled) {
+            log(LogLevel.DEBUG, block())
+        }
+    }
+
+    inline fun info(block: () -> String): Unit {
+        if (isInfoEnabled) {
+            log(LogLevel.INFO, block())
+        }
+    }
+
+    inline fun warn(block: () -> String): Unit {
+        if (isWarnEnabled) {
+            log(LogLevel.WARN, block())
+        }
+    }
 
     fun warn(message: String): Unit = log(LogLevel.WARN, message, prefix = "WARNING: ")
 
-    private fun log(level: LogLevel, message: String, prefix: String = "") {
+    fun log(level: LogLevel, message: String, prefix: String = "") {
         logger.log(level, "[{}] {}{}", loggerId, prefix, message)
     }
 }

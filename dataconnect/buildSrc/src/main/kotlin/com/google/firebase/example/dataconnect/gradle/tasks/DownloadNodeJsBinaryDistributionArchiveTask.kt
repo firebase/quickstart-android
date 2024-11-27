@@ -23,6 +23,8 @@ import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinary
 import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
 import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLoggerProvider
 import com.google.firebase.example.dataconnect.gradle.util.FileDownloader
+import com.google.firebase.example.dataconnect.gradle.util.Sha256SignatureVerifier
+import com.google.firebase.example.dataconnect.gradle.util.installKeysFromKeyListResource
 import com.google.firebase.example.dataconnect.gradle.util.createDirectory
 import com.google.firebase.example.dataconnect.gradle.util.deleteDirectory
 import java.io.File
@@ -39,6 +41,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
+import java.nio.charset.StandardCharsets
 
 @CacheableTask
 abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
@@ -168,10 +171,10 @@ private class NodeJsTarballDownloader(
 }
 
 private fun NodeJsTarballDownloader.run() {
-    logger.info("operatingSystemType: $operatingSystemType")
-    logger.info("operatingSystemArchitecture: $operatingSystemArchitecture")
-    logger.info("nodeJsVersion: $nodeJsVersion")
-    logger.info("outputDirectory: $outputDirectory")
+    logger.info { "operatingSystemType: $operatingSystemType" }
+    logger.info { "operatingSystemArchitecture: $operatingSystemArchitecture" }
+    logger.info { "nodeJsVersion: $nodeJsVersion" }
+    logger.info { "outputDirectory: $outputDirectory" }
 
     deleteDirectory(outputDirectory, fileSystemOperations)
     createDirectory(outputDirectory)
@@ -198,4 +201,15 @@ private fun NodeJsTarballDownloader.downloadShasumsFile(destFile: File) {
 private fun NodeJsTarballDownloader.verifyNodeJsReleaseSignature(file: File) {
     val shasumsFile = File(outputDirectory, nodeJsPaths.shasumsFileName)
     downloadShasumsFile(shasumsFile)
+
+    Sha256SignatureVerifier(logger).let { signatureVerifier ->
+        logger.info { "Loading Node.js release signing certificates " +
+                "from resource: $KEY_LIST_RESOURCE_PATH" }
+        signatureVerifier.installKeysFromKeyListResource(KEY_LIST_RESOURCE_PATH)
+
+        logger.info { "Loading SHA256 hashes from file: ${shasumsFile.absolutePath}" }
+        signatureVerifier.installShasumsFromFile(shasumsFile)
+    }
 }
+
+private const val KEY_LIST_RESOURCE_PATH = "com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/keys.list"

@@ -25,7 +25,7 @@ interface DataConnectGradleLoggerProvider {
 }
 
 fun DataConnectGradleLoggerProvider.deleteDirectory(dir: File, fileSystemOperations: FileSystemOperations) {
-    logger.info("Deleting directory: $dir")
+    logger.info { "Deleting directory: $dir" }
     fileSystemOperations.runCatching { delete { delete(dir) } }.onFailure {
         throw DataConnectGradleException(
             "unable to delete directory: ${dir.absolutePath}: $it " +
@@ -36,7 +36,7 @@ fun DataConnectGradleLoggerProvider.deleteDirectory(dir: File, fileSystemOperati
 }
 
 fun DataConnectGradleLoggerProvider.createDirectory(dir: File) {
-    logger.info("Creating directory: $dir")
+    logger.info { "Creating directory: $dir" }
     if (!dir.mkdirs()) {
         throw DataConnectGradleException(
             "unable to create directory: ${dir.absolutePath} " +
