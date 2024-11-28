@@ -76,11 +76,11 @@ internal open class MyProjectProviders(
         providerFactory.provider { lazyFirebaseCliVersion.value }
     }
 
-    val nodeVersion: Provider<String> = run {
+    val nodeJsVersion: Provider<String> = run {
         val lazyNodeVersion: Lazy<String> = lazy {
-            ext.nodeVersion
+            ext.nodeJsVersion
                 ?: throw GradleException(
-                    "dataconnect.nodeVersion must be set in " +
+                    "dataconnect.nodeJsVersion must be set in " +
                         "build.gradle or build.gradle.kts to " +
                         "specify the version of Node.js (https://nodejs.org) " +
                         "to install (e.g. \"20.9.0\") (error code 3acj27az2c)"

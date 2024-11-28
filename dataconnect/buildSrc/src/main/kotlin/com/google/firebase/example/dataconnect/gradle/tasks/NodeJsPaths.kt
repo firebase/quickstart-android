@@ -18,6 +18,8 @@ package com.google.firebase.example.dataconnect.gradle.tasks
 
 import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
 
 public class NodeJsPaths(
     public val downloadUrl: String,
@@ -26,6 +28,15 @@ public class NodeJsPaths(
     public val shasumsFileName: String
 ) {
     public companion object
+}
+
+internal fun ProviderFactory.nodeJsPaths(
+    nodeJsVersion: Provider<String>,
+    operatingSystem: Provider<OperatingSystem>
+): Provider<NodeJsPaths> = provider {
+    @Suppress("NAME_SHADOWING") val nodeJsVersion: String = nodeJsVersion.get()
+    @Suppress("NAME_SHADOWING") val operatingSystem: OperatingSystem = operatingSystem.get()
+    NodeJsPaths.from(nodeJsVersion, operatingSystem.type, operatingSystem.architecture)
 }
 
 public fun NodeJsPaths.Companion.from(

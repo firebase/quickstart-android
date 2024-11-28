@@ -25,7 +25,7 @@ public interface DataConnectExtension {
      * Firebase CLI. This version of Node.js will be downloaded and extracted
      * for exclusive use of the Data Connect Gradle plugin.
      */
-    public var nodeVersion: String?
+    public var nodeJsVersion: String?
 
     /**
      * The version of the Firebase CLI (https://www.npmjs.com/package/firebase-tools)

@@ -16,39 +16,19 @@
 
 package com.google.firebase.example.dataconnect.gradle.providers
 
+import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
 import kotlinx.serialization.Serializable
 import org.gradle.api.GradleException
 import org.gradle.api.logging.Logger
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Internal
-import org.gradle.kotlin.dsl.property
 
 @Serializable
 public data class OperatingSystem(
     @get:Input val type: Type,
     @get:Input val architecture: Architecture
 ) {
-    public constructor(
-        type: Type,
-        arch: Architecture,
-        description: String
-    ) : this(type, arch) {
-        this.description = description
-    }
-
-    // Declare `description` outside the primary constructor so that it does
-    // not get serialized or included in equals() and hashCode() computations.
-    @get:Internal
-    var description: String? = null
-        private set
-
-    // Override toString() to include the description
-    override fun toString(): String = "OperatingSystem(" +
-        "type=$type, architecture=$architecture, description=$description" +
-        ")"
 
     public enum class Type {
         Windows,
@@ -72,38 +52,35 @@ public data class OperatingSystem(
     public companion object
 }
 
-internal fun OperatingSystem.Companion.provider(
-    objectFactory: ObjectFactory,
-    providerFactory: ProviderFactory,
+internal fun ProviderFactory.operatingSystem(
     logger: Logger
 ): Provider<OperatingSystem> {
-    val logPrefix = "OperatingSystem.provider():"
-    val osNameProvider = providerFactory.systemProperty("os.name")
-    val osArchProvider = providerFactory.systemProperty("os.arch")
+    @Suppress("NAME_SHADOWING") val logger = DataConnectGradleLogger(loggerIdPrefix="os", logger)
+    val osNameSystemPropertyName = "os.name"
+    val osArchitectureSystemPropertyName = "os.arch"
+    val osNameProvider = systemProperty(osNameSystemPropertyName)
+    val osArchitectureProvider = systemProperty(osArchitectureSystemPropertyName)
 
-    val provider: Provider<OperatingSystem> = providerFactory.provider {
+    return provider {
         val osName = osNameProvider.orNull
-        val osArch = osArchProvider.orNull
-        val description = "os.name=$osName and os.arch=$osArch"
-        logger.info("{} osName: {}", logPrefix, osName)
-        logger.info("{} osArch: {}", logPrefix, osArch)
+        val osArchitecture = osArchitectureProvider.orNull
+        logger.info { "System property \"$osNameSystemPropertyName\": $osName" }
+        logger.info { "System property \"$osArchitectureSystemPropertyName\": $osArchitecture" }
 
         val type = osName?.let { OperatingSystem.Type.forName(it) }
-        val arch = osArch?.let { OperatingSystem.Architecture.forName(it) }
+        val architecture = osArchitecture?.let { OperatingSystem.Architecture.forName(it) }
 
-        if (type === null || arch === null) {
+        if (type === null || architecture === null) {
             throw GradleException(
-                "unable to determine operating system from $description " +
-                    " (type=$type, arch=$arch) (error code qecxcvcf8n)"
+                "unable to determine operating system from Java system properties: " +
+                    "$osNameSystemPropertyName=$osName, " +
+                    "$osArchitectureSystemPropertyName=$osArchitecture " +
+                    "(computed values: type=$type, architecture=$architecture) " +
+                    "(error code qecxcvcf8n)"
             )
         }
 
-        OperatingSystem(type = type, arch = arch, description = description)
-    }
-
-    return objectFactory.property<OperatingSystem>().apply {
-        set(provider)
-        disallowUnsafeRead()
+        OperatingSystem(type = type, architecture = architecture)
     }
 }
 
