@@ -90,6 +90,10 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase
     @get:Inject
     abstract val fileSystemOperations: FileSystemOperations
 
+    init {
+        description = "Download the Node.js binary distribution archive"
+    }
+
     override fun doRun() {
         val (operatingSystem: OperatingSystem, nodeJsVersion: String) = inputData.get()
 

@@ -42,11 +42,17 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
         val providers = MyProjectProviders(project, downloadNodeJsTask)
 
         project.tasks.register<DownloadNodeJsBinaryDistributionArchiveTask>("downloadNodeJsBinaryDistributionArchive") {
+            group = TASK_GROUP
             configureFrom(providers)
         }
-
-        downloadNodeJsTask.configure { configureFrom(providers) }
-        setupFirebaseToolsTask.configure { configureFrom(providers) }
+        downloadNodeJsTask.configure {
+            group = TASK_GROUP
+            configureFrom(providers)
+        }
+        setupFirebaseToolsTask.configure {
+            group = TASK_GROUP
+            configureFrom(providers)
+        }
 
         val androidComponents = project.extensions.getByType<ApplicationAndroidComponentsExtension>()
         androidComponents.onVariants { variant ->
@@ -81,5 +87,9 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
             generateCodeTask,
             GenerateDataConnectSourcesTask::outputDirectory
         )
+    }
+
+    companion object {
+        private const val TASK_GROUP = "Firebase Data Connect"
     }
 }
