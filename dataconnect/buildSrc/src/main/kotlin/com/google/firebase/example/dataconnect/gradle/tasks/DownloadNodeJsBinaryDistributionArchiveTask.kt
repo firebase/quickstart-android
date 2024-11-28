@@ -29,6 +29,8 @@ import com.google.firebase.example.dataconnect.gradle.util.addCertificatesFromKe
 import com.google.firebase.example.dataconnect.gradle.util.addHashesFromShasumsFile
 import com.google.firebase.example.dataconnect.gradle.util.createDirectory
 import com.google.firebase.example.dataconnect.gradle.util.deleteDirectory
+import java.io.File
+import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.DirectoryProperty
@@ -41,8 +43,6 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
-import java.io.File
-import javax.inject.Inject
 
 @CacheableTask
 abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
@@ -206,7 +206,7 @@ private fun NodeJsTarballDownloader.verifyNodeJsReleaseSignature(file: File) {
     val signatureVerifier = Sha256SignatureVerifier()
     logger.info {
         "Loading Node.js release signing certificates " +
-                "from resource: $KEY_LIST_RESOURCE_PATH"
+            "from resource: $KEY_LIST_RESOURCE_PATH"
     }
     val numCertificatesAdded = signatureVerifier.addCertificatesFromKeyListResource(KEY_LIST_RESOURCE_PATH)
     logger.info { "Loaded $numCertificatesAdded certificates from $KEY_LIST_RESOURCE_PATH" }
@@ -215,19 +215,19 @@ private fun NodeJsTarballDownloader.verifyNodeJsReleaseSignature(file: File) {
     val fileNamesWithLoadedHash = signatureVerifier.addHashesFromShasumsFile(shasumsFile)
     logger.info {
         "Loaded ${fileNamesWithLoadedHash.size} hashes from ${shasumsFile.absolutePath} " +
-                "for file names: ${fileNamesWithLoadedHash.sorted()}"
+            "for file names: ${fileNamesWithLoadedHash.sorted()}"
     }
 
     if (!fileNamesWithLoadedHash.contains(file.name)) {
         throw DataConnectGradleException(
             "hash for file name ${file.name} " +
-                    "not found in ${shasumsFile.absolutePath} " +
-                    "(error code yx3g25s926)"
+                "not found in ${shasumsFile.absolutePath} " +
+                "(error code yx3g25s926)"
         )
     }
 
     file.inputStream().use { inputStream ->
-        logger.info { "Verifying SHA256 hash of file: ${file.absolutePath}"}
+        logger.info { "Verifying SHA256 hash of file: ${file.absolutePath}" }
         signatureVerifier.verifyHash(inputStream, file.name)
     }
 }

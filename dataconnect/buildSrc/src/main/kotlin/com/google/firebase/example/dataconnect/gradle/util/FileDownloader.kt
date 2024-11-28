@@ -37,7 +37,7 @@ class FileDownloader(private val logger: DataConnectGradleLogger) : AutoCloseabl
     private val httpClient: HttpClient get() = getOrCreateHttpClient()
 
     suspend fun download(url: String, destFile: File, maxNumDownloadBytes: Long) {
-        logger.info {"Downloading $url to ${destFile.absolutePath}"}
+        logger.info { "Downloading $url to ${destFile.absolutePath}" }
 
         val actualNumBytesDownloaded = httpClient.prepareGet(url).execute { httpResponse ->
             val downloadChannel: ByteReadChannel = httpResponse.body()
@@ -60,7 +60,7 @@ class FileDownloader(private val logger: DataConnectGradleLogger) : AutoCloseabl
 
         logger.info {
             "Successfully downloaded $actualNumBytesDownloadedStr bytes from $url " +
-                    "to ${destFile.absolutePath}"
+                "to ${destFile.absolutePath}"
         }
     }
 
@@ -120,7 +120,7 @@ private fun HttpClientConfig<*>.installDataConnectLogger(dataConnectGradleLogger
         logger = object : Logger {
             override fun log(message: String) {
                 message.lines().forEach { line ->
-                    dataConnectGradleLogger.info{"ktor: ${line.trimEnd()}"}
+                    dataConnectGradleLogger.info { "ktor: ${line.trimEnd()}" }
                 }
             }
         }

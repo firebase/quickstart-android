@@ -23,7 +23,7 @@ class NodeJsPaths(
     val downloadUrl: String,
     val downloadFileName: String,
     val shasumsUrl: String,
-    val shasumsFileName: String,
+    val shasumsFileName: String
 ) {
     companion object
 }

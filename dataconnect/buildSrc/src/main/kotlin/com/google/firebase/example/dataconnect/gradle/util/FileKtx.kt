@@ -21,8 +21,10 @@ import java.io.File
 import java.io.IOException
 
 fun File.readBytes(byteLimit: Int): ByteArray = inputStream().use { inputStream ->
-    require(byteLimit >= 0) { "invalid byte limit: $byteLimit " +
-            "(must be greater than or equal to zero) (error code vrr6daevyw)" }
+    require(byteLimit >= 0) {
+        "invalid byte limit: $byteLimit " +
+            "(must be greater than or equal to zero) (error code vrr6daevyw)"
+    }
 
     val buffer = ByteArray(8192)
     val byteArrayOutputStream = ByteArrayOutputStream()
@@ -37,8 +39,10 @@ fun File.readBytes(byteLimit: Int): ByteArray = inputStream().use { inputStream 
         if (totalByteReadCount > byteLimit) {
             val byteLimitStr = String.format("%,d", byteLimit)
             val totalByteReadCountStr = String.format("%,d", totalByteReadCount)
-            throw TooManyBytesReadException("too many bytes read: $byteLimitStr " +
-            "(expected at most $totalByteReadCountStr) (error code fnaxenqmxs)")
+            throw TooManyBytesReadException(
+                "too many bytes read: $totalByteReadCountStr " +
+                    "(expected at most $byteLimitStr) (error code fnaxenqmxs)"
+            )
         }
 
         byteArrayOutputStream.write(buffer, 0, numBytesJustRead)

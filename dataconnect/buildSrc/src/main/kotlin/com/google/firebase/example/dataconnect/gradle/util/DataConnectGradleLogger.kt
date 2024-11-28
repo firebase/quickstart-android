@@ -45,19 +45,19 @@ class DataConnectGradleLogger(loggerIdPrefix: String, private val logger: Logger
 
     val isWarnEnabled: Boolean get() = logger.isWarnEnabled
 
-    inline fun debug(block: () -> String): Unit {
+    inline fun debug(block: () -> String) {
         if (isDebugEnabled) {
             log(LogLevel.DEBUG, block())
         }
     }
 
-    inline fun info(block: () -> String): Unit {
+    inline fun info(block: () -> String) {
         if (isInfoEnabled) {
             log(LogLevel.INFO, block())
         }
     }
 
-    inline fun warn(block: () -> String): Unit {
+    inline fun warn(block: () -> String) {
         if (isWarnEnabled) {
             log(LogLevel.WARN, block())
         }

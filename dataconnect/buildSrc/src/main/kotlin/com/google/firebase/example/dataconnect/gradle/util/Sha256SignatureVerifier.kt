@@ -1,12 +1,14 @@
 package com.google.firebase.example.dataconnect.gradle.util
 
 import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
-import org.pgpainless.sop.SOPImpl
 import java.io.File
 import java.io.InputStream
 import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
+import org.bouncycastle.util.encoders.Hex
+import org.pgpainless.sop.SOPImpl
 
 /**
  * Verifies the SHA256 hash of files.
@@ -30,9 +32,44 @@ class Sha256SignatureVerifier {
      * @param inputStream the stream of bytes whose hash to calculate and verify.
      * @param fileName the name of the file whose expected hash to use; the hash for this file name
      * must have been previously added by a call to [addHashForFileName].
+     * @throws UnknownHashException if the hash for the given file name was _not_ added by a
+     * previous invocation of [addHashForFileName].
+     * @throws IncorrectHashException if the hash of the bytes of the given input stream does _not_
+     * match the expected hash of the given file name, as added by a previous invocation of
+     * [addHashForFileName].
      */
     fun verifyHash(inputStream: InputStream, fileName: String) {
-        TODO()
+        val expectedSha256Hash = lock.withLock {
+            hashByFileName[fileName]
+        }
+        if (expectedSha256Hash === null) {
+            throw UnknownHashException(
+                "expected SHA256 hash for file name not known: $fileName " +
+                    "(did you call addHashForFileName() with the given file name?) " +
+                    "(error code ws53hqrmd6)"
+            )
+        }
+
+        val actualSha256Hash = run {
+            val messageDigest = MessageDigest.getInstance("SHA-256")
+            val buffer = ByteArray(8192)
+            while (true) {
+                val readCount = inputStream.read(buffer)
+                if (readCount < 0) {
+                    break
+                }
+                messageDigest.update(buffer, 0, readCount)
+            }
+            val digest = messageDigest.digest()
+            Hex.toHexString(digest)
+        }
+
+        if (expectedSha256Hash != actualSha256Hash) {
+            throw IncorrectHashException(
+                "SHA256 hash of $fileName did not match the expected hash: " +
+                    "$actualSha256Hash (expected $expectedSha256Hash)"
+            )
+        }
     }
 
     /**
@@ -91,6 +128,8 @@ class Sha256SignatureVerifier {
         return verificationResult.bytes
     }
 
+    class UnknownHashException(message: String) : Exception(message)
+    class IncorrectHashException(message: String) : Exception(message)
 }
 
 /**
@@ -165,14 +204,14 @@ fun Sha256SignatureVerifier.addHashesFromShasumsFile(shasumsFile: File): Set<Str
     val shasumsFileLines = String(shasumsFileBytes, StandardCharsets.UTF_8).lines()
 
     val regex = Regex("""\s*(.*?)\s+(.*?)\s*""")
-    val hashByFileName = shasumsFileLines.mapNotNull { regex.matchEntire(it)}.associate {
+    val hashByFileName = shasumsFileLines.mapNotNull { regex.matchEntire(it) }.associate {
         val fileName = it.groupValues[2]
         val hash = it.groupValues[1]
         fileName to hash
     }
 
     hashByFileName.forEach {
-        addHashForFileName(fileName=it.key, hash=it.value)
+        addHashForFileName(fileName = it.key, hash = it.value)
     }
 
     return hashByFileName.keys
