@@ -16,13 +16,11 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
-import com.google.firebase.example.dataconnect.gradle.cache.CacheManager
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.util.runCommand
 import java.io.File
 import javax.inject.Inject
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
@@ -51,9 +49,6 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
     abstract val nodeExecutable: RegularFileProperty
 
     @get:Internal
-    abstract val cacheManager: Property<CacheManager>
-
-    @get:Internal
     val firebaseExecutable: RegularFile get() = outputDirectory.get().file("node_modules/.bin/firebase")
 
     @get:Inject
@@ -67,19 +62,11 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
         val npmExecutable: File = npmExecutable.get().asFile
         val nodeExecutable: File = nodeExecutable.get().asFile
         val outputDirectory: File = outputDirectory.get().asFile
-        val cacheManager: CacheManager? = cacheManager.orNull
 
         logger.info("firebaseCliVersion: {}", firebaseCliVersion)
         logger.info("npmExecutable: {}", npmExecutable.absolutePath)
         logger.info("nodeExecutable: {}", nodeExecutable.absolutePath)
         logger.info("outputDirectory: {}", outputDirectory.absolutePath)
-        logger.info("cacheManager: {}", cacheManager)
-
-        if (cacheManager !== null && cacheManager.isCommitted(outputDirectory, logger)) {
-            logger.info("Using cached data from directory: {}", outputDirectory.absolutePath)
-            didWork = false
-            return
-        }
 
         project.delete(outputDirectory)
         project.mkdir(outputDirectory)
@@ -96,8 +83,6 @@ abstract class SetupFirebaseToolsTask : DefaultTask() {
             commandLine(npmExecutable.absolutePath, "install", "firebase-tools@$firebaseCliVersion")
             workingDir(outputDirectory)
         }
-
-        cacheManager?.commitDir(outputDirectory, logger)
     }
 }
 
@@ -105,21 +90,5 @@ internal fun SetupFirebaseToolsTask.configureFrom(providers: MyProjectProviders)
     firebaseCliVersion.set(providers.firebaseCliVersion)
     npmExecutable.set(providers.npmExecutable)
     nodeExecutable.set(providers.nodeExecutable)
-    cacheManager.set(providers.cacheManager)
-    cacheManager.set(providers.cacheManager)
-
-    outputDirectory.set(
-        providers.providerFactory.provider {
-            val cacheManager = cacheManager.orNull
-            val directoryProvider: Provider<Directory> = if (cacheManager === null) {
-                providers.buildDirectory.map { it.dir("firebase-tools") }
-            } else {
-                val cacheDomain = "SetupFirebaseToolsTask"
-                val cacheKey = "firebaseCliVersion=${firebaseCliVersion.get()}"
-                val cacheDir = cacheManager.getOrAllocateDir(domain = cacheDomain, key = cacheKey, logger)
-                providers.objectFactory.directoryProperty().also { it.set(cacheDir) }
-            }
-            directoryProvider.get()
-        }
-    )
+    outputDirectory.set(providers.buildDirectory.map { it.dir("firebase-tools") })
 }

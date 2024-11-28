@@ -54,14 +54,14 @@ private fun NodeJsPathsCalculator.downloadUrlPrefix(): String = "https://nodejs.
  * The URL to download the Node.js binary distribution.
  *
  * Here are some examples:
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-darwin-arm64.tar.gz
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-darwin-x64.tar.gz
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-arm64.tar.gz
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-armv7l.tar.gz
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-x64.tar.gz
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-arm64.zip
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x64.zip
- * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x86.zip
+ * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-darwin-arm64.tar.xz
+ * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-darwin-x64.tar.xz
+ * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-arm64.tar.xz
+ * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-armv7l.tar.xz
+ * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-x64.tar.xz
+ * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-arm64.7z
+ * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x64.7z
+ * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x86.7z
  */
 private fun NodeJsPathsCalculator.downloadUrl(): String {
     val downloadUrlPrefix = downloadUrlPrefix()
@@ -82,20 +82,20 @@ private fun NodeJsPathsCalculator.shasumsDownloadUrl(): String {
  * The file name of the download for the Node.js binary distribution.
  *
  * Here are some examples:
- * * node-v20.9.0-darwin-arm64.tar.gz
- * * node-v20.9.0-darwin-x64.tar.gz
- * * node-v20.9.0-linux-arm64.tar.gz
- * * node-v20.9.0-linux-armv7l.tar.gz
- * * node-v20.9.0-linux-x64.tar.gz
- * * node-v20.9.0-win-arm64.zip
- * * node-v20.9.0-win-x64.zip
- * * node-v20.9.0-win-x86.zip
+ * * node-v20.9.0-darwin-arm64.tar.xz
+ * * node-v20.9.0-darwin-x64.tar.xz
+ * * node-v20.9.0-linux-arm64.tar.xz
+ * * node-v20.9.0-linux-armv7l.tar.xz
+ * * node-v20.9.0-linux-x64.tar.xz
+ * * node-v20.9.0-win-arm64.7z
+ * * node-v20.9.0-win-x64.7z
+ * * node-v20.9.0-win-x86.7z
  */
 private fun NodeJsPathsCalculator.downloadFileName(): String {
     val fileExtension: String = when (operatingSystemType) {
-        OperatingSystem.Type.Windows -> "zip"
-        OperatingSystem.Type.MacOS -> "tar.gz"
-        OperatingSystem.Type.Linux -> "tar.gz"
+        OperatingSystem.Type.Windows -> "7z"
+        OperatingSystem.Type.MacOS -> "tar.xz"
+        OperatingSystem.Type.Linux -> "tar.xz"
         else -> throw DataConnectGradleException(
             "unable to determine Node.js download file extension " +
                 "for operating system type: $operatingSystemType " +
@@ -109,7 +109,7 @@ private fun NodeJsPathsCalculator.downloadFileName(): String {
 
 /**
  * The base file name of the download for the Node.js binary distribution;
- * that is, the file name without the ".zip" or ".tar.gz" extension.
+ * that is, the file name without the ".7z" or ".tar.xz" extension.
  *
  * Here are some examples:
  * * node-v20.9.0-darwin-arm64

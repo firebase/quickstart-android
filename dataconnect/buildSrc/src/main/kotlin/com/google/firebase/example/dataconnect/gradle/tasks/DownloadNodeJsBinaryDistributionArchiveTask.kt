@@ -17,7 +17,6 @@
 package com.google.firebase.example.dataconnect.gradle.tasks
 
 import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
-import com.google.firebase.example.dataconnect.gradle.cache.CacheManager
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinaryDistributionArchiveTask.Inputs
@@ -59,11 +58,10 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase
     /**
      * The directory into which to place the downloaded artifact(s).
      *
-     * This property is _required_, meaning that it must be set; that is,
-     * [Property.isPresent] must return `true`.
+     * This property is _required_, meaning that it must be set; that is, [Property.isPresent] must
+     * return `true`.
      *
-     * This directory will be deleted and re-created by the task unless it is a "committed" cache
-     * directory, as determined by [CacheManager.isCommitted].
+     * This directory will be deleted and re-created when this task is executed.
      */
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty

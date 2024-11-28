@@ -16,7 +16,6 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
-import com.google.firebase.example.dataconnect.gradle.cache.CacheManager
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask.DownloadOfficialVersion
@@ -77,9 +76,6 @@ abstract class DownloadNodeJsTask : DefaultTask() {
     abstract val outputDirectory: DirectoryProperty
 
     @get:Internal
-    abstract val cacheManager: Property<CacheManager>
-
-    @get:Internal
     val nodeExecutable: RegularFile get() {
         val source = source.get()
         val outputDirectory = outputDirectory.get()
@@ -98,25 +94,15 @@ abstract class DownloadNodeJsTask : DefaultTask() {
         val source: Source = source.get()
         val outputDirectoryRegularFile: Directory = outputDirectory.get()
         val outputDirectory: File = outputDirectoryRegularFile.asFile
-        val cacheManager: CacheManager? = cacheManager.orNull
 
         logger.info("source: {}", Source.describe(source))
         logger.info("outputDirectory: {}", outputDirectory.absolutePath)
-        logger.info("cacheManager: {}", cacheManager)
-
-        if (cacheManager !== null && cacheManager.isCommitted(outputDirectory, logger)) {
-            logger.info("Using cached data from directory: {}", outputDirectory.absolutePath)
-            didWork = false
-            return
-        }
 
         project.delete(outputDirectory)
 
         when (source) {
             is DownloadOfficialVersion -> downloadOfficialVersion(source, outputDirectory)
         }
-
-        cacheManager?.commitDir(outputDirectory, logger)
     }
 
     sealed interface Source : java.io.Serializable {
@@ -191,26 +177,8 @@ internal fun DownloadNodeJsTask.configureFrom(providers: MyProjectProviders) {
         finalizeValueOnRead()
     }
 
-    cacheManager.run {
-        set(providers.cacheManager)
-        finalizeValueOnRead()
-    }
-
     outputDirectory.run {
-        set(
-            providers.providerFactory.provider {
-                val cacheManager = cacheManager.orNull
-                val directoryProvider: Provider<Directory> = if (cacheManager === null) {
-                    providers.buildDirectory.map { it.dir("node") }
-                } else {
-                    val cacheDomain = "DownloadNodeJsTask"
-                    val cacheKey = source.get().cacheKey
-                    val cacheDir = cacheManager.getOrAllocateDir(domain = cacheDomain, key = cacheKey, logger)
-                    providers.objectFactory.directoryProperty().also { it.set(cacheDir) }
-                }
-                directoryProvider.get()
-            }
-        )
+        set(providers.buildDirectory.map { it.dir("node") })
         finalizeValueOnRead()
     }
 }

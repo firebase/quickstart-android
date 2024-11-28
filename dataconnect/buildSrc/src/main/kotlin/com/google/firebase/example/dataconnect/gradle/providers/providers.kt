@@ -18,7 +18,6 @@ package com.google.firebase.example.dataconnect.gradle.providers
 
 import com.android.build.api.variant.ApplicationVariant
 import com.google.firebase.example.dataconnect.gradle.DataConnectExtension
-import com.google.firebase.example.dataconnect.gradle.cache.CacheManager
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
 import org.gradle.api.GradleException
@@ -97,24 +96,6 @@ internal open class MyProjectProviders(
             }
         }
         providerFactory.provider { lazyDataConnectConfigDir.value }
-    }
-
-    private val dataConnectCacheDir: Provider<Directory> = run {
-        val lazyDataConnectCacheDir: Lazy<Directory?> = lazy {
-            ext.cacheDir?.let { cacheDir ->
-                projectLayout.projectDirectory.dir(cacheDir.path).dir("v1")
-            }
-        }
-        providerFactory.provider { lazyDataConnectCacheDir.value }
-    }
-
-    val cacheManager: Provider<CacheManager> = run {
-        val lazyCacheManager: Lazy<CacheManager?> = lazy {
-            dataConnectCacheDir.orNull?.let {
-                CacheManager(it.asFile)
-            }
-        }
-        providerFactory.provider { lazyCacheManager.value }
     }
 }
 

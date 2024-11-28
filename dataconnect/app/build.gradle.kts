@@ -98,10 +98,4 @@ dataconnect {
     // The directory that contains dataconnect.yaml that specifies the Data
     // Connect schema and connectors whose code to generate.
     dataConnectConfigDir = file("../dataconnect")
-
-    // The directory where the Data Connect gradle plugin will cache its data.
-    // This can be set with the "DataConnectGradleCacheDir" project property,
-    // such as by specifying -PDataConnectGradleCacheDir=myCacheDir on the
-    // Gradle command line.
-    cacheDir = findProperty("dataconnect.gradleCacheDir")?.let { file(it) }
 }
