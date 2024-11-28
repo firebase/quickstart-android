@@ -16,6 +16,7 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
+import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
 import com.google.firebase.example.dataconnect.gradle.cache.CacheManager
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
@@ -24,11 +25,10 @@ import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogg
 import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLoggerProvider
 import com.google.firebase.example.dataconnect.gradle.util.FileDownloader
 import com.google.firebase.example.dataconnect.gradle.util.Sha256SignatureVerifier
-import com.google.firebase.example.dataconnect.gradle.util.installKeysFromKeyListResource
+import com.google.firebase.example.dataconnect.gradle.util.addCertificatesFromKeyListResource
+import com.google.firebase.example.dataconnect.gradle.util.addHashesFromShasumsFile
 import com.google.firebase.example.dataconnect.gradle.util.createDirectory
 import com.google.firebase.example.dataconnect.gradle.util.deleteDirectory
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import org.gradle.api.file.DirectoryProperty
@@ -41,7 +41,8 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
-import java.nio.charset.StandardCharsets
+import java.io.File
+import javax.inject.Inject
 
 @CacheableTask
 abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
@@ -202,14 +203,34 @@ private fun NodeJsTarballDownloader.verifyNodeJsReleaseSignature(file: File) {
     val shasumsFile = File(outputDirectory, nodeJsPaths.shasumsFileName)
     downloadShasumsFile(shasumsFile)
 
-    Sha256SignatureVerifier(logger).let { signatureVerifier ->
-        logger.info { "Loading Node.js release signing certificates " +
-                "from resource: $KEY_LIST_RESOURCE_PATH" }
-        signatureVerifier.installKeysFromKeyListResource(KEY_LIST_RESOURCE_PATH)
+    val signatureVerifier = Sha256SignatureVerifier()
+    logger.info {
+        "Loading Node.js release signing certificates " +
+                "from resource: $KEY_LIST_RESOURCE_PATH"
+    }
+    val numCertificatesAdded = signatureVerifier.addCertificatesFromKeyListResource(KEY_LIST_RESOURCE_PATH)
+    logger.info { "Loaded $numCertificatesAdded certificates from $KEY_LIST_RESOURCE_PATH" }
 
-        logger.info { "Loading SHA256 hashes from file: ${shasumsFile.absolutePath}" }
-        signatureVerifier.installShasumsFromFile(shasumsFile)
+    logger.info { "Loading SHA256 hashes from file: ${shasumsFile.absolutePath}" }
+    val fileNamesWithLoadedHash = signatureVerifier.addHashesFromShasumsFile(shasumsFile)
+    logger.info {
+        "Loaded ${fileNamesWithLoadedHash.size} hashes from ${shasumsFile.absolutePath} " +
+                "for file names: ${fileNamesWithLoadedHash.sorted()}"
+    }
+
+    if (!fileNamesWithLoadedHash.contains(file.name)) {
+        throw DataConnectGradleException(
+            "hash for file name ${file.name} " +
+                    "not found in ${shasumsFile.absolutePath} " +
+                    "(error code yx3g25s926)"
+        )
+    }
+
+    file.inputStream().use { inputStream ->
+        logger.info { "Verifying SHA256 hash of file: ${file.absolutePath}"}
+        signatureVerifier.verifyHash(inputStream, file.name)
     }
 }
 
-private const val KEY_LIST_RESOURCE_PATH = "com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/keys.list"
+private const val KEY_LIST_RESOURCE_PATH =
+    "com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/keys.list"
