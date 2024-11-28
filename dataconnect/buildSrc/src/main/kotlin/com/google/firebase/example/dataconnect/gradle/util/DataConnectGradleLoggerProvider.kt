@@ -20,11 +20,11 @@ import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
 import java.io.File
 import org.gradle.api.file.FileSystemOperations
 
-interface DataConnectGradleLoggerProvider {
+internal interface DataConnectGradleLoggerProvider {
     val logger: DataConnectGradleLogger
 }
 
-fun DataConnectGradleLoggerProvider.deleteDirectory(dir: File, fileSystemOperations: FileSystemOperations) {
+internal fun DataConnectGradleLoggerProvider.deleteDirectory(dir: File, fileSystemOperations: FileSystemOperations) {
     logger.info { "Deleting directory: $dir" }
     fileSystemOperations.runCatching { delete { delete(dir) } }.onFailure {
         throw DataConnectGradleException(
@@ -35,7 +35,7 @@ fun DataConnectGradleLoggerProvider.deleteDirectory(dir: File, fileSystemOperati
     }
 }
 
-fun DataConnectGradleLoggerProvider.createDirectory(dir: File) {
+internal fun DataConnectGradleLoggerProvider.createDirectory(dir: File) {
     logger.info { "Creating directory: $dir" }
     if (!dir.mkdirs()) {
         throw DataConnectGradleException(

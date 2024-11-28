@@ -19,16 +19,16 @@ package com.google.firebase.example.dataconnect.gradle.tasks
 import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 
-class NodeJsPaths(
-    val downloadUrl: String,
-    val downloadFileName: String,
-    val shasumsUrl: String,
-    val shasumsFileName: String
+public class NodeJsPaths(
+    public val downloadUrl: String,
+    public val downloadFileName: String,
+    public val shasumsUrl: String,
+    public val shasumsFileName: String
 ) {
-    companion object
+    public companion object
 }
 
-fun NodeJsPaths.Companion.from(
+public fun NodeJsPaths.Companion.from(
     nodeJsVersion: String,
     operatingSystemType: OperatingSystem.Type,
     operatingSystemArchitecture: OperatingSystem.Architecture

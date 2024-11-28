@@ -20,7 +20,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 
-fun File.readBytes(byteLimit: Int): ByteArray = inputStream().use { inputStream ->
+internal fun File.readBytes(byteLimit: Int): ByteArray = inputStream().use { inputStream ->
     require(byteLimit >= 0) {
         "invalid byte limit: $byteLimit " +
             "(must be greater than or equal to zero) (error code vrr6daevyw)"
@@ -51,4 +51,4 @@ fun File.readBytes(byteLimit: Int): ByteArray = inputStream().use { inputStream 
     return byteArrayOutputStream.toByteArray()
 }
 
-class TooManyBytesReadException(message: String) : IOException(message)
+public class TooManyBytesReadException(message: String) : IOException(message)

@@ -22,7 +22,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 
-abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask() {
+public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask() {
 
     @get:Internal
     protected val dataConnectLogger: DataConnectGradleLogger = DataConnectGradleLogger(
@@ -38,7 +38,7 @@ abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask() {
     }
 
     @TaskAction
-    fun run() {
+    public fun run() {
         dataConnectLogger.info { "Task $path starting execution" }
         runCatching { doRun() }.fold(
             onSuccess = {
@@ -51,5 +51,8 @@ abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask() {
         )
     }
 
+    /**
+     * Called by [run] to actually do the work of this task.
+     */
     protected abstract fun doRun()
 }

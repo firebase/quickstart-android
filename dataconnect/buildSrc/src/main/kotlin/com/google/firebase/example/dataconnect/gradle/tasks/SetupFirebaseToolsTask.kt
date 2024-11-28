@@ -34,30 +34,30 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
 
 @CacheableTask
-abstract class SetupFirebaseToolsTask : DefaultTask() {
+public abstract class SetupFirebaseToolsTask : DefaultTask() {
 
     @get:Input
-    abstract val firebaseCliVersion: Property<String>
+    public abstract val firebaseCliVersion: Property<String>
 
     @get:OutputDirectory
-    abstract val outputDirectory: DirectoryProperty
+    public abstract val outputDirectory: DirectoryProperty
 
     @get:Internal
-    abstract val npmExecutable: RegularFileProperty
+    public abstract val npmExecutable: RegularFileProperty
 
     @get:Internal
-    abstract val nodeExecutable: RegularFileProperty
+    public abstract val nodeExecutable: RegularFileProperty
 
     @get:Internal
-    val firebaseExecutable: RegularFile get() = outputDirectory.get().file("node_modules/.bin/firebase")
+    public val firebaseExecutable: RegularFile get() = outputDirectory.get().file("node_modules/.bin/firebase")
 
     @get:Inject
-    protected abstract val execOperations: ExecOperations
+    internal abstract val execOperations: ExecOperations
 
     private val pathEnvironmentVariable: Provider<String> get() = project.providers.environmentVariable("PATH")
 
     @TaskAction
-    fun run() {
+    public fun run() {
         val firebaseCliVersion: String = firebaseCliVersion.get()
         val npmExecutable: File = npmExecutable.get().asFile
         val nodeExecutable: File = nodeExecutable.get().asFile

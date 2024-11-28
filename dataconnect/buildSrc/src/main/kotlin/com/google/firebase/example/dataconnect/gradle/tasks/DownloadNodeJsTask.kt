@@ -67,30 +67,30 @@ import org.gradle.kotlin.dsl.newInstance
 import org.pgpainless.sop.SOPImpl
 
 @CacheableTask
-abstract class DownloadNodeJsTask : DefaultTask() {
+public abstract class DownloadNodeJsTask : DefaultTask() {
 
     @get:Nested
-    abstract val source: Property<Source>
+    public abstract val source: Property<Source>
 
     @get:OutputDirectory
-    abstract val outputDirectory: DirectoryProperty
+    public abstract val outputDirectory: DirectoryProperty
 
     @get:Internal
-    val nodeExecutable: RegularFile get() {
+    public val nodeExecutable: RegularFile get() {
         val source = source.get()
         val outputDirectory = outputDirectory.get()
         return outputDirectory.file(source.nodeExecutable)
     }
 
     @get:Internal
-    val npmExecutable: RegularFile get() {
+    public val npmExecutable: RegularFile get() {
         val source = source.get()
         val outputDirectory = outputDirectory.get()
         return outputDirectory.file(source.npmExecutable)
     }
 
     @TaskAction
-    fun run() {
+    public fun run() {
         val source: Source = source.get()
         val outputDirectoryRegularFile: Directory = outputDirectory.get()
         val outputDirectory: File = outputDirectoryRegularFile.asFile
@@ -105,27 +105,27 @@ abstract class DownloadNodeJsTask : DefaultTask() {
         }
     }
 
-    sealed interface Source : java.io.Serializable {
-        companion object
+    public sealed interface Source : java.io.Serializable {
+        public companion object
 
         @get:Internal
-        val nodeExecutable: String
+        public val nodeExecutable: String
 
         @get:Internal
-        val npmExecutable: String
+        public val npmExecutable: String
 
         @get:Internal
-        val cacheKey: String
+        public val cacheKey: String
     }
 
-    abstract class DownloadOfficialVersion : Source {
-        companion object
+    public abstract class DownloadOfficialVersion : Source {
+        public companion object
 
         @get:Input
-        abstract val version: Property<String>
+        public abstract val version: Property<String>
 
         @get:Nested
-        abstract val operatingSystem: Property<OperatingSystem>
+        public abstract val operatingSystem: Property<OperatingSystem>
 
         override val nodeExecutable: String get() = nodePathOf { it.nodeExecutable }
 

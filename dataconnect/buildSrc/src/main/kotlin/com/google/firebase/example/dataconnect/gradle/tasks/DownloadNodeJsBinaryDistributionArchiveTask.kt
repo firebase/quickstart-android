@@ -44,7 +44,7 @@ import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
 
 @CacheableTask
-abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
+public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
 
     /**
      * The inputs required to execute this task.
@@ -53,7 +53,7 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase
      * [Property.isPresent] must return `true`.
      */
     @get:Nested
-    abstract val inputData: Property<Inputs>
+    public abstract val inputData: Property<Inputs>
 
     /**
      * The directory into which to place the downloaded artifact(s).
@@ -64,7 +64,7 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase
      * This directory will be deleted and re-created when this task is executed.
      */
     @get:OutputDirectory
-    abstract val outputDirectory: DirectoryProperty
+    public abstract val outputDirectory: DirectoryProperty
 
     /**
      * The path of the downloaded Node.js binary distribution archive.
@@ -74,7 +74,7 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase
      * This property must not be accessed until after the task executes.
      */
     @get:Internal
-    val downloadedFile: RegularFile
+    public val downloadedFile: RegularFile
         get() {
             val inputs = inputData.get()
             val outputDirectory = outputDirectory.get()
@@ -83,10 +83,10 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase
         }
 
     @get:Inject
-    abstract val providerFactory: ProviderFactory
+    internal abstract val providerFactory: ProviderFactory
 
     @get:Inject
-    abstract val fileSystemOperations: FileSystemOperations
+    internal abstract val fileSystemOperations: FileSystemOperations
 
     init {
         description = "Download the Node.js binary distribution archive"
@@ -117,13 +117,13 @@ abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase
      * @property nodeJsVersion The version of Node.js whose binary distribution archive to download.
      */
     @Serializable
-    data class Inputs(
+    public data class Inputs(
         @get:Nested val operatingSystem: OperatingSystem,
         @get:Input val nodeJsVersion: String
     )
 
-    companion object {
-        private const val LOGGER_ID_PREFIX = "dnb"
+    private companion object {
+        const val LOGGER_ID_PREFIX = "dnb"
     }
 }
 

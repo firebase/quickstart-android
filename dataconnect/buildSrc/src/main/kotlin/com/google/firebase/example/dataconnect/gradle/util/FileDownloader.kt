@@ -31,7 +31,7 @@ import java.io.File
 import java.text.NumberFormat
 import java.util.concurrent.atomic.AtomicReference
 
-class FileDownloader(private val logger: DataConnectGradleLogger) : AutoCloseable {
+internal class FileDownloader(private val logger: DataConnectGradleLogger) : AutoCloseable {
 
     private val state: AtomicReference<State> = AtomicReference(State.Uninitialized)
     private val httpClient: HttpClient get() = getOrCreateHttpClient()

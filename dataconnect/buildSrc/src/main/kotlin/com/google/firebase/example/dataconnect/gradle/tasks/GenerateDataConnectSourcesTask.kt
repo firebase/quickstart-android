@@ -37,30 +37,30 @@ import org.gradle.process.ExecOperations
 import org.yaml.snakeyaml.Yaml
 
 @CacheableTask
-abstract class GenerateDataConnectSourcesTask : DefaultTask() {
+public abstract class GenerateDataConnectSourcesTask : DefaultTask() {
 
-    @get:InputDirectory abstract val dataConnectConfigDir: DirectoryProperty
+    @get:InputDirectory public abstract val dataConnectConfigDir: DirectoryProperty
 
-    @get:InputFile abstract val firebaseExecutable: RegularFileProperty
+    @get:InputFile public abstract val firebaseExecutable: RegularFileProperty
 
-    @get:OutputDirectory abstract val outputDirectory: DirectoryProperty
-
-    @get:Internal
-    abstract val nodeExecutable: RegularFileProperty
+    @get:OutputDirectory public abstract val outputDirectory: DirectoryProperty
 
     @get:Internal
-    abstract val pathEnvironmentVariable: Property<String>
+    public abstract val nodeExecutable: RegularFileProperty
 
-    @get:Internal abstract val tweakedDataConnectConfigDir: DirectoryProperty
+    @get:Internal
+    public abstract val pathEnvironmentVariable: Property<String>
+
+    @get:Internal public abstract val tweakedDataConnectConfigDir: DirectoryProperty
 
     @get:Inject
-    protected abstract val fileSystemOperations: FileSystemOperations
+    internal abstract val fileSystemOperations: FileSystemOperations
 
     @get:Inject
-    protected abstract val execOperations: ExecOperations
+    internal abstract val execOperations: ExecOperations
 
     @TaskAction
-    fun run() {
+    public fun run() {
         val dataConnectConfigDir = dataConnectConfigDir.get().asFile
         val firebaseExecutable = firebaseExecutable.get().asFile
         val nodeExecutable = nodeExecutable.orNull?.asFile

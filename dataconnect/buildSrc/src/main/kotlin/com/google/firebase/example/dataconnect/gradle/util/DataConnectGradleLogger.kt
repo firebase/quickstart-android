@@ -35,37 +35,37 @@ import org.gradle.api.logging.Logger
  * for example a class named "DataFileLoader" could use the `loggerIdPrefix` of "dfl".
  * @param logger The logger that will be used to do the actual logging.
  */
-class DataConnectGradleLogger(loggerIdPrefix: String, private val logger: Logger) {
+public class DataConnectGradleLogger(loggerIdPrefix: String, private val logger: Logger) {
 
     private val loggerId: String = "$loggerIdPrefix${Random.nextAlphanumericString(8)}"
 
-    val isDebugEnabled: Boolean get() = logger.isDebugEnabled
+    public val isDebugEnabled: Boolean get() = logger.isDebugEnabled
 
-    val isInfoEnabled: Boolean get() = logger.isInfoEnabled
+    public val isInfoEnabled: Boolean get() = logger.isInfoEnabled
 
-    val isWarnEnabled: Boolean get() = logger.isWarnEnabled
+    public val isWarnEnabled: Boolean get() = logger.isWarnEnabled
 
-    inline fun debug(block: () -> String) {
+    public inline fun debug(block: () -> String) {
         if (isDebugEnabled) {
             log(LogLevel.DEBUG, block())
         }
     }
 
-    inline fun info(block: () -> String) {
+    public inline fun info(block: () -> String) {
         if (isInfoEnabled) {
             log(LogLevel.INFO, block())
         }
     }
 
-    inline fun warn(block: () -> String) {
+    public inline fun warn(block: () -> String) {
         if (isWarnEnabled) {
             log(LogLevel.WARN, block())
         }
     }
 
-    fun warn(message: String): Unit = log(LogLevel.WARN, message, prefix = "WARNING: ")
+    public fun warn(message: String): Unit = log(LogLevel.WARN, message, prefix = "WARNING: ")
 
-    fun log(level: LogLevel, message: String, prefix: String = "") {
+    public fun log(level: LogLevel, message: String, prefix: String = "") {
         logger.log(level, "[{}] {}{}", loggerId, prefix, message)
     }
 }

@@ -32,7 +32,7 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
 
 @Suppress("unused")
-abstract class DataConnectGradlePlugin : Plugin<Project> {
+public abstract class DataConnectGradlePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val downloadNodeJsTask = project.tasks.register<DownloadNodeJsTask>("downloadNodeJs")
@@ -89,7 +89,7 @@ abstract class DataConnectGradlePlugin : Plugin<Project> {
         )
     }
 
-    companion object {
+    private companion object {
         private const val TASK_GROUP = "Firebase Data Connect"
     }
 }

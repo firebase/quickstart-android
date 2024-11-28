@@ -18,4 +18,4 @@ package com.google.firebase.example.dataconnect.gradle
 
 import org.gradle.api.GradleException
 
-class DataConnectGradleException(message: String, cause: Throwable? = null) : GradleException(message, cause)
+public class DataConnectGradleException(message: String, cause: Throwable? = null) : GradleException(message, cause)

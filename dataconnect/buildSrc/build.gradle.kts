@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 /*
  * Copyright 2024 Google LLC
  *
@@ -21,6 +23,10 @@ plugins {
 }
 
 java { toolchain { languageVersion.set(JavaLanguageVersion.of(17)) } }
+
+kotlin {
+  explicitApi = ExplicitApiMode.Strict
+}
 
 dependencies {
   implementation(libs.android.gradlePlugin.api)

@@ -18,20 +18,20 @@ package com.google.firebase.example.dataconnect.gradle
 
 import java.io.File
 
-interface DataConnectExtension {
+public interface DataConnectExtension {
 
     /**
      * The version of Node.js (https://nodejs.org) to use to install and run the
      * Firebase CLI. This version of Node.js will be downloaded and extracted
      * for exclusive use of the Data Connect Gradle plugin.
      */
-    var nodeVersion: String?
+    public var nodeVersion: String?
 
     /**
      * The version of the Firebase CLI (https://www.npmjs.com/package/firebase-tools)
      * to use to perform the Data Connect Kotlin code generation.
      */
-    var firebaseCliVersion: String?
+    public var firebaseCliVersion: String?
 
     /**
      * The directory that contains dataconnect.yaml that specifies the Data
@@ -42,5 +42,5 @@ interface DataConnectExtension {
      * If this value is null then no Data Connect code generation will occur
      * as part of the build.
      */
-    var dataConnectConfigDir: File?
+    public var dataConnectConfigDir: File?
 }

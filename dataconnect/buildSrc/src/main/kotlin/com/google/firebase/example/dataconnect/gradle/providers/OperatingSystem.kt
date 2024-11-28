@@ -27,11 +27,11 @@ import org.gradle.api.tasks.Internal
 import org.gradle.kotlin.dsl.property
 
 @Serializable
-data class OperatingSystem(
+public data class OperatingSystem(
     @get:Input val type: Type,
     @get:Input val architecture: Architecture
 ) {
-    constructor(
+    public constructor(
         type: Type,
         arch: Architecture,
         description: String
@@ -50,29 +50,29 @@ data class OperatingSystem(
         "type=$type, architecture=$architecture, description=$description" +
         ")"
 
-    enum class Type {
+    public enum class Type {
         Windows,
         Linux,
         MacOS,
         FreeBSD,
         Solaris;
 
-        companion object
+        public companion object
     }
 
-    enum class Architecture {
+    public enum class Architecture {
         Arm64,
         ArmV7,
         X86,
         X86_64;
 
-        companion object
+        public companion object
     }
 
-    companion object
+    public companion object
 }
 
-fun OperatingSystem.Companion.provider(
+internal fun OperatingSystem.Companion.provider(
     objectFactory: ObjectFactory,
     providerFactory: ProviderFactory,
     logger: Logger
@@ -113,7 +113,7 @@ fun OperatingSystem.Companion.provider(
  * @param osName the name of the operating system whose value to return; this value should be one that was
  * returned from [System.getProperty] called with `"os.name"`.
  */
-fun OperatingSystem.Type.Companion.forName(osName: String): OperatingSystem.Type? = forLowerCaseName(osName.lowercase())
+public fun OperatingSystem.Type.Companion.forName(osName: String): OperatingSystem.Type? = forLowerCaseName(osName.lowercase())
 
 // NOTE: This logic was adapted from
 // https://github.com/gradle/gradle/blob/99d83f56d6/platforms/core-runtime/base-services/src/main/java/org/gradle/internal/os/OperatingSystem.java#L63-L79
@@ -138,8 +138,7 @@ private fun OperatingSystem.Type.Companion.forLowerCaseName(osName: String): Ope
  * @param osArch the name of the operating system whose value to return; this value should be one that was
  * returned from [System.getProperty] called with `"os.name"`.
  */
-fun OperatingSystem.Architecture.Companion.forName(osArch: String): OperatingSystem.Architecture? =
-    forLowerCaseName(osArch.lowercase())
+public fun OperatingSystem.Architecture.Companion.forName(osArch: String): OperatingSystem.Architecture? = forLowerCaseName(osArch.lowercase())
 
 // NOTE: This logic was adapted from
 // https://github.com/gradle/gradle/blob/e745e6d369/platforms/native/platform-native/src/main/java/org/gradle/nativeplatform/platform/internal/Architectures.java#L26-L42

@@ -28,7 +28,7 @@ import kotlin.random.Random
  * must be greater than or equal to zero.
  * @return a string containing the given number of random alphanumeric characters.
  */
-fun Random.nextAlphanumericString(length: Int): String {
+internal fun Random.nextAlphanumericString(length: Int): String {
     require(length >= 0) { "invalid length: $length" }
     return (0 until length).map { ALPHANUMERIC_ALPHABET.random(this) }.joinToString(separator = "")
 }

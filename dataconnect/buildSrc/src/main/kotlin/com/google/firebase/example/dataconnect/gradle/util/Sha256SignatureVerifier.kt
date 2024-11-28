@@ -20,7 +20,7 @@ import org.pgpainless.sop.SOPImpl
  * This class is thread-safe; that is, instances of this class can safely have their methods invoked
  * concurrently from multiple threads.
  */
-class Sha256SignatureVerifier {
+internal class Sha256SignatureVerifier {
 
     private val lock = ReentrantLock()
     private val certificates = mutableListOf<ByteArray>()
@@ -136,7 +136,7 @@ class Sha256SignatureVerifier {
  * Shorthand for [Sha256SignatureVerifier.addCertificate], calling it with the bytes of the given
  * resource, as loaded by [ClassLoader.getResourceAsStream].
  */
-fun Sha256SignatureVerifier.addCertificateFromResource(resourcePath: String) {
+internal fun Sha256SignatureVerifier.addCertificateFromResource(resourcePath: String) {
     val certificateBytes = loadResource(resourcePath)
     addCertificate(certificateBytes)
 }
@@ -148,7 +148,7 @@ fun Sha256SignatureVerifier.addCertificateFromResource(resourcePath: String) {
  *
  * @return the number of certificates that were added by this method invocation.
  */
-fun Sha256SignatureVerifier.addCertificatesFromKeyListResource(keyListResourcePath: String): Int {
+internal fun Sha256SignatureVerifier.addCertificatesFromKeyListResource(keyListResourcePath: String): Int {
     val keyNames = loadKeyNameList(keyListResourcePath)
 
     val lastSlashIndex = keyListResourcePath.lastIndexOf('/')
@@ -198,7 +198,7 @@ private fun Sha256SignatureVerifier.loadKeyNameList(resourcePath: String): List<
  *
  * @return the names of the files whose hashes were added.
  */
-fun Sha256SignatureVerifier.addHashesFromShasumsFile(shasumsFile: File): Set<String> {
+internal fun Sha256SignatureVerifier.addHashesFromShasumsFile(shasumsFile: File): Set<String> {
     val shasumsFileSignedBytes = shasumsFile.readBytes(byteLimit = 1_000_000)
     val shasumsFileBytes = this.verifySignature(shasumsFileSignedBytes)
     val shasumsFileLines = String(shasumsFileBytes, StandardCharsets.UTF_8).lines()
