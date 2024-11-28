@@ -58,7 +58,7 @@ internal open class MyProjectProviders(
         project.logger
     )
 
-    val operatingSystem: Provider<OperatingSystem> = OperatingSystem.provider(objectFactory, providerFactory, logger)
+    val operatingSystem: Provider<OperatingSystem> = providerFactory.operatingSystem(logger)
 
     val buildDirectory: Provider<Directory> = projectBuildDirectory.map { it.dir("dataconnect") }
 

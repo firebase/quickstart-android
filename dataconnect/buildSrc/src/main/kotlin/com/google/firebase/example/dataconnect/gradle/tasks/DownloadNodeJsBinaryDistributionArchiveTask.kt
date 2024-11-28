@@ -129,8 +129,8 @@ internal fun DownloadNodeJsBinaryDistributionArchiveTask.configureFrom(myProvide
         set(
             providerFactory.provider {
                 val operatingSystem = myProviders.operatingSystem.get()
-                val nodeVersion = myProviders.nodeVersion.get()
-                Inputs(operatingSystem, nodeVersion)
+                val nodeJsVersion = myProviders.nodeJsVersion.get()
+                Inputs(operatingSystem, nodeJsVersion)
             }
         )
     }
