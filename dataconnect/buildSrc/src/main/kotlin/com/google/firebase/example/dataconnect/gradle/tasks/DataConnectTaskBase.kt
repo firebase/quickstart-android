@@ -16,11 +16,15 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
+import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
+import com.google.firebase.example.dataconnect.gradle.tasks.DataConnectTaskBase.Worker
 import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
 import kotlin.reflect.full.allSupertypes
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
+import java.io.File
 
 public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask() {
 
@@ -40,7 +44,7 @@ public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask(
     @TaskAction
     public fun run() {
         dataConnectLogger.info { "Task $path starting execution" }
-        runCatching { doRun() }.fold(
+        runCatching { newWorker().invoke() }.fold(
             onSuccess = {
                 dataConnectLogger.info { "Task $path execution completed successfully" }
             },
@@ -52,7 +56,33 @@ public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask(
     }
 
     /**
-     * Called by [run] to actually do the work of this task.
+     * Creates and returns a new [Worker] object, which will be called by
+     * [run] to actually perform this task's work.
      */
-    protected abstract fun doRun()
+    protected abstract fun newWorker(): Worker
+
+    public interface Worker : () -> Unit {
+        public val logger: DataConnectGradleLogger
+    }
+}
+
+internal fun Worker.deleteDirectory(dir: File, fileSystemOperations: FileSystemOperations) {
+    logger.info { "Deleting directory: $dir" }
+    fileSystemOperations.runCatching { delete { delete(dir) } }.onFailure {
+        throw DataConnectGradleException(
+            "unable to delete directory: ${dir.absolutePath}: $it " +
+                    "(error code 6trngh6x47)",
+            it
+        )
+    }
+}
+
+internal fun Worker.createDirectory(dir: File) {
+    logger.info { "Creating directory: $dir" }
+    if (!dir.mkdirs()) {
+        throw DataConnectGradleException(
+            "unable to create directory: ${dir.absolutePath} " +
+                    "(error code j7x4sw7w95)"
+        )
+    }
 }

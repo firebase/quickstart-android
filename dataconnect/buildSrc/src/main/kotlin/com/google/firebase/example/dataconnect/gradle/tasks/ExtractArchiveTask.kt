@@ -16,13 +16,11 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
+import com.google.firebase.example.dataconnect.gradle.tasks.ExtractArchiveTask.Worker
 import com.google.firebase.example.dataconnect.gradle.util.ArchiveSetFileMetadataType
 import com.google.firebase.example.dataconnect.gradle.util.ArchiveType
 import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
-import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLoggerProvider
 import com.google.firebase.example.dataconnect.gradle.util.ExtractArchiveWithDetectionCallbacks
-import com.google.firebase.example.dataconnect.gradle.util.createDirectory
-import com.google.firebase.example.dataconnect.gradle.util.deleteDirectory
 import com.google.firebase.example.dataconnect.gradle.util.extractArchive
 import com.google.firebase.example.dataconnect.gradle.util.toFormattedString
 import org.gradle.api.file.DirectoryProperty
@@ -62,14 +60,17 @@ public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX)
     @get:Inject
     internal abstract val fileSystemOperations: FileSystemOperations
 
-    override fun doRun() {
-        val archiveExtractor = ArchiveExtractor(
+    override fun newWorker(): DataConnectTaskBase.Worker = ExtractArchiveTaskWorkerImpl(
             archiveFile = archiveFile.get().asFile,
             outputDirectory = outputDirectory.get().asFile,
             fileSystemOperations = fileSystemOperations,
             logger = dataConnectLogger
         )
-        archiveExtractor.run()
+
+    internal interface Worker: DataConnectTaskBase.Worker {
+        val archiveFile: File
+        val outputDirectory: File
+        val fileSystemOperations: FileSystemOperations
     }
 
     private companion object {
@@ -78,14 +79,18 @@ public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX)
 
 }
 
-private class ArchiveExtractor(
-    val archiveFile: File,
-    val outputDirectory: File,
-    val fileSystemOperations: FileSystemOperations,
+private class ExtractArchiveTaskWorkerImpl(
+    override val archiveFile: File,
+    override val outputDirectory: File,
+    override val fileSystemOperations: FileSystemOperations,
     override val logger: DataConnectGradleLogger
-) : DataConnectGradleLoggerProvider
+) : Worker {
+    override fun invoke() {
+        run()
+    }
+}
 
-private fun ArchiveExtractor.run() {
+private fun Worker.run() {
     logger.info { "archiveFile: ${archiveFile.absolutePath}" }
     logger.info { "outputDirectory: ${outputDirectory.absolutePath}" }
 
@@ -95,9 +100,13 @@ private fun ArchiveExtractor.run() {
     logger.info { "Extracting ${archiveFile.absolutePath} to ${outputDirectory.absolutePath}" }
     val extractCallbacks = ExtractArchiveCallbacksImpl(archiveFile, logger)
     archiveFile.extractArchive(outputDirectory, extractCallbacks)
+
     logger.info {
-        "Extracted ${extractCallbacks.extractedFileCount.toFormattedString()} files " +
-                "(${extractCallbacks.extractedByteCount.toFormattedString()} bytes) " +
+        val fileCountStr = extractCallbacks.extractedFileCount.toFormattedString()
+        val symlinkCountStr = extractCallbacks.extractedSymlinkCount.toFormattedString()
+        val byteCountStr = extractCallbacks.extractedByteCount.toFormattedString()
+        "Extracted $fileCountStr files ($byteCountStr bytes) " +
+                "and $symlinkCountStr symlinks " +
                 "from ${archiveFile.absolutePath} to ${outputDirectory.absolutePath}"
     }
 }
@@ -107,6 +116,9 @@ private class ExtractArchiveCallbacksImpl(private val file: File, private val lo
 
     private val _extractedFileCount = AtomicLong(0)
     val extractedFileCount: Long get() = _extractedFileCount.get()
+
+    private val _extractedSymlinkCount = AtomicLong(0)
+    val extractedSymlinkCount: Long get() = _extractedSymlinkCount.get()
 
     private val _extractedByteCount = AtomicLong(0)
     val extractedByteCount: Long get() = _extractedByteCount.get()
@@ -123,19 +135,18 @@ private class ExtractArchiveCallbacksImpl(private val file: File, private val lo
     override fun onExtractFileDone(srcPath: String, destFile: File, extractedByteCount: Long) {
         _extractedByteCount.addAndGet(extractedByteCount)
         logger.debug {
-            "Extracted ${extractedByteCount.toFormattedString()} bytes " +
-                    "from $srcPath to ${destFile.absolutePath}"
+            "Extracted ${extractedByteCount.toFormattedString()} bytes " + "from $srcPath to ${destFile.absolutePath}"
         }
     }
 
     override fun onExtractSymlink(linkPath: String, destFile: File) {
+        _extractedFileCount.incrementAndGet()
         logger.debug { "Creating symlink ${destFile.absolutePath} to $linkPath" }
     }
 
     override fun onSetFileMetadataFailed(file: File, metadataType: ArchiveSetFileMetadataType, exception: Exception) {
         logger.debug {
-            "Ignoring failure to set ${metadataType.name} " +
-                    "on extracted file: ${file.absolutePath}"
+            "Ignoring failure to set ${metadataType.name} " + "on extracted file: ${file.absolutePath}"
         }
     }
 

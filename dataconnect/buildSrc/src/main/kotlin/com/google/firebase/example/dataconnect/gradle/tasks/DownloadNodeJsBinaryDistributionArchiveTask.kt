@@ -20,14 +20,12 @@ import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
 import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
 import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinaryDistributionArchiveTask.Inputs
+import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinaryDistributionArchiveTask.Worker
 import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
-import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLoggerProvider
 import com.google.firebase.example.dataconnect.gradle.util.FileDownloader
 import com.google.firebase.example.dataconnect.gradle.util.Sha256SignatureVerifier
 import com.google.firebase.example.dataconnect.gradle.util.addCertificatesFromKeyListResource
 import com.google.firebase.example.dataconnect.gradle.util.addHashesFromShasumsFile
-import com.google.firebase.example.dataconnect.gradle.util.createDirectory
-import com.google.firebase.example.dataconnect.gradle.util.deleteDirectory
 import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
@@ -88,10 +86,9 @@ public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectT
     @get:Inject
     internal abstract val fileSystemOperations: FileSystemOperations
 
-    override fun doRun() {
+    override fun newWorker(): DataConnectTaskBase.Worker {
         val (operatingSystem: OperatingSystem, nodeJsVersion: String) = inputData.get()
-
-        val nodeJsTarballDownloader = NodeJsTarballDownloader(
+        return DownloadNodeJsBinaryDistributionArchiveTaskWorkerImpl(
             operatingSystemType = operatingSystem.type,
             operatingSystemArchitecture = operatingSystem.architecture,
             nodeJsVersion = nodeJsVersion,
@@ -99,10 +96,6 @@ public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectT
             fileSystemOperations = fileSystemOperations,
             logger = dataConnectLogger
         )
-
-        nodeJsTarballDownloader.use {
-            it.run()
-        }
     }
 
     /**
@@ -117,6 +110,21 @@ public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectT
         @get:Nested val operatingSystem: OperatingSystem,
         @get:Input val nodeJsVersion: String
     )
+
+    internal interface Worker : DataConnectTaskBase.Worker, AutoCloseable {
+        val operatingSystemType: OperatingSystem.Type
+        val operatingSystemArchitecture: OperatingSystem.Architecture
+        val nodeJsVersion: String
+        val outputDirectory: File
+        val fileSystemOperations: FileSystemOperations
+        val nodeJsPaths: NodeJsPaths
+        val fileDownloader: FileDownloader
+
+        override fun close() {
+            fileDownloader.close()
+        }
+    }
+
 
     private companion object {
         const val LOGGER_ID_PREFIX = "dnb"
@@ -151,25 +159,25 @@ private fun Inputs.calculateNodeJsPaths(): NodeJsPaths = NodeJsPaths.from(
     operatingSystem.architecture
 )
 
-private class NodeJsTarballDownloader(
-    val operatingSystemType: OperatingSystem.Type,
-    val operatingSystemArchitecture: OperatingSystem.Architecture,
-    val nodeJsVersion: String,
-    val outputDirectory: File,
-    val fileSystemOperations: FileSystemOperations,
+private class DownloadNodeJsBinaryDistributionArchiveTaskWorkerImpl(
+    override val operatingSystemType: OperatingSystem.Type,
+    override val operatingSystemArchitecture: OperatingSystem.Architecture,
+    override val nodeJsVersion: String,
+    override val outputDirectory: File,
+    override val fileSystemOperations: FileSystemOperations,
     override val logger: DataConnectGradleLogger
-) : DataConnectGradleLoggerProvider, AutoCloseable {
-    val nodeJsPaths: NodeJsPaths =
+) : Worker {
+    override val fileDownloader = FileDownloader(logger)
+
+    override val nodeJsPaths =
         NodeJsPaths.from(nodeJsVersion, operatingSystemType, operatingSystemArchitecture)
 
-    val fileDownloader: FileDownloader = FileDownloader(logger)
-
-    override fun close() {
-        fileDownloader.close()
+    override fun invoke() {
+        run()
     }
 }
 
-private fun NodeJsTarballDownloader.run() {
+private fun Worker.run() {
     logger.info { "operatingSystemType: $operatingSystemType" }
     logger.info { "operatingSystemArchitecture: $operatingSystemArchitecture" }
     logger.info { "nodeJsVersion: $nodeJsVersion" }
@@ -183,21 +191,21 @@ private fun NodeJsTarballDownloader.run() {
     verifyNodeJsReleaseSignature(destFile)
 }
 
-private fun NodeJsTarballDownloader.downloadNodeJsBinaryArchive(destFile: File) {
+private fun Worker.downloadNodeJsBinaryArchive(destFile: File) {
     val url = nodeJsPaths.downloadUrl
     runBlocking {
         fileDownloader.download(url, destFile, maxNumDownloadBytes = 200_000_000)
     }
 }
 
-private fun NodeJsTarballDownloader.downloadShasumsFile(destFile: File) {
+private fun Worker.downloadShasumsFile(destFile: File) {
     val url = nodeJsPaths.shasumsUrl
     runBlocking {
         fileDownloader.download(url, destFile, maxNumDownloadBytes = 100_000)
     }
 }
 
-private fun NodeJsTarballDownloader.verifyNodeJsReleaseSignature(file: File) {
+private fun Worker.verifyNodeJsReleaseSignature(file: File) {
     val shasumsFile = File(outputDirectory, nodeJsPaths.shasumsFileName)
     downloadShasumsFile(shasumsFile)
 
