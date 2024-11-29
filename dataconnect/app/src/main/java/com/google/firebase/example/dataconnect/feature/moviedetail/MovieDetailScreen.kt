@@ -101,7 +101,8 @@ fun MovieDetailScreen(
                         onReviewSubmitted = { rating, text ->
                             movieDetailViewModel.addRating(rating, text)
                         },
-                        movie?.reviews
+                        movie?.reviews,
+                        isUserSignedIn = ui.isUserSignedIn
                     )
                 }
 

@@ -28,7 +28,9 @@
     <string name="title_supporting_actors">Supporting Actors</string>
     <string name="title_user_reviews">User Reviews</string>
     <string name="hint_write_review">Write your review</string>
+    <string name="sign_in_to_review">Create an account or sign-in to write a review</string>
     <string name="button_submit_review">Submit Review</string>
+    <string name="movie_rating_indicator">Rating: %.1f</string>
 
     <!-- Actor Detail Screen -->
     <string name="error_actor_not_found">Couldn\'t find actor in the database</string>

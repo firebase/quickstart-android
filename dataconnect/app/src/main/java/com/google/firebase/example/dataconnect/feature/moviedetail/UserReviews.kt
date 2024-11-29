@@ -29,55 +29,66 @@ import com.google.firebase.example.dataconnect.ui.components.ReviewCard
 @Composable
 fun UserReviews(
     onReviewSubmitted: (rating: Float, text: String) -> Unit,
-    reviews: List<GetMovieByIdQuery.Data.Movie.ReviewsItem>? = emptyList()
+    reviews: List<GetMovieByIdQuery.Data.Movie.ReviewsItem>? = emptyList(),
+    isUserSignedIn: Boolean
 ) {
     var reviewText by remember { mutableStateOf("") }
     Text(
-        text = "User Reviews",
+        text = stringResource(R.string.title_user_reviews),
         style = MaterialTheme.typography.headlineMedium,
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     )
-    Spacer(modifier = Modifier.height(8.dp))
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        var rating by remember { mutableFloatStateOf(5f) }
-        Text("Rating: ${rating}")
-        Slider(
-            value = rating,
-            onValueChange = { rating = Math.round(it).toFloat() },
-            steps = 10,
-            valueRange = 1f..10f
-        )
-        TextField(
-            value = reviewText,
-            onValueChange = { if (it.length <= 280) reviewText = it },
-            label = { Text(stringResource(R.string.hint_write_review)) },
-            supportingText = {
-                Text(
-                    "${reviewText.length} / 280",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.End
-                )
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                if (!reviewText.isNullOrEmpty()) {
-                    onReviewSubmitted(rating, reviewText)
-                    reviewText = ""
-                }
-            }
+    if (isUserSignedIn) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(stringResource(R.string.button_submit_review))
+            var rating by remember { mutableFloatStateOf(5f) }
+            Text(stringResource(R.string.movie_rating_indicator, rating))
+            Slider(
+                value = rating,
+                onValueChange = { rating = Math.round(it).toFloat() },
+                steps = 10,
+                valueRange = 1f..10f
+            )
+            TextField(
+                value = reviewText,
+                onValueChange = { if (it.length <= 280) reviewText = it },
+                label = { Text(stringResource(R.string.hint_write_review)) },
+                supportingText = {
+                    Text(
+                        "${reviewText.length} / 280",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.End
+                    )
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    if (!reviewText.isNullOrEmpty()) {
+                        onReviewSubmitted(rating, reviewText)
+                        reviewText = ""
+                    }
+                }
+            ) {
+                Text(stringResource(R.string.button_submit_review))
+            }
         }
+    } else {
+        Text(
+            text = stringResource(R.string.sign_in_to_review),
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(8.dp)
+                .fillMaxWidth()
+        )
     }
     Column {
         // TODO(thatfiredev): Handle cases where the list is too long to display
