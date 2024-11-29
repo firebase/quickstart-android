@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.google.firebase.example.dataconnect.gradle.tasks
+package com.google.firebase.example.dataconnect.gradle.util
 
 import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
-import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 
@@ -26,7 +25,9 @@ public class NodeJsPaths(
     public val archiveBaseFileName: String,
     public val archiveFileName: String,
     public val shasumsUrl: String,
-    public val shasumsFileName: String
+    public val shasumsFileName: String,
+    public val nodeExecutableRelativePath: String,
+    public val npmExecutableRelativePath: String,
 ) {
     public companion object
 }
@@ -51,7 +52,9 @@ public fun NodeJsPaths.Companion.from(
         archiveBaseFileName = calculator.archiveBaseFileName(),
         archiveFileName = calculator.archiveFileName(),
         shasumsUrl = calculator.shasumsUrl(),
-        shasumsFileName = calculator.shasumsFileName()
+        shasumsFileName = calculator.shasumsFileName(),
+        nodeExecutableRelativePath = calculator.nodeExecutableRelativePath(),
+        npmExecutableRelativePath = calculator.npmExecutableRelativePath()
     )
 }
 
@@ -153,3 +156,28 @@ private fun NodeJsPathsCalculator.archiveBaseFileName(): String {
 
     return "node-v$nodeJsVersion-$osType-$osArch"
 }
+
+private fun NodeJsPathsCalculator.nodeExecutableRelativePath(): String =
+    when (operatingSystemType) {
+        OperatingSystem.Type.Windows -> "node.exe"
+        OperatingSystem.Type.MacOS,
+        OperatingSystem.Type.Linux -> "bin/node"
+        else -> throw DataConnectGradleException(
+            "unable to determine nodeexecutable path " +
+                "for operating system type: $operatingSystemType " +
+                "(error code bjs8et7w6a)"
+        )
+    }
+
+private fun NodeJsPathsCalculator.npmExecutableRelativePath(): String =
+    when (operatingSystemType) {
+        OperatingSystem.Type.Windows -> "npm.cmd"
+        OperatingSystem.Type.MacOS,
+        OperatingSystem.Type.Linux -> "bin/node"
+        else -> throw DataConnectGradleException(
+            "unable to determine npm executable path " +
+                "for operating system type: $operatingSystemType " +
+                "(error code zrrsk9g5n4)"
+        )
+    }
+

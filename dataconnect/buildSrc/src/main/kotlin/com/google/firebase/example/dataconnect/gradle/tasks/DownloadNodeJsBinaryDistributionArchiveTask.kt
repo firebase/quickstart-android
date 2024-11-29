@@ -17,46 +17,49 @@
 package com.google.firebase.example.dataconnect.gradle.tasks
 
 import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
-import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProviders
-import com.google.firebase.example.dataconnect.gradle.providers.OperatingSystem
-import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinaryDistributionArchiveTask.Inputs
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinaryDistributionArchiveTask.Worker
 import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
 import com.google.firebase.example.dataconnect.gradle.util.FileDownloader
 import com.google.firebase.example.dataconnect.gradle.util.Sha256SignatureVerifier
 import com.google.firebase.example.dataconnect.gradle.util.addCertificatesFromKeyListResource
 import com.google.firebase.example.dataconnect.gradle.util.addHashesFromShasumsFile
-import java.io.File
-import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.Serializable
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputFile
-import java.nio.file.Files
+import java.io.File
+import javax.inject.Inject
 
 @CacheableTask
 public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
 
     /**
-     * The inputs required to execute this task.
+     * The URL of the Node.js binary distribution archive file to download.
      *
-     * This property is _required_, meaning that it must be set; that is,
-     * [Property.isPresent] must return `true`.
+     * This property is _required_; that is, it must be set by the time that
+     * this task is executed.
      */
-    @get:Nested
-    public abstract val inputData: Property<Inputs>
+    @get:Input
+    public abstract val archiveUrl: Property<String>
 
     /**
-     * The file to which to download the Node.js binary distribution archive.
+     * The URL of the archive file to download.
      *
-     * This property is _required_, meaning that it must be set; that is, [Property.isPresent] must
-     * return `true`.
+     * This property is _required_; that is, it must be set by the time that
+     * this task is executed.
+     */
+    @get:Input
+    public abstract val shasumsUrl: Property<String>
+
+    /**
+     * The URL of the "SHASUMS256.txt.asc" file.
+     *
+     * This property is _required_; that is, it must be set by the time that
+     * this task is executed.
      */
     @get:OutputFile
     public abstract val archiveFile: RegularFileProperty
@@ -64,8 +67,8 @@ public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectT
     /**
      * The file to which to download the "SHASUMS256.txt.asc" file.
      *
-     * This property is _required_, meaning that it must be set; that is, [Property.isPresent] must
-     * return `true`.
+     * This property is _required_; that is, it must be set by the time that
+     * this task is executed.
      */
     @get:OutputFile
     public abstract val shasumsFile: RegularFileProperty
@@ -77,49 +80,23 @@ public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectT
     internal abstract val fileSystemOperations: FileSystemOperations
 
     override fun newWorker(): DataConnectTaskBase.Worker {
-        val inputData = inputData.get()
-        val nodeJsPaths = inputData.calculateNodeJsPaths()
-
         return DownloadNodeJsBinaryDistributionArchiveTaskWorkerImpl(
-            operatingSystemType = inputData.operatingSystem.type,
-            operatingSystemArchitecture = inputData.operatingSystem.architecture,
-            nodeJsVersion = inputData.nodeJsVersion,
+            archiveUrl = archiveUrl.get(),
+            shasumsUrl = shasumsUrl.get(),
             archiveFile = archiveFile.get().asFile,
             shasumsFile = shasumsFile.get().asFile,
-            archiveUrl = nodeJsPaths.archiveUrl,
-            shasumsUrl = nodeJsPaths.shasumsUrl,
             fileSystemOperations = fileSystemOperations,
             logger = dataConnectLogger
         )
     }
 
-    /**
-     * The inputs for [DownloadNodeJsBinaryDistributionArchiveTask].
-     *
-     * @property operatingSystem The operating system whose Node.js binary distribution archive to
-     * download.
-     * @property nodeJsVersion The version of Node.js whose binary distribution archive to download.
-     */
-    @Serializable
-    public data class Inputs(
-        @get:Nested val operatingSystem: OperatingSystem,
-        @get:Input val nodeJsVersion: String
-    )
-
     internal interface Worker : DataConnectTaskBase.Worker, AutoCloseable {
-        val operatingSystemType: OperatingSystem.Type
-        val operatingSystemArchitecture: OperatingSystem.Architecture
-        val nodeJsVersion: String
-        val archiveFile: File
-        val shasumsFile: File
         val archiveUrl: String
         val shasumsUrl: String
+        val archiveFile: File
+        val shasumsFile: File
         val fileSystemOperations: FileSystemOperations
         val fileDownloader: FileDownloader
-
-        override fun close() {
-            fileDownloader.close()
-        }
     }
 
 
@@ -128,67 +105,26 @@ public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectT
     }
 }
 
-internal fun DownloadNodeJsBinaryDistributionArchiveTask.configureFrom(myProviders: MyProjectProviders) {
-    inputData.run {
-        finalizeValueOnRead()
-        set(
-            providerFactory.provider {
-                val operatingSystem = myProviders.operatingSystem.get()
-                val nodeJsVersion = myProviders.nodeJsVersion.get()
-                Inputs(operatingSystem, nodeJsVersion)
-            }
-        )
-    }
-
-    archiveFile.run {
-        finalizeValueOnRead()
-        set(myProviders.buildDirectory.map {
-            val downloadFileName = inputData.get().calculateNodeJsPaths().archiveFileName
-            it.file(downloadFileName)
-        })
-    }
-
-    shasumsFile.run {
-        finalizeValueOnRead()
-        set(myProviders.buildDirectory.map {
-            val shasumsFileName = inputData.get().calculateNodeJsPaths().shasumsFileName
-            it.file(shasumsFileName)
-        })
-    }
-
-    setOnlyIf("inputData was specified", {
-        inputData.isPresent
-    })
-}
-
-private fun Inputs.calculateNodeJsPaths(): NodeJsPaths = NodeJsPaths.from(
-    nodeJsVersion,
-    operatingSystem.type,
-    operatingSystem.architecture
-)
-
 private class DownloadNodeJsBinaryDistributionArchiveTaskWorkerImpl(
-    override val operatingSystemType: OperatingSystem.Type,
-    override val operatingSystemArchitecture: OperatingSystem.Architecture,
-    override val nodeJsVersion: String,
-    override val archiveFile: File,
-    override val shasumsFile: File,
     override val archiveUrl: String,
     override val shasumsUrl: String,
+    override val archiveFile: File,
+    override val shasumsFile: File,
     override val fileSystemOperations: FileSystemOperations,
     override val logger: DataConnectGradleLogger
 ) : Worker {
     override val fileDownloader = FileDownloader(logger)
 
-    override fun invoke() {
-        run()
+    override fun invoke() = run()
+
+    override fun close() {
+        fileDownloader.close()
     }
 }
 
 private fun Worker.run() {
-    logger.info { "operatingSystemType: $operatingSystemType" }
-    logger.info { "operatingSystemArchitecture: $operatingSystemArchitecture" }
-    logger.info { "nodeJsVersion: $nodeJsVersion" }
+    logger.info { "archiveUrl: $archiveUrl" }
+    logger.info { "shasumsUrl: $shasumsUrl" }
     logger.info { "archiveFile: ${archiveFile.absolutePath}" }
     logger.info { "shasumsFile: ${shasumsFile.absolutePath}" }
 

@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-package com.google.firebase.example.dataconnect.gradle.providers
+package com.google.firebase.example.dataconnect.gradle.util
 
-import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
 import kotlinx.serialization.Serializable
 import org.gradle.api.GradleException
-import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.Input
@@ -52,10 +50,7 @@ public data class OperatingSystem(
     public companion object
 }
 
-internal fun ProviderFactory.operatingSystem(
-    logger: Logger
-): Provider<OperatingSystem> {
-    @Suppress("NAME_SHADOWING") val logger = DataConnectGradleLogger(loggerIdPrefix="os", logger)
+internal fun ProviderFactory.operatingSystem(): Provider<OperatingSystem> {
     val osNameSystemPropertyName = "os.name"
     val osArchitectureSystemPropertyName = "os.arch"
     val osNameProvider = systemProperty(osNameSystemPropertyName)
@@ -64,8 +59,6 @@ internal fun ProviderFactory.operatingSystem(
     return provider {
         val osName = osNameProvider.orNull
         val osArchitecture = osArchitectureProvider.orNull
-        logger.info { "System property \"$osNameSystemPropertyName\": $osName" }
-        logger.info { "System property \"$osArchitectureSystemPropertyName\": $osArchitecture" }
 
         val type = osName?.let { OperatingSystem.Type.forName(it) }
         val architecture = osArchitecture?.let { OperatingSystem.Architecture.forName(it) }

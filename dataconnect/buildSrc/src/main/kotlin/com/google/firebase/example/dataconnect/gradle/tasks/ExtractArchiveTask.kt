@@ -27,6 +27,7 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
@@ -83,6 +84,9 @@ public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX)
 
     @get:Inject
     internal abstract val fileSystemOperations: FileSystemOperations
+
+    @get:Inject
+    internal abstract val providerFactory: ProviderFactory
 
     override fun newWorker(): DataConnectTaskBase.Worker = ExtractArchiveTaskWorkerImpl(
             archiveFile = archiveFile.get().asFile,

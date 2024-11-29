@@ -16,10 +16,7 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
-import com.google.firebase.example.dataconnect.gradle.providers.MyVariantProviders
 import com.google.firebase.example.dataconnect.gradle.util.runCommand
-import java.io.File
-import javax.inject.Inject
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.DirectoryProperty
@@ -35,6 +32,8 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
 import org.yaml.snakeyaml.Yaml
+import java.io.File
+import javax.inject.Inject
 
 @CacheableTask
 public abstract class GenerateDataConnectSourcesTask : DefaultTask() {
@@ -45,7 +44,7 @@ public abstract class GenerateDataConnectSourcesTask : DefaultTask() {
 
     @get:OutputDirectory public abstract val outputDirectory: DirectoryProperty
 
-    @get:Internal
+    @get:InputFile
     public abstract val nodeExecutable: RegularFileProperty
 
     @get:Internal
@@ -109,14 +108,6 @@ public abstract class GenerateDataConnectSourcesTask : DefaultTask() {
             workingDir(tweakedDataConnectConfigDir)
         }
     }
-}
-
-internal fun GenerateDataConnectSourcesTask.configureFrom(providers: MyVariantProviders) {
-    dataConnectConfigDir.set(providers.projectProviders.dataConnectConfigDir)
-    firebaseExecutable.set(providers.firebaseExecutable)
-    TODO("uncomment line below nw8m8k5hjx")
-    //nodeExecutable.set(providers.projectProviders.nodeExecutable)
-    tweakedDataConnectConfigDir.set(providers.buildDirectory.map { it.dir("config") })
 }
 
 private fun tweakConnectorYamlFiles(dir: File, newOutputDir: String, logger: Logger) {
