@@ -16,16 +16,25 @@
 
 package com.google.firebase.example.dataconnect.gradle.tasks
 
-import java.io.File
-import javax.inject.Inject
+import com.google.firebase.example.dataconnect.gradle.util.ArchiveSetFileMetadataType
+import com.google.firebase.example.dataconnect.gradle.util.ArchiveType
+import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
+import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLoggerProvider
+import com.google.firebase.example.dataconnect.gradle.util.ExtractArchiveWithDetectionCallbacks
+import com.google.firebase.example.dataconnect.gradle.util.createDirectory
+import com.google.firebase.example.dataconnect.gradle.util.deleteDirectory
+import com.google.firebase.example.dataconnect.gradle.util.extractArchive
+import com.google.firebase.example.dataconnect.gradle.util.toFormattedString
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.work.DisableCachingByDefault
+import java.io.File
+import java.util.concurrent.atomic.AtomicLong
+import javax.inject.Inject
 
 @DisableCachingByDefault(because = "extracting an archive is a quick operation not worth caching")
 public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
@@ -58,7 +67,7 @@ public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX)
             archiveFile = archiveFile.get().asFile,
             outputDirectory = outputDirectory.get().asFile,
             fileSystemOperations = fileSystemOperations,
-            logger = logger
+            logger = dataConnectLogger
         )
         archiveExtractor.run()
     }
@@ -73,9 +82,61 @@ private class ArchiveExtractor(
     val archiveFile: File,
     val outputDirectory: File,
     val fileSystemOperations: FileSystemOperations,
-    val logger: Logger
-)
+    override val logger: DataConnectGradleLogger
+) : DataConnectGradleLoggerProvider
 
 private fun ArchiveExtractor.run() {
+    logger.info { "archiveFile: ${archiveFile.absolutePath}" }
+    logger.info { "outputDirectory: ${outputDirectory.absolutePath}" }
+
+    deleteDirectory(outputDirectory, fileSystemOperations)
+    createDirectory(outputDirectory)
+
+    logger.info { "Extracting ${archiveFile.absolutePath} to ${outputDirectory.absolutePath}" }
+    val extractCallbacks = ExtractArchiveCallbacksImpl(archiveFile, logger)
+    archiveFile.extractArchive(outputDirectory, extractCallbacks)
+    logger.info {
+        "Extracted ${extractCallbacks.extractedFileCount.toFormattedString()} files " +
+                "(${extractCallbacks.extractedByteCount.toFormattedString()} bytes) " +
+                "from ${archiveFile.absolutePath} to ${outputDirectory.absolutePath}"
+    }
+}
+
+private class ExtractArchiveCallbacksImpl(private val file: File, private val logger: DataConnectGradleLogger) :
+    ExtractArchiveWithDetectionCallbacks {
+
+    private val _extractedFileCount = AtomicLong(0)
+    val extractedFileCount: Long get() = _extractedFileCount.get()
+
+    private val _extractedByteCount = AtomicLong(0)
+    val extractedByteCount: Long get() = _extractedByteCount.get()
+
+    override fun onArchiveTypeDetected(archiveType: ArchiveType) {
+        logger.info { "Detected archive type $archiveType for file: ${file.absolutePath}" }
+    }
+
+    override fun onExtractFileStarting(srcPath: String, destFile: File) {
+        _extractedFileCount.incrementAndGet()
+        logger.debug { "Extracting $srcPath to ${destFile.absolutePath}" }
+    }
+
+    override fun onExtractFileDone(srcPath: String, destFile: File, extractedByteCount: Long) {
+        _extractedByteCount.addAndGet(extractedByteCount)
+        logger.debug {
+            "Extracted ${extractedByteCount.toFormattedString()} bytes " +
+                    "from $srcPath to ${destFile.absolutePath}"
+        }
+    }
+
+    override fun onExtractSymlink(linkPath: String, destFile: File) {
+        logger.debug { "Creating symlink ${destFile.absolutePath} to $linkPath" }
+    }
+
+    override fun onSetFileMetadataFailed(file: File, metadataType: ArchiveSetFileMetadataType, exception: Exception) {
+        logger.debug {
+            "Ignoring failure to set ${metadataType.name} " +
+                    "on extracted file: ${file.absolutePath}"
+        }
+    }
 
 }

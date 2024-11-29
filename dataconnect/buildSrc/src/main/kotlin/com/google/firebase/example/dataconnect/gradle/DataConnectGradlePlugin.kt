@@ -22,6 +22,7 @@ import com.google.firebase.example.dataconnect.gradle.providers.MyProjectProvide
 import com.google.firebase.example.dataconnect.gradle.providers.MyVariantProviders
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinaryDistributionArchiveTask
 import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask
+import com.google.firebase.example.dataconnect.gradle.tasks.ExtractArchiveTask
 import com.google.firebase.example.dataconnect.gradle.tasks.GenerateDataConnectSourcesTask
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
 import com.google.firebase.example.dataconnect.gradle.tasks.configureFrom
@@ -35,11 +36,36 @@ import org.gradle.kotlin.dsl.register
 public abstract class DataConnectGradlePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
+        project.extensions.create("dataconnect", DataConnectExtension::class.java)
+        val providers = MyProjectProviders(project)
+
+        val dlTask = project.tasks.register<DownloadNodeJsBinaryDistributionArchiveTask>("dl") {
+            group = TASK_GROUP
+            configureFrom(providers)
+        }
+
+        project.tasks.register<ExtractArchiveTask>("ex") {
+            group = TASK_GROUP
+
+            archiveFile.set(
+                dlTask.flatMap { task ->
+                    task.outputDirectory.map { outputDirectory ->
+                        val downloadFileName = providers.nodeJsPaths.get().downloadFileName
+                        outputDirectory.file(downloadFileName)
+                    }
+                }
+            )
+
+            outputDirectory.set(providers.buildDirectory.map { it.dir("extracted") })
+        }
+    }
+
+    private fun apply2(project: Project) {
         val downloadNodeJsTask = project.tasks.register<DownloadNodeJsTask>("downloadNodeJs")
         val setupFirebaseToolsTask = project.tasks.register<SetupFirebaseToolsTask>("setupFirebaseToolsForDataConnect")
 
         project.extensions.create("dataconnect", DataConnectExtension::class.java)
-        val providers = MyProjectProviders(project, downloadNodeJsTask)
+        val providers = MyProjectProviders(project)
 
         project.tasks.register<DownloadNodeJsBinaryDistributionArchiveTask>("downloadNodeJsBinaryDistributionArchive") {
             group = TASK_GROUP

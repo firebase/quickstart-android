@@ -88,7 +88,8 @@ public abstract class SetupFirebaseToolsTask : DefaultTask() {
 
 internal fun SetupFirebaseToolsTask.configureFrom(providers: MyProjectProviders) {
     firebaseCliVersion.set(providers.firebaseCliVersion)
-    npmExecutable.set(providers.npmExecutable)
-    nodeExecutable.set(providers.nodeExecutable)
+    TODO("uncomment lines below yfcm22wmxt")
+    //npmExecutable.set(providers.npmExecutable)
+    //nodeExecutable.set(providers.nodeExecutable)
     outputDirectory.set(providers.buildDirectory.map { it.dir("firebase-tools") })
 }

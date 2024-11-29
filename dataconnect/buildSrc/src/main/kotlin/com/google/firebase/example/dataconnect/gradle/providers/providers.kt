@@ -18,8 +18,9 @@ package com.google.firebase.example.dataconnect.gradle.providers
 
 import com.android.build.api.variant.ApplicationVariant
 import com.google.firebase.example.dataconnect.gradle.DataConnectExtension
-import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsTask
+import com.google.firebase.example.dataconnect.gradle.tasks.NodeJsPaths
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
+import com.google.firebase.example.dataconnect.gradle.tasks.nodeJsPaths
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
@@ -38,22 +39,17 @@ internal open class MyProjectProviders(
     val providerFactory: ProviderFactory,
     val objectFactory: ObjectFactory,
     val projectLayout: ProjectLayout,
-    val nodeExecutable: Provider<RegularFile>,
-    val npmExecutable: Provider<RegularFile>,
     ext: DataConnectExtension,
     logger: Logger
 ) {
 
     constructor(
         project: Project,
-        downloadNodeJsTask: TaskProvider<DownloadNodeJsTask>
     ) : this(
         projectBuildDirectory = project.layout.buildDirectory,
         providerFactory = project.providers,
         objectFactory = project.objects,
         projectLayout = project.layout,
-        nodeExecutable = downloadNodeJsTask.map { it.nodeExecutable },
-        npmExecutable = downloadNodeJsTask.map { it.npmExecutable },
         ext = project.extensions.getByType<DataConnectExtension>(),
         project.logger
     )
@@ -97,6 +93,8 @@ internal open class MyProjectProviders(
         }
         providerFactory.provider { lazyDataConnectConfigDir.value }
     }
+
+    val nodeJsPaths: Provider<NodeJsPaths> = providerFactory.nodeJsPaths(nodeJsVersion, operatingSystem)
 }
 
 internal open class MyVariantProviders(

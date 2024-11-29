@@ -89,7 +89,7 @@ dataconnect {
     // The version of Node.js (https://nodejs.org) to use to install and run the
     // Firebase CLI. This version of Node.js will be downloaded and extracted
     // for exclusive use of the Data Connect Gradle plugin.
-    nodeVersion = "20.18.1"
+    nodeJsVersion = "20.18.1"
 
     // The version of the Firebase CLI (https://www.npmjs.com/package/firebase-tools)
     // to use to perform the Data Connect Kotlin code generation.

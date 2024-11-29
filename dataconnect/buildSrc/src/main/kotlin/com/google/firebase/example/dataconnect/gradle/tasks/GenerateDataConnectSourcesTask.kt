@@ -114,7 +114,8 @@ public abstract class GenerateDataConnectSourcesTask : DefaultTask() {
 internal fun GenerateDataConnectSourcesTask.configureFrom(providers: MyVariantProviders) {
     dataConnectConfigDir.set(providers.projectProviders.dataConnectConfigDir)
     firebaseExecutable.set(providers.firebaseExecutable)
-    nodeExecutable.set(providers.projectProviders.nodeExecutable)
+    TODO("uncomment line below nw8m8k5hjx")
+    //nodeExecutable.set(providers.projectProviders.nodeExecutable)
     tweakedDataConnectConfigDir.set(providers.buildDirectory.map { it.dir("config") })
 }
 

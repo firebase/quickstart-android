@@ -41,6 +41,8 @@ dependencies {
   implementation("org.pgpainless:pgpainless-sop:1.7.2")
   implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
   implementation("org.apache.commons:commons-compress:1.27.1")
+
+  runtimeOnly("org.tukaani:xz:1.10")
 }
 
 gradlePlugin {
