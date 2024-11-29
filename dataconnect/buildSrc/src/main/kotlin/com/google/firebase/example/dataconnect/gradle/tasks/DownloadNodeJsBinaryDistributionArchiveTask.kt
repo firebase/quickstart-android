@@ -30,16 +30,15 @@ import java.io.File
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
-import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemOperations
-import org.gradle.api.file.RegularFile
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
-import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.OutputFile
+import java.nio.file.Files
 
 @CacheableTask
 public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
@@ -54,31 +53,22 @@ public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectT
     public abstract val inputData: Property<Inputs>
 
     /**
-     * The directory into which to place the downloaded artifact(s).
+     * The file to which to download the Node.js binary distribution archive.
      *
      * This property is _required_, meaning that it must be set; that is, [Property.isPresent] must
      * return `true`.
-     *
-     * This directory will be deleted and re-created when this task is executed.
      */
-    @get:OutputDirectory
-    public abstract val outputDirectory: DirectoryProperty
+    @get:OutputFile
+    public abstract val archiveFile: RegularFileProperty
 
     /**
-     * The path of the downloaded Node.js binary distribution archive.
+     * The file to which to download the "SHASUMS256.txt.asc" file.
      *
-     * This property's value is computed from [inputData] and [outputDirectory].
-     *
-     * This property must not be accessed until after the task executes.
+     * This property is _required_, meaning that it must be set; that is, [Property.isPresent] must
+     * return `true`.
      */
-    @get:Internal
-    public val downloadedFile: RegularFile
-        get() {
-            val inputs = inputData.get()
-            val outputDirectory = outputDirectory.get()
-            val downloadedFileName = inputs.calculateNodeJsPaths().downloadFileName
-            return outputDirectory.file(downloadedFileName)
-        }
+    @get:OutputFile
+    public abstract val shasumsFile: RegularFileProperty
 
     @get:Inject
     internal abstract val providerFactory: ProviderFactory
@@ -87,12 +77,17 @@ public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectT
     internal abstract val fileSystemOperations: FileSystemOperations
 
     override fun newWorker(): DataConnectTaskBase.Worker {
-        val (operatingSystem: OperatingSystem, nodeJsVersion: String) = inputData.get()
+        val inputData = inputData.get()
+        val nodeJsPaths = inputData.calculateNodeJsPaths()
+
         return DownloadNodeJsBinaryDistributionArchiveTaskWorkerImpl(
-            operatingSystemType = operatingSystem.type,
-            operatingSystemArchitecture = operatingSystem.architecture,
-            nodeJsVersion = nodeJsVersion,
-            outputDirectory = outputDirectory.get().asFile,
+            operatingSystemType = inputData.operatingSystem.type,
+            operatingSystemArchitecture = inputData.operatingSystem.architecture,
+            nodeJsVersion = inputData.nodeJsVersion,
+            archiveFile = archiveFile.get().asFile,
+            shasumsFile = shasumsFile.get().asFile,
+            archiveUrl = nodeJsPaths.archiveUrl,
+            shasumsUrl = nodeJsPaths.shasumsUrl,
             fileSystemOperations = fileSystemOperations,
             logger = dataConnectLogger
         )
@@ -115,9 +110,11 @@ public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectT
         val operatingSystemType: OperatingSystem.Type
         val operatingSystemArchitecture: OperatingSystem.Architecture
         val nodeJsVersion: String
-        val outputDirectory: File
+        val archiveFile: File
+        val shasumsFile: File
+        val archiveUrl: String
+        val shasumsUrl: String
         val fileSystemOperations: FileSystemOperations
-        val nodeJsPaths: NodeJsPaths
         val fileDownloader: FileDownloader
 
         override fun close() {
@@ -143,9 +140,20 @@ internal fun DownloadNodeJsBinaryDistributionArchiveTask.configureFrom(myProvide
         )
     }
 
-    outputDirectory.run {
+    archiveFile.run {
         finalizeValueOnRead()
-        set(myProviders.buildDirectory.map { it.dir("DownloadNodeJsBinaryDistributionArchive") })
+        set(myProviders.buildDirectory.map {
+            val downloadFileName = inputData.get().calculateNodeJsPaths().archiveFileName
+            it.file(downloadFileName)
+        })
+    }
+
+    shasumsFile.run {
+        finalizeValueOnRead()
+        set(myProviders.buildDirectory.map {
+            val shasumsFileName = inputData.get().calculateNodeJsPaths().shasumsFileName
+            it.file(shasumsFileName)
+        })
     }
 
     setOnlyIf("inputData was specified", {
@@ -163,14 +171,14 @@ private class DownloadNodeJsBinaryDistributionArchiveTaskWorkerImpl(
     override val operatingSystemType: OperatingSystem.Type,
     override val operatingSystemArchitecture: OperatingSystem.Architecture,
     override val nodeJsVersion: String,
-    override val outputDirectory: File,
+    override val archiveFile: File,
+    override val shasumsFile: File,
+    override val archiveUrl: String,
+    override val shasumsUrl: String,
     override val fileSystemOperations: FileSystemOperations,
     override val logger: DataConnectGradleLogger
 ) : Worker {
     override val fileDownloader = FileDownloader(logger)
-
-    override val nodeJsPaths =
-        NodeJsPaths.from(nodeJsVersion, operatingSystemType, operatingSystemArchitecture)
 
     override fun invoke() {
         run()
@@ -181,41 +189,30 @@ private fun Worker.run() {
     logger.info { "operatingSystemType: $operatingSystemType" }
     logger.info { "operatingSystemArchitecture: $operatingSystemArchitecture" }
     logger.info { "nodeJsVersion: $nodeJsVersion" }
-    logger.info { "outputDirectory: $outputDirectory" }
+    logger.info { "archiveFile: ${archiveFile.absolutePath}" }
+    logger.info { "shasumsFile: ${shasumsFile.absolutePath}" }
 
-    deleteDirectory(outputDirectory, fileSystemOperations)
-    createDirectory(outputDirectory)
+    val files = listOf(archiveFile, shasumsFile).sorted()
+    files.forEach { deleteFile(it) }
+    val directories = files.map { it.absoluteFile.parentFile }.distinct().sorted()
+    directories.forEach { createDirectory(it) }
 
-    val destFile = File(outputDirectory, nodeJsPaths.downloadFileName)
-    downloadNodeJsBinaryArchive(destFile)
-    verifyNodeJsReleaseSignature(destFile)
-}
-
-private fun Worker.downloadNodeJsBinaryArchive(destFile: File) {
-    val url = nodeJsPaths.downloadUrl
     runBlocking {
-        fileDownloader.download(url, destFile, maxNumDownloadBytes = 200_000_000)
+        fileDownloader.download(archiveUrl, archiveFile, maxNumDownloadBytes = 200_000_000)
+        fileDownloader.download(shasumsUrl, shasumsFile, maxNumDownloadBytes = 100_000)
     }
+
+    verifyNodeJsReleaseSignature(file =archiveFile, shasumsFile =shasumsFile, keyListResourcePath="com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/keys.list", logger)
 }
 
-private fun Worker.downloadShasumsFile(destFile: File) {
-    val url = nodeJsPaths.shasumsUrl
-    runBlocking {
-        fileDownloader.download(url, destFile, maxNumDownloadBytes = 100_000)
-    }
-}
-
-private fun Worker.verifyNodeJsReleaseSignature(file: File) {
-    val shasumsFile = File(outputDirectory, nodeJsPaths.shasumsFileName)
-    downloadShasumsFile(shasumsFile)
-
+private fun verifyNodeJsReleaseSignature(file: File, shasumsFile: File, keyListResourcePath: String, logger: DataConnectGradleLogger) {
     val signatureVerifier = Sha256SignatureVerifier()
     logger.info {
         "Loading Node.js release signing certificates " +
-            "from resource: $KEY_LIST_RESOURCE_PATH"
+            "from resource: $keyListResourcePath"
     }
-    val numCertificatesAdded = signatureVerifier.addCertificatesFromKeyListResource(KEY_LIST_RESOURCE_PATH)
-    logger.info { "Loaded $numCertificatesAdded certificates from $KEY_LIST_RESOURCE_PATH" }
+    val numCertificatesAdded = signatureVerifier.addCertificatesFromKeyListResource(keyListResourcePath)
+    logger.info { "Loaded $numCertificatesAdded certificates from $keyListResourcePath" }
 
     logger.info { "Loading SHA256 hashes from file: ${shasumsFile.absolutePath}" }
     val fileNamesWithLoadedHash = signatureVerifier.addHashesFromShasumsFile(shasumsFile)
@@ -237,6 +234,3 @@ private fun Worker.verifyNodeJsReleaseSignature(file: File) {
         signatureVerifier.verifyHash(inputStream, file.name)
     }
 }
-
-private const val KEY_LIST_RESOURCE_PATH =
-    "com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/keys.list"

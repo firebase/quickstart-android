@@ -22,8 +22,9 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 
 public class NodeJsPaths(
-    public val downloadUrl: String,
-    public val downloadFileName: String,
+    public val archiveUrl: String,
+    public val archiveBaseFileName: String,
+    public val archiveFileName: String,
     public val shasumsUrl: String,
     public val shasumsFileName: String
 ) {
@@ -46,10 +47,11 @@ public fun NodeJsPaths.Companion.from(
 ): NodeJsPaths {
     val calculator = NodeJsPathsCalculator(nodeJsVersion, operatingSystemType, operatingSystemArchitecture)
     return NodeJsPaths(
-        downloadUrl = calculator.downloadUrl(),
-        downloadFileName = calculator.downloadFileName(),
-        shasumsUrl = calculator.shasumsDownloadUrl(),
-        shasumsFileName = calculator.shasumsDownloadFileName()
+        archiveUrl = calculator.archiveUrl(),
+        archiveBaseFileName = calculator.archiveBaseFileName(),
+        archiveFileName = calculator.archiveFileName(),
+        shasumsUrl = calculator.shasumsUrl(),
+        shasumsFileName = calculator.shasumsFileName()
     )
 }
 
@@ -59,7 +61,7 @@ private class NodeJsPathsCalculator(
     val operatingSystemArchitecture: OperatingSystem.Architecture
 )
 
-private fun NodeJsPathsCalculator.downloadUrlPrefix(): String = "https://nodejs.org/dist/v$nodeJsVersion"
+private fun NodeJsPathsCalculator.urlForFileWithName(fileName: String): String = "https://nodejs.org/dist/v$nodeJsVersion/$fileName"
 
 /**
  * The URL to download the Node.js binary distribution.
@@ -74,20 +76,13 @@ private fun NodeJsPathsCalculator.downloadUrlPrefix(): String = "https://nodejs.
  * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x64.7z
  * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x86.7z
  */
-private fun NodeJsPathsCalculator.downloadUrl(): String {
-    val downloadUrlPrefix = downloadUrlPrefix()
-    val downloadFileName = downloadFileName()
-    return "$downloadUrlPrefix/$downloadFileName"
-}
+private fun NodeJsPathsCalculator.archiveUrl(): String = urlForFileWithName(archiveFileName())
+
 
 @Suppress("UnusedReceiverParameter")
-private fun NodeJsPathsCalculator.shasumsDownloadFileName(): String = "SHASUMS256.txt.asc"
+private fun NodeJsPathsCalculator.shasumsFileName(): String = "SHASUMS256.txt.asc"
 
-private fun NodeJsPathsCalculator.shasumsDownloadUrl(): String {
-    val downloadUrlPrefix = downloadUrlPrefix()
-    val downloadFileName = shasumsDownloadFileName()
-    return "$downloadUrlPrefix/$downloadFileName"
-}
+private fun NodeJsPathsCalculator.shasumsUrl(): String = urlForFileWithName(shasumsFileName())
 
 /**
  * The file name of the download for the Node.js binary distribution.
@@ -102,21 +97,26 @@ private fun NodeJsPathsCalculator.shasumsDownloadUrl(): String {
  * * node-v20.9.0-win-x64.7z
  * * node-v20.9.0-win-x86.7z
  */
-private fun NodeJsPathsCalculator.downloadFileName(): String {
-    val fileExtension: String = when (operatingSystemType) {
-        OperatingSystem.Type.Windows -> "7z"
-        OperatingSystem.Type.MacOS -> "tar.xz"
-        OperatingSystem.Type.Linux -> "tar.xz"
-        else -> throw DataConnectGradleException(
-            "unable to determine Node.js download file extension " +
+private fun NodeJsPathsCalculator.archiveFileName(): String = "${archiveBaseFileName()}${archiveFileNameSuffix()}"
+
+/**
+ * The suffix of the file name download for the Node.js binary distribution.
+ *
+ * Here are some examples:
+ * * .tar.xz
+ * * .7z
+ */
+private fun NodeJsPathsCalculator.archiveFileNameSuffix(): String = when (operatingSystemType) {
+    OperatingSystem.Type.Windows -> ".7z"
+    OperatingSystem.Type.MacOS,
+    OperatingSystem.Type.Linux -> ".tar.xz"
+    else -> throw DataConnectGradleException(
+        "unable to determine Node.js download file name suffix " +
                 "for operating system type: $operatingSystemType " +
                 "(error code ead53smf45)"
-        )
-    }
-
-    val downloadFileNameBase = downloadFileNameBase()
-    return "$downloadFileNameBase.$fileExtension"
+    )
 }
+
 
 /**
  * The base file name of the download for the Node.js binary distribution;
@@ -132,7 +132,7 @@ private fun NodeJsPathsCalculator.downloadFileName(): String {
  * * node-v20.9.0-win-x64
  * * node-v20.9.0-win-x86
  */
-private fun NodeJsPathsCalculator.downloadFileNameBase(): String {
+private fun NodeJsPathsCalculator.archiveBaseFileName(): String {
     val osType: String = when (operatingSystemType) {
         OperatingSystem.Type.Windows -> "win"
         OperatingSystem.Type.MacOS -> "darwin"

@@ -121,7 +121,6 @@ private fun Worker.run() {
     logger.info { "archiveFile: ${archiveFile.absolutePath}" }
     logger.info { "outputDirectory: ${outputDirectory.absolutePath}" }
     logger.info { "prefixStripCount: $prefixStripCount" }
-    logger.info { "Extracting ${archiveFile.absolutePath} to ${outputDirectory.absolutePath}" }
 
     if (prefixStripCount < 0) {
         throw IllegalArgumentException("invalid prefixStripCount: $prefixStripCount " +
@@ -131,6 +130,7 @@ private fun Worker.run() {
     deleteDirectory(outputDirectory, fileSystemOperations)
     createDirectory(outputDirectory)
 
+    logger.info { "Extracting ${archiveFile.absolutePath} to ${outputDirectory.absolutePath}" }
     val extractCallbacks = ExtractArchiveCallbacksImpl(archiveFile, logger)
     archiveFile.extractArchive(outputDirectory) {
         callbacks = extractCallbacks
@@ -176,7 +176,7 @@ private class ExtractArchiveCallbacksImpl(private val file: File, private val lo
     }
 
     override fun onExtractSymlink(linkPath: String, destFile: File) {
-        _extractedFileCount.incrementAndGet()
+        _extractedSymlinkCount.incrementAndGet()
         logger.debug { "Creating symlink ${destFile.absolutePath} to $linkPath" }
     }
 

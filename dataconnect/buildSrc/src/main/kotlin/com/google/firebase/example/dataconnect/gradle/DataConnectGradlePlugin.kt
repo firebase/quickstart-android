@@ -47,17 +47,13 @@ public abstract class DataConnectGradlePlugin : Plugin<Project> {
         project.tasks.register<ExtractArchiveTask>("ex") {
             group = TASK_GROUP
 
-            archiveFile.set(
-                dlTask.flatMap { task ->
-                    task.outputDirectory.map { outputDirectory ->
-                        val downloadFileName = providers.nodeJsPaths.get().downloadFileName
-                        outputDirectory.file(downloadFileName)
-                    }
-                }
-            )
-
-            outputDirectory.set(providers.buildDirectory.map { it.dir("extracted") })
             pathPrefixComponentStripCount.set(1)
+            archiveFile.set(dlTask.flatMap { it.archiveFile })
+
+            outputDirectory.set(providers.buildDirectory.map {
+                val dirName = providers.nodeJsPaths.get().archiveBaseFileName
+                it.dir(dirName)
+            })
         }
     }
 

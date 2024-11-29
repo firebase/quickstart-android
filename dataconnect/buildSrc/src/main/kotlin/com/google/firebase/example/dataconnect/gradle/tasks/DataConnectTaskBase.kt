@@ -25,6 +25,7 @@ import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import java.io.File
+import java.nio.file.Files
 
 public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask() {
 
@@ -68,7 +69,9 @@ public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask(
 
 internal fun Worker.deleteDirectory(dir: File, fileSystemOperations: FileSystemOperations) {
     logger.info { "Deleting directory: $dir" }
-    fileSystemOperations.runCatching { delete { delete(dir) } }.onFailure {
+    val result = fileSystemOperations.runCatching { delete { delete(dir) } }
+
+    result.onFailure {
         throw DataConnectGradleException(
             "unable to delete directory: ${dir.absolutePath}: $it " +
                     "(error code 6trngh6x47)",
@@ -77,12 +80,27 @@ internal fun Worker.deleteDirectory(dir: File, fileSystemOperations: FileSystemO
     }
 }
 
+internal fun Worker.deleteFile(file: File) {
+    logger.info { "Deleting file: ${file.absolutePath}" }
+    val result = kotlin.runCatching { Files.deleteIfExists(file.toPath()) }
+
+    result.onFailure {
+        throw DataConnectGradleException(
+            "unable to delete file: ${file.absolutePath}: $it " +
+                    "(error code rprr987jqk)",
+            it
+        )
+    }
+}
+
 internal fun Worker.createDirectory(dir: File) {
     logger.info { "Creating directory: $dir" }
-    if (!dir.mkdirs()) {
+
+    val result = runCatching { Files.createDirectories(dir.toPath()) }
+    result.onFailure {
         throw DataConnectGradleException(
-            "unable to create directory: ${dir.absolutePath} " +
-                    "(error code j7x4sw7w95)"
+            "unable to create directory: ${dir.absolutePath}: $it " +
+                    "(error code j7x4sw7w95)", it
         )
     }
 }
