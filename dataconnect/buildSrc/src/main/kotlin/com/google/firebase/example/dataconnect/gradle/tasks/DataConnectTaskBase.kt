@@ -54,8 +54,11 @@ public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask(
 
         val endTime = System.nanoTime().toDuration(DurationUnit.NANOSECONDS)
         val elapsedTime = endTime - startTime
-        dataConnectLogger.info { "Task $path completed execution at ${Date()} " +
-        "(${elapsedTime.inWholeSeconds} seconds)" }
+        dataConnectLogger.info {
+            "Task $path completed execution in " +
+                    elapsedTime.toString(DurationUnit.SECONDS, 2) +
+                    " at ${Date()}"
+        }
 
         result.onFailure {
             dataConnectLogger.warn("Task $path execution failed: $it")
