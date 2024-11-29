@@ -16,12 +16,6 @@
 
 package com.google.firebase.example.dataconnect.gradle.util
 
-import org.apache.commons.compress.archivers.ArchiveEntry
-import org.apache.commons.compress.archivers.ArchiveInputStream
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
-import org.apache.commons.compress.compressors.xz.XZCompressorInputStream
-import org.apache.commons.compress.compressors.xz.XZUtils
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -29,6 +23,12 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.attribute.FileTime
 import java.nio.file.attribute.PosixFilePermission
+import org.apache.commons.compress.archivers.ArchiveEntry
+import org.apache.commons.compress.archivers.ArchiveInputStream
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
+import org.apache.commons.compress.compressors.xz.XZCompressorInputStream
+import org.apache.commons.compress.compressors.xz.XZUtils
 
 internal fun File.extractArchive(destDir: File, configure: ExtractArchiveConfigBuilder.() -> Unit = {}) {
     if (XZUtils.isCompressedFileName(name)) {
@@ -38,8 +38,8 @@ internal fun File.extractArchive(destDir: File, configure: ExtractArchiveConfigB
     } else {
         throw UnsupportedArchiveException(
             "don't know how to extract $name; " +
-                    "supported archive formats are .7z and .tar.xz " +
-                    "(error code vm9w6kmaby)"
+                "supported archive formats are .7z and .tar.xz " +
+                "(error code vm9w6kmaby)"
         )
     }
 }
@@ -127,7 +127,6 @@ private fun extractTarArchive(inputStream: InputStream, config: ExtractArchiveCo
                 continue
             }
         }
-
     }
 }
 
@@ -198,12 +197,12 @@ private object ExtractArchiveCallbacksStubImpl : ExtractArchiveCallbacks {
 
 internal enum class ArchiveType {
     TarXz,
-    SevenZip,
+    SevenZip
 }
 
 internal enum class ArchiveSetFileMetadataType {
     LastModifiedTime,
-    PosixFilePermissions,
+    PosixFilePermissions
 }
 
 @JvmName("childWithPathPrefixComponentsStrippedFileExt")
@@ -217,8 +216,8 @@ private fun childWithPathPrefixComponentsStripped(file: File, childPath: String,
     if (pathSeparators.any { childPath.startsWith(it) }) {
         throw InvalidArchivePathException(
             "unable to extract file: $childPath " +
-                    "(must not be an absolute path)" +
-                    "(error code t827vf36ac)"
+                "(must not be an absolute path)" +
+                "(error code t827vf36ac)"
         )
     }
 
@@ -229,9 +228,9 @@ private fun childWithPathPrefixComponentsStripped(file: File, childPath: String,
             if (index < 0) {
                 throw MissingPathPrefixException(
                     "the given childPath was expected to have at least " +
-                            "$pathPrefixStripCount leading path components, " +
-                            "but there were only $prefixComponentIndex " +
-                            "(error code radpfa8nc9)"
+                        "$pathPrefixStripCount leading path components, " +
+                        "but there were only $prefixComponentIndex " +
+                        "(error code radpfa8nc9)"
                 )
             }
             deleteRange(0, index + 1)

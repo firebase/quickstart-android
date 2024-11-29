@@ -27,7 +27,7 @@ public class NodeJsPaths(
     public val shasumsUrl: String,
     public val shasumsFileName: String,
     public val nodeExecutableRelativePath: String,
-    public val npmExecutableRelativePath: String,
+    public val npmExecutableRelativePath: String
 ) {
     public companion object
 }
@@ -36,8 +36,11 @@ internal fun ProviderFactory.nodeJsPaths(
     nodeJsVersion: Provider<String>,
     operatingSystem: Provider<OperatingSystem>
 ): Provider<NodeJsPaths> = provider {
-    @Suppress("NAME_SHADOWING") val nodeJsVersion: String = nodeJsVersion.get()
-    @Suppress("NAME_SHADOWING") val operatingSystem: OperatingSystem = operatingSystem.get()
+    @Suppress("NAME_SHADOWING")
+    val nodeJsVersion: String = nodeJsVersion.get()
+
+    @Suppress("NAME_SHADOWING")
+    val operatingSystem: OperatingSystem = operatingSystem.get()
     NodeJsPaths.from(nodeJsVersion, operatingSystem.type, operatingSystem.architecture)
 }
 
@@ -46,7 +49,11 @@ public fun NodeJsPaths.Companion.from(
     operatingSystemType: OperatingSystem.Type,
     operatingSystemArchitecture: OperatingSystem.Architecture
 ): NodeJsPaths {
-    val calculator = NodeJsPathsCalculator(nodeJsVersion, operatingSystemType, operatingSystemArchitecture)
+    val calculator = NodeJsPathsCalculator(
+        nodeJsVersion,
+        operatingSystemType,
+        operatingSystemArchitecture
+    )
     return NodeJsPaths(
         archiveUrl = calculator.archiveUrl(),
         archiveBaseFileName = calculator.archiveBaseFileName(),
@@ -64,7 +71,8 @@ private class NodeJsPathsCalculator(
     val operatingSystemArchitecture: OperatingSystem.Architecture
 )
 
-private fun NodeJsPathsCalculator.urlForFileWithName(fileName: String): String = "https://nodejs.org/dist/v$nodeJsVersion/$fileName"
+private fun NodeJsPathsCalculator.urlForFileWithName(fileName: String): String =
+    "https://nodejs.org/dist/v$nodeJsVersion/$fileName"
 
 /**
  * The URL to download the Node.js binary distribution.
@@ -80,7 +88,6 @@ private fun NodeJsPathsCalculator.urlForFileWithName(fileName: String): String =
  * * https://nodejs.org/dist/v20.9.0/node-v20.9.0-win-x86.7z
  */
 private fun NodeJsPathsCalculator.archiveUrl(): String = urlForFileWithName(archiveFileName())
-
 
 @Suppress("UnusedReceiverParameter")
 private fun NodeJsPathsCalculator.shasumsFileName(): String = "SHASUMS256.txt.asc"
@@ -100,7 +107,8 @@ private fun NodeJsPathsCalculator.shasumsUrl(): String = urlForFileWithName(shas
  * * node-v20.9.0-win-x64.7z
  * * node-v20.9.0-win-x86.7z
  */
-private fun NodeJsPathsCalculator.archiveFileName(): String = "${archiveBaseFileName()}${archiveFileNameSuffix()}"
+private fun NodeJsPathsCalculator.archiveFileName(): String =
+    "${archiveBaseFileName()}${archiveFileNameSuffix()}"
 
 /**
  * The suffix of the file name download for the Node.js binary distribution.
@@ -115,11 +123,10 @@ private fun NodeJsPathsCalculator.archiveFileNameSuffix(): String = when (operat
     OperatingSystem.Type.Linux -> ".tar.xz"
     else -> throw DataConnectGradleException(
         "unable to determine Node.js download file name suffix " +
-                "for operating system type: $operatingSystemType " +
-                "(error code ead53smf45)"
+            "for operating system type: $operatingSystemType " +
+            "(error code ead53smf45)"
     )
 }
-
 
 /**
  * The base file name of the download for the Node.js binary distribution;
@@ -180,4 +187,3 @@ private fun NodeJsPathsCalculator.npmExecutableRelativePath(): String =
                 "(error code zrrsk9g5n4)"
         )
     }
-

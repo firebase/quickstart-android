@@ -19,16 +19,16 @@ package com.google.firebase.example.dataconnect.gradle.tasks
 import com.google.firebase.example.dataconnect.gradle.DataConnectGradleException
 import com.google.firebase.example.dataconnect.gradle.tasks.DataConnectTaskBase.Worker
 import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
+import java.io.File
+import java.nio.file.Files
+import java.util.Date
 import kotlin.reflect.full.allSupertypes
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
-import java.io.File
-import java.nio.file.Files
-import java.util.Date
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask() {
 
@@ -56,8 +56,8 @@ public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask(
         val elapsedTime = endTime - startTime
         dataConnectLogger.info {
             "Task $path completed execution in " +
-                    elapsedTime.toString(DurationUnit.SECONDS, 2) +
-                    " at ${Date()}"
+                elapsedTime.toString(DurationUnit.SECONDS, 2) +
+                " at ${Date()}"
         }
 
         result.onFailure {
@@ -84,7 +84,7 @@ internal fun Worker.deleteDirectory(dir: File, fileSystemOperations: FileSystemO
     result.onFailure {
         throw DataConnectGradleException(
             "unable to delete directory: ${dir.absolutePath}: $it " +
-                    "(error code 6trngh6x47)",
+                "(error code 6trngh6x47)",
             it
         )
     }
@@ -97,7 +97,7 @@ internal fun Worker.deleteFile(file: File) {
     result.onFailure {
         throw DataConnectGradleException(
             "unable to delete file: ${file.absolutePath}: $it " +
-                    "(error code rprr987jqk)",
+                "(error code rprr987jqk)",
             it
         )
     }
@@ -110,7 +110,8 @@ internal fun Worker.createDirectory(dir: File) {
     result.onFailure {
         throw DataConnectGradleException(
             "unable to create directory: ${dir.absolutePath}: $it " +
-                    "(error code j7x4sw7w95)", it
+                "(error code j7x4sw7w95)",
+            it
         )
     }
 }

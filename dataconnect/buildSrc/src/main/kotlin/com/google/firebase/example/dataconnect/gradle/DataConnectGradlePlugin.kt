@@ -21,17 +21,19 @@ import com.google.firebase.example.dataconnect.gradle.tasks.DownloadNodeJsBinary
 import com.google.firebase.example.dataconnect.gradle.tasks.ExtractArchiveTask
 import com.google.firebase.example.dataconnect.gradle.tasks.GenerateDataConnectSourcesTask
 import com.google.firebase.example.dataconnect.gradle.tasks.SetupFirebaseToolsTask
+import java.util.Locale
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
-import java.util.Locale
 
 @Suppress("unused")
 public abstract class DataConnectGradlePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        val downloadNodeJsArchiveTask = project.tasks.register<DownloadNodeJsBinaryDistributionArchiveTask>("dataConnectDownloadNodeJs")
+        val downloadNodeJsArchiveTask = project.tasks.register<DownloadNodeJsBinaryDistributionArchiveTask>(
+            "dataConnectDownloadNodeJs"
+        )
         val extractNodeJsArchiveTask = project.tasks.register<ExtractArchiveTask>("dataConnectExtractNodeJs")
         val setupFirebaseToolsTask = project.tasks.register<SetupFirebaseToolsTask>("dataConnectSetupFirebaseTools")
 
@@ -42,9 +44,8 @@ public abstract class DataConnectGradlePlugin : Plugin<Project> {
             extractNodeJsArchiveTask = extractNodeJsArchiveTask,
             setupFirebaseToolsTask = setupFirebaseToolsTask,
             buildDirectory = project.layout.buildDirectory.dir("dataConnect"),
-            projectLayout = project.layout,
-            providerFactory = project.providers,
-            logger = project.logger
+            projectDirectory = project.layout.projectDirectory,
+            providerFactory = project.providers
         )
 
         configurer.invoke()
@@ -62,5 +63,4 @@ public abstract class DataConnectGradlePlugin : Plugin<Project> {
             )
         }
     }
-
 }

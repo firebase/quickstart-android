@@ -23,6 +23,9 @@ import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogg
 import com.google.firebase.example.dataconnect.gradle.util.ExtractArchiveCallbacks
 import com.google.firebase.example.dataconnect.gradle.util.extractArchive
 import com.google.firebase.example.dataconnect.gradle.util.toFormattedString
+import java.io.File
+import java.util.concurrent.atomic.AtomicLong
+import javax.inject.Inject
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
@@ -33,9 +36,6 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.work.DisableCachingByDefault
-import java.io.File
-import java.util.concurrent.atomic.AtomicLong
-import javax.inject.Inject
 
 @DisableCachingByDefault(because = "extracting an archive is a quick operation not worth caching")
 public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
@@ -89,14 +89,14 @@ public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX)
     internal abstract val providerFactory: ProviderFactory
 
     override fun newWorker(): DataConnectTaskBase.Worker = ExtractArchiveTaskWorkerImpl(
-            archiveFile = archiveFile.get().asFile,
-            outputDirectory = outputDirectory.get().asFile,
-            prefixStripCount = pathPrefixComponentStripCount.orNull ?: 0,
-            fileSystemOperations = fileSystemOperations,
-            logger = dataConnectLogger
-        )
+        archiveFile = archiveFile.get().asFile,
+        outputDirectory = outputDirectory.get().asFile,
+        prefixStripCount = pathPrefixComponentStripCount.orNull ?: 0,
+        fileSystemOperations = fileSystemOperations,
+        logger = dataConnectLogger
+    )
 
-    internal interface Worker: DataConnectTaskBase.Worker {
+    internal interface Worker : DataConnectTaskBase.Worker {
         val archiveFile: File
         val outputDirectory: File
         val prefixStripCount: Int
@@ -106,7 +106,6 @@ public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX)
     private companion object {
         const val LOGGER_ID_PREFIX = "ear"
     }
-
 }
 
 private class ExtractArchiveTaskWorkerImpl(
@@ -127,8 +126,10 @@ private fun Worker.run() {
     logger.info { "prefixStripCount: $prefixStripCount" }
 
     if (prefixStripCount < 0) {
-        throw IllegalArgumentException("invalid prefixStripCount: $prefixStripCount " +
-        "(must be greater than or equal to zero) (error code mn8pp2b7mc)")
+        throw IllegalArgumentException(
+            "invalid prefixStripCount: $prefixStripCount " +
+                "(must be greater than or equal to zero) (error code mn8pp2b7mc)"
+        )
     }
 
     deleteDirectory(outputDirectory, fileSystemOperations)
@@ -146,8 +147,8 @@ private fun Worker.run() {
         val symlinkCountStr = extractCallbacks.extractedSymlinkCount.toFormattedString()
         val byteCountStr = extractCallbacks.extractedByteCount.toFormattedString()
         "Extracted $fileCountStr files ($byteCountStr bytes) " +
-                "and $symlinkCountStr symlinks " +
-                "from ${archiveFile.absolutePath} to ${outputDirectory.absolutePath}"
+            "and $symlinkCountStr symlinks " +
+            "from ${archiveFile.absolutePath} to ${outputDirectory.absolutePath}"
     }
 }
 
@@ -189,5 +190,4 @@ private class ExtractArchiveCallbacksImpl(private val file: File, private val lo
             "Ignoring failure to set ${metadataType.name} " + "on extracted file: ${file.absolutePath}"
         }
     }
-
 }

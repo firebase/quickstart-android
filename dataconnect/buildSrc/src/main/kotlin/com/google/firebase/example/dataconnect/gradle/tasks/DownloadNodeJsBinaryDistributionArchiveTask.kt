@@ -23,6 +23,8 @@ import com.google.firebase.example.dataconnect.gradle.util.FileDownloader
 import com.google.firebase.example.dataconnect.gradle.util.Sha256SignatureVerifier
 import com.google.firebase.example.dataconnect.gradle.util.addCertificatesFromKeyListResource
 import com.google.firebase.example.dataconnect.gradle.util.addHashesFromShasumsFile
+import java.io.File
+import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
@@ -31,8 +33,6 @@ import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
-import java.io.File
-import javax.inject.Inject
 
 @CacheableTask
 public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX) {
@@ -99,7 +99,6 @@ public abstract class DownloadNodeJsBinaryDistributionArchiveTask : DataConnectT
         val fileDownloader: FileDownloader
     }
 
-
     private companion object {
         const val LOGGER_ID_PREFIX = "dnb"
     }
@@ -138,10 +137,20 @@ private fun Worker.run() {
         fileDownloader.download(shasumsUrl, shasumsFile, maxNumDownloadBytes = 100_000)
     }
 
-    verifyNodeJsReleaseSignature(file =archiveFile, shasumsFile =shasumsFile, keyListResourcePath="com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/keys.list", logger)
+    verifyNodeJsReleaseSignature(
+        file = archiveFile,
+        shasumsFile = shasumsFile,
+        keyListResourcePath = "com/google/firebase/example/dataconnect/gradle/nodejs_release_signing_keys/keys.list",
+        logger
+    )
 }
 
-private fun verifyNodeJsReleaseSignature(file: File, shasumsFile: File, keyListResourcePath: String, logger: DataConnectGradleLogger) {
+private fun verifyNodeJsReleaseSignature(
+    file: File,
+    shasumsFile: File,
+    keyListResourcePath: String,
+    logger: DataConnectGradleLogger
+) {
     val signatureVerifier = Sha256SignatureVerifier()
     logger.info {
         "Loading Node.js release signing certificates " +
