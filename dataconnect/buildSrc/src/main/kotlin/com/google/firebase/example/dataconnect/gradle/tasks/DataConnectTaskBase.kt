@@ -26,6 +26,9 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import java.io.File
 import java.nio.file.Files
+import java.util.Date
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask() {
 
@@ -44,16 +47,20 @@ public abstract class DataConnectTaskBase(loggerIdPrefix: String) : DefaultTask(
 
     @TaskAction
     public fun run() {
-        dataConnectLogger.info { "Task $path starting execution" }
-        runCatching { newWorker().invoke() }.fold(
-            onSuccess = {
-                dataConnectLogger.info { "Task $path execution completed successfully" }
-            },
-            onFailure = {
-                dataConnectLogger.warn("Task $path execution failed: $it")
-                throw it
-            }
-        )
+        dataConnectLogger.info { "Task $path starting execution at ${Date()}" }
+        val startTime = System.nanoTime().toDuration(DurationUnit.NANOSECONDS)
+
+        val result = runCatching { newWorker().invoke() }
+
+        val endTime = System.nanoTime().toDuration(DurationUnit.NANOSECONDS)
+        val elapsedTime = endTime - startTime
+        dataConnectLogger.info { "Task $path completed execution at ${Date()} " +
+        "(${elapsedTime.inWholeSeconds} seconds)" }
+
+        result.onFailure {
+            dataConnectLogger.warn("Task $path execution failed: $it")
+            throw it
+        }
     }
 
     /**
