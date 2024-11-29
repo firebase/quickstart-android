@@ -84,7 +84,7 @@ fun UserReviews(
         Text(
             text = stringResource(R.string.sign_in_to_review),
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.secondary,
+            color = MaterialTheme.colorScheme.tertiary,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(8.dp)
                 .fillMaxWidth()
