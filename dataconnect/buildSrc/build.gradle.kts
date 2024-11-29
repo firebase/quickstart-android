@@ -42,6 +42,7 @@ dependencies {
   implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
   implementation("org.apache.commons:commons-compress:1.27.1")
 
+  // Needed for org.apache.commons.compress.compressors.xz.XZCompressorInputStream
   runtimeOnly("org.tukaani:xz:1.10")
 }
 

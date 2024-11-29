@@ -20,7 +20,6 @@ import org.apache.commons.compress.archivers.ArchiveEntry
 import org.apache.commons.compress.archivers.ArchiveInputStream
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream
 import org.apache.commons.compress.compressors.xz.XZCompressorInputStream
 import org.apache.commons.compress.compressors.xz.XZUtils
 import java.io.File
@@ -31,13 +30,11 @@ import java.nio.file.Paths
 import java.nio.file.attribute.FileTime
 import java.nio.file.attribute.PosixFilePermission
 
-internal fun File.extractArchive(destDir: File, callbacks: ExtractArchiveWithDetectionCallbacks?) {
+internal fun File.extractArchive(destDir: File, configure: ExtractArchiveConfigBuilder.() -> Unit = {}) {
     if (XZUtils.isCompressedFileName(name)) {
-        callbacks?.onArchiveTypeDetected(ArchiveType.TarXz)
-        extractTarXzArchive(destDir, callbacks)
+        extractTarXzArchive(destDir, configure)
     } else if (name.endsWith(".7z")) {
-        callbacks?.onArchiveTypeDetected(ArchiveType.SevenZip)
-        extract7zArchive(destDir, callbacks)
+        extract7zArchive(destDir, configure)
     } else {
         throw UnsupportedArchiveException(
             "don't know how to extract $name; " +
@@ -48,25 +45,22 @@ internal fun File.extractArchive(destDir: File, callbacks: ExtractArchiveWithDet
 }
 
 @JvmName("extractTarXzArchiveFileExt")
-private fun File.extractTarXzArchive(destDir: File, callbacks: ExtractArchiveCallbacks?) {
-    extractTarXzArchive(file = this, destDir = destDir, callbacks)
+private fun File.extractTarXzArchive(destDir: File, configure: ExtractArchiveConfigBuilder.() -> Unit) {
+    val config = ExtractArchiveConfigBuilder().apply(configure).build(destDir)
+    config.callbacks.onExtractArchiveStarting(ArchiveType.TarXz)
+    extractTarXzArchive(this, config)
 }
 
 private fun extractTarXzArchive(
     inputStream: InputStream,
-    destDir: File,
-    callbacks: ExtractArchiveCallbacks?
+    config: ExtractArchiveConfig
 ) {
     XZCompressorInputStream(inputStream).use { xzInputStream ->
-        extractTarArchive(xzInputStream, destDir, callbacks)
+        extractTarArchive(xzInputStream, config)
     }
 }
 
-private fun extractTarArchive(
-    inputStream: InputStream,
-    destDir: File,
-    callbacks: ExtractArchiveCallbacks?
-) {
+private fun extractTarArchive(inputStream: InputStream, config: ExtractArchiveConfig) {
     // Use `ArchiveInputStream` as the static type of `tarInputStream`, rather than the more
     // natural `TarArchiveInputStream` because this enables compatibility with older versions of
     // the Apache Commons Compress library. This is because at one point `ArchiveInputStream` was
@@ -83,23 +77,27 @@ private fun extractTarArchive(
             if (tarEntry !is TarArchiveEntry) {
                 continue
             }
-            val outputFile = File(destDir, tarEntry.name).absoluteFile
+
+            val outputFile = config.destDir
+                .childWithPathPrefixComponentsStripped(tarEntry.name, config.prefixStripCount)
+                .absoluteFile
+
             if (tarEntry.isSymbolicLink) {
-                callbacks?.onExtractSymlink(tarEntry.linkName, outputFile)
+                config.callbacks.onExtractSymlink(tarEntry.linkName, outputFile)
                 Files.createSymbolicLink(outputFile.toPath(), Paths.get(tarEntry.linkName))
             } else if (tarEntry.isFile) {
-                callbacks?.onExtractFileStarting(tarEntry.name, outputFile)
+                config.callbacks.onExtractFileStarting(tarEntry.name, outputFile)
                 outputFile.parentFile.mkdirs()
                 val extractedByteCount = outputFile.outputStream().use { fileOutputStream ->
                     tarInputStream.copyTo(fileOutputStream)
                 }
-                callbacks?.onExtractFileDone(tarEntry.name, outputFile, extractedByteCount)
+                config.callbacks.onExtractFileDone(tarEntry.name, outputFile, extractedByteCount)
 
                 val lastModifiedTime = FileTime.from(tarEntry.lastModifiedDate.toInstant())
                 try {
                     Files.setLastModifiedTime(outputFile.toPath(), lastModifiedTime)
                 } catch (e: IOException) {
-                    callbacks?.onSetFileMetadataFailed(outputFile, ArchiveSetFileMetadataType.LastModifiedTime, e)
+                    config.callbacks.onSetFileMetadataFailed(outputFile, ArchiveSetFileMetadataType.LastModifiedTime, e)
                 }
 
                 val newPermissions = buildSet {
@@ -119,7 +117,11 @@ private fun extractTarArchive(
                 try {
                     Files.setPosixFilePermissions(outputFile.toPath(), newPermissions)
                 } catch (e: UnsupportedOperationException) {
-                    callbacks?.onSetFileMetadataFailed(outputFile, ArchiveSetFileMetadataType.PosixFilePermissions, e)
+                    config.callbacks.onSetFileMetadataFailed(
+                        outputFile,
+                        ArchiveSetFileMetadataType.PosixFilePermissions,
+                        e
+                    )
                 }
             } else {
                 continue
@@ -129,24 +131,44 @@ private fun extractTarArchive(
     }
 }
 
-private fun extractTarXzArchive(file: File, destDir: File, callbacks: ExtractArchiveCallbacks?) {
+private fun extractTarXzArchive(file: File, config: ExtractArchiveConfig) {
     file.inputStream().use { fileInputStream ->
-        extractTarXzArchive(fileInputStream, destDir, callbacks)
+        extractTarXzArchive(fileInputStream, config)
     }
 }
 
 @JvmName("extract7zArchiveFileExt")
-private fun File.extract7zArchive(destDir: File, callbacks: ExtractArchiveCallbacks?) {
-    extract7zArchive(file = this, destDir = destDir, callbacks)
+private fun File.extract7zArchive(destDir: File, configure: ExtractArchiveConfigBuilder.() -> Unit) {
+    val config = ExtractArchiveConfigBuilder().apply(configure).build(destDir)
+    extract7zArchive(this, config)
 }
 
-private fun extract7zArchive(file: File, destDir: File, callbacks: ExtractArchiveCallbacks?) {
+private fun extract7zArchive(file: File, config: ExtractArchiveConfig) {
     TODO("extract7zArchive() not yet implemented")
 }
 
 private class UnsupportedArchiveException(message: String) : Exception(message)
 
+internal class ExtractArchiveConfigBuilder {
+    var callbacks: ExtractArchiveCallbacks? = null
+    var prefixStripCount: Int? = null
+}
+
+private class ExtractArchiveConfig(
+    val destDir: File,
+    val callbacks: ExtractArchiveCallbacks,
+    val prefixStripCount: Int
+)
+
+private fun ExtractArchiveConfigBuilder.build(destDir: File) = ExtractArchiveConfig(
+    destDir = destDir,
+    callbacks = callbacks ?: ExtractArchiveCallbacksStubImpl,
+    prefixStripCount = prefixStripCount ?: 0
+)
+
 internal interface ExtractArchiveCallbacks {
+
+    fun onExtractArchiveStarting(archiveType: ArchiveType)
 
     fun onExtractFileStarting(srcPath: String, destFile: File)
 
@@ -157,10 +179,21 @@ internal interface ExtractArchiveCallbacks {
     fun onSetFileMetadataFailed(file: File, metadataType: ArchiveSetFileMetadataType, exception: Exception)
 }
 
-internal interface ExtractArchiveWithDetectionCallbacks : ExtractArchiveCallbacks {
+private object ExtractArchiveCallbacksStubImpl : ExtractArchiveCallbacks {
+    override fun onExtractArchiveStarting(archiveType: ArchiveType) {
+    }
 
-    fun onArchiveTypeDetected(archiveType: ArchiveType)
+    override fun onExtractFileStarting(srcPath: String, destFile: File) {
+    }
 
+    override fun onExtractFileDone(srcPath: String, destFile: File, extractedByteCount: Long) {
+    }
+
+    override fun onExtractSymlink(linkPath: String, destFile: File) {
+    }
+
+    override fun onSetFileMetadataFailed(file: File, metadataType: ArchiveSetFileMetadataType, exception: Exception) {
+    }
 }
 
 internal enum class ArchiveType {
@@ -172,3 +205,45 @@ internal enum class ArchiveSetFileMetadataType {
     LastModifiedTime,
     PosixFilePermissions,
 }
+
+@JvmName("childWithPathPrefixComponentsStrippedFileExt")
+private fun File.childWithPathPrefixComponentsStripped(childPath: String, pathPrefixStripCount: Int): File =
+    childWithPathPrefixComponentsStripped(this, childPath, pathPrefixStripCount)
+
+private fun childWithPathPrefixComponentsStripped(file: File, childPath: String, pathPrefixStripCount: Int): File {
+    require(pathPrefixStripCount >= 0) { "invalid pathPrefixStripCount: $pathPrefixStripCount" }
+    val pathSeparators = charArrayOf('\\', '/')
+
+    if (pathSeparators.any { childPath.startsWith(it) }) {
+        throw InvalidArchivePathException(
+            "unable to extract file: $childPath " +
+                    "(must not be an absolute path)" +
+                    "(error code t827vf36ac)"
+        )
+    }
+
+    val newChildPath = buildString {
+        append(childPath)
+        repeat(pathPrefixStripCount) { prefixComponentIndex ->
+            val index = indexOfAny(pathSeparators)
+            if (index < 0) {
+                throw MissingPathPrefixException(
+                    "the given childPath was expected to have at least " +
+                            "$pathPrefixStripCount leading path components, " +
+                            "but there were only $prefixComponentIndex " +
+                            "(error code radpfa8nc9)"
+                )
+            }
+            deleteRange(0, index + 1)
+            while (isNotEmpty() && first() in pathSeparators) {
+                deleteAt(0)
+            }
+        }
+    }
+
+    return File(file, newChildPath)
+}
+
+private class InvalidArchivePathException(message: String) : Exception(message)
+
+private class MissingPathPrefixException(message: String) : Exception(message)

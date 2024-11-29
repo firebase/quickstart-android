@@ -20,7 +20,7 @@ import com.google.firebase.example.dataconnect.gradle.tasks.ExtractArchiveTask.W
 import com.google.firebase.example.dataconnect.gradle.util.ArchiveSetFileMetadataType
 import com.google.firebase.example.dataconnect.gradle.util.ArchiveType
 import com.google.firebase.example.dataconnect.gradle.util.DataConnectGradleLogger
-import com.google.firebase.example.dataconnect.gradle.util.ExtractArchiveWithDetectionCallbacks
+import com.google.firebase.example.dataconnect.gradle.util.ExtractArchiveCallbacks
 import com.google.firebase.example.dataconnect.gradle.util.extractArchive
 import com.google.firebase.example.dataconnect.gradle.util.toFormattedString
 import org.gradle.api.file.DirectoryProperty
@@ -128,13 +128,14 @@ private fun Worker.run() {
         "(must be greater than or equal to zero) (error code mn8pp2b7mc)")
     }
 
-    zzyzx("TODO: implement prefixStripCount 72mt5e9nt7")
-
     deleteDirectory(outputDirectory, fileSystemOperations)
     createDirectory(outputDirectory)
 
     val extractCallbacks = ExtractArchiveCallbacksImpl(archiveFile, logger)
-    archiveFile.extractArchive(outputDirectory, extractCallbacks)
+    archiveFile.extractArchive(outputDirectory) {
+        callbacks = extractCallbacks
+        prefixStripCount = this@run.prefixStripCount
+    }
 
     logger.info {
         val fileCountStr = extractCallbacks.extractedFileCount.toFormattedString()
@@ -147,7 +148,7 @@ private fun Worker.run() {
 }
 
 private class ExtractArchiveCallbacksImpl(private val file: File, private val logger: DataConnectGradleLogger) :
-    ExtractArchiveWithDetectionCallbacks {
+    ExtractArchiveCallbacks {
 
     private val _extractedFileCount = AtomicLong(0)
     val extractedFileCount: Long get() = _extractedFileCount.get()
@@ -158,7 +159,7 @@ private class ExtractArchiveCallbacksImpl(private val file: File, private val lo
     private val _extractedByteCount = AtomicLong(0)
     val extractedByteCount: Long get() = _extractedByteCount.get()
 
-    override fun onArchiveTypeDetected(archiveType: ArchiveType) {
+    override fun onExtractArchiveStarting(archiveType: ArchiveType) {
         logger.info { "Detected archive type $archiveType for file: ${file.absolutePath}" }
     }
 

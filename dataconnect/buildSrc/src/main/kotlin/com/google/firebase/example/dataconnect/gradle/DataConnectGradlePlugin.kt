@@ -57,6 +57,7 @@ public abstract class DataConnectGradlePlugin : Plugin<Project> {
             )
 
             outputDirectory.set(providers.buildDirectory.map { it.dir("extracted") })
+            pathPrefixComponentStripCount.set(1)
         }
     }
 
