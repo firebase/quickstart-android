@@ -27,7 +27,9 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.work.DisableCachingByDefault
 import java.io.File
@@ -47,6 +49,28 @@ public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX)
     public abstract val archiveFile: RegularFileProperty
 
     /**
+     * The number of path components to strip from the paths of files extracted from the archive.
+     *
+     * If this value is greater than zero, then the paths of the extracted files are written into
+     * the destination directory without that number of path prefixes stripped. For example, if this
+     * property's value is 2 and a file named `aaa/bbb/ccc/ddd/file.txt` was being extracted from
+     * the archive into directory `/home/foo` then it would be written to
+     * `/home/foo/ccc/ddd/file.txt` (with the 2 path prefix components `aaa/bbb/` removed) instead
+     * of `/home/foo/aaa/bbb/ccc/ddd/file.txt`.
+     *
+     * Setting this property to a positive value can be useful in the cases where the archive is
+     * known to contain exactly one top-level directory that is superfluous in the extracted
+     * directory structure.
+     *
+     * This property is _optional_; if this property is not set, that is, [Property.isPresent]
+     * returns `false`, then a value of `0` (zero) will be used.
+     *
+     * This property's value _must_ be greater than or equal to zero.
+     */
+    @get:Input @get:Optional
+    public abstract val pathPrefixComponentStripCount: Property<Int>
+
+    /**
      * The directory into which to extract the archive.
      *
      * This property is _required_, meaning that it must be set; that is, [Property.isPresent] must
@@ -63,6 +87,7 @@ public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX)
     override fun newWorker(): DataConnectTaskBase.Worker = ExtractArchiveTaskWorkerImpl(
             archiveFile = archiveFile.get().asFile,
             outputDirectory = outputDirectory.get().asFile,
+            prefixStripCount = pathPrefixComponentStripCount.orNull ?: 0,
             fileSystemOperations = fileSystemOperations,
             logger = dataConnectLogger
         )
@@ -70,6 +95,7 @@ public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX)
     internal interface Worker: DataConnectTaskBase.Worker {
         val archiveFile: File
         val outputDirectory: File
+        val prefixStripCount: Int
         val fileSystemOperations: FileSystemOperations
     }
 
@@ -82,6 +108,7 @@ public abstract class ExtractArchiveTask : DataConnectTaskBase(LOGGER_ID_PREFIX)
 private class ExtractArchiveTaskWorkerImpl(
     override val archiveFile: File,
     override val outputDirectory: File,
+    override val prefixStripCount: Int,
     override val fileSystemOperations: FileSystemOperations,
     override val logger: DataConnectGradleLogger
 ) : Worker {
@@ -93,11 +120,19 @@ private class ExtractArchiveTaskWorkerImpl(
 private fun Worker.run() {
     logger.info { "archiveFile: ${archiveFile.absolutePath}" }
     logger.info { "outputDirectory: ${outputDirectory.absolutePath}" }
+    logger.info { "prefixStripCount: $prefixStripCount" }
+    logger.info { "Extracting ${archiveFile.absolutePath} to ${outputDirectory.absolutePath}" }
+
+    if (prefixStripCount < 0) {
+        throw IllegalArgumentException("invalid prefixStripCount: $prefixStripCount " +
+        "(must be greater than or equal to zero) (error code mn8pp2b7mc)")
+    }
+
+    zzyzx("TODO: implement prefixStripCount 72mt5e9nt7")
 
     deleteDirectory(outputDirectory, fileSystemOperations)
     createDirectory(outputDirectory)
 
-    logger.info { "Extracting ${archiveFile.absolutePath} to ${outputDirectory.absolutePath}" }
     val extractCallbacks = ExtractArchiveCallbacksImpl(archiveFile, logger)
     archiveFile.extractArchive(outputDirectory, extractCallbacks)
 
