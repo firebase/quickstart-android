@@ -1,4 +1,7 @@
 pluginManagement {
+    includeBuild("dataconnect/buildSrc") {
+        name = "dataConnectBuildSrc"
+    }
     repositories {
         google()
         mavenCentral()
