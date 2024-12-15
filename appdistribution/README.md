@@ -1,4 +1,4 @@
-# Firebase App Distrbution Quickstart
+# Firebase App Distribution Quickstart
 
 ## Introduction
 
