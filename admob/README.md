@@ -18,7 +18,7 @@ Getting Started
   - In `src/main/res/values/strings.xml` change the `admob_app_id` string to your AdMob app id.
   - Note that this ID is used in two places: `AndroidManifest.xml` and `MainActivity`
 - Run the sample on your Android device or emulator.
-- The running sample displays a test banner ad and a test interstitial add.
+- The running sample displays a test banner ad and a test interstitial ad.
 
 Result
 -----------
