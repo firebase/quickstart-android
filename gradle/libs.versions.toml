@@ -11,9 +11,9 @@ espressoCore = "3.6.1"
 kotlinxSerializationCore = "1.7.3"
 lifecycle = "2.8.7"
 activityCompose = "1.9.3"
-composeBom = "2024.11.00"
+composeBom = "2024.12.01"
 googleServices = "4.4.2"
-composeNavigation = "2.8.4"
+composeNavigation = "2.8.5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
