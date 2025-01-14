@@ -1,4 +1,5 @@
-# Contributing to the Firebase Android Quickstarts
+$ git pull --ff upstream master$ git branch -D my-fix-branch$ git checkout master -f$ git push origin --delete my-fix-branch$ git rebase master -i
+$ git push origin my-fix-branch -f# Contributing to the Firebase Android Quickstarts
 
 We'd love for you to contribute to our source code and to make the Firebase Android Quickstarts even better than it is today! Here are the guidelines we'd like you to follow:
 
