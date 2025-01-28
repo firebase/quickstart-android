@@ -26,6 +26,8 @@
     <string name="menu_chat_description">Sample app demonstrating a conversational UI</string>
     <string name="menu_audio_title">Generate text from text-and-audio input</string>
     <string name="menu_audio_description">Sample app for recording audio and generating text from it</string>
+    <string name="menu_image_title">Generate image from text input</string>
+    <string name="menu_image_description">Sample app demonstrating image generation from text input</string>
 
     <!-- Summarize sample strings -->
     <string name="summarize_label">Text</string>
@@ -49,4 +51,8 @@
     <string name="start_recording">Start Recording</string>
     <string name="stop_recording">Stop Recording</string>
     <string name="delete_clip">Delete Recorded Clip</string>
+
+    <!-- Image sample strings -->
+    <string name="generate_image_label">Text</string>
+    <string name="generate_image_hint">Enter text to generate image</string>
 </resources>

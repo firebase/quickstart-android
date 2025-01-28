@@ -23,11 +23,15 @@ import com.google.firebase.Firebase
 import com.google.firebase.quickstart.vertexai.feature.audio.AudioViewModel
 import com.google.firebase.quickstart.vertexai.feature.chat.ChatViewModel
 import com.google.firebase.quickstart.vertexai.feature.functioncalling.FunctionsChatViewModel
+import com.google.firebase.quickstart.vertexai.feature.image.ImageViewModel
 import com.google.firebase.quickstart.vertexai.feature.multimodal.PhotoReasoningViewModel
 import com.google.firebase.quickstart.vertexai.feature.text.SummarizeViewModel
 import com.google.firebase.vertexai.type.Schema
 import com.google.firebase.vertexai.type.Tool
 import com.google.firebase.vertexai.type.FunctionDeclaration
+import com.google.firebase.vertexai.type.ImagenAspectRatio
+import com.google.firebase.vertexai.type.ImagenGenerationConfig
+import com.google.firebase.vertexai.type.ImagenImageFormat
 import com.google.firebase.vertexai.type.generationConfig
 import com.google.firebase.vertexai.vertexAI
 
@@ -104,6 +108,20 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                         generationConfig = config
                     )
                     AudioViewModel(generativeModel)
+                }
+
+                isAssignableFrom(ImageViewModel::class.java) -> {
+                    // Initialize a GenerativeModel with the `imagen-3.0-generate` AI model for image generation
+                    val generativeModel = Firebase.vertexAI.imageModel(
+                        modelName = "imagen-3.0-generate-001",
+                        generationConfig = ImagenGenerationConfig(
+                            numberOfImages = 1,
+                            aspectRatio = ImagenAspectRatio.SQUARE_1x1,
+                            imageFormat = ImagenImageFormat.jpeg(compressionQuality = 75),
+                            addWatermark = false
+                        )
+                    )
+                    ImageViewModel(generativeModel)
                 }
 
                 else ->

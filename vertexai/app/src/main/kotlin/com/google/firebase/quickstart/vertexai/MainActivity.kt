@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -33,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.quickstart.vertexai.feature.audio.AudioRoute
 import com.google.firebase.quickstart.vertexai.feature.chat.ChatRoute
 import com.google.firebase.quickstart.vertexai.feature.functioncalling.FunctionsChatRoute
+import com.google.firebase.quickstart.vertexai.feature.image.ImageRoute
 import com.google.firebase.quickstart.vertexai.feature.multimodal.PhotoReasoningRoute
 import com.google.firebase.quickstart.vertexai.feature.text.SummarizeRoute
 import com.google.firebase.quickstart.vertexai.ui.theme.GenerativeAISample
@@ -78,6 +78,9 @@ class MainActivity : ComponentActivity() {
                             }
                             composable("audio") {
                                 AudioRoute()
+                            }
+                            composable("image") {
+                                ImageRoute()
                             }
                         }
                     }
