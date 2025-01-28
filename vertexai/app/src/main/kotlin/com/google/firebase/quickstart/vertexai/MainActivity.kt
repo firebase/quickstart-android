@@ -20,7 +20,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -41,32 +45,40 @@ class MainActivity : ComponentActivity() {
         setContent {
             GenerativeAISample {
                 // A surface container using the 'background' color from the theme
+                val navController = rememberNavController()
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-
-                    NavHost(navController = navController, startDestination = "menu") {
-                        composable("menu") {
-                            MenuScreen(onItemClicked = { routeId ->
-                                navController.navigate(routeId)
-                            })
-                        }
-                        composable("summarize") {
-                            SummarizeRoute()
-                        }
-                        composable("photo_reasoning") {
-                            PhotoReasoningRoute()
-                        }
-                        composable("chat") {
-                            ChatRoute()
-                        }
-                        composable("functions_chat") {
-                            FunctionsChatRoute()
-                        }
-                        composable("audio") {
-                            AudioRoute()
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize().navigationBarsPadding(),
+                    ) { innerPadding ->
+                        NavHost(
+                            navController = navController,
+                            startDestination = "menu",
+                            modifier = Modifier.padding(innerPadding)
+                        ) {
+                            composable("menu") {
+                                MenuScreen(onItemClicked = { routeId ->
+                                    navController.navigate(routeId)
+                                })
+                            }
+                            composable("summarize") {
+                                SummarizeRoute()
+                            }
+                            composable("photo_reasoning") {
+                                PhotoReasoningRoute()
+                            }
+                            composable("chat") {
+                                ChatRoute()
+                            }
+                            composable("functions_chat") {
+                                FunctionsChatRoute()
+                            }
+                            composable("audio") {
+                                AudioRoute()
+                            }
                         }
                     }
                 }
