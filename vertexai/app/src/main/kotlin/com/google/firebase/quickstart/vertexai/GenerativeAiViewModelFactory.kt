@@ -32,6 +32,9 @@ import com.google.firebase.vertexai.type.FunctionDeclaration
 import com.google.firebase.vertexai.type.ImagenAspectRatio
 import com.google.firebase.vertexai.type.ImagenGenerationConfig
 import com.google.firebase.vertexai.type.ImagenImageFormat
+import com.google.firebase.vertexai.type.ImagenPersonFilterLevel
+import com.google.firebase.vertexai.type.ImagenSafetyFilterLevel
+import com.google.firebase.vertexai.type.ImagenSafetySettings
 import com.google.firebase.vertexai.type.generationConfig
 import com.google.firebase.vertexai.vertexAI
 
@@ -112,13 +115,18 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
 
                 isAssignableFrom(ImageViewModel::class.java) -> {
                     // Initialize a GenerativeModel with the `imagen-3.0-generate` AI model for image generation
-                    val generativeModel = Firebase.vertexAI.imageModel(
+                    val generativeModel = Firebase.vertexAI.imagenModel(
                         modelName = "imagen-3.0-generate-001",
                         generationConfig = ImagenGenerationConfig(
+                            negativePrompt = "frogs",
                             numberOfImages = 1,
                             aspectRatio = ImagenAspectRatio.SQUARE_1x1,
                             imageFormat = ImagenImageFormat.jpeg(compressionQuality = 75),
                             addWatermark = false
+                        ),
+                        safetySettings = ImagenSafetySettings(
+                            safetyFilterLevel = ImagenSafetyFilterLevel.BLOCK_LOW_AND_ABOVE,
+                            personFilterLevel = ImagenPersonFilterLevel.BLOCK_ALL
                         )
                     )
                     ImageViewModel(generativeModel)

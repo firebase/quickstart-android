@@ -18,14 +18,14 @@ package com.google.firebase.quickstart.vertexai.feature.image
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.vertexai.ImageModel
+import com.google.firebase.vertexai.ImagenModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ImageViewModel(
-    private val generativeModel: ImageModel
+    private val generativeModel: ImagenModel
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<ImageUiState> = MutableStateFlow(ImageUiState.Initial)
     val uiState: StateFlow<ImageUiState> = _uiState.asStateFlow()
@@ -35,7 +35,7 @@ class ImageViewModel(
 
         viewModelScope.launch {
             try {
-                val imageResponse = generativeModel.generateImage(inputText)
+                val imageResponse = generativeModel.generateImages(inputText)
                 val image = imageResponse.images.first()
                 _uiState.value = ImageUiState.Success(image.asBitmap())
             } catch (e: Exception) {
