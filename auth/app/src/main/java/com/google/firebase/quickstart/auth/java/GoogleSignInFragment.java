@@ -19,6 +19,7 @@ package com.google.firebase.quickstart.auth.java;
 import static com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL;
 
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +45,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.quickstart.auth.R;
 import com.google.firebase.quickstart.auth.databinding.FragmentGoogleBinding;
+import java.util.concurrent.Executors;
 
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
@@ -104,7 +106,7 @@ public class GoogleSignInFragment extends BaseFragment {
                 .addCredentialOption(signInWithGoogleOption)
                 .build();
 
-        getCredential(request);
+        launchCredentialManager(request);
     }
 
     private void signInWithBottomSheet() {
@@ -119,37 +121,50 @@ public class GoogleSignInFragment extends BaseFragment {
                 .addCredentialOption(googleIdOption)
                 .build();
 
-        getCredential(request);
+        launchCredentialManager(request);
     }
 
-    private void getCredential(GetCredentialRequest request) {
-        credentialManager.getCredentialAsync(requireContext(), request, null, Runnable::run,
+    private void launchCredentialManager(GetCredentialRequest request) {
+        credentialManager.getCredentialAsync(
+                requireContext(),
+                request,
+                new CancellationSignal(),
+                Executors.newSingleThreadExecutor(),
                 new CredentialManagerCallback<>() {
                     @Override
                     public void onResult(GetCredentialResponse result) {
-                        // Extract credential from the result returned by Credential Manager
-                        Credential credential = result.getCredential();
-
-                        // Check if credential is of type Google ID
-                        if (credential instanceof CustomCredential customCredential
-                                && credential.getType().equals(TYPE_GOOGLE_ID_TOKEN_CREDENTIAL)) {
-                            Bundle credentialData = customCredential.getData();
-                            GoogleIdTokenCredential googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credentialData);
-                            firebaseAuthWithGoogle(googleIdTokenCredential.getIdToken());
-                        } else {
-                            Log.d(TAG, "Credential is not of type Google ID!");
-                        }
+                        getCredential(result);
                     }
 
                     @Override
                     public void onError(GetCredentialException e) {
                         Log.e(TAG, "Couldn't retrieve user's credentials: " + e.getLocalizedMessage());
                     }
-                });
+                }
+        );
+    }
+
+    private void getCredential(GetCredentialResponse response) {
+        // Update UI to show progress bar while response is being processed
+        requireActivity().runOnUiThread(this::showProgressBar);
+
+        // Extract credential from the result returned by Credential Manager
+        Credential credential = response.getCredential();
+
+        // Check if credential is of type Google ID
+        if (credential instanceof CustomCredential customCredential
+                && credential.getType().equals(TYPE_GOOGLE_ID_TOKEN_CREDENTIAL)) {
+            Bundle credentialData = customCredential.getData();
+            GoogleIdTokenCredential googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credentialData);
+
+            // Sign in to Firebase with the Google ID Token
+            firebaseAuthWithGoogle(googleIdTokenCredential.getIdToken());
+        } else {
+            Log.d(TAG, "Credential is not of type Google ID!");
+        }
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
-        showProgressBar();
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(requireActivity(), task -> {
@@ -176,7 +191,10 @@ public class GoogleSignInFragment extends BaseFragment {
         // When a user signs out, clear the current user credential state from all credential providers.
         // This will notify all providers that any stored credential session for the given app should be cleared.
         ClearCredentialStateRequest clearRequest = new ClearCredentialStateRequest();
-        credentialManager.clearCredentialStateAsync(clearRequest, null, Runnable::run,
+        credentialManager.clearCredentialStateAsync(
+                clearRequest,
+                new CancellationSignal(),
+                Executors.newSingleThreadExecutor(),
                 new CredentialManagerCallback<>() {
                     @Override
                     public void onResult(@NonNull Void result) {
@@ -191,20 +209,22 @@ public class GoogleSignInFragment extends BaseFragment {
     }
 
     private void updateUI(FirebaseUser user) {
-        hideProgressBar();
-        if (user != null) {
-            mBinding.status.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mBinding.detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+        requireActivity().runOnUiThread(() -> {
+            hideProgressBar();
+            if (user != null) {
+                mBinding.status.setText(getString(R.string.google_status_fmt, user.getEmail()));
+                mBinding.detail.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
-            mBinding.signInButton.setVisibility(View.GONE);
-            mBinding.signOutButton.setVisibility(View.VISIBLE);
-        } else {
-            mBinding.status.setText(R.string.signed_out);
-            mBinding.detail.setText(null);
+                mBinding.signInButton.setVisibility(View.GONE);
+                mBinding.signOutButton.setVisibility(View.VISIBLE);
+            } else {
+                mBinding.status.setText(R.string.signed_out);
+                mBinding.detail.setText(null);
 
-            mBinding.signInButton.setVisibility(View.VISIBLE);
-            mBinding.signOutButton.setVisibility(View.GONE);
-        }
+                mBinding.signInButton.setVisibility(View.VISIBLE);
+                mBinding.signOutButton.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override

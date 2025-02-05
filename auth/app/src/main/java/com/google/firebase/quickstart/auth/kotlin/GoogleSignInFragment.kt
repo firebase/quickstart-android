@@ -115,6 +115,7 @@ class GoogleSignInFragment : BaseFragment() {
                 // Check if credential is of type Google ID
                 if (credential is CustomCredential && credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                    // Sign in to Firebase with the Google ID Token
                     firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
                 } else {
                     Log.d(TAG, "Credential is not of type Google ID!")
