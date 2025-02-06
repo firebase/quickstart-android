@@ -105,8 +105,8 @@ class GoogleSignInFragment : BaseFragment() {
             try {
                 // Launch Credential Manager UI
                 val result = credentialManager.getCredential(
-                    request = request,
-                    context = requireContext()
+                    context = requireContext(),
+                    request = request                    
                 )
 
                 // Extract credential from the result returned by Credential Manager
