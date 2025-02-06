@@ -78,12 +78,12 @@ public class GoogleSignInFragment extends BaseFragment {
         mAuth = FirebaseAuth.getInstance();
 
         // Button listeners
-        mBinding.signInButton.setOnClickListener(v -> signInWithButton());
+        mBinding.signInButton.setOnClickListener(v -> signIn());
         mBinding.signOutButton.setOnClickListener(v -> signOut());
 
         // Display Credential Manager Bottom Sheet if user isn't logged in
         if (mAuth.getCurrentUser() == null) {
-            signInWithBottomSheet();
+            showBottomSheet();
         }
     }
 
@@ -95,7 +95,7 @@ public class GoogleSignInFragment extends BaseFragment {
         updateUI(currentUser);
     }
 
-    private void signInWithButton() {
+    private void signIn() {
         // Create the dialog configuration for the Credential Manager request
         GetSignInWithGoogleOption signInWithGoogleOption = new GetSignInWithGoogleOption
                 .Builder(requireContext().getString(R.string.default_web_client_id))
@@ -109,7 +109,7 @@ public class GoogleSignInFragment extends BaseFragment {
         launchCredentialManager(request);
     }
 
-    private void signInWithBottomSheet() {
+    private void showBottomSheet() {
         // Create the bottom sheet configuration for the Credential Manager request
         GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(true)
@@ -133,7 +133,8 @@ public class GoogleSignInFragment extends BaseFragment {
                 new CredentialManagerCallback<>() {
                     @Override
                     public void onResult(GetCredentialResponse result) {
-                        getCredential(result);
+                        // Extract credential from the result returned by Credential Manager
+                        createGoogleIdToken(result.getCredential());
                     }
 
                     @Override
@@ -144,23 +145,21 @@ public class GoogleSignInFragment extends BaseFragment {
         );
     }
 
-    private void getCredential(GetCredentialResponse response) {
+    private void createGoogleIdToken(Credential credential) {
         // Update UI to show progress bar while response is being processed
         requireActivity().runOnUiThread(this::showProgressBar);
-
-        // Extract credential from the result returned by Credential Manager
-        Credential credential = response.getCredential();
 
         // Check if credential is of type Google ID
         if (credential instanceof CustomCredential customCredential
                 && credential.getType().equals(TYPE_GOOGLE_ID_TOKEN_CREDENTIAL)) {
+            // Create Google ID Token
             Bundle credentialData = customCredential.getData();
             GoogleIdTokenCredential googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credentialData);
 
-            // Sign in to Firebase with the Google ID Token
+            // Sign in to Firebase with using the token
             firebaseAuthWithGoogle(googleIdTokenCredential.getIdToken());
         } else {
-            Log.d(TAG, "Credential is not of type Google ID!");
+            Log.w(TAG, "Credential is not of type Google ID!");
         }
     }
 

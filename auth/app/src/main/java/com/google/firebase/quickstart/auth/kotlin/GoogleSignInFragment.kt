@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.Credential
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -56,12 +57,12 @@ class GoogleSignInFragment : BaseFragment() {
         auth = Firebase.auth
 
         // Button listeners
-        binding.signInButton.setOnClickListener { signInWithButton() }
+        binding.signInButton.setOnClickListener { signIn() }
 
         binding.signOutButton.setOnClickListener { signOut() }
 
         // Display Credential Manager Bottom Sheet if user isn't logged in
-        if (auth.currentUser == null) { signInWithBottomSheet() }
+        if (auth.currentUser == null) { showBottomSheet() }
     }
 
     override fun onStart() {
@@ -71,7 +72,7 @@ class GoogleSignInFragment : BaseFragment() {
         updateUI(currentUser)
     }
 
-    private fun signInWithButton() {
+    private fun signIn() {
         // Create the dialog configuration for the Credential Manager request
         val signInWithGoogleOption = GetSignInWithGoogleOption
             .Builder(serverClientId = requireContext().getString(R.string.default_web_client_id))
@@ -82,10 +83,10 @@ class GoogleSignInFragment : BaseFragment() {
             .addCredentialOption(signInWithGoogleOption)
             .build()
 
-        getCredential(request)
+        launchCredentialManager(request)
     }
 
-    private fun signInWithBottomSheet() {
+    private fun showBottomSheet() {
         // Create the bottom sheet configuration for the Credential Manager request
         val googleIdOption = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(true)
@@ -97,32 +98,36 @@ class GoogleSignInFragment : BaseFragment() {
             .addCredentialOption(googleIdOption)
             .build()
 
-        getCredential(request)
+        launchCredentialManager(request)
     }
 
-    private fun getCredential(request: GetCredentialRequest) {
+    private fun launchCredentialManager(request: GetCredentialRequest) {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
                 // Launch Credential Manager UI
                 val result = credentialManager.getCredential(
                     context = requireContext(),
-                    request = request                    
+                    request = request
                 )
 
                 // Extract credential from the result returned by Credential Manager
-                val credential = result.credential
-
-                // Check if credential is of type Google ID
-                if (credential is CustomCredential && credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-                    val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
-                    // Sign in to Firebase with the Google ID Token
-                    firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
-                } else {
-                    Log.d(TAG, "Credential is not of type Google ID!")
-                }
+                createGoogleIdToken(result.credential)
             } catch (e: GetCredentialException) {
                 Log.e(TAG, "Couldn't retrieve user's credentials: ${e.localizedMessage}")
             }
+        }
+    }
+
+    private fun createGoogleIdToken(credential: Credential) {
+        // Check if credential is of type Google ID
+        if (credential is CustomCredential && credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+            // Create Google ID Token
+            val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+
+            // Sign in to Firebase with using the token
+            firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+        } else {
+            Log.w(TAG, "Credential is not of type Google ID!")
         }
     }
 
