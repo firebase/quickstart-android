@@ -1,7 +1,7 @@
 [versions]
 agp = "8.8.0"
 coilCompose = "2.7.0"
-firebaseAuth = "23.1.0"
+firebaseAuth = "23.2.0"
 firebaseDataConnect = "16.0.0-beta04"
 kotlin = "2.1.10"
 coreKtx = "1.13.1"
