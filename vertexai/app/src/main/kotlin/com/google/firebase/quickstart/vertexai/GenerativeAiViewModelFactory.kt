@@ -43,29 +43,29 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
         return with(viewModelClass) {
             when {
                 isAssignableFrom(SummarizeViewModel::class.java) -> {
-                    // Initialize a GenerativeModel with the `gemini-flash` AI model
+                    // Initialize a GenerativeModel with a Gemini model
                     // for text generation
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.5-flash",
+                        modelName = "gemini-2.0-flash",
                         generationConfig = config
                     )
                     SummarizeViewModel(generativeModel)
                 }
 
                 isAssignableFrom(PhotoReasoningViewModel::class.java) -> {
-                    // Initialize a GenerativeModel with the `gemini-flash` AI model
+                    // Initialize a GenerativeModel with a Gemini model
                     // for multimodal text generation
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.5-flash",
+                        modelName = "gemini-2.0-flash",
                         generationConfig = config
                     )
                     PhotoReasoningViewModel(generativeModel)
                 }
 
                 isAssignableFrom(ChatViewModel::class.java) -> {
-                    // Initialize a GenerativeModel with the `gemini-flash` AI model for chat
+                    // Initialize a GenerativeModel with a Gemini model for chat
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.5-flash",
+                        modelName = "gemini-2.0-flash",
                         generationConfig = config
                     )
                     ChatViewModel(generativeModel)
@@ -88,9 +88,9 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                     )
 
 
-                    // Initialize a GenerativeModel with the `gemini-pro` AI model for function calling chat
+                    // Initialize a GenerativeModel with a Gemini model for function calling chat
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.5-flash",
+                        modelName = "gemini-2.0-flash",
                         generationConfig = config,
                         tools = tools
                     )
@@ -98,9 +98,9 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                 }
 
                 isAssignableFrom(AudioViewModel::class.java) -> {
-                    // Initialize a GenerativeModel with the `gemini-pro` AI model for audio generation
+                    // Initialize a GenerativeModel with a Gemini model for audio understanding
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-1.5-pro-001",
+                        modelName = "gemini-2.0-flash",
                         generationConfig = config
                     )
                     AudioViewModel(generativeModel)
