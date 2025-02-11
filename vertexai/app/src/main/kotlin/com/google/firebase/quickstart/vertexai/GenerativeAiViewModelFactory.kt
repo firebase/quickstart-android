@@ -46,7 +46,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                     // Initialize a GenerativeModel with a Gemini model
                     // for text generation
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-2.0-flash-001",
+                        modelName = "gemini-2.0-flash",
                         generationConfig = config
                     )
                     SummarizeViewModel(generativeModel)
@@ -56,7 +56,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                     // Initialize a GenerativeModel with a Gemini model
                     // for multimodal text generation
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-2.0-flash-001",
+                        modelName = "gemini-2.0-flash",
                         generationConfig = config
                     )
                     PhotoReasoningViewModel(generativeModel)
@@ -65,7 +65,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                 isAssignableFrom(ChatViewModel::class.java) -> {
                     // Initialize a GenerativeModel with a Gemini model for chat
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-2.0-flash-001",
+                        modelName = "gemini-2.0-flash",
                         generationConfig = config
                     )
                     ChatViewModel(generativeModel)
@@ -90,7 +90,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
 
                     // Initialize a GenerativeModel with a Gemini model for function calling chat
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-2.0-flash-001",
+                        modelName = "gemini-2.0-flash",
                         generationConfig = config,
                         tools = tools
                     )
