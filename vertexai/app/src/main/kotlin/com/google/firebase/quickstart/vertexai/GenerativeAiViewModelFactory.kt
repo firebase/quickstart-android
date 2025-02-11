@@ -100,7 +100,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                 isAssignableFrom(AudioViewModel::class.java) -> {
                     // Initialize a GenerativeModel with a Gemini model for audio understanding
                     val generativeModel = Firebase.vertexAI.generativeModel(
-                        modelName = "gemini-2.0-flash-001",
+                        modelName = "gemini-2.0-flash",
                         generationConfig = config
                     )
                     AudioViewModel(generativeModel)
