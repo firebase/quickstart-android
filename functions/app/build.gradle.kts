@@ -46,7 +46,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
 
     implementation("androidx.activity:activity-ktx:1.10.0")
-    implementation("androidx.fragment:fragment-ktx:1.8.5")
+    implementation("androidx.fragment:fragment-ktx:1.8.6")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
 
