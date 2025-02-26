@@ -26,10 +26,16 @@
     <string name="menu_chat_description">Sample app demonstrating a conversational UI</string>
     <string name="menu_audio_title">Generate text from text-and-audio input</string>
     <string name="menu_audio_description">Sample app for recording audio and generating text from it</string>
+    <string name="menu_imagen_title">Generate images from a text prompt</string>
+    <string name="menu_imagen_description">Sample app demonstrating Imagen</string>
 
     <!-- Summarize sample strings -->
     <string name="summarize_label">Text</string>
     <string name="summarize_hint">Enter text to summarize</string>
+
+    <!-- Generate Image String -->
+    <string name="imagen_label">Prompt</string>
+    <string name="imagen_hint">Enter text to generate an image</string>
 
     <!-- Photo Reasoning sample strings -->
     <string name="reason_label">Question</string>
