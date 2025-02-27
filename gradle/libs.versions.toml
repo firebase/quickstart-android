@@ -1,5 +1,5 @@
 [versions]
-agp = "8.8.1"
+agp = "8.8.2"
 coilCompose = "2.7.0"
 firebaseAuth = "23.2.0"
 firebaseDataConnect = "16.0.0-beta04"
@@ -10,10 +10,10 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 kotlinxSerializationCore = "1.8.0"
 lifecycle = "2.8.7"
-activityCompose = "1.10.0"
+activityCompose = "1.10.1"
 composeBom = "2025.02.00"
 googleServices = "4.4.2"
-composeNavigation = "2.8.7"
+composeNavigation = "2.8.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
