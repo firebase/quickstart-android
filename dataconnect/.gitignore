@@ -17,3 +17,4 @@ local.properties
 .firebaserc
 .firebase/
 *.log
+.kotlin
