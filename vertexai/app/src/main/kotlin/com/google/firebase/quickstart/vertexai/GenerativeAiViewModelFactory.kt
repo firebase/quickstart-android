@@ -109,7 +109,7 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
 
                 isAssignableFrom(ImagenViewModel::class.java) -> {
                     val imagenModel = Firebase.vertexAI.imagenModel(
-                        "imagen-3.0-fast-generate-001")
+                        "imagen-3.0-generate-002")
                     ImagenViewModel(imagenModel)
                 }
 
