@@ -26,7 +26,7 @@
     <string name="menu_chat_description">Sample app demonstrating a conversational UI</string>
     <string name="menu_audio_title">Generate text from text-and-audio input</string>
     <string name="menu_audio_description">Sample app for recording audio and generating text from it</string>
-    <string name="menu_imagen_title">Generate images from a text prompt</string>
+    <string name="menu_imagen_title">Generate images from a text-only input</string>
     <string name="menu_imagen_description">Sample app demonstrating how to use Imagen 3 for image generation</string>
 
     <!-- Summarize sample strings -->
