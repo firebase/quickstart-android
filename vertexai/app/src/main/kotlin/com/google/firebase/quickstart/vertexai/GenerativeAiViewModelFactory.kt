@@ -26,10 +26,17 @@ import com.google.firebase.quickstart.vertexai.feature.functioncalling.Functions
 import com.google.firebase.quickstart.vertexai.feature.image.ImagenViewModel
 import com.google.firebase.quickstart.vertexai.feature.multimodal.PhotoReasoningViewModel
 import com.google.firebase.quickstart.vertexai.feature.text.SummarizeViewModel
+import com.google.firebase.vertexai.type.FunctionDeclaration
+import com.google.firebase.vertexai.type.ImagenAspectRatio
+import com.google.firebase.vertexai.type.ImagenImageFormat
+import com.google.firebase.vertexai.type.ImagenPersonFilterLevel
+import com.google.firebase.vertexai.type.ImagenSafetyFilterLevel
+import com.google.firebase.vertexai.type.ImagenSafetySettings
+import com.google.firebase.vertexai.type.SafetySetting
 import com.google.firebase.vertexai.type.Schema
 import com.google.firebase.vertexai.type.Tool
-import com.google.firebase.vertexai.type.FunctionDeclaration
 import com.google.firebase.vertexai.type.generationConfig
+import com.google.firebase.vertexai.type.imagenGenerationConfig
 import com.google.firebase.vertexai.vertexAI
 
 val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
@@ -108,8 +115,17 @@ val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
                 }
 
                 isAssignableFrom(ImagenViewModel::class.java) -> {
+                    val generationConfig = imagenGenerationConfig {
+                        numberOfImages = 1
+                        aspectRatio = ImagenAspectRatio.PORTRAIT_3x4
+                        imageFormat = ImagenImageFormat.png()
+                    }
+                    val safetySettings = ImagenSafetySettings(
+                        safetyFilterLevel = ImagenSafetyFilterLevel.BLOCK_LOW_AND_ABOVE,
+                        personFilterLevel = ImagenPersonFilterLevel.BLOCK_ALL
+                    )
                     val imagenModel = Firebase.vertexAI.imagenModel(
-                        "imagen-3.0-generate-002")
+                        "imagen-3.0-generate-002", generationConfig, safetySettings)
                     ImagenViewModel(imagenModel)
                 }
 
