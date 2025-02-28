@@ -32,6 +32,7 @@ import com.google.firebase.vertexai.type.ImagenImageFormat
 import com.google.firebase.vertexai.type.ImagenPersonFilterLevel
 import com.google.firebase.vertexai.type.ImagenSafetyFilterLevel
 import com.google.firebase.vertexai.type.ImagenSafetySettings
+import com.google.firebase.vertexai.type.PublicPreviewAPI
 import com.google.firebase.vertexai.type.SafetySetting
 import com.google.firebase.vertexai.type.Schema
 import com.google.firebase.vertexai.type.Tool
@@ -39,6 +40,7 @@ import com.google.firebase.vertexai.type.generationConfig
 import com.google.firebase.vertexai.type.imagenGenerationConfig
 import com.google.firebase.vertexai.vertexAI
 
+@OptIn(PublicPreviewAPI::class)
 val GenerativeViewModelFactory = object : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(
         viewModelClass: Class<T>,

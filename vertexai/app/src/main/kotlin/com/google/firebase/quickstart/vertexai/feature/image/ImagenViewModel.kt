@@ -19,11 +19,13 @@ package com.google.firebase.quickstart.vertexai.feature.image
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.vertexai.ImagenModel
+import com.google.firebase.vertexai.type.PublicPreviewAPI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+@OptIn(PublicPreviewAPI::class)
 class ImagenViewModel(
     private val imageModel: ImagenModel
 ) : ViewModel() {
