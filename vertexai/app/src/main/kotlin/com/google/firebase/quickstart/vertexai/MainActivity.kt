@@ -29,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.quickstart.vertexai.feature.audio.AudioRoute
 import com.google.firebase.quickstart.vertexai.feature.chat.ChatRoute
 import com.google.firebase.quickstart.vertexai.feature.functioncalling.FunctionsChatRoute
+import com.google.firebase.quickstart.vertexai.feature.image.ImagenRoute
 import com.google.firebase.quickstart.vertexai.feature.multimodal.PhotoReasoningRoute
 import com.google.firebase.quickstart.vertexai.feature.text.SummarizeRoute
 import com.google.firebase.quickstart.vertexai.ui.theme.GenerativeAISample
@@ -67,6 +68,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("audio") {
                             AudioRoute()
+                        }
+                        composable("images") {
+                            ImagenRoute()
                         }
                     }
                 }

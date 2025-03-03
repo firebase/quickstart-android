@@ -47,7 +47,8 @@ fun MenuScreen(
         MenuItem("photo_reasoning", R.string.menu_reason_title, R.string.menu_reason_description),
         MenuItem("chat", R.string.menu_chat_title, R.string.menu_chat_description),
         MenuItem("functions_chat", R.string.menu_functions_title, R.string.menu_functions_description),
-        MenuItem("audio", R.string.menu_audio_title, R.string.menu_audio_description)
+        MenuItem("audio", R.string.menu_audio_title, R.string.menu_audio_description),
+        MenuItem("images", R.string.menu_imagen_title, R.string.menu_imagen_description)
     )
 
     LazyColumn(
