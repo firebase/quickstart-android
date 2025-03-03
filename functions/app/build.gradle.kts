@@ -54,9 +54,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
 
     // Cloud Functions for Firebase
-    // TODO(thatfiredev): remove the pinned dependency version when
-    //   https://github.com/firebase/firebase-android-sdk/issues/6522 is fixed
-    implementation("com.google.firebase:firebase-functions:21.0.0")
+    implementation("com.google.firebase:firebase-functions")
 
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")

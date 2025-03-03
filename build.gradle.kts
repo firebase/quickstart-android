@@ -71,8 +71,7 @@ fun isBlockListed(candidate: ModuleComponentIdentifier): Boolean {
             "com.facebook.android",
             "com.google.guava",
             "com.github.bumptech.glide",
-            "com.google.android.gms",
-            "com.google.firebase:firebase-functions" // TODO(thatfiredev): remove once https://github.com/firebase/firebase-android-sdk/issues/6522 is fixed
+            "com.google.android.gms"
     ).any { keyword ->
         keyword in candidate.toString().lowercase()
     }
