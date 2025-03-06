@@ -16,6 +16,8 @@
 
 package com.google.firebase.quickstart.vertexai.feature.chat
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -66,8 +68,19 @@ internal fun ChatRoute(
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(
-        bottomBar = {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        ChatList(
+            chatUiState.messages,
+            listState,
+            modifier = Modifier.fillMaxSize()
+                .weight(0.5f)
+        )
+        Box(
+            contentAlignment = Alignment.BottomCenter
+        ) {
             MessageInput(
                 onSendMessage = { inputText ->
                     chatViewModel.sendMessage(inputText)
@@ -79,26 +92,19 @@ internal fun ChatRoute(
                 }
             )
         }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize()
-        ) {
-            // Messages List
-            ChatList(chatUiState.messages, listState)
-        }
     }
 }
 
 @Composable
 fun ChatList(
     chatMessages: List<ChatMessage>,
-    listState: LazyListState
+    listState: LazyListState,
+    modifier: Modifier = Modifier
 ) {
     LazyColumn(
         reverseLayout = true,
-        state = listState
+        state = listState,
+        modifier = modifier
     ) {
         items(chatMessages.reversed()) { message ->
             ChatBubbleItem(message)
