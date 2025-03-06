@@ -18,9 +18,11 @@ package com.google.firebase.quickstart.vertexai.feature.functioncalling
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.quickstart.vertexai.feature.chat.ChatMessage
+import com.google.firebase.quickstart.vertexai.feature.chat.ChatUiState
+import com.google.firebase.quickstart.vertexai.feature.chat.Participant
 import com.google.firebase.vertexai.GenerativeModel
 import com.google.firebase.vertexai.type.FunctionResponsePart
-import com.google.firebase.vertexai.type.InvalidStateException
 import com.google.firebase.vertexai.type.asTextOrNull
 import com.google.firebase.vertexai.type.content
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +31,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
-import java.lang.IllegalArgumentException
 
 class FunctionsChatViewModel(
     private val generativeModel: GenerativeModel
@@ -45,12 +46,12 @@ class FunctionsChatViewModel(
         )
     )
 
-    private val _uiState: MutableStateFlow<FunctionsChatUiState> =
+    private val _uiState: MutableStateFlow<ChatUiState> =
         MutableStateFlow(
-            FunctionsChatUiState(
+            ChatUiState(
                 chat.history.map { content ->
                     // Map the initial messages
-                    FunctionsChatMessage(
+                    ChatMessage(
                         text = content.parts.first().asTextOrNull() ?: "",
                         participant = if (content.role == "user") Participant.USER else Participant.MODEL,
                         isPending = false
@@ -58,13 +59,13 @@ class FunctionsChatViewModel(
                 }
             )
         )
-    val uiState: StateFlow<FunctionsChatUiState> =
+    val uiState: StateFlow<ChatUiState> =
         _uiState.asStateFlow()
 
     fun sendMessage(userMessage: String) {
         // Add a pending message
         _uiState.value.addMessage(
-            FunctionsChatMessage(
+            ChatMessage(
                 text = userMessage,
                 participant = Participant.USER,
                 isPending = true
@@ -105,7 +106,7 @@ class FunctionsChatViewModel(
 
                 response.text?.let { modelResponse ->
                     _uiState.value.addMessage(
-                        FunctionsChatMessage(
+                        ChatMessage(
                             text = modelResponse,
                             participant = Participant.MODEL,
                             isPending = false
@@ -115,7 +116,7 @@ class FunctionsChatViewModel(
             } catch (e: Exception) {
                 _uiState.value.replaceLastPendingMessage()
                 _uiState.value.addMessage(
-                    FunctionsChatMessage(
+                    ChatMessage(
                         text = e.localizedMessage,
                         participant = Participant.ERROR
                     )
