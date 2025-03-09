@@ -1,5 +1,5 @@
 [versions]
-agp = "8.8.2"
+agp = "8.9.0"
 coilCompose = "2.7.0"
 firebaseAuth = "23.2.0"
 firebaseDataConnect = "16.0.0-beta04"
