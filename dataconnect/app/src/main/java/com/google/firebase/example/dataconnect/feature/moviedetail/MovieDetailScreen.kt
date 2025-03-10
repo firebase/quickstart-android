@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -80,6 +81,7 @@ fun MovieDetailScreen(
                         onFavoriteToggled = { newValue ->
                             movieDetailViewModel.toggleFavorite(newValue)
                         },
+                        isUserSignedIn = ui.isUserSignedIn
                     )
                     // Main Actors list
                     ActorsList(
@@ -101,7 +103,8 @@ fun MovieDetailScreen(
                         onReviewSubmitted = { rating, text ->
                             movieDetailViewModel.addRating(rating, text)
                         },
-                        movie?.reviews
+                        movie?.reviews,
+                        isUserSignedIn = ui.isUserSignedIn
                     )
                 }
 
@@ -115,7 +118,8 @@ fun MovieInformation(
     modifier: Modifier = Modifier,
     movie: GetMovieByIdQuery.Data.Movie?,
     isMovieFavorite: Boolean,
-    onFavoriteToggled: (newValue: Boolean) -> Unit
+    onFavoriteToggled: (newValue: Boolean) -> Unit,
+    isUserSignedIn: Boolean
 ) {
     if (movie == null) {
         ErrorCard(stringResource(R.string.error_movie_not_found))
@@ -176,14 +180,25 @@ fun MovieInformation(
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            ToggleButton(
-                iconEnabled = Icons.Filled.Favorite,
-                iconDisabled = Icons.Outlined.FavoriteBorder,
-                textEnabled = stringResource(R.string.button_remove_favorite),
-                textDisabled = stringResource(R.string.button_favorite),
-                isEnabled = isMovieFavorite,
-                onToggle = onFavoriteToggled
-            )
+            if (isUserSignedIn) {
+                ToggleButton(
+                    iconEnabled = Icons.Filled.Favorite,
+                    iconDisabled = Icons.Outlined.FavoriteBorder,
+                    textEnabled = stringResource(R.string.button_remove_favorite),
+                    textDisabled = stringResource(R.string.button_favorite),
+                    isEnabled = isMovieFavorite,
+                    onToggle = onFavoriteToggled
+                )
+            } else {
+                Text(
+                    text = stringResource(R.string.sign_in_to_favorite),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.tertiary,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(8.dp)
+                        .fillMaxWidth()
+                )
+            }
         }
     }
 }
