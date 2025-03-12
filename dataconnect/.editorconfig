@@ -1,0 +1,5 @@
+[buildSrc/src/main/kotlin/com/google/firebase/example/dataconnect/gradle/providers/providers.kt]
+ktlint_standard_filename = disabled
+
+[buildSrc/src/main/kotlin/com/google/firebase/example/dataconnect/gradle/tasks/util.kt]
+ktlint_standard_filename = disabled
