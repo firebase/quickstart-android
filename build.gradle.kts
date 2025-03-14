@@ -7,7 +7,7 @@ plugins {
     id("com.google.gms.google-services") version "4.4.2" apply false
     id("com.google.firebase.crashlytics") version "3.0.3" apply false
     id("com.google.firebase.firebase-perf") version "1.4.2" apply false
-    id("androidx.navigation.safeargs") version "2.8.8" apply false
+    id("androidx.navigation.safeargs") version "2.8.9" apply false
     id("com.github.ben-manes.versions") version "0.52.0" apply true
     id("org.jetbrains.kotlin.plugin.compose") version "2.1.10" apply false
 }
