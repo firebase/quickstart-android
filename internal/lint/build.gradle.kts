@@ -9,8 +9,8 @@ java {
 }
 
 dependencies {
-    compileOnly("com.android.tools.lint:lint-api:31.9.0")
-    testImplementation("com.android.tools.lint:lint:31.9.0")
-    testImplementation("com.android.tools.lint:lint-tests:31.9.0")
+    compileOnly("com.android.tools.lint:lint-api:31.9.1")
+    testImplementation("com.android.tools.lint:lint:31.9.1")
+    testImplementation("com.android.tools.lint:lint-tests:31.9.1")
     testImplementation("junit:junit:4.13.2")
 }

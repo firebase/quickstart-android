@@ -12,13 +12,13 @@ tasks {
 
 android {
     namespace= "com.google.firebase.quickstart.auth"
-    compileSdk = 35
+    compileSdk = 36
     flavorDimensions += "minSdkVersion"
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.auth"
         minSdk = 23
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -55,23 +55,23 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
     implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.8")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.8")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.9")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.9")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
 
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
 
     // Google Identity Services SDK (only required for Auth with Google)
-    implementation("androidx.credentials:credentials:1.3.0")
-    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("androidx.credentials:credentials:1.5.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.5.0")
     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+    implementation("com.firebaseui:firebase-ui-auth:9.0.0")
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.

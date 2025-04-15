@@ -12,12 +12,12 @@ tasks {
 
 android {
     namespace = "com.google.firebase.quickstart.deeplinks"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.deeplinks"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -62,7 +62,7 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
 
     // Firebase Dynamic Links
     implementation("com.google.firebase:firebase-dynamic-links")
