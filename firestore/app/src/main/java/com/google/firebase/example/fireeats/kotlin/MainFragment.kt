@@ -241,7 +241,7 @@ class MainFragment :
 
         val intent = AuthUI.getInstance().createSignInIntentBuilder()
             .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
-            .setIsSmartLockEnabled(false)
+            .setCredentialManagerEnabled(false)
             .build()
 
         signInLauncher.launch(intent)

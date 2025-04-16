@@ -218,7 +218,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val signInIntent = AuthUI.getInstance()
             .createSignInIntentBuilder()
             .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
-            .setIsSmartLockEnabled(false)
+            .setCredentialManagerEnabled(false)
             .build()
 
         signInLauncher.launch(signInIntent)
