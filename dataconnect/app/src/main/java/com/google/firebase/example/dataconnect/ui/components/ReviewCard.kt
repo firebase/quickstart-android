@@ -14,12 +14,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.firebase.dataconnect.LocalDate
 import com.google.firebase.dataconnect.toJavaLocalDate
+import com.google.firebase.example.dataconnect.R
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -77,11 +79,7 @@ fun ReviewCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Rating: ",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = "$rating",
+                    text = stringResource(R.string.movie_rating_indicator, rating),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
