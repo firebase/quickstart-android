@@ -17,6 +17,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.firebase.quickstart.ai.feature.live.StreamSample
+import com.google.firebase.quickstart.ai.feature.media.MediaSamples
+import com.google.firebase.quickstart.ai.feature.text.TextSamples
 import com.google.firebase.quickstart.ai.navigation.AppDestinations
 import com.google.firebase.quickstart.ai.ui.theme.FirebaseAIServicesTheme
 
@@ -46,8 +49,17 @@ class MainActivity : ComponentActivity() {
                         },
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        // TODO: Destinations
-                        LandingScreen()
+                        when (currentDestination) {
+                            AppDestinations.CHAT -> {
+                                TextSamples()
+                            }
+                            AppDestinations.MEDIA -> {
+                                MediaSamples()
+                            }
+                            AppDestinations.LIVE -> {
+                                StreamSample()
+                            }
+                        }
                     }
                 }
             }
