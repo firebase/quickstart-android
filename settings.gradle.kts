@@ -7,6 +7,7 @@ pluginManagement {
 }
 
 include(":admob:app",
+        ":ai:app",
         ":analytics:app",
         ":appdistribution:app",
         ":auth:app",
