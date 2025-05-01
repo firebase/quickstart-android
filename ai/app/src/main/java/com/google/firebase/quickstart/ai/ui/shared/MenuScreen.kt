@@ -24,6 +24,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+val MIN_CARD_SIZE = 160.dp
+
 @Composable
 fun MenuScreen(
     filterTitle: String,
@@ -36,7 +38,7 @@ fun MenuScreen(
             .padding(16.dp)
     ) {
         var selectedCategory by remember { mutableStateOf(filters.first()) }
-        Text(text = filterTitle, style = MaterialTheme.typography.titleMedium)
+        Text(text = filterTitle, style = MaterialTheme.typography.titleLarge)
         LazyRow {
             items(filters) { capability ->
                 FilterChip(
@@ -62,14 +64,14 @@ fun MenuScreen(
         }
         Text(
             text = "Samples",
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(top = 16.dp)
         )
         val filteredSamples = samples.filter {
             it.categories.contains(selectedCategory)
         }
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+            columns = GridCells.Adaptive(MIN_CARD_SIZE),
             modifier = Modifier
         ) {
             items(filteredSamples) { sample ->

@@ -22,7 +22,7 @@ fun SampleItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 160.dp)
+            .heightIn(min = MIN_CARD_SIZE)
             .padding(4.dp)
             .clickable {
                 onItemClicked()
