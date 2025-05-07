@@ -30,7 +30,8 @@ val MIN_CARD_SIZE = 160.dp
 fun MenuScreen(
     filterTitle: String,
     filters: List<Category>,
-    samples: List<Sample>
+    samples: List<Sample>,
+    onSampleClicked: (sample: Sample) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -75,7 +76,9 @@ fun MenuScreen(
             modifier = Modifier
         ) {
             items(filteredSamples) { sample ->
-                SampleItem(sample.title, sample.description)
+                SampleItem(sample.title, sample.description, onItemClicked = {
+                    onSampleClicked(sample)
+                })
             }
         }
     }
