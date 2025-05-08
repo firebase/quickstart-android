@@ -4,14 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.quickstart.ai.navigation.MenuNav
 import com.google.firebase.quickstart.ai.navigation.TextSample
 import com.google.firebase.quickstart.ai.ui.shared.Category
 import com.google.firebase.quickstart.ai.ui.shared.MenuScreen
 import com.google.firebase.quickstart.ai.ui.shared.Sample
 
 @Composable
-fun TextSamples() {
+fun TextSamples(
+    onSampleClicked: (Sample) -> Unit
+) {
     val textSamples = listOf(
         Sample("Blog post creator", "Create a blog post", "post", listOf(Category.TEXT)),
         Sample(
@@ -40,20 +41,12 @@ fun TextSamples() {
         ),
     )
 
-    val navController = rememberNavController()
-    NavHost(navController, startDestination = MenuNav) {
-        composable<MenuNav> {
-            MenuScreen(
-                filterTitle = "Filter by use case:",
-                filters = Category.entries.toList(),
-                samples = textSamples,
-                onSampleClicked = {
-                    navController.navigate(TextSample("Hey"))
-                }
-            )
+    MenuScreen(
+        filterTitle = "Filter by use case:",
+        filters = Category.entries.toList(),
+        samples = textSamples,
+        onSampleClicked = {
+            onSampleClicked(it)
         }
-        composable<TextSample> {
-            ChatScreen()
-        }
-    }
+    )
 }
