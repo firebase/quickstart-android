@@ -3,7 +3,7 @@ package com.google.firebase.quickstart.ai.feature.text
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
-import com.google.firebase.ai.type.asTextOrNull
+import com.google.firebase.vertexai.type.asTextOrNull
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ class ChatViewModel(
     private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
 
     private val _messages = MutableStateFlow<List<ChatMessage>>(
-        sample.history.map { content ->
+        sample.chatHistory.map { content ->
             ChatMessage(
                 text = content.parts.first().asTextOrNull() ?: "",
                 participant = if (content.role == "user") Participant.USER else Participant.MODEL,

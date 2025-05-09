@@ -1,9 +1,7 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
-import com.google.firebase.ai.type.Content
-import com.google.firebase.ai.type.content
+import com.google.firebase.vertexai.type.Content
 import java.util.UUID
-import kotlinx.serialization.Serializable
 
 enum class Category(
     val label: String
@@ -26,7 +24,5 @@ data class Sample(
     // Optional parameters
     val initialPrompt: Content? = null,
     val systemInstructions: String = "",
-    val history: List<Content> = emptyList(),
-    val youtubeUrl: String? = null,
-    val gcsUrl: String? = null,
+    val chatHistory: List<Content> = emptyList(),
 )

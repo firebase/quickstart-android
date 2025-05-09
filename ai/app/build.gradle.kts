@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
     kotlin("plugin.serialization") version "2.1.10"
-//    id("com.google.gms.google-services")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -63,7 +63,8 @@ dependencies {
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
-    implementation("com.google.firebase:firebase-ai:16.0.0-SNAPSHOT")
+//    implementation("com.google.firebase:firebase-ai:16.0.0-SNAPSHOT")
+    implementation("com.google.firebase:firebase-vertexai")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -1,6 +1,6 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
-import com.google.firebase.ai.type.content
+import com.google.firebase.vertexai.type.content
 
 val FIREBASE_AI_SAMPLES = listOf(
     Sample(
@@ -13,7 +13,7 @@ val FIREBASE_AI_SAMPLES = listOf(
                 " questions the user asks based on the information listed" +
                 " in Relevant Information. Do not hallucinate. Do not use" +
                 " the internet.",
-        history = listOf(
+        chatHistory = listOf(
             content {
                 role = "user"
                 text("I have never traveled before. When should I book a flight?")
