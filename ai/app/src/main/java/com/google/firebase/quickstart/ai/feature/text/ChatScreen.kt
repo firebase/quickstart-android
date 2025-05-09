@@ -24,6 +24,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -56,7 +57,6 @@ data class ChatMessage(
     val id: String = UUID.randomUUID().toString(),
     var text: String = "",
     val participant: Participant = Participant.USER,
-    var isPending: Boolean = false
 ) {
     constructor(content: Content) : this(
         text = content.parts.first().asTextOrNull() ?: "",
@@ -72,6 +72,7 @@ fun ChatScreen(
     chatViewModel: ChatViewModel = viewModel<ChatViewModel>()
 ) {
     val messages: List<ChatMessage> by chatViewModel.messages.collectAsStateWithLifecycle()
+    val isLoading: Boolean by chatViewModel.isLoading.collectAsStateWithLifecycle()
     val initialPrompt: String = chatViewModel.initialPrompt
 
     val listState = rememberLazyListState()
@@ -91,17 +92,27 @@ fun ChatScreen(
         Box(
             contentAlignment = Alignment.BottomCenter
         ) {
-            MessageInput(
-                initialPrompt = initialPrompt,
-                onSendMessage = { inputText ->
-                    chatViewModel.sendMessage(inputText)
-                },
-                resetScroll = {
-                    coroutineScope.launch {
-                        listState.scrollToItem(0)
-                    }
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                if (isLoading) {
+                    LinearProgressIndicator(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
                 }
-            )
+                MessageInput(
+                    initialPrompt = initialPrompt,
+                    onSendMessage = { inputText ->
+                        chatViewModel.sendMessage(inputText)
+                    },
+                    resetScroll = {
+                        coroutineScope.launch {
+                            listState.scrollToItem(0)
+                        }
+                    }
+                )
+            }
         }
     }
 }
@@ -143,13 +154,6 @@ fun ChatBubbleItem(
             modifier = Modifier.padding(bottom = 4.dp)
         )
         Row {
-            if (chatMessage.isPending) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .padding(all = 8.dp)
-                )
-            }
             BoxWithConstraints {
                 Card(
                     colors = CardDefaults.cardColors(containerColor = backgroundColor),

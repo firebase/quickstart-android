@@ -23,6 +23,9 @@ class ChatViewModel(
     private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
     val initialPrompt = sample.initialPrompt?.parts?.first()?.asTextOrNull().orEmpty()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     private val _messageList: MutableList<ChatMessage> =
         sample.chatHistory.map { ChatMessage(it) }.toMutableStateList()
     private val _messages = MutableStateFlow<List<ChatMessage>>(_messageList)
@@ -46,42 +49,33 @@ class ChatViewModel(
             ChatMessage(
                 text = userMessage,
                 participant = Participant.USER,
-                isPending = true
             )
         )
 
         viewModelScope.launch {
+            _isLoading.value = true
             try {
                 val response = chat.sendMessage(userMessage)
-
-                replaceLastPendingMessage()
 
                 response.text?.let { modelResponse ->
                     _messageList.add(
                         ChatMessage(
                             text = modelResponse,
                             participant = Participant.MODEL,
-                            isPending = false
                         )
                     )
                 }
             } catch (e: Exception) {
-                replaceLastPendingMessage()
                 _messageList.add(
                     ChatMessage(
                         text = e.localizedMessage,
                         participant = Participant.ERROR
                     )
                 )
+            } finally {
+                _isLoading.value = false
             }
         }
     }
 
-    private fun replaceLastPendingMessage() {
-        _messageList.lastOrNull()?.let {
-            _messageList.removeAt(_messageList.lastIndex)
-            val newMessage = it.apply { isPending = false }
-            _messageList.add(newMessage)
-        }
-    }
 }
