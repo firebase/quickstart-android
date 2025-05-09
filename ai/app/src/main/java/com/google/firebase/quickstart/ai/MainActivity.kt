@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeRoute
+import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenRoute
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenScreen
 import com.google.firebase.quickstart.ai.feature.text.ChatRoute
@@ -40,12 +42,16 @@ class MainActivity : ComponentActivity() {
                                         "chat" -> {
                                             navController.navigate(ChatRoute(it.id))
                                         }
+
                                         "imagen" -> {
                                             navController.navigate(ImagenRoute(it.id))
                                         }
+
+                                        "stream" -> {
+                                            navController.navigate(StreamRealtimeRoute(it.id))
+                                        }
                                     }
-                                },
-                                modifier = Modifier.fillMaxSize()
+                                }
                             )
                         }
                         // Text Samples
@@ -55,6 +61,10 @@ class MainActivity : ComponentActivity() {
                         // Imagen Samples
                         composable<ImagenRoute> {
                             ImagenScreen()
+                        }
+                        // Stream Realtime Samples
+                        composable<StreamRealtimeRoute> {
+                            StreamRealtimeScreen()
                         }
                     }
                 }

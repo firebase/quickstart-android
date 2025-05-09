@@ -10,9 +10,9 @@ enum class Category(
 ) {
     TEXT("Text"),
     IMAGE("Image"),
-    VIDEO("Video"),
-    AUDIO("Audio"),
-    DOCUMENT("Document"),
+//    VIDEO("Video"),
+//    AUDIO("Audio"),
+//    DOCUMENT("Document"),
     FUNCTION_CALL("Function calling"),
     STREAM_REALTIME("Stream realtime"),
 }
@@ -29,5 +29,4 @@ data class Sample(
     val history: List<Content> = emptyList(),
     val youtubeUrl: String? = null,
     val gcsUrl: String? = null,
-
-    )
+)

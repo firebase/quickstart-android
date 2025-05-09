@@ -34,7 +34,6 @@ val MIN_CARD_SIZE = 180.dp
 @Composable
 fun MainMenuScreen(
     onSampleClicked: (Sample) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     MenuScreen(
         filterTitle = "Filter by use case:",
