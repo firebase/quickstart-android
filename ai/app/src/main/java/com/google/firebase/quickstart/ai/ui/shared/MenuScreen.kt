@@ -24,7 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-val MIN_CARD_SIZE = 160.dp
+val MIN_CARD_SIZE = 180.dp
 
 @Composable
 fun MenuScreen(

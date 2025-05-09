@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Firebase AI Services"
+rootProject.name = "Firebase AI Logic"
 include(":app")
  

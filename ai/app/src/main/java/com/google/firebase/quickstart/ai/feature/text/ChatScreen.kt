@@ -59,8 +59,8 @@ fun ChatScreen(
 ) {
     val messages = rememberSaveable {
         listOf<ChatMessage>(
-            ChatMessage(text = "Hello World"),
-            ChatMessage(text = "Hello", participant = Participant.MODEL),
+            ChatMessage(text = "I have never traveled before. When should I book a flight?"),
+            ChatMessage(text = "You should book flights a couple of months ahead of time. It will be cheaper and more flexible for you.", participant = Participant.MODEL),
         )
     }
 
@@ -178,7 +178,7 @@ fun MessageInput(
     onSendMessage: (String) -> Unit,
     resetScroll: () -> Unit = {}
 ) {
-    var userMessage by rememberSaveable { mutableStateOf("") }
+    var userMessage by rememberSaveable { mutableStateOf("Do I need a passport?") }
 
     ElevatedCard(
         modifier = Modifier

@@ -14,7 +14,18 @@ fun TextSamples(
     onSampleClicked: (Sample) -> Unit
 ) {
     val textSamples = listOf(
-        Sample("Blog post creator", "Create a blog post", "post", listOf(Category.TEXT)),
+        Sample(
+            "Travel tips",
+            "The user wants the model to help a new traveler with travel tips for traveling.",
+            "post",
+            listOf(Category.TEXT)
+        ),
+        Sample(
+            "Chatbot recommendations for courses",
+            "A chatbot suggests courses for a performing arts program.",
+            "post",
+            listOf(Category.TEXT)
+        ),
         Sample(
             "Extract data from receipts",
             "Analyze an image of a receipt and extract data in JSON format",
