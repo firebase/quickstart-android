@@ -1,15 +1,73 @@
 package com.google.firebase.quickstart.ai.feature.media.imagen
 
+import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.google.firebase.quickstart.ai.feature.text.ChatRoute
+import com.google.firebase.Firebase
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
+import com.google.firebase.vertexai.ImagenModel
+import com.google.firebase.vertexai.type.ImagenAspectRatio
+import com.google.firebase.vertexai.type.ImagenImageFormat
+import com.google.firebase.vertexai.type.ImagenPersonFilterLevel
+import com.google.firebase.vertexai.type.ImagenSafetyFilterLevel
+import com.google.firebase.vertexai.type.ImagenSafetySettings
+import com.google.firebase.vertexai.type.PublicPreviewAPI
+import com.google.firebase.vertexai.type.imagenGenerationConfig
+import com.google.firebase.vertexai.vertexAI
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
+@OptIn(PublicPreviewAPI::class)
 class ImagenViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val sampleId = savedStateHandle.toRoute<ImagenRoute>().sampleId
     private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
 
+    private val _errorMessage: MutableStateFlow<String?> = MutableStateFlow(null)
+    val errorMessage: StateFlow<String?> = _errorMessage
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+    private val _generatedBitmaps = MutableStateFlow(listOf<Bitmap>())
+    val generatedBitmaps: StateFlow<List<Bitmap>> = _generatedBitmaps
+
+    private val imagenModel: ImagenModel
+
+    init {
+        val config = imagenGenerationConfig {
+            numberOfImages = 4
+            aspectRatio = ImagenAspectRatio.SQUARE_1x1
+            imageFormat = ImagenImageFormat.png()
+        }
+        val settings = ImagenSafetySettings(
+            safetyFilterLevel = ImagenSafetyFilterLevel.BLOCK_LOW_AND_ABOVE,
+            personFilterLevel = ImagenPersonFilterLevel.BLOCK_ALL
+        )
+        imagenModel = Firebase.vertexAI.imagenModel(
+            modelName = "imagen-3.0-generate-002",
+            generationConfig = config,
+            safetySettings = settings
+        )
+    }
+
+    fun generateImages(inputText: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val imageResponse = imagenModel.generateImages(
+                    inputText
+                )
+                _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
+            } catch (e: Exception) {
+                _errorMessage.value = e.localizedMessage
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
 }
