@@ -14,6 +14,7 @@ import com.google.firebase.vertexai.type.ImagenPersonFilterLevel
 import com.google.firebase.vertexai.type.ImagenSafetyFilterLevel
 import com.google.firebase.vertexai.type.ImagenSafetySettings
 import com.google.firebase.vertexai.type.PublicPreviewAPI
+import com.google.firebase.vertexai.type.asTextOrNull
 import com.google.firebase.vertexai.type.imagenGenerationConfig
 import com.google.firebase.vertexai.vertexAI
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +27,7 @@ class ImagenViewModel(
 ) : ViewModel() {
     private val sampleId = savedStateHandle.toRoute<ImagenRoute>().sampleId
     private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
+    val initialPrompt = sample.initialPrompt?.parts?.first()?.asTextOrNull().orEmpty()
 
     private val _errorMessage: MutableStateFlow<String?> = MutableStateFlow(null)
     val errorMessage: StateFlow<String?> = _errorMessage
@@ -63,6 +65,7 @@ class ImagenViewModel(
                     inputText
                 )
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
+                _errorMessage.value = null // clear error message
             } catch (e: Exception) {
                 _errorMessage.value = e.localizedMessage
             } finally {

@@ -38,7 +38,7 @@ class ImagenRoute(val sampleId: String)
 fun ImagenScreen(
     imagenViewModel: ImagenViewModel = viewModel<ImagenViewModel>()
 ) {
-    var imagenPrompt by rememberSaveable { mutableStateOf("") }
+    var imagenPrompt by rememberSaveable { mutableStateOf(imagenViewModel.initialPrompt) }
     val errorMessage by imagenViewModel.errorMessage.collectAsStateWithLifecycle()
     val isLoading by imagenViewModel.isLoading.collectAsStateWithLifecycle()
     val generatedImages by imagenViewModel.generatedBitmaps.collectAsStateWithLifecycle()

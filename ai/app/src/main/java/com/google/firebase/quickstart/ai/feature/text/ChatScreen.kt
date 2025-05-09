@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.ai.feature.text
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -59,7 +60,8 @@ class ChatRoute(val sampleId: String)
 fun ChatScreen(
     chatViewModel: ChatViewModel = viewModel<ChatViewModel>()
 ) {
-     val messages: List<ChatMessage> by chatViewModel.messages.collectAsStateWithLifecycle()
+    val messages: List<ChatMessage> by chatViewModel.messages.collectAsStateWithLifecycle()
+    val initialPrompt: String = chatViewModel.initialPrompt
 
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -67,6 +69,7 @@ fun ChatScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.errorContainer)
     ) {
         ChatList(
             messages,
@@ -79,9 +82,9 @@ fun ChatScreen(
             contentAlignment = Alignment.BottomCenter
         ) {
             MessageInput(
+                initialPrompt = initialPrompt,
                 onSendMessage = { inputText ->
-                    // TODO
-//                    chatViewModel.sendMessage(inputText)
+                    chatViewModel.sendMessage(inputText)
                 },
                 resetScroll = {
                     coroutineScope.launch {
@@ -172,10 +175,11 @@ fun ChatList(
 
 @Composable
 fun MessageInput(
+    initialPrompt: String,
     onSendMessage: (String) -> Unit,
     resetScroll: () -> Unit = {}
 ) {
-    var userMessage by rememberSaveable { mutableStateOf("") }
+    var userMessage by rememberSaveable { mutableStateOf(initialPrompt) }
 
     ElevatedCard(
         modifier = Modifier
