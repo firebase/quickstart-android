@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.ai.feature.text
 
+import android.graphics.Bitmap
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -11,11 +12,9 @@ import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.vertexai.Chat
 import com.google.firebase.vertexai.GenerativeModel
 import com.google.firebase.vertexai.type.Content
-import com.google.firebase.vertexai.type.content
 import com.google.firebase.vertexai.vertexAI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChatViewModel(
@@ -39,6 +38,7 @@ class ChatViewModel(
 
     private val generativeModel: GenerativeModel
     private val chat: Chat
+    private var contentBuilder = Content.Builder()
 
     init {
         generativeModel = Firebase.vertexAI.generativeModel(
@@ -49,14 +49,19 @@ class ChatViewModel(
     }
 
     fun sendMessage(userMessage: String) {
-        _messageList.add(content { text(userMessage) })
+        val prompt = contentBuilder
+            .text(userMessage)
+            .build()
+
+        _messageList.add(prompt)
 
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = chat.sendMessage(userMessage)
+                val response = chat.sendMessage(prompt)
                 _messageList.add(response.candidates.first().content)
                 _errorMessage.value = null // clear errors
+                contentBuilder = Content.Builder() // reset the builder
             } catch (e: Exception) {
                 _errorMessage.value = e.localizedMessage
             } finally {
@@ -65,4 +70,7 @@ class ChatViewModel(
         }
     }
 
+    fun attachFile(fileInBytes: ByteArray, mimeType: String?) {
+        contentBuilder.inlineData(fileInBytes, mimeType ?: "text/plain")
+    }
 }

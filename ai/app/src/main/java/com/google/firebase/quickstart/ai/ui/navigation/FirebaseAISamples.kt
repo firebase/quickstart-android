@@ -61,6 +61,27 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
+        title = "Audio Summarization",
+        description = "Summarize an audio file",
+        navRoute = "chat",
+        categories = listOf(Category.AUDIO),
+        chatHistory = listOf(
+            content { text("Can you help me summarize an audio file?") },
+            content("model") {
+                text(
+                    "Of course! Click on the attach button" +
+                            " below and choose an audio file for me to summarize."
+                )
+            }
+        ),
+        initialPrompt = content {
+            text(
+                "I have attached the audio file. Please analyze it and summarize the contents" +
+                        " of the audio as bullet points."
+            )
+        }
+    ),
+    Sample(
         title = "Image generation",
         description = "Generate images with the Imagen 3 model",
         navRoute = "imagen",

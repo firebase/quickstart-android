@@ -8,9 +8,9 @@ enum class Category(
 ) {
     TEXT("Text"),
     IMAGE("Image"),
-//    VIDEO("Video"),
-//    AUDIO("Audio"),
-//    DOCUMENT("Document"),
+    VIDEO("Video"),
+    AUDIO("Audio"),
+    DOCUMENT("Document"),
     FUNCTION_CALL("Function calling"),
     STREAM_REALTIME("Stream realtime"),
 }

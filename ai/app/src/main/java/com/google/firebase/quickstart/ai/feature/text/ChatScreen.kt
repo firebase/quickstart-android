@@ -1,5 +1,9 @@
 package com.google.firebase.quickstart.ai.feature.text
 
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -21,36 +25,32 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.vertexai.type.Content
 import com.google.firebase.vertexai.type.TextPart
-import com.google.firebase.vertexai.type.asTextOrNull
-import java.util.UUID
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
@@ -85,7 +85,9 @@ fun ChatScreen(
             contentAlignment = Alignment.BottomCenter
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.surfaceContainer)
             ) {
                 if (isLoading) {
                     LinearProgressIndicator(
@@ -108,6 +110,7 @@ fun ChatScreen(
                         )
                     }
                 }
+                val contentResolver = LocalContext.current.contentResolver
                 MessageInput(
                     initialPrompt = initialPrompt,
                     onSendMessage = { inputText ->
@@ -117,7 +120,22 @@ fun ChatScreen(
                         coroutineScope.launch {
                             listState.scrollToItem(0)
                         }
-                    }
+                    },
+                    onFileAttached = { uri ->
+                        val mimeType = contentResolver.getType(uri).orEmpty()
+
+                        val inputStream = contentResolver.openInputStream(uri)
+                        if (inputStream != null) {
+                            val bytes = inputStream.readBytes()
+                            chatViewModel.attachFile(bytes, mimeType)
+                        } else {
+                            // Unable to read file - show an error
+                        }
+                        inputStream?.close()
+                        Log.d("ChatScreen", "path: ${uri.toString()}")
+                        Log.d("ChatScreen", "mimeType: $mimeType")
+                    },
+                    isLoading = isLoading
                 )
             }
         }
@@ -132,7 +150,13 @@ fun ChatBubbleItem(
 
     val backgroundColor = when (chatMessage.role) {
         "user" -> MaterialTheme.colorScheme.tertiaryContainer
-        else -> MaterialTheme.colorScheme.primaryContainer
+        else -> MaterialTheme.colorScheme.secondaryContainer
+    }
+
+    val textColor = if (isModelMessage) {
+        MaterialTheme.colorScheme.onSecondaryContainer
+    } else {
+        MaterialTheme.colorScheme.onTertiaryContainer
     }
 
     val bubbleShape = if (isModelMessage) {
@@ -167,7 +191,8 @@ fun ChatBubbleItem(
                 ) {
                     Text(
                         text = chatMessage.parts.filterIsInstance<TextPart>().joinToString(" ") { it.text },
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(16.dp),
+                        color = textColor
                     )
                 }
             }
@@ -196,7 +221,9 @@ fun ChatList(
 fun MessageInput(
     initialPrompt: String,
     onSendMessage: (String) -> Unit,
-    resetScroll: () -> Unit = {}
+    resetScroll: () -> Unit = {},
+    onFileAttached: (Uri) -> Unit,
+    isLoading: Boolean = false
 ) {
     var userMessage by rememberSaveable { mutableStateOf(initialPrompt) }
 
@@ -218,13 +245,63 @@ fun MessageInput(
                 .fillMaxWidth()
                 .weight(1f)
         )
+        AttachmentsMenu(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            onFileAttached = onFileAttached
+        )
         IconButton(
             onClick = {
-                // TODO
+                if (userMessage.isNotBlank()) {
+                    onSendMessage(userMessage)
+                    userMessage = ""
+                    resetScroll()
+                }
             },
+            enabled = !isLoading,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .padding(end = 4.dp)
+                .clip(CircleShape)
+                .background(
+                    color = if (isLoading) {
+                        IconButtonDefaults.iconButtonColors().disabledContainerColor
+                    } else {
+                        MaterialTheme.colorScheme.primary
+                    }
+                )
+        ) {
+            Icon(
+                Icons.AutoMirrored.Default.Send,
+                contentDescription = "Send",
+                tint = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            )
+        }
+    }
+}
+
+
+@Composable
+fun AttachmentsMenu(
+    modifier: Modifier = Modifier,
+    onFileAttached: (Uri) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    val openDocument = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+        uri?.let {
+            onFileAttached(it)
+        }
+    }
+    Box(
+        modifier = modifier
+            .padding(end = 4.dp)
+    ) {
+        IconButton(
+            onClick = {
+                expanded = !expanded
+            }
         ) {
             Icon(
                 Icons.Default.AttachFile,
@@ -234,25 +311,36 @@ fun MessageInput(
                     .padding(4.dp)
             )
         }
-        IconButton(
-            onClick = {
-                if (userMessage.isNotBlank()) {
-                    onSendMessage(userMessage)
-                    userMessage = ""
-                    resetScroll()
-                }
-            },
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .clip(CircleShape)
-                .background(color = MaterialTheme.colorScheme.primaryContainer)
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
         ) {
-            Icon(
-                Icons.AutoMirrored.Default.Send,
-                contentDescription = "Send",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
+            Text(
+                text = "Attach",
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+            DropdownMenuItem(
+                text = { Text("Image / Video") },
+                onClick = {
+                    openDocument.launch(arrayOf("image/*", "video/*"))
+                    expanded = !expanded
+                }
+            )
+            DropdownMenuItem(
+                text = { Text("Audio") },
+                onClick = {
+                    openDocument.launch(arrayOf("audio/*"))
+                    expanded = !expanded
+                }
+            )
+            DropdownMenuItem(
+                text = { Text("Document (PDF)") },
+                onClick = {
+                    openDocument.launch(arrayOf("application/pdf"))
+                    expanded = !expanded
+                }
             )
         }
     }
