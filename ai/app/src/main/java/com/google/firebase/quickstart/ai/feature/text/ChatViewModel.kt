@@ -23,26 +23,21 @@ class ChatViewModel(
     private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
     val initialPrompt = sample.initialPrompt?.parts?.first()?.asTextOrNull().orEmpty()
 
-    private val _messageList: MutableList<ChatMessage> = sample.chatHistory.map { content ->
-        ChatMessage(
-            text = content.parts.first().asTextOrNull() ?: "",
-            participant = if (content.role == "user") Participant.USER else Participant.MODEL,
-            isPending = false
-        )
-    }.toMutableStateList()
+    private val _messageList: MutableList<ChatMessage> =
+        sample.chatHistory.map { ChatMessage(it) }.toMutableStateList()
     private val _messages = MutableStateFlow<List<ChatMessage>>(_messageList)
     val messages: StateFlow<List<ChatMessage>> =
         _messages
-
 
     private val generativeModel: GenerativeModel
     private val chat: Chat
 
     init {
         generativeModel = Firebase.vertexAI.generativeModel(
-            "gemini-2.0-flash"
+            modelName = "gemini-2.0-flash",
+            systemInstruction = sample.systemInstructions
         )
-        chat = generativeModel.startChat()
+        chat = generativeModel.startChat(sample.chatHistory)
     }
 
     fun sendMessage(userMessage: String) {

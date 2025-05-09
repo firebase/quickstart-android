@@ -38,6 +38,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.vertexai.type.Content
+import com.google.firebase.vertexai.type.asTextOrNull
 import java.util.UUID
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -51,7 +53,12 @@ data class ChatMessage(
     var text: String = "",
     val participant: Participant = Participant.USER,
     var isPending: Boolean = false
-)
+) {
+    constructor(content: Content) : this(
+        text = content.parts.first().asTextOrNull() ?: "",
+        participant = if (content.role == "user") Participant.USER else Participant.MODEL
+    )
+}
 
 @Serializable
 class ChatRoute(val sampleId: String)
@@ -69,7 +76,6 @@ fun ChatScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.errorContainer)
     ) {
         ChatList(
             messages,

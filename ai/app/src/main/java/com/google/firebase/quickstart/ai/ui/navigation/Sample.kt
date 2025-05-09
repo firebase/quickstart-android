@@ -23,6 +23,6 @@ data class Sample(
     val categories: List<Category>,
     // Optional parameters
     val initialPrompt: Content? = null,
-    val systemInstructions: String = "",
+    val systemInstructions: Content? = null,
     val chatHistory: List<Content> = emptyList(),
 )

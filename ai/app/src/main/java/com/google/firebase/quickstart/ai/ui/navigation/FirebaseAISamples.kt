@@ -9,10 +9,14 @@ val FIREBASE_AI_SAMPLES = listOf(
                 " travel tips for traveling.",
         navRoute = "chat",
         categories = listOf(Category.TEXT),
-        systemInstructions = "You are a Travel assistant. You will answer" +
-                " questions the user asks based on the information listed" +
-                " in Relevant Information. Do not hallucinate. Do not use" +
-                " the internet.",
+        systemInstructions = content {
+            text(
+                "You are a Travel assistant. You will answer" +
+                        " questions the user asks based on the information listed" +
+                        " in Relevant Information. Do not hallucinate. Do not use" +
+                        " the internet."
+            )
+        },
         chatHistory = listOf(
             content {
                 role = "user"
