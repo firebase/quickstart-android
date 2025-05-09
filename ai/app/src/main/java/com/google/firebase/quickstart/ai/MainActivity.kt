@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenRoute
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenScreen
+import com.google.firebase.quickstart.ai.feature.text.ChatRoute
 import com.google.firebase.quickstart.ai.feature.text.ChatScreen
-import com.google.firebase.quickstart.ai.ui.navigation.TextSample
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
 import com.google.firebase.quickstart.ai.ui.theme.FirebaseAILogicTheme
 
@@ -27,20 +29,32 @@ class MainActivity : ComponentActivity() {
                     NavHost(
                         navController,
                         startDestination = "mainMenu",
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
                             .padding(innerPadding)
                     ) {
                         composable("mainMenu") {
                             MainMenuScreen(
                                 onSampleClicked = {
-                                    navController.navigate(TextSample("hey"))
+                                    when (it.navRoute) {
+                                        "chat" -> {
+                                            navController.navigate(ChatRoute(it.id))
+                                        }
+                                        "imagen" -> {
+                                            navController.navigate(ImagenRoute(it.id))
+                                        }
+                                    }
                                 },
                                 modifier = Modifier.fillMaxSize()
                             )
                         }
                         // Text Samples
-                        composable<TextSample> {
+                        composable<ChatRoute> {
                             ChatScreen()
+                        }
+                        // Imagen Samples
+                        composable<ImagenRoute> {
+                            ImagenScreen()
                         }
                     }
                 }

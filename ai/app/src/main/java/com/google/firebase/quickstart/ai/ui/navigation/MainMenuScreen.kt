@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -57,7 +58,7 @@ fun MenuScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        var selectedCategory by remember { mutableStateOf(filters.first()) }
+        var selectedCategory by rememberSaveable { mutableStateOf(filters.first()) }
         Text(text = filterTitle, style = MaterialTheme.typography.titleLarge)
         LazyRow {
             items(filters) { capability ->

@@ -55,8 +55,15 @@ dependencies {
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.material3.adaptive.navigation.suite)
     implementation(libs.compose.navigation)
-    // Mainly for navigation
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.0")
+    // ViewModel utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.9.0")
     implementation(libs.kotlinx.serialization.json)
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation("com.google.firebase:firebase-ai:16.0.0-SNAPSHOT")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -38,8 +38,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import java.util.UUID
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 
 enum class Participant {
     USER, MODEL, ERROR
@@ -52,17 +55,14 @@ data class ChatMessage(
     var isPending: Boolean = false
 )
 
+@Serializable
+class ChatRoute(val id: String)
 
 @Composable
 fun ChatScreen(
-
+    chatViewModel: ChatViewModel = viewModel<ChatViewModel>()
 ) {
-    val messages = rememberSaveable {
-        listOf<ChatMessage>(
-            ChatMessage(text = "I have never traveled before. When should I book a flight?"),
-            ChatMessage(text = "You should book flights a couple of months ahead of time. It will be cheaper and more flexible for you.", participant = Participant.MODEL),
-        )
-    }
+     val messages: List<ChatMessage> by chatViewModel.messages.collectAsStateWithLifecycle()
 
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -178,7 +178,7 @@ fun MessageInput(
     onSendMessage: (String) -> Unit,
     resetScroll: () -> Unit = {}
 ) {
-    var userMessage by rememberSaveable { mutableStateOf("Do I need a passport?") }
+    var userMessage by rememberSaveable { mutableStateOf("") }
 
     ElevatedCard(
         modifier = Modifier

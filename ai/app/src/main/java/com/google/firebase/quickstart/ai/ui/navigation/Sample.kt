@@ -1,5 +1,10 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
+import com.google.firebase.ai.type.Content
+import com.google.firebase.ai.type.content
+import java.util.UUID
+import kotlinx.serialization.Serializable
+
 enum class Category(
     val label: String
 ) {
@@ -13,8 +18,16 @@ enum class Category(
 }
 
 data class Sample(
+    val id: String = UUID.randomUUID().toString(), // used for navigation
     val title: String,
     val description: String,
-    val destination: String,
-    val categories: List<Category>
-)
+    val navRoute: String,
+    val categories: List<Category>,
+    // Optional parameters
+    val initialPrompt: Content? = null,
+    val systemInstructions: String = "",
+    val history: List<Content> = emptyList(),
+    val youtubeUrl: String? = null,
+    val gcsUrl: String? = null,
+
+    )
