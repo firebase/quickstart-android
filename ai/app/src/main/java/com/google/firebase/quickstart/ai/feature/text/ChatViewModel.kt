@@ -10,6 +10,8 @@ import com.google.firebase.vertexai.type.asTextOrNull
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.vertexai.Chat
 import com.google.firebase.vertexai.GenerativeModel
+import com.google.firebase.vertexai.type.Content
+import com.google.firebase.vertexai.type.content
 import com.google.firebase.vertexai.vertexAI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,10 +28,13 @@ class ChatViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
-    private val _messageList: MutableList<ChatMessage> =
-        sample.chatHistory.map { ChatMessage(it) }.toMutableStateList()
-    private val _messages = MutableStateFlow<List<ChatMessage>>(_messageList)
-    val messages: StateFlow<List<ChatMessage>> =
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage
+
+    private val _messageList: MutableList<Content> =
+        sample.chatHistory.toMutableStateList()
+    private val _messages = MutableStateFlow<List<Content>>(_messageList)
+    val messages: StateFlow<List<Content>> =
         _messages
 
     private val generativeModel: GenerativeModel
@@ -44,34 +49,16 @@ class ChatViewModel(
     }
 
     fun sendMessage(userMessage: String) {
-        // Add a pending message
-        _messageList.add(
-            ChatMessage(
-                text = userMessage,
-                participant = Participant.USER,
-            )
-        )
+        _messageList.add(content { text(userMessage) })
 
         viewModelScope.launch {
             _isLoading.value = true
             try {
                 val response = chat.sendMessage(userMessage)
-
-                response.text?.let { modelResponse ->
-                    _messageList.add(
-                        ChatMessage(
-                            text = modelResponse,
-                            participant = Participant.MODEL,
-                        )
-                    )
-                }
+                _messageList.add(response.candidates.first().content)
+                _errorMessage.value = null // clear errors
             } catch (e: Exception) {
-                _messageList.add(
-                    ChatMessage(
-                        text = e.localizedMessage,
-                        participant = Participant.ERROR
-                    )
-                )
+                _errorMessage.value = e.localizedMessage
             } finally {
                 _isLoading.value = false
             }

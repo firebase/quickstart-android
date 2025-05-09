@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,25 +45,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.vertexai.type.Content
+import com.google.firebase.vertexai.type.TextPart
 import com.google.firebase.vertexai.type.asTextOrNull
 import java.util.UUID
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-
-enum class Participant {
-    USER, MODEL, ERROR
-}
-
-data class ChatMessage(
-    val id: String = UUID.randomUUID().toString(),
-    var text: String = "",
-    val participant: Participant = Participant.USER,
-) {
-    constructor(content: Content) : this(
-        text = content.parts.first().asTextOrNull() ?: "",
-        participant = if (content.role == "user") Participant.USER else Participant.MODEL
-    )
-}
 
 @Serializable
 class ChatRoute(val sampleId: String)
@@ -71,8 +58,10 @@ class ChatRoute(val sampleId: String)
 fun ChatScreen(
     chatViewModel: ChatViewModel = viewModel<ChatViewModel>()
 ) {
-    val messages: List<ChatMessage> by chatViewModel.messages.collectAsStateWithLifecycle()
+    val messages: List<Content> by chatViewModel.messages.collectAsStateWithLifecycle()
     val isLoading: Boolean by chatViewModel.isLoading.collectAsStateWithLifecycle()
+    val errorMessage: String? by chatViewModel.errorMessage.collectAsStateWithLifecycle()
+
     val initialPrompt: String = chatViewModel.initialPrompt
 
     val listState = rememberLazyListState()
@@ -97,9 +86,24 @@ fun ChatScreen(
             ) {
                 if (isLoading) {
                     LinearProgressIndicator(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     )
+                }
+                errorMessage?.let {
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = it,
+                            modifier = Modifier.padding(16.dp),
+                            color = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                    }
                 }
                 MessageInput(
                     initialPrompt = initialPrompt,
@@ -119,15 +123,13 @@ fun ChatScreen(
 
 @Composable
 fun ChatBubbleItem(
-    chatMessage: ChatMessage
+    chatMessage: Content
 ) {
-    val isModelMessage = chatMessage.participant == Participant.MODEL ||
-            chatMessage.participant == Participant.ERROR
+    val isModelMessage = chatMessage.role == "model"
 
-    val backgroundColor = when (chatMessage.participant) {
-        Participant.MODEL -> MaterialTheme.colorScheme.primaryContainer
-        Participant.USER -> MaterialTheme.colorScheme.tertiaryContainer
-        Participant.ERROR -> MaterialTheme.colorScheme.errorContainer
+    val backgroundColor = when (chatMessage.role) {
+        "user" -> MaterialTheme.colorScheme.tertiaryContainer
+        else -> MaterialTheme.colorScheme.primaryContainer
     }
 
     val bubbleShape = if (isModelMessage) {
@@ -149,7 +151,7 @@ fun ChatBubbleItem(
             .fillMaxWidth()
     ) {
         Text(
-            text = chatMessage.participant.name,
+            text = chatMessage.role?.uppercase() ?: "USER",
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(bottom = 4.dp)
         )
@@ -161,7 +163,7 @@ fun ChatBubbleItem(
                     modifier = Modifier.widthIn(0.dp, maxWidth * 0.9f)
                 ) {
                     Text(
-                        text = chatMessage.text,
+                        text = chatMessage.parts.filterIsInstance<TextPart>().joinToString(" ") { it.text },
                         modifier = Modifier.padding(16.dp)
                     )
                 }
@@ -172,7 +174,7 @@ fun ChatBubbleItem(
 
 @Composable
 fun ChatList(
-    chatMessages: List<ChatMessage>,
+    chatMessages: List<Content>,
     listState: LazyListState,
     modifier: Modifier = Modifier
 ) {
