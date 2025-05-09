@@ -48,13 +48,28 @@ val FIREBASE_AI_SAMPLES = listOf(
         title = "Chatbot recommendations for courses",
         description = "A chatbot suggests courses for a performing arts program.",
         navRoute = "chat",
-        categories = listOf(Category.TEXT)
+        categories = listOf(Category.TEXT),
+        systemInstructions = content {
+            text(
+                "You are a chatbot for the county's performing and fine arts" +
+                        " program. You help students decide what course they will" +
+                        " take during the summer."
+            )
+        },
+        initialPrompt = content {
+            text("I am interested in Performing Arts. I have taken Theater 1A.")
+        }
     ),
     Sample(
         title = "Image generation",
         description = "Generate images with the Imagen 3 model",
         navRoute = "imagen",
         categories = listOf(Category.IMAGE),
-        initialPrompt = content { text("Generate a comicbook style image of Tower bridge with cherry blossoms around") }
+        initialPrompt = content {
+            text(
+                "Generate a comicbook style image of" +
+                        " Tower bridge with cherry blossoms around"
+            )
+        }
     ),
 )
