@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.quickstart.ai.feature.text.ChatScreen
-import com.google.firebase.quickstart.ai.navigation.TextSample
+import com.google.firebase.quickstart.ai.ui.navigation.TextSample
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
 import com.google.firebase.quickstart.ai.ui.theme.FirebaseAILogicTheme
 
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable("mainMenu") {
                             MainMenuScreen(
-                                onTextSampleClicked = {
+                                onSampleClicked = {
                                     navController.navigate(TextSample("hey"))
                                 },
                                 modifier = Modifier.fillMaxSize()

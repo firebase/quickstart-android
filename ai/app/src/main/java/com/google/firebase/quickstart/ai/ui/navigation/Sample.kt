@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.ui.shared
+package com.google.firebase.quickstart.ai.ui.navigation
 
 enum class Category(
     val label: String
@@ -8,7 +8,8 @@ enum class Category(
     VIDEO("Video"),
     AUDIO("Audio"),
     DOCUMENT("Document"),
-    FUNCTION_CALL("Function calling")
+    FUNCTION_CALL("Function calling"),
+    STREAM_REALTIME("Stream realtime"),
 }
 
 data class Sample(
