@@ -13,10 +13,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -40,6 +42,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -197,47 +200,60 @@ fun MessageInput(
 ) {
     var userMessage by rememberSaveable { mutableStateOf(initialPrompt) }
 
-    ElevatedCard(
+    Row(
         modifier = Modifier
+            .padding(8.dp)
             .fillMaxWidth()
     ) {
-        Row(
+        OutlinedTextField(
+            value = userMessage,
+            label = { Text("Message") },
+            onValueChange = { userMessage = it },
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Sentences
+            ),
             modifier = Modifier
-                .padding(16.dp)
+                .align(Alignment.CenterVertically)
+                .padding(end = 4.dp)
                 .fillMaxWidth()
+                .weight(1f)
+        )
+        IconButton(
+            onClick = {
+                // TODO
+            },
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(end = 4.dp)
         ) {
-            OutlinedTextField(
-                value = userMessage,
-                label = { Text("Message") },
-                onValueChange = { userMessage = it },
-                keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.Sentences
-                ),
+            Icon(
+                Icons.Default.AttachFile,
+                contentDescription = "Attach",
                 modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .fillMaxWidth()
-                    .weight(0.85f)
+                    .fillMaxSize()
+                    .padding(4.dp)
             )
-            IconButton(
-                onClick = {
-                    if (userMessage.isNotBlank()) {
-                        onSendMessage(userMessage)
-                        userMessage = ""
-                        resetScroll()
-                    }
-                },
+        }
+        IconButton(
+            onClick = {
+                if (userMessage.isNotBlank()) {
+                    onSendMessage(userMessage)
+                    userMessage = ""
+                    resetScroll()
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .clip(CircleShape)
+                .background(color = MaterialTheme.colorScheme.primaryContainer)
+        ) {
+            Icon(
+                Icons.AutoMirrored.Default.Send,
+                contentDescription = "Send",
                 modifier = Modifier
-                    .padding(start = 16.dp)
-                    .align(Alignment.CenterVertically)
-                    .fillMaxWidth()
-                    .weight(0.15f)
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Default.Send,
-                    contentDescription = "Send",
-                    modifier = Modifier
-                )
-            }
+                    .fillMaxSize()
+                    .padding(8.dp)
+            )
         }
     }
 }
