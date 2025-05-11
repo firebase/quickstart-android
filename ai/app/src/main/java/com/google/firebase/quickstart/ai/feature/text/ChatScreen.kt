@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.text
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.text.format.Formatter
@@ -223,33 +224,35 @@ fun ChatBubbleItem(
                                 }
 
                                 is InlineDataPart -> {
-                                    // TODO: show a human readable version of the attachment
-                                    val attachmentType = if (part.mimeType.contains("audio")) {
-                                        "audio attached"
-                                    } else if (part.mimeType.contains("image")) {
-                                        "image attached"
-                                    } else if (part.mimeType.contains("application/pdf")) {
-                                        "PDF attached"
-                                    } else if (part.mimeType.contains("video")) {
-                                        "video"
+                                    if (part.mimeType.contains("image")) {
+                                        val imageData = part.inlineData
+                                        val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
+                                        Image(
+                                            bitmap = bitmap.asImageBitmap(),
+                                            contentDescription = "Attached image",
+                                            modifier = Modifier.fillMaxWidth()
+                                                .padding(bottom = 4.dp)
+                                        )
                                     } else {
-                                        "file attached"
+                                        // TODO: show a human readable version of audio, PDFs and videos
+                                        val attachmentType = if (part.mimeType.contains("audio")) {
+                                            "audio attached"
+                                        } else if (part.mimeType.contains("application/pdf")) {
+                                            "PDF attached"
+                                        } else if (part.mimeType.contains("video")) {
+                                            "video"
+                                        } else {
+                                            "file attached"
+                                        }
+                                        Text(
+                                            text = "($attachmentType)",
+                                            modifier = Modifier
+                                                .padding(4.dp)
+                                                .fillMaxWidth(),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            textAlign = TextAlign.End
+                                        )
                                     }
-                                    Text(
-                                        text = "($attachmentType)",
-                                        modifier = Modifier
-                                            .padding(4.dp)
-                                            .fillMaxWidth(),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        textAlign = TextAlign.End
-                                    )
-                                }
-
-                                is ImagePart -> {
-                                    Image(
-                                        bitmap = part.image.asImageBitmap(),
-                                        contentDescription = "Image"
-                                    )
                                 }
                             }
                         }
