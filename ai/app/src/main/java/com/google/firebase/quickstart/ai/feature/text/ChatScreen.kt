@@ -52,10 +52,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.vertexai.type.Content
+import com.google.firebase.vertexai.type.ImagePart
+import com.google.firebase.vertexai.type.InlineDataPart
 import com.google.firebase.vertexai.type.TextPart
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -138,8 +141,10 @@ fun ChatScreen(
                             val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                             val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
                             cursor.moveToFirst()
-                            val humanReadableSize = Formatter.formatShortFileSize(context,
-                                cursor.getLong(sizeIndex))
+                            val humanReadableSize = Formatter.formatShortFileSize(
+                                context,
+                                cursor.getLong(sizeIndex)
+                            )
                             fileName = "${cursor.getString(nameIndex)} ($humanReadableSize)"
                         }
 
@@ -202,11 +207,54 @@ fun ChatBubbleItem(
                     shape = bubbleShape,
                     modifier = Modifier.widthIn(0.dp, maxWidth * 0.9f)
                 ) {
-                    Text(
-                        text = chatMessage.parts.filterIsInstance<TextPart>().joinToString(" ") { it.text },
-                        modifier = Modifier.padding(16.dp),
-                        color = textColor
-                    )
+                    Column(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        chatMessage.parts.forEach { part ->
+                            when (part) {
+                                is TextPart -> {
+                                    Text(
+                                        text = part.text,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        color = textColor
+                                    )
+                                }
+
+                                is InlineDataPart -> {
+                                    // TODO: show a human readable version of the attachment
+                                    val attachmentType = if (part.mimeType.contains("audio")) {
+                                        "audio attached"
+                                    } else if (part.mimeType.contains("image")) {
+                                        "image attached"
+                                    } else if (part.mimeType.contains("application/pdf")) {
+                                        "PDF attached"
+                                    } else if (part.mimeType.contains("video")) {
+                                        "video"
+                                    } else {
+                                        "file attached"
+                                    }
+                                    Text(
+                                        text = "($attachmentType)",
+                                        modifier = Modifier
+                                            .padding(4.dp)
+                                            .fillMaxWidth(),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        textAlign = TextAlign.End
+                                    )
+                                }
+
+                                is ImagePart -> {
+                                    Image(
+                                        bitmap = part.image.asImageBitmap(),
+                                        contentDescription = "Image"
+                                    )
+                                }
+                            }
+                        }
+                    }
+
                 }
             }
         }
