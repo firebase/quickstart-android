@@ -1,9 +1,12 @@
 package com.google.firebase.quickstart.ai.feature.text
 
+import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
+import android.provider.OpenableColumns
+import android.text.format.Formatter
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -15,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -23,6 +27,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.AttachFile
+import androidx.compose.material.icons.filled.Attachment
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -44,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -64,6 +70,7 @@ fun ChatScreen(
     val messages: List<Content> by chatViewModel.messages.collectAsStateWithLifecycle()
     val isLoading: Boolean by chatViewModel.isLoading.collectAsStateWithLifecycle()
     val errorMessage: String? by chatViewModel.errorMessage.collectAsStateWithLifecycle()
+    val attachments: List<Attachment> by chatViewModel.attachments.collectAsStateWithLifecycle()
 
     val initialPrompt: String = chatViewModel.initialPrompt
 
@@ -110,7 +117,9 @@ fun ChatScreen(
                         )
                     }
                 }
-                val contentResolver = LocalContext.current.contentResolver
+                AttachmentsList(attachments)
+                val context = LocalContext.current
+                val contentResolver = context.contentResolver
                 MessageInput(
                     initialPrompt = initialPrompt,
                     onSendMessage = { inputText ->
@@ -123,17 +132,21 @@ fun ChatScreen(
                     },
                     onFileAttached = { uri ->
                         val mimeType = contentResolver.getType(uri).orEmpty()
-
-                        val inputStream = contentResolver.openInputStream(uri)
-                        if (inputStream != null) {
-                            val bytes = inputStream.readBytes()
-                            chatViewModel.attachFile(bytes, mimeType)
-                        } else {
-                            // Unable to read file - show an error
+                        var fileName: String? = null
+                        // Fetch file name and size
+                        contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                            val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+                            cursor.moveToFirst()
+                            val humanReadableSize = Formatter.formatShortFileSize(context,
+                                cursor.getLong(sizeIndex))
+                            fileName = "${cursor.getString(nameIndex)} ($humanReadableSize)"
                         }
-                        inputStream?.close()
-                        Log.d("ChatScreen", "path: ${uri.toString()}")
-                        Log.d("ChatScreen", "mimeType: $mimeType")
+
+                        contentResolver.openInputStream(uri)?.use { stream ->
+                            val bytes = stream.readBytes()
+                            chatViewModel.attachFile(bytes, mimeType, fileName)
+                        }
                     },
                     isLoading = isLoading
                 )
@@ -342,6 +355,54 @@ fun AttachmentsMenu(
                     expanded = !expanded
                 }
             )
+        }
+    }
+}
+
+/**
+ * Meant to present attachments in the UI
+ */
+data class Attachment(
+    val fileName: String,
+    val image: Bitmap? = null // only for image attachments
+)
+
+@Composable
+fun AttachmentsList(
+    attachments: List<Attachment>
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        items(attachments) { attachment ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Icon(
+                    Icons.Default.Attachment,
+                    contentDescription = "Attachment icon",
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .align(Alignment.CenterVertically)
+                )
+                attachment.image?.let {
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        contentDescription = attachment.fileName,
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                    )
+                }
+                Text(
+                    text = attachment.fileName,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(horizontal = 4.dp)
+                )
+            }
         }
     }
 }

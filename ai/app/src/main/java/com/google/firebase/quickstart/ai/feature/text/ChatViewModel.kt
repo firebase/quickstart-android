@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.text
 
 import android.graphics.Bitmap
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -15,6 +16,7 @@ import com.google.firebase.vertexai.type.Content
 import com.google.firebase.vertexai.vertexAI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 class ChatViewModel(
@@ -36,9 +38,16 @@ class ChatViewModel(
     val messages: StateFlow<List<Content>> =
         _messages
 
+    private val _attachmentsList: MutableList<Attachment> =
+        mutableStateListOf()
+    private val _attachments = MutableStateFlow<List<Attachment>>(_attachmentsList)
+    val attachments: StateFlow<List<Attachment>>
+        get() = _attachments
+
+    // Firebase AI Logic
+    private var contentBuilder = Content.Builder()
     private val generativeModel: GenerativeModel
     private val chat: Chat
-    private var contentBuilder = Content.Builder()
 
     init {
         generativeModel = Firebase.vertexAI.generativeModel(
@@ -61,16 +70,22 @@ class ChatViewModel(
                 val response = chat.sendMessage(prompt)
                 _messageList.add(response.candidates.first().content)
                 _errorMessage.value = null // clear errors
-                contentBuilder = Content.Builder() // reset the builder
             } catch (e: Exception) {
                 _errorMessage.value = e.localizedMessage
             } finally {
                 _isLoading.value = false
+                contentBuilder = Content.Builder() // reset the builder
+                _attachmentsList.clear()
             }
         }
     }
 
-    fun attachFile(fileInBytes: ByteArray, mimeType: String?) {
+    fun attachFile(
+        fileInBytes: ByteArray,
+        mimeType: String?,
+        fileName: String? = "Unnamed file"
+    ) {
         contentBuilder.inlineData(fileInBytes, mimeType ?: "text/plain")
+        _attachmentsList.add(Attachment(fileName ?: "Unnamed file"))
     }
 }
