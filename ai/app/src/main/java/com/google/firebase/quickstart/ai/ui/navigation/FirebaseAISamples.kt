@@ -125,5 +125,45 @@ val FIREBASE_AI_SAMPLES = listOf(
                         " from 2023. How did the standard deduction evolve?"
             )
         }
-    )
+    ),
+    Sample(
+        title = "Hashtags for a video",
+        description = "Generate hashtags for a video ad",
+        navRoute = "chat",
+        categories = listOf(Category.VIDEO),
+        initialPrompt = content {
+            fileData(
+                "https://storage.googleapis.com/cloud-samples-data/generative-ai/video/google_home_celebrity_ad.mp4",
+                "video/mpeg"
+            )
+            text(
+                "Generate 5-10 hashtags that relate to the video content." +
+                        " Try to use more popular and engaging terms," +
+                        " e.g. #Viral. Do not add content not related to" +
+                        " the video.\n Start the output with 'Tags:'"
+            )
+        }
+    ),
+    Sample(
+        title = "Summarize video",
+        description = "Summarize a video and extract important dialogue.",
+        navRoute = "chat",
+        categories = listOf(Category.VIDEO),
+        chatHistory = listOf(
+            content { text("Can you help me with the description of a video file?") },
+            content("model") {
+                text(
+                    "Sure! Click on the attach button below and choose a" +
+                            " video file for me to describe."
+                )
+            }
+        ),
+        initialPrompt = content {
+            text(
+                "I have attached the video file. Provide a description of" +
+                        " the video. The description should also contain" +
+                        " anything important which people say in the video."
+            )
+        }
+    ),
 )
