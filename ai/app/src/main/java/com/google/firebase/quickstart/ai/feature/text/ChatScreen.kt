@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.vertexai.type.Content
+import com.google.firebase.vertexai.type.FileDataPart
 import com.google.firebase.vertexai.type.ImagePart
 import com.google.firebase.vertexai.type.InlineDataPart
 import com.google.firebase.vertexai.type.TextPart
@@ -230,7 +231,8 @@ fun ChatBubbleItem(
                                         Image(
                                             bitmap = bitmap.asImageBitmap(),
                                             contentDescription = "Attached image",
-                                            modifier = Modifier.fillMaxWidth()
+                                            modifier = Modifier
+                                                .fillMaxWidth()
                                                 .padding(bottom = 4.dp)
                                         )
                                     } else {
@@ -253,6 +255,22 @@ fun ChatBubbleItem(
                                             textAlign = TextAlign.End
                                         )
                                     }
+                                }
+
+                                is FileDataPart -> {
+                                    Text(
+                                        text = part.uri,
+                                        style = MaterialTheme.typography.bodySmall,
+                                        textAlign = TextAlign.End,
+                                        modifier = Modifier
+                                            .background(backgroundColor.copy(
+                                                red = backgroundColor.red * 0.7f,
+                                                green = backgroundColor.green * 0.7f,
+                                                blue = backgroundColor.blue * 0.7f,
+                                            ))
+                                            .padding(4.dp)
+                                            .fillMaxWidth(),
+                                    )
                                 }
                             }
                         }
