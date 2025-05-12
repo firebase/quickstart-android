@@ -95,6 +95,23 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
+        title = "Blog post creator",
+        description = "Create a blog post from an image file.",
+        navRoute = "chat",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content {
+            fileData(
+                "https://storage.googleapis.com/cloud-samples-data/generative-ai/image/meal-prep.jpeg",
+                "image/jpeg"
+            )
+            text(
+                "Write a short, engaging blog post based on this picture." +
+                        " It should include a description of the meal in the" +
+                        " photo and talk about my journey meal prepping."
+            )
+        }
+    ),
+    Sample(
         title = "Image generation",
         description = "Generate images with the Imagen 3 model",
         navRoute = "imagen",
