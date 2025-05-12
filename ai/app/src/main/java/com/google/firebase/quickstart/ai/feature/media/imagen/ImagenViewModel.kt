@@ -38,6 +38,7 @@ class ImagenViewModel(
     private val _generatedBitmaps = MutableStateFlow(listOf<Bitmap>())
     val generatedBitmaps: StateFlow<List<Bitmap>> = _generatedBitmaps
 
+    // Firebase AI Logic
     private val imagenModel: ImagenModel
 
     init {

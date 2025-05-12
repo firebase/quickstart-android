@@ -13,18 +13,28 @@ import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.vertexai.Chat
 import com.google.firebase.vertexai.GenerativeModel
 import com.google.firebase.vertexai.type.Content
+import com.google.firebase.vertexai.type.FileDataPart
+import com.google.firebase.vertexai.type.ImagePart
+import com.google.firebase.vertexai.type.InlineDataPart
+import com.google.firebase.vertexai.type.TextPart
+import com.google.firebase.vertexai.type.content
 import com.google.firebase.vertexai.vertexAI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
 
 class ChatViewModel(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val sampleId = savedStateHandle.toRoute<ChatRoute>().sampleId
     private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
-    val initialPrompt = sample.initialPrompt?.parts?.first()?.asTextOrNull().orEmpty()
+    val initialPrompt: String =
+        sample.initialPrompt?.parts
+            ?.filterIsInstance<TextPart>()
+            ?.first()
+            ?.asTextOrNull().orEmpty()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -39,7 +49,9 @@ class ChatViewModel(
         _messages
 
     private val _attachmentsList: MutableList<Attachment> =
-        mutableStateListOf()
+        sample.initialPrompt?.parts?.filterIsInstance<FileDataPart>()?.map {
+            Attachment(it.uri)
+        }?.toMutableStateList() ?: mutableStateListOf()
     private val _attachments = MutableStateFlow<List<Attachment>>(_attachmentsList)
     val attachments: StateFlow<List<Attachment>>
         get() = _attachments
@@ -55,6 +67,15 @@ class ChatViewModel(
             systemInstruction = sample.systemInstructions
         )
         chat = generativeModel.startChat(sample.chatHistory)
+
+        // add attachments from initial prompt
+        sample.initialPrompt?.parts?.forEach { part ->
+            if (part is TextPart) {
+                /* Ignore text parts, as the text will come from the textInputField */
+            } else {
+                contentBuilder.part(part)
+            }
+        }
     }
 
     fun sendMessage(userMessage: String) {

@@ -93,4 +93,24 @@ val FIREBASE_AI_SAMPLES = listOf(
             )
         }
     ),
+    Sample(
+        title = "Document comparison",
+        description = "Compare the contents of 2 documents",
+        navRoute = "chat",
+        categories = listOf(Category.DOCUMENT),
+        initialPrompt = content {
+            fileData(
+                "https://storage.googleapis.com/cloud-samples-data/generative-ai/pdf/form_1040_2013.pdf",
+                "application/pdf"
+            )
+            fileData(
+                "https://storage.googleapis.com/cloud-samples-data/generative-ai/pdf/form_1040_2023.pdf",
+                "application/pdf"
+            )
+            text(
+                "The first document is from 2013, and the second document is" +
+                        " from 2023. How did the standard deduction evolve?"
+            )
+        }
+    )
 )
