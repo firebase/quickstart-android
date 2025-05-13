@@ -6,17 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.google.firebase.Firebase
+import com.google.firebase.ai.ImagenModel
+import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
-import com.google.firebase.vertexai.ImagenModel
-import com.google.firebase.vertexai.type.ImagenAspectRatio
-import com.google.firebase.vertexai.type.ImagenImageFormat
-import com.google.firebase.vertexai.type.ImagenPersonFilterLevel
-import com.google.firebase.vertexai.type.ImagenSafetyFilterLevel
-import com.google.firebase.vertexai.type.ImagenSafetySettings
-import com.google.firebase.vertexai.type.PublicPreviewAPI
-import com.google.firebase.vertexai.type.asTextOrNull
-import com.google.firebase.vertexai.type.imagenGenerationConfig
-import com.google.firebase.vertexai.vertexAI
+import com.google.firebase.ai.type.ImagenAspectRatio
+import com.google.firebase.ai.type.ImagenImageFormat
+import com.google.firebase.ai.type.ImagenPersonFilterLevel
+import com.google.firebase.ai.type.ImagenSafetyFilterLevel
+import com.google.firebase.ai.type.ImagenSafetySettings
+import com.google.firebase.ai.type.PublicPreviewAPI
+import com.google.firebase.ai.type.asTextOrNull
+import com.google.firebase.ai.type.imagenGenerationConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -51,7 +52,9 @@ class ImagenViewModel(
             safetyFilterLevel = ImagenSafetyFilterLevel.BLOCK_LOW_AND_ABOVE,
             personFilterLevel = ImagenPersonFilterLevel.BLOCK_ALL
         )
-        imagenModel = Firebase.vertexAI.imagenModel(
+        imagenModel = Firebase.ai(
+            backend = GenerativeBackend.vertexAI()
+        ).imagenModel(
             modelName = "imagen-3.0-generate-002",
             generationConfig = config,
             safetySettings = settings

@@ -57,11 +57,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.firebase.vertexai.type.Content
-import com.google.firebase.vertexai.type.FileDataPart
-import com.google.firebase.vertexai.type.ImagePart
-import com.google.firebase.vertexai.type.InlineDataPart
-import com.google.firebase.vertexai.type.TextPart
+import com.google.firebase.ai.type.Content
+import com.google.firebase.ai.type.FileDataPart
+import com.google.firebase.ai.type.ImagePart
+import com.google.firebase.ai.type.InlineDataPart
+import com.google.firebase.ai.type.TextPart
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 

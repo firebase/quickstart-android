@@ -8,17 +8,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.google.firebase.Firebase
-import com.google.firebase.vertexai.type.asTextOrNull
+import com.google.firebase.ai.Chat
+import com.google.firebase.ai.GenerativeModel
+import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.asTextOrNull
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
-import com.google.firebase.vertexai.Chat
-import com.google.firebase.vertexai.GenerativeModel
-import com.google.firebase.vertexai.type.Content
-import com.google.firebase.vertexai.type.FileDataPart
-import com.google.firebase.vertexai.type.ImagePart
-import com.google.firebase.vertexai.type.InlineDataPart
-import com.google.firebase.vertexai.type.TextPart
-import com.google.firebase.vertexai.type.content
-import com.google.firebase.vertexai.vertexAI
+import com.google.firebase.ai.type.Content
+import com.google.firebase.ai.type.FileDataPart
+import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.ImagePart
+import com.google.firebase.ai.type.InlineDataPart
+import com.google.firebase.ai.type.ResponseModality
+import com.google.firebase.ai.type.TextPart
+import com.google.firebase.ai.type.content
+import com.google.firebase.ai.type.generationConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOf
@@ -62,9 +65,12 @@ class ChatViewModel(
     private val chat: Chat
 
     init {
-        generativeModel = Firebase.vertexAI.generativeModel(
+        generativeModel = Firebase.ai(
+            backend = GenerativeBackend.vertexAI()
+        ).generativeModel(
             modelName = "gemini-2.0-flash",
-            systemInstruction = sample.systemInstructions
+            systemInstruction = sample.systemInstructions,
+            generationConfig = sample.generationConfig
         )
         chat = generativeModel.startChat(sample.chatHistory)
 
