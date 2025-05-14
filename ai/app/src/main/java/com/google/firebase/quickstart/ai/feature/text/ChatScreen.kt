@@ -218,43 +218,41 @@ fun ChatBubbleItem(
                             when (part) {
                                 is TextPart -> {
                                     Text(
-                                        text = part.text,
+                                        text = part.text.trimIndent(),
                                         modifier = Modifier.fillMaxWidth(),
                                         color = textColor
                                     )
                                 }
 
+                                is ImagePart -> {
+                                    Image(
+                                        bitmap = part.image.asImageBitmap(),
+                                        contentDescription = "Attached image",
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(bottom = 4.dp)
+                                    )
+                                }
+
                                 is InlineDataPart -> {
-                                    if (part.mimeType.contains("image")) {
-                                        val imageData = part.inlineData
-                                        val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
-                                        Image(
-                                            bitmap = bitmap.asImageBitmap(),
-                                            contentDescription = "Attached image",
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(bottom = 4.dp)
-                                        )
+                                    // TODO: show a human readable version of audio, PDFs and videos
+                                    val attachmentType = if (part.mimeType.contains("audio")) {
+                                        "audio attached"
+                                    } else if (part.mimeType.contains("application/pdf")) {
+                                        "PDF attached"
+                                    } else if (part.mimeType.contains("video")) {
+                                        "video"
                                     } else {
-                                        // TODO: show a human readable version of audio, PDFs and videos
-                                        val attachmentType = if (part.mimeType.contains("audio")) {
-                                            "audio attached"
-                                        } else if (part.mimeType.contains("application/pdf")) {
-                                            "PDF attached"
-                                        } else if (part.mimeType.contains("video")) {
-                                            "video"
-                                        } else {
-                                            "file attached"
-                                        }
-                                        Text(
-                                            text = "($attachmentType)",
-                                            modifier = Modifier
-                                                .padding(4.dp)
-                                                .fillMaxWidth(),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            textAlign = TextAlign.End
-                                        )
+                                        "file attached"
                                     }
+                                    Text(
+                                        text = "($attachmentType)",
+                                        modifier = Modifier
+                                            .padding(4.dp)
+                                            .fillMaxWidth(),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        textAlign = TextAlign.End
+                                    )
                                 }
 
                                 is FileDataPart -> {

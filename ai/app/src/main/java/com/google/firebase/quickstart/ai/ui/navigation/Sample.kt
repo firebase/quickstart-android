@@ -23,6 +23,7 @@ data class Sample(
     val navRoute: String,
     val categories: List<Category>,
     // Optional parameters
+    val modelName: String? = null,
     val initialPrompt: Content? = null,
     val systemInstructions: Content? = null,
     val generationConfig: GenerationConfig? = null,

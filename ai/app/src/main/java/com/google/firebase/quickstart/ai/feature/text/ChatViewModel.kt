@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.text
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.SavedStateHandle
@@ -68,7 +69,7 @@ class ChatViewModel(
         generativeModel = Firebase.ai(
             backend = GenerativeBackend.vertexAI()
         ).generativeModel(
-            modelName = "gemini-2.0-flash",
+            modelName = sample.modelName ?: "gemini-2.0-flash",
             systemInstruction = sample.systemInstructions,
             generationConfig = sample.generationConfig
         )
@@ -112,7 +113,15 @@ class ChatViewModel(
         mimeType: String?,
         fileName: String? = "Unnamed file"
     ) {
-        contentBuilder.inlineData(fileInBytes, mimeType ?: "text/plain")
+        if (mimeType?.contains("image") == true) {
+            // images should be attached as ImageParts
+            contentBuilder.image(decodeBitmapFromImage(fileInBytes))
+        } else {
+            contentBuilder.inlineData(fileInBytes, mimeType ?: "text/plain")
+        }
         _attachmentsList.add(Attachment(fileName ?: "Unnamed file"))
     }
+
+    private fun decodeBitmapFromImage(input: ByteArray) =
+        BitmapFactory.decodeByteArray(input, 0, input.size)
 }

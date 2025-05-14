@@ -1,6 +1,8 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
-import com.google.firebase.vertexai.type.content
+import com.google.firebase.ai.type.ResponseModality
+import com.google.firebase.ai.type.content
+import com.google.firebase.ai.type.generationConfig
 
 val FIREBASE_AI_SAMPLES = listOf(
     Sample(
@@ -112,15 +114,31 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Image generation",
-        description = "Generate images with the Imagen 3 model",
+        title = "Imagen 3 - image generation",
+        description = "Generate images using Imagen 3",
         navRoute = "imagen",
         categories = listOf(Category.IMAGE),
         initialPrompt = content {
             text(
-                "Generate a comicbook style image of" +
-                        " Tower bridge with cherry blossoms around"
+                "A photo of a modern building with water in the background"
             )
+        }
+    ),
+    Sample(
+        title = "Gemini 2.0 Flash - image generation",
+        description = "Generate and/or edit images using Gemini 2.0 Flash",
+        navRoute = "chat",
+        categories = listOf(Category.IMAGE),
+        modelName = "gemini-2.0-flash-preview-image-generation",
+        initialPrompt = content {
+            text(
+                "Hi, can you create a 3d rendered image of a pig " +
+                        "with wings and a top hat flying over a happy " +
+                        "futuristic scifi city with lots of greenery?"
+            )
+        },
+        generationConfig = generationConfig {
+            responseModalities = listOf(ResponseModality.TEXT, ResponseModality.IMAGE)
         }
     ),
     Sample(
