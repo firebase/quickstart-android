@@ -53,7 +53,7 @@ class ImagenViewModel(
             personFilterLevel = ImagenPersonFilterLevel.BLOCK_ALL
         )
         imagenModel = Firebase.ai(
-            backend = GenerativeBackend.vertexAI()
+            backend = GenerativeBackend.googleAI()
         ).imagenModel(
             modelName = "imagen-3.0-generate-002",
             generationConfig = config,

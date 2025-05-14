@@ -62,12 +62,11 @@ class ChatViewModel(
 
     // Firebase AI Logic
     private var contentBuilder = Content.Builder()
-    private val generativeModel: GenerativeModel
     private val chat: Chat
 
     init {
-        generativeModel = Firebase.ai(
-            backend = GenerativeBackend.vertexAI()
+        val generativeModel = Firebase.ai(
+            backend = GenerativeBackend.googleAI()
         ).generativeModel(
             modelName = sample.modelName ?: "gemini-2.0-flash",
             systemInstruction = sample.systemInstructions,
