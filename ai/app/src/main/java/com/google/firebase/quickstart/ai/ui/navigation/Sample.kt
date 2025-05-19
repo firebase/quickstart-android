@@ -11,9 +11,7 @@ enum class Category(
     IMAGE("Image"),
     VIDEO("Video"),
     AUDIO("Audio"),
-    DOCUMENT("Document"),
-    FUNCTION_CALL("Function calling"),
-    STREAM_REALTIME("Stream realtime"),
+    DOCUMENT("Document")
 }
 
 data class Sample(
