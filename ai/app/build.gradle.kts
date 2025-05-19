@@ -62,9 +62,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
-    implementation("com.google.firebase:firebase-ai:16.0.0-SNAPSHOT")
-//    implementation("com.google.firebase:firebase-vertexai")
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
+    implementation("com.google.firebase:firebase-ai")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
