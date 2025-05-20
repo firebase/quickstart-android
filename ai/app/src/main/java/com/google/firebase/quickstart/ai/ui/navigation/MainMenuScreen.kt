@@ -124,12 +124,10 @@ fun SampleItem(
                 .fillMaxSize()
         ) {
             Text(
-//                text = stringResource(menuItem.titleResId),
                 text = titleResId,
                 style = MaterialTheme.typography.labelLarge
             )
             Text(
-//                text = stringResource(menuItem.descriptionResId),
                 text = descriptionResId,
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 8.dp)
