@@ -128,18 +128,6 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Imagen 4 - image generation",
-        description = "Generate images using Imagen 4 in Vertex AI",
-        navRoute = "imagen",
-        categories = listOf(Category.IMAGE),
-        modelName = "imagen-4-0-generate-preview-05-20",
-        initialPrompt = content {
-            text(
-                "A photo of a modern building with water in the background"
-            )
-        }
-    ),
-    Sample(
         title = "Gemini 2.0 Flash - image generation",
         description = "Generate and/or edit images using Gemini 2.0 Flash",
         navRoute = "chat",
