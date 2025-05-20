@@ -9,8 +9,8 @@ import com.google.firebase.quickstart.ai.ui.navigation.Sample
 val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Travel tips",
-        description = "The user wants the model to help a new traveler with" +
-                " travel tips for traveling.",
+        description = "The user wants the model to help a new traveler" +
+                " with travel tips",
         navRoute = "chat",
         categories = listOf(Category.TEXT),
         systemInstructions = content {
