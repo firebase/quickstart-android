@@ -7,7 +7,7 @@ pluginManagement {
 }
 
 include(":admob:app",
-        ":ai:app",
+        ":firebase-ai:app",
         ":analytics:app",
         ":appdistribution:app",
         ":auth:app",
