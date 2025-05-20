@@ -2,6 +2,7 @@
 agp = "8.9.0"
 coilCompose = "2.7.0"
 firebaseAuth = "23.2.0"
+firebaseBom = "33.14.0"
 firebaseDataConnect = "16.0.0-beta04"
 kotlin = "2.1.10"
 coreKtx = "1.13.1"
@@ -9,7 +10,7 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 kotlinxSerializationCore = "1.8.0"
-lifecycle = "2.8.7"
+lifecycle = "2.9.0"
 activityCompose = "1.10.1"
 composeBom = "2025.02.00"
 googleServices = "4.4.2"
@@ -19,10 +20,14 @@ composeNavigation = "2.8.9"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-compose-android = { module = "androidx.lifecycle:lifecycle-runtime-compose-android", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-material3-adaptive-navigation-suite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+firebase-ai = { module = "com.google.firebase:firebase-ai" }
 firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-dataconnect = { module = "com.google.firebase:firebase-dataconnect", version.ref = "firebaseDataConnect" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
