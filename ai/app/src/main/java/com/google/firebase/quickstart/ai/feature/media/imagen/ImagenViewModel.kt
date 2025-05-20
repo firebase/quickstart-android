@@ -55,7 +55,7 @@ class ImagenViewModel(
         imagenModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).imagenModel(
-            modelName = "imagen-3.0-generate-002",
+            modelName = sample.modelName ?: "imagen-3.0-generate-002",
             generationConfig = config,
             safetySettings = settings
         )
