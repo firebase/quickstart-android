@@ -1,6 +1,7 @@
 package com.google.firebase.example.dataconnect.ui.components
 
 import android.os.Build
+import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,12 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.firebase.dataconnect.LocalDate
 import com.google.firebase.dataconnect.toJavaLocalDate
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+
 
 @Composable
 fun ReviewCard(
@@ -54,22 +57,22 @@ fun ReviewCard(
             ) {
                 Text(
                     text =
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        val dateFormatter = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.getDefault())
-                        date.toJavaLocalDate().format(dateFormatter)
-                    } else {
-                        val parseableDateString = date.run {
-                            val year = "$year".padStart(4, '0')
-                            val month = "$month".padStart(2, '0')
-                            val day = "$day".padStart(2, '0')
-                            "$year-$month-$day"
-                        }
-                        val dateParser = SimpleDateFormat("y-M-d", Locale.US)
-                        val parsedDate = dateParser.parse(parseableDateString)
-                            ?: throw Exception("INTERNAL ERROR: unparseable date string: $parseableDateString")
-                        val dateFormatter = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
-                        dateFormatter.format(parsedDate)
-                    },
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            val dateFormatter = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.getDefault())
+                            date.toJavaLocalDate().format(dateFormatter)
+                        } else {
+                            val parseableDateString = date.run {
+                                val year = "$year".padStart(4, '0')
+                                val month = "$month".padStart(2, '0')
+                                val day = "$day".padStart(2, '0')
+                                "$year-$month-$day"
+                            }
+                            val dateParser = SimpleDateFormat("y-M-d", Locale.US)
+                            val parsedDate = dateParser.parse(parseableDateString) ?:
+                              throw Exception("INTERNAL ERROR: unparseable date string: $parseableDateString")
+                            val dateFormatter = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
+                            dateFormatter.format(parsedDate)
+                        },
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.width(8.dp))

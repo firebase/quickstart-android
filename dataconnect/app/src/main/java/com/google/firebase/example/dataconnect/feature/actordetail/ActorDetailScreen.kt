@@ -1,8 +1,11 @@
 package com.google.firebase.example.dataconnect.feature.actordetail
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -30,6 +33,7 @@ import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.Movie
 import com.google.firebase.example.dataconnect.ui.components.MoviesList
 import kotlinx.serialization.Serializable
+
 
 @Serializable
 data class ActorDetailRoute(val actorId: String)
@@ -65,7 +69,7 @@ fun ActorDetailScreen(
                         .verticalScroll(scrollState)
                 ) {
                     ActorInformation(
-                        actor = uiState.actor
+                        actor = uiState.actor,
                     )
                     MoviesList(
                         listTitle = stringResource(R.string.title_main_roles),
@@ -84,6 +88,7 @@ fun ActorDetailScreen(
                     )
                 }
             }
+
         }
     }
 }

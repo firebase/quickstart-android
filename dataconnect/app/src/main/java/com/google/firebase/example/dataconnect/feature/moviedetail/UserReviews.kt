@@ -45,7 +45,7 @@ fun UserReviews(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var rating by remember { mutableFloatStateOf(5f) }
-        Text("Rating: $rating")
+        Text("Rating: ${rating}")
         Slider(
             value = rating,
             onValueChange = { rating = Math.round(it).toFloat() },
@@ -86,7 +86,7 @@ fun UserReviews(
                 userName = it.user.username,
                 date = it.reviewDate,
                 rating = it.rating?.toDouble() ?: 0.0,
-                text = it.reviewText ?: ""
+                text = it.reviewText ?: "",
             )
         }
     }

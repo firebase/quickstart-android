@@ -100,7 +100,7 @@ fun ActorTile(
                 text = actor.name,
                 style = MaterialTheme.typography.bodyLarge,
                 maxLines = 2,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }

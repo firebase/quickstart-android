@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AuthScreen(
     onSignUp: (email: String, password: String, displayName: String) -> Unit,
-    onSignIn: (email: String, password: String) -> Unit
+    onSignIn: (email: String, password: String) -> Unit,
 ) {
     var isSignUp by remember { mutableStateOf(false) }
     var email by remember { mutableStateOf("") }
