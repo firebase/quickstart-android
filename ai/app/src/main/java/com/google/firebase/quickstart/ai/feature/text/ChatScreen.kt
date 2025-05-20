@@ -1,7 +1,6 @@
 package com.google.firebase.quickstart.ai.feature.text
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.text.format.Formatter
@@ -19,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -261,19 +259,20 @@ fun ChatBubbleItem(
                                         style = MaterialTheme.typography.bodySmall,
                                         textAlign = TextAlign.End,
                                         modifier = Modifier
-                                            .background(backgroundColor.copy(
-                                                red = backgroundColor.red * 0.7f,
-                                                green = backgroundColor.green * 0.7f,
-                                                blue = backgroundColor.blue * 0.7f,
-                                            ))
+                                            .background(
+                                                backgroundColor.copy(
+                                                    red = backgroundColor.red * 0.7f,
+                                                    green = backgroundColor.green * 0.7f,
+                                                    blue = backgroundColor.blue * 0.7f
+                                                )
+                                            )
                                             .padding(4.dp)
-                                            .fillMaxWidth(),
+                                            .fillMaxWidth()
                                     )
                                 }
                             }
                         }
                     }
-
                 }
             }
         }
@@ -360,7 +359,6 @@ fun MessageInput(
         }
     }
 }
-
 
 @Composable
 fun AttachmentsMenu(

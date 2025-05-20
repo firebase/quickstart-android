@@ -10,18 +10,18 @@ import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.ai.Chat
 import com.google.firebase.ai.ai
-import com.google.firebase.ai.type.asTextOrNull
-import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.FileDataPart
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.TextPart
+import com.google.firebase.ai.type.asTextOrNull
+import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class ChatViewModel(
-    savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     private val sampleId = savedStateHandle.toRoute<ChatRoute>().sampleId
     private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }

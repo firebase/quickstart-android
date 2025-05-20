@@ -1,29 +1,23 @@
 package com.google.firebase.example.dataconnect.feature.profile
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.dataconnect.movies.GetCurrentUserQuery
 import com.google.firebase.example.dataconnect.R
-import com.google.firebase.example.dataconnect.ui.components.Actor
-import com.google.firebase.example.dataconnect.ui.components.ActorsList
 import com.google.firebase.example.dataconnect.ui.components.ErrorCard
 import com.google.firebase.example.dataconnect.ui.components.LoadingScreen
 import com.google.firebase.example.dataconnect.ui.components.Movie
@@ -37,7 +31,7 @@ object ProfileRoute
 @Composable
 fun ProfileScreen(
     profileViewModel: ProfileViewModel = viewModel(),
-    onMovieClicked: (String) -> Unit,
+    onMovieClicked: (String) -> Unit
 ) {
     val uiState by profileViewModel.uiState.collectAsState()
     when (uiState) {

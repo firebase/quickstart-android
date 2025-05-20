@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = MoviesRoute,
                         Modifier
                             .padding(innerPadding)
-                            .consumeWindowInsets(innerPadding),
+                            .consumeWindowInsets(innerPadding)
                     ) {
                         composable<MoviesRoute>() {
                             MoviesScreen(
@@ -120,14 +120,16 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         searchScreen()
-                        composable<ProfileRoute> { ProfileScreen(
-                            onMovieClicked = { movieId ->
-                                navController.navigate(
-                                    MovieDetailRoute(movieId),
-                                    { launchSingleTop = true }
-                                )
-                            }
-                        ) }
+                        composable<ProfileRoute> {
+                            ProfileScreen(
+                                onMovieClicked = { movieId ->
+                                    navController.navigate(
+                                        MovieDetailRoute(movieId),
+                                        { launchSingleTop = true }
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }

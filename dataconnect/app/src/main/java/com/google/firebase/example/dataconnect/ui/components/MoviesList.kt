@@ -77,7 +77,7 @@ fun MovieTile(
             .sizeIn(maxWidth = tileWidth)
             .clickable {
                 onMovieClicked(movie.id)
-            },
+            }
     ) {
         AsyncImage(
             model = movie.imageUrl,

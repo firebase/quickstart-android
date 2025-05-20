@@ -25,5 +25,5 @@ data class Sample(
     val initialPrompt: Content? = null,
     val systemInstructions: Content? = null,
     val generationConfig: GenerationConfig? = null,
-    val chatHistory: List<Content> = emptyList(),
+    val chatHistory: List<Content> = emptyList()
 )
