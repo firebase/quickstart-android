@@ -92,7 +92,8 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.AUDIO),
         initialPrompt = content {
             fileData(
-                "https://storage.googleapis.com/cloud-samples-data/generative-ai/audio/How_to_create_a_My_Map_in_Google_Maps.mp3",
+                "https://storage.googleapis.com/cloud-samples-data/generative-ai/audio/" +
+                        "How_to_create_a_My_Map_in_Google_Maps.mp3",
                 "audio/mpeg"
             )
             text("Please translate the audio to Mandarin.")
