@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .createSignInIntentBuilder()
                 .setAvailableProviders(Collections.singletonList(
                         new AuthUI.IdpConfig.EmailBuilder().build()))
-                .setIsSmartLockEnabled(false)
+                .setCredentialManagerEnabled(false)
                 .build();
 
         signInLauncher.launch(signInIntent);

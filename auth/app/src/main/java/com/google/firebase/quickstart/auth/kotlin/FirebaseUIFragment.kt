@@ -71,7 +71,7 @@ class FirebaseUIFragment : Fragment() {
 
     private fun startSignIn() {
         val intent = AuthUI.getInstance().createSignInIntentBuilder()
-            .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+            .setCredentialManagerEnabled(!BuildConfig.DEBUG)
             .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
             .setLogo(R.mipmap.ic_launcher)
             .build()

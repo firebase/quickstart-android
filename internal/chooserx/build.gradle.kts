@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace = "com.firebase.example.internal"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 16
-        targetSdk = 35
+        targetSdk = 36
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

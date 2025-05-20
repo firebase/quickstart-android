@@ -276,7 +276,7 @@ public class MainFragment extends Fragment implements
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(Collections.singletonList(
                         new AuthUI.IdpConfig.EmailBuilder().build()))
-                .setIsSmartLockEnabled(false)
+                .setCredentialManagerEnabled(false)
                 .build();
 
         signinLauncher.launch(intent);

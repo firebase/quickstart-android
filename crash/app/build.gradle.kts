@@ -13,12 +13,12 @@ tasks {
 
 android {
     namespace = "com.google.samples.quickstart.crash"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.google.samples.quickstart.crash"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -56,7 +56,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.10.1")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.10.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
 
     // Firebase Crashlytics
     implementation("com.google.firebase:firebase-crashlytics")
