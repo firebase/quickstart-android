@@ -9,7 +9,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
-import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
+import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 import com.google.firebase.ai.type.ImagenAspectRatio
 import com.google.firebase.ai.type.ImagenImageFormat
 import com.google.firebase.ai.type.ImagenPersonFilterLevel

@@ -1,8 +1,10 @@
-package com.google.firebase.quickstart.ai.ui.navigation
+package com.google.firebase.quickstart.ai
 
 import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
+import com.google.firebase.quickstart.ai.ui.navigation.Category
+import com.google.firebase.quickstart.ai.ui.navigation.Sample
 
 val FIREBASE_AI_SAMPLES = listOf(
     Sample(
@@ -118,6 +120,18 @@ val FIREBASE_AI_SAMPLES = listOf(
         description = "Generate images using Imagen 3",
         navRoute = "imagen",
         categories = listOf(Category.IMAGE),
+        initialPrompt = content {
+            text(
+                "A photo of a modern building with water in the background"
+            )
+        }
+    ),
+    Sample(
+        title = "Imagen 4 - image generation",
+        description = "Generate images using Imagen 4 in Vertex AI",
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        modelName = "imagen-4-0-generate-preview-05-20",
         initialPrompt = content {
             text(
                 "A photo of a modern building with water in the background"

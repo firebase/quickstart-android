@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.ai.feature.text
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.toMutableStateList
@@ -10,24 +9,16 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.ai.Chat
-import com.google.firebase.ai.GenerativeModel
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.asTextOrNull
-import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
+import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.FileDataPart
 import com.google.firebase.ai.type.GenerativeBackend
-import com.google.firebase.ai.type.ImagePart
-import com.google.firebase.ai.type.InlineDataPart
-import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.TextPart
-import com.google.firebase.ai.type.content
-import com.google.firebase.ai.type.generationConfig
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import org.w3c.dom.Text
 
 class ChatViewModel(
     savedStateHandle: SavedStateHandle,
