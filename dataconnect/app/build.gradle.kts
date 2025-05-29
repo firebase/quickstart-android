@@ -70,10 +70,17 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose.android)
     implementation(libs.coil.compose)
 
-    // Firebase dependencies
-    implementation(libs.firebase.auth)
-    implementation(libs.firebase.dataconnect)
+    // Data Connect dependencies
     implementation(libs.kotlinx.serialization.core)
+
+    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
+    implementation(platform(libs.firebase.bom))
+
+    // Data Connect
+    implementation("com.google.firebase:firebase-dataconnect")
+
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
