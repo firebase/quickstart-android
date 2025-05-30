@@ -1,4 +1,4 @@
-specVersion: "v1beta"
+specVersion: "v1"
 serviceId: "dataconnect"
 location: "us-central1"
 schema:
