@@ -1,11 +1,16 @@
 package com.google.samples.quickstart.functions.java;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.pm.PackageManager;
 import android.os.Build;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -39,13 +44,17 @@ public class FunctionsMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            NotificationManagerCompat manager = NotificationManagerCompat.from(this);
-            Notification notification = new NotificationCompat.Builder(this, "Messages")
-                    .setContentText(remoteMessage.getData().get("text"))
-                    .setContentTitle("New message")
-                    .setSmallIcon(R.drawable.ic_stat_notification)
-                    .build();
-            manager.notify(0, notification);
+            // Check if permission to post notifications has been granted
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                NotificationManagerCompat manager = NotificationManagerCompat.from(this);
+                Notification notification = new NotificationCompat.Builder(this, "Messages")
+                        .setContentText(remoteMessage.getData().get("text"))
+                        .setContentTitle("New message")
+                        .setSmallIcon(R.drawable.ic_stat_notification)
+                        .build();
+                manager.notify(0, notification);
+            }
         }
     }
 }
