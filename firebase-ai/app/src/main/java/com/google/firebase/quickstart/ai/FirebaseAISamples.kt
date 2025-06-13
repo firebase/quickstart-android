@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.ai
 
+import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
@@ -86,10 +87,11 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Translation from audio",
-        description = "Translate an audio file",
+        title = "Translation from audio (Vertex AI)",
+        description = "Translate an audio file stored in Cloud Storage",
         navRoute = "chat",
         categories = listOf(Category.AUDIO),
+        backend = GenerativeBackend.vertexAI(),
         initialPrompt = content {
             fileData(
                 "https://storage.googleapis.com/cloud-samples-data/generative-ai/audio/" +
@@ -100,10 +102,11 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Blog post creator",
-        description = "Create a blog post from an image file.",
+        title = "Blog post creator (Vertex AI)",
+        description = "Create a blog post from an image file stored in Cloud Storage.",
         navRoute = "chat",
         categories = listOf(Category.IMAGE),
+        backend = GenerativeBackend.vertexAI(),
         initialPrompt = content {
             fileData(
                 "https://storage.googleapis.com/cloud-samples-data/generative-ai/image/meal-prep.jpeg",
@@ -145,10 +148,12 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Document comparison",
-        description = "Compare the contents of 2 documents",
+        title = "Document comparison (Vertex AI)",
+        description = "Compare the contents of 2 documents." +
+                " Only supported by the Vertex AI Gemini API because the documents are stored in Cloud Storage",
         navRoute = "chat",
         categories = listOf(Category.DOCUMENT),
+        backend = GenerativeBackend.vertexAI(),
         initialPrompt = content {
             fileData(
                 "https://storage.googleapis.com/cloud-samples-data/generative-ai/pdf/form_1040_2013.pdf",
@@ -165,10 +170,11 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Hashtags for a video",
-        description = "Generate hashtags for a video ad",
+        title = "Hashtags for a video (Vertex AI)",
+        description = "Generate hashtags for a video ad stored in Cloud Storage",
         navRoute = "chat",
         categories = listOf(Category.VIDEO),
+        backend = GenerativeBackend.vertexAI(),
         initialPrompt = content {
             fileData(
                 "https://storage.googleapis.com/cloud-samples-data/generative-ai/video/google_home_celebrity_ad.mp4",

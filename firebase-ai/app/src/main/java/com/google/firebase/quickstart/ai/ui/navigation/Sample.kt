@@ -2,6 +2,7 @@ package com.google.firebase.quickstart.ai.ui.navigation
 
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.GenerationConfig
+import com.google.firebase.ai.type.GenerativeBackend
 import java.util.UUID
 
 enum class Category(
@@ -22,6 +23,7 @@ data class Sample(
     val categories: List<Category>,
     // Optional parameters
     val modelName: String? = null,
+    val backend: GenerativeBackend = GenerativeBackend.googleAI(),
     val initialPrompt: Content? = null,
     val systemInstructions: Content? = null,
     val generationConfig: GenerationConfig? = null,
