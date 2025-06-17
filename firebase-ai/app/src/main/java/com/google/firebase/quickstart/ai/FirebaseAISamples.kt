@@ -2,8 +2,10 @@ package com.google.firebase.quickstart.ai
 
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ResponseModality
+import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
+import com.google.firebase.quickstart.ai.feature.text.functioncalling.fetchWeatherTool
 import com.google.firebase.quickstart.ai.ui.navigation.Category
 import com.google.firebase.quickstart.ai.ui.navigation.Sample
 
@@ -209,5 +211,16 @@ val FIREBASE_AI_SAMPLES = listOf(
                     " anything important which people say in the video."
             )
         }
-    )
+    ),
+    Sample(
+        title = "Weather Chat",
+        description = "Use function calling to get the weather conditions" +
+                " for a specific US city on a specific date.",
+        navRoute = "chat",
+        categories = listOf(Category.TEXT, Category.FUNCTION_CALLING),
+        tools = listOf(Tool.functionDeclarations(listOf(fetchWeatherTool))),
+        initialPrompt = content {
+            text("What was the weather in Boston, MA on October 17, 2024?")
+        }
+    ),
 )
