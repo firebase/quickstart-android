@@ -3,6 +3,7 @@ package com.google.firebase.quickstart.ai.ui.navigation
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.GenerationConfig
 import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.Tool
 import java.util.UUID
 
 enum class Category(
@@ -12,7 +13,8 @@ enum class Category(
     IMAGE("Image"),
     VIDEO("Video"),
     AUDIO("Audio"),
-    DOCUMENT("Document")
+    DOCUMENT("Document"),
+    FUNCTION_CALLING("Function calling"),
 }
 
 data class Sample(
@@ -27,5 +29,6 @@ data class Sample(
     val initialPrompt: Content? = null,
     val systemInstructions: Content? = null,
     val generationConfig: GenerationConfig? = null,
-    val chatHistory: List<Content> = emptyList()
+    val chatHistory: List<Content> = emptyList(),
+    val tools: List<Tool>? = null
 )

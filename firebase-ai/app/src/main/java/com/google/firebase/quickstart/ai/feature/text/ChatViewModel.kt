@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.text
 
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.SavedStateHandle
@@ -12,13 +13,17 @@ import com.google.firebase.ai.Chat
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.FileDataPart
-import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.FunctionResponsePart
+import com.google.firebase.ai.type.GenerateContentResponse
 import com.google.firebase.ai.type.TextPart
 import com.google.firebase.ai.type.asTextOrNull
+import com.google.firebase.ai.type.content
 import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
+import com.google.firebase.quickstart.ai.feature.text.functioncalling.WeatherRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.jsonPrimitive
 
 class ChatViewModel(
     savedStateHandle: SavedStateHandle
@@ -61,7 +66,8 @@ class ChatViewModel(
         ).generativeModel(
             modelName = sample.modelName ?: "gemini-2.5-flash",
             systemInstruction = sample.systemInstructions,
-            generationConfig = sample.generationConfig
+            generationConfig = sample.generationConfig,
+            tools = sample.tools
         )
         chat = generativeModel.startChat(sample.chatHistory)
 
@@ -86,7 +92,15 @@ class ChatViewModel(
             _isLoading.value = true
             try {
                 val response = chat.sendMessage(prompt)
-                _messageList.add(response.candidates.first().content)
+                if (response.functionCalls.isEmpty()) {
+                    // Samples without function calling can simply display
+                    // the response in the UI
+                    _messageList.add(response.candidates.first().content)
+                } else {
+                    // Samples WITH function calling need to perform
+                    // additional handling
+                    handleFunctionCalls(response)
+                }
                 _errorMessage.value = null // clear errors
             } catch (e: Exception) {
                 _errorMessage.value = e.localizedMessage
@@ -110,6 +124,47 @@ class ChatViewModel(
             contentBuilder.inlineData(fileInBytes, mimeType ?: "text/plain")
         }
         _attachmentsList.add(Attachment(fileName ?: "Unnamed file"))
+    }
+
+    /**
+     * Only used by samples with function calling
+     */
+    private suspend fun handleFunctionCalls(
+        response: GenerateContentResponse
+    ) {
+        response.functionCalls.forEach { functionCall ->
+            Log.d(
+                "ChatViewModel", "Model responded with function call:" +
+                        functionCall.name
+            )
+            when (functionCall.name) {
+                "fetchWeather" -> {
+                    // Handle the call to fetchWeather()
+                    val city = functionCall.args["city"]!!.jsonPrimitive.content
+                    val state = functionCall.args["city"]!!.jsonPrimitive.content
+                    val date = functionCall.args["date"]!!.jsonPrimitive.content
+
+                    val functionResponse = WeatherRepository
+                        .fetchWeather(city, state, date)
+
+                    // Send the response(s) from the function back to the model
+                    // so that the model can use it to generate its final response.
+                    val finalResponse = chat.sendMessage(content("function") {
+                        part(FunctionResponsePart("fetchWeather", functionResponse))
+                    })
+
+                    Log.d("ChatViewModel", "Model responded with: ${finalResponse.text}")
+                    _messageList.add(finalResponse.candidates.first().content)
+                }
+
+                else -> {
+                    Log.d(
+                        "ChatViewModel", "Model responded with unknown" +
+                                " function call: ${functionCall.name}"
+                    )
+                }
+            }
+        }
     }
 
     private fun decodeBitmapFromImage(input: ByteArray) =
