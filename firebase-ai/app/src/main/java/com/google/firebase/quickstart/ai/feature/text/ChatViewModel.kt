@@ -59,7 +59,7 @@ class ChatViewModel(
         val generativeModel = Firebase.ai(
             backend = sample.backend // GenerativeBackend.googleAI() by default
         ).generativeModel(
-            modelName = sample.modelName ?: "gemini-2.0-flash",
+            modelName = sample.modelName ?: "gemini-2.5-flash",
             systemInstruction = sample.systemInstructions,
             generationConfig = sample.generationConfig
         )
