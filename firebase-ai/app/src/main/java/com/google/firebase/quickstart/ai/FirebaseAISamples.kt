@@ -209,5 +209,12 @@ val FIREBASE_AI_SAMPLES = listOf(
                     " anything important which people say in the video."
             )
         }
+    ),
+    Sample(
+        title = "Live API",
+        description = "Bidirectional streaming",
+        navRoute = "stream",
+        categories = listOf(Category.AUDIO),
+        backend = GenerativeBackend.vertexAI()
     )
 )
