@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.ai
 
 import com.google.firebase.ai.type.ResponseModality
+import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
 import com.google.firebase.quickstart.ai.ui.navigation.Category
@@ -203,5 +204,18 @@ val FIREBASE_AI_SAMPLES = listOf(
                     " anything important which people say in the video."
             )
         }
+    ),
+    Sample(
+        title = "Grounding with Google Search",
+        description = "Use Grounding with Google Search to get responses based on up-to-date information from the web.",
+        navRoute = "chat",
+        categories = listOf(Category.TEXT, Category.DOCUMENT),
+        modelName = "gemini-2.5-flash",
+        tools = listOf(Tool.googleSearch()),
+        initialPrompt = content {
+            text(
+                "What's the weather in Chicago this weekend?"
+            )
+        },
     )
 )

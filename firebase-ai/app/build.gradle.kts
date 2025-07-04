@@ -61,6 +61,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.kotlinx.serialization.json)
 
+    // Material
+    implementation(libs.material)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.ai)
@@ -72,4 +75,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Webkit
+    implementation(libs.androidx.webkit)
 }

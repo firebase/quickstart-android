@@ -13,12 +13,21 @@ import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.FileDataPart
 import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.GroundingMetadata
 import com.google.firebase.ai.type.TextPart
 import com.google.firebase.ai.type.asTextOrNull
 import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
+/**
+ * A wrapper for a model [Content] object that includes additional UI-specific metadata.
+ */
+data class UiChatMessage(
+    val content: Content,
+    val groundingMetadata: GroundingMetadata? = null,
+)
 
 class ChatViewModel(
     savedStateHandle: SavedStateHandle
@@ -37,10 +46,10 @@ class ChatViewModel(
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
 
-    private val _messageList: MutableList<Content> =
-        sample.chatHistory.toMutableStateList()
-    private val _messages = MutableStateFlow<List<Content>>(_messageList)
-    val messages: StateFlow<List<Content>> =
+    private val _messageList: MutableList<UiChatMessage> =
+        sample.chatHistory.map { UiChatMessage(it) }.toMutableStateList()
+    private val _messages = MutableStateFlow<List<UiChatMessage>>(_messageList)
+    val messages: StateFlow<List<UiChatMessage>> =
         _messages
 
     private val _attachmentsList: MutableList<Attachment> =
@@ -61,7 +70,8 @@ class ChatViewModel(
         ).generativeModel(
             modelName = sample.modelName ?: "gemini-2.0-flash",
             systemInstruction = sample.systemInstructions,
-            generationConfig = sample.generationConfig
+            generationConfig = sample.generationConfig,
+            tools = sample.tools
         )
         chat = generativeModel.startChat(sample.chatHistory)
 
@@ -80,14 +90,26 @@ class ChatViewModel(
             .text(userMessage)
             .build()
 
-        _messageList.add(prompt)
+        _messageList.add(UiChatMessage(prompt))
 
         viewModelScope.launch {
             _isLoading.value = true
             try {
                 val response = chat.sendMessage(prompt)
-                _messageList.add(response.candidates.first().content)
-                _errorMessage.value = null // clear errors
+                val candidate = response.candidates.first()
+
+                // Compliance check for grounding
+                if (candidate.groundingMetadata != null
+                    && candidate.groundingMetadata?.groundingChunks?.isNotEmpty() == true
+                    && candidate.groundingMetadata?.searchEntryPoint == null) {
+                    _errorMessage.value =
+                        "Could not display the response because it was missing required attribution components."
+                } else {
+                    _messageList.add(
+                        UiChatMessage(candidate.content, candidate.groundingMetadata)
+                    )
+                    _errorMessage.value = null // clear errors
+                }
             } catch (e: Exception) {
                 _errorMessage.value = e.localizedMessage
             } finally {
