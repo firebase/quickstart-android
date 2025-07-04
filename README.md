@@ -17,6 +17,7 @@ the generated `google-services.json` file, and copy it to the `app/` directory o
 the sample you wish to run.
 
 - [Admob](admob/README.md)
+- [Firebase AI Logic](firebase-ai/README.md)
 - [Analytics](analytics/README.md)
 - [App Distribution](appdistribution/README.md)
 - [App-Indexing](app-indexing/README.md)
@@ -35,7 +36,6 @@ the sample you wish to run.
 - [ML Kit Translate](mlkit-translate/README.md)
 - [Performance Monitoring](perf/README.md)
 - [Storage](storage/README.md)
-- [Vertex AI](vertexai/README.md)
 
 ## How to make contributions?
 Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
