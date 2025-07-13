@@ -21,9 +21,20 @@ include(":admob:app",
         ":internal:chooserx",
         ":internal:lint",
         ":internal:lintchecks",
-        ":inappmessaging:app",
-        ":messaging:app",
+      ":messaging:app",
         ":perf:app",
         ":storage:app",
-        ":vertexai:app"
-)
+        ":vertexai:app"    
+        ":settings.gradle.kts".
+
+
+
+
+
+
+
+
+
+
+
+
