@@ -1,9 +1,14 @@
 package com.google.firebase.quickstart.ai
 
 import android.graphics.Bitmap
+import com.google.firebase.ai.ImagenModel
+import com.google.firebase.ai.type.Dimensions
 import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ImagenBackgroundMask
+import com.google.firebase.ai.type.ImagenEditMode
+import com.google.firebase.ai.type.ImagenEditingConfig
+import com.google.firebase.ai.type.ImagenMaskReference
 import com.google.firebase.ai.type.ImagenRawImage
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.ResponseModality
@@ -152,9 +157,35 @@ val FIREBASE_AI_SAMPLES = listOf(
             )
         },
         includeAttach = true,
-        bundleReferenceImages = {string: String, bitmap: Bitmap? ->
-                listOf(ImagenRawImage(bitmap!!.toImagenInlineImage()), ImagenBackgroundMask())
-            }
+        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap? ->
+            model.editImage(
+                listOf(ImagenRawImage(bitmap!!.toImagenInlineImage()), ImagenBackgroundMask()),
+                inputText,
+                ImagenEditingConfig(ImagenEditMode.INPAINT_INSERTION)
+            )
+        }
+    ),
+    Sample(
+        title = "Imagen 3 - Outpainting",
+        description = "Expand an image by drawing in more background",
+        modelName= "imagen-3.0-capability-001",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content {
+            text(
+                ""
+            )
+        },
+        includeAttach = true,
+        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap? ->
+            val dimensions = Dimensions(bitmap!!.width * 2, bitmap.height * 2)
+            model.editImage(
+                ImagenMaskReference.generateMaskAndPadForOutpainting(bitmap.toImagenInlineImage(), dimensions),
+                inputText,
+                ImagenEditingConfig(ImagenEditMode.OUTPAINT)
+            )
+        }
     ),
     Sample(
         title = "Gemini 2.0 Flash - image generation",

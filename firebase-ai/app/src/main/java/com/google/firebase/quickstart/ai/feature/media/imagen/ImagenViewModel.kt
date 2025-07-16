@@ -9,7 +9,6 @@ import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.ai
-import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ImagenAspectRatio
 import com.google.firebase.ai.type.ImagenEditMode
 import com.google.firebase.ai.type.ImagenEditingConfig
@@ -52,7 +51,6 @@ class ImagenViewModel(
     init {
         val config = imagenGenerationConfig {
             numberOfImages = 4
-            aspectRatio = ImagenAspectRatio.SQUARE_1x1
             imageFormat = ImagenImageFormat.png()
         }
         val settings = ImagenSafetySettings(
@@ -73,17 +71,13 @@ class ImagenViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val bundleReferenceImages = sample.bundleReferenceImages
-                val imageResponse = if (bundleReferenceImages == null) {
+                val generateImages = sample.generateImages
+                val imageResponse = if (generateImages == null) {
                     imagenModel.generateImages(
                         inputText
                     )
                 } else {
-                    imagenModel.editImage(
-                        bundleReferenceImages(inputText, attachedImage),
-                        inputText,
-                        ImagenEditingConfig(ImagenEditMode.INPAINT_INSERTION)
-                    )
+                    generateImages(imagenModel, inputText, attachedImage)
                 }
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
                 _errorMessage.value = null // clear error message

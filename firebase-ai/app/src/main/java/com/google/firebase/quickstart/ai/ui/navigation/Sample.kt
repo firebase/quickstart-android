@@ -1,10 +1,12 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
 import android.graphics.Bitmap
+import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.GenerationConfig
 import com.google.firebase.ai.type.GenerativeBackend
-import com.google.firebase.ai.type.ImagenReferenceImage
+import com.google.firebase.ai.type.ImagenGenerationResponse
+import com.google.firebase.ai.type.ImagenInlineImage
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.Tool
 import java.util.UUID
@@ -36,5 +38,5 @@ data class Sample(
     val chatHistory: List<Content> = emptyList(),
     val tools: List<Tool>? = null,
     val includeAttach: Boolean = false,
-    val bundleReferenceImages: ((String, Bitmap?) -> List<ImagenReferenceImage>)? = null
+    val generateImages: (suspend (ImagenModel, String, Bitmap?) -> ImagenGenerationResponse<ImagenInlineImage>)? = null
 )

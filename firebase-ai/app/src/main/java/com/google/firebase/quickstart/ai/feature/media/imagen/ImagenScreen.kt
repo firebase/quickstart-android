@@ -102,9 +102,7 @@ fun ImagenScreen(
             }
             TextButton(
                 onClick = {
-                    if (imagenPrompt.isNotBlank()) {
-                        imagenViewModel.generateImages(imagenPrompt)
-                    }
+                    imagenViewModel.generateImages(imagenPrompt)
                 },
                 modifier = Modifier
                     .padding(end = 16.dp, bottom = 16.dp)
