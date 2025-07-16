@@ -86,7 +86,7 @@ class MainActivity : ComponentActivity() {
                         composable<ChatRoute> {
                             ChatScreen()
                         }
-                        // Imagen Samples
+                        // Imagn Samples
                         composable<ImagenRoute> {
                             ImagenScreen()
                         }

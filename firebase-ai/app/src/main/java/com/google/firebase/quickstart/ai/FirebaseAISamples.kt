@@ -1,15 +1,21 @@
 package com.google.firebase.quickstart.ai
 
+import android.graphics.Bitmap
 import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.ImagenBackgroundMask
+import com.google.firebase.ai.type.ImagenRawImage
+import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
+import com.google.firebase.ai.type.toImagenInlineImage
 import com.google.firebase.quickstart.ai.ui.navigation.Category
 import com.google.firebase.quickstart.ai.ui.navigation.Sample
 
+@OptIn(PublicPreviewAPI::class)
 val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Travel tips",
@@ -132,6 +138,23 @@ val FIREBASE_AI_SAMPLES = listOf(
                 "A photo of a modern building with water in the background"
             )
         }
+    ),
+    Sample(
+        title = "Imagen 3 - Inpainting",
+        description = "Replace the background of an image using Imagen 3",
+        modelName= "imagen-3.0-capability-001",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content {
+            text(
+                "A sunny beach"
+            )
+        },
+        includeAttach = true,
+        bundleReferenceImages = {string: String, bitmap: Bitmap? ->
+                listOf(ImagenRawImage(bitmap!!.toImagenInlineImage()), ImagenBackgroundMask())
+            }
     ),
     Sample(
         title = "Gemini 2.0 Flash - image generation",

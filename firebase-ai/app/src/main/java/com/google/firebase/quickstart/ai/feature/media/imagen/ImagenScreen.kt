@@ -1,5 +1,10 @@
 package com.google.firebase.quickstart.ai.feature.media.imagen
 
+import android.net.Uri
+import android.provider.OpenableColumns
+import android.text.format.Formatter
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,6 +46,29 @@ fun ImagenScreen(
     val errorMessage by imagenViewModel.errorMessage.collectAsStateWithLifecycle()
     val isLoading by imagenViewModel.isLoading.collectAsStateWithLifecycle()
     val generatedImages by imagenViewModel.generatedBitmaps.collectAsStateWithLifecycle()
+    val includeAttach by imagenViewModel.includeAttach.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val contentResolver = context.contentResolver
+    val openDocument = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { optionalUri: Uri? ->
+        optionalUri?.let { uri ->
+            var fileName: String? = null
+            // Fetch file name and size
+            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+                cursor.moveToFirst()
+                val humanReadableSize = Formatter.formatShortFileSize(
+                    context, cursor.getLong(sizeIndex)
+                )
+                fileName = "${cursor.getString(nameIndex)} ($humanReadableSize)"
+            }
+
+            contentResolver.openInputStream(uri)?.use { stream ->
+                val bytes = stream.readBytes()
+                imagenViewModel.attachImage(bytes, fileName)
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -59,6 +88,18 @@ fun ImagenScreen(
                     .padding(16.dp)
                     .fillMaxWidth()
             )
+            if (includeAttach) {
+                TextButton(
+                    onClick = {
+                        openDocument.launch(arrayOf("image/*"))
+                    },
+                    modifier = Modifier
+                        .padding(end = 16.dp, bottom = 16.dp)
+                        .align(Alignment.End)
+
+
+                ) { Text("Attach") }
+            }
             TextButton(
                 onClick = {
                     if (imagenPrompt.isNotBlank()) {
