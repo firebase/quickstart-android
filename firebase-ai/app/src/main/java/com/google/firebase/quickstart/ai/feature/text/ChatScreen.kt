@@ -310,26 +310,6 @@ fun ChatBubbleItem(
                                             }
                                         }
 
-                                        // Use WebSettingsCompat to safely set the dark mode on API < 23.
-                                        // This is a no-op on API >= 23. On versions > 23, the WebView
-                                        // will correctly use the system theme.
-                                        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
-                                            if (isDarkTheme) {
-                                                WebSettingsCompat.setForceDark(
-                                                    settings,
-                                                    WebSettingsCompat.FORCE_DARK_ON
-                                                )
-                                            } else {
-                                                WebSettingsCompat.setForceDark(
-                                                    settings,
-                                                    WebSettingsCompat.FORCE_DARK_OFF
-                                                )
-                                            }
-                                        }
-
-                                        // The HTML content from the backend has its own styling.
-                                        // Set the WebView background to transparent to let the chat bubble's
-                                        // background show through.
                                         setBackgroundColor(android.graphics.Color.TRANSPARENT)
                                         loadDataWithBaseURL(
                                             null,
