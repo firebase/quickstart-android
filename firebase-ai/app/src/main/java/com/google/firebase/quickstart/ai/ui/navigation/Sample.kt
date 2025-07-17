@@ -1,8 +1,13 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
+import android.graphics.Bitmap
+import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.GenerationConfig
 import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.ImagenGenerationResponse
+import com.google.firebase.ai.type.ImagenInlineImage
+import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.Tool
 import java.util.UUID
 
@@ -17,6 +22,7 @@ enum class Category(
     FUNCTION_CALLING("Function calling"),
 }
 
+@OptIn(PublicPreviewAPI::class)
 data class Sample(
     val id: String = UUID.randomUUID().toString(), // used for navigation
     val title: String,
@@ -30,5 +36,7 @@ data class Sample(
     val systemInstructions: Content? = null,
     val generationConfig: GenerationConfig? = null,
     val chatHistory: List<Content> = emptyList(),
-    val tools: List<Tool>? = null
+    val tools: List<Tool>? = null,
+    val includeAttach: Boolean = false,
+    val generateImages: (suspend (ImagenModel, String, Bitmap?) -> ImagenGenerationResponse<ImagenInlineImage>)? = null
 )
