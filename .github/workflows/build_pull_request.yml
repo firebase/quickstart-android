@@ -1,4 +1,4 @@
-name: Build Pull Request
+name: build_pull_request.sh
 
 on:
   pull_request:

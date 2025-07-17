@@ -1,4 +1,4 @@
-name: Build Branch
+name: gradlew assemble
 
 on:
   push:
