@@ -17,25 +17,20 @@ the generated `google-services.json` file, and copy it to the `app/` directory o
 the sample you wish to run.
 
 - [Admob](admob/README.md)
+- [Firebase AI Logic](firebase-ai/README.md)
 - [Analytics](analytics/README.md)
 - [App Distribution](appdistribution/README.md)
-- [App-Indexing](app-indexing/README.md)
 - [Auth](auth/README.md)
-- [Config](config/README.md)
-- [Crash](crash/README.md)
-- [Database](database/README.md)
+- [Remote Config](config/README.md)
+- [Crashlytics](crash/README.md)
+- [Realtime Database](database/README.md)
+- [Data Connect](dataconnect/README.md)
 - [Firestore](firestore/README.md)
-- [Functions](functions/README.md)
-- [Dynamic Links](dynamiclinks/README.md)
+- [Cloud Functions for Firebase](functions/README.md)
 - [In-App Messaging](inappmessaging/README.md)
-- [Messaging](messaging/README.md)
-- [ML Kit](mlkit/README.md)
-- [ML Kit LanguageID](mlkit-langid/README.md)
-- [ML Kit Smart Reply](mlkit-smartreply/README.md)
-- [ML Kit Translate](mlkit-translate/README.md)
+- [Cloud Messaging](messaging/README.md)
 - [Performance Monitoring](perf/README.md)
-- [Storage](storage/README.md)
-- [Vertex AI](vertexai/README.md)
+- [Cloud Storage for Firebase](storage/README.md)
 
 ## How to make contributions?
 Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -44,6 +39,6 @@ Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
 [![SAM Score][sam-score-badge]][sam-score]
 
 [gh-actions]: https://github.com/firebase/quickstart-android/actions
-[gh-actions-badge]: https://github.com/firebase/quickstart-android/workflows/Android%20CI/badge.svg
+[gh-actions-badge]: https://github.com/firebase/quickstart-android/actions/workflows/android.yml/badge.svg?branch=master&event=push
 [sam-score]: https://ossbot.computer/samscore.html
 [sam-score-badge]: https://ossbot.computer/samscorebadge?org=firebase&repo=quickstart-android
