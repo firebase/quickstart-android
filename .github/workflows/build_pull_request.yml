@@ -1,8 +1,7 @@
-name: Android CI
+name: build_pull_request.sh
 
 on:
   pull_request:
-  push:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
@@ -30,7 +29,3 @@ jobs:
       run: ./copy_mock_google_services_json.sh
     - name: Build with Gradle (Pull Request)
       run: ./build_pull_request.sh
-      if: github.event_name == 'pull_request'
-    - name: Build with Gradle (Push)
-      run: ./gradlew clean ktlint assemble
-      if: github.event_name != 'pull_request'
