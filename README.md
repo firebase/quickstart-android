@@ -39,6 +39,6 @@ Please read and follow the steps in the [CONTRIBUTING.md](CONTRIBUTING.md)
 [![SAM Score][sam-score-badge]][sam-score]
 
 [gh-actions]: https://github.com/firebase/quickstart-android/actions
-[gh-actions-badge]: https://github.com/firebase/quickstart-android/actions/workflows/build_branch.yml/badge.svg?branch=master&event=push
+[gh-actions-badge]: https://github.com/firebase/quickstart-android/actions/workflows/android.yml/badge.svg?branch=master&event=push
 [sam-score]: https://ossbot.computer/samscore.html
 [sam-score-badge]: https://ossbot.computer/samscorebadge?org=firebase&repo=quickstart-android
