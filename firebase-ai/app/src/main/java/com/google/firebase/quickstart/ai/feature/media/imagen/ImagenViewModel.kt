@@ -41,6 +41,9 @@ class ImagenViewModel(
     private val _includeAttach = MutableStateFlow(sample.includeAttach)
     val includeAttach: StateFlow<Boolean> = _includeAttach
 
+    private val _allowEmptyPrompt = MutableStateFlow(sample.allowEmptyPrompt)
+    val allowEmptyPrompt: StateFlow<Boolean> = _allowEmptyPrompt
+
     private val _generatedBitmaps = MutableStateFlow(listOf<Bitmap>())
     val generatedBitmaps: StateFlow<List<Bitmap>> = _generatedBitmaps
 
@@ -71,14 +74,7 @@ class ImagenViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val generateImages = sample.generateImages
-                val imageResponse = if (generateImages == null) {
-                    imagenModel.generateImages(
-                        inputText
-                    )
-                } else {
-                    generateImages(imagenModel, inputText, attachedImage)
-                }
+                val imageResponse = sample.generateImages!!(imagenModel, inputText, attachedImage)
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
                 _errorMessage.value = null // clear error message
             } catch (e: Exception) {
@@ -91,7 +87,6 @@ class ImagenViewModel(
 
     fun attachImage(
         fileInBytes: ByteArray,
-        fileName: String? = "Unnamed file"
     ) {
         attachedImage = BitmapFactory.decodeByteArray(fileInBytes, 0, fileInBytes.size)
     }

@@ -47,6 +47,7 @@ fun ImagenScreen(
     val isLoading by imagenViewModel.isLoading.collectAsStateWithLifecycle()
     val generatedImages by imagenViewModel.generatedBitmaps.collectAsStateWithLifecycle()
     val includeAttach by imagenViewModel.includeAttach.collectAsStateWithLifecycle()
+    val allowEmptyPrompt by imagenViewModel.allowEmptyPrompt.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val contentResolver = context.contentResolver
     val openDocument = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { optionalUri: Uri? ->
@@ -65,7 +66,7 @@ fun ImagenScreen(
 
             contentResolver.openInputStream(uri)?.use { stream ->
                 val bytes = stream.readBytes()
-                imagenViewModel.attachImage(bytes, fileName)
+                imagenViewModel.attachImage(bytes)
             }
         }
     }
@@ -96,13 +97,13 @@ fun ImagenScreen(
                     modifier = Modifier
                         .padding(end = 16.dp, bottom = 16.dp)
                         .align(Alignment.End)
-
-
                 ) { Text("Attach") }
             }
             TextButton(
                 onClick = {
-                    imagenViewModel.generateImages(imagenPrompt)
+                    if (allowEmptyPrompt || imagenPrompt.isNotBlank()) {
+                        imagenViewModel.generateImages(imagenPrompt)
+                    }
                 },
                 modifier = Modifier
                     .padding(end = 16.dp, bottom = 16.dp)

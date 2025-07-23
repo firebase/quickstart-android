@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
+import android.content.Context
 import android.graphics.Bitmap
 import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.type.Content
@@ -38,5 +39,6 @@ data class Sample(
     val chatHistory: List<Content> = emptyList(),
     val tools: List<Tool>? = null,
     val includeAttach: Boolean = false,
+    val allowEmptyPrompt: Boolean = false,
     val generateImages: (suspend (ImagenModel, String, Bitmap?) -> ImagenGenerationResponse<ImagenInlineImage>)? = null
 )
