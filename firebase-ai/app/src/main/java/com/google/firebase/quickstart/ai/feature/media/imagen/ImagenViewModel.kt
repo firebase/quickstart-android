@@ -57,7 +57,7 @@ class ImagenViewModel(
     init {
         val config = imagenGenerationConfig {
             numberOfImages = 4
-            imageFormat = ImagenImasgeFormat.png()
+            imageFormat = ImagenImageFormat.png()
         }
         val settings = ImagenSafetySettings(
             safetyFilterLevel = ImagenSafetyFilterLevel.BLOCK_LOW_AND_ABOVE,
