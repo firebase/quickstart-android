@@ -24,6 +24,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,6 +34,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.quickstart.ai.feature.text.Attachment
+import com.google.firebase.quickstart.ai.feature.text.AttachmentsList
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -48,8 +53,10 @@ fun ImagenScreen(
     val generatedImages by imagenViewModel.generatedBitmaps.collectAsStateWithLifecycle()
     val includeAttach by imagenViewModel.includeAttach.collectAsStateWithLifecycle()
     val allowEmptyPrompt by imagenViewModel.allowEmptyPrompt.collectAsStateWithLifecycle()
+    val attachedImage by imagenViewModel.attachedImage.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val contentResolver = context.contentResolver
+    val scope = rememberCoroutineScope()
     val openDocument = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { optionalUri: Uri? ->
         optionalUri?.let { uri ->
             var fileName: String? = null
@@ -66,7 +73,9 @@ fun ImagenScreen(
 
             contentResolver.openInputStream(uri)?.use { stream ->
                 val bytes = stream.readBytes()
-                imagenViewModel.attachImage(bytes)
+                scope.launch {
+                    imagenViewModel.attachImage(bytes)
+                }
             }
         }
     }
@@ -90,6 +99,9 @@ fun ImagenScreen(
                     .fillMaxWidth()
             )
             if (includeAttach) {
+                if (attachedImage != null) {
+                    AttachmentsList(listOf(Attachment("", attachedImage)))
+                }
                 TextButton(
                     onClick = {
                         openDocument.launch(arrayOf("image/*"))

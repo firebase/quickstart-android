@@ -22,6 +22,7 @@ import com.google.firebase.ai.type.imagenGenerationConfig
 import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @OptIn(PublicPreviewAPI::class)
@@ -44,17 +45,19 @@ class ImagenViewModel(
     private val _allowEmptyPrompt = MutableStateFlow(sample.allowEmptyPrompt)
     val allowEmptyPrompt: StateFlow<Boolean> = _allowEmptyPrompt
 
+    private val _attachedImage = MutableStateFlow<Bitmap?>(null)
+    val attachedImage: StateFlow<Bitmap?> = _attachedImage
+
     private val _generatedBitmaps = MutableStateFlow(listOf<Bitmap>())
     val generatedBitmaps: StateFlow<List<Bitmap>> = _generatedBitmaps
 
     // Firebase AI Logic
     private val imagenModel: ImagenModel
-    private var attachedImage: Bitmap?
 
     init {
         val config = imagenGenerationConfig {
             numberOfImages = 4
-            imageFormat = ImagenImageFormat.png()
+            imageFormat = ImagenImasgeFormat.png()
         }
         val settings = ImagenSafetySettings(
             safetyFilterLevel = ImagenSafetyFilterLevel.BLOCK_LOW_AND_ABOVE,
@@ -67,14 +70,13 @@ class ImagenViewModel(
             generationConfig = config,
             safetySettings = settings
         )
-        attachedImage = null
     }
 
     fun generateImages(inputText: String) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val imageResponse = sample.generateImages!!(imagenModel, inputText, attachedImage)
+                val imageResponse = sample.generateImages!!(imagenModel, inputText, attachedImage.first())
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
                 _errorMessage.value = null // clear error message
             } catch (e: Exception) {
@@ -85,9 +87,9 @@ class ImagenViewModel(
         }
     }
 
-    fun attachImage(
+    suspend fun attachImage(
         fileInBytes: ByteArray,
     ) {
-        attachedImage = BitmapFactory.decodeByteArray(fileInBytes, 0, fileInBytes.size)
+        _attachedImage.emit(BitmapFactory.decodeByteArray(fileInBytes, 0, fileInBytes.size))
     }
 }

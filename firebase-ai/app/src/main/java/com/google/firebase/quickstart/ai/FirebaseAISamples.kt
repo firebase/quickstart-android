@@ -157,7 +157,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Imagen 3 - Inpainting",
+        title = "Imagen 3 - Inpainting (Vertex AI)",
         description = "Replace the background of an image using Imagen 3",
         modelName = "imagen-3.0-capability-001",
         backend = GenerativeBackend.vertexAI(),
@@ -175,7 +175,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Imagen 3 - Outpainting",
+        title = "Imagen 3 - Outpainting (Vertex AI)",
         description = "Expand an image by drawing in more background",
         modelName = "imagen-3.0-capability-001",
         backend = GenerativeBackend.vertexAI(),
@@ -194,7 +194,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Imagen 3 - Subject Reference",
+        title = "Imagen 3 - Subject Reference (Vertex AI)",
         description = "generate an image using a referenced subject (must be an animal)",
         modelName = "imagen-3.0-capability-001",
         backend = GenerativeBackend.vertexAI(),
@@ -219,7 +219,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Imagen 3 - Style Transfer",
+        title = "Imagen 3 - Style Transfer (Vertex AI)",
         description = "Change the art style of an cat picture using a reference",
         modelName = "imagen-3.0-capability-001",
         backend = GenerativeBackend.vertexAI(),
