@@ -13,7 +13,6 @@ cp mock-google-services.json config/app/google-services.json
 cp mock-google-services.json crash/app/google-services.json
 cp mock-google-services.json database/app/google-services.json
 cp mock-google-services.json dataconnect/app/google-services.json
-cp mock-google-services.json dynamiclinks/app/google-services.json
 cp mock-google-services.json firebase-ai/app/google-services.json
 cp mock-google-services.json firestore/app/google-services.json
 cp mock-google-services.json functions/app/google-services.json

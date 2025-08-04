@@ -15,7 +15,6 @@ include(":admob:app",
         ":crash:app",
         ":database:app",
         ":dataconnect:app",
-        ":dynamiclinks:app",
         ":firestore:app",
         ":functions:app",
         ":internal:chooserx",
@@ -24,6 +23,5 @@ include(":admob:app",
         ":inappmessaging:app",
         ":messaging:app",
         ":perf:app",
-        ":storage:app",
-        ":vertexai:app"
+        ":storage:app"
 )
