@@ -60,6 +60,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.kotlinx.serialization.json)
+    // Webkit
+    implementation(libs.androidx.webkit)
+
+    // Material for XML-based theme
+    implementation(libs.material)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
