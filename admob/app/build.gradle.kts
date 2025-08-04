@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.google.samples.quickstart.admobexample"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
