@@ -61,7 +61,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
 
     // Firebase Performance Monitoring
     implementation("com.google.firebase:firebase-perf")
@@ -73,5 +73,5 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.12.0")
 
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
 }
