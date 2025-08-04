@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     implementation(libs.kotlinx.serialization.json)
+    // Webkit
+    implementation(libs.androidx.webkit)
 
     // Material for XML-based theme
     implementation(libs.material)
@@ -75,7 +77,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    // Webkit
-    implementation(libs.androidx.webkit)
 }
