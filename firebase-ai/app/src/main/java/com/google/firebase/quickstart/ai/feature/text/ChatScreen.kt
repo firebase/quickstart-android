@@ -1,17 +1,23 @@
 package com.google.firebase.quickstart.ai.feature.text
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.text.format.Formatter
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,6 +28,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
@@ -31,6 +38,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -50,16 +58,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.firebase.ai.type.Content
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import com.google.firebase.ai.type.FileDataPart
 import com.google.firebase.ai.type.ImagePart
 import com.google.firebase.ai.type.InlineDataPart
 import com.google.firebase.ai.type.TextPart
+import com.google.firebase.ai.type.WebGroundingChunk
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
@@ -70,7 +84,7 @@ class ChatRoute(val sampleId: String)
 fun ChatScreen(
     chatViewModel: ChatViewModel = viewModel<ChatViewModel>()
 ) {
-    val messages: List<Content> by chatViewModel.messages.collectAsStateWithLifecycle()
+    val messages: List<UiChatMessage> by chatViewModel.messages.collectAsStateWithLifecycle()
     val isLoading: Boolean by chatViewModel.isLoading.collectAsStateWithLifecycle()
     val errorMessage: String? by chatViewModel.errorMessage.collectAsStateWithLifecycle()
     val attachments: List<Attachment> by chatViewModel.attachments.collectAsStateWithLifecycle()
@@ -162,17 +176,19 @@ fun ChatScreen(
 
 @Composable
 fun ChatBubbleItem(
-    chatMessage: Content
+    message: UiChatMessage
 ) {
-    val isModelMessage = chatMessage.role == "model"
+    val isModelMessage = message.content.role == "model"
 
-    val backgroundColor = when (chatMessage.role) {
+    val isDarkTheme = isSystemInDarkTheme()
+
+    val backgroundColor = when (message.content.role) {
         "user" -> MaterialTheme.colorScheme.tertiaryContainer
         else -> MaterialTheme.colorScheme.secondaryContainer
     }
 
     val textColor = if (isModelMessage) {
-        MaterialTheme.colorScheme.onSecondaryContainer
+        MaterialTheme.colorScheme.onBackground
     } else {
         MaterialTheme.colorScheme.onTertiaryContainer
     }
@@ -196,7 +212,7 @@ fun ChatBubbleItem(
             .fillMaxWidth()
     ) {
         Text(
-            text = chatMessage.role?.uppercase() ?: "USER",
+            text = message.content.role?.uppercase() ?: "USER",
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(bottom = 4.dp)
         )
@@ -212,7 +228,7 @@ fun ChatBubbleItem(
                             .padding(16.dp)
                             .fillMaxWidth()
                     ) {
-                        chatMessage.parts.forEach { part ->
+                        message.content.parts.forEach { part ->
                             when (part) {
                                 is TextPart -> {
                                     Text(
@@ -272,6 +288,56 @@ fun ChatBubbleItem(
                                 }
                             }
                         }
+                        message.groundingMetadata?.let { metadata ->
+                            HorizontalDivider(modifier = Modifier.padding(vertical = 18.dp))
+
+                            // Search Entry Point (WebView)
+                            metadata.searchEntryPoint?.let { searchEntryPoint ->
+                                val context = LocalContext.current
+                                AndroidView(factory = {
+                                    WebView(it).apply {
+                                        webViewClient = object : WebViewClient() {
+                                            override fun shouldOverrideUrlLoading(
+                                                view: WebView?,
+                                                request: WebResourceRequest?
+                                            ): Boolean {
+                                                request?.url?.let { uri ->
+                                                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                                                    context.startActivity(intent)
+                                                }
+                                                // Return true to indicate we handled the URL loading
+                                                return true
+                                            }
+                                        }
+
+                                        setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                                        loadDataWithBaseURL(
+                                            null,
+                                            searchEntryPoint.renderedContent,
+                                            "text/html",
+                                            "UTF-8",
+                                            null
+                                        )
+                                    }
+                                },
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(22.dp))
+                                        .fillMaxHeight()
+                                        .fillMaxWidth()
+                                )
+                            }
+
+                            if (metadata.groundingChunks.isNotEmpty()) {
+                                Text(
+                                    text = "Sources",
+                                    style = MaterialTheme.typography.titleSmall,
+                                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                                )
+                                metadata.groundingChunks.forEach { chunk ->
+                                    chunk.web?.let { SourceLinkView(it) }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -280,8 +346,40 @@ fun ChatBubbleItem(
 }
 
 @Composable
+fun SourceLinkView(
+    webChunk: WebGroundingChunk
+) {
+    val context = LocalContext.current
+    val annotatedString = AnnotatedString.Builder(webChunk.title ?: "Untitled Source").apply {
+        addStyle(
+            style = SpanStyle(
+                color = MaterialTheme.colorScheme.primary,
+                textDecoration = TextDecoration.Underline
+            ),
+            start = 0,
+            end = webChunk.title?.length ?: "Untitled Source".length
+        )
+        webChunk.uri?.let { addStringAnnotation("URL", it, 0, it.length) }
+    }.toAnnotatedString()
+
+    Row(modifier = Modifier.padding(bottom = 8.dp)) {
+        Icon(
+            Icons.Default.Attachment,
+            contentDescription = "Source link",
+            modifier = Modifier.padding(end = 8.dp)
+        )
+        ClickableText(text = annotatedString, onClick = { offset ->
+            annotatedString.getStringAnnotations(tag = "URL", start = offset, end = offset)
+                .firstOrNull()?.let { annotation ->
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(annotation.item)))
+                }
+        })
+    }
+}
+
+@Composable
 fun ChatList(
-    chatMessages: List<Content>,
+    chatMessages: List<UiChatMessage>,
     listState: LazyListState,
     modifier: Modifier = Modifier
 ) {
