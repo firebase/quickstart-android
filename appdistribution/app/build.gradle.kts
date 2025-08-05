@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.google.firebase.appdistributionquickstart"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -57,17 +57,17 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
 
     // ADD the SDK to the "prerelease" variant only (example)
-    implementation("com.google.firebase:firebase-appdistribution:16.0.0-beta15")
+    implementation("com.google.firebase:firebase-appdistribution:16.0.0-beta16")
 
     // For an optimal experience using App Distribution, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
     implementation("com.google.firebase:firebase-analytics")
 
-    androidTestImplementation("androidx.test:runner:1.6.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation("androidx.test:rules:1.6.1")
+    androidTestImplementation("androidx.test:runner:1.7.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    androidTestImplementation("androidx.test:rules:1.7.0")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
 }

@@ -1,7 +1,10 @@
 package com.google.firebase.quickstart.ai
 
+import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ResponseModality
+import com.google.firebase.ai.type.Schema
+import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
 import com.google.firebase.quickstart.ai.ui.navigation.Category
@@ -11,15 +14,15 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Travel tips",
         description = "The user wants the model to help a new traveler" +
-            " with travel tips",
+                " with travel tips",
         navRoute = "chat",
         categories = listOf(Category.TEXT),
         systemInstructions = content {
             text(
                 "You are a Travel assistant. You will answer" +
-                    " questions the user asks based on the information listed" +
-                    " in Relevant Information. Do not hallucinate. Do not use" +
-                    " the internet."
+                        " questions the user asks based on the information listed" +
+                        " in Relevant Information. Do not hallucinate. Do not use" +
+                        " the internet."
             )
         },
         chatHistory = listOf(
@@ -31,7 +34,7 @@ val FIREBASE_AI_SAMPLES = listOf(
                 role = "model"
                 text(
                     "You should book flights a couple of months ahead of time." +
-                        " It will be cheaper and more flexible for you."
+                            " It will be cheaper and more flexible for you."
                 )
             },
             content {
@@ -42,8 +45,8 @@ val FIREBASE_AI_SAMPLES = listOf(
                 role = "model"
                 text(
                     "If you are traveling outside your own country, make sure" +
-                        " your passport is up-to-date and valid for more" +
-                        " than 6 months during your travel."
+                            " your passport is up-to-date and valid for more" +
+                            " than 6 months during your travel."
                 )
             }
         ),
@@ -57,8 +60,8 @@ val FIREBASE_AI_SAMPLES = listOf(
         systemInstructions = content {
             text(
                 "You are a chatbot for the county's performing and fine arts" +
-                    " program. You help students decide what course they will" +
-                    " take during the summer."
+                        " program. You help students decide what course they will" +
+                        " take during the summer."
             )
         },
         initialPrompt = content {
@@ -75,14 +78,14 @@ val FIREBASE_AI_SAMPLES = listOf(
             content("model") {
                 text(
                     "Of course! Click on the attach button" +
-                        " below and choose an audio file for me to summarize."
+                            " below and choose an audio file for me to summarize."
                 )
             }
         ),
         initialPrompt = content {
             text(
                 "I have attached the audio file. Please analyze it and summarize the contents" +
-                    " of the audio as bullet points."
+                        " of the audio as bullet points."
             )
         }
     ),
@@ -114,8 +117,8 @@ val FIREBASE_AI_SAMPLES = listOf(
             )
             text(
                 "Write a short, engaging blog post based on this picture." +
-                    " It should include a description of the meal in the" +
-                    " photo and talk about my journey meal prepping."
+                        " It should include a description of the meal in the" +
+                        " photo and talk about my journey meal prepping."
             )
         }
     ),
@@ -139,8 +142,8 @@ val FIREBASE_AI_SAMPLES = listOf(
         initialPrompt = content {
             text(
                 "Hi, can you create a 3d rendered image of a pig " +
-                    "with wings and a top hat flying over a happy " +
-                    "futuristic scifi city with lots of greenery?"
+                        "with wings and a top hat flying over a happy " +
+                        "futuristic scifi city with lots of greenery?"
             )
         },
         generationConfig = generationConfig {
@@ -165,7 +168,7 @@ val FIREBASE_AI_SAMPLES = listOf(
             )
             text(
                 "The first document is from 2013, and the second document is" +
-                    " from 2023. How did the standard deduction evolve?"
+                        " from 2023. How did the standard deduction evolve?"
             )
         }
     ),
@@ -182,9 +185,9 @@ val FIREBASE_AI_SAMPLES = listOf(
             )
             text(
                 "Generate 5-10 hashtags that relate to the video content." +
-                    " Try to use more popular and engaging terms," +
-                    " e.g. #Viral. Do not add content not related to" +
-                    " the video.\n Start the output with 'Tags:'"
+                        " Try to use more popular and engaging terms," +
+                        " e.g. #Viral. Do not add content not related to" +
+                        " the video.\n Start the output with 'Tags:'"
             )
         }
     ),
@@ -198,16 +201,57 @@ val FIREBASE_AI_SAMPLES = listOf(
             content("model") {
                 text(
                     "Sure! Click on the attach button below and choose a" +
-                        " video file for me to describe."
+                            " video file for me to describe."
                 )
             }
         ),
         initialPrompt = content {
             text(
                 "I have attached the video file. Provide a description of" +
-                    " the video. The description should also contain" +
-                    " anything important which people say in the video."
+                        " the video. The description should also contain" +
+                        " anything important which people say in the video."
             )
         }
-    )
+    ),
+    Sample(
+        title = "Weather Chat",
+        description = "Use function calling to get the weather conditions" +
+                " for a specific US city on a specific date.",
+        navRoute = "chat",
+        categories = listOf(Category.TEXT, Category.FUNCTION_CALLING),
+        tools = listOf(
+            Tool.functionDeclarations(
+                listOf(
+                    FunctionDeclaration(
+                        "fetchWeather",
+                        "Get the weather conditions for a specific US city on a specific date.",
+                        mapOf(
+                            "city" to Schema.string("The US city of the location."),
+                            "state" to Schema.string("The US state of the location."),
+                            "date" to Schema.string(
+                                "The date for which to get the weather." +
+                                        " Date must be in the format: YYYY-MM-DD."
+                            ),
+                        ),
+                    )
+                )
+            )
+        ),
+        initialPrompt = content {
+            text("What was the weather in Boston, MA on October 17, 2024?")
+        }
+    ),
+    Sample(
+        title = "Grounding with Google Search",
+        description = "Use Grounding with Google Search to get responses based on up-to-date information from the web.",
+        navRoute = "chat",
+        categories = listOf(Category.TEXT, Category.DOCUMENT),
+        modelName = "gemini-2.5-flash",
+        tools = listOf(Tool.googleSearch()),
+        initialPrompt = content {
+            text(
+                "What's the weather in Chicago this weekend?"
+            )
+        },
+    ),
 )

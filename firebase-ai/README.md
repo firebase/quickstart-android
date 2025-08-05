@@ -23,6 +23,7 @@ There are 2 main files that demonstrate the use of Firebase AI Logic:
     -  [Analyze audio](https://firebase.google.com/docs/ai-logic/analyze-audio)
     -  [Analyze documents (PDFs)](https://firebase.google.com/docs/ai-logic/analyze-documents)
     -  [Generate images using Gemini 2.0](https://firebase.google.com/docs/ai-logic/generate-images-imagen)
+    -  [Function calling](https://firebase.google.com/docs/ai-logic/function-calling)
 - [ImagenViewModel](app/src/main/java/com/google/firebase/quickstart/ai/feature/media/imagen/ImagenViewModel.kt)
  which shows how to [Generate images using Imagen models](https://firebase.google.com/docs/ai-logic/generate-images-imagen)
 
