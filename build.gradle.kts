@@ -68,6 +68,7 @@ fun isNonStable(candidate: ModuleComponentIdentifier): Boolean {
 fun isBlockListed(candidate: ModuleComponentIdentifier): Boolean {
     return listOf(
             "androidx.browser:browser",
+            "androidx.webkit:webkit",
             "com.facebook.android",
             "com.google.guava",
             "com.github.bumptech.glide",
