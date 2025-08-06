@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.media.imagen
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,8 +9,9 @@ import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.ai
-import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ImagenAspectRatio
+import com.google.firebase.ai.type.ImagenEditMode
+import com.google.firebase.ai.type.ImagenEditingConfig
 import com.google.firebase.ai.type.ImagenImageFormat
 import com.google.firebase.ai.type.ImagenPersonFilterLevel
 import com.google.firebase.ai.type.ImagenSafetyFilterLevel
@@ -20,6 +22,7 @@ import com.google.firebase.ai.type.imagenGenerationConfig
 import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @OptIn(PublicPreviewAPI::class)
@@ -36,6 +39,15 @@ class ImagenViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    private val _includeAttach = MutableStateFlow(sample.includeAttach)
+    val includeAttach: StateFlow<Boolean> = _includeAttach
+
+    private val _allowEmptyPrompt = MutableStateFlow(sample.allowEmptyPrompt)
+    val allowEmptyPrompt: StateFlow<Boolean> = _allowEmptyPrompt
+
+    private val _attachedImage = MutableStateFlow<Bitmap?>(null)
+    val attachedImage: StateFlow<Bitmap?> = _attachedImage
+
     private val _generatedBitmaps = MutableStateFlow(listOf<Bitmap>())
     val generatedBitmaps: StateFlow<List<Bitmap>> = _generatedBitmaps
 
@@ -45,7 +57,6 @@ class ImagenViewModel(
     init {
         val config = imagenGenerationConfig {
             numberOfImages = 4
-            aspectRatio = ImagenAspectRatio.SQUARE_1x1
             imageFormat = ImagenImageFormat.png()
         }
         val settings = ImagenSafetySettings(
@@ -53,7 +64,7 @@ class ImagenViewModel(
             personFilterLevel = ImagenPersonFilterLevel.BLOCK_ALL
         )
         imagenModel = Firebase.ai(
-            backend = GenerativeBackend.googleAI()
+            backend = sample.backend
         ).imagenModel(
             modelName = sample.modelName ?: "imagen-3.0-generate-002",
             generationConfig = config,
@@ -65,9 +76,7 @@ class ImagenViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val imageResponse = imagenModel.generateImages(
-                    inputText
-                )
+                val imageResponse = sample.generateImages!!(imagenModel, inputText, attachedImage.first())
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
                 _errorMessage.value = null // clear error message
             } catch (e: Exception) {
@@ -76,5 +85,11 @@ class ImagenViewModel(
                 _isLoading.value = false
             }
         }
+    }
+
+    suspend fun attachImage(
+        fileInBytes: ByteArray,
+    ) {
+        _attachedImage.emit(BitmapFactory.decodeByteArray(fileInBytes, 0, fileInBytes.size))
     }
 }
