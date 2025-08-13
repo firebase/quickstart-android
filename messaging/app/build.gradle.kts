@@ -58,11 +58,11 @@ dependencies {
     implementation(project(":internal:chooserx"))
     implementation("androidx.annotation:annotation:1.9.1")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
-    implementation("androidx.core:core-ktx:1.16.0")
+    implementation("androidx.core:core-ktx:1.17.0")
 
     // Required when asking for permission to post notifications (starting in Android 13)
     implementation("androidx.activity:activity-ktx:1.10.1")
-    implementation("androidx.fragment:fragment-ktx:1.8.8")
+    implementation("androidx.fragment:fragment-ktx:1.8.9")
 
     implementation("com.google.android.material:material:1.12.0")
 

@@ -67,7 +67,7 @@ dependencies {
     // for Google Analytics. This is recommended, but not required.
     implementation("com.google.firebase:firebase-analytics")
 
-    debugImplementation("androidx.fragment:fragment-testing:1.8.8")
+    debugImplementation("androidx.fragment:fragment-testing:1.8.9")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.test:rules:1.7.0")
     androidTestImplementation("androidx.test:runner:1.7.0")
