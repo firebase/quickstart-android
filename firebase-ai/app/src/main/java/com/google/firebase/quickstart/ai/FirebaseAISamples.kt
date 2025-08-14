@@ -1,15 +1,32 @@
 package com.google.firebase.quickstart.ai
 
+import android.graphics.Bitmap
+import com.google.firebase.ai.ImagenModel
+import com.google.firebase.ai.type.Dimensions
 import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.ImagenBackgroundMask
+import com.google.firebase.ai.type.ImagenEditMode
+import com.google.firebase.ai.type.ImagenEditingConfig
+import com.google.firebase.ai.type.ImagenForegroundMask
+import com.google.firebase.ai.type.ImagenImagePlacement
+import com.google.firebase.ai.type.ImagenMaskReference
+import com.google.firebase.ai.type.ImagenRawImage
+import com.google.firebase.ai.type.ImagenRawMask
+import com.google.firebase.ai.type.ImagenStyleReference
+import com.google.firebase.ai.type.ImagenSubjectReference
+import com.google.firebase.ai.type.ImagenSubjectReferenceType
+import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
+import com.google.firebase.ai.type.toImagenInlineImage
 import com.google.firebase.quickstart.ai.ui.navigation.Category
 import com.google.firebase.quickstart.ai.ui.navigation.Sample
 
+@OptIn(PublicPreviewAPI::class)
 val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Travel tips",
@@ -130,6 +147,118 @@ val FIREBASE_AI_SAMPLES = listOf(
         initialPrompt = content {
             text(
                 "A photo of a modern building with water in the background"
+            )
+        },
+        allowEmptyPrompt = false,
+        generateImages = { model: ImagenModel, inputText: String, _: Bitmap?, _ ->
+            model.generateImages(
+                inputText
+            )
+        }
+    ),
+    Sample(
+        title = "Imagen 3 - Inpainting (Vertex AI)",
+        description = "Replace the background of an image using Imagen 3",
+        modelName = "imagen-3.0-capability-001",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("A sunny beach") },
+        includeAttach = true,
+        allowEmptyPrompt = true,
+        radioOptions = listOf("Background", "Foreground"),
+        generateImages = { model: ImagenModel,
+                           inputText: String,
+                           bitmap: Bitmap?,
+                           selectedRadioOption: String? ->
+            val mask = when (selectedRadioOption) {
+                "Foreground" -> ImagenForegroundMask()
+                else -> ImagenBackgroundMask()
+            }
+            model.editImage(
+                listOfNotNull(ImagenRawImage(bitmap!!.toImagenInlineImage()), mask),
+                inputText,
+                ImagenEditingConfig(ImagenEditMode.INPAINT_INSERTION)
+            )
+        }
+    ),
+    Sample(
+        title = "Imagen 3 - Outpainting (Vertex AI)",
+        description = "Expand an image by drawing in more background",
+        modelName = "imagen-3.0-capability-001",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("") },
+        includeAttach = true,
+        allowEmptyPrompt = true,
+        radioOptions = listOf("Center", "Top", "Bottom", "Left", "Right"),
+        generateImages = { model: ImagenModel,
+                           inputText: String,
+                           bitmap: Bitmap?,
+                           selectedRadioOption: String? ->
+            val position = when (selectedRadioOption) {
+                "Top" -> ImagenImagePlacement.TOP_CENTER
+                "Bottom" -> ImagenImagePlacement.BOTTOM_CENTER
+                "Left" -> ImagenImagePlacement.LEFT_CENTER
+                "Right" -> ImagenImagePlacement.RIGHT_CENTER
+                else -> ImagenImagePlacement.CENTER
+            }
+            val dimensions = Dimensions(bitmap!!.width * 2, bitmap.height * 2)
+            val (sourceImage, mask) = ImagenMaskReference.generateMaskAndPadForOutpainting(
+                bitmap.toImagenInlineImage(),
+                dimensions,
+                position
+            )
+            model.editImage(
+                listOf(sourceImage, ImagenRawMask(mask.image!!, 0.05)),
+                inputText,
+                ImagenEditingConfig(ImagenEditMode.OUTPAINT)
+            )
+        }
+    ),
+    Sample(
+        title = "Imagen 3 - Subject Reference (Vertex AI)",
+        description = "generate an image using a referenced subject (must be an animal)",
+        modelName = "imagen-3.0-capability-001",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("<subject> flying through space") },
+        includeAttach = true,
+        allowEmptyPrompt = false,
+        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap?, _ ->
+            model.editImage(
+                listOf(
+                    ImagenSubjectReference(
+                        referenceId = 1,
+                        image = bitmap!!.toImagenInlineImage(),
+                        subjectType = ImagenSubjectReferenceType.ANIMAL,
+                        description = "An animal"
+                    )
+                ),
+                "Create an image about An animal [1] to match the description: " +
+                        inputText.replace("<subject>", "An animal [1]"),
+            )
+        }
+    ),
+    Sample(
+        title = "Imagen 3 - Style Transfer (Vertex AI)",
+        description = "Change the art style of an cat picture using a reference",
+        modelName = "imagen-3.0-capability-001",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("A picture of a cat") },
+        includeAttach = true,
+        allowEmptyPrompt = true,
+        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap?, _ ->
+            model.editImage(
+                listOf(
+                    ImagenRawImage(MainActivity.catImage.toImagenInlineImage()),
+                    ImagenStyleReference(bitmap!!.toImagenInlineImage(), 1, "an art style")
+                ),
+                "Generate an image in an art style [1] based on the following caption: $inputText",
             )
         }
     ),
