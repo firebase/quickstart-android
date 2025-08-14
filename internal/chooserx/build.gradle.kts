@@ -8,7 +8,6 @@ android {
 
     defaultConfig {
         minSdk = 16
-        targetSdk = 36
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -18,6 +17,10 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
+    }
+
+    lint {
+        targetSdk = 36
     }
 
 }
