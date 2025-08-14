@@ -1,9 +1,6 @@
 package com.google.firebase.quickstart.ai
 
-import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.type.Dimensions
 import com.google.firebase.ai.type.FunctionDeclaration
@@ -170,8 +167,11 @@ val FIREBASE_AI_SAMPLES = listOf(
         includeAttach = true,
         allowEmptyPrompt = true,
         radioOptions = listOf("Background", "Foreground"),
-        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap?, selectedRadioOption:String? ->
-            val mask = when(selectedRadioOption) {
+        generateImages = { model: ImagenModel,
+                           inputText: String,
+                           bitmap: Bitmap?,
+                           selectedRadioOption: String? ->
+            val mask = when (selectedRadioOption) {
                 "Foreground" -> ImagenForegroundMask()
                 else -> ImagenBackgroundMask()
             }
@@ -193,8 +193,11 @@ val FIREBASE_AI_SAMPLES = listOf(
         includeAttach = true,
         allowEmptyPrompt = true,
         radioOptions = listOf("Center", "Top", "Bottom", "Left", "Right"),
-        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap?, selectedRadioOption: String? ->
-            val position = when(selectedRadioOption) {
+        generateImages = { model: ImagenModel,
+                           inputText: String,
+                           bitmap: Bitmap?,
+                           selectedRadioOption: String? ->
+            val position = when (selectedRadioOption) {
                 "Top" -> ImagenImagePlacement.TOP_CENTER
                 "Bottom" -> ImagenImagePlacement.BOTTOM_CENTER
                 "Left" -> ImagenImagePlacement.LEFT_CENTER
@@ -253,7 +256,8 @@ val FIREBASE_AI_SAMPLES = listOf(
             model.editImage(
                 listOf(
                     ImagenRawImage(MainActivity.catImage.toImagenInlineImage()),
-                    ImagenStyleReference(bitmap!!.toImagenInlineImage(), 1, "an art style")),
+                    ImagenStyleReference(bitmap!!.toImagenInlineImage(), 1, "an art style")
+                ),
                 "Generate an image in an art style [1] based on the following caption: $inputText",
             )
         }
