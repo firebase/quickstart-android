@@ -8,17 +8,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -31,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -54,6 +59,8 @@ fun ImagenScreen(
     val includeAttach by imagenViewModel.includeAttach.collectAsStateWithLifecycle()
     val allowEmptyPrompt by imagenViewModel.allowEmptyPrompt.collectAsStateWithLifecycle()
     val attachedImage by imagenViewModel.attachedImage.collectAsStateWithLifecycle()
+    val radioOptions by imagenViewModel.radioOptions.collectAsStateWithLifecycle()
+    val selectedOption by imagenViewModel.selectedRadioOption.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val contentResolver = context.contentResolver
     val scope = rememberCoroutineScope()
@@ -98,6 +105,33 @@ fun ImagenScreen(
                     .padding(16.dp)
                     .fillMaxWidth()
             )
+            if (radioOptions.isNotEmpty()) {
+                Column(modifier = Modifier.selectableGroup()) {
+                    radioOptions.forEach {option ->
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .selectable(
+                                    selected = (option == selectedOption),
+                                    onClick = { imagenViewModel.selectRadio(option) },
+                                    role = Role.RadioButton
+                                )
+                                .padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = (option == selectedOption),
+                                onClick = null // null recommended for accessibility with screen readers
+                            )
+                            Text(
+                                text = option,
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
+                        }
+                }
+                }
+            }
             if (includeAttach) {
                 if (attachedImage != null) {
                     AttachmentsList(listOf(Attachment("", attachedImage)))

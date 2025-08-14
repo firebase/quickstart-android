@@ -11,8 +11,11 @@ import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ImagenBackgroundMask
 import com.google.firebase.ai.type.ImagenEditMode
 import com.google.firebase.ai.type.ImagenEditingConfig
+import com.google.firebase.ai.type.ImagenForegroundMask
+import com.google.firebase.ai.type.ImagenImagePlacement
 import com.google.firebase.ai.type.ImagenMaskReference
 import com.google.firebase.ai.type.ImagenRawImage
+import com.google.firebase.ai.type.ImagenRawMask
 import com.google.firebase.ai.type.ImagenStyleReference
 import com.google.firebase.ai.type.ImagenSubjectReference
 import com.google.firebase.ai.type.ImagenSubjectReferenceType
@@ -150,7 +153,7 @@ val FIREBASE_AI_SAMPLES = listOf(
             )
         },
         allowEmptyPrompt = false,
-        generateImages = { model: ImagenModel, inputText: String, _: Bitmap? ->
+        generateImages = { model: ImagenModel, inputText: String, _: Bitmap?, _ ->
             model.generateImages(
                 inputText
             )
@@ -166,9 +169,14 @@ val FIREBASE_AI_SAMPLES = listOf(
         initialPrompt = content { text("A sunny beach") },
         includeAttach = true,
         allowEmptyPrompt = true,
-        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap? ->
+        radioOptions = listOf("Background", "Foreground"),
+        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap?, selectedRadioOption:String? ->
+            val mask = when(selectedRadioOption) {
+                "Foreground" -> ImagenForegroundMask()
+                else -> ImagenBackgroundMask()
+            }
             model.editImage(
-                listOf(ImagenRawImage(bitmap!!.toImagenInlineImage()), ImagenBackgroundMask()),
+                listOfNotNull(ImagenRawImage(bitmap!!.toImagenInlineImage()), mask),
                 inputText,
                 ImagenEditingConfig(ImagenEditMode.INPAINT_INSERTION)
             )
@@ -184,10 +192,23 @@ val FIREBASE_AI_SAMPLES = listOf(
         initialPrompt = content { text("") },
         includeAttach = true,
         allowEmptyPrompt = true,
-        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap? ->
+        radioOptions = listOf("Center", "Top", "Bottom", "Left", "Right"),
+        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap?, selectedRadioOption: String? ->
+            val position = when(selectedRadioOption) {
+                "Top" -> ImagenImagePlacement.TOP_CENTER
+                "Bottom" -> ImagenImagePlacement.BOTTOM_CENTER
+                "Left" -> ImagenImagePlacement.LEFT_CENTER
+                "Right" -> ImagenImagePlacement.RIGHT_CENTER
+                else -> ImagenImagePlacement.CENTER
+            }
             val dimensions = Dimensions(bitmap!!.width * 2, bitmap.height * 2)
+            val (sourceImage, mask) = ImagenMaskReference.generateMaskAndPadForOutpainting(
+                bitmap.toImagenInlineImage(),
+                dimensions,
+                position
+            )
             model.editImage(
-                ImagenMaskReference.generateMaskAndPadForOutpainting(bitmap.toImagenInlineImage(), dimensions),
+                listOf(sourceImage, ImagenRawMask(mask.image!!, 0.05)),
                 inputText,
                 ImagenEditingConfig(ImagenEditMode.OUTPAINT)
             )
@@ -203,7 +224,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         initialPrompt = content { text("<subject> flying through space") },
         includeAttach = true,
         allowEmptyPrompt = false,
-        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap? ->
+        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap?, _ ->
             model.editImage(
                 listOf(
                     ImagenSubjectReference(
@@ -228,7 +249,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         initialPrompt = content { text("A picture of a cat") },
         includeAttach = true,
         allowEmptyPrompt = true,
-        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap? ->
+        generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap?, _ ->
             model.editImage(
                 listOf(
                     ImagenRawImage(MainActivity.catImage.toImagenInlineImage()),

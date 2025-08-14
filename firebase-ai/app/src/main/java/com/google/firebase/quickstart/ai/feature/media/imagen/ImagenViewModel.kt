@@ -42,6 +42,12 @@ class ImagenViewModel(
     private val _includeAttach = MutableStateFlow(sample.includeAttach)
     val includeAttach: StateFlow<Boolean> = _includeAttach
 
+    private val _radioOptions = MutableStateFlow(sample.radioOptions)
+    val radioOptions: StateFlow<List<String>> = _radioOptions
+
+    private val _selectedRadioOption = MutableStateFlow<String?>(null)
+    val selectedRadioOption: StateFlow<String?> = _selectedRadioOption
+
     private val _allowEmptyPrompt = MutableStateFlow(sample.allowEmptyPrompt)
     val allowEmptyPrompt: StateFlow<Boolean> = _allowEmptyPrompt
 
@@ -76,7 +82,8 @@ class ImagenViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val imageResponse = sample.generateImages!!(imagenModel, inputText, attachedImage.first())
+                val imageResponse =
+                    sample.generateImages!!(imagenModel, inputText, attachedImage.first(), selectedRadioOption.first())
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
                 _errorMessage.value = null // clear error message
             } catch (e: Exception) {
@@ -90,6 +97,19 @@ class ImagenViewModel(
     suspend fun attachImage(
         fileInBytes: ByteArray,
     ) {
-        _attachedImage.emit(BitmapFactory.decodeByteArray(fileInBytes, 0, fileInBytes.size))
+        val originalBitmap = BitmapFactory.decodeByteArray(fileInBytes, 0, fileInBytes.size)
+        val resizedBitmap = Bitmap.createScaledBitmap(
+            originalBitmap,
+            512,
+            (originalBitmap.height * (512.0 / originalBitmap.width)).toInt(),
+            true
+        )
+        _attachedImage.emit(resizedBitmap)
+    }
+
+    fun selectRadio(selection: String) {
+        viewModelScope.launch {
+            _selectedRadioOption.emit(selection)
+        }
     }
 }

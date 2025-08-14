@@ -40,5 +40,6 @@ data class Sample(
     val tools: List<Tool>? = null,
     val includeAttach: Boolean = false,
     val allowEmptyPrompt: Boolean = false,
-    val generateImages: (suspend (ImagenModel, String, Bitmap?) -> ImagenGenerationResponse<ImagenInlineImage>)? = null
+    val radioOptions: List<String> = emptyList(),
+    val generateImages: (suspend (ImagenModel, String, Bitmap?, String?) -> ImagenGenerationResponse<ImagenInlineImage>)? = null
 )
