@@ -9,9 +9,6 @@ import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.ai
-import com.google.firebase.ai.type.ImagenAspectRatio
-import com.google.firebase.ai.type.ImagenEditMode
-import com.google.firebase.ai.type.ImagenEditingConfig
 import com.google.firebase.ai.type.ImagenImageFormat
 import com.google.firebase.ai.type.ImagenPersonFilterLevel
 import com.google.firebase.ai.type.ImagenSafetyFilterLevel
@@ -42,11 +39,11 @@ class ImagenViewModel(
     private val _includeAttach = MutableStateFlow(sample.includeAttach)
     val includeAttach: StateFlow<Boolean> = _includeAttach
 
-    private val _radioOptions = MutableStateFlow(sample.radioOptions)
-    val radioOptions: StateFlow<List<String>> = _radioOptions
+    private val _selectionOptions = MutableStateFlow(sample.selectionOptions)
+    val selectionOptions: StateFlow<List<String>> = _selectionOptions
 
-    private val _selectedRadioOption = MutableStateFlow<String?>(null)
-    val selectedRadioOption: StateFlow<String?> = _selectedRadioOption
+    private val _selectedOption = MutableStateFlow<String?>(null)
+    val selectedOption: StateFlow<String?> = _selectedOption
 
     private val _allowEmptyPrompt = MutableStateFlow(sample.allowEmptyPrompt)
     val allowEmptyPrompt: StateFlow<Boolean> = _allowEmptyPrompt
@@ -83,7 +80,7 @@ class ImagenViewModel(
             _isLoading.value = true
             try {
                 val imageResponse =
-                    sample.generateImages!!(imagenModel, inputText, attachedImage.first(), selectedRadioOption.first())
+                    sample.generateImages!!(imagenModel, inputText, attachedImage.first(), selectedOption.first())
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
                 _errorMessage.value = null // clear error message
             } catch (e: Exception) {
@@ -109,7 +106,7 @@ class ImagenViewModel(
 
     fun selectRadio(selection: String) {
         viewModelScope.launch {
-            _selectedRadioOption.emit(selection)
+            _selectedOption.emit(selection)
         }
     }
 }

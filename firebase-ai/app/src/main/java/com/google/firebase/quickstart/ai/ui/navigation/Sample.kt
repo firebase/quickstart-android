@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
-import android.content.Context
 import android.graphics.Bitmap
 import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.type.Content
@@ -40,7 +39,7 @@ data class Sample(
     val tools: List<Tool>? = null,
     val includeAttach: Boolean = false,
     val allowEmptyPrompt: Boolean = false,
-    val radioOptions: List<String> = emptyList(),
+    val selectionOptions: List<String> = emptyList(),
     val generateImages: (suspend (ImagenModel,
                                   String,
                                   Bitmap?,

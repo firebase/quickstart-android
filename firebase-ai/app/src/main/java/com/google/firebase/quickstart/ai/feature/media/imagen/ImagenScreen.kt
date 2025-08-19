@@ -41,7 +41,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.quickstart.ai.feature.text.Attachment
 import com.google.firebase.quickstart.ai.feature.text.AttachmentsList
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
@@ -59,8 +58,8 @@ fun ImagenScreen(
     val includeAttach by imagenViewModel.includeAttach.collectAsStateWithLifecycle()
     val allowEmptyPrompt by imagenViewModel.allowEmptyPrompt.collectAsStateWithLifecycle()
     val attachedImage by imagenViewModel.attachedImage.collectAsStateWithLifecycle()
-    val radioOptions by imagenViewModel.radioOptions.collectAsStateWithLifecycle()
-    val selectedOption by imagenViewModel.selectedRadioOption.collectAsStateWithLifecycle()
+    val selectionOptions by imagenViewModel.selectionOptions.collectAsStateWithLifecycle()
+    val selectedOption by imagenViewModel.selectedOption.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val contentResolver = context.contentResolver
     val scope = rememberCoroutineScope()
@@ -105,9 +104,9 @@ fun ImagenScreen(
                     .padding(16.dp)
                     .fillMaxWidth()
             )
-            if (radioOptions.isNotEmpty()) {
+            if (selectionOptions.isNotEmpty()) {
                 Column(modifier = Modifier.selectableGroup()) {
-                    radioOptions.forEach {option ->
+                    selectionOptions.forEach { option ->
                         Row(
                             Modifier
                                 .fillMaxWidth()
@@ -136,27 +135,30 @@ fun ImagenScreen(
                 if (attachedImage != null) {
                     AttachmentsList(listOf(Attachment("", attachedImage)))
                 }
+            }
+            Row() {
+                if (includeAttach) {
+                    TextButton(
+                        onClick = {
+                            openDocument.launch(arrayOf("image/*"))
+                        },
+                        modifier = Modifier
+                            .padding(end = 16.dp, bottom = 16.dp)
+                    ) { Text("Attach") }
+                }
                 TextButton(
                     onClick = {
-                        openDocument.launch(arrayOf("image/*"))
+                        if (allowEmptyPrompt || imagenPrompt.isNotBlank()) {
+                            imagenViewModel.generateImages(imagenPrompt)
+                        }
                     },
                     modifier = Modifier
                         .padding(end = 16.dp, bottom = 16.dp)
-                        .align(Alignment.End)
-                ) { Text("Attach") }
+                ) {
+                    Text("Generate")
+                }
             }
-            TextButton(
-                onClick = {
-                    if (allowEmptyPrompt || imagenPrompt.isNotBlank()) {
-                        imagenViewModel.generateImages(imagenPrompt)
-                    }
-                },
-                modifier = Modifier
-                    .padding(end = 16.dp, bottom = 16.dp)
-                    .align(Alignment.End)
-            ) {
-                Text("Generate")
-            }
+
         }
 
         if (isLoading) {
