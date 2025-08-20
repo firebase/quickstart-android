@@ -46,7 +46,10 @@ class ImagenViewModel(
     val selectedOption: StateFlow<String?> = _selectedOption
 
     private val _allowEmptyPrompt = MutableStateFlow(sample.allowEmptyPrompt)
-    val allowEmptyPrompt: StateFlow<Boolean> = _allowEmptyPrompt
+    val allowEmptyPrompt = _allowEmptyPrompt
+
+    private val _additionalImage = MutableStateFlow(sample.additionalImage)
+    val additionalImage: StateFlow<Bitmap?> = _additionalImage
 
     private val _attachedImage = MutableStateFlow<Bitmap?>(null)
     val attachedImage: StateFlow<Bitmap?> = _attachedImage

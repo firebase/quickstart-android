@@ -536,10 +536,10 @@ data class Attachment(
 fun AttachmentsList(
     attachments: List<Attachment>
 ) {
-    LazyColumn(
+    Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        items(attachments) { attachment ->
+        attachments.forEach { attachment ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

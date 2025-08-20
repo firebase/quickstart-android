@@ -7,15 +7,21 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -62,7 +69,7 @@ fun ImagenScreen(
     val allowEmptyPrompt by imagenViewModel.allowEmptyPrompt.collectAsStateWithLifecycle()
     val attachedImage by imagenViewModel.attachedImage.collectAsStateWithLifecycle()
     val selectionOptions by imagenViewModel.selectionOptions.collectAsStateWithLifecycle()
-    val selectedOption by imagenViewModel.selectedOption.collectAsStateWithLifecycle()
+    val additionalImage by imagenViewModel.additionalImage.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val contentResolver = context.contentResolver
     val scope = rememberCoroutineScope()
@@ -90,7 +97,7 @@ fun ImagenScreen(
     }
 
     Column(
-        modifier = Modifier
+        modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
         ElevatedCard(
             modifier = Modifier
@@ -111,8 +118,15 @@ fun ImagenScreen(
                 DropDownMenu(selectionOptions) { imagenViewModel.selectOption(it) }
             }
             if (includeAttach) {
-                if (attachedImage != null) {
-                    AttachmentsList(listOf(Attachment("", attachedImage)))
+                if (attachedImage != null || additionalImage != null) {
+                    AttachmentsList(buildList {
+                        if (additionalImage != null) {
+                            add(Attachment("", additionalImage))
+                        }
+                        if (attachedImage != null) {
+                            add(Attachment("", attachedImage))
+                        }
+                    })
                 }
             }
             Row() {
@@ -167,9 +181,11 @@ fun ImagenScreen(
                 )
             }
         }
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.padding(16.dp)
+        LazyHorizontalGrid(
+            rows = GridCells.Fixed(2),
+            modifier = Modifier
+                .padding(16.dp)
+                .height(500.dp)
         ) {
             items(generatedImages) { image ->
                 Card(
@@ -196,13 +212,14 @@ fun DropDownMenu(items: List<String>, onClick: (String) -> Unit) {
     }
 
     val itemPosition = remember {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
 
 
     Column(
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Top,
+        modifier = Modifier.padding(horizontal = 10.dp)
     ) {
 
         Box {
@@ -213,7 +230,7 @@ fun DropDownMenu(items: List<String>, onClick: (String) -> Unit) {
                     isDropDownExpanded.value = true
                 }
             ) {
-                Text(text = items[itemPosition.value])
+                Text(text = items[itemPosition.intValue])
                 Image(
                     painter = painterResource(id = R.drawable.round_arrow_drop_down_24),
                     contentDescription = "DropDown Icon"
@@ -230,7 +247,7 @@ fun DropDownMenu(items: List<String>, onClick: (String) -> Unit) {
                     },
                         onClick = {
                             isDropDownExpanded.value = false
-                            itemPosition.value = index
+                            itemPosition.intValue = index
                             onClick(item)
                         })
                 }

@@ -244,7 +244,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Imagen 3 - Style Transfer (Vertex AI)",
-        description = "Change the art style of an cat picture using a reference",
+        description = "Change the art style of a cat picture using a reference",
         modelName = "imagen-3.0-capability-001",
         backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
@@ -252,6 +252,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         initialPrompt = content { text("A picture of a cat") },
         includeAttach = true,
         allowEmptyPrompt = true,
+        additionalImage = MainActivity.catImage,
         generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap?, _ ->
             model.editImage(
                 listOf(
