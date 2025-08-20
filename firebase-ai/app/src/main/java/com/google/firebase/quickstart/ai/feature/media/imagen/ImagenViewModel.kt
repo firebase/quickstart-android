@@ -104,7 +104,7 @@ class ImagenViewModel(
         _attachedImage.emit(resizedBitmap)
     }
 
-    fun selectRadio(selection: String) {
+    fun selectOption(selection: String) {
         viewModelScope.launch {
             _selectedOption.emit(selection)
         }
