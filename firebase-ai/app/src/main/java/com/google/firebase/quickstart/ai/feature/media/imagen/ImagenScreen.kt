@@ -65,11 +65,7 @@ fun ImagenScreen(
     val errorMessage by imagenViewModel.errorMessage.collectAsStateWithLifecycle()
     val isLoading by imagenViewModel.isLoading.collectAsStateWithLifecycle()
     val generatedImages by imagenViewModel.generatedBitmaps.collectAsStateWithLifecycle()
-    val includeAttach by imagenViewModel.includeAttach.collectAsStateWithLifecycle()
-    val allowEmptyPrompt by imagenViewModel.allowEmptyPrompt.collectAsStateWithLifecycle()
     val attachedImage by imagenViewModel.attachedImage.collectAsStateWithLifecycle()
-    val selectionOptions by imagenViewModel.selectionOptions.collectAsStateWithLifecycle()
-    val additionalImage by imagenViewModel.additionalImage.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val contentResolver = context.contentResolver
     val scope = rememberCoroutineScope()
@@ -114,23 +110,28 @@ fun ImagenScreen(
                     .padding(16.dp)
                     .fillMaxWidth()
             )
-            if (selectionOptions.isNotEmpty()) {
-                DropDownMenu(selectionOptions) { imagenViewModel.selectOption(it) }
+            if (imagenViewModel.selectionOptions.isNotEmpty()) {
+                DropDownMenu(imagenViewModel.selectionOptions) { imagenViewModel.selectOption(it) }
             }
-            if (includeAttach) {
-                if (attachedImage != null || additionalImage != null) {
+            if (imagenViewModel.includeAttach) {
+                if (attachedImage != null || imagenViewModel.additionalImage != null) {
                     AttachmentsList(buildList {
-                        if (additionalImage != null) {
-                            add(Attachment("", additionalImage))
+                        if (imagenViewModel.additionalImage != null) {
+                            add(
+                                Attachment(
+                                    imagenViewModel.imageLabels.getOrElse(0) { "" },
+                                    imagenViewModel.additionalImage
+                                )
+                            )
                         }
                         if (attachedImage != null) {
-                            add(Attachment("", attachedImage))
+                            add(Attachment(imagenViewModel.imageLabels.getOrElse(1) { "" }, attachedImage))
                         }
                     })
                 }
             }
             Row() {
-                if (includeAttach) {
+                if (imagenViewModel.includeAttach) {
                     TextButton(
                         onClick = {
                             openDocument.launch(arrayOf("image/*"))
@@ -141,7 +142,7 @@ fun ImagenScreen(
                 }
                 TextButton(
                     onClick = {
-                        if (allowEmptyPrompt || imagenPrompt.isNotBlank()) {
+                        if (imagenViewModel.allowEmptyPrompt || imagenPrompt.isNotBlank()) {
                             imagenViewModel.generateImages(imagenPrompt)
                         }
                     },
@@ -242,9 +243,10 @@ fun DropDownMenu(items: List<String>, onClick: (String) -> Unit) {
                     isDropDownExpanded.value = false
                 }) {
                 items.forEachIndexed { index, item ->
-                    DropdownMenuItem(text = {
-                        Text(text = item)
-                    },
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = item)
+                        },
                         onClick = {
                             isDropDownExpanded.value = false
                             itemPosition.intValue = index

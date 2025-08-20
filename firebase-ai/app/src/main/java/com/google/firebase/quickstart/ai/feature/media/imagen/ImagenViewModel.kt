@@ -29,6 +29,7 @@ class ImagenViewModel(
     private val sampleId = savedStateHandle.toRoute<ImagenRoute>().sampleId
     private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
     val initialPrompt = sample.initialPrompt?.parts?.first()?.asTextOrNull().orEmpty()
+    val imageLabels = sample.imageLabels
 
     private val _errorMessage: MutableStateFlow<String?> = MutableStateFlow(null)
     val errorMessage: StateFlow<String?> = _errorMessage
@@ -36,20 +37,16 @@ class ImagenViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
-    private val _includeAttach = MutableStateFlow(sample.includeAttach)
-    val includeAttach: StateFlow<Boolean> = _includeAttach
+    val includeAttach = sample.includeAttach
 
-    private val _selectionOptions = MutableStateFlow(sample.selectionOptions)
-    val selectionOptions: StateFlow<List<String>> = _selectionOptions
+    val selectionOptions = sample.selectionOptions
 
     private val _selectedOption = MutableStateFlow<String?>(null)
     val selectedOption: StateFlow<String?> = _selectedOption
 
-    private val _allowEmptyPrompt = MutableStateFlow(sample.allowEmptyPrompt)
-    val allowEmptyPrompt = _allowEmptyPrompt
+    val allowEmptyPrompt = sample.allowEmptyPrompt
 
-    private val _additionalImage = MutableStateFlow(sample.additionalImage)
-    val additionalImage: StateFlow<Bitmap?> = _additionalImage
+    val additionalImage = sample.additionalImage
 
     private val _attachedImage = MutableStateFlow<Bitmap?>(null)
     val attachedImage: StateFlow<Bitmap?> = _attachedImage

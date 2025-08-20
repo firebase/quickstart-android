@@ -253,6 +253,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         includeAttach = true,
         allowEmptyPrompt = true,
         additionalImage = MainActivity.catImage,
+        imageLabels = listOf("Style Target", "Style Source"),
         generateImages = { model: ImagenModel, inputText: String, bitmap: Bitmap?, _ ->
             model.editImage(
                 listOf(

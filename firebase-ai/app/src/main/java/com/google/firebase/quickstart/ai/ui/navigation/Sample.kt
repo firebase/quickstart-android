@@ -40,6 +40,7 @@ data class Sample(
     val includeAttach: Boolean = false,
     val allowEmptyPrompt: Boolean = false,
     val additionalImage: Bitmap? = null,
+    val imageLabels: List<String> = emptyList(),
     val selectionOptions: List<String> = emptyList(),
     val generateImages: (suspend (ImagenModel,
                                   String,
