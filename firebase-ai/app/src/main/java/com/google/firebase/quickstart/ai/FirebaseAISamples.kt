@@ -158,7 +158,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Imagen 3 - Inpainting (Vertex AI)",
-        description = "Replace part of of an image using Imagen 3",
+        description = "Replace part of an image using Imagen 3",
         modelName = "imagen-3.0-capability-001",
         backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
