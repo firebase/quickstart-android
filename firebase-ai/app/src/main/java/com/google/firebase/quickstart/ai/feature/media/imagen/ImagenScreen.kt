@@ -7,8 +7,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.rememberScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -113,7 +110,7 @@ fun ImagenScreen(
             if (imagenViewModel.selectionOptions.isNotEmpty()) {
                 DropDownMenu(imagenViewModel.selectionOptions) { imagenViewModel.selectOption(it) }
             }
-            val mylist = buildList {
+            val attachmentsList = buildList {
                 if (imagenViewModel.additionalImage != null) {
                     add(
                         Attachment(
@@ -127,8 +124,8 @@ fun ImagenScreen(
                 }
             }
 
-            if (imagenViewModel.includeAttach && mylist.isNotEmpty()) {
-                AttachmentsList(mylist)
+            if (imagenViewModel.includeAttach && attachmentsList.isNotEmpty()) {
+                AttachmentsList(attachmentsList)
             }
             Row() {
                 if (imagenViewModel.includeAttach) {
