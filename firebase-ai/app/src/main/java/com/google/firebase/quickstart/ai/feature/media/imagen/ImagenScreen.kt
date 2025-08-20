@@ -113,22 +113,22 @@ fun ImagenScreen(
             if (imagenViewModel.selectionOptions.isNotEmpty()) {
                 DropDownMenu(imagenViewModel.selectionOptions) { imagenViewModel.selectOption(it) }
             }
-            if (imagenViewModel.includeAttach) {
-                if (attachedImage != null || imagenViewModel.additionalImage != null) {
-                    AttachmentsList(buildList {
-                        if (imagenViewModel.additionalImage != null) {
-                            add(
-                                Attachment(
-                                    imagenViewModel.imageLabels.getOrElse(0) { "" },
-                                    imagenViewModel.additionalImage
-                                )
-                            )
-                        }
-                        if (attachedImage != null) {
-                            add(Attachment(imagenViewModel.imageLabels.getOrElse(1) { "" }, attachedImage))
-                        }
-                    })
+            val mylist = buildList {
+                if (imagenViewModel.additionalImage != null) {
+                    add(
+                        Attachment(
+                            imagenViewModel.imageLabels.getOrElse(0) { "" },
+                            imagenViewModel.additionalImage
+                        )
+                    )
                 }
+                if (attachedImage != null) {
+                    add(Attachment(imagenViewModel.imageLabels.getOrElse(1) { "" }, attachedImage))
+                }
+            }
+
+            if (imagenViewModel.includeAttach && mylist.isNotEmpty()) {
+                AttachmentsList(mylist)
             }
             Row() {
                 if (imagenViewModel.includeAttach) {
@@ -234,7 +234,7 @@ fun DropDownMenu(items: List<String>, onClick: (String) -> Unit) {
                 Text(text = items[itemPosition.intValue])
                 Image(
                     painter = painterResource(id = R.drawable.round_arrow_drop_down_24),
-                    contentDescription = "DropDown Icon"
+                    contentDescription = "Dropdown Icon"
                 )
             }
             DropdownMenu(
