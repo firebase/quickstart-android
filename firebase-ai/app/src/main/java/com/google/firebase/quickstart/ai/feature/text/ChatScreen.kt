@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.ai.feature.text
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -174,6 +175,7 @@ fun ChatScreen(
     }
 }
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun ChatBubbleItem(
     message: UiChatMessage
