@@ -9,6 +9,7 @@ import com.google.firebase.ai.type.ImagenGenerationResponse
 import com.google.firebase.ai.type.ImagenInlineImage
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.Tool
+import com.google.firebase.quickstart.ai.feature.media.imagen.EditingMode
 import java.util.UUID
 
 enum class Category(
@@ -42,8 +43,5 @@ data class Sample(
     val additionalImage: Bitmap? = null,
     val imageLabels: List<String> = emptyList(),
     val selectionOptions: List<String> = emptyList(),
-    val generateImages: (suspend (ImagenModel,
-                                  String,
-                                  Bitmap?,
-                                  String?) -> ImagenGenerationResponse<ImagenInlineImage>)? = null
+    val editingMode: EditingMode? = null,
 )
