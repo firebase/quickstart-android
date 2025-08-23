@@ -2,14 +2,17 @@ package com.google.firebase.quickstart.ai
 
 import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
+import com.google.firebase.quickstart.ai.feature.media.imagen.EditingMode
 import com.google.firebase.quickstart.ai.ui.navigation.Category
 import com.google.firebase.quickstart.ai.ui.navigation.Sample
 
+@OptIn(PublicPreviewAPI::class)
 val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Travel tips",
@@ -131,7 +134,61 @@ val FIREBASE_AI_SAMPLES = listOf(
             text(
                 "A photo of a modern building with water in the background"
             )
-        }
+        },
+        allowEmptyPrompt = false,
+        editingMode = EditingMode.GENERATE,
+    ),
+    Sample(
+        title = "Imagen 3 - Inpainting (Vertex AI)",
+        description = "Replace part of an image using Imagen 3",
+        modelName = "imagen-3.0-capability-001",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("A sunny beach") },
+        includeAttach = true,
+        allowEmptyPrompt = true,
+        selectionOptions = listOf("Mask", "Background", "Foreground"),
+        editingMode = EditingMode.INPAINTING,
+    ),
+    Sample(
+        title = "Imagen 3 - Outpainting (Vertex AI)",
+        description = "Expand an image by drawing in more background",
+        modelName = "imagen-3.0-capability-001",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("") },
+        includeAttach = true,
+        allowEmptyPrompt = true,
+        selectionOptions = listOf("Image Alignment", "Center", "Top", "Bottom", "Left", "Right"),
+        editingMode = EditingMode.OUTPAINTING,
+    ),
+    Sample(
+        title = "Imagen 3 - Subject Reference (Vertex AI)",
+        description = "Generate an image using a referenced subject (must be an animal)",
+        modelName = "imagen-3.0-capability-001",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("<subject> flying through space") },
+        includeAttach = true,
+        allowEmptyPrompt = false,
+        editingMode = EditingMode.SUBJECT_REFERENCE,
+    ),
+    Sample(
+        title = "Imagen 3 - Style Transfer (Vertex AI)",
+        description = "Change the art style of a cat picture using a reference",
+        modelName = "imagen-3.0-capability-001",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("A picture of a cat") },
+        includeAttach = true,
+        allowEmptyPrompt = true,
+        additionalImage = MainActivity.catImage,
+        imageLabels = listOf("Style Target", "Style Source"),
+        editingMode = EditingMode.STYLE_TRANSFER
     ),
     Sample(
         title = "Gemini 2.0 Flash - image generation",
