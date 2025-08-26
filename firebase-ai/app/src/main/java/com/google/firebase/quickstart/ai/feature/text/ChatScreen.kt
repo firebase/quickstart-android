@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.ai.feature.text
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -175,7 +174,6 @@ fun ChatScreen(
     }
 }
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun ChatBubbleItem(
     message: UiChatMessage
@@ -296,33 +294,32 @@ fun ChatBubbleItem(
                             // Search Entry Point (WebView)
                             metadata.searchEntryPoint?.let { searchEntryPoint ->
                                 val context = LocalContext.current
-                                AndroidView(
-                                    factory = {
-                                        WebView(it).apply {
-                                            webViewClient = object : WebViewClient() {
-                                                override fun shouldOverrideUrlLoading(
-                                                    view: WebView?,
-                                                    request: WebResourceRequest?
-                                                ): Boolean {
-                                                    request?.url?.let { uri ->
-                                                        val intent = Intent(Intent.ACTION_VIEW, uri)
-                                                        context.startActivity(intent)
-                                                    }
-                                                    // Return true to indicate we handled the URL loading
-                                                    return true
+                                AndroidView(factory = {
+                                    WebView(it).apply {
+                                        webViewClient = object : WebViewClient() {
+                                            override fun shouldOverrideUrlLoading(
+                                                view: WebView?,
+                                                request: WebResourceRequest?
+                                            ): Boolean {
+                                                request?.url?.let { uri ->
+                                                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                                                    context.startActivity(intent)
                                                 }
+                                                // Return true to indicate we handled the URL loading
+                                                return true
                                             }
-
-                                            setBackgroundColor(android.graphics.Color.TRANSPARENT)
-                                            loadDataWithBaseURL(
-                                                null,
-                                                searchEntryPoint.renderedContent,
-                                                "text/html",
-                                                "UTF-8",
-                                                null
-                                            )
                                         }
-                                    },
+
+                                        setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                                        loadDataWithBaseURL(
+                                            null,
+                                            searchEntryPoint.renderedContent,
+                                            "text/html",
+                                            "UTF-8",
+                                            null
+                                        )
+                                    }
+                                },
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(22.dp))
                                         .fillMaxHeight()
@@ -537,10 +534,10 @@ data class Attachment(
 fun AttachmentsList(
     attachments: List<Attachment>
 ) {
-    Column(
+    LazyColumn(
         modifier = Modifier.fillMaxWidth()
     ) {
-        attachments.forEach { attachment ->
+        items(attachments) { attachment ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -553,21 +550,21 @@ fun AttachmentsList(
                         .padding(4.dp)
                         .align(Alignment.CenterVertically)
                 )
-                Column(modifier = Modifier.align (Alignment.CenterVertically)) {
-                    attachment.image?.let {
-                        Image(
-                            bitmap = it.asImageBitmap(),
-                            contentDescription = attachment.fileName,
-                            modifier = Modifier
-                        )
-                    }
-                    Text(
-                        text = attachment.fileName,
-                        style = MaterialTheme.typography.bodySmall,
+                attachment.image?.let {
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        contentDescription = attachment.fileName,
                         modifier = Modifier
-                            .padding(horizontal = 4.dp)
+                            .align(Alignment.CenterVertically)
                     )
                 }
+                Text(
+                    text = attachment.fileName,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(horizontal = 4.dp)
+                )
             }
         }
     }
