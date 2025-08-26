@@ -1,9 +1,12 @@
 package com.google.firebase.quickstart.ai.feature.text.functioncalling
 
+import com.google.firebase.ai.type.FunctionCallPart
+import com.google.firebase.ai.type.FunctionResponsePart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonPrimitive
 
 /**
  * Hypothetical repository that calls an external weather API.
@@ -24,5 +27,9 @@ class WeatherRepository {
                 )
             )
         }
+
     }
+
+
+
 }

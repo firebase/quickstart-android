@@ -46,11 +46,8 @@ class StreamRealtimeRoute(val sampleId: String)
 @Composable
 fun StreamRealtimeScreen(bidiView: BidiViewModel = viewModel<BidiViewModel>()) {
     val isConversationActive = remember { mutableStateOf(false) }
-    val backgroundColor = if (isConversationActive.value) {
-        Color(0xFF1A237E)  // A dark background for active state
-    } else {
+    val backgroundColor =
         MaterialTheme.colorScheme.background
-    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = backgroundColor
