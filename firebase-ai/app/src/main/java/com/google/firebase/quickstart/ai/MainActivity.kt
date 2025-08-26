@@ -2,6 +2,8 @@ package com.google.firebase.quickstart.ai
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,6 +28,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.ai.type.toImagenInlineImage
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenRoute
@@ -43,6 +46,7 @@ class MainActivity : ComponentActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
         }
         enableEdgeToEdge()
+        catImage = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.cat)
         setContent {
             val navController = rememberNavController()
 
@@ -116,5 +120,8 @@ class MainActivity : ComponentActivity() {
                 }
             })
         }
+    }
+    companion object{
+        lateinit var catImage: Bitmap
     }
 }
