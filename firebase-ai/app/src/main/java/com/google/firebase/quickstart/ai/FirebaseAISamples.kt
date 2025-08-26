@@ -134,11 +134,11 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Gemini 2.0 Flash - image generation",
+        title = "Gemini 2.5 Flash - image generation (preview)",
         description = "Generate and/or edit images using Gemini 2.0 Flash",
         navRoute = "chat",
         categories = listOf(Category.IMAGE),
-        modelName = "gemini-2.0-flash-preview-image-generation",
+        modelName = "gemini-2.5-flash-image-preview",
         initialPrompt = content {
             text(
                 "Hi, can you create a 3d rendered image of a pig " +
