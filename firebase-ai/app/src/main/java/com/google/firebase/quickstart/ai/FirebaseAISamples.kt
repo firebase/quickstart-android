@@ -135,7 +135,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Gemini 2.5 Flash - image generation (preview)",
-        description = "Generate and/or edit images using Gemini 2.0 Flash",
+        description = "Generate and/or edit images using Gemini 2.5 Flash Image Preview",
         navRoute = "chat",
         categories = listOf(Category.IMAGE),
         modelName = "gemini-2.5-flash-image-preview",
