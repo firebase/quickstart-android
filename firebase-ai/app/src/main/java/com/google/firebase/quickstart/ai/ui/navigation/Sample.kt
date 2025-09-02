@@ -21,7 +21,7 @@ enum class Category(
     AUDIO("Audio"),
     DOCUMENT("Document"),
     FUNCTION_CALLING("Function calling"),
-    LIVE_API("Bidi Streaming")
+    LIVE_API("LiveAPI Streaming")
 }
 
 @OptIn(PublicPreviewAPI::class)

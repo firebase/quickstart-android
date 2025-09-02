@@ -74,7 +74,7 @@ fun StreamRealtimeScreen(bidiView: BidiViewModel = viewModel<BidiViewModel>()) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Tap the end button to stop", // Example timer
+                        text = "Tap the end button to stop",
                         fontSize = 18.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

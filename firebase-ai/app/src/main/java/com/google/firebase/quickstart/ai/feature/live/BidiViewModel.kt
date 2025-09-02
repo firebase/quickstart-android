@@ -65,7 +65,7 @@ class BidiViewModel(
         }
         @OptIn(PublicPreviewAPI::class)
         val liveModel = FirebaseAI.getInstance(Firebase.app, sample.backend).liveModel(
-            "gemini-live-2.5-flash-preview",
+            "gemini-live-2.5-flash",
             generationConfig = liveGenerationConfig,
             tools = sample.tools
         )
@@ -77,11 +77,15 @@ class BidiViewModel(
     fun handler(fetchWeatherCall: FunctionCallPart) : FunctionResponsePart {
         val response:JsonObject
         fetchWeatherCall.let {
-            val city = it.args["city"]!!.jsonPrimitive.content
-            val state = it.args["city"]!!.jsonPrimitive.content
-            val date = it.args["date"]!!.jsonPrimitive.content
+            val city = it.args["city"]?.jsonPrimitive?.content
+            val state = it.args["state"]?.jsonPrimitive?.content
+            val date = it.args["date"]?.jsonPrimitive?.content
             runBlocking {
-                response = fetchWeather(city, state, date)
+                response = if(!city.isNullOrEmpty() and !state.isNullOrEmpty() and date.isNullOrEmpty()) {
+                    fetchWeather(city!!, state!!, date!!)
+                } else {
+                    JsonObject(emptyMap())
+                }
             }
         }
         return FunctionResponsePart("fetchWeather",  response, fetchWeatherCall.id)

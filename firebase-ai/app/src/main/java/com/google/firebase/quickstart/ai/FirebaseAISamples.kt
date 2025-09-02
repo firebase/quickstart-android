@@ -271,7 +271,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Converse With AI",
+        title = "ForecastTalk",
         description = "Simple app which allows you to talk to AI and" +
                 " also get information about the weather conditions",
         navRoute = "stream",
