@@ -60,8 +60,8 @@ class BidiViewModel(
     init {
         val liveGenerationConfig = liveGenerationConfig {
             speechConfig = SpeechConfig(voice = Voice("CHARON"))
-            responseModality = ResponseModality.AUDIO
             // Change this to ContentModality.TEXT if you want text output.
+            responseModality = ResponseModality.AUDIO
         }
         @OptIn(PublicPreviewAPI::class)
         val liveModel = FirebaseAI.getInstance(Firebase.app, sample.backend).liveModel(
