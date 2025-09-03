@@ -272,8 +272,8 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "ForecastTalk",
-        description = "Simple app which allows you to talk to AI and" +
-                " also get information about the weather conditions",
+        description = "Use bidirectional streaming to get information about" +
+                " weather conditions for a specific US city on a specific date",
         navRoute = "stream",
         categories = listOf(Category.LIVE_API, Category.AUDIO, Category.FUNCTION_CALLING),
         tools = listOf(
