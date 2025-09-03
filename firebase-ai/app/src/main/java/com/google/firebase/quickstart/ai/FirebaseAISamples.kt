@@ -271,6 +271,34 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
+        title = "ForecastTalk",
+        description = "Use bidirectional streaming to get information about" +
+                " weather conditions for a specific US city on a specific date",
+        navRoute = "stream",
+        categories = listOf(Category.LIVE_API, Category.AUDIO, Category.FUNCTION_CALLING),
+        tools = listOf(
+            Tool.functionDeclarations(
+                listOf(
+                    FunctionDeclaration(
+                        "fetchWeather",
+                        "Get the weather conditions for a specific US city on a specific date.",
+                        mapOf(
+                            "city" to Schema.string("The US city of the location."),
+                            "state" to Schema.string("The US state of the location."),
+                            "date" to Schema.string(
+                                "The date for which to get the weather." +
+                                        " Date must be in the format: YYYY-MM-DD."
+                            ),
+                        ),
+                    )
+                )
+            )
+        ),
+        initialPrompt = content {
+            text("What was the weather in Boston, MA on October 17, 2024?")
+        }
+    ),
+    Sample(
         title = "Weather Chat",
         description = "Use function calling to get the weather conditions" +
                 " for a specific US city on a specific date.",
