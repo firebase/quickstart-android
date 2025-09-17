@@ -1,8 +1,8 @@
 [versions]
-activityCompose = "1.10.1"
+activityCompose = "1.11.0"
 agp = "8.9.2"
 composeBom = "2024.09.00"
-composeNavigation = "2.9.3"
+composeNavigation = "2.9.4"
 coreKtx = "1.17.0"
 espressoCore = "3.7.0"
 firebaseBom = "34.2.0"
@@ -10,9 +10,9 @@ junit = "4.13.2"
 junitVersion = "1.3.0"
 kotlin = "2.0.21"
 kotlinxSerializationCore = "1.9.0"
-lifecycle = "2.9.3"
+lifecycle = "2.9.4"
 lifecycleRuntimeKtx = "2.8.7"
-material = "1.12.0"
+material = "1.13.0"
 webkit = "1.14.0"
 
 [libraries]
