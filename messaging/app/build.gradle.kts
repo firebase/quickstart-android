@@ -61,10 +61,10 @@ dependencies {
     implementation("androidx.core:core-ktx:1.17.0")
 
     // Required when asking for permission to post notifications (starting in Android 13)
-    implementation("androidx.activity:activity-ktx:1.10.1")
+    implementation("androidx.activity:activity-ktx:1.11.0")
     implementation("androidx.fragment:fragment-ktx:1.8.9")
 
-    implementation("com.google.android.material:material:1.12.0")
+    implementation("com.google.android.material:material:1.13.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:34.2.0"))
@@ -78,7 +78,7 @@ dependencies {
 
     implementation("com.google.firebase:firebase-installations:19.0.0")
 
-    implementation("androidx.work:work-runtime:2.10.3")
+    implementation("androidx.work:work-runtime:2.10.4")
 
     // Testing dependencies
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
