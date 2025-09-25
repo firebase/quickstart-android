@@ -191,11 +191,11 @@ val FIREBASE_AI_SAMPLES = listOf(
         editingMode = EditingMode.STYLE_TRANSFER
     ),
     Sample(
-        title = "Gemini 2.5 Flash - image generation (preview)",
-        description = "Generate and/or edit images using Gemini 2.5 Flash Image Preview",
+        title = "Gemini 2.5 Flash Image (aka nanobanana)",
+        description = "Generate and/or edit images using Gemini 2.5 Flash Image aka nanobanana",
         navRoute = "chat",
         categories = listOf(Category.IMAGE),
-        modelName = "gemini-2.5-flash-image-preview",
+        modelName = "gemini-2.5-flash-image",
         initialPrompt = content {
             text(
                 "Hi, can you create a 3d rendered image of a pig " +
