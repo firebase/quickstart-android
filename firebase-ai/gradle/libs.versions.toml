@@ -2,7 +2,7 @@
 activityCompose = "1.11.0"
 agp = "8.9.2"
 composeBom = "2024.09.00"
-composeNavigation = "2.9.4"
+composeNavigation = "2.9.5"
 coreKtx = "1.17.0"
 espressoCore = "3.7.0"
 firebaseBom = "34.3.0"
