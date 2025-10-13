@@ -31,6 +31,8 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.ai.type.toImagenInlineImage
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeScreen
+import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
+import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoScreen
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenRoute
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenScreen
 import com.google.firebase.quickstart.ai.feature.text.ChatRoute
@@ -90,6 +92,9 @@ class MainActivity : ComponentActivity() {
                                         "stream" -> {
                                             navController.navigate(StreamRealtimeRoute(it.id))
                                         }
+                                        "streamVideo" -> {
+                                            navController.navigate(StreamRealtimeVideoRoute(it.id))
+                                        }
                                     }
                                 }
                             )
@@ -105,6 +110,10 @@ class MainActivity : ComponentActivity() {
                         // Stream Realtime Samples
                         composable<StreamRealtimeRoute> {
                             StreamRealtimeScreen()
+                        }
+
+                        composable<StreamRealtimeVideoRoute> {
+                            StreamRealtimeVideoScreen()
                         }
                     }
                 }
