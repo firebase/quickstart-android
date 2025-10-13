@@ -303,7 +303,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         title = "Video input",
         description = "Use bidirectional streaming to chat with Gemini using your" +
                 " phone's camera",
-        navRoute = "stream",
+        navRoute = "streamVideo",
         modelName = "gemini-live-2.5-flash-preview",
         categories = listOf(Category.LIVE_API, Category.VIDEO, Category.FUNCTION_CALLING),
         tools = listOf(

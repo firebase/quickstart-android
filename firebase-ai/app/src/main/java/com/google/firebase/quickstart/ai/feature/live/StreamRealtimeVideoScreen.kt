@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.quickstart.ai.feature.media.imagen.BidiViewModel
@@ -20,7 +21,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 class StreamRealtimeVideoRoute(val sampleId: String)
 
-@RequiresPermission(Manifest.permission.RECORD_AUDIO)
 @Composable
 fun StreamRealtimeVideoScreen(bidiView: BidiViewModel = viewModel<BidiViewModel>()) {
     val backgroundColor =
