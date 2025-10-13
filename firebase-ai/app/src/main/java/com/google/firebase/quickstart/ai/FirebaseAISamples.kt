@@ -275,8 +275,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         description = "Use bidirectional streaming to get information about" +
                 " weather conditions for a specific US city on a specific date",
         navRoute = "stream",
-        modelName = "gemini-2.0-flash-live-preview-04-09",
-        //backend = GenerativeBackend.vertexAI(),
+        modelName = "gemini-live-2.5-flash-preview",
         categories = listOf(Category.LIVE_API, Category.AUDIO, Category.FUNCTION_CALLING),
         tools = listOf(
             Tool.functionDeclarations(
@@ -305,9 +304,8 @@ val FIREBASE_AI_SAMPLES = listOf(
         description = "Use bidirectional streaming to chat with Gemini using your" +
                 " phone's camera",
         navRoute = "stream",
-        modelName = "gemini-2.0-flash-live-preview-04-09",
-        //backend = GenerativeBackend.vertexAI(),
-        categories = listOf(Category.LIVE_API, Category.AUDIO, Category.FUNCTION_CALLING),
+        modelName = "gemini-live-2.5-flash-preview",
+        categories = listOf(Category.LIVE_API, Category.VIDEO, Category.FUNCTION_CALLING),
         tools = listOf(
             Tool.functionDeclarations(
                 listOf(

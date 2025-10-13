@@ -65,7 +65,7 @@ class BidiViewModel(
         }
         @OptIn(PublicPreviewAPI::class)
         val liveModel = FirebaseAI.getInstance(Firebase.app, sample.backend).liveModel(
-            "gemini-live-2.5-flash",
+            modelName = sample.modelName ?: "gemini-live-2.5-flash",
             generationConfig = liveGenerationConfig,
             tools = sample.tools
         )

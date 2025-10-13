@@ -111,7 +111,7 @@ class MainActivity : ComponentActivity() {
                         composable<StreamRealtimeRoute> {
                             StreamRealtimeScreen()
                         }
-
+                        // Stream Realtime Video Samples
                         composable<StreamRealtimeVideoRoute> {
                             StreamRealtimeVideoScreen()
                         }
