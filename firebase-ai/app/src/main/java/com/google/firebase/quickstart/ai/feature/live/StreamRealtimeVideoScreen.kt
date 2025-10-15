@@ -2,7 +2,6 @@ package com.google.firebase.quickstart.ai.feature.live
 
 import android.Manifest
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,11 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.quickstart.ai.feature.media.imagen.BidiViewModel
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import java.io.ByteArrayOutputStream
 
 @Serializable
 class StreamRealtimeVideoRoute(val sampleId: String)
@@ -24,6 +25,16 @@ class StreamRealtimeVideoRoute(val sampleId: String)
 fun StreamRealtimeVideoScreen(bidiView: BidiViewModel = viewModel<BidiViewModel>()) {
     val backgroundColor =
         MaterialTheme.colorScheme.background
+
+    val scope = rememberCoroutineScope()
+    DisposableEffect(Unit) {
+        scope.launch {
+            bidiView.startConversation()
+        }
+        onDispose {
+            bidiView.endConversation()
+        }
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -36,10 +47,7 @@ fun StreamRealtimeVideoScreen(bidiView: BidiViewModel = viewModel<BidiViewModel>
             CameraView(
                 modifier = Modifier.fillMaxHeight(0.5f),
                 onFrameCaptured = { bitmap ->
-                    val stream = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                    val byteArray = stream.toByteArray()
-                    Log.d("CameraFeed", "Captured frame size: ${byteArray.size}")
+                    bidiView.sendVideoFrame(bitmap)
                 }
             )
         }
