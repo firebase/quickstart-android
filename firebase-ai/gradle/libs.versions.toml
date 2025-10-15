@@ -14,6 +14,7 @@ lifecycle = "2.9.4"
 lifecycleRuntimeKtx = "2.8.7"
 material = "1.13.0"
 webkit = "1.14.0"
+camerax = "1.4.0-alpha05"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -41,6 +42,11 @@ firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "fir
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationCore" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "camerax" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "camerax" }
+androidx-camera-extensions = { module = "androidx.camera:camera-extensions", version.ref = "camerax" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "camerax" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "camerax" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

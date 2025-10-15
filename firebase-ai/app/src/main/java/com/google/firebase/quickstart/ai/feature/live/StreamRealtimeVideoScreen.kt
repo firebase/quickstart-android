@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.live
 
 import android.Manifest
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.quickstart.ai.feature.media.imagen.BidiViewModel
 import kotlinx.serialization.Serializable
+import java.io.ByteArrayOutputStream
 
 @Serializable
 class StreamRealtimeVideoRoute(val sampleId: String)
@@ -33,7 +35,10 @@ fun StreamRealtimeVideoScreen(bidiView: BidiViewModel = viewModel<BidiViewModel>
         ) {
             CameraView(
                 modifier = Modifier.fillMaxHeight(0.5f),
-                onFrameCaptured = { byteArray ->
+                onFrameCaptured = { bitmap ->
+                    val stream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                    val byteArray = stream.toByteArray()
                     Log.d("CameraFeed", "Captured frame size: ${byteArray.size}")
                 }
             )
