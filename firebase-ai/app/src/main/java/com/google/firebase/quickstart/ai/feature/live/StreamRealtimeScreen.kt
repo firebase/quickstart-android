@@ -32,8 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.BidiViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

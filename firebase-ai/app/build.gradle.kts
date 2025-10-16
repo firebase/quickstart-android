@@ -67,6 +67,13 @@ dependencies {
     // Webkit
     implementation(libs.androidx.webkit)
 
+    // CameraX
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.extensions)
+
     // Material for XML-based theme
     implementation(libs.material)
 
