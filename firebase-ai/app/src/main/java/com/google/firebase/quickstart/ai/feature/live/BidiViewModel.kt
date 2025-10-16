@@ -11,7 +11,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.ai.FirebaseAI
 import com.google.firebase.ai.type.FunctionCallPart
 import com.google.firebase.ai.type.FunctionResponsePart
-import com.google.firebase.ai.type.InlineDataPart
+import com.google.firebase.ai.type.InlineData
 import com.google.firebase.ai.type.LiveSession
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.ResponseModality
@@ -22,15 +22,11 @@ import com.google.firebase.app
 import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeRoute
 import com.google.firebase.quickstart.ai.feature.text.functioncalling.WeatherRepository.Companion.fetchWeather
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import java.io.ByteArrayOutputStream
-import kotlin.time.Duration.Companion.seconds
 
 @OptIn(PublicPreviewAPI::class)
 class BidiViewModel(
@@ -97,7 +93,7 @@ class BidiViewModel(
             val jpegBytes = byteArrayOutputStream.toByteArray()
 
             liveSession.sendVideoRealtime(
-                InlineDataPart(jpegBytes, "image/jpeg")
+                InlineData(jpegBytes, "image/jpeg")
             )
         }
     }

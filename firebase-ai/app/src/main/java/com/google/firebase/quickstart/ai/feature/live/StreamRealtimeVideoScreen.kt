@@ -1,7 +1,6 @@
 package com.google.firebase.quickstart.ai.feature.live
 
 import android.Manifest
-import android.graphics.Bitmap
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
