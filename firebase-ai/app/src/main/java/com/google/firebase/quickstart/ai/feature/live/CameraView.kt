@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun CameraView(
@@ -67,7 +68,7 @@ private fun bindPreview(
             .also {
                 it.setAnalyzer(
                     ContextCompat.getMainExecutor(previewView.context),
-                    SecondIntervalAnalyzer(onFrameCaptured),
+                    SnapshotFrameAnalyzer(onFrameCaptured),
                 )
             }
 
@@ -75,10 +76,11 @@ private fun bindPreview(
     cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, preview, imageAnalysis)
 }
 
-private class SecondIntervalAnalyzer(private val onFrameCaptured: (Bitmap) -> Unit) :
+// Calls the [onFrameCaptured] callback with the captured frame every second.
+private class SnapshotFrameAnalyzer(private val onFrameCaptured: (Bitmap) -> Unit) :
     ImageAnalysis.Analyzer {
     private var lastFrameTimestamp = 0L
-    private val interval = 1000L // 1 second
+    private val interval = 1.seconds // 1 second
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun analyze(image: ImageProxy) {
@@ -87,7 +89,7 @@ private class SecondIntervalAnalyzer(private val onFrameCaptured: (Bitmap) -> Un
             lastFrameTimestamp = currentTimestamp
         }
 
-        if (currentTimestamp - lastFrameTimestamp >= interval) {
+        if (currentTimestamp - lastFrameTimestamp >= interval.inWholeMilliseconds) {
             onFrameCaptured(image.toBitmap())
             lastFrameTimestamp = currentTimestamp
         }
