@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.feature.media.imagen
+package com.google.firebase.quickstart.ai.feature.live
 
 import android.Manifest
 import android.graphics.Bitmap
@@ -73,7 +73,7 @@ class BidiViewModel(
         return FunctionResponsePart("fetchWeather", response, fetchWeatherCall.id)
     }
 
-    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
+    
     suspend fun startConversation() {
         liveSession.startAudioConversation(::handler)
     }
@@ -82,9 +82,7 @@ class BidiViewModel(
         liveSession.stopAudioConversation()
     }
 
-// ... (imports and class definition)
-
-    @RequiresPermission(android.Manifest.permission.RECORD_AUDIO)
+    
     fun sendVideoFrame(frame: Bitmap) {
         viewModelScope.launch {
             // Directly compress the Bitmap to a ByteArray
