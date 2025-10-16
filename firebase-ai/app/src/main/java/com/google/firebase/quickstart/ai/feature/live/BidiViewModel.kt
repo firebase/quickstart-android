@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.ai.feature.live
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -69,6 +70,8 @@ class BidiViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
         return FunctionResponsePart("fetchWeather", response, fetchWeatherCall.id)
     }
 
+    // The permission check is handled by the view that calls this function.
+    @SuppressLint("MissingPermission")
     suspend fun startConversation() {
         liveSession.startAudioConversation(::handler)
     }

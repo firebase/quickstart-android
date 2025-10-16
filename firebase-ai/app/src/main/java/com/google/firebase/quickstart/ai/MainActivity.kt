@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.ai
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -104,11 +105,15 @@ class MainActivity : ComponentActivity() {
                         composable<ImagenRoute> {
                             ImagenScreen()
                         }
-                        // Stream Realtime Samples
+                        // The permission is checked by the @RequiresPermission annotation on the
+                        // StreamRealtimeScreen composable.
+                        @SuppressLint("MissingPermission")
                         composable<StreamRealtimeRoute> {
                             StreamRealtimeScreen()
                         }
-                        // Stream Realtime Video Samples
+                        // The permission is checked by the @RequiresPermission annotation on the
+                        // StreamRealtimeVideoScreen composable.
+                        @SuppressLint("MissingPermission")
                         composable<StreamRealtimeVideoRoute> {
                             StreamRealtimeVideoScreen()
                         }
