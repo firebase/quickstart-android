@@ -1,8 +1,6 @@
 package com.google.firebase.quickstart.ai.feature.live
 
-import android.Manifest
 import android.graphics.Bitmap
-import androidx.annotation.RequiresPermission
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,18 +18,15 @@ import com.google.firebase.ai.type.Voice
 import com.google.firebase.ai.type.liveGenerationConfig
 import com.google.firebase.app
 import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
-import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeRoute
 import com.google.firebase.quickstart.ai.feature.text.functioncalling.WeatherRepository.Companion.fetchWeather
+import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import java.io.ByteArrayOutputStream
 
 @OptIn(PublicPreviewAPI::class)
-class BidiViewModel(
-    savedStateHandle: SavedStateHandle
-) : ViewModel() {
+class BidiViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
     private val sampleId = savedStateHandle.toRoute<StreamRealtimeRoute>().sampleId
     private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
 
@@ -46,14 +41,14 @@ class BidiViewModel(
         }
 
         @OptIn(PublicPreviewAPI::class)
-        val liveModel = FirebaseAI.getInstance(Firebase.app, sample.backend).liveModel(
-            modelName = sample.modelName ?: "gemini-live-2.5-flash",
-            generationConfig = liveGenerationConfig,
-            tools = sample.tools
-        )
-        runBlocking {
-            liveSession = liveModel.connect()
-        }
+        val liveModel =
+            FirebaseAI.getInstance(Firebase.app, sample.backend)
+                .liveModel(
+                    modelName = sample.modelName ?: "gemini-live-2.5-flash",
+                    generationConfig = liveGenerationConfig,
+                    tools = sample.tools,
+                )
+        runBlocking { liveSession = liveModel.connect() }
     }
 
     fun handler(fetchWeatherCall: FunctionCallPart): FunctionResponsePart {
@@ -63,17 +58,17 @@ class BidiViewModel(
             val state = it.args["state"]?.jsonPrimitive?.content
             val date = it.args["date"]?.jsonPrimitive?.content
             runBlocking {
-                response = if (!city.isNullOrEmpty() and !state.isNullOrEmpty() and date.isNullOrEmpty()) {
-                    fetchWeather(city!!, state!!, date!!)
-                } else {
-                    JsonObject(emptyMap())
-                }
+                response =
+                    if (!city.isNullOrEmpty() and !state.isNullOrEmpty() and date.isNullOrEmpty()) {
+                        fetchWeather(city!!, state!!, date!!)
+                    } else {
+                        JsonObject(emptyMap())
+                    }
             }
         }
         return FunctionResponsePart("fetchWeather", response, fetchWeatherCall.id)
     }
 
-    
     suspend fun startConversation() {
         liveSession.startAudioConversation(::handler)
     }
@@ -82,7 +77,6 @@ class BidiViewModel(
         liveSession.stopAudioConversation()
     }
 
-    
     fun sendVideoFrame(frame: Bitmap) {
         viewModelScope.launch {
             // Directly compress the Bitmap to a ByteArray
@@ -90,9 +84,7 @@ class BidiViewModel(
             frame.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
             val jpegBytes = byteArrayOutputStream.toByteArray()
 
-            liveSession.sendVideoRealtime(
-                InlineData(jpegBytes, "image/jpeg")
-            )
+            liveSession.sendVideoRealtime(InlineData(jpegBytes, "image/jpeg"))
         }
     }
 }

@@ -1,12 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.live
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.ImageFormat
-import android.graphics.Rect
-import android.graphics.YuvImage
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -21,13 +16,12 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import java.io.ByteArrayOutputStream
 
 @Composable
 fun CameraView(
     modifier: Modifier = Modifier,
     cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA,
-    onFrameCaptured: (Bitmap) -> Unit
+    onFrameCaptured: (Bitmap) -> Unit,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -37,16 +31,19 @@ fun CameraView(
         factory = { ctx ->
             val previewView = PreviewView(ctx)
             val executor = ContextCompat.getMainExecutor(ctx)
-            cameraProviderFuture.addListener({
-                val cameraProvider = cameraProviderFuture.get()
-                bindPreview(
-                    lifecycleOwner,
-                    previewView,
-                    cameraProvider,
-                    cameraSelector,
-                    onFrameCaptured
-                )
-            }, executor)
+            cameraProviderFuture.addListener(
+                {
+                    val cameraProvider = cameraProviderFuture.get()
+                    bindPreview(
+                        lifecycleOwner,
+                        previewView,
+                        cameraProvider,
+                        cameraSelector,
+                        onFrameCaptured,
+                    )
+                },
+                executor,
+            )
             previewView
         },
         modifier = modifier,
@@ -58,29 +55,28 @@ private fun bindPreview(
     previewView: PreviewView,
     cameraProvider: ProcessCameraProvider,
     cameraSelector: CameraSelector,
-    onFrameCaptured: (Bitmap) -> Unit
+    onFrameCaptured: (Bitmap) -> Unit,
 ) {
-    val preview = Preview.Builder().build().also {
-        it.setSurfaceProvider(previewView.surfaceProvider)
-    }
+    val preview =
+        Preview.Builder().build().also { it.setSurfaceProvider(previewView.surfaceProvider) }
 
-    val imageAnalysis = ImageAnalysis.Builder()
-        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-        .build()
-        .also {
-            it.setAnalyzer(ContextCompat.getMainExecutor(previewView.context), SecondIntervalAnalyzer(onFrameCaptured))
-        }
+    val imageAnalysis =
+        ImageAnalysis.Builder()
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .build()
+            .also {
+                it.setAnalyzer(
+                    ContextCompat.getMainExecutor(previewView.context),
+                    SecondIntervalAnalyzer(onFrameCaptured),
+                )
+            }
 
     cameraProvider.unbindAll()
-    cameraProvider.bindToLifecycle(
-        lifecycleOwner,
-        cameraSelector,
-        preview,
-        imageAnalysis
-    )
+    cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, preview, imageAnalysis)
 }
 
-private class SecondIntervalAnalyzer(private val onFrameCaptured: (Bitmap) -> Unit) : ImageAnalysis.Analyzer {
+private class SecondIntervalAnalyzer(private val onFrameCaptured: (Bitmap) -> Unit) :
+    ImageAnalysis.Analyzer {
     private var lastFrameTimestamp = 0L
     private val interval = 1000L // 1 second
 
