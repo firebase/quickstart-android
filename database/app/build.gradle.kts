@@ -66,7 +66,7 @@ dependencies {
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
 
-    implementation("com.firebaseui:firebase-ui-database:9.0.0")
+    implementation("com.firebaseui:firebase-ui-database:9.1.1")
 
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation("androidx.arch.core:core-runtime:2.2.0")
