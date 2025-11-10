@@ -126,8 +126,8 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Imagen 3 - image generation",
-        description = "Generate images using Imagen 3",
+        title = "Imagen 4 - image generation",
+        description = "Generate images using Imagen 4",
         navRoute = "imagen",
         categories = listOf(Category.IMAGE),
         initialPrompt = content {
