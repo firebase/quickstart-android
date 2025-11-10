@@ -67,7 +67,7 @@ dependencies {
     // Webkit
     implementation(libs.androidx.webkit)
 
-    // CameraX
+    // CameraX (for video with the Gemini Live API)
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
