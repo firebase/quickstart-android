@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import androidx.core.graphics.scale
+import com.google.firebase.ai.TemplateImagenModel
 import com.google.firebase.ai.type.Dimensions
 import com.google.firebase.ai.type.ImagenBackgroundMask
 import com.google.firebase.ai.type.ImagenEditMode
@@ -67,6 +68,10 @@ class ImagenViewModel(
 
     val additionalImage = sample.additionalImage
 
+    val templateId = sample.templateId
+
+    val templateKey = sample.templateKey
+
     private val _attachedImage = MutableStateFlow<Bitmap?>(null)
     val attachedImage: StateFlow<Bitmap?> = _attachedImage
 
@@ -103,12 +108,18 @@ class ImagenViewModel(
                     EditingMode.OUTPAINTING -> outpaint(imagenModel, inputText)
                     EditingMode.SUBJECT_REFERENCE -> drawReferenceSubject(imagenModel, inputText)
                     EditingMode.STYLE_TRANSFER -> transferStyle(imagenModel, inputText)
+                    EditingMode.TEMPLATE -> generateWithTemplate(Firebase.ai.templateImagenModel(), templateId!!, templateKey!!, inputText)
                     else -> generate(imagenModel, inputText)
                 }
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
                 _errorMessage.value = null // clear error message
             } catch (e: Exception) {
-                _errorMessage.value = e.localizedMessage
+                val errorMessage = if ((e.localizedMessage?.contains("not found") == true) && (templateId != null)) {
+                    "Template was not found, please add a template named $templateId to your project."
+                } else {
+                     e.localizedMessage
+                }
+                _errorMessage.value = errorMessage
             } finally {
                 _isLoading.value = false
             }
@@ -211,5 +222,14 @@ class ImagenViewModel(
         return model.generateImages(
             inputText
         )
+    }
+
+    suspend fun generateWithTemplate(
+        model: TemplateImagenModel,
+        templateId: String,
+        templateKey: String,
+        inputText: String,
+    ): ImagenGenerationResponse<ImagenInlineImage> {
+        return model.generateImages(templateId, mapOf(templateKey to inputText))
     }
 }

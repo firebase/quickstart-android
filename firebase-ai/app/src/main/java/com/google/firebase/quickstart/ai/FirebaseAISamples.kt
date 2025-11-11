@@ -339,4 +339,31 @@ val FIREBASE_AI_SAMPLES = listOf(
             )
         },
     ),
+    Sample(
+        title = "Imagen 3 - Server Template Generation",
+        description = "Generate an image using a server prompt template.",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("List of things that should be in the image") },
+        allowEmptyPrompt = false,
+        editingMode = EditingMode.TEMPLATE,
+        // To make this work on your project, create an `Imagen (Basic)` template in your project with this name
+        templateId = "imagen-test-template",
+        templateKey = "prompt"
+    ),
+    Sample(
+        title = "Server Prompt Templates",
+        description = "Generate an invoice using server prompt templates",
+        backend = GenerativeBackend.vertexAI(),
+        navRoute = "text",
+        categories = listOf(Category.TEXT),
+        initialPrompt = content { text("Customer Name") },
+        allowEmptyPrompt = false,
+        editingMode = EditingMode.TEMPLATE,
+        // To make this work on your project, create an `Input + System Instructions` template in your project with this name
+        templateId = "textgen-test-template",
+        templateKey = "customerName"
+    ),
+
 )
