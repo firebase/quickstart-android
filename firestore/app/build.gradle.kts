@@ -58,7 +58,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
 
     // Firestore
     implementation("com.google.firebase:firebase-firestore")
@@ -84,8 +84,8 @@ dependencies {
     implementation("androidx.media:media:1.7.1")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.5")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
 
     // Android architecture components
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
