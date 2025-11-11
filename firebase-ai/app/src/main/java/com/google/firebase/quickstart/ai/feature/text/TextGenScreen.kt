@@ -86,8 +86,7 @@ fun TextGenScreen(
                             textGenViewModel.generate(textPrompt)
                         }
                     },
-                    modifier = Modifier
-                        .padding(end = 16.dp, bottom = 16.dp)
+                    modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
                 ) {
                     Text("Generate")
                 }
@@ -139,59 +138,5 @@ fun TextGenScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun DropDownMenu(items: List<String>, onClick: (String) -> Unit) {
-
-    val isDropDownExpanded = remember {
-        mutableStateOf(false)
-    }
-
-    val itemPosition = remember {
-        mutableIntStateOf(0)
-    }
-
-
-    Column(
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier.padding(horizontal = 10.dp)
-    ) {
-
-        Box {
-            Row(
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.Top,
-                modifier = Modifier.clickable {
-                    isDropDownExpanded.value = true
-                }
-            ) {
-                Text(text = items[itemPosition.intValue])
-                Image(
-                    painter = painterResource(id = R.drawable.round_arrow_drop_down_24),
-                    contentDescription = "Dropdown Icon"
-                )
-            }
-            DropdownMenu(
-                expanded = isDropDownExpanded.value,
-                onDismissRequest = {
-                    isDropDownExpanded.value = false
-                }) {
-                items.forEachIndexed { index, item ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = item)
-                        },
-                        onClick = {
-                            isDropDownExpanded.value = false
-                            itemPosition.intValue = index
-                            onClick(item)
-                        })
-                }
-            }
-        }
-
     }
 }

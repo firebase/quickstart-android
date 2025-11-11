@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.google.firebase.ai.GenerativeModel
+import com.google.firebase.ai.TemplateGenerativeModel
 
 @OptIn(PublicPreviewAPI::class)
 class TextGenViewModel(
@@ -28,19 +29,18 @@ class TextGenViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
-
     val allowEmptyPrompt = sample.allowEmptyPrompt
 
     val templateId = sample.templateId
 
     val templateKey = sample.templateKey
 
-
     private val _generatedText = MutableStateFlow<String?>(null)
     val generatedText: StateFlow<String?> = _generatedText
 
     // Firebase AI Logic
     private val generativeModel: GenerativeModel
+    private val templateGenerativeModel: TemplateGenerativeModel
 
     init {
         generativeModel = Firebase.ai(
@@ -51,24 +51,25 @@ class TextGenViewModel(
             generationConfig = sample.generationConfig,
             tools = sample.tools
         )
+        templateGenerativeModel = Firebase.ai.templateGenerativeModel()
     }
 
     fun generate(inputText: String) {
         viewModelScope.launch {
             _isLoading.value = true
+            _errorMessage.value = null // clear error message
             try {
                 val generativeResponse = if (templateId != null) {
-                    Firebase.ai.templateGenerativeModel()
+                    templateGenerativeModel
                         .generateContent(templateId, mapOf(templateKey!! to inputText))
                 } else {
                     generativeModel.generateContent(inputText)
                 }
                 _generatedText.value = generativeResponse.text
-                _errorMessage.value = null // clear error message
             } catch (e: Exception) {
                 val errorMessage =
                     if ((e.localizedMessage?.contains("not found") == true) && (templateId != null)) {
-                        "Template was not found, please add a template named $templateId to your project."
+                        "Template was not found, please verify that your project contains a template named \"$templateId\"."
                     } else {
                         e.localizedMessage
                     }

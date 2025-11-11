@@ -362,7 +362,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         allowEmptyPrompt = false,
         editingMode = EditingMode.TEMPLATE,
         // To make this work on your project, create an `Input + System Instructions` template in your project with this name
-        templateId = "textgen-test-template",
+        templateId = "input-system-instructions",
         templateKey = "customerName"
     ),
 

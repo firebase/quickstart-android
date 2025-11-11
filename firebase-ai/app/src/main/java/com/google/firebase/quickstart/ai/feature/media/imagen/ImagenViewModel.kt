@@ -80,6 +80,7 @@ class ImagenViewModel(
 
     // Firebase AI Logic
     private val imagenModel: ImagenModel
+    private val templateImagenModel: TemplateImagenModel
 
     init {
         val config = imagenGenerationConfig {
@@ -97,28 +98,30 @@ class ImagenViewModel(
             generationConfig = config,
             safetySettings = settings
         )
+        templateImagenModel = Firebase.ai.templateImagenModel()
     }
 
     fun generateImages(inputText: String) {
         viewModelScope.launch {
             _isLoading.value = true
+            _errorMessage.value = null // clear error message
             try {
                 val imageResponse = when(sample.editingMode) {
                     EditingMode.INPAINTING -> inpaint(imagenModel, inputText)
                     EditingMode.OUTPAINTING -> outpaint(imagenModel, inputText)
                     EditingMode.SUBJECT_REFERENCE -> drawReferenceSubject(imagenModel, inputText)
                     EditingMode.STYLE_TRANSFER -> transferStyle(imagenModel, inputText)
-                    EditingMode.TEMPLATE -> generateWithTemplate(Firebase.ai.templateImagenModel(), templateId!!, templateKey!!, inputText)
+                    EditingMode.TEMPLATE -> generateWithTemplate(templateImagenModel, templateId!!, mapOf(templateKey!! to inputText))
                     else -> generate(imagenModel, inputText)
                 }
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
-                _errorMessage.value = null // clear error message
             } catch (e: Exception) {
-                val errorMessage = if ((e.localizedMessage?.contains("not found") == true) && (templateId != null)) {
-                    "Template was not found, please add a template named $templateId to your project."
-                } else {
-                     e.localizedMessage
-                }
+                val errorMessage =
+                    if ((e.localizedMessage?.contains("not found") == true) && sample.editingMode == EditingMode.TEMPLATE) {
+                        "Template was not found, please verify that your project contains a template named \"$templateId\"."
+                    } else {
+                        e.localizedMessage
+                    }
                 _errorMessage.value = errorMessage
             } finally {
                 _isLoading.value = false
@@ -227,9 +230,8 @@ class ImagenViewModel(
     suspend fun generateWithTemplate(
         model: TemplateImagenModel,
         templateId: String,
-        templateKey: String,
-        inputText: String,
+        inputMap: Map<String, String>
     ): ImagenGenerationResponse<ImagenInlineImage> {
-        return model.generateImages(templateId, mapOf(templateKey to inputText))
+        return model.generateImages(templateId, inputMap)
     }
 }
