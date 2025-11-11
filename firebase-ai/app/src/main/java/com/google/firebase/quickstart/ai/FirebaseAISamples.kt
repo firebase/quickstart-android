@@ -342,7 +342,6 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Imagen 3 - Server Template Generation",
         description = "Generate an image using a server prompt template.",
-        backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
         categories = listOf(Category.IMAGE),
         initialPrompt = content { text("List of things that should be in the image") },
@@ -355,12 +354,10 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Server Prompt Templates",
         description = "Generate an invoice using server prompt templates",
-        backend = GenerativeBackend.vertexAI(),
         navRoute = "text",
         categories = listOf(Category.TEXT),
         initialPrompt = content { text("Customer Name") },
         allowEmptyPrompt = false,
-        editingMode = EditingMode.TEMPLATE,
         // To make this work on your project, create an `Input + System Instructions` template in your project with this name
         templateId = "input-system-instructions",
         templateKey = "customerName"
