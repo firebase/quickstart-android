@@ -348,7 +348,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         allowEmptyPrompt = false,
         editingMode = EditingMode.TEMPLATE,
         // To make this work on your project, create an `Imagen (Basic)` template in your project with this name
-        templateId = "imagen-test-template",
+        templateId = "imagen-basic",
         templateKey = "prompt"
     ),
     Sample(
