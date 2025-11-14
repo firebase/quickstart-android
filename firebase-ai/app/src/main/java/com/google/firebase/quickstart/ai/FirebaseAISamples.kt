@@ -340,7 +340,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         },
     ),
     Sample(
-        title = "Imagen 3 - Server Template Generation",
+        title = "Server Prompt Template - Imagen",
         description = "Generate an image using a server prompt template.",
         navRoute = "imagen",
         categories = listOf(Category.IMAGE),
