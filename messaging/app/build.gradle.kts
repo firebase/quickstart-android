@@ -67,7 +67,7 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
 
     // Firebase Cloud Messaging
     implementation("com.google.firebase:firebase-messaging")
