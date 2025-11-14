@@ -353,7 +353,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Server Prompt Templates",
-        description = "Generate an invoice using server prompt templates",
+        description = "Generate an invoice using server prompt templates.  Note that you need to setup the template in the Firebase console before running this demo.",
         navRoute = "text",
         categories = listOf(Category.TEXT),
         initialPrompt = content { text("Customer Name") },
