@@ -347,7 +347,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         initialPrompt = content { text("List of things that should be in the image") },
         allowEmptyPrompt = false,
         editingMode = EditingMode.TEMPLATE,
-        // To make this work on your project, create an `Imagen (Basic)` template in your project with this name
+        // To make this work, create an "Imagen (Basic)" server prompt template in your Firebase project with this name
         templateId = "imagen-basic",
         templateKey = "prompt"
     ),
