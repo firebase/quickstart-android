@@ -45,4 +45,6 @@ data class Sample(
     val imageLabels: List<String> = emptyList(),
     val selectionOptions: List<String> = emptyList(),
     val editingMode: EditingMode? = null,
+    val templateId: String? = null,
+    val templateKey: String? = null,
 )
