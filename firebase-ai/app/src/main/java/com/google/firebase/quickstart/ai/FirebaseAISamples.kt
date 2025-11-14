@@ -356,7 +356,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         description = "Generate an invoice using server prompt templates.  Note that you need to setup the template in the Firebase console before running this demo.",
         navRoute = "text",
         categories = listOf(Category.TEXT),
-        initialPrompt = content { text("Customer Name") },
+        initialPrompt = content { text("Jane Doe") },
         allowEmptyPrompt = false,
         // To make this work, create an `Input + System Instructions` template in your Firebase project with this name
         templateId = "input-system-instructions",
