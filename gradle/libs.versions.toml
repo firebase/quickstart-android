@@ -1,7 +1,7 @@
 [versions]
-agp = "8.13.0"
+agp = "8.13.1"
 coilCompose = "2.7.0"
-firebaseBom = "34.5.0"
+firebaseBom = "34.6.0"
 kotlin = "2.2.21"
 coreKtx = "1.17.0"
 junit = "4.13.2"
