@@ -352,7 +352,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         templateKey = "prompt"
     ),
     Sample(
-        title = "Server Prompt Templates",
+        title = "Server Prompt Templates - Gemini",
         description = "Generate an invoice using server prompt templates.  Note that you need to setup the template in the Firebase console before running this demo.",
         navRoute = "text",
         categories = listOf(Category.TEXT),
