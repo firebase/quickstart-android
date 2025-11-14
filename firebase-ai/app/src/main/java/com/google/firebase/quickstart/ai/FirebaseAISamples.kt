@@ -341,7 +341,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Server Prompt Template - Imagen",
-        description = "Generate an image using a server prompt template.",
+        description = "Generate an image using a server prompt template. Note that you need to setup the template in the Firebase console before running this demo.",
         navRoute = "imagen",
         categories = listOf(Category.IMAGE),
         initialPrompt = content { text("List of things that should be in the image") },
