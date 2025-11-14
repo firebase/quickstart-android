@@ -358,7 +358,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.TEXT),
         initialPrompt = content { text("Customer Name") },
         allowEmptyPrompt = false,
-        // To make this work on your project, create an `Input + System Instructions` template in your project with this name
+        // To make this work, create an `Input + System Instructions` template in your Firebase project with this name
         templateId = "input-system-instructions",
         templateKey = "customerName"
     ),
