@@ -112,7 +112,7 @@ public class CustomKeySamples {
      * which does not require READ_PHONE_STATE
      * and returns more useful information about bandwidth, metering, and capabilities.
      *
-     * Supressed deprecation warning because that code path is only used below API Level N.
+     * Suppressed deprecation warning because that code path is only used below API Level N.
      */
     @Deprecated
     @SuppressLint("MissingPermission")
@@ -139,7 +139,7 @@ public class CustomKeySamples {
     /**
      * Retrieve the locale information for the app.
      *
-     * Supressed deprecation warning because that code path is only used below API Level N.
+     * Suppressed deprecation warning because that code path is only used below API Level N.
      */
     @SuppressWarnings("deprecation")
     public String getLocale() {
@@ -186,7 +186,7 @@ public class CustomKeySamples {
      * Retrieve the preferred ABI of the device. Some devices can support
      * multiple ABIs and the first one returned in the preferred one.
      *
-     * Supressed deprecation warning because that code path is only used below Lollipop.
+     * Suppressed deprecation warning because that code path is only used below Lollipop.
      */
     @SuppressWarnings("deprecation")
     public String getPreferredAbi() {
@@ -200,7 +200,7 @@ public class CustomKeySamples {
     /**
      * Retrieve the install source and return it as a string.
      *
-     * Supressed deprecation warning because that code path is only used below API level R.
+     * Suppressed deprecation warning because that code path is only used below API level R.
      */
     public String getInstallSource() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
