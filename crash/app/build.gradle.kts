@@ -60,7 +60,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.11.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
 
     // Firebase Crashlytics
     implementation("com.google.firebase:firebase-crashlytics")
