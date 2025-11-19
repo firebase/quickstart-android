@@ -111,14 +111,17 @@ class ImagenViewModel(
                     EditingMode.OUTPAINTING -> outpaint(imagenModel, inputText)
                     EditingMode.SUBJECT_REFERENCE -> drawReferenceSubject(imagenModel, inputText)
                     EditingMode.STYLE_TRANSFER -> transferStyle(imagenModel, inputText)
-                    EditingMode.TEMPLATE -> generateWithTemplate(templateImagenModel, templateId!!, mapOf(templateKey!! to inputText))
+                    EditingMode.TEMPLATE ->
+                        generateWithTemplate(templateImagenModel, templateId!!, mapOf(templateKey!! to inputText))
                     else -> generate(imagenModel, inputText)
                 }
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
             } catch (e: Exception) {
                 val errorMessage =
-                    if ((e.localizedMessage?.contains("not found") == true) && sample.editingMode == EditingMode.TEMPLATE) {
-                        "Template was not found, please verify that your project contains a template named \"$templateId\"."
+                    if ((e.localizedMessage?.contains("not found") == true) &&
+                        sample.editingMode == EditingMode.TEMPLATE) {
+                        "Template was not found, please verify that your project contains a" +
+                                " template named \"$templateId\"."
                     } else {
                         e.localizedMessage
                     }

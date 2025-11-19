@@ -69,7 +69,8 @@ class TextGenViewModel(
             } catch (e: Exception) {
                 val errorMessage =
                     if ((e.localizedMessage?.contains("not found") == true) && (templateId != null)) {
-                        "Template was not found, please verify that your project contains a template named \"$templateId\"."
+                        "Template was not found, please verify that your project contains a" +
+                                " template named \"$templateId\"."
                     } else {
                         e.localizedMessage
                     }
