@@ -6,4 +6,5 @@ enum class EditingMode {
     OUTPAINTING,
     SUBJECT_REFERENCE,
     STYLE_TRANSFER,
+    TEMPLATE,
 }

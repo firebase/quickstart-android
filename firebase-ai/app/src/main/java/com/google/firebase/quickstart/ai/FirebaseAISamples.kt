@@ -328,7 +328,8 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Grounding with Google Search",
-        description = "Use Grounding with Google Search to get responses based on up-to-date information from the web.",
+        description = "Use Grounding with Google Search to get responses based on up-to-date information from the" +
+                " web.",
         navRoute = "chat",
         categories = listOf(Category.TEXT, Category.DOCUMENT),
         modelName = "gemini-2.5-flash",
@@ -339,4 +340,30 @@ val FIREBASE_AI_SAMPLES = listOf(
             )
         },
     ),
+    Sample(
+        title = "Server Prompt Template - Imagen",
+        description = "Generate an image using a server prompt template. Note that you need to setup the template in" +
+                "the Firebase console before running this demo.",
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("List of things that should be in the image") },
+        allowEmptyPrompt = false,
+        editingMode = EditingMode.TEMPLATE,
+        // To make this work, create an "Imagen (Basic)" server prompt template in your Firebase project with this name
+        templateId = "imagen-basic",
+        templateKey = "prompt"
+    ),
+    Sample(
+        title = "Server Prompt Templates - Gemini",
+        description = "Generate an invoice using server prompt templates.  Note that you need to setup the template" +
+                " in the Firebase console before running this demo.",
+        navRoute = "text",
+        categories = listOf(Category.TEXT),
+        initialPrompt = content { text("Jane Doe") },
+        allowEmptyPrompt = false,
+        // To make this work, create an `Input + System Instructions` template in your Firebase project with this name
+        templateId = "input-system-instructions",
+        templateKey = "customerName"
+    ),
+
 )
