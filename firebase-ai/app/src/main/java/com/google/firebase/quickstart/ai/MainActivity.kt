@@ -94,6 +94,7 @@ class MainActivity : ComponentActivity() {
                                         }
                                         "streamVideo" -> {
                                             navController.navigate(StreamRealtimeVideoRoute(it.id))
+                                        }
                                         "text" -> {
                                             navController.navigate(TextGenRoute(it.id))
                                         }
