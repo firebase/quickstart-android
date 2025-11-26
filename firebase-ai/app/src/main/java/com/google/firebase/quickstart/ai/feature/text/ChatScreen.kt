@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.core.net.toUri
 import android.provider.OpenableColumns
 import android.text.format.Formatter
 import android.webkit.WebResourceRequest
@@ -374,7 +375,7 @@ fun SourceLinkView(
         ClickableText(text = annotatedString, onClick = { offset ->
             annotatedString.getStringAnnotations(tag = "URL", start = offset, end = offset)
                 .firstOrNull()?.let { annotation ->
-                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(annotation.item)))
+                    context.startActivity(Intent(Intent.ACTION_VIEW, annotation.item.toUri()))
                 }
         })
     }

@@ -275,7 +275,39 @@ val FIREBASE_AI_SAMPLES = listOf(
         description = "Use bidirectional streaming to get information about" +
                 " weather conditions for a specific US city on a specific date",
         navRoute = "stream",
+        backend = GenerativeBackend.vertexAI(),
+        modelName = "gemini-2.0-flash-live-preview-04-09",
         categories = listOf(Category.LIVE_API, Category.AUDIO, Category.FUNCTION_CALLING),
+        tools = listOf(
+            Tool.functionDeclarations(
+                listOf(
+                    FunctionDeclaration(
+                        "fetchWeather",
+                        "Get the weather conditions for a specific US city on a specific date.",
+                        mapOf(
+                            "city" to Schema.string("The US city of the location."),
+                            "state" to Schema.string("The US state of the location."),
+                            "date" to Schema.string(
+                                "The date for which to get the weather." +
+                                        " Date must be in the format: YYYY-MM-DD."
+                            ),
+                        ),
+                    )
+                )
+            )
+        ),
+        initialPrompt = content {
+            text("What was the weather in Boston, MA on October 17, 2024?")
+        }
+    ),
+    Sample(
+        title = "Gemini Live (Video input)",
+        description = "Use bidirectional streaming to chat with Gemini using your" +
+                " phone's camera",
+        navRoute = "streamVideo",
+        backend = GenerativeBackend.vertexAI(),
+        modelName = "gemini-2.0-flash-live-preview-04-09",
+        categories = listOf(Category.LIVE_API, Category.VIDEO, Category.FUNCTION_CALLING),
         tools = listOf(
             Tool.functionDeclarations(
                 listOf(
