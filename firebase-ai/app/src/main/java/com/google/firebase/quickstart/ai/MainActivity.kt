@@ -38,6 +38,8 @@ import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenRoute
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenScreen
 import com.google.firebase.quickstart.ai.feature.text.ChatRoute
 import com.google.firebase.quickstart.ai.feature.text.ChatScreen
+import com.google.firebase.quickstart.ai.feature.text.TextGenRoute
+import com.google.firebase.quickstart.ai.feature.text.TextGenScreen
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
 import com.google.firebase.quickstart.ai.ui.theme.FirebaseAILogicTheme
 
@@ -92,6 +94,8 @@ class MainActivity : ComponentActivity() {
                                         }
                                         "streamVideo" -> {
                                             navController.navigate(StreamRealtimeVideoRoute(it.id))
+                                        "text" -> {
+                                            navController.navigate(TextGenRoute(it.id))
                                         }
                                     }
                                 }
@@ -116,6 +120,8 @@ class MainActivity : ComponentActivity() {
                         @SuppressLint("MissingPermission")
                         composable<StreamRealtimeVideoRoute> {
                             StreamRealtimeVideoScreen()
+                        composable<TextGenRoute> {
+                            TextGenScreen()
                         }
                     }
                 }
