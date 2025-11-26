@@ -301,7 +301,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Video input",
+        title = "Gemini Live (Video input)",
         description = "Use bidirectional streaming to chat with Gemini using your" +
                 " phone's camera",
         navRoute = "streamVideo",
