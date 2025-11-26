@@ -121,6 +121,7 @@ class MainActivity : ComponentActivity() {
                         @SuppressLint("MissingPermission")
                         composable<StreamRealtimeVideoRoute> {
                             StreamRealtimeVideoScreen()
+                        }
                         composable<TextGenRoute> {
                             TextGenScreen()
                         }
