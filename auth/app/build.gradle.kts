@@ -54,7 +54,7 @@ dependencies {
     implementation(project(":internal:lintchecks"))
     implementation("androidx.multidex:multidex:2.0.1")
 
-    implementation("androidx.activity:activity-ktx:1.12.0")
+    implementation("androidx.activity:activity-ktx:1.12.1")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
     implementation("com.google.android.material:material:1.13.0")
