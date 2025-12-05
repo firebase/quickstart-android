@@ -60,7 +60,7 @@ class BidiViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
             val date = it.args["date"]?.jsonPrimitive?.content
             runBlocking {
                 response =
-                    if (!city.isNullOrEmpty() and !state.isNullOrEmpty() and date.isNullOrEmpty()) {
+                    if (!city.isNullOrEmpty() and !state.isNullOrEmpty() and !date.isNullOrEmpty()) {
                         fetchWeather(city!!, state!!, date!!)
                     } else {
                         JsonObject(emptyMap())
