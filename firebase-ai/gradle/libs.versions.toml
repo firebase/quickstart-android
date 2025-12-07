@@ -14,7 +14,7 @@ lifecycle = "2.10.0"
 lifecycleRuntimeKtx = "2.9.4"
 material = "1.13.0"
 webkit = "1.14.0"
-camerax = "1.5.1"
+camerax = "1.5.2"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
