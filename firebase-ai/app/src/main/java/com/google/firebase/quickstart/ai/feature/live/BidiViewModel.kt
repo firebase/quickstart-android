@@ -41,17 +41,13 @@ class BidiViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
             responseModality = ResponseModality.AUDIO
         }
 
-        val defaultModelName = if (sample.backend == GenerativeBackend.googleAI()) {
-          "gemini-2.5-flash-native-audio-preview-09-2025"
-        } else {
-          "gemini-live-2.5-flash-preview-native-audio-09-2025"
-        }
-
         @OptIn(PublicPreviewAPI::class)
         val liveModel =
             FirebaseAI.getInstance(Firebase.app, sample.backend)
                 .liveModel(
-                    modelName = sample.modelName ?: defaultModelName,
+                    // If you are using Vertex AI, change the model name to
+                    // "gemini-live-2.5-flash-preview-native-audio-09-2025"
+                    modelName = sample.modelName ?: "gemini-2.5-flash-native-audio-preview-09-2025",
                     generationConfig = liveGenerationConfig,
                     tools = sample.tools,
                 )
