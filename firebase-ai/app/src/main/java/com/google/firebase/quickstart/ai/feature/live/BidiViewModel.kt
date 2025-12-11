@@ -45,7 +45,9 @@ class BidiViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
         val liveModel =
             FirebaseAI.getInstance(Firebase.app, sample.backend)
                 .liveModel(
-                    modelName = sample.modelName ?: "gemini-live-2.5-flash",
+                    // If you are using Vertex AI, change the model name to
+                    // "gemini-live-2.5-flash-preview-native-audio-09-2025"
+                    modelName = sample.modelName ?: "gemini-2.5-flash-native-audio-preview-09-2025",
                     generationConfig = liveGenerationConfig,
                     tools = sample.tools,
                 )
