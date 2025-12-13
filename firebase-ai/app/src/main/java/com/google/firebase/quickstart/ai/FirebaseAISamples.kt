@@ -396,7 +396,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Thinking",
-        description = "AIME 2025 with Gemini 2.5 Flash",
+        description = "Gemini 2.5 Flash with dynamic thinking",
         navRoute = "chat",
         categories = listOf(Category.TEXT),
         initialPrompt = content {
