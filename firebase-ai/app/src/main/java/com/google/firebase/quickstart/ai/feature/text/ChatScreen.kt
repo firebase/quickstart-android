@@ -36,6 +36,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Attachment
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -234,11 +238,15 @@ fun ChatBubbleItem(
                         message.content.parts.forEach { part ->
                             when (part) {
                                 is TextPart -> {
-                                    Text(
-                                        text = part.text.trimIndent(),
-                                        modifier = Modifier.fillMaxWidth(),
-                                        color = textColor
-                                    )
+                                    if (part.isThought) {
+                                        ThoughtBubble(part.text)
+                                    } else {
+                                        Text(
+                                            text = part.text.trimIndent(),
+                                            modifier = Modifier.fillMaxWidth(),
+                                            color = textColor
+                                        )
+                                    }
                                 }
 
                                 is ImagePart -> {
@@ -569,6 +577,57 @@ fun AttachmentsList(
                             .padding(horizontal = 4.dp)
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun ThoughtBubble(
+    text: String
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
+            .clickable { expanded = !expanded }
+            .padding(8.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(
+                imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                contentDescription = if (expanded) "Collapse thoughts" else "Expand thoughts",
+                modifier = Modifier.padding(end = 8.dp),
+                tint = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+            Text(
+                text = "Thoughts",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+        }
+
+        AnimatedVisibility(visible = expanded) {
+            Column {
+                HorizontalDivider(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+                Text(
+                    text = text.trimIndent(),
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
             }
         }
     }
