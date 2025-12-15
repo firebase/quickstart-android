@@ -405,7 +405,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         generationConfig = generationConfig {
             thinkingConfig = thinkingConfig {
                 includeThoughts = true
-                thinkingBudget = -1
+                thinkingBudget = -1 // Dynamic Thinking
             }
         }
     )
