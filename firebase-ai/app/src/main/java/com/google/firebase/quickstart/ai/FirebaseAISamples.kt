@@ -8,6 +8,7 @@ import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
+import com.google.firebase.ai.type.thinkingConfig
 import com.google.firebase.quickstart.ai.feature.media.imagen.EditingMode
 import com.google.firebase.quickstart.ai.ui.navigation.Category
 import com.google.firebase.quickstart.ai.ui.navigation.Sample
@@ -393,5 +394,19 @@ val FIREBASE_AI_SAMPLES = listOf(
         templateId = "input-system-instructions",
         templateKey = "customerName"
     ),
-
+    Sample(
+        title = "Thinking",
+        description = "Gemini 2.5 Flash with dynamic thinking",
+        navRoute = "chat",
+        categories = listOf(Category.TEXT),
+        initialPrompt = content {
+            text("Analogize photosynthesis and growing up.")
+        },
+        generationConfig = generationConfig {
+            thinkingConfig = thinkingConfig {
+                includeThoughts = true
+                thinkingBudget = -1 // Dynamic Thinking
+            }
+        }
+    )
 )
