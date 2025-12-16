@@ -43,7 +43,7 @@ class SvgViewModel(
 
     init {
         generativeModel = Firebase.ai(
-            backend = GenerativeBackend.vertexAI("global") // GenerativeBackend.googleAI() by default
+            backend = sample.backend
         ).generativeModel(
             modelName = sample.modelName ?: "gemini-2.5-flash",
             systemInstruction = sample.systemInstructions,

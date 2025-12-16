@@ -395,8 +395,23 @@ val FIREBASE_AI_SAMPLES = listOf(
         templateKey = "customerName"
     ),
     Sample(
+        title = "Thinking",
+        description = "Gemini 2.5 Flash with dynamic thinking",
+        navRoute = "chat",
+        categories = listOf(Category.TEXT),
+        initialPrompt = content {
+            text("Analogize photosynthesis and growing up.")
+        },
+        generationConfig = generationConfig {
+            thinkingConfig = thinkingConfig {
+                includeThoughts = true
+                thinkingBudget = -1 // Dynamic Thinking
+            }
+        }
+    ),
+    Sample(
         title = "SVG Generator",
-        description = "Use Gemini 3 Flash to create SVG illustrations",
+        description = "Use Gemini 2.5 Flash to create SVG illustrations",
         navRoute = "svg",
         categories = listOf(Category.IMAGE, Category.TEXT),
         initialPrompt = content {
@@ -404,7 +419,7 @@ val FIREBASE_AI_SAMPLES = listOf(
                 "a kitten"
             )
         },
-        modelName = "gemini-3-flash-preview",
+        modelName = "gemini-2.5-flash-preview",
         generationConfig = generationConfig {
             thinkingConfig {
                 thinkingBudget = -1
