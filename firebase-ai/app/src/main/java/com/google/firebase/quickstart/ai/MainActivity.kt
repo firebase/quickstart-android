@@ -1,6 +1,7 @@
 package com.google.firebase.quickstart.ai
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -31,10 +32,16 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.ai.type.toImagenInlineImage
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeScreen
+import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
+import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoScreen
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenRoute
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenScreen
+import com.google.firebase.quickstart.ai.feature.svg.SvgRoute
+import com.google.firebase.quickstart.ai.feature.svg.SvgScreen
 import com.google.firebase.quickstart.ai.feature.text.ChatRoute
 import com.google.firebase.quickstart.ai.feature.text.ChatScreen
+import com.google.firebase.quickstart.ai.feature.text.TextGenRoute
+import com.google.firebase.quickstart.ai.feature.text.TextGenScreen
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
 import com.google.firebase.quickstart.ai.ui.theme.FirebaseAILogicTheme
 
@@ -42,10 +49,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
-        }
+
         enableEdgeToEdge()
         catImage = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.cat)
         setContent {
@@ -90,6 +94,15 @@ class MainActivity : ComponentActivity() {
                                         "stream" -> {
                                             navController.navigate(StreamRealtimeRoute(it.id))
                                         }
+                                        "streamVideo" -> {
+                                            navController.navigate(StreamRealtimeVideoRoute(it.id))
+                                        }
+                                        "text" -> {
+                                            navController.navigate(TextGenRoute(it.id))
+                                        }
+                                        "svg" -> {
+                                            navController.navigate(SvgRoute(it.id))
+                                        }
                                     }
                                 }
                             )
@@ -102,9 +115,23 @@ class MainActivity : ComponentActivity() {
                         composable<ImagenRoute> {
                             ImagenScreen()
                         }
-                        // Stream Realtime Samples
+                        // The permission is checked by the @RequiresPermission annotation on the
+                        // StreamRealtimeScreen composable.
+                        @SuppressLint("MissingPermission")
                         composable<StreamRealtimeRoute> {
                             StreamRealtimeScreen()
+                        }
+                        // The permission is checked by the @RequiresPermission annotation on the
+                        // StreamRealtimeVideoScreen composable.
+                        @SuppressLint("MissingPermission")
+                        composable<StreamRealtimeVideoRoute> {
+                            StreamRealtimeVideoScreen()
+                        }
+                        composable<TextGenRoute> {
+                            TextGenScreen()
+                        }
+                        composable<SvgRoute> {
+                            SvgScreen()
                         }
                     }
                 }

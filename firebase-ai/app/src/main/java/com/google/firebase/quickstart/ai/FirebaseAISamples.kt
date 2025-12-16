@@ -8,6 +8,7 @@ import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
+import com.google.firebase.ai.type.thinkingConfig
 import com.google.firebase.quickstart.ai.feature.media.imagen.EditingMode
 import com.google.firebase.quickstart.ai.ui.navigation.Category
 import com.google.firebase.quickstart.ai.ui.navigation.Sample
@@ -126,8 +127,8 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
-        title = "Imagen 3 - image generation",
-        description = "Generate images using Imagen 3",
+        title = "Imagen 4 - image generation",
+        description = "Generate images using Imagen 4",
         navRoute = "imagen",
         categories = listOf(Category.IMAGE),
         initialPrompt = content {
@@ -299,6 +300,34 @@ val FIREBASE_AI_SAMPLES = listOf(
         }
     ),
     Sample(
+        title = "Gemini Live (Video input)",
+        description = "Use bidirectional streaming to chat with Gemini using your" +
+                " phone's camera",
+        navRoute = "streamVideo",
+        categories = listOf(Category.LIVE_API, Category.VIDEO, Category.FUNCTION_CALLING),
+        tools = listOf(
+            Tool.functionDeclarations(
+                listOf(
+                    FunctionDeclaration(
+                        "fetchWeather",
+                        "Get the weather conditions for a specific US city on a specific date.",
+                        mapOf(
+                            "city" to Schema.string("The US city of the location."),
+                            "state" to Schema.string("The US state of the location."),
+                            "date" to Schema.string(
+                                "The date for which to get the weather." +
+                                        " Date must be in the format: YYYY-MM-DD."
+                            ),
+                        ),
+                    )
+                )
+            )
+        ),
+        initialPrompt = content {
+            text("What was the weather in Boston, MA on October 17, 2024?")
+        }
+    ),
+    Sample(
         title = "Weather Chat",
         description = "Use function calling to get the weather conditions" +
                 " for a specific US city on a specific date.",
@@ -328,7 +357,8 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Grounding with Google Search",
-        description = "Use Grounding with Google Search to get responses based on up-to-date information from the web.",
+        description = "Use Grounding with Google Search to get responses based on up-to-date information from the" +
+                " web.",
         navRoute = "chat",
         categories = listOf(Category.TEXT, Category.DOCUMENT),
         modelName = "gemini-2.5-flash",
@@ -338,5 +368,54 @@ val FIREBASE_AI_SAMPLES = listOf(
                 "What's the weather in Chicago this weekend?"
             )
         },
+    ),
+    Sample(
+        title = "Server Prompt Template - Imagen",
+        description = "Generate an image using a server prompt template. Note that you need to setup the template in" +
+                "the Firebase console before running this demo.",
+        navRoute = "imagen",
+        categories = listOf(Category.IMAGE),
+        initialPrompt = content { text("List of things that should be in the image") },
+        allowEmptyPrompt = false,
+        editingMode = EditingMode.TEMPLATE,
+        // To make this work, create an "Imagen (Basic)" server prompt template in your Firebase project with this name
+        templateId = "imagen-basic",
+        templateKey = "prompt"
+    ),
+    Sample(
+        title = "Server Prompt Templates - Gemini",
+        description = "Generate an invoice using server prompt templates.  Note that you need to setup the template" +
+                " in the Firebase console before running this demo.",
+        navRoute = "text",
+        categories = listOf(Category.TEXT),
+        initialPrompt = content { text("Jane Doe") },
+        allowEmptyPrompt = false,
+        // To make this work, create an `Input + System Instructions` template in your Firebase project with this name
+        templateId = "input-system-instructions",
+        templateKey = "customerName"
+    ),
+    Sample(
+        title = "SVG Generator",
+        description = "Use Gemini 3 Flash to create SVG illustrations",
+        navRoute = "svg",
+        categories = listOf(Category.IMAGE, Category.TEXT),
+        initialPrompt = content {
+            text(
+                "a kitten"
+            )
+        },
+        modelName = "gemini-3-flash-preview",
+        generationConfig = generationConfig {
+            thinkingConfig {
+                thinkingBudget = -1
+            }
+        },
+        systemInstructions = content { text("""
+            You are an expert at turning image prompts into SVG code. When given a prompt,
+            use your creativity to code a 800x600 SVG rendering of it.
+            Always add viewBox="0 0 800 600" to the root svg tag. Do
+            not import external assets, they won't work. Return ONLY the SVG code, nothing else,
+            no commentary.
+        """.trimIndent()) }
     ),
 )

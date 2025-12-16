@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import androidx.core.graphics.scale
+import com.google.firebase.ai.TemplateImagenModel
 import com.google.firebase.ai.type.Dimensions
 import com.google.firebase.ai.type.ImagenBackgroundMask
 import com.google.firebase.ai.type.ImagenEditMode
@@ -67,6 +68,10 @@ class ImagenViewModel(
 
     val additionalImage = sample.additionalImage
 
+    val templateId = sample.templateId
+
+    val templateKey = sample.templateKey
+
     private val _attachedImage = MutableStateFlow<Bitmap?>(null)
     val attachedImage: StateFlow<Bitmap?> = _attachedImage
 
@@ -75,6 +80,7 @@ class ImagenViewModel(
 
     // Firebase AI Logic
     private val imagenModel: ImagenModel
+    private val templateImagenModel: TemplateImagenModel
 
     init {
         val config = imagenGenerationConfig {
@@ -88,27 +94,38 @@ class ImagenViewModel(
         imagenModel = Firebase.ai(
             backend = sample.backend
         ).imagenModel(
-            modelName = sample.modelName ?: "imagen-3.0-generate-002",
+            modelName = sample.modelName ?: "imagen-4.0-generate-001",
             generationConfig = config,
             safetySettings = settings
         )
+        templateImagenModel = Firebase.ai.templateImagenModel()
     }
 
     fun generateImages(inputText: String) {
         viewModelScope.launch {
             _isLoading.value = true
+            _errorMessage.value = null // clear error message
             try {
                 val imageResponse = when(sample.editingMode) {
                     EditingMode.INPAINTING -> inpaint(imagenModel, inputText)
                     EditingMode.OUTPAINTING -> outpaint(imagenModel, inputText)
                     EditingMode.SUBJECT_REFERENCE -> drawReferenceSubject(imagenModel, inputText)
                     EditingMode.STYLE_TRANSFER -> transferStyle(imagenModel, inputText)
+                    EditingMode.TEMPLATE ->
+                        generateWithTemplate(templateImagenModel, templateId!!, mapOf(templateKey!! to inputText))
                     else -> generate(imagenModel, inputText)
                 }
                 _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
-                _errorMessage.value = null // clear error message
             } catch (e: Exception) {
-                _errorMessage.value = e.localizedMessage
+                val errorMessage =
+                    if ((e.localizedMessage?.contains("not found") == true) &&
+                        sample.editingMode == EditingMode.TEMPLATE) {
+                        "Template was not found, please verify that your project contains a" +
+                                " template named \"$templateId\"."
+                    } else {
+                        e.localizedMessage
+                    }
+                _errorMessage.value = errorMessage
             } finally {
                 _isLoading.value = false
             }
@@ -211,5 +228,13 @@ class ImagenViewModel(
         return model.generateImages(
             inputText
         )
+    }
+
+    suspend fun generateWithTemplate(
+        model: TemplateImagenModel,
+        templateId: String,
+        inputMap: Map<String, String>
+    ): ImagenGenerationResponse<ImagenInlineImage> {
+        return model.generateImages(templateId, inputMap)
     }
 }

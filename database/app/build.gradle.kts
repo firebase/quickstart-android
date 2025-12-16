@@ -54,11 +54,11 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("com.google.android.material:material:1.13.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.5")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
 
     // Firebase Realtime Database
     implementation("com.google.firebase:firebase-database")
@@ -66,7 +66,7 @@ dependencies {
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
 
-    implementation("com.firebaseui:firebase-ui-database:9.0.0")
+    implementation("com.firebaseui:firebase-ui-database:9.1.1")
 
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation("androidx.arch.core:core-runtime:2.2.0")

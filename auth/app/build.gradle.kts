@@ -54,15 +54,15 @@ dependencies {
     implementation(project(":internal:lintchecks"))
     implementation("androidx.multidex:multidex:2.0.1")
 
-    implementation("androidx.activity:activity-ktx:1.11.0")
+    implementation("androidx.activity:activity-ktx:1.12.1")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
     implementation("com.google.android.material:material:1.13.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.5")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.7.0"))
 
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
@@ -74,7 +74,7 @@ dependencies {
 
     // Firebase UI
     // Used in FirebaseUIActivity.
-    implementation("com.firebaseui:firebase-ui-auth:9.0.0")
+    implementation("com.firebaseui:firebase-ui-auth:9.1.1")
 
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
