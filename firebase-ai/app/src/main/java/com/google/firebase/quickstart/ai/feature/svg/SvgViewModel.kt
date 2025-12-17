@@ -58,7 +58,7 @@ class SvgViewModel(
             try {
                 val response = generativeModel.generateContent(prompt)
                 response.text?.let {
-                    _generatedSvgList.addFirst(it)
+                    _generatedSvgList.add(0, it)
                 }
                 _errorMessage.value = null
             } catch (e: Exception) {
