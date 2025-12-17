@@ -411,7 +411,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "SVG Generator",
-        description = "Use Gemini 2.5 Flash to create SVG illustrations",
+        description = "Use Gemini 3 Flash preview to create SVG illustrations",
         navRoute = "svg",
         categories = listOf(Category.IMAGE, Category.TEXT),
         initialPrompt = content {
@@ -419,7 +419,6 @@ val FIREBASE_AI_SAMPLES = listOf(
                 "a kitten"
             )
         },
-        modelName = "gemini-2.5-flash-preview",
         generationConfig = generationConfig {
             thinkingConfig {
                 thinkingBudget = -1

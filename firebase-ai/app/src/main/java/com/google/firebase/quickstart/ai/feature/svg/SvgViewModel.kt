@@ -45,7 +45,7 @@ class SvgViewModel(
         generativeModel = Firebase.ai(
             backend = sample.backend
         ).generativeModel(
-            modelName = sample.modelName ?: "gemini-2.5-flash",
+            modelName = sample.modelName ?: "gemini-3-flash-preview",
             systemInstruction = sample.systemInstructions,
             generationConfig = sample.generationConfig,
             tools = sample.tools
