@@ -408,5 +408,28 @@ val FIREBASE_AI_SAMPLES = listOf(
                 thinkingBudget = -1 // Dynamic Thinking
             }
         }
-    )
+    ),
+    Sample(
+        title = "SVG Generator",
+        description = "Use Gemini 3 Flash preview to create SVG illustrations",
+        navRoute = "svg",
+        categories = listOf(Category.IMAGE, Category.TEXT),
+        initialPrompt = content {
+            text(
+                "a kitten"
+            )
+        },
+        generationConfig = generationConfig {
+            thinkingConfig {
+                thinkingBudget = -1
+            }
+        },
+        systemInstructions = content { text("""
+            You are an expert at turning image prompts into SVG code. When given a prompt,
+            use your creativity to code a 800x600 SVG rendering of it.
+            Always add viewBox="0 0 800 600" to the root svg tag. Do
+            not import external assets, they won't work. Return ONLY the SVG code, nothing else,
+            no commentary.
+        """.trimIndent()) }
+    ),
 )

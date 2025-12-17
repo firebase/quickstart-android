@@ -36,6 +36,8 @@ import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoScreen
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenRoute
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenScreen
+import com.google.firebase.quickstart.ai.feature.svg.SvgRoute
+import com.google.firebase.quickstart.ai.feature.svg.SvgScreen
 import com.google.firebase.quickstart.ai.feature.text.ChatRoute
 import com.google.firebase.quickstart.ai.feature.text.ChatScreen
 import com.google.firebase.quickstart.ai.feature.text.TextGenRoute
@@ -47,7 +49,6 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
         catImage = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.cat)
         setContent {
@@ -98,6 +99,9 @@ class MainActivity : ComponentActivity() {
                                         "text" -> {
                                             navController.navigate(TextGenRoute(it.id))
                                         }
+                                        "svg" -> {
+                                            navController.navigate(SvgRoute(it.id))
+                                        }
                                     }
                                 }
                             )
@@ -124,6 +128,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<TextGenRoute> {
                             TextGenScreen()
+                        }
+                        composable<SvgRoute> {
+                            SvgScreen()
                         }
                     }
                 }

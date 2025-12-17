@@ -81,6 +81,11 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.ai)
 
+    // Image loading
+    implementation(libs.coil3.coil.compose)
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.coil.svg)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

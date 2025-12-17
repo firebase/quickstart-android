@@ -3,6 +3,7 @@ activityCompose = "1.12.1"
 agp = "8.13.2"
 camerax = "1.5.2"
 coilCompose = "2.7.0"
+coil3Compose = "3.3.0"
 composeBom = "2025.12.00"
 composeNavigation = "2.9.6"
 coreKtx = "1.17.0"
@@ -44,6 +45,9 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil3Compose" }
+coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil3Compose" }
+coil3-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3Compose" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation"}
 firebase-ai = { module = "com.google.firebase:firebase-ai" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
