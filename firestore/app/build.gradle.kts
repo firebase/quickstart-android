@@ -1,8 +1,6 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
     id("com.google.gms.google-services")
     id("androidx.navigation.safeargs")
 }
@@ -26,19 +24,14 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            testProguardFiles(getDefaultProguardFile("proguard-android.txt"), "test-proguard-rules.pro")
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            testProguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "test-proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-        }
     }
 
     buildFeatures {
@@ -83,7 +76,6 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.media:media:1.7.1")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
-    implementation("androidx.multidex:multidex:2.0.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.9.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.9.6")
 

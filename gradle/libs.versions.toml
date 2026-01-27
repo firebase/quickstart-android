@@ -1,6 +1,6 @@
 [versions]
 activityCompose = "1.12.1"
-agp = "8.13.2"
+agp = "9.0.0"
 camerax = "1.5.2"
 coilCompose = "2.7.0"
 coil3Compose = "3.3.0"

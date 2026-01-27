@@ -14,7 +14,7 @@ include(":admob:app",
         ":config:app",
         ":crash:app",
         ":database:app",
-        ":dataconnect:app",
+        
         ":firestore:app",
         ":functions:app",
         ":internal:chooserx",

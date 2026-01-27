@@ -1,6 +1,6 @@
 [versions]
 activityCompose = "1.12.1"
-agp = "8.13.0"
+agp = "9.0.0"
 composeBom = "2025.10.00"
 composeNavigation = "2.9.6"
 coreKtx = "1.17.0"
