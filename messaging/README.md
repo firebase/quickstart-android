@@ -16,6 +16,9 @@ Getting Started
 
 - [Add Firebase to your Android Project](https://firebase.google.com/docs/android/setup).
 - Run the sample on Android device or emulator.
+- There are two `FirebaseMessagingService` defined in `AndroidManifest.xml` to receive
+  incoming messages. Only one of these can be active at any one time so comment one
+  if you would like to guarantee that the other is used.
 
 **NOTE**: This sample contains identical code for both Java and Kotlin.
 However, there can only be one service in each app that receives FCM
