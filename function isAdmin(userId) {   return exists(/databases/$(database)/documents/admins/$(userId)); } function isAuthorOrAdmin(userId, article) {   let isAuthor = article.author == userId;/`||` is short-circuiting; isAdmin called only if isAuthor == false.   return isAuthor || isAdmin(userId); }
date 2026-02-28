@@ -1,0 +1,8 @@
+function isAdmin(userId) {
+  return exists(/databases/$(database)/documents/admins/$(userId));
+}
+function isAuthorOrAdmin(userId, article) {
+  let isAuthor = article.author == userId;
+  // `||` is short-circuiting; isAdmin called only if isAuthor == false.
+  return isAuthor || isAdmin(userId);
+}
