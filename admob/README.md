@@ -1,4 +1,4 @@
-AdMob by Google Quickstart
+AdMob by Google Quickstart 
 =======================
 
 The AdMob by Google Android quickstart demonstrates how to display an interstitial ad and
