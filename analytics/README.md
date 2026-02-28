@@ -3,7 +3,7 @@ Google Analytics for Firebase Quickstart
 
 Introduction
 ------------
-
+ 
 - [Read more about Google Analytics for Firebase](https://firebase.google.com/docs/analytics)
 
 Getting Started
