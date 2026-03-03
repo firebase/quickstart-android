@@ -19,15 +19,19 @@ jobs:
       with:
         distribution: 'zulu'
         java-version: 17
+    - name: Install Node to use the Firebase CLI
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
     - name: Check Snippets
       run: python scripts/checksnippets.py
-    # TODO(thatfiredev): remove this once github.com/firebase/quickstart-android/issues/1672 is fixed
-    - name: Remove Firebase Data Connect from CI
-      run: python scripts/ci_remove_fdc.py
     - name: Copy mock google_services.json
       run: ./copy_mock_google_services_json.sh
+    - name: Generate SDKs for the Data Connect quickstart
+      run: npx firebase dataconnect:compile
+      working-directory: ./dataconnect
     - name: Build with Gradle (Pull Request)
       run: ./build_pull_request.sh
       if: github.event_name == 'pull_request'
