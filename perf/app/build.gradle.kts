@@ -1,14 +1,8 @@
-import com.android.build.gradle.internal.tasks.factory.dependsOn
-import com.google.firebase.perf.plugin.FirebasePerfExtension
 
 plugins {
-    id("com.android.application")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.firebase-perf")
-}
-
-tasks {
-    check.dependsOn("assembleDebugAndroidTest")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.perf)
 }
 
 android {
@@ -21,9 +15,9 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -42,6 +36,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     buildFeatures {
         viewBinding = true
     }

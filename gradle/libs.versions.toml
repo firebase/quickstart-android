@@ -10,6 +10,9 @@ coreKtx = "1.17.0"
 espressoCore = "3.7.0"
 firebaseBom = "34.7.0"
 googleServices = "4.4.4"
+firebaseCrashlytics = "3.0.6"
+firebasePerf = "2.0.2"
+gradleVersions = "0.53.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 kotlin = "2.3.0"
@@ -58,7 +61,12 @@ material = { module = "com.google.android.material:material", version.ref = "mat
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
+firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
+navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "composeNavigation" }
+gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersions" }
