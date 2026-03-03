@@ -1,8 +1,8 @@
 
 plugins {
-    id("com.android.application")
-    id("com.google.gms.google-services")
-    id("androidx.navigation.safeargs")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
