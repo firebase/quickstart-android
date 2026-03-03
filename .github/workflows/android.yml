@@ -30,7 +30,7 @@ jobs:
     - name: Copy mock google_services.json
       run: ./copy_mock_google_services_json.sh
     - name: Generate SDKs for the Data Connect quickstart
-      run: npx firebase dataconnect:compile
+      run: npx -y firebase-tools@latest dataconnect:compile
       working-directory: ./dataconnect
     - name: Build with Gradle (Pull Request)
       run: ./build_pull_request.sh
