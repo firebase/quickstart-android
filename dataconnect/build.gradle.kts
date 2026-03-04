@@ -17,6 +17,7 @@ tasks {
         } else {
             commandLine("npx", "-y", "firebase-tools@latest", "dataconnect:compile")
         }
+        isIgnoreExitValue = true
     }
 
     named("clean") {
