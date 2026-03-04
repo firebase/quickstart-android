@@ -48,7 +48,8 @@ tasks.register<JavaExec>("ktlintCheck") {
         "--code-style=android_studio",
         "--reporter=plain",
         "--reporter=checkstyle,output=${outputFile}",
-        "**/*.kt"
+        "**/*.kt",
+        "!**/build/**"
     )
 
     jvmArgs("--add-opens=java.base/java.lang=ALL-UNNAMED")
