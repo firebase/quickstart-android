@@ -1,5 +1,5 @@
 # List subset of fields for movies
-query ListMovies($orderByRating: OrderDirection, $orderByReleaseYear: OrderDirection, $limit: Int) @auth(level: PUBLIC) {
+query ListMovies($orderByRating: OrderDirection, $orderByReleaseYear: OrderDirection, $limit: Int) @auth(level: PUBLIC, insecureReason: "Test Mode") {
   movies(
     orderBy: [
       { rating: $orderByRating },
@@ -19,7 +19,7 @@ query ListMovies($orderByRating: OrderDirection, $orderByReleaseYear: OrderDirec
 }
 
 # Get movie by id
-query GetMovieById($id: UUID!) @auth(level: PUBLIC) {
+query GetMovieById($id: UUID!) @auth(level: PUBLIC, insecureReason: "Test Mode") {
  movie(id: $id) {
     id
     title
@@ -58,7 +58,7 @@ query GetMovieById($id: UUID!) @auth(level: PUBLIC) {
  }
 
 # Get actor by id
-query GetActorById($id: UUID!) @auth(level: PUBLIC) {
+query GetActorById($id: UUID!) @auth(level: PUBLIC, insecureReason: "Test Mode") {
   actor(id: $id) {
     id
     name
@@ -130,7 +130,7 @@ query SearchAll(
   $minRating: Float!
   $maxRating: Float!
   $genre: String!
-) @auth(level: PUBLIC) {
+) @auth(level: PUBLIC, insecureReason: "Test Mode") {
   moviesMatchingTitle: movies(
     where: {
       _and: [
