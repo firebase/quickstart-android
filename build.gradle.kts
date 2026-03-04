@@ -26,7 +26,6 @@ dependencies {
         attributes {
             attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
         }
-        exclude("**/build/generated/sources/**")
     }
 }
 
