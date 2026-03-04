@@ -86,3 +86,16 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+
+tasks.register<Exec>("dataconnectCompile") {
+    workingDir = project.file("..")
+    if (org.apache.tools.ant.taskdefs.condition.Os.isFamily(org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS)) {
+        commandLine("npx.cmd", "-y", "firebase-tools@latest", "dataconnect:compile")
+    } else {
+        commandLine("npx", "-y", "firebase-tools@latest", "dataconnect:compile")
+    }
+}
+
+tasks.named("preBuild") {
+    dependsOn("dataconnectCompile")
+}
