@@ -6,10 +6,6 @@ plugins {
 }
 
 tasks {
-    register("clean", Delete::class) {
-        delete(rootProject.layout.buildDirectory)
-    }
-
     register<Exec>("dataconnectCompile") {
         workingDir = project.file("./dataconnect")
         if (org.apache.tools.ant.taskdefs.condition.Os.isFamily(org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS)) {
@@ -20,7 +16,8 @@ tasks {
         isIgnoreExitValue = true
     }
 
-    named("clean") {
+    register("clean", Delete::class) {
+        delete(rootProject.layout.buildDirectory)
         finalizedBy("dataconnectCompile")
     }
 }

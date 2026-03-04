@@ -47,9 +47,7 @@ android {
         }
     }
     sourceSets.getByName("main") {
-        kotlin.directories.add(
-            project.layout.projectDirectory.dir("build/generated/sources").toString()
-        )
+        kotlin.directories.add("build/generated/sources")
     }
 }
 
