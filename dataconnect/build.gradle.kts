@@ -4,3 +4,22 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.compose.compiler) apply false
 }
+
+tasks {
+    register("clean", Delete::class) {
+        delete(rootProject.layout.buildDirectory)
+    }
+
+    register<Exec>("dataconnectCompile") {
+        workingDir = project.file("./dataconnect")
+        if (org.apache.tools.ant.taskdefs.condition.Os.isFamily(org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS)) {
+            commandLine("npx.cmd", "-y", "firebase-tools@latest", "dataconnect:compile")
+        } else {
+            commandLine("npx", "-y", "firebase-tools@latest", "dataconnect:compile")
+        }
+    }
+
+    named("clean") {
+        finalizedBy("dataconnectCompile")
+    }
+}
