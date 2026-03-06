@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import com.google.firebase.Firebase
 import com.google.firebase.ai.TemplateImagenModel
 import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ImagenGenerationResponse
 import com.google.firebase.ai.type.ImagenInlineImage
 import com.google.firebase.ai.type.PublicPreviewAPI
@@ -22,7 +23,13 @@ class ImagenTemplateViewModel : ImagenViewModel() {
     override val additionalImage: Bitmap? = null
     override val imageLabels: List<String> = emptyList()
 
-    private val templateImagenModel: TemplateImagenModel = Firebase.ai.templateImagenModel()
+    private var templateImagenModel: TemplateImagenModel
+
+    init {
+        templateImagenModel = Firebase.ai(
+            backend = GenerativeBackend.googleAI()
+        ).templateImagenModel()
+    }
 
     override suspend fun performGeneration(
         inputText: String,

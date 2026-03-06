@@ -6,6 +6,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.ai.Chat
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.Content
+import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.content
 import com.google.firebase.quickstart.ai.ui.ChatUiState
 import com.google.firebase.quickstart.ai.ui.UiChatMessage
@@ -37,7 +38,9 @@ class AudioSummarizationViewModel : ChatViewModel() {
         _messages.value = chatHistory.map { UiChatMessage(it) }
         _uiState.value = ChatUiState.Success
 
-        val generativeModel = Firebase.ai.generativeModel(
+        val generativeModel = Firebase.ai(
+            backend = GenerativeBackend.googleAI()
+        ).generativeModel(
             modelName = "gemini-2.5-flash"
         )
         chat = generativeModel.startChat(chatHistory)

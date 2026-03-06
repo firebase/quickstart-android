@@ -6,6 +6,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.ai.Chat
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.Content
+import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.generationConfig
 import com.google.firebase.quickstart.ai.ui.UiChatMessage
@@ -22,7 +23,9 @@ class ImageGenerationViewModel : ChatViewModel() {
     private val chat: Chat
 
     init {
-        val generativeModel = Firebase.ai.generativeModel(
+        val generativeModel = Firebase.ai(
+            backend = GenerativeBackend.googleAI()
+        ).generativeModel(
             modelName = "gemini-2.5-flash-image",
             generationConfig = generationConfig {
                 responseModalities = listOf(ResponseModality.TEXT, ResponseModality.IMAGE)

@@ -24,7 +24,6 @@ import kotlinx.serialization.Serializable
 object ImagenStyleTransferRoute
 
 @OptIn(PublicPreviewAPI::class)
-@Suppress("DEPRECATION")
 class ImagenStyleTransferViewModel : ImagenViewModel() {
     override val initialPrompt: String = "A picture of a cat"
     override val includeAttach: Boolean = true

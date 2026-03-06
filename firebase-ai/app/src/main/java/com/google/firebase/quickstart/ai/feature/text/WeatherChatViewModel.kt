@@ -10,6 +10,7 @@ import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.FunctionResponsePart
 import com.google.firebase.ai.type.GenerateContentResponse
+import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
@@ -27,7 +28,9 @@ class WeatherChatViewModel : ChatViewModel() {
     private val chat: Chat
 
     init {
-        val generativeModel = Firebase.ai.generativeModel(
+        val generativeModel = Firebase.ai(
+            backend = GenerativeBackend.googleAI()
+        ).generativeModel(
             modelName = "gemini-2.5-flash",
             tools = listOf(
                 Tool.functionDeclarations(

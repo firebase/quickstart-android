@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.ai.TemplateGenerativeModel
 import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.quickstart.ai.ui.ServerPromptUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,10 +25,15 @@ class ServerPromptTemplateViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<ServerPromptUiState>(ServerPromptUiState.Success())
     val uiState: StateFlow<ServerPromptUiState> = _uiState.asStateFlow()
 
-    private val templateGenerativeModel: TemplateGenerativeModel = Firebase.ai.templateGenerativeModel()
+    private var templateGenerativeModel: TemplateGenerativeModel
+
+    init {
+        templateGenerativeModel = Firebase.ai(
+            backend = GenerativeBackend.googleAI()
+        ).templateGenerativeModel()
+    }
 
     fun generate(inputText: String) {
-        val currentState = (_uiState.value as? ServerPromptUiState.Success) ?: ServerPromptUiState.Success()
         viewModelScope.launch {
             _uiState.value = ServerPromptUiState.Loading
             try {
