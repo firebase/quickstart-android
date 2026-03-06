@@ -30,9 +30,19 @@ import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoScreen
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenRoute
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenGenerationRoute
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenGenerationViewModel
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenInpaintingRoute
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenInpaintingViewModel
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenOutpaintingRoute
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenOutpaintingViewModel
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenScreen
-import com.google.firebase.quickstart.ai.feature.media.imagen.LegacyImagenViewModel
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenStyleTransferRoute
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenStyleTransferViewModel
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenSubjectReferenceRoute
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenSubjectReferenceViewModel
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenTemplateRoute
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.svg.SvgRoute
 import com.google.firebase.quickstart.ai.feature.svg.SvgScreen
 import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationRoute
@@ -116,10 +126,15 @@ class MainActivity : ComponentActivity() {
                                         "Summarize video" -> navController.navigate(VideoSummarizationRoute)
                                         "Grounding with Google Search" -> navController.navigate(GoogleSearchGroundingRoute)
                                         "Thinking" -> navController.navigate(ThinkingChatRoute)
+                                        "Imagen 4 - image generation" -> navController.navigate(ImagenGenerationRoute)
+                                        "Imagen 3 - Inpainting (Vertex AI)" -> navController.navigate(ImagenInpaintingRoute)
+                                        "Imagen 3 - Outpainting (Vertex AI)" -> navController.navigate(ImagenOutpaintingRoute)
+                                        "Imagen 3 - Subject Reference (Vertex AI)" -> navController.navigate(ImagenSubjectReferenceRoute)
+                                        "Imagen 3 - Style Transfer (Vertex AI)" -> navController.navigate(ImagenStyleTransferRoute)
+                                        "Server Prompt Template - Imagen" -> navController.navigate(ImagenTemplateRoute)
                                         else -> {
                                             when (it.navRoute) {
                                                 "chat" -> navController.navigate(ChatRoute(it.id))
-                                                "imagen" -> navController.navigate(ImagenRoute(it.id))
                                                 "stream" -> navController.navigate(StreamRealtimeRoute(it.id))
                                                 "streamVideo" -> navController.navigate(StreamRealtimeVideoRoute(it.id))
                                                 "text" -> navController.navigate(TextGenRoute(it.id))
@@ -184,11 +199,32 @@ class MainActivity : ComponentActivity() {
                             val viewModel: LegacyChatViewModel = viewModel()
                             ChatScreen(viewModel)
                         }
-                        // Imagen Samples
-                        composable<ImagenRoute> {
-                            val viewModel: LegacyImagenViewModel = viewModel()
+                        // Refactored Imagen Samples
+                        composable<ImagenGenerationRoute> {
+                            val viewModel: ImagenGenerationViewModel = viewModel()
                             ImagenScreen(viewModel)
                         }
+                        composable<ImagenInpaintingRoute> {
+                            val viewModel: ImagenInpaintingViewModel = viewModel()
+                            ImagenScreen(viewModel)
+                        }
+                        composable<ImagenOutpaintingRoute> {
+                            val viewModel: ImagenOutpaintingViewModel = viewModel()
+                            ImagenScreen(viewModel)
+                        }
+                        composable<ImagenSubjectReferenceRoute> {
+                            val viewModel: ImagenSubjectReferenceViewModel = viewModel()
+                            ImagenScreen(viewModel)
+                        }
+                        composable<ImagenStyleTransferRoute> {
+                            val viewModel: ImagenStyleTransferViewModel = viewModel()
+                            ImagenScreen(viewModel)
+                        }
+                        composable<ImagenTemplateRoute> {
+                            val viewModel: ImagenTemplateViewModel = viewModel()
+                            ImagenScreen(viewModel)
+                        }
+                        // Final verification
                         // The permission is checked by the @RequiresPermission annotation on the
                         // StreamRealtimeScreen composable.
                         @SuppressLint("MissingPermission")
