@@ -87,6 +87,8 @@ fun ChatScreen(
     chatViewModel: ChatViewModel
 ) {
     val uiState by chatViewModel.uiState.collectAsStateWithLifecycle()
+    val messages by chatViewModel.messages.collectAsStateWithLifecycle()
+    val attachments by chatViewModel.attachments.collectAsStateWithLifecycle()
 
     val initialPrompt: String = chatViewModel.initialPrompt
 
@@ -97,27 +99,13 @@ fun ChatScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        when (val state = uiState) {
-            is ChatUiState.Success -> {
-                ChatList(
-                    state.messages,
-                    listState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(0.5f)
-                )
-            }
-            is ChatUiState.Loading -> {
-//                Box(modifier = Modifier.weight(0.5f).fillMaxSize(), contentAlignment = Alignment.Center) {
-//                    LinearProgressIndicator()
-//                }
-            }
-            is ChatUiState.Error -> {
-                Box(modifier = Modifier.weight(0.5f).fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = state.message, color = MaterialTheme.colorScheme.error)
-                }
-            }
-        }
+        ChatList(
+            messages,
+            listState,
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(0.5f)
+        )
         
         Box(
             contentAlignment = Alignment.BottomCenter
@@ -148,9 +136,7 @@ fun ChatScreen(
                         )
                     }
                 }
-                (uiState as? ChatUiState.Success)?.let {
-                    AttachmentsList(it.attachments)
-                }
+                AttachmentsList(attachments)
                 val context = LocalContext.current
                 val contentResolver = context.contentResolver
                 MessageInput(

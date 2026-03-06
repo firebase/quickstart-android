@@ -22,9 +22,6 @@ data class UiChatMessage(
 
 sealed interface ChatUiState {
     data object Loading : ChatUiState
-    data class Success(
-        val messages: List<UiChatMessage> = emptyList(),
-        val attachments: List<Attachment> = emptyList(),
-    ) : ChatUiState
+    data object Success : ChatUiState
     data class Error(val message: String) : ChatUiState
 }

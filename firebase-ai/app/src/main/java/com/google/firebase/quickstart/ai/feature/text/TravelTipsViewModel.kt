@@ -59,10 +59,8 @@ class TravelTipsViewModel : ChatViewModel() {
                 }
             ))
 
-        _uiState.value = ChatUiState.Success(
-            messages = chat.history.map { UiChatMessage(it) },
-            attachments = emptyList()
-        )
+        _messages.value = chat.history.map { UiChatMessage(it) }
+        _uiState.value = ChatUiState.Success
     }
 
     override suspend fun performSendMessage(prompt: Content, currentMessages: List<UiChatMessage>) {

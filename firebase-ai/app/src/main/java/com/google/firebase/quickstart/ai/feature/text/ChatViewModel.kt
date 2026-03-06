@@ -17,13 +17,14 @@ import kotlinx.coroutines.launch
 @OptIn(PublicPreviewAPI::class)
 abstract class ChatViewModel : ViewModel() {
 
-    protected val _uiState: MutableStateFlow<ChatUiState> =
-        MutableStateFlow(
-            ChatUiState.Success(
-            messages = emptyList(),
-            attachments = emptyList()
-        ))
+    protected val _uiState = MutableStateFlow<ChatUiState>(ChatUiState.Success)
     val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
+
+    protected val _messages = MutableStateFlow<List<UiChatMessage>>(emptyList())
+    val messages: StateFlow<List<UiChatMessage>> = _messages.asStateFlow()
+
+    protected val _attachments = MutableStateFlow<List<Attachment>>(emptyList())
+    val attachments: StateFlow<List<Attachment>> = _attachments.asStateFlow()
 
     abstract val initialPrompt: String
 
@@ -35,20 +36,16 @@ abstract class ChatViewModel : ViewModel() {
      * Handles adding the message to the UI and setting the loading state.
      */
     fun sendMessage(userMessage: String) {
-        val uiStateValue = _uiState.value
-        if (uiStateValue !is ChatUiState.Success) return
-
         val prompt = contentBuilder
             .text(userMessage)
             .build()
 
-        val updatedMessages = uiStateValue.messages + UiChatMessage(prompt)
-        _uiState.value = uiStateValue.copy(messages = updatedMessages)
+        _messages.value = _messages.value + UiChatMessage(prompt)
 
         viewModelScope.launch {
             _uiState.value = ChatUiState.Loading
             try {
-                performSendMessage(prompt, updatedMessages)
+                performSendMessage(prompt, _messages.value)
             } catch (e: Exception) {
                 _uiState.value = ChatUiState.Error(e.localizedMessage ?: "Unknown error")
             } finally {
@@ -83,10 +80,9 @@ abstract class ChatViewModel : ViewModel() {
                 "Could not display the response because it was missing required attribution components."
             )
         } else {
-            _uiState.value = ChatUiState.Success(
-                messages = currentMessages + UiChatMessage(candidate.content, candidate.groundingMetadata),
-                attachments = emptyList()
-            )
+            _messages.value = currentMessages + UiChatMessage(candidate.content, candidate.groundingMetadata)
+            _attachments.value = emptyList()
+            _uiState.value = ChatUiState.Success
         }
     }
 
@@ -95,19 +91,14 @@ abstract class ChatViewModel : ViewModel() {
         mimeType: String?,
         fileName: String? = "Unnamed file"
     ) {
-        val uiStateValue = _uiState.value
-        if (uiStateValue !is ChatUiState.Success) return
-
         if (mimeType?.contains("image") == true) {
             // images should be attached as ImageParts
             contentBuilder.image(decodeBitmapFromImage(fileInBytes))
         } else {
             contentBuilder.inlineData(fileInBytes, mimeType ?: "text/plain")
         }
-        
-        _uiState.value = uiStateValue.copy(
-            attachments = uiStateValue.attachments + Attachment(fileName ?: "Unnamed file")
-        )
+
+        _attachments.value = _attachments.value + Attachment(fileName ?: "Unnamed file")
     }
 
     protected fun decodeBitmapFromImage(input: ByteArray) =

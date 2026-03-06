@@ -30,10 +30,8 @@ class AudioSummarizationViewModel : ChatViewModel() {
             }
         )
 
-        _uiState.value = ChatUiState.Success(
-            messages = chatHistory.map { UiChatMessage(it) },
-            attachments = emptyList()
-        )
+        _messages.value = chatHistory.map { UiChatMessage(it) }
+        _uiState.value = ChatUiState.Success
 
         val generativeModel = Firebase.ai.generativeModel(
             modelName = "gemini-2.5-flash"
