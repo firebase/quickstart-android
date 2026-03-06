@@ -35,13 +35,33 @@ import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenScreen
 import com.google.firebase.quickstart.ai.feature.media.imagen.LegacyImagenViewModel
 import com.google.firebase.quickstart.ai.feature.svg.SvgRoute
 import com.google.firebase.quickstart.ai.feature.svg.SvgScreen
+import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationRoute
+import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationViewModel
+import com.google.firebase.quickstart.ai.feature.text.AudioTranslationRoute
+import com.google.firebase.quickstart.ai.feature.text.AudioTranslationViewModel
 import com.google.firebase.quickstart.ai.feature.text.ChatRoute
 import com.google.firebase.quickstart.ai.feature.text.ChatScreen
+import com.google.firebase.quickstart.ai.feature.text.CourseRecommendationsRoute
+import com.google.firebase.quickstart.ai.feature.text.CourseRecommendationsViewModel
+import com.google.firebase.quickstart.ai.feature.text.DocumentComparisonRoute
+import com.google.firebase.quickstart.ai.feature.text.DocumentComparisonViewModel
+import com.google.firebase.quickstart.ai.feature.text.GoogleSearchGroundingRoute
+import com.google.firebase.quickstart.ai.feature.text.GoogleSearchGroundingViewModel
+import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorRoute
+import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorViewModel
+import com.google.firebase.quickstart.ai.feature.text.ImageGenerationRoute
+import com.google.firebase.quickstart.ai.feature.text.ImageGenerationViewModel
 import com.google.firebase.quickstart.ai.feature.text.LegacyChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.TextGenRoute
 import com.google.firebase.quickstart.ai.feature.text.TextGenScreen
+import com.google.firebase.quickstart.ai.feature.text.ThinkingChatRoute
+import com.google.firebase.quickstart.ai.feature.text.ThinkingChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.TravelTipsRoute
 import com.google.firebase.quickstart.ai.feature.text.TravelTipsViewModel
+import com.google.firebase.quickstart.ai.feature.text.VideoHashtagGeneratorRoute
+import com.google.firebase.quickstart.ai.feature.text.VideoHashtagGeneratorViewModel
+import com.google.firebase.quickstart.ai.feature.text.VideoSummarizationRoute
+import com.google.firebase.quickstart.ai.feature.text.VideoSummarizationViewModel
 import com.google.firebase.quickstart.ai.feature.text.WeatherChatRoute
 import com.google.firebase.quickstart.ai.feature.text.WeatherChatViewModel
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
@@ -84,34 +104,26 @@ class MainActivity : ComponentActivity() {
                                 onSampleClicked = {
                                     topBarTitle = it.title
                                     when (it.title) {
-                                        "Travel tips" -> {
-                                            navController.navigate(TravelTipsRoute)
-                                        }
-                                        "Weather Chat" -> {
-                                            navController.navigate(WeatherChatRoute)
-                                        }
+                                        "Travel tips" -> navController.navigate(TravelTipsRoute)
+                                        "Weather Chat" -> navController.navigate(WeatherChatRoute)
+                                        "Chatbot recommendations for courses" -> navController.navigate(CourseRecommendationsRoute)
+                                        "Audio Summarization" -> navController.navigate(AudioSummarizationRoute)
+                                        "Translation from audio (Vertex AI)" -> navController.navigate(AudioTranslationRoute)
+                                        "Blog post creator (Vertex AI)" -> navController.navigate(ImageBlogCreatorRoute)
+                                        "Gemini 2.5 Flash Image (aka nanobanana)" -> navController.navigate(ImageGenerationRoute)
+                                        "Document comparison (Vertex AI)" -> navController.navigate(DocumentComparisonRoute)
+                                        "Hashtags for a video (Vertex AI)" -> navController.navigate(VideoHashtagGeneratorRoute)
+                                        "Summarize video" -> navController.navigate(VideoSummarizationRoute)
+                                        "Grounding with Google Search" -> navController.navigate(GoogleSearchGroundingRoute)
+                                        "Thinking" -> navController.navigate(ThinkingChatRoute)
                                         else -> {
                                             when (it.navRoute) {
-                                                "chat" -> {
-                                                    navController.navigate(ChatRoute(it.id))
-                                                }
-
-                                                "imagen" -> {
-                                                    navController.navigate(ImagenRoute(it.id))
-                                                }
-
-                                                "stream" -> {
-                                                    navController.navigate(StreamRealtimeRoute(it.id))
-                                                }
-                                                "streamVideo" -> {
-                                                    navController.navigate(StreamRealtimeVideoRoute(it.id))
-                                                }
-                                                "text" -> {
-                                                    navController.navigate(TextGenRoute(it.id))
-                                                }
-                                                "svg" -> {
-                                                    navController.navigate(SvgRoute(it.id))
-                                                }
+                                                "chat" -> navController.navigate(ChatRoute(it.id))
+                                                "imagen" -> navController.navigate(ImagenRoute(it.id))
+                                                "stream" -> navController.navigate(StreamRealtimeRoute(it.id))
+                                                "streamVideo" -> navController.navigate(StreamRealtimeVideoRoute(it.id))
+                                                "text" -> navController.navigate(TextGenRoute(it.id))
+                                                "svg" -> navController.navigate(SvgRoute(it.id))
                                             }
                                         }
                                     }
@@ -125,6 +137,46 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<WeatherChatRoute> {
                             val viewModel: WeatherChatViewModel = viewModel()
+                            ChatScreen(viewModel)
+                        }
+                        composable<CourseRecommendationsRoute> {
+                            val viewModel: CourseRecommendationsViewModel = viewModel()
+                            ChatScreen(viewModel)
+                        }
+                        composable<AudioSummarizationRoute> {
+                            val viewModel: AudioSummarizationViewModel = viewModel()
+                            ChatScreen(viewModel)
+                        }
+                        composable<AudioTranslationRoute> {
+                            val viewModel: AudioTranslationViewModel = viewModel()
+                            ChatScreen(viewModel)
+                        }
+                        composable<ImageBlogCreatorRoute> {
+                            val viewModel: ImageBlogCreatorViewModel = viewModel()
+                            ChatScreen(viewModel)
+                        }
+                        composable<ImageGenerationRoute> {
+                            val viewModel: ImageGenerationViewModel = viewModel()
+                            ChatScreen(viewModel)
+                        }
+                        composable<DocumentComparisonRoute> {
+                            val viewModel: DocumentComparisonViewModel = viewModel()
+                            ChatScreen(viewModel)
+                        }
+                        composable<VideoHashtagGeneratorRoute> {
+                            val viewModel: VideoHashtagGeneratorViewModel = viewModel()
+                            ChatScreen(viewModel)
+                        }
+                        composable<VideoSummarizationRoute> {
+                            val viewModel: VideoSummarizationViewModel = viewModel()
+                            ChatScreen(viewModel)
+                        }
+                        composable<GoogleSearchGroundingRoute> {
+                            val viewModel: GoogleSearchGroundingViewModel = viewModel()
+                            ChatScreen(viewModel)
+                        }
+                        composable<ThinkingChatRoute> {
+                            val viewModel: ThinkingChatViewModel = viewModel()
                             ChatScreen(viewModel)
                         }
                         // Generic Chat Samples (Legacy)

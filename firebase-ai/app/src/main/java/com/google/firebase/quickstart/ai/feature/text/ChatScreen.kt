@@ -88,6 +88,36 @@ object TravelTipsRoute
 @Serializable
 object WeatherChatRoute
 
+@Serializable
+object CourseRecommendationsRoute
+
+@Serializable
+object AudioSummarizationRoute
+
+@Serializable
+object AudioTranslationRoute
+
+@Serializable
+object ImageBlogCreatorRoute
+
+@Serializable
+object ImageGenerationRoute
+
+@Serializable
+object DocumentComparisonRoute
+
+@Serializable
+object VideoHashtagGeneratorRoute
+
+@Serializable
+object VideoSummarizationRoute
+
+@Serializable
+object GoogleSearchGroundingRoute
+
+@Serializable
+object ThinkingChatRoute
+
 @Composable
 fun ChatScreen(
     chatViewModel: ChatViewModel
