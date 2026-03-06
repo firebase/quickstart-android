@@ -26,53 +26,18 @@ import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeRoute
-import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
-import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
-import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenGenerationRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenGenerationViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenInpaintingRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenInpaintingViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenOutpaintingRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenOutpaintingViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenStyleTransferRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenStyleTransferViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenSubjectReferenceRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenSubjectReferenceViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenTemplateRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenTemplateViewModel
-import com.google.firebase.quickstart.ai.feature.text.SvgRoute
-import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationRoute
-import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationViewModel
-import com.google.firebase.quickstart.ai.feature.text.AudioTranslationRoute
-import com.google.firebase.quickstart.ai.feature.text.AudioTranslationViewModel
-import com.google.firebase.quickstart.ai.feature.text.CourseRecommendationsRoute
-import com.google.firebase.quickstart.ai.feature.text.CourseRecommendationsViewModel
-import com.google.firebase.quickstart.ai.feature.text.DocumentComparisonRoute
-import com.google.firebase.quickstart.ai.feature.text.DocumentComparisonViewModel
-import com.google.firebase.quickstart.ai.feature.text.GoogleSearchGroundingRoute
-import com.google.firebase.quickstart.ai.feature.text.GoogleSearchGroundingViewModel
-import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorRoute
-import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorViewModel
-import com.google.firebase.quickstart.ai.feature.text.ImageGenerationRoute
-import com.google.firebase.quickstart.ai.feature.text.ImageGenerationViewModel
-import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateRoute
-import com.google.firebase.quickstart.ai.feature.text.ThinkingChatRoute
-import com.google.firebase.quickstart.ai.feature.text.ThinkingChatViewModel
-import com.google.firebase.quickstart.ai.feature.text.TravelTipsRoute
-import com.google.firebase.quickstart.ai.feature.text.TravelTipsViewModel
-import com.google.firebase.quickstart.ai.feature.text.VideoHashtagGeneratorRoute
-import com.google.firebase.quickstart.ai.feature.text.VideoHashtagGeneratorViewModel
-import com.google.firebase.quickstart.ai.feature.text.VideoSummarizationRoute
-import com.google.firebase.quickstart.ai.feature.text.VideoSummarizationViewModel
-import com.google.firebase.quickstart.ai.feature.text.WeatherChatRoute
-import com.google.firebase.quickstart.ai.feature.text.WeatherChatViewModel
+import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenViewModel
+import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
 import com.google.firebase.quickstart.ai.ui.ChatScreen
 import com.google.firebase.quickstart.ai.ui.ImagenScreen
 import com.google.firebase.quickstart.ai.ui.ServerPromptScreen
+import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
+import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
 import com.google.firebase.quickstart.ai.ui.SvgScreen
+import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
+import com.google.firebase.quickstart.ai.ui.navigation.ScreenType
 import com.google.firebase.quickstart.ai.ui.theme.FirebaseAILogicTheme
 
 class MainActivity : ComponentActivity() {
@@ -110,130 +75,57 @@ class MainActivity : ComponentActivity() {
                         composable("mainMenu") {
                             MainMenuScreen(
                                 onSampleClicked = {
-                                    topBarTitle = it.title
-                                    when (it.title) {
-                                        "Travel tips" -> navController.navigate(TravelTipsRoute)
-                                        "Weather Chat" -> navController.navigate(WeatherChatRoute)
-                                        "Chatbot recommendations for courses" -> navController.navigate(CourseRecommendationsRoute)
-                                        "Audio Summarization" -> navController.navigate(AudioSummarizationRoute)
-                                        "Translation from audio (Vertex AI)" -> navController.navigate(AudioTranslationRoute)
-                                        "Blog post creator (Vertex AI)" -> navController.navigate(ImageBlogCreatorRoute)
-                                        "Gemini 2.5 Flash Image (aka nanobanana)" -> navController.navigate(ImageGenerationRoute)
-                                        "Document comparison (Vertex AI)" -> navController.navigate(DocumentComparisonRoute)
-                                        "Hashtags for a video (Vertex AI)" -> navController.navigate(VideoHashtagGeneratorRoute)
-                                        "Summarize video" -> navController.navigate(VideoSummarizationRoute)
-                                        "Grounding with Google Search" -> navController.navigate(GoogleSearchGroundingRoute)
-                                        "Thinking" -> navController.navigate(ThinkingChatRoute)
-                                        "Imagen 4 - image generation" -> navController.navigate(ImagenGenerationRoute)
-                                        "Imagen 3 - Inpainting (Vertex AI)" -> navController.navigate(ImagenInpaintingRoute)
-                                        "Imagen 3 - Outpainting (Vertex AI)" -> navController.navigate(ImagenOutpaintingRoute)
-                                        "Imagen 3 - Subject Reference (Vertex AI)" -> navController.navigate(ImagenSubjectReferenceRoute)
-                                        "Imagen 3 - Style Transfer (Vertex AI)" -> navController.navigate(ImagenStyleTransferRoute)
-                                        "Server Prompt Template - Imagen" -> navController.navigate(ImagenTemplateRoute)
-                                        else -> {
-                                            when (it.navRoute) {
-                                                "serverPromptTemplate" -> navController.navigate(ServerPromptTemplateRoute)
-                                                "stream" -> navController.navigate(StreamRealtimeRoute(it.id))
-                                                "streamVideo" -> navController.navigate(StreamRealtimeVideoRoute(it.id))
-                                                "svg" -> navController.navigate(SvgRoute(it.id))
-                                            }
-                                        }
-                                    }
+                                    navController.navigate(it.route)
                                 }
                             )
                         }
-                        // Refactored Chat Samples
-                        composable<TravelTipsRoute> {
-                            val viewModel: TravelTipsViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<WeatherChatRoute> {
-                            val viewModel: WeatherChatViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<CourseRecommendationsRoute> {
-                            val viewModel: CourseRecommendationsViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<AudioSummarizationRoute> {
-                            val viewModel: AudioSummarizationViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<AudioTranslationRoute> {
-                            val viewModel: AudioTranslationViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<ImageBlogCreatorRoute> {
-                            val viewModel: ImageBlogCreatorViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<ImageGenerationRoute> {
-                            val viewModel: ImageGenerationViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<DocumentComparisonRoute> {
-                            val viewModel: DocumentComparisonViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<VideoHashtagGeneratorRoute> {
-                            val viewModel: VideoHashtagGeneratorViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<VideoSummarizationRoute> {
-                            val viewModel: VideoSummarizationViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<GoogleSearchGroundingRoute> {
-                            val viewModel: GoogleSearchGroundingViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        composable<ThinkingChatRoute> {
-                            val viewModel: ThinkingChatViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        // Refactored Imagen Samples
-                        composable<ImagenGenerationRoute> {
-                            val viewModel: ImagenGenerationViewModel = viewModel()
-                            ImagenScreen(viewModel)
-                        }
-                        composable<ImagenInpaintingRoute> {
-                            val viewModel: ImagenInpaintingViewModel = viewModel()
-                            ImagenScreen(viewModel)
-                        }
-                        composable<ImagenOutpaintingRoute> {
-                            val viewModel: ImagenOutpaintingViewModel = viewModel()
-                            ImagenScreen(viewModel)
-                        }
-                        composable<ImagenSubjectReferenceRoute> {
-                            val viewModel: ImagenSubjectReferenceViewModel = viewModel()
-                            ImagenScreen(viewModel)
-                        }
-                        composable<ImagenStyleTransferRoute> {
-                            val viewModel: ImagenStyleTransferViewModel = viewModel()
-                            ImagenScreen(viewModel)
-                        }
-                        composable<ImagenTemplateRoute> {
-                            val viewModel: ImagenTemplateViewModel = viewModel()
-                            ImagenScreen(viewModel)
-                        }
-                        // Final verification
-                        // The permission is checked by the @RequiresPermission annotation on the
-                        // StreamRealtimeScreen composable.
-                        @SuppressLint("MissingPermission")
-                        composable<StreamRealtimeRoute> {
-                            StreamRealtimeScreen()
-                        }
-                        // The permission is checked by the @RequiresPermission annotation on the
-                        // StreamRealtimeVideoScreen composable.
-                        @SuppressLint("MissingPermission")
-                        composable<StreamRealtimeVideoRoute> {
-                            StreamRealtimeVideoScreen()
-                        }
-                        composable<ServerPromptTemplateRoute> {
-                            ServerPromptScreen()
-                        }
-                        composable<SvgRoute> {
-                            SvgScreen()
+
+                        // Add navigation for all of the samples
+                        FIREBASE_AI_SAMPLES.forEach { sample ->
+                            composable(
+                                route = sample.route::class,
+                                typeMap = emptyMap()
+                            ) {
+                                when (sample.screenType) {
+                                    ScreenType.CHAT -> {
+                                        val viewModel: ChatViewModel = viewModel(
+                                            modelClass = sample.viewModelClass!!.java
+                                        ) as ChatViewModel
+                                        ChatScreen(viewModel)
+                                    }
+
+                                    ScreenType.IMAGEN -> {
+                                        val viewModel: ImagenViewModel = viewModel(
+                                            modelClass = sample.viewModelClass!!.java
+                                        ) as ImagenViewModel
+                                        ImagenScreen(viewModel)
+                                    }
+
+                                    ScreenType.SVG -> {
+                                        SvgScreen()
+                                    }
+
+                                    ScreenType.SERVER_PROMPT -> {
+                                        ServerPromptScreen()
+                                    }
+
+                                    ScreenType.BIDI -> {
+                                        val viewModel: BidiViewModel = viewModel(
+                                            modelClass = sample.viewModelClass!!.java
+                                        ) as BidiViewModel
+                                        @SuppressLint("MissingPermission")
+                                        StreamRealtimeScreen(viewModel)
+                                    }
+
+                                    ScreenType.BIDI_VIDEO -> {
+                                        val viewModel: BidiViewModel = viewModel(
+                                            modelClass = sample.viewModelClass!!.java
+                                        ) as BidiViewModel
+                                        @SuppressLint("MissingPermission")
+                                        StreamRealtimeVideoScreen(viewModel)
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -251,7 +143,8 @@ class MainActivity : ComponentActivity() {
             })
         }
     }
-    companion object{
+
+    companion object {
         lateinit var catImage: Bitmap
     }
 }

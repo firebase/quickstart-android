@@ -27,7 +27,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 
 val MIN_CARD_SIZE = 180.dp
 

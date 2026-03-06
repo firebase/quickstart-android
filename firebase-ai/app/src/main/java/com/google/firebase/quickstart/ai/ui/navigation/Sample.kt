@@ -1,7 +1,7 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
-import com.google.firebase.ai.type.PublicPreviewAPI
-import java.util.UUID
+import androidx.lifecycle.ViewModel
+import kotlin.reflect.KClass
 
 enum class Category(
     val label: String
@@ -12,14 +12,23 @@ enum class Category(
     AUDIO("Audio"),
     DOCUMENT("Document"),
     FUNCTION_CALLING("Function calling"),
-    LIVE_API("LiveAPI Streaming")
+    LIVE_API("Live API Streaming")
 }
 
-@OptIn(PublicPreviewAPI::class)
+enum class ScreenType {
+    CHAT,
+    IMAGEN,
+    SVG,
+    SERVER_PROMPT,
+    BIDI,
+    BIDI_VIDEO
+}
+
 data class Sample(
-    val id: String = UUID.randomUUID().toString(), // used for navigation
     val title: String,
     val description: String,
-    val navRoute: String,
+    val route: Any,
+    val screenType: ScreenType,
+    val viewModelClass: KClass<out ViewModel>? = null,
     val categories: List<Category>,
 )
