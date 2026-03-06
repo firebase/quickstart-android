@@ -11,16 +11,18 @@ import com.android.tools.lint.detector.api.Severity
 import org.jetbrains.uast.UImportStatement
 
 val ISSUE_INVALID_IMPORT = Issue.create(
-        "SuspiciousImport",
-        "importing files from the `java` package in a kotlin file",
-        "Importing files from the java package is usually not intentional; it sometimes happens when " +
-                "you have classes with the same name in both `java` and `kotlin` package.",
-        Category.CORRECTNESS,
-        9,
-        Severity.ERROR,
-        Implementation(
-                InvalidImportDetector::class.java,
-                Scope.JAVA_FILE_SCOPE))
+    "SuspiciousImport",
+    "importing files from the `java` package in a kotlin file",
+    "Importing files from the java package is usually not intentional; it sometimes happens when " +
+        "you have classes with the same name in both `java` and `kotlin` package.",
+    Category.CORRECTNESS,
+    9,
+    Severity.ERROR,
+    Implementation(
+        InvalidImportDetector::class.java,
+        Scope.JAVA_FILE_SCOPE,
+    ),
+)
 
 class InvalidImportDetector : Detector(), Detector.UastScanner {
 

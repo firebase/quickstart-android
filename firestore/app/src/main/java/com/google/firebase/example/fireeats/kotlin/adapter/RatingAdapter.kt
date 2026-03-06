@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.example.fireeats.databinding.ItemRatingBinding
 import com.google.firebase.example.fireeats.kotlin.model.Rating
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.firestore.toObject
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -42,7 +42,9 @@ open class RatingAdapter(query: Query) : FirestoreAdapter<RatingAdapter.ViewHold
         companion object {
 
             private val FORMAT = SimpleDateFormat(
-                    "MM/dd/yyyy", Locale.US)
+                "MM/dd/yyyy",
+                Locale.US,
+            )
         }
     }
 }

@@ -12,15 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Query
 import com.google.firebase.database.Transaction
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.database
+import com.google.firebase.Firebase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.kotlin.PostDetailFragment
 import com.google.firebase.quickstart.database.kotlin.models.Post
@@ -42,7 +42,7 @@ abstract class PostListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val rootView = inflater.inflate(R.layout.fragment_all_posts, container, false)
@@ -70,8 +70,8 @@ abstract class PostListFragment : Fragment() {
         val postsQuery = getQuery(database)
 
         val options = FirebaseRecyclerOptions.Builder<Post>()
-                .setQuery(postsQuery, Post::class.java)
-                .build()
+            .setQuery(postsQuery, Post::class.java)
+            .build()
 
         adapter = object : FirebaseRecyclerAdapter<Post, PostViewHolder>(options) {
 
@@ -115,7 +115,7 @@ abstract class PostListFragment : Fragment() {
         postRef.runTransaction(object : Transaction.Handler {
             override fun doTransaction(mutableData: MutableData): Transaction.Result {
                 val p = mutableData.getValue(Post::class.java)
-                        ?: return Transaction.success(mutableData)
+                    ?: return Transaction.success(mutableData)
 
                 if (p.stars.containsKey(uid)) {
                     // Unstar the post and remove self from stars
@@ -135,7 +135,7 @@ abstract class PostListFragment : Fragment() {
             override fun onComplete(
                 databaseError: DatabaseError?,
                 committed: Boolean,
-                currentData: DataSnapshot?
+                currentData: DataSnapshot?,
             ) {
                 // Transaction completed
                 Log.d(TAG, "postTransaction:onComplete:" + databaseError!!)

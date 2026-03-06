@@ -9,7 +9,7 @@ Introduction
 
 This is a simple example of using Remote Config to override in-app default
 values by defining service-side parameter values in the Firebase console. This
-example demonstrates a small subset of the capilities of Firebase Remote
+example demonstrates a small subset of the capabilities of Firebase Remote
 Config. To learn more about how you can use Firebase Remote Config in your app,
 see
 [Firebase Remote Config Introduction](https://firebase.google.com/docs/remote-config/).

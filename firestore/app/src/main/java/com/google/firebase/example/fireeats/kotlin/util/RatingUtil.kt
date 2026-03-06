@@ -4,6 +4,7 @@ import com.google.firebase.example.fireeats.kotlin.model.Rating
 import java.util.ArrayList
 import java.util.Random
 import java.util.UUID
+import kotlin.math.floor
 
 /**
  * Utilities for Ratings.
@@ -11,20 +12,21 @@ import java.util.UUID
 object RatingUtil {
 
     private val REVIEW_CONTENTS = arrayOf(
-            // 0 - 1 stars
-            "This was awful! Totally inedible.",
+        // 0 - 1 stars
+        "This was awful! Totally inedible.",
 
-            // 1 - 2 stars
-            "This was pretty bad, would not go back.",
+        // 1 - 2 stars
+        "This was pretty bad, would not go back.",
 
-            // 2 - 3 stars
-            "I was fed, so that's something.",
+        // 2 - 3 stars
+        "I was fed, so that's something.",
 
-            // 3 - 4 stars
-            "This was a nice meal, I'd go back.",
+        // 3 - 4 stars
+        "This was a nice meal, I'd go back.",
 
-            // 4 - 5 stars
-            "This was fantastic!  Best ever!")
+        // 4 - 5 stars
+        "This was fantastic!  Best ever!",
+    )
 
     /**
      * Create a random Rating POJO.
@@ -36,7 +38,7 @@ object RatingUtil {
             val random = Random()
 
             val score = random.nextDouble() * 5.0
-            val text = REVIEW_CONTENTS[Math.floor(score).toInt()]
+            val text = REVIEW_CONTENTS[floor(score).toInt()]
 
             rating.userId = UUID.randomUUID().toString()
             rating.userName = "Random User"

@@ -12,9 +12,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.database
+import com.google.firebase.database.getValue
+import com.google.firebase.Firebase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.databinding.FragmentNewPostBinding
 import com.google.firebase.quickstart.database.kotlin.models.Post
@@ -61,31 +61,34 @@ class NewPostFragment : BaseFragment() {
 
         val userId = uid
         database.child("users").child(userId).addListenerForSingleValueEvent(
-                object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        // Get user value
-                        val user = dataSnapshot.getValue<User>()
+            object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Get user value
+                    val user = dataSnapshot.getValue<User>()
 
-                        if (user == null) {
-                            // User is null, error out
-                            Log.e(TAG, "User $userId is unexpectedly null")
-                            Toast.makeText(context,
-                                    "Error: could not fetch user.",
-                                    Toast.LENGTH_SHORT).show()
-                        } else {
-                            // Write new post
-                            writeNewPost(userId, user.username.toString(), title, body)
-                        }
-
-                        setEditingEnabled(true)
-                        findNavController().navigate(R.id.action_NewPostFragment_to_MainFragment)
+                    if (user == null) {
+                        // User is null, error out
+                        Log.e(TAG, "User $userId is unexpectedly null")
+                        Toast.makeText(
+                            context,
+                            "Error: could not fetch user.",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    } else {
+                        // Write new post
+                        writeNewPost(userId, user.username.toString(), title, body)
                     }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        Log.w(TAG, "getUser:onCancelled", databaseError.toException())
-                        setEditingEnabled(true)
-                    }
-                })
+                    setEditingEnabled(true)
+                    findNavController().navigate(R.id.action_NewPostFragment_to_MainFragment)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w(TAG, "getUser:onCancelled", databaseError.toException())
+                    setEditingEnabled(true)
+                }
+            },
+        )
     }
 
     private fun setEditingEnabled(enabled: Boolean) {
@@ -113,8 +116,8 @@ class NewPostFragment : BaseFragment() {
         val postValues = post.toMap()
 
         val childUpdates = hashMapOf<String, Any>(
-                "/posts/$key" to postValues,
-                "/user-posts/$userId/$key" to postValues
+            "/posts/$key" to postValues,
+            "/user-posts/$userId/$key" to postValues,
         )
 
         database.updateChildren(childUpdates)

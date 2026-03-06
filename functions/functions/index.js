@@ -15,15 +15,17 @@
  */
 'use strict';
 
-const functions = require('firebase-functions');
+const {onCall, HttpsError} = require('firebase-functions/v2/https')
+const {initializeApp} = require("firebase-admin/app");
+
 const sanitizer = require('./sanitizer');
-const admin = require('firebase-admin');
-admin.initializeApp();
+
+initializeApp();
 
 // [START allAdd]
 // [START addFunctionTrigger]
 // Adds two numbers to each other.
-exports.addNumbers = functions.https.onCall((data) => {
+exports.addNumbers = onCall((data) => {
 // [END addFunctionTrigger]
   // [START readAddData]
   // Numbers passed from the client.
@@ -35,7 +37,7 @@ exports.addNumbers = functions.https.onCall((data) => {
   // Checking that attributes are present and are numbers.
   if (!Number.isFinite(firstNumber) || !Number.isFinite(secondNumber)) {
     // Throwing an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+    throw new HttpsError('invalid-argument', 'The function must be called with ' +
         'two arguments "firstNumber" and "secondNumber" which must both be numbers.');
   }
   // [END addHttpsError]
@@ -54,7 +56,7 @@ exports.addNumbers = functions.https.onCall((data) => {
 
 // [START messageFunctionTrigger]
 // Saves a message to the Firebase Realtime Database but sanitizes the text by removing swearwords.
-exports.addMessage = functions.https.onCall((data, context) => {
+exports.addMessage = onCall((data, context) => {
   // [START_EXCLUDE]
   // [START readMessageData]
   // Message text passed from the client.
@@ -64,13 +66,13 @@ exports.addMessage = functions.https.onCall((data, context) => {
   // Checking attribute.
   if (!(typeof text === 'string') || text.length === 0) {
     // Throwing an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError('invalid-argument', 'The function must be called with ' +
+    throw new HttpsError('invalid-argument', 'The function must be called with ' +
         'one arguments "text" containing the message text to add.');
   }
   // Checking that the user is authenticated.
   if (!context.auth) {
     // Throwing an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError('failed-precondition', 'The function must be called ' +
+    throw new HttpsError('failed-precondition', 'The function must be called ' +
         'while authenticated.');
   }
   // [END messageHttpsErrors]
@@ -85,7 +87,7 @@ exports.addMessage = functions.https.onCall((data, context) => {
 
   // [START returnMessageAsync]
   // Saving the new message to the Realtime Database.
-  const sanitizedMessage = sanitizer.sanitizeText(text); // Sanitize the message.
+  const sanitizedMessage = sanitizeText(text); // Sanitize the message.
   return admin.database().ref('/messages').push({
     text: sanitizedMessage,
     author: { uid, name, picture, email },
@@ -102,7 +104,7 @@ exports.addMessage = functions.https.onCall((data, context) => {
     return sanitizedMessage;
   }).catch((error) => {
     // Re-throwing the error as an HttpsError so that the client gets the error details.
-    throw new functions.https.HttpsError('unknown', error.message, error);
+    throw new HttpsError('unknown', error.message, error);
   });
   // [END returnMessageAsync]
   // [END_EXCLUDE]

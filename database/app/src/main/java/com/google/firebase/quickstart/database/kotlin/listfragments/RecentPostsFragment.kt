@@ -10,7 +10,7 @@ class RecentPostsFragment : PostListFragment() {
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys.
         return databaseReference.child("posts")
-                .limitToFirst(100)
+            .limitToFirst(100)
         // [END recent_posts_query]
     }
 }

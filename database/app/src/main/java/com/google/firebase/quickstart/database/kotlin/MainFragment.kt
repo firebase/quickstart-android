@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.Firebase
 import com.google.firebase.quickstart.database.R
 import com.google.firebase.quickstart.database.databinding.FragmentMainBinding
 import com.google.firebase.quickstart.database.kotlin.listfragments.MyPostsFragment
@@ -42,9 +42,10 @@ class MainFragment : Fragment(), MenuProvider {
         // Create the adapter that will return a fragment for each section
         pagerAdapter = object : FragmentStateAdapter(parentFragmentManager, viewLifecycleOwner.lifecycle) {
             private val fragments = arrayOf<Fragment>(
-                    RecentPostsFragment(),
-                    MyPostsFragment(),
-                    MyTopPostsFragment())
+                RecentPostsFragment(),
+                MyPostsFragment(),
+                MyTopPostsFragment(),
+            )
 
             override fun createFragment(position: Int) = fragments[position]
 
@@ -55,7 +56,7 @@ class MainFragment : Fragment(), MenuProvider {
         with(binding) {
             container.adapter = pagerAdapter
             TabLayoutMediator(tabs, container) { tab, position ->
-                tab.text = when(position) {
+                tab.text = when (position) {
                     0 -> getString(R.string.heading_recent)
                     1 -> getString(R.string.heading_my_posts)
                     else -> getString(R.string.heading_my_top_posts)

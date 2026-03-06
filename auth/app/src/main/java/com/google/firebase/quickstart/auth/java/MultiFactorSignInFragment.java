@@ -22,6 +22,7 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.PhoneMultiFactorGenerator;
 import com.google.firebase.auth.PhoneMultiFactorInfo;
+import com.google.firebase.quickstart.auth.R;
 import com.google.firebase.quickstart.auth.databinding.FragmentMultiFactorSignInBinding;
 
 import java.util.ArrayList;
@@ -111,16 +112,9 @@ public class MultiFactorSignInFragment extends BaseFragment {
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        mVerificationId = savedInstanceState.getString(KEY_VERIFICATION_ID);
-    }
-
-    private View.OnClickListener generateFactorOnClickListener(PhoneMultiFactorInfo phoneMultiFactorInfo) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        };
+        if (savedInstanceState != null) {
+            mVerificationId = savedInstanceState.getString(KEY_VERIFICATION_ID);
+        }
     }
 
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks generateCallbacks() {
@@ -169,7 +163,7 @@ public class MultiFactorSignInFragment extends BaseFragment {
                             @Override
                             public void onSuccess(AuthResult authResult) {
                                 NavHostFragment.findNavController(MultiFactorSignInFragment.this)
-                                        .popBackStack();
+                                        .navigate(R.id.action_mfasignin_to_mfa);
                             }
                         })
                 .addOnFailureListener(

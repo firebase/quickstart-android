@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.auth
 import com.google.firebase.example.fireeats.databinding.DialogRatingBinding
 import com.google.firebase.example.fireeats.kotlin.model.Rating
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
 
 /**
  * Dialog Fragment containing rating form.
@@ -28,7 +28,7 @@ class RatingDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = DialogRatingBinding.inflate(inflater, container, false)
 
@@ -54,17 +54,19 @@ class RatingDialogFragment : DialogFragment() {
     override fun onResume() {
         super.onResume()
         dialog?.window?.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+        )
     }
 
     private fun onSubmitClicked() {
         val user = Firebase.auth.currentUser
         user?.let {
             val rating = Rating(
-                    it,
-                    binding.restaurantFormRating.rating.toDouble(),
-                    binding.restaurantFormText.text.toString())
+                it,
+                binding.restaurantFormRating.rating.toDouble(),
+                binding.restaurantFormText.text.toString(),
+            )
 
             ratingListener?.onRating(rating)
         }

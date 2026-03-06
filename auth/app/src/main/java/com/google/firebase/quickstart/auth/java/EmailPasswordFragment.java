@@ -280,9 +280,8 @@ public class EmailPasswordFragment extends BaseFragment {
             MultiFactorResolver resolver = ((FirebaseAuthMultiFactorException) e).getResolver();
             Bundle args = new Bundle();
             args.putParcelable(MultiFactorSignInFragment.EXTRA_MFA_RESOLVER, resolver);
-            args.putBoolean(MultiFactorFragment.RESULT_NEEDS_MFA_SIGN_IN, true);
             NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_emailpassword_to_mfa, args);
+                    .navigate(R.id.action_emailpassword_to_mfasignin, args);
         }
     }
 

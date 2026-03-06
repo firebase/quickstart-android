@@ -2,11 +2,11 @@ package com.google.samples.quickstart.admobexample.kotlin
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -26,8 +26,11 @@ class FirstFragment : Fragment() {
     private lateinit var adView: AdView
     private lateinit var loadInterstitialButton: Button
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -70,30 +73,30 @@ class FirstFragment : Fragment() {
         adView.loadAd(adRequest)
 
         InterstitialAd.load(
-                requireContext(),
-                getString(R.string.interstitial_ad_unit_id),
-                adRequest,
-                object : InterstitialAdLoadCallback() {
-                    override fun onAdLoaded(ad: InterstitialAd) {
-                        super.onAdLoaded(ad)
-                        interstitialAd = ad
-                        // Ad received, ready to display
-                        loadInterstitialButton.isEnabled = true
+            requireContext(),
+            getString(R.string.interstitial_ad_unit_id),
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    super.onAdLoaded(ad)
+                    interstitialAd = ad
+                    // Ad received, ready to display
+                    loadInterstitialButton.isEnabled = true
 
-                        interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-                            override fun onAdDismissedFullScreenContent() {
-                                super.onAdDismissedFullScreenContent()
-                                goToNextFragment()
-                            }
+                    interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                        override fun onAdDismissedFullScreenContent() {
+                            super.onAdDismissedFullScreenContent()
+                            goToNextFragment()
                         }
                     }
-
-                    override fun onAdFailedToLoad(error: LoadAdError) {
-                        super.onAdFailedToLoad(error)
-                        interstitialAd = null
-                        Log.w(TAG, "onAdFailedToLoad:${error.message}")
-                    }
                 }
+
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    super.onAdFailedToLoad(error)
+                    interstitialAd = null
+                    Log.w(TAG, "onAdFailedToLoad:${error.message}")
+                }
+            },
         )
     }
 

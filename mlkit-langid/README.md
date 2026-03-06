@@ -1,1 +1,0 @@
-UPDATE: On June 3, 2020, we started offering ML Kit's on-device APIs through a new standalone SDK. Cloud APIs, AutoML Vision Edge, and custom model deployment will continue to be available via Firebase Machine Learning. [Learn more](https://developers.google.com/ml-kit)

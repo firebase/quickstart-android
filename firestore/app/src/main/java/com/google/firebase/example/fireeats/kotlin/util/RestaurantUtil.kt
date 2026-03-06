@@ -16,10 +16,18 @@ object RestaurantUtil {
     private const val MAX_IMAGE_NUM = 22
 
     private val NAME_FIRST_WORDS = arrayOf(
-            "Foo", "Bar", "Baz", "Qux", "Fire", "Sam's", "World Famous", "Google", "The Best")
+        "Foo", "Bar", "Baz", "Qux", "Fire", "Sam's", "World Famous", "Google", "The Best",
+    )
 
     private val NAME_SECOND_WORDS = arrayOf(
-            "Restaurant", "Cafe", "Spot", "Eatin' Place", "Eatery", "Drive Thru", "Diner")
+        "Restaurant",
+        "Cafe",
+        "Spot",
+        "Eatin' Place",
+        "Eatery",
+        "Drive Thru",
+        "Diner",
+    )
 
     /**
      * Create a random Restaurant POJO.
@@ -30,11 +38,11 @@ object RestaurantUtil {
 
         // Cities (first elemnt is 'Any')
         var cities = context.resources.getStringArray(R.array.cities)
-        cities = Arrays.copyOfRange(cities, 1, cities.size)
+        cities = cities.copyOfRange(1, cities.size)
 
         // Categories (first element is 'Any')
         var categories = context.resources.getStringArray(R.array.categories)
-        categories = Arrays.copyOfRange(categories, 1, categories.size)
+        categories = categories.copyOfRange(1, categories.size)
 
         val prices = intArrayOf(1, 2, 3)
 
@@ -71,17 +79,19 @@ object RestaurantUtil {
      * Get price represented as dollar signs.
      */
     fun getPriceString(priceInt: Int): String {
-        when (priceInt) {
-            1 -> return "$"
-            2 -> return "$$"
-            3 -> return "$$$"
-            else -> return "$$$"
+        return when (priceInt) {
+            1 -> "$"
+            2 -> "$$"
+            3 -> "$$$"
+            else -> "$$$"
         }
     }
 
     private fun getRandomName(random: Random): String {
-        return (getRandomString(NAME_FIRST_WORDS, random) + " " +
-                getRandomString(NAME_SECOND_WORDS, random))
+        return (
+            getRandomString(NAME_FIRST_WORDS, random) + " " +
+                getRandomString(NAME_SECOND_WORDS, random)
+            )
     }
 
     private fun getRandomString(array: Array<String>, random: Random): String {

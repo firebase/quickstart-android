@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Firebase Data Connect</string>
+    <string name="unknown_error">An unknown error occurred</string>
+
+    <!-- NavBar labels -->
+    <string name="label_movies">Movies</string>
+    <string name="label_genres">Genres</string>
+    <string name="label_search">Search</string>
+    <string name="label_profile">Profile</string>
+
+    <!-- Movies Screen -->
+    <string name="title_top_10_movies">Top 10 Movies</string>
+    <string name="title_latest_movies">Latest Movies</string>
+
+    <!-- Genre Detail Screen -->
+    <string name="title_genre_detail">%s Movies</string>
+    <string name="title_most_popular">Most Popular</string>
+    <string name="title_most_recent">Most Recent</string>
+
+    <!-- Movie Detail Screen -->
+    <string name="error_movie_not_found">Couldn\'t find movie in the database</string>
+    <string name="description_not_available">Description not available</string>
+    <string name="button_mark_watched">Mark as watched</string>
+    <string name="button_unmark_watched">Watched</string>
+    <string name="button_favorite">Add to favorites</string>
+    <string name="button_remove_favorite">Favorite</string>
+    <string name="title_main_actors">Main Actors</string>
+    <string name="title_supporting_actors">Supporting Actors</string>
+    <string name="title_user_reviews">User Reviews</string>
+    <string name="hint_write_review">Write your review</string>
+    <string name="button_submit_review">Submit Review</string>
+
+    <!-- Actor Detail Screen -->
+    <string name="error_actor_not_found">Couldn\'t find actor in the database</string>
+    <string name="title_main_roles">Main Roles</string>
+    <string name="title_supporting_roles">Supporting Roles</string>
+
+    <!-- Profile Screen -->
+    <string name="title_favorite_movies">Favorite Movies</string>
+    <string name="title_reviews">Reviews</string>
+
+</resources>

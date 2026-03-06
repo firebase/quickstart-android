@@ -8,14 +8,16 @@ class EntryChoiceActivity : BaseEntryChoiceActivity() {
 
     override fun getChoices(): List<Choice> {
         return listOf(
-                Choice(
-                        "Java",
-                        "Run the Firebase Storage quickstart written in Java.",
-                        Intent(this, com.google.firebase.quickstart.firebasestorage.java.MainActivity::class.java)),
-                Choice(
-                        "Kotlin",
-                        "Run the Firebase In App Messaging quickstart written in Kotlin.",
-                        Intent(this, com.google.firebase.quickstart.firebasestorage.kotlin.MainActivity::class.java))
+            Choice(
+                "Java",
+                "Run the Firebase Storage quickstart written in Java.",
+                Intent(this, com.google.firebase.quickstart.firebasestorage.java.MainActivity::class.java),
+            ),
+            Choice(
+                "Kotlin",
+                "Run the Firebase In App Messaging quickstart written in Kotlin.",
+                Intent(this, com.google.firebase.quickstart.firebasestorage.kotlin.MainActivity::class.java),
+            ),
         )
     }
 }

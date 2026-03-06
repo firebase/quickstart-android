@@ -10,6 +10,6 @@ class MyTopPostsFragment : PostListFragment() {
         val myUserId = uid
 
         return databaseReference.child("user-posts").child(myUserId)
-                .orderByChild("starCount")
+            .orderByChild("starCount")
     }
 }
