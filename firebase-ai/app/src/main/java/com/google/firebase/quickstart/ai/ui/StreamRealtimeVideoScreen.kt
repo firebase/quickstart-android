@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 
 @RequiresPermission(allOf = [Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA])
 @Composable
-fun StreamRealtimeVideoScreen(bidiView: BidiViewModel = viewModel<BidiViewModel>()) {
+fun StreamRealtimeVideoScreen(bidiView: BidiViewModel) {
     val backgroundColor = MaterialTheme.colorScheme.background
 
     val scope = rememberCoroutineScope()

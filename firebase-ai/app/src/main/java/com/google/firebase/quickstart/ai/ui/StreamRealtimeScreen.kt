@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 
 @RequiresPermission(Manifest.permission.RECORD_AUDIO)
 @Composable
-fun StreamRealtimeScreen(bidiView: BidiViewModel = viewModel<BidiViewModel>()) {
+fun StreamRealtimeScreen(bidiView: BidiViewModel) {
     val isConversationActive = remember { mutableStateOf(false) }
     val backgroundColor =
         MaterialTheme.colorScheme.background

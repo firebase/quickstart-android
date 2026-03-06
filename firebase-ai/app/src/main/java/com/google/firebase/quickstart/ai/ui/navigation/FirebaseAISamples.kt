@@ -1,7 +1,8 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
-import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
-import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeRoute
+import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
+import com.google.firebase.quickstart.ai.feature.live.StreamVideoViewModel
+import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeAudioRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenGenerationRoute
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenGenerationViewModel
@@ -163,9 +164,9 @@ val FIREBASE_AI_SAMPLES = listOf(
         title = "ForecastTalk",
         description = "Use bidirectional streaming to get information about" +
                 " weather conditions for a specific US city on a specific date",
-        route = StreamRealtimeRoute,
+        route = StreamRealtimeAudioRoute,
         screenType = ScreenType.BIDI,
-        viewModelClass = BidiViewModel::class,
+        viewModelClass = StreamAudioViewModel::class,
         categories = listOf(Category.LIVE_API, Category.AUDIO, Category.FUNCTION_CALLING)
     ),
     Sample(
@@ -174,7 +175,7 @@ val FIREBASE_AI_SAMPLES = listOf(
                 " phone's camera",
         route = StreamRealtimeVideoRoute,
         screenType = ScreenType.BIDI_VIDEO,
-        viewModelClass = BidiViewModel::class,
+        viewModelClass = StreamVideoViewModel::class,
         categories = listOf(Category.LIVE_API, Category.VIDEO, Category.FUNCTION_CALLING)
     ),
     Sample(

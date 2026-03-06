@@ -53,8 +53,8 @@ You can find the implementation for each feature by clicking on the links below:
 - [Summarize video](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/VideoSummarizationViewModel.kt): Summarize a video and extract important dialogue.
 
 ### Live API (Real-time bidrectional streaming)
-- [ForecastTalk](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/BidiViewModel.kt): Use bidirectional streaming to get information about weather conditions
-- [Gemini Live (Video input)](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/BidiViewModel.kt): Use bidirectional streaming to chat with Gemini using your phone's camera
+- [ForecastTalk](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/StreamAudioViewModel.kt): Use bidirectional streaming to get information about weather conditions
+- [Gemini Live (Video input)](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/StreamVideoViewModel.kt): Use bidirectional streaming to chat with Gemini using your phone's camera
 
 ### Document (PDFs) analysis
 - [Document comparison (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/DocumentComparisonViewModel.kt): Compare the contents of 2 documents in Cloud Storage.
