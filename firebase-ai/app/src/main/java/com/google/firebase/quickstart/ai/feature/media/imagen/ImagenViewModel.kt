@@ -27,11 +27,14 @@ abstract class ImagenViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<ImagenUiState>(ImagenUiState.Success())
     val uiState: StateFlow<ImagenUiState> = _uiState.asStateFlow()
 
-    protected abstract suspend fun performGeneration(inputText: String, currentState: ImagenUiState.Success): ImagenGenerationResponse<ImagenInlineImage>
+    protected abstract suspend fun performGeneration(
+        inputText: String,
+        currentState: ImagenUiState.Success
+    ): ImagenGenerationResponse<ImagenInlineImage>
 
     fun generateImages(inputText: String) {
         val currentState = (_uiState.value as? ImagenUiState.Success) ?: ImagenUiState.Success()
-        
+
         viewModelScope.launch {
             _uiState.value = ImagenUiState.Loading
             try {

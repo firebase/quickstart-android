@@ -32,7 +32,11 @@ class ImagenTemplateViewModel : ImagenViewModel() {
             templateImagenModel.generateImages("imagen-basic", mapOf("prompt" to inputText))
         } catch (e: Exception) {
             if (e.localizedMessage?.contains("not found") == true) {
-                throw Exception("Template was not found, please verify that your project contains a template named \"imagen-basic\".")
+                throw Exception(
+                    """
+                    Template was not found, please verify that your project contains a template named "imagen-basic".
+                    """.trimIndent()
+                )
             } else {
                 throw e
             }

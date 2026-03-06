@@ -15,7 +15,11 @@ object AudioSummarizationRoute
 
 class AudioSummarizationViewModel : ChatViewModel() {
 
-    override val initialPrompt: String = "I have attached the audio file. Please analyze it and summarize the contents of the audio as bullet points."
+    override val initialPrompt: String =
+        """
+        I have attached the audio file. Please analyze it and summarize 
+        the contents of the audio as bullet points.            
+        """.trimIndent()
 
     private val chat: Chat
 

@@ -37,7 +37,10 @@ class ServerPromptTemplateViewModel : ViewModel() {
             } catch (e: Exception) {
                 _uiState.value = ServerPromptUiState.Error(
                     if (e.localizedMessage?.contains("not found") == true) {
-                        "Template was not found, please verify that your project contains a template named \"input-system-instructions\"."
+                        """
+                        Template was not found, please verify that your project contains a template 
+                        named "input-system-instructions".   
+                        """.trimIndent()
                     } else {
                         e.localizedMessage ?: "Unknown error"
                     }
