@@ -59,6 +59,9 @@ You can find the implementation for each feature by clicking on the links below:
 ### Document (PDFs) analysis
 - [Document comparison (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/DocumentComparisonViewModel.kt): Compare the contents of 2 documents in Cloud Storage.
 
+
+## All samples
+
 The full list of available samples can be found in the
 [FirebaseAISamples.kt file](app/src/main/java/com/google/firebase/quickstart/ai/ui/navigation/FirebaseAISamples.kt).
 
