@@ -51,8 +51,6 @@ import com.google.firebase.quickstart.ai.feature.text.AttachmentsList
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@Serializable
-class ImagenRoute(val sampleId: String)
 
 @Composable
 fun ImagenScreen(

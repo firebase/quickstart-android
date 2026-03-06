@@ -1,10 +1,15 @@
 package com.google.firebase.quickstart.ai.feature.text
 
+import kotlinx.serialization.Serializable
+
 import com.google.firebase.Firebase
 import com.google.firebase.ai.Chat
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.GenerativeBackend
+
+@Serializable
+object AudioTranslationRoute
 
 class AudioTranslationViewModel : ChatViewModel() {
 

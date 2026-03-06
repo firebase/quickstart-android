@@ -34,8 +34,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.Serializable
 import java.nio.ByteBuffer
 
-@Serializable
-class SvgRoute(val sampleId: String)
 
 @Composable
 fun SvgScreen(

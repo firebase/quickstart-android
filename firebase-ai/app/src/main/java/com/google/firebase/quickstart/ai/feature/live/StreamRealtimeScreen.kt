@@ -37,8 +37,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@Serializable
-class StreamRealtimeRoute(val sampleId: String)
 
 @RequiresPermission(Manifest.permission.RECORD_AUDIO)
 @Composable

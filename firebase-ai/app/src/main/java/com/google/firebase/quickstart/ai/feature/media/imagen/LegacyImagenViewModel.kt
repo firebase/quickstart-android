@@ -1,9 +1,14 @@
 package com.google.firebase.quickstart.ai.feature.media.imagen
 
+import kotlinx.serialization.Serializable
+
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 import com.google.firebase.ai.type.asTextOrNull
+
+@Serializable
+class ImagenRoute(val sampleId: String)
 
 class LegacyImagenViewModel(
     savedStateHandle: SavedStateHandle

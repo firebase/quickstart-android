@@ -1,5 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.text
 
+import kotlinx.serialization.Serializable
+
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.google.firebase.Firebase
@@ -8,6 +10,9 @@ import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.asTextOrNull
 import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
+
+@Serializable
+class ChatRoute(val sampleId: String? = null)
 
 class LegacyChatViewModel(
     savedStateHandle: SavedStateHandle

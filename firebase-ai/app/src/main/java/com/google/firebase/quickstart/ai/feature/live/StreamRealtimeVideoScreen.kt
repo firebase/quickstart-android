@@ -27,7 +27,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@Serializable class StreamRealtimeVideoRoute(val sampleId: String)
 
 @RequiresPermission(allOf = [Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA])
 @Composable

@@ -1,5 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.text
 
+import kotlinx.serialization.Serializable
+
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,6 +16,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.google.firebase.ai.GenerativeModel
 import com.google.firebase.ai.TemplateGenerativeModel
+
+@Serializable
+class TextGenRoute(val sampleId: String? = null)
 
 @OptIn(PublicPreviewAPI::class)
 class TextGenViewModel(

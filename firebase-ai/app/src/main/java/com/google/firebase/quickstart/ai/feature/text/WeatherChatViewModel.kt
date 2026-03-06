@@ -1,5 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.text
 
+import kotlinx.serialization.Serializable
+
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.ai.Chat
@@ -13,6 +15,9 @@ import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.quickstart.ai.feature.text.functioncalling.WeatherRepository
 import kotlinx.serialization.json.jsonPrimitive
+
+@Serializable
+object WeatherChatRoute
 
 class WeatherChatViewModel : ChatViewModel() {
 
@@ -82,3 +87,4 @@ class WeatherChatViewModel : ChatViewModel() {
         }
     }
 }
+

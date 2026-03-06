@@ -1,5 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.live
 
+import kotlinx.serialization.Serializable
+
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
@@ -26,6 +28,12 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import java.io.ByteArrayOutputStream
+
+@Serializable
+class StreamRealtimeRoute(val sampleId: String)
+
+@Serializable
+class StreamRealtimeVideoRoute(val sampleId: String)
 
 @OptIn(PublicPreviewAPI::class)
 class BidiViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
@@ -108,3 +116,4 @@ class BidiViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
         }
     }
 }
+
