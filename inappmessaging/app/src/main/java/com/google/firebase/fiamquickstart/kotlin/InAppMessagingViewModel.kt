@@ -36,7 +36,7 @@ class InAppMessagingViewModel(
                 val id = firebaseInstallations.id.await()
                 _installationsId.value = id
             } catch (e: Exception) {
-                Log.e(TAG, e.toString())
+                Log.e(TAG, "Error fetching installation ID", e)
             }
         }
     }

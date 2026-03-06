@@ -94,7 +94,7 @@ fun MainContent(
     _installationsId: State<String> = mutableStateOf(""),
     triggerEvent: ()-> Unit = {}
 ) {
-    val installationsId by remember { _installationsId }
+    val installationsId by _installationsId
 
     Column(
         modifier = Modifier
@@ -103,7 +103,7 @@ fun MainContent(
     ) {
         Image(
             painter = painterResource(R.drawable.firebase_lockup_400),
-            contentDescription = "",
+            contentDescription = "Firebase logo",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
@@ -126,7 +126,7 @@ fun MainContent(
 
         Text(
             text = if(installationsId.isEmpty()){
-                "Device Instance ID: 1234"
+                "Fetching Installation ID..."
             } else {
                 stringResource(R.string.installation_id_fmt, installationsId)
             },
