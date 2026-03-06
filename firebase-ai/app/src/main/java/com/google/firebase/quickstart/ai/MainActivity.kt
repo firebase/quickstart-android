@@ -61,7 +61,7 @@ import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorViewModel
 import com.google.firebase.quickstart.ai.feature.text.ImageGenerationRoute
 import com.google.firebase.quickstart.ai.feature.text.ImageGenerationViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateRoute
-import com.google.firebase.quickstart.ai.feature.text.TextGenScreen
+import com.google.firebase.quickstart.ai.feature.text.ServerPromptScreen
 import com.google.firebase.quickstart.ai.feature.text.ThinkingChatRoute
 import com.google.firebase.quickstart.ai.feature.text.ThinkingChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.TravelTipsRoute
@@ -230,7 +230,7 @@ class MainActivity : ComponentActivity() {
                             StreamRealtimeVideoScreen()
                         }
                         composable<ServerPromptTemplateRoute> {
-                            TextGenScreen()
+                            ServerPromptScreen()
                         }
                         composable<SvgRoute> {
                             SvgScreen()

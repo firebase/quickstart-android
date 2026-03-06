@@ -28,7 +28,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
-fun TextGenScreen(
+fun ServerPromptScreen(
     viewModel: ServerPromptTemplateViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -37,7 +37,7 @@ fun TextGenScreen(
     val errorMessage = (uiState as? ServerPromptUiState.Error)?.message
     val generatedText = (uiState as? ServerPromptUiState.Success)?.generatedText
 
-    TextGenContent(
+    ServerPromptContent(
         initialPrompt = viewModel.initialPrompt,
         isLoading = isLoading,
         errorMessage = errorMessage,
@@ -48,7 +48,7 @@ fun TextGenScreen(
 }
 
 @Composable
-private fun TextGenContent(
+private fun ServerPromptContent(
     initialPrompt: String,
     isLoading: Boolean,
     errorMessage: String?,
