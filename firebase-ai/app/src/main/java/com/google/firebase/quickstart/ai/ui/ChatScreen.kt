@@ -1,7 +1,8 @@
-package com.google.firebase.quickstart.ai.feature.text
+package com.google.firebase.quickstart.ai.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.text.format.Formatter
@@ -64,6 +65,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -76,8 +78,8 @@ import com.google.firebase.ai.type.ImagePart
 import com.google.firebase.ai.type.InlineDataPart
 import com.google.firebase.ai.type.TextPart
 import com.google.firebase.ai.type.WebGroundingChunk
+import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 
 
 @Composable
@@ -330,7 +332,7 @@ fun ChatBubbleItem(
                                                 }
                                             }
 
-                                            setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                                            setBackgroundColor(Color.TRANSPARENT)
                                             loadDataWithBaseURL(
                                                 null,
                                                 searchEntryPoint.renderedContent,
@@ -624,7 +626,7 @@ fun ThoughtBubble(
                 Text(
                     text = text.trimIndent(),
                     style = MaterialTheme.typography.bodySmall.copy(
-                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                        fontStyle = FontStyle.Italic
                     ),
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.onTertiaryContainer

@@ -7,6 +7,7 @@ import com.google.firebase.ai.Chat
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.content
+import com.google.firebase.quickstart.ai.ui.UiChatMessage
 
 @Serializable
 object CourseRecommendationsRoute

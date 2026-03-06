@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.feature.media.imagen
+package com.google.firebase.quickstart.ai.ui
 
 import android.net.Uri
 import android.provider.OpenableColumns
@@ -44,12 +44,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.quickstart.ai.R
-import com.google.firebase.quickstart.ai.feature.text.Attachment
-import com.google.firebase.quickstart.ai.feature.text.AttachmentsList
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenViewModel
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 
 
 @Composable

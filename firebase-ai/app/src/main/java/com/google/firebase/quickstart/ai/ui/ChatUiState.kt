@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.feature.text
+package com.google.firebase.quickstart.ai.ui
 
 import android.graphics.Bitmap
 import com.google.firebase.ai.type.Content

@@ -13,6 +13,7 @@ import com.google.firebase.ai.type.ImagenSafetySettings
 import com.google.firebase.ai.type.ImagenGenerationResponse
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.imagenGenerationConfig
+import com.google.firebase.quickstart.ai.ui.ImagenUiState
 import kotlinx.serialization.Serializable
 
 @Serializable

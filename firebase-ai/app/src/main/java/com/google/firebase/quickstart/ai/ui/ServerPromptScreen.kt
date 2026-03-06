@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.feature.text
+package com.google.firebase.quickstart.ai.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
 
 
 @Composable

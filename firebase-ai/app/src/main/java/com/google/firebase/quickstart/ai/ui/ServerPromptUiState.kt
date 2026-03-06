@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.feature.text
+package com.google.firebase.quickstart.ai.ui
 
 sealed interface ServerPromptUiState {
     data object Idle : ServerPromptUiState

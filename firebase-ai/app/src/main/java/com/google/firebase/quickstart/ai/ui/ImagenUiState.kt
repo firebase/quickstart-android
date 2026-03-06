@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.feature.media.imagen
+package com.google.firebase.quickstart.ai.ui
 
 import android.graphics.Bitmap
 

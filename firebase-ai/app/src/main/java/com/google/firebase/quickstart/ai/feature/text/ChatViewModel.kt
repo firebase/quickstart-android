@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.GenerateContentResponse
 import com.google.firebase.ai.type.PublicPreviewAPI
+import com.google.firebase.quickstart.ai.ui.Attachment
+import com.google.firebase.quickstart.ai.ui.ChatUiState
+import com.google.firebase.quickstart.ai.ui.UiChatMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +18,8 @@ import kotlinx.coroutines.launch
 abstract class ChatViewModel : ViewModel() {
 
     protected val _uiState: MutableStateFlow<ChatUiState> =
-        MutableStateFlow(ChatUiState.Success(
+        MutableStateFlow(
+            ChatUiState.Success(
             messages = emptyList(),
             attachments = emptyList()
         ))

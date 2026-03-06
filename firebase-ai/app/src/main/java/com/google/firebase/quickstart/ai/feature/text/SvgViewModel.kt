@@ -1,8 +1,7 @@
-package com.google.firebase.quickstart.ai.feature.svg
+package com.google.firebase.quickstart.ai.feature.text
 
 import kotlinx.serialization.Serializable
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
@@ -13,23 +12,18 @@ import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
 import com.google.firebase.ai.type.thinkingConfig
 import kotlinx.coroutines.Dispatchers
+import com.google.firebase.quickstart.ai.ui.SvgUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @Serializable
 class SvgRoute(val sampleId: String? = null)
 
 class SvgViewModel : ViewModel() {
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage
-
-    private val _generatedSvgList = mutableStateListOf<String>()
-    val generatedSvgs: StateFlow<List<String>> =
-        MutableStateFlow<List<String>>(_generatedSvgList)
+    private val _uiState = MutableStateFlow<SvgUiState>(SvgUiState.Success())
+    val uiState: StateFlow<SvgUiState> = _uiState.asStateFlow()
 
     private val generativeModel: GenerativeModel
 
@@ -58,18 +52,19 @@ class SvgViewModel : ViewModel() {
     }
 
     fun generateSVG(prompt: String) {
-        _isLoading.value = true
+        val currentSvgs = (_uiState.value as? SvgUiState.Success)?.svgs ?: emptyList()
+        _uiState.value = SvgUiState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = generativeModel.generateContent(prompt)
-                response.text?.let {
-                    _generatedSvgList.add(0, it)
+                val newSvg = response.text
+                if (newSvg != null) {
+                    _uiState.value = SvgUiState.Success(listOf(newSvg) + currentSvgs)
+                } else {
+                    _uiState.value = SvgUiState.Success(currentSvgs)
                 }
-                _errorMessage.value = null
             } catch (e: Exception) {
-                _errorMessage.value = e.localizedMessage
-            } finally {
-                _isLoading.value = false
+                _uiState.value = SvgUiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

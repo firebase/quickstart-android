@@ -14,6 +14,7 @@ import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.quickstart.ai.feature.text.functioncalling.WeatherRepository
+import com.google.firebase.quickstart.ai.ui.UiChatMessage
 import kotlinx.serialization.json.jsonPrimitive
 
 @Serializable

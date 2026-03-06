@@ -6,6 +6,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.ai.TemplateGenerativeModel
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.PublicPreviewAPI
+import com.google.firebase.quickstart.ai.ui.ServerPromptUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

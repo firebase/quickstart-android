@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.feature.live
+package com.google.firebase.quickstart.ai.ui
 
 import android.Manifest
 import androidx.annotation.RequiresPermission
@@ -32,10 +32,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 
 
 @RequiresPermission(Manifest.permission.RECORD_AUDIO)
