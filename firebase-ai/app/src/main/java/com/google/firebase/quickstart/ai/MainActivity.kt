@@ -49,7 +49,6 @@ import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationRoute
 import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationViewModel
 import com.google.firebase.quickstart.ai.feature.text.AudioTranslationRoute
 import com.google.firebase.quickstart.ai.feature.text.AudioTranslationViewModel
-import com.google.firebase.quickstart.ai.feature.text.ChatRoute
 import com.google.firebase.quickstart.ai.feature.text.ChatScreen
 import com.google.firebase.quickstart.ai.feature.text.CourseRecommendationsRoute
 import com.google.firebase.quickstart.ai.feature.text.CourseRecommendationsViewModel
@@ -61,7 +60,6 @@ import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorRoute
 import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorViewModel
 import com.google.firebase.quickstart.ai.feature.text.ImageGenerationRoute
 import com.google.firebase.quickstart.ai.feature.text.ImageGenerationViewModel
-import com.google.firebase.quickstart.ai.feature.text.LegacyChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateRoute
 import com.google.firebase.quickstart.ai.feature.text.TextGenScreen
 import com.google.firebase.quickstart.ai.feature.text.ThinkingChatRoute
@@ -135,7 +133,6 @@ class MainActivity : ComponentActivity() {
                                         else -> {
                                             when (it.navRoute) {
                                                 "serverPromptTemplate" -> navController.navigate(ServerPromptTemplateRoute)
-                                                "chat" -> navController.navigate(ChatRoute(it.id))
                                                 "stream" -> navController.navigate(StreamRealtimeRoute(it.id))
                                                 "streamVideo" -> navController.navigate(StreamRealtimeVideoRoute(it.id))
                                                 "svg" -> navController.navigate(SvgRoute(it.id))
@@ -192,11 +189,6 @@ class MainActivity : ComponentActivity() {
                         }
                         composable<ThinkingChatRoute> {
                             val viewModel: ThinkingChatViewModel = viewModel()
-                            ChatScreen(viewModel)
-                        }
-                        // Generic Chat Samples (Legacy)
-                        composable<ChatRoute> {
-                            val viewModel: LegacyChatViewModel = viewModel()
                             ChatScreen(viewModel)
                         }
                         // Refactored Imagen Samples
