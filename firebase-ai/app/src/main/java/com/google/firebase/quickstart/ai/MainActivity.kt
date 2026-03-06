@@ -29,6 +29,8 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenViewModel
 import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
+import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
+import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
 import com.google.firebase.quickstart.ai.ui.ChatScreen
 import com.google.firebase.quickstart.ai.ui.ImagenScreen
 import com.google.firebase.quickstart.ai.ui.ServerPromptScreen
@@ -87,43 +89,39 @@ class MainActivity : ComponentActivity() {
                                 route = sample.route::class,
                                 typeMap = emptyMap()
                             ) {
+                                val viewModelClass = sample.viewModelClass?.java
+                                    ?: return@composable
+                                val vm = viewModel(modelClass = viewModelClass)
+
                                 when (sample.screenType) {
                                     ScreenType.CHAT -> {
-                                        val viewModel: ChatViewModel = viewModel(
-                                            modelClass = sample.viewModelClass!!.java
-                                        ) as ChatViewModel
-                                        ChatScreen(viewModel)
+                                        (vm as? ChatViewModel)?.let { ChatScreen(it) }
                                     }
 
                                     ScreenType.IMAGEN -> {
-                                        val viewModel: ImagenViewModel = viewModel(
-                                            modelClass = sample.viewModelClass!!.java
-                                        ) as ImagenViewModel
-                                        ImagenScreen(viewModel)
+                                        (vm as? ImagenViewModel)?.let { ImagenScreen(it) }
                                     }
 
                                     ScreenType.SVG -> {
-                                        SvgScreen()
+                                        (vm as? SvgViewModel)?.let { SvgScreen(it) }
                                     }
 
                                     ScreenType.SERVER_PROMPT -> {
-                                        ServerPromptScreen()
+                                        (vm as? ServerPromptTemplateViewModel)?.let { ServerPromptScreen(it) }
                                     }
 
                                     ScreenType.BIDI -> {
-                                        val viewModel: BidiViewModel = viewModel(
-                                            modelClass = sample.viewModelClass!!.java
-                                        ) as BidiViewModel
-                                        @SuppressLint("MissingPermission")
-                                        StreamRealtimeScreen(viewModel)
+                                        (vm as? BidiViewModel)?.let {
+                                            @SuppressLint("MissingPermission")
+                                            StreamRealtimeScreen(it)
+                                        }
                                     }
 
                                     ScreenType.BIDI_VIDEO -> {
-                                        val viewModel: BidiViewModel = viewModel(
-                                            modelClass = sample.viewModelClass!!.java
-                                        ) as BidiViewModel
-                                        @SuppressLint("MissingPermission")
-                                        StreamRealtimeVideoScreen(viewModel)
+                                        (vm as? BidiViewModel)?.let {
+                                            @SuppressLint("MissingPermission")
+                                            StreamRealtimeVideoScreen(it)
+                                        }
                                     }
                                 }
                             }
