@@ -62,7 +62,7 @@ import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorViewModel
 import com.google.firebase.quickstart.ai.feature.text.ImageGenerationRoute
 import com.google.firebase.quickstart.ai.feature.text.ImageGenerationViewModel
 import com.google.firebase.quickstart.ai.feature.text.LegacyChatViewModel
-import com.google.firebase.quickstart.ai.feature.text.TextGenRoute
+import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateRoute
 import com.google.firebase.quickstart.ai.feature.text.TextGenScreen
 import com.google.firebase.quickstart.ai.feature.text.ThinkingChatRoute
 import com.google.firebase.quickstart.ai.feature.text.ThinkingChatViewModel
@@ -93,7 +93,7 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             colors = TopAppBarDefaults.topAppBarColors(
                                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                titleContentColor = MaterialTheme.colorScheme.primary
+                                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                             ),
                             title = {
                                 Text(topBarTitle)
@@ -134,10 +134,10 @@ class MainActivity : ComponentActivity() {
                                         "Server Prompt Template - Imagen" -> navController.navigate(ImagenTemplateRoute)
                                         else -> {
                                             when (it.navRoute) {
+                                                "serverPromptTemplate" -> navController.navigate(ServerPromptTemplateRoute)
                                                 "chat" -> navController.navigate(ChatRoute(it.id))
                                                 "stream" -> navController.navigate(StreamRealtimeRoute(it.id))
                                                 "streamVideo" -> navController.navigate(StreamRealtimeVideoRoute(it.id))
-                                                "text" -> navController.navigate(TextGenRoute(it.id))
                                                 "svg" -> navController.navigate(SvgRoute(it.id))
                                             }
                                         }
@@ -237,7 +237,7 @@ class MainActivity : ComponentActivity() {
                         composable<StreamRealtimeVideoRoute> {
                             StreamRealtimeVideoScreen()
                         }
-                        composable<TextGenRoute> {
+                        composable<ServerPromptTemplateRoute> {
                             TextGenScreen()
                         }
                         composable<SvgRoute> {

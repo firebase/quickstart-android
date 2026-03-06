@@ -29,12 +29,34 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun TextGenScreen(
-    textGenViewModel: TextGenViewModel = viewModel<TextGenViewModel>()
+    viewModel: ServerPromptTemplateViewModel = viewModel()
 ) {
-    var textPrompt by rememberSaveable { mutableStateOf(textGenViewModel.initialPrompt) }
-    val errorMessage by textGenViewModel.errorMessage.collectAsStateWithLifecycle()
-    val isLoading by textGenViewModel.isLoading.collectAsStateWithLifecycle()
-    val generatedText by textGenViewModel.generatedText.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    
+    val isLoading = uiState is ServerPromptUiState.Loading
+    val errorMessage = (uiState as? ServerPromptUiState.Error)?.message
+    val generatedText = (uiState as? ServerPromptUiState.Success)?.generatedText
+
+    TextGenContent(
+        initialPrompt = viewModel.initialPrompt,
+        isLoading = isLoading,
+        errorMessage = errorMessage,
+        generatedText = generatedText,
+        allowEmptyPrompt = viewModel.allowEmptyPrompt,
+        onGenerate = { viewModel.generate(it) }
+    )
+}
+
+@Composable
+private fun TextGenContent(
+    initialPrompt: String,
+    isLoading: Boolean,
+    errorMessage: String?,
+    generatedText: String?,
+    allowEmptyPrompt: Boolean,
+    onGenerate: (String) -> Unit
+) {
+    var textPrompt by rememberSaveable { mutableStateOf(initialPrompt) }
 
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
@@ -57,8 +79,8 @@ fun TextGenScreen(
             Row() {
                 TextButton(
                     onClick = {
-                        if (textGenViewModel.allowEmptyPrompt || textPrompt.isNotBlank()) {
-                            textGenViewModel.generate(textPrompt)
+                        if (allowEmptyPrompt || textPrompt.isNotBlank()) {
+                            onGenerate(textPrompt)
                         }
                     },
                     modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)

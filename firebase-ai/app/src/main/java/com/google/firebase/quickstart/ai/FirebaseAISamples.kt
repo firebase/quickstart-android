@@ -3,7 +3,6 @@ package com.google.firebase.quickstart.ai
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.content
-import com.google.firebase.quickstart.ai.feature.media.imagen.EditingMode
 import com.google.firebase.quickstart.ai.ui.navigation.Category
 import com.google.firebase.quickstart.ai.ui.navigation.Sample
 
@@ -44,14 +43,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         title = "Imagen 4 - image generation",
         description = "Generate images using Imagen 4",
         navRoute = "imagen",
-        categories = listOf(Category.IMAGE),
-        initialPrompt = content {
-            text(
-                "A photo of a modern building with water in the background"
-            )
-        },
-        allowEmptyPrompt = false,
-        editingMode = EditingMode.GENERATE,
+        categories = listOf(Category.IMAGE)
     ),
     Sample(
         title = "Imagen 3 - Inpainting (Vertex AI)",
@@ -59,12 +51,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         modelName = "imagen-3.0-capability-001",
         backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
-        categories = listOf(Category.IMAGE),
-        initialPrompt = content { text("A sunny beach") },
-        includeAttach = true,
-        allowEmptyPrompt = true,
-        selectionOptions = listOf("Mask", "Background", "Foreground"),
-        editingMode = EditingMode.INPAINTING,
+        categories = listOf(Category.IMAGE)
     ),
     Sample(
         title = "Imagen 3 - Outpainting (Vertex AI)",
@@ -72,12 +59,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         modelName = "imagen-3.0-capability-001",
         backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
-        categories = listOf(Category.IMAGE),
-        initialPrompt = content { text("") },
-        includeAttach = true,
-        allowEmptyPrompt = true,
-        selectionOptions = listOf("Image Alignment", "Center", "Top", "Bottom", "Left", "Right"),
-        editingMode = EditingMode.OUTPAINTING,
+        categories = listOf(Category.IMAGE)
     ),
     Sample(
         title = "Imagen 3 - Subject Reference (Vertex AI)",
@@ -85,11 +67,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         modelName = "imagen-3.0-capability-001",
         backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
-        categories = listOf(Category.IMAGE),
-        initialPrompt = content { text("<subject> flying through space") },
-        includeAttach = true,
-        allowEmptyPrompt = false,
-        editingMode = EditingMode.SUBJECT_REFERENCE,
+        categories = listOf(Category.IMAGE)
     ),
     Sample(
         title = "Imagen 3 - Style Transfer (Vertex AI)",
@@ -97,13 +75,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         modelName = "imagen-3.0-capability-001",
         backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
-        categories = listOf(Category.IMAGE),
-        initialPrompt = content { text("A picture of a cat") },
-        includeAttach = true,
-        allowEmptyPrompt = true,
-        additionalImage = MainActivity.catImage,
-        imageLabels = listOf("Style Target", "Style Source"),
-        editingMode = EditingMode.STYLE_TRANSFER
+        categories = listOf(Category.IMAGE)
     ),
     Sample(
         title = "Gemini 2.5 Flash Image (aka nanobanana)",
@@ -163,19 +135,13 @@ val FIREBASE_AI_SAMPLES = listOf(
         description = "Generate an image using a server prompt template. Note that you need to setup the template in " +
                 "the Firebase console before running this demo.",
         navRoute = "imagen",
-        categories = listOf(Category.IMAGE),
-        initialPrompt = content { text("List of things that should be in the image") },
-        allowEmptyPrompt = false,
-        editingMode = EditingMode.TEMPLATE,
-        // To make this work, create an "Imagen (Basic)" server prompt template in your Firebase project with this name
-        templateId = "imagen-basic",
-        templateKey = "prompt"
+        categories = listOf(Category.IMAGE)
     ),
     Sample(
         title = "Server Prompt Templates - Gemini",
         description = "Generate an invoice using server prompt templates.  Note that you need to setup the template" +
                 " in the Firebase console before running this demo.",
-        navRoute = "text",
+        navRoute = "serverPromptTemplate",
         categories = listOf(Category.TEXT),
         initialPrompt = content { text("Jane Doe") },
         allowEmptyPrompt = false,
