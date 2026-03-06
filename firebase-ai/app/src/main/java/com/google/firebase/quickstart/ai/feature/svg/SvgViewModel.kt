@@ -1,34 +1,21 @@
 package com.google.firebase.quickstart.ai.feature.svg
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.ai.GenerativeModel
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
-import com.google.firebase.ai.type.TextPart
-import com.google.firebase.ai.type.asTextOrNull
-import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
-import com.google.firebase.quickstart.ai.feature.text.ChatRoute
+import com.google.firebase.ai.type.content
+import com.google.firebase.ai.type.generationConfig
+import com.google.firebase.ai.type.thinkingConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class SvgViewModel(
-    savedStateHandle: SavedStateHandle
-) : ViewModel() {
-    private val sampleId = savedStateHandle.toRoute<ChatRoute>().sampleId
-    private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
-    val initialPrompt: String =
-        sample.initialPrompt?.parts
-            ?.filterIsInstance<TextPart>()
-            ?.first()
-            ?.asTextOrNull().orEmpty()
-
+class SvgViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
@@ -43,12 +30,25 @@ class SvgViewModel(
 
     init {
         generativeModel = Firebase.ai(
-            backend = sample.backend
+            backend = GenerativeBackend.googleAI()
         ).generativeModel(
-            modelName = sample.modelName ?: "gemini-3-flash-preview",
-            systemInstruction = sample.systemInstructions,
-            generationConfig = sample.generationConfig,
-            tools = sample.tools
+            modelName = "gemini-3-flash-preview",
+            systemInstruction = content {
+                text(
+                    """
+            You are an expert at turning image prompts into SVG code. When given a prompt,
+            use your creativity to code a 800x600 SVG rendering of it.
+            Always add viewBox="0 0 800 600" to the root svg tag. Do
+            not import external assets, they won't work. Return ONLY the SVG code, nothing else,
+            no commentary.
+            """.trimIndent()
+                )
+            },
+            generationConfig = generationConfig {
+                thinkingConfig {
+                    thinkingBudget = -1
+                }
+            }
         )
     }
 
@@ -67,6 +67,5 @@ class SvgViewModel(
                 _isLoading.value = false
             }
         }
-
     }
 }

@@ -41,7 +41,7 @@ class SvgRoute(val sampleId: String)
 fun SvgScreen(
     svgViewModel: SvgViewModel = viewModel<SvgViewModel>()
 ) {
-    var prompt by rememberSaveable { mutableStateOf(svgViewModel.initialPrompt) }
+    var prompt by rememberSaveable { mutableStateOf("A kitten") }
     val errorMessage by svgViewModel.errorMessage.collectAsStateWithLifecycle()
     val isLoading by svgViewModel.isLoading.collectAsStateWithLifecycle()
     val generatedSvgs by svgViewModel.generatedSvgs.collectAsStateWithLifecycle()

@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
@@ -59,7 +59,7 @@ private fun bindPreview(
     onFrameCaptured: (Bitmap) -> Unit,
 ) {
     val preview =
-        Preview.Builder().build().also { it.setSurfaceProvider(previewView.surfaceProvider) }
+        Preview.Builder().build().also { it.surfaceProvider = previewView.surfaceProvider }
 
     val imageAnalysis =
         ImageAnalysis.Builder()
