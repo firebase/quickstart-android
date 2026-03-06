@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @Serializable
-class SvgRoute(val sampleId: String? = null)
+object SvgRoute
 
 class SvgViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<SvgUiState>(SvgUiState.Success())

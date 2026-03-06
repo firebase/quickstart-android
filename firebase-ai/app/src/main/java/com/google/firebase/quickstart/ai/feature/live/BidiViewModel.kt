@@ -30,13 +30,13 @@ import kotlinx.serialization.json.jsonPrimitive
 import java.io.ByteArrayOutputStream
 
 @Serializable
-class StreamRealtimeRoute(val sampleId: String)
+object StreamRealtimeRoute
 
 @Serializable
-class StreamRealtimeVideoRoute(val sampleId: String)
+object StreamRealtimeVideoRoute
 
 @OptIn(PublicPreviewAPI::class)
-class BidiViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+class BidiViewModel : ViewModel() {
     // Firebase AI Logic
     private var liveSession: LiveSession
 

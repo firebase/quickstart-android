@@ -163,7 +163,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         title = "ForecastTalk",
         description = "Use bidirectional streaming to get information about" +
                 " weather conditions for a specific US city on a specific date",
-        route = StreamRealtimeRoute("forecast-talk"),
+        route = StreamRealtimeRoute,
         screenType = ScreenType.BIDI,
         viewModelClass = BidiViewModel::class,
         categories = listOf(Category.LIVE_API, Category.AUDIO, Category.FUNCTION_CALLING)
@@ -172,7 +172,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         title = "Gemini Live (Video input)",
         description = "Use bidirectional streaming to chat with Gemini using your" +
                 " phone's camera",
-        route = StreamRealtimeVideoRoute("gemini-live-video"),
+        route = StreamRealtimeVideoRoute,
         screenType = ScreenType.BIDI_VIDEO,
         viewModelClass = BidiViewModel::class,
         categories = listOf(Category.LIVE_API, Category.VIDEO, Category.FUNCTION_CALLING)
@@ -224,7 +224,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "SVG Generator",
         description = "Use Gemini 3 Flash preview to create SVG illustrations",
-        route = SvgRoute("svg-generator"),
+        route = SvgRoute,
         screenType = ScreenType.SVG,
         viewModelClass = SvgViewModel::class,
         categories = listOf(Category.IMAGE, Category.TEXT)
