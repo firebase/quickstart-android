@@ -29,7 +29,7 @@ class ImagenStyleTransferViewModel : ImagenViewModel() {
     override val includeAttach: Boolean = true
     override val selectionOptions: List<String> = emptyList()
     override val allowEmptyPrompt: Boolean = true
-    override val additionalImage: Bitmap? = MainActivity.catImage
+    override val additionalImage: Bitmap = MainActivity.catImage
     override val imageLabels: List<String> = listOf("Style Target", "Style Source")
 
     private val imagenModel: ImagenModel

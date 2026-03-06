@@ -25,25 +25,23 @@ class AudioSummarizationViewModel : ChatViewModel() {
     private val chat: Chat
 
     init {
-        val chatHistory = listOf(
-            content { text("Can you help me summarize an audio file?") },
-            content("model") {
-                text(
-                    "Of course! Click on the attach button" +
-                            " below and choose an audio file for me to summarize."
-                )
-            }
-        )
-
-        _messages.value = chatHistory.map { UiChatMessage(it) }
-        _uiState.value = ChatUiState.Success
-
         val generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).generativeModel(
             modelName = "gemini-2.5-flash"
         )
-        chat = generativeModel.startChat(chatHistory)
+        chat = generativeModel.startChat(
+            listOf(
+                content { text("Can you help me summarize an audio file?") },
+                content("model") {
+                    text(
+                        "Of course! Click on the attach button" +
+                                " below and choose an audio file for me to summarize."
+                    )
+                }
+            ))
+        _messages.value = chat.history.map { UiChatMessage(it) }
+        _uiState.value = ChatUiState.Success
     }
 
     override suspend fun performSendMessage(prompt: Content, currentMessages: List<UiChatMessage>) {

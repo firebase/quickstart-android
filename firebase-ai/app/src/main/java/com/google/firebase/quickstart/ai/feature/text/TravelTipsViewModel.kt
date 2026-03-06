@@ -60,7 +60,8 @@ class TravelTipsViewModel : ChatViewModel() {
                                 " than 6 months during your travel."
                     )
                 }
-            ))
+            )
+        )
 
         _messages.value = chat.history.map { UiChatMessage(it) }
         _uiState.value = ChatUiState.Success
