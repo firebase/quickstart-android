@@ -25,7 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
-import com.google.firebase.quickstart.ai.feature.live.CameraView
 import kotlinx.coroutines.launch
 
 

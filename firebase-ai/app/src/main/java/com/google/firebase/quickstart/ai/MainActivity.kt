@@ -75,6 +75,7 @@ class MainActivity : ComponentActivity() {
                         composable("mainMenu") {
                             MainMenuScreen(
                                 onSampleClicked = {
+                                    topBarTitle = it.title
                                     navController.navigate(it.route)
                                 }
                             )
@@ -130,17 +131,11 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-            navController.addOnDestinationChangedListener(object : NavController.OnDestinationChangedListener {
-                override fun onDestinationChanged(
-                    controller: NavController,
-                    destination: NavDestination,
-                    arguments: Bundle?
-                ) {
-                    if (destination.route == "mainMenu") {
-                        topBarTitle = getString(R.string.app_name)
-                    }
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                if (destination.route == "mainMenu") {
+                    topBarTitle = getString(R.string.app_name)
                 }
-            })
+            }
         }
     }
 

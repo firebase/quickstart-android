@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.feature.live
+package com.google.firebase.quickstart.ai.ui
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
