@@ -48,11 +48,7 @@ class WeatherChatViewModel : ChatViewModel() {
     override suspend fun performSendMessage(prompt: Content, currentMessages: List<UiChatMessage>) {
         val response = chat.sendMessage(prompt)
         if (response.functionCalls.isEmpty()) {
-            val candidate = response.candidates.first()
-            _uiState.value = ChatUiState.Success(
-                messages = currentMessages + UiChatMessage(candidate.content, candidate.groundingMetadata),
-                attachments = emptyList()
-            )
+            validateAndDisplayResponse(response, currentMessages)
         } else {
             handleFunctionCalls(response, currentMessages)
         }
@@ -80,11 +76,7 @@ class WeatherChatViewModel : ChatViewModel() {
                         part(FunctionResponsePart("fetchWeather", functionResponse))
                     })
 
-                    val candidate = finalResponse.candidates.first()
-                    _uiState.value = ChatUiState.Success(
-                        messages = currentMessages + UiChatMessage(candidate.content, candidate.groundingMetadata),
-                        attachments = emptyList()
-                    )
+                    validateAndDisplayResponse(finalResponse, currentMessages)
                 }
             }
         }

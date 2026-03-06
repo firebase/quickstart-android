@@ -37,10 +37,6 @@ class LegacyChatViewModel(
 
     override suspend fun performSendMessage(prompt: Content, currentMessages: List<UiChatMessage>) {
         val response = chat.sendMessage(prompt)
-        val candidate = response.candidates.first()
-        _uiState.value = ChatUiState.Success(
-            messages = currentMessages + UiChatMessage(candidate.content, candidate.groundingMetadata),
-            attachments = emptyList()
-        )
+        validateAndDisplayResponse(response, currentMessages)
     }
 }

@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.ai.type.Content
+import com.google.firebase.ai.type.GenerateContentResponse
 import com.google.firebase.ai.type.PublicPreviewAPI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -59,6 +60,31 @@ abstract class ChatViewModel : ViewModel() {
         prompt: Content,
         currentMessages: List<UiChatMessage>
     )
+
+    /**
+     * Centralized method to validate the AI response (grounding check) and update the UI state.
+     */
+    protected fun validateAndDisplayResponse(
+        response: GenerateContentResponse,
+        currentMessages: List<UiChatMessage>
+    ) {
+        val candidate = response.candidates.firstOrNull() ?: return
+
+        // Compliance check for grounding
+        if (candidate.groundingMetadata != null
+            && candidate.groundingMetadata?.groundingChunks?.isNotEmpty() == true
+            && candidate.groundingMetadata?.searchEntryPoint == null
+        ) {
+            _uiState.value = ChatUiState.Error(
+                "Could not display the response because it was missing required attribution components."
+            )
+        } else {
+            _uiState.value = ChatUiState.Success(
+                messages = currentMessages + UiChatMessage(candidate.content, candidate.groundingMetadata),
+                attachments = emptyList()
+            )
+        }
+    }
 
     fun attachFile(
         fileInBytes: ByteArray,

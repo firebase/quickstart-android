@@ -29,32 +29,6 @@ val FIREBASE_AI_SAMPLES = listOf(
                         " the internet."
             )
         },
-        chatHistory = listOf(
-            content {
-                role = "user"
-                text("I have never traveled before. When should I book a flight?")
-            },
-            content {
-                role = "model"
-                text(
-                    "You should book flights a couple of months ahead of time." +
-                            " It will be cheaper and more flexible for you."
-                )
-            },
-            content {
-                role = "user"
-                text("Do I need a passport?")
-            },
-            content {
-                role = "model"
-                text(
-                    "If you are traveling outside your own country, make sure" +
-                            " your passport is up-to-date and valid for more" +
-                            " than 6 months during your travel."
-                )
-            }
-        ),
-        initialPrompt = content { text("What else is important when traveling?") }
     ),
     Sample(
         title = "Chatbot recommendations for courses",
