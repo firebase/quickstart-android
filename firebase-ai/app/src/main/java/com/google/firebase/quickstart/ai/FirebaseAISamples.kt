@@ -48,32 +48,24 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Imagen 3 - Inpainting (Vertex AI)",
         description = "Replace part of an image using Imagen 3",
-        modelName = "imagen-3.0-capability-001",
-        backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
         categories = listOf(Category.IMAGE)
     ),
     Sample(
         title = "Imagen 3 - Outpainting (Vertex AI)",
         description = "Expand an image by drawing in more background",
-        modelName = "imagen-3.0-capability-001",
-        backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
         categories = listOf(Category.IMAGE)
     ),
     Sample(
         title = "Imagen 3 - Subject Reference (Vertex AI)",
         description = "Generate an image using a referenced subject (must be an animal)",
-        modelName = "imagen-3.0-capability-001",
-        backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
         categories = listOf(Category.IMAGE)
     ),
     Sample(
         title = "Imagen 3 - Style Transfer (Vertex AI)",
         description = "Change the art style of a cat picture using a reference",
-        modelName = "imagen-3.0-capability-001",
-        backend = GenerativeBackend.vertexAI(),
         navRoute = "imagen",
         categories = listOf(Category.IMAGE)
     ),
@@ -143,11 +135,6 @@ val FIREBASE_AI_SAMPLES = listOf(
                 " in the Firebase console before running this demo.",
         navRoute = "serverPromptTemplate",
         categories = listOf(Category.TEXT),
-        initialPrompt = content { text("Jane Doe") },
-        allowEmptyPrompt = false,
-        // To make this work, create an `Input + System Instructions` template in your Firebase project with this name
-        templateId = "input-system-instructions",
-        templateKey = "customerName"
     ),
     Sample(
         title = "Thinking",
