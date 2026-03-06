@@ -2,81 +2,58 @@ package com.google.firebase.quickstart.ai.feature.media.imagen
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import androidx.lifecycle.SavedStateHandle
+import androidx.core.graphics.scale
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ImagenModel
-import com.google.firebase.ai.ai
-import com.google.firebase.ai.type.ImagenImageFormat
-import com.google.firebase.ai.type.ImagenPersonFilterLevel
-import com.google.firebase.ai.type.ImagenSafetyFilterLevel
-import com.google.firebase.ai.type.ImagenSafetySettings
-import com.google.firebase.ai.type.PublicPreviewAPI
-import com.google.firebase.ai.type.asTextOrNull
-import com.google.firebase.ai.type.imagenGenerationConfig
-import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import androidx.core.graphics.scale
 import com.google.firebase.ai.TemplateImagenModel
+import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.Dimensions
+import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ImagenBackgroundMask
 import com.google.firebase.ai.type.ImagenEditMode
 import com.google.firebase.ai.type.ImagenEditingConfig
 import com.google.firebase.ai.type.ImagenForegroundMask
 import com.google.firebase.ai.type.ImagenGenerationResponse
+import com.google.firebase.ai.type.ImagenImageFormat
 import com.google.firebase.ai.type.ImagenImagePlacement
 import com.google.firebase.ai.type.ImagenInlineImage
 import com.google.firebase.ai.type.ImagenMaskReference
+import com.google.firebase.ai.type.ImagenPersonFilterLevel
 import com.google.firebase.ai.type.ImagenRawImage
 import com.google.firebase.ai.type.ImagenRawMask
+import com.google.firebase.ai.type.ImagenSafetyFilterLevel
+import com.google.firebase.ai.type.ImagenSafetySettings
 import com.google.firebase.ai.type.ImagenStyleReference
 import com.google.firebase.ai.type.ImagenSubjectReference
 import com.google.firebase.ai.type.ImagenSubjectReferenceType
+import com.google.firebase.ai.type.PublicPreviewAPI
+import com.google.firebase.ai.type.imagenGenerationConfig
 import com.google.firebase.ai.type.toImagenInlineImage
 import com.google.firebase.quickstart.ai.MainActivity
-import kotlin.collections.component1
-import kotlin.collections.component2
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 @OptIn(PublicPreviewAPI::class)
-class ImagenViewModel(
-    savedStateHandle: SavedStateHandle
+open class ImagenViewModel(
+    val initialPrompt: String = "",
+    val modelName: String = "imagen-4.0-generate-001",
+    val backend: GenerativeBackend = GenerativeBackend.googleAI(),
+    val includeAttach: Boolean = false,
+    val selectionOptions: List<String> = emptyList(),
+    val allowEmptyPrompt: Boolean = false,
+    val additionalImage: Bitmap? = null,
+    val imageLabels: List<String> = emptyList(),
+    val editingMode: EditingMode? = null,
+    val templateId: String? = null,
+    val templateKey: String? = null,
 ) : ViewModel() {
-    private val sampleId = savedStateHandle.toRoute<ImagenRoute>().sampleId
-    private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
-    val initialPrompt = sample.initialPrompt?.parts?.first()?.asTextOrNull().orEmpty()
-    val imageLabels = sample.imageLabels
 
-    private val _errorMessage: MutableStateFlow<String?> = MutableStateFlow(null)
-    val errorMessage: StateFlow<String?> = _errorMessage
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-    val includeAttach = sample.includeAttach
-
-    val selectionOptions = sample.selectionOptions
-
-    private val _selectedOption = MutableStateFlow<String?>(null)
-    val selectedOption: StateFlow<String?> = _selectedOption
-
-    val allowEmptyPrompt = sample.allowEmptyPrompt
-
-    val additionalImage = sample.additionalImage
-
-    val templateId = sample.templateId
-
-    val templateKey = sample.templateKey
-
-    private val _attachedImage = MutableStateFlow<Bitmap?>(null)
-    val attachedImage: StateFlow<Bitmap?> = _attachedImage
-
-    private val _generatedBitmaps = MutableStateFlow(listOf<Bitmap>())
-    val generatedBitmaps: StateFlow<List<Bitmap>> = _generatedBitmaps
+    private val _uiState = MutableStateFlow<ImagenUiState>(ImagenUiState.Success())
+    val uiState: StateFlow<ImagenUiState> = _uiState.asStateFlow()
 
     // Firebase AI Logic
     private val imagenModel: ImagenModel
@@ -92,9 +69,9 @@ class ImagenViewModel(
             personFilterLevel = ImagenPersonFilterLevel.BLOCK_ALL
         )
         imagenModel = Firebase.ai(
-            backend = sample.backend
+            backend = backend
         ).imagenModel(
-            modelName = sample.modelName ?: "imagen-4.0-generate-001",
+            modelName = modelName,
             generationConfig = config,
             safetySettings = settings
         )
@@ -102,32 +79,31 @@ class ImagenViewModel(
     }
 
     fun generateImages(inputText: String) {
+        val currentState = (_uiState.value as? ImagenUiState.Success) ?: ImagenUiState.Success()
+        
         viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null // clear error message
+            _uiState.value = ImagenUiState.Loading
             try {
-                val imageResponse = when(sample.editingMode) {
-                    EditingMode.INPAINTING -> inpaint(imagenModel, inputText)
-                    EditingMode.OUTPAINTING -> outpaint(imagenModel, inputText)
-                    EditingMode.SUBJECT_REFERENCE -> drawReferenceSubject(imagenModel, inputText)
-                    EditingMode.STYLE_TRANSFER -> transferStyle(imagenModel, inputText)
+                val imageResponse = when(editingMode) {
+                    EditingMode.INPAINTING -> inpaint(imagenModel, inputText, currentState.attachedImage, currentState.selectedOption)
+                    EditingMode.OUTPAINTING -> outpaint(imagenModel, inputText, currentState.attachedImage, currentState.selectedOption)
+                    EditingMode.SUBJECT_REFERENCE -> drawReferenceSubject(imagenModel, inputText, currentState.attachedImage)
+                    EditingMode.STYLE_TRANSFER -> transferStyle(imagenModel, inputText, currentState.attachedImage)
                     EditingMode.TEMPLATE ->
                         generateWithTemplate(templateImagenModel, templateId!!, mapOf(templateKey!! to inputText))
                     else -> generate(imagenModel, inputText)
                 }
-                _generatedBitmaps.value = imageResponse.images.map { it.asBitmap() }
+                _uiState.value = currentState.copy(images = imageResponse.images.map { it.asBitmap() })
             } catch (e: Exception) {
                 val errorMessage =
                     if ((e.localizedMessage?.contains("not found") == true) &&
-                        sample.editingMode == EditingMode.TEMPLATE) {
+                        editingMode == EditingMode.TEMPLATE) {
                         "Template was not found, please verify that your project contains a" +
                                 " template named \"$templateId\"."
                     } else {
-                        e.localizedMessage
+                        e.localizedMessage ?: "Unknown error"
                     }
-                _errorMessage.value = errorMessage
-            } finally {
-                _isLoading.value = false
+                _uiState.value = ImagenUiState.Error(errorMessage)
             }
         }
     }
@@ -140,37 +116,39 @@ class ImagenViewModel(
             512,
             (originalBitmap.height * (512.0 / originalBitmap.width)).toInt()
         )
-        _attachedImage.emit(resizedBitmap)
+        val currentState = (_uiState.value as? ImagenUiState.Success) ?: ImagenUiState.Success()
+        _uiState.value = currentState.copy(attachedImage = resizedBitmap)
     }
 
     fun selectOption(selection: String) {
-        viewModelScope.launch {
-            _selectedOption.emit(selection)
-        }
+        val currentState = (_uiState.value as? ImagenUiState.Success) ?: ImagenUiState.Success()
+        _uiState.value = currentState.copy(selectedOption = selection)
     }
 
-    suspend fun transferStyle(
+    private suspend fun transferStyle(
         model: ImagenModel,
         inputText: String,
+        attachedImage: Bitmap?
     ): ImagenGenerationResponse<ImagenInlineImage> {
         return model.editImage(
             listOf(
                 ImagenRawImage(MainActivity.catImage.toImagenInlineImage()),
-                ImagenStyleReference(attachedImage.first()!!.toImagenInlineImage(), 1, "an art style")
+                ImagenStyleReference(attachedImage!!.toImagenInlineImage(), 1, "an art style")
             ),
             "Generate an image in an art style [1] based on the following caption: $inputText",
         )
     }
 
-    suspend fun drawReferenceSubject(
+    private suspend fun drawReferenceSubject(
         model: ImagenModel,
         inputText: String,
+        attachedImage: Bitmap?
     ): ImagenGenerationResponse<ImagenInlineImage> {
         return model.editImage(
             listOf(
                 ImagenSubjectReference(
                     referenceId = 1,
-                    image = attachedImage.first()!!.toImagenInlineImage(),
+                    image = attachedImage!!.toImagenInlineImage(),
                     subjectType = ImagenSubjectReferenceType.ANIMAL,
                     description = "An animal"
                 )
@@ -180,12 +158,14 @@ class ImagenViewModel(
         )
     }
 
-    suspend fun outpaint(
+    private suspend fun outpaint(
         model: ImagenModel,
         inputText: String,
+        attachedImage: Bitmap?,
+        selectedOption: String?
     ): ImagenGenerationResponse<ImagenInlineImage> {
-        val bitmap = attachedImage.first()!!
-        val position = when (selectedOption.first()) {
+        val bitmap = attachedImage!!
+        val position = when (selectedOption) {
             "Top" -> ImagenImagePlacement.TOP_CENTER
             "Bottom" -> ImagenImagePlacement.BOTTOM_CENTER
             "Left" -> ImagenImagePlacement.LEFT_CENTER
@@ -205,12 +185,14 @@ class ImagenViewModel(
         )
     }
 
-    suspend fun inpaint(
+    private suspend fun inpaint(
         model: ImagenModel,
         inputText: String,
+        attachedImage: Bitmap?,
+        selectedOption: String?
     ): ImagenGenerationResponse<ImagenInlineImage> {
-        val bitmap = attachedImage.first()!!
-        val mask = when (selectedOption.first()) {
+        val bitmap = attachedImage!!
+        val mask = when (selectedOption) {
             "Foreground" -> ImagenForegroundMask()
             else -> ImagenBackgroundMask()
         }
@@ -221,7 +203,7 @@ class ImagenViewModel(
         )
     }
 
-    suspend fun generate(
+    private suspend fun generate(
         model: ImagenModel,
         inputText: String,
     ): ImagenGenerationResponse<ImagenInlineImage> {
@@ -230,7 +212,7 @@ class ImagenViewModel(
         )
     }
 
-    suspend fun generateWithTemplate(
+    private suspend fun generateWithTemplate(
         model: TemplateImagenModel,
         templateId: String,
         inputMap: Map<String, String>

@@ -2,9 +2,7 @@ package com.google.firebase.quickstart.ai.feature.text
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
-import androidx.core.net.toUri
 import android.provider.OpenableColumns
 import android.text.format.Formatter
 import android.webkit.WebResourceRequest
@@ -12,8 +10,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -38,8 +38,6 @@ import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Attachment
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -71,10 +69,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebViewFeature
 import com.google.firebase.ai.type.FileDataPart
 import com.google.firebase.ai.type.ImagePart
 import com.google.firebase.ai.type.InlineDataPart
@@ -84,16 +80,19 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 @Serializable
-class ChatRoute(val sampleId: String)
+class ChatRoute(val sampleId: String? = null)
+
+@Serializable
+object TravelTipsRoute
+
+@Serializable
+object WeatherChatRoute
 
 @Composable
 fun ChatScreen(
-    chatViewModel: ChatViewModel = viewModel<ChatViewModel>()
+    chatViewModel: ChatViewModel
 ) {
-    val messages: List<UiChatMessage> by chatViewModel.messages.collectAsStateWithLifecycle()
-    val isLoading: Boolean by chatViewModel.isLoading.collectAsStateWithLifecycle()
-    val errorMessage: String? by chatViewModel.errorMessage.collectAsStateWithLifecycle()
-    val attachments: List<Attachment> by chatViewModel.attachments.collectAsStateWithLifecycle()
+    val uiState by chatViewModel.uiState.collectAsStateWithLifecycle()
 
     val initialPrompt: String = chatViewModel.initialPrompt
 
@@ -104,13 +103,28 @@ fun ChatScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        ChatList(
-            messages,
-            listState,
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(0.5f)
-        )
+        when (val state = uiState) {
+            is ChatUiState.Success -> {
+                ChatList(
+                    state.messages,
+                    listState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(0.5f)
+                )
+            }
+            is ChatUiState.Loading -> {
+//                Box(modifier = Modifier.weight(0.5f).fillMaxSize(), contentAlignment = Alignment.Center) {
+//                    LinearProgressIndicator()
+//                }
+            }
+            is ChatUiState.Error -> {
+                Box(modifier = Modifier.weight(0.5f).fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = state.message, color = MaterialTheme.colorScheme.error)
+                }
+            }
+        }
+        
         Box(
             contentAlignment = Alignment.BottomCenter
         ) {
@@ -119,14 +133,14 @@ fun ChatScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.surfaceContainer)
             ) {
-                if (isLoading) {
+                if (uiState is ChatUiState.Loading) {
                     LinearProgressIndicator(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     )
                 }
-                errorMessage?.let {
+                (uiState as? ChatUiState.Error)?.let {
                     Card(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.errorContainer
@@ -134,13 +148,15 @@ fun ChatScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = it,
+                            text = it.message,
                             modifier = Modifier.padding(16.dp),
                             color = MaterialTheme.colorScheme.onErrorContainer
                         )
                     }
                 }
-                AttachmentsList(attachments)
+                (uiState as? ChatUiState.Success)?.let {
+                    AttachmentsList(it.attachments)
+                }
                 val context = LocalContext.current
                 val contentResolver = context.contentResolver
                 MessageInput(
@@ -173,7 +189,7 @@ fun ChatScreen(
                             chatViewModel.attachFile(bytes, mimeType, fileName)
                         }
                     },
-                    isLoading = isLoading
+                    isLoading = uiState is ChatUiState.Loading
                 )
             }
         }
@@ -534,13 +550,6 @@ fun AttachmentsMenu(
     }
 }
 
-/**
- * Meant to present attachments in the UI
- */
-data class Attachment(
-    val fileName: String,
-    val image: Bitmap? = null // only for image attachments
-)
 
 @Composable
 fun AttachmentsList(

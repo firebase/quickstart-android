@@ -56,13 +56,15 @@ class ImagenRoute(val sampleId: String)
 
 @Composable
 fun ImagenScreen(
-    imagenViewModel: ImagenViewModel = viewModel<ImagenViewModel>()
+    imagenViewModel: ImagenViewModel
 ) {
+    val uiState by imagenViewModel.uiState.collectAsStateWithLifecycle()
+    val successState = uiState as? ImagenUiState.Success
+    val attachedImage = successState?.attachedImage
+    val generatedImages = successState?.images ?: emptyList()
+
     var imagenPrompt by rememberSaveable { mutableStateOf(imagenViewModel.initialPrompt) }
-    val errorMessage by imagenViewModel.errorMessage.collectAsStateWithLifecycle()
-    val isLoading by imagenViewModel.isLoading.collectAsStateWithLifecycle()
-    val generatedImages by imagenViewModel.generatedBitmaps.collectAsStateWithLifecycle()
-    val attachedImage by imagenViewModel.attachedImage.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
     val contentResolver = context.contentResolver
     val scope = rememberCoroutineScope()
@@ -152,7 +154,7 @@ fun ImagenScreen(
 
         }
 
-        if (isLoading) {
+        if (uiState is ImagenUiState.Loading) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -162,7 +164,7 @@ fun ImagenScreen(
                 CircularProgressIndicator()
             }
         }
-        errorMessage?.let {
+        (uiState as? ImagenUiState.Error)?.let {
             Card(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -173,7 +175,7 @@ fun ImagenScreen(
                 )
             ) {
                 Text(
-                    text = it,
+                    text = it.message,
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(all = 16.dp)
                 )
