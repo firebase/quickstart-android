@@ -5,32 +5,30 @@ import android.graphics.Bitmap
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.google.firebase.Firebase
-import com.google.firebase.ai.FirebaseAI
+import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.FunctionCallPart
+import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.FunctionResponsePart
+import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.InlineData
 import com.google.firebase.ai.type.LiveSession
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.ResponseModality
+import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.SpeechConfig
+import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.Voice
 import com.google.firebase.ai.type.liveGenerationConfig
-import com.google.firebase.app
-import com.google.firebase.quickstart.ai.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.feature.text.functioncalling.WeatherRepository.Companion.fetchWeather
-import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import java.io.ByteArrayOutputStream
 
 @OptIn(PublicPreviewAPI::class)
 class BidiViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
-    private val sampleId = savedStateHandle.toRoute<StreamRealtimeRoute>().sampleId
-    private val sample = FIREBASE_AI_SAMPLES.first { it.id == sampleId }
-
     // Firebase AI Logic
     private var liveSession: LiveSession
 
@@ -43,13 +41,30 @@ class BidiViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
 
         @OptIn(PublicPreviewAPI::class)
         val liveModel =
-            FirebaseAI.getInstance(Firebase.app, sample.backend)
+            Firebase.ai(backend = GenerativeBackend.googleAI())
                 .liveModel(
                     // If you are using Vertex AI, change the model name to
                     // "gemini-live-2.5-flash-preview-native-audio-09-2025"
-                    modelName = sample.modelName ?: "gemini-2.5-flash-native-audio-preview-09-2025",
+                    modelName = "gemini-2.5-flash-native-audio-preview-09-2025",
                     generationConfig = liveGenerationConfig,
-                    tools = sample.tools,
+                    tools = listOf(
+                        Tool.functionDeclarations(
+                            listOf(
+                                FunctionDeclaration(
+                                    "fetchWeather",
+                                    "Get the weather conditions for a specific US city on a specific date.",
+                                    mapOf(
+                                        "city" to Schema.string("The US city of the location."),
+                                        "state" to Schema.string("The US state of the location."),
+                                        "date" to Schema.string(
+                                            "The date for which to get the weather." +
+                                                    " Date must be in the format: YYYY-MM-DD."
+                                        ),
+                                    ),
+                                )
+                            )
+                        )
+                    ),
                 )
         runBlocking { liveSession = liveModel.connect() }
     }

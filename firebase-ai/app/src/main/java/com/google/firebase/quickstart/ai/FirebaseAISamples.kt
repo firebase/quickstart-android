@@ -1,14 +1,8 @@
 package com.google.firebase.quickstart.ai
 
-import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.PublicPreviewAPI
-import com.google.firebase.ai.type.ResponseModality
-import com.google.firebase.ai.type.Schema
-import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
-import com.google.firebase.ai.type.generationConfig
-import com.google.firebase.ai.type.thinkingConfig
 import com.google.firebase.quickstart.ai.feature.media.imagen.EditingMode
 import com.google.firebase.quickstart.ai.ui.navigation.Category
 import com.google.firebase.quickstart.ai.ui.navigation.Sample
@@ -141,56 +135,14 @@ val FIREBASE_AI_SAMPLES = listOf(
         description = "Use bidirectional streaming to get information about" +
                 " weather conditions for a specific US city on a specific date",
         navRoute = "stream",
-        categories = listOf(Category.LIVE_API, Category.AUDIO, Category.FUNCTION_CALLING),
-        tools = listOf(
-            Tool.functionDeclarations(
-                listOf(
-                    FunctionDeclaration(
-                        "fetchWeather",
-                        "Get the weather conditions for a specific US city on a specific date.",
-                        mapOf(
-                            "city" to Schema.string("The US city of the location."),
-                            "state" to Schema.string("The US state of the location."),
-                            "date" to Schema.string(
-                                "The date for which to get the weather." +
-                                        " Date must be in the format: YYYY-MM-DD."
-                            ),
-                        ),
-                    )
-                )
-            )
-        ),
-        initialPrompt = content {
-            text("What was the weather in Boston, MA on October 17, 2024?")
-        }
+        categories = listOf(Category.LIVE_API, Category.AUDIO, Category.FUNCTION_CALLING)
     ),
     Sample(
         title = "Gemini Live (Video input)",
         description = "Use bidirectional streaming to chat with Gemini using your" +
                 " phone's camera",
         navRoute = "streamVideo",
-        categories = listOf(Category.LIVE_API, Category.VIDEO, Category.FUNCTION_CALLING),
-        tools = listOf(
-            Tool.functionDeclarations(
-                listOf(
-                    FunctionDeclaration(
-                        "fetchWeather",
-                        "Get the weather conditions for a specific US city on a specific date.",
-                        mapOf(
-                            "city" to Schema.string("The US city of the location."),
-                            "state" to Schema.string("The US state of the location."),
-                            "date" to Schema.string(
-                                "The date for which to get the weather." +
-                                        " Date must be in the format: YYYY-MM-DD."
-                            ),
-                        ),
-                    )
-                )
-            )
-        ),
-        initialPrompt = content {
-            text("What was the weather in Boston, MA on October 17, 2024?")
-        }
+        categories = listOf(Category.LIVE_API, Category.VIDEO, Category.FUNCTION_CALLING)
     ),
     Sample(
         title = "Weather Chat",
@@ -208,7 +160,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Server Prompt Template - Imagen",
-        description = "Generate an image using a server prompt template. Note that you need to setup the template in" +
+        description = "Generate an image using a server prompt template. Note that you need to setup the template in " +
                 "the Firebase console before running this demo.",
         navRoute = "imagen",
         categories = listOf(Category.IMAGE),
