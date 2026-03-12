@@ -30,7 +30,7 @@ import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewMo
 
 @Composable
 fun ServerPromptScreen(
-    viewModel: ServerPromptTemplateViewModel = viewModel()
+    viewModel: ServerPromptTemplateViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     

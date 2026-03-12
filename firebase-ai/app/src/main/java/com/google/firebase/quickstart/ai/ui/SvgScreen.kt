@@ -36,7 +36,7 @@ import java.nio.ByteBuffer
 
 @Composable
 fun SvgScreen(
-    svgViewModel: SvgViewModel = viewModel<SvgViewModel>()
+    svgViewModel: SvgViewModel
 ) {
     var prompt by rememberSaveable { mutableStateOf("A kitten") }
     val uiState by svgViewModel.uiState.collectAsStateWithLifecycle()
