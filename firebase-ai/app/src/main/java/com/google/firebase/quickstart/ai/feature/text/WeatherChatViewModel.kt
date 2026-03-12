@@ -16,6 +16,8 @@ import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.content
 import com.google.firebase.quickstart.ai.feature.text.functioncalling.WeatherRepository
 import com.google.firebase.quickstart.ai.ui.UiChatMessage
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 
 @Serializable
@@ -74,16 +76,27 @@ class WeatherChatViewModel : ChatViewModel() {
             )
             when (functionCall.name) {
                 "fetchWeather" -> {
-                    val city = functionCall.args["city"]!!.jsonPrimitive.content
-                    val state = functionCall.args["state"]!!.jsonPrimitive.content // Fixed state retrieval
-                    val date = functionCall.args["date"]!!.jsonPrimitive.content
+                    val city = functionCall.args["city"]?.jsonPrimitive?.content
+                    val state = functionCall.args["state"]?.jsonPrimitive?.content // Fixed state retrieval
+                    val date = functionCall.args["date"]?.jsonPrimitive?.content
 
-                    val functionResponse = WeatherRepository
-                        .fetchWeather(city, state, date)
+                    val finalResponse = if (city == null || state == null || date == null) {
+                        chat.sendMessage(content("function") {
+                            part(FunctionResponsePart("fetchWeather",
+                                JsonObject(
+                                    mapOf(
+                                        "error" to JsonPrimitive("Unable to fetch weather - one of the parameters was null"),
+                                    )
+                                )))
+                        })
+                    } else {
+                        val functionResponse = WeatherRepository
+                            .fetchWeather(city, state, date)
 
-                    val finalResponse = chat.sendMessage(content("function") {
-                        part(FunctionResponsePart("fetchWeather", functionResponse))
-                    })
+                        chat.sendMessage(content("function") {
+                            part(FunctionResponsePart("fetchWeather", functionResponse))
+                        })
+                    }
 
                     validateAndDisplayResponse(finalResponse, currentMessages)
                 }
