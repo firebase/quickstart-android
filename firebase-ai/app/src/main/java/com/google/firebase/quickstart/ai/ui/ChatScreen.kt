@@ -1,10 +1,9 @@
-package com.google.firebase.quickstart.ai.feature.text
+package com.google.firebase.quickstart.ai.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
-import androidx.core.net.toUri
 import android.provider.OpenableColumns
 import android.text.format.Formatter
 import android.webkit.WebResourceRequest
@@ -12,8 +11,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -38,8 +39,6 @@ import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Attachment
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -66,34 +65,30 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebViewFeature
 import com.google.firebase.ai.type.FileDataPart
 import com.google.firebase.ai.type.ImagePart
 import com.google.firebase.ai.type.InlineDataPart
 import com.google.firebase.ai.type.TextPart
 import com.google.firebase.ai.type.WebGroundingChunk
+import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 
-@Serializable
-class ChatRoute(val sampleId: String)
 
 @Composable
 fun ChatScreen(
-    chatViewModel: ChatViewModel = viewModel<ChatViewModel>()
+    chatViewModel: ChatViewModel
 ) {
-    val messages: List<UiChatMessage> by chatViewModel.messages.collectAsStateWithLifecycle()
-    val isLoading: Boolean by chatViewModel.isLoading.collectAsStateWithLifecycle()
-    val errorMessage: String? by chatViewModel.errorMessage.collectAsStateWithLifecycle()
-    val attachments: List<Attachment> by chatViewModel.attachments.collectAsStateWithLifecycle()
+    val uiState by chatViewModel.uiState.collectAsStateWithLifecycle()
+    val messages by chatViewModel.messages.collectAsStateWithLifecycle()
+    val attachments by chatViewModel.attachments.collectAsStateWithLifecycle()
 
     val initialPrompt: String = chatViewModel.initialPrompt
 
@@ -111,6 +106,7 @@ fun ChatScreen(
                 .fillMaxSize()
                 .weight(0.5f)
         )
+        
         Box(
             contentAlignment = Alignment.BottomCenter
         ) {
@@ -119,14 +115,14 @@ fun ChatScreen(
                     .fillMaxWidth()
                     .background(color = MaterialTheme.colorScheme.surfaceContainer)
             ) {
-                if (isLoading) {
+                if (uiState is ChatUiState.Loading) {
                     LinearProgressIndicator(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     )
                 }
-                errorMessage?.let {
+                (uiState as? ChatUiState.Error)?.let {
                     Card(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.errorContainer
@@ -134,7 +130,7 @@ fun ChatScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = it,
+                            text = it.message,
                             modifier = Modifier.padding(16.dp),
                             color = MaterialTheme.colorScheme.onErrorContainer
                         )
@@ -173,7 +169,7 @@ fun ChatScreen(
                             chatViewModel.attachFile(bytes, mimeType, fileName)
                         }
                     },
-                    isLoading = isLoading
+                    isLoading = uiState is ChatUiState.Loading
                 )
             }
         }
@@ -322,7 +318,7 @@ fun ChatBubbleItem(
                                                 }
                                             }
 
-                                            setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                                            setBackgroundColor(Color.TRANSPARENT)
                                             loadDataWithBaseURL(
                                                 null,
                                                 searchEntryPoint.renderedContent,
@@ -534,13 +530,6 @@ fun AttachmentsMenu(
     }
 }
 
-/**
- * Meant to present attachments in the UI
- */
-data class Attachment(
-    val fileName: String,
-    val image: Bitmap? = null // only for image attachments
-)
 
 @Composable
 fun AttachmentsList(
@@ -623,7 +612,7 @@ fun ThoughtBubble(
                 Text(
                     text = text.trimIndent(),
                     style = MaterialTheme.typography.bodySmall.copy(
-                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                        fontStyle = FontStyle.Italic
                     ),
                     modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.onTertiaryContainer

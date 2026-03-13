@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.feature.media.imagen
+package com.google.firebase.quickstart.ai.ui
 
 import android.net.Uri
 import android.provider.OpenableColumns
@@ -44,25 +44,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.quickstart.ai.R
-import com.google.firebase.quickstart.ai.feature.text.Attachment
-import com.google.firebase.quickstart.ai.feature.text.AttachmentsList
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenViewModel
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
 
-@Serializable
-class ImagenRoute(val sampleId: String)
 
 @Composable
 fun ImagenScreen(
-    imagenViewModel: ImagenViewModel = viewModel<ImagenViewModel>()
+    imagenViewModel: ImagenViewModel
 ) {
+    val uiState by imagenViewModel.uiState.collectAsStateWithLifecycle()
+    val successState = uiState as? ImagenUiState.Success
+    val attachedImage = successState?.attachedImage
+    val generatedImages = successState?.images ?: emptyList()
+
     var imagenPrompt by rememberSaveable { mutableStateOf(imagenViewModel.initialPrompt) }
-    val errorMessage by imagenViewModel.errorMessage.collectAsStateWithLifecycle()
-    val isLoading by imagenViewModel.isLoading.collectAsStateWithLifecycle()
-    val generatedImages by imagenViewModel.generatedBitmaps.collectAsStateWithLifecycle()
-    val attachedImage by imagenViewModel.attachedImage.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
     val contentResolver = context.contentResolver
     val scope = rememberCoroutineScope()
@@ -152,7 +149,7 @@ fun ImagenScreen(
 
         }
 
-        if (isLoading) {
+        if (uiState is ImagenUiState.Loading) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -162,7 +159,7 @@ fun ImagenScreen(
                 CircularProgressIndicator()
             }
         }
-        errorMessage?.let {
+        (uiState as? ImagenUiState.Error)?.let {
             Card(
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -173,7 +170,7 @@ fun ImagenScreen(
                 )
             ) {
                 Text(
-                    text = it,
+                    text = it.message,
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(all = 16.dp)
                 )

@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.ai.feature.svg
+package com.google.firebase.quickstart.ai.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,21 +30,20 @@ import coil3.compose.SubcomposeAsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.svg.SvgDecoder
+import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.serialization.Serializable
 import java.nio.ByteBuffer
-
-@Serializable
-class SvgRoute(val sampleId: String)
 
 @Composable
 fun SvgScreen(
-    svgViewModel: SvgViewModel = viewModel<SvgViewModel>()
+    svgViewModel: SvgViewModel
 ) {
-    var prompt by rememberSaveable { mutableStateOf(svgViewModel.initialPrompt) }
-    val errorMessage by svgViewModel.errorMessage.collectAsStateWithLifecycle()
-    val isLoading by svgViewModel.isLoading.collectAsStateWithLifecycle()
-    val generatedSvgs by svgViewModel.generatedSvgs.collectAsStateWithLifecycle()
+    var prompt by rememberSaveable { mutableStateOf("A kitten") }
+    val uiState by svgViewModel.uiState.collectAsStateWithLifecycle()
+    
+    val isLoading = uiState is SvgUiState.Loading
+    val errorMessage = (uiState as? SvgUiState.Error)?.message
+    val generatedSvgs = (uiState as? SvgUiState.Success)?.svgs ?: emptyList()
 
     Column {
         ElevatedCard(

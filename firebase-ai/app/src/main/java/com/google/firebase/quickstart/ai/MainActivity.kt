@@ -1,8 +1,6 @@
 package com.google.firebase.quickstart.ai
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -22,27 +20,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.ai.type.toImagenInlineImage
-import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeRoute
-import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeScreen
-import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
-import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoScreen
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenScreen
-import com.google.firebase.quickstart.ai.feature.svg.SvgRoute
-import com.google.firebase.quickstart.ai.feature.svg.SvgScreen
-import com.google.firebase.quickstart.ai.feature.text.ChatRoute
-import com.google.firebase.quickstart.ai.feature.text.ChatScreen
-import com.google.firebase.quickstart.ai.feature.text.TextGenRoute
-import com.google.firebase.quickstart.ai.feature.text.TextGenScreen
+import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
+import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenViewModel
+import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
+import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
+import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
+import com.google.firebase.quickstart.ai.ui.ChatScreen
+import com.google.firebase.quickstart.ai.ui.ImagenScreen
+import com.google.firebase.quickstart.ai.ui.ServerPromptScreen
+import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
+import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
+import com.google.firebase.quickstart.ai.ui.SvgScreen
+import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
+import com.google.firebase.quickstart.ai.ui.navigation.ScreenType
 import com.google.firebase.quickstart.ai.ui.theme.FirebaseAILogicTheme
 
 class MainActivity : ComponentActivity() {
@@ -61,7 +58,7 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             colors = TopAppBarDefaults.topAppBarColors(
                                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                titleContentColor = MaterialTheme.colorScheme.primary
+                                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                             ),
                             title = {
                                 Text(topBarTitle)
@@ -81,74 +78,66 @@ class MainActivity : ComponentActivity() {
                             MainMenuScreen(
                                 onSampleClicked = {
                                     topBarTitle = it.title
-                                    when (it.navRoute) {
-                                        "chat" -> {
-                                            navController.navigate(ChatRoute(it.id))
-                                        }
-
-                                        "imagen" -> {
-                                            navController.navigate(ImagenRoute(it.id))
-                                        }
-
-                                        "stream" -> {
-                                            navController.navigate(StreamRealtimeRoute(it.id))
-                                        }
-                                        "streamVideo" -> {
-                                            navController.navigate(StreamRealtimeVideoRoute(it.id))
-                                        }
-                                        "text" -> {
-                                            navController.navigate(TextGenRoute(it.id))
-                                        }
-                                        "svg" -> {
-                                            navController.navigate(SvgRoute(it.id))
-                                        }
-                                    }
+                                    navController.navigate(it.route)
                                 }
                             )
                         }
-                        // Text Samples
-                        composable<ChatRoute> {
-                            ChatScreen()
-                        }
-                        // Imagen Samples
-                        composable<ImagenRoute> {
-                            ImagenScreen()
-                        }
-                        // The permission is checked by the @RequiresPermission annotation on the
-                        // StreamRealtimeScreen composable.
-                        @SuppressLint("MissingPermission")
-                        composable<StreamRealtimeRoute> {
-                            StreamRealtimeScreen()
-                        }
-                        // The permission is checked by the @RequiresPermission annotation on the
-                        // StreamRealtimeVideoScreen composable.
-                        @SuppressLint("MissingPermission")
-                        composable<StreamRealtimeVideoRoute> {
-                            StreamRealtimeVideoScreen()
-                        }
-                        composable<TextGenRoute> {
-                            TextGenScreen()
-                        }
-                        composable<SvgRoute> {
-                            SvgScreen()
+
+                        // Add navigation for all of the samples
+                        FIREBASE_AI_SAMPLES.forEach { sample ->
+                            composable(
+                                route = sample.route::class,
+                                typeMap = emptyMap()
+                            ) {
+                                val viewModelClass = sample.viewModelClass?.java
+                                    ?: return@composable
+                                val vm = viewModel(modelClass = viewModelClass)
+
+                                when (sample.screenType) {
+                                    ScreenType.CHAT -> {
+                                        (vm as? ChatViewModel)?.let { ChatScreen(it) }
+                                    }
+
+                                    ScreenType.IMAGEN -> {
+                                        (vm as? ImagenViewModel)?.let { ImagenScreen(it) }
+                                    }
+
+                                    ScreenType.SVG -> {
+                                        (vm as? SvgViewModel)?.let { SvgScreen(it) }
+                                    }
+
+                                    ScreenType.SERVER_PROMPT -> {
+                                        (vm as? ServerPromptTemplateViewModel)?.let { ServerPromptScreen(it) }
+                                    }
+
+                                    ScreenType.BIDI -> {
+                                        (vm as? BidiViewModel)?.let {
+                                            @SuppressLint("MissingPermission")
+                                            StreamRealtimeScreen(it)
+                                        }
+                                    }
+
+                                    ScreenType.BIDI_VIDEO -> {
+                                        (vm as? BidiViewModel)?.let {
+                                            @SuppressLint("MissingPermission")
+                                            StreamRealtimeVideoScreen(it)
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-            navController.addOnDestinationChangedListener(object : NavController.OnDestinationChangedListener {
-                override fun onDestinationChanged(
-                    controller: NavController,
-                    destination: NavDestination,
-                    arguments: Bundle?
-                ) {
-                    if (destination.route == "mainMenu") {
-                        topBarTitle = getString(R.string.app_name)
-                    }
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                if (destination.route == "mainMenu") {
+                    topBarTitle = getString(R.string.app_name)
                 }
-            })
+            }
         }
     }
-    companion object{
+
+    companion object {
         lateinit var catImage: Bitmap
     }
 }
