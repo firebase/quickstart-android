@@ -75,7 +75,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Audio Summarization",
-        description = "Summarize an audio file",
+        description = "Use Gemini 3.1 Flash Lite to summarize an audio file",
         route = AudioSummarizationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = AudioSummarizationViewModel::class,
