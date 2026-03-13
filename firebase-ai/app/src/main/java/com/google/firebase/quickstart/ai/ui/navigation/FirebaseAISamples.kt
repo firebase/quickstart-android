@@ -204,7 +204,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = GoogleSearchGroundingRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = GoogleSearchGroundingViewModel::class,
-        categories = listOf(Category.TEXT, Category.DOCUMENT)
+        categories = listOf(Category.TEXT)
     ),
     Sample(
         title = "Server Prompt Template - Imagen",
