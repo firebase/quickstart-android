@@ -19,7 +19,7 @@ class TranslationViewModel : ChatViewModel() {
             Hey, are you down to grab some pizza later? I'm starving!
         """.trimIndent()
 
-    private var chat: Chat
+    private val chat: Chat
 
     init {
         val generativeModel = Firebase.ai(
