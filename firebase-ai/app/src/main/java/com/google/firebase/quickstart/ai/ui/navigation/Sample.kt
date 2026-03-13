@@ -11,7 +11,6 @@ enum class Category(
     MULTIMODAL_UNDERSTANDING("Multimodal understanding"),
     TOOLS_FC("Tools and Function calling"),
     LIVE_API("Live API streaming"),
-    HYBRID_AI("Hybrid inference"),
     SERVER_PROMPTS("Server prompt templates"),
     IMAGEN("Imagen")
 }

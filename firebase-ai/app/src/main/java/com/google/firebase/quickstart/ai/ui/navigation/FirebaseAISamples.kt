@@ -138,7 +138,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Gemini 2.5 Flash Image (Nano Banana)",
-        description = "Generate and/or edit images using Gemini 2.5 Flash Image aka nanobanana",
+        description = "Generate and/or edit images using Nano Banana",
         route = NanoBananaRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaViewModel::class,
@@ -170,6 +170,24 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
+        title = "Grounding with Google Search",
+        description = "Use Grounding with Google Search to get responses based on up-to-date information from the" +
+                " web.",
+        route = GoogleSearchGroundingRoute,
+        screenType = ScreenType.CHAT,
+        viewModelClass = GoogleSearchGroundingViewModel::class,
+        categories = listOf(Category.TOOLS_FC)
+    ),
+    Sample(
+        title = "Weather Chat",
+        description = "Use function calling to get the weather conditions" +
+                " for a specific US city on a specific date.",
+        route = WeatherChatRoute,
+        screenType = ScreenType.CHAT,
+        viewModelClass = WeatherChatViewModel::class,
+        categories = listOf(Category.TOOLS_FC)
+    ),
+    Sample(
         title = "Gemini Live (audio input)",
         description = "Use bidirectional streaming to get information about" +
                 " weather conditions for a specific US city on a specific date",
@@ -188,22 +206,13 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.LIVE_API, Category.TOOLS_FC)
     ),
     Sample(
-        title = "Weather Chat",
-        description = "Use function calling to get the weather conditions" +
-                " for a specific US city on a specific date.",
-        route = WeatherChatRoute,
-        screenType = ScreenType.CHAT,
-        viewModelClass = WeatherChatViewModel::class,
-        categories = listOf(Category.TOOLS_FC)
-    ),
-    Sample(
-        title = "Grounding with Google Search",
-        description = "Use Grounding with Google Search to get responses based on up-to-date information from the" +
-                " web.",
-        route = GoogleSearchGroundingRoute,
-        screenType = ScreenType.CHAT,
-        viewModelClass = GoogleSearchGroundingViewModel::class,
-        categories = listOf(Category.TOOLS_FC)
+        title = "Server Prompt Templates - Gemini",
+        description = "Generate an invoice using server prompt templates.  Note that you need to setup the template" +
+                " in the Firebase console before running this demo.",
+        route = ServerPromptTemplateRoute,
+        screenType = ScreenType.SERVER_PROMPT,
+        viewModelClass = ServerPromptTemplateViewModel::class,
+        categories = listOf(Category.SERVER_PROMPTS),
     ),
     Sample(
         title = "Server Prompt Template - Imagen",
@@ -213,15 +222,6 @@ val FIREBASE_AI_SAMPLES = listOf(
         screenType = ScreenType.IMAGEN,
         viewModelClass = ImagenTemplateViewModel::class,
         categories = listOf(Category.SERVER_PROMPTS)
-    ),
-    Sample(
-        title = "Server Prompt Templates - Gemini",
-        description = "Generate an invoice using server prompt templates.  Note that you need to setup the template" +
-                " in the Firebase console before running this demo.",
-        route = ServerPromptTemplateRoute,
-        screenType = ScreenType.SERVER_PROMPT,
-        viewModelClass = ServerPromptTemplateViewModel::class,
-        categories = listOf(Category.SERVER_PROMPTS),
     ),
     Sample(
         title = "Thinking",
