@@ -54,24 +54,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = TranslationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = TranslationViewModel::class,
-        categories = listOf(Category.TEXT)
-    ),
-    Sample(
-        title = "Travel tips",
-        description = "The user wants the model to help a new traveler" +
-                " with travel tips",
-        route = TravelTipsRoute,
-        screenType = ScreenType.CHAT,
-        viewModelClass = TravelTipsViewModel::class,
-        categories = listOf(Category.TEXT),
-    ),
-    Sample(
-        title = "Chatbot recommendations for courses",
-        description = "A chatbot suggests courses for a performing arts program.",
-        route = CourseRecommendationsRoute,
-        screenType = ScreenType.CHAT,
-        viewModelClass = CourseRecommendationsViewModel::class,
-        categories = listOf(Category.TEXT),
+        categories = listOf(Category.GEMINI3)
     ),
     Sample(
         title = "Audio Summarization",
@@ -79,7 +62,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = AudioSummarizationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = AudioSummarizationViewModel::class,
-        categories = listOf(Category.AUDIO),
+        categories = listOf(Category.MULTIMODAL_UNDERSTANDING),
     ),
     Sample(
         title = "Translation from audio (Vertex AI)",
@@ -87,7 +70,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = AudioTranslationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = AudioTranslationViewModel::class,
-        categories = listOf(Category.AUDIO)
+        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
         title = "Blog post creator (Vertex AI)",
@@ -95,7 +78,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = ImageBlogCreatorRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = ImageBlogCreatorViewModel::class,
-        categories = listOf(Category.IMAGE)
+        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
         title = "Imagen 4 - image generation",
@@ -103,7 +86,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = ImagenGenerationRoute,
         screenType = ScreenType.IMAGEN,
         viewModelClass = ImagenGenerationViewModel::class,
-        categories = listOf(Category.IMAGE)
+        categories = listOf(Category.IMAGEN)
     ),
     Sample(
         title = "Imagen 3 - Inpainting (Vertex AI)",
@@ -111,7 +94,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = ImagenInpaintingRoute,
         screenType = ScreenType.IMAGEN,
         viewModelClass = ImagenInpaintingViewModel::class,
-        categories = listOf(Category.IMAGE)
+        categories = listOf(Category.IMAGEN)
     ),
     Sample(
         title = "Imagen 3 - Outpainting (Vertex AI)",
@@ -119,7 +102,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = ImagenOutpaintingRoute,
         screenType = ScreenType.IMAGEN,
         viewModelClass = ImagenOutpaintingViewModel::class,
-        categories = listOf(Category.IMAGE)
+        categories = listOf(Category.IMAGEN)
     ),
     Sample(
         title = "Imagen 3 - Subject Reference (Vertex AI)",
@@ -127,7 +110,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = ImagenSubjectReferenceRoute,
         screenType = ScreenType.IMAGEN,
         viewModelClass = ImagenSubjectReferenceViewModel::class,
-        categories = listOf(Category.IMAGE)
+        categories = listOf(Category.IMAGEN)
     ),
     Sample(
         title = "Imagen 3 - Style Transfer (Vertex AI)",
@@ -135,7 +118,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = ImagenStyleTransferRoute,
         screenType = ScreenType.IMAGEN,
         viewModelClass = ImagenStyleTransferViewModel::class,
-        categories = listOf(Category.IMAGE)
+        categories = listOf(Category.IMAGEN)
     ),
     Sample(
         title = "Gemini 2.5 Flash Image (aka nanobanana)",
@@ -143,7 +126,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = ImageGenerationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = ImageGenerationViewModel::class,
-        categories = listOf(Category.IMAGE)
+        categories = listOf(Category.NANO_BANANA)
     ),
     Sample(
         title = "Document comparison (Vertex AI)",
@@ -152,7 +135,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = DocumentComparisonRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = DocumentComparisonViewModel::class,
-        categories = listOf(Category.DOCUMENT)
+        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
         title = "Hashtags for a video (Vertex AI)",
@@ -160,7 +143,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = VideoHashtagGeneratorRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = VideoHashtagGeneratorViewModel::class,
-        categories = listOf(Category.VIDEO)
+        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
         title = "Summarize video",
@@ -168,25 +151,25 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = VideoSummarizationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = VideoSummarizationViewModel::class,
-        categories = listOf(Category.VIDEO)
+        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
-        title = "ForecastTalk",
+        title = "Gemini Live (audio input)",
         description = "Use bidirectional streaming to get information about" +
                 " weather conditions for a specific US city on a specific date",
         route = StreamRealtimeAudioRoute,
         screenType = ScreenType.BIDI,
         viewModelClass = StreamAudioViewModel::class,
-        categories = listOf(Category.LIVE_API, Category.AUDIO, Category.FUNCTION_CALLING)
+        categories = listOf(Category.LIVE_API, Category.TOOLS_FC)
     ),
     Sample(
-        title = "Gemini Live (Video input)",
+        title = "Gemini Live (video input)",
         description = "Use bidirectional streaming to chat with Gemini using your" +
                 " phone's camera",
         route = StreamRealtimeVideoRoute,
         screenType = ScreenType.BIDI_VIDEO,
         viewModelClass = StreamVideoViewModel::class,
-        categories = listOf(Category.LIVE_API, Category.VIDEO, Category.FUNCTION_CALLING)
+        categories = listOf(Category.LIVE_API, Category.TOOLS_FC)
     ),
     Sample(
         title = "Weather Chat",
@@ -195,7 +178,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = WeatherChatRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = WeatherChatViewModel::class,
-        categories = listOf(Category.TEXT, Category.FUNCTION_CALLING)
+        categories = listOf(Category.TOOLS_FC)
     ),
     Sample(
         title = "Grounding with Google Search",
@@ -204,7 +187,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = GoogleSearchGroundingRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = GoogleSearchGroundingViewModel::class,
-        categories = listOf(Category.TEXT)
+        categories = listOf(Category.TOOLS_FC)
     ),
     Sample(
         title = "Server Prompt Template - Imagen",
@@ -213,7 +196,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = ImagenTemplateRoute,
         screenType = ScreenType.IMAGEN,
         viewModelClass = ImagenTemplateViewModel::class,
-        categories = listOf(Category.IMAGE)
+        categories = listOf(Category.SERVER_PROMPTS)
     ),
     Sample(
         title = "Server Prompt Templates - Gemini",
@@ -222,7 +205,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = ServerPromptTemplateRoute,
         screenType = ScreenType.SERVER_PROMPT,
         viewModelClass = ServerPromptTemplateViewModel::class,
-        categories = listOf(Category.TEXT),
+        categories = listOf(Category.SERVER_PROMPTS),
     ),
     Sample(
         title = "Thinking",
@@ -230,7 +213,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = ThinkingChatRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = ThinkingChatViewModel::class,
-        categories = listOf(Category.TEXT)
+        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
         title = "SVG Generator",
@@ -238,6 +221,6 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = SvgRoute,
         screenType = ScreenType.SVG,
         viewModelClass = SvgViewModel::class,
-        categories = listOf(Category.IMAGE, Category.TEXT)
+        categories = listOf(Category.GEMINI3)
     )
 )

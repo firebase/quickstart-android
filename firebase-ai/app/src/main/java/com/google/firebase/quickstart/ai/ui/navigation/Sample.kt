@@ -6,13 +6,14 @@ import kotlin.reflect.KClass
 enum class Category(
     val label: String
 ) {
-    TEXT("Text"),
-    IMAGE("Image"),
-    VIDEO("Video"),
-    AUDIO("Audio"),
-    DOCUMENT("Document"),
-    FUNCTION_CALLING("Function calling"),
-    LIVE_API("Live API Streaming")
+    GEMINI3("Gemini 3"),
+    NANO_BANANA("Nano Banana"),
+    MULTIMODAL_UNDERSTANDING("Multimodal understanding"),
+    TOOLS_FC("Tools and Function calling"),
+    LIVE_API("Live API streaming"),
+    HYBRID_AI("Hybrid inference"),
+    SERVER_PROMPTS("Server prompt templates"),
+    IMAGEN("Imagen")
 }
 
 enum class ScreenType {
