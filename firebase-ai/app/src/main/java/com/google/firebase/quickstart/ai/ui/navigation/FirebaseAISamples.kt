@@ -36,6 +36,8 @@ import com.google.firebase.quickstart.ai.feature.text.SvgRoute
 import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
 import com.google.firebase.quickstart.ai.feature.text.ThinkingChatRoute
 import com.google.firebase.quickstart.ai.feature.text.ThinkingChatViewModel
+import com.google.firebase.quickstart.ai.feature.text.TranslationRoute
+import com.google.firebase.quickstart.ai.feature.text.TranslationViewModel
 import com.google.firebase.quickstart.ai.feature.text.TravelTipsRoute
 import com.google.firebase.quickstart.ai.feature.text.TravelTipsViewModel
 import com.google.firebase.quickstart.ai.feature.text.VideoHashtagGeneratorRoute
@@ -46,6 +48,14 @@ import com.google.firebase.quickstart.ai.feature.text.WeatherChatRoute
 import com.google.firebase.quickstart.ai.feature.text.WeatherChatViewModel
 
 val FIREBASE_AI_SAMPLES = listOf(
+    Sample(
+        title = "Translate text",
+        description = "Use Gemini 3.1 Flash-Lite to translate text",
+        route = TranslationRoute,
+        screenType = ScreenType.CHAT,
+        viewModelClass = TranslationViewModel::class,
+        categories = listOf(Category.TEXT)
+    ),
     Sample(
         title = "Travel tips",
         description = "The user wants the model to help a new traveler" +
