@@ -16,9 +16,11 @@ object ImageGenerationRoute
 
 class ImageGenerationViewModel : ChatViewModel() {
 
-    override val initialPrompt: String = "Hi, can you create a 3d rendered image of a pig " +
-            "with wings and a top hat flying over a happy " +
-            "futuristic scifi city with lots of greenery?"
+    override val initialPrompt: String = """
+        Hi, can you create a 3d rendered image of a pig
+        with wings and a top hat flying over a happy
+        futuristic scifi city with lots of greenery?
+        """.trimIndent()
 
     private val chat: Chat
 

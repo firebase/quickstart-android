@@ -37,23 +37,19 @@ class TravelTipsViewModel : ChatViewModel() {
 
         chat = generativeModel.startChat(
             history = listOf(
-                content {
-                    role = "user"
+                content("role") {
                     text("I have never traveled before. When should I book a flight?")
                 },
-                content {
-                    role = "model"
+                content("model") {
                     text(
                         "You should book flights a couple of months ahead of time." +
                                 " It will be cheaper and more flexible for you."
                     )
                 },
-                content {
-                    role = "user"
+                content("user") {
                     text("Do I need a passport?")
                 },
-                content {
-                    role = "model"
+                content("model") {
                     text(
                         "If you are traveling outside your own country, make sure" +
                                 " your passport is up-to-date and valid for more" +
