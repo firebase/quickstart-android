@@ -20,16 +20,18 @@ import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationRoute
 import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationViewModel
 import com.google.firebase.quickstart.ai.feature.text.AudioTranslationRoute
 import com.google.firebase.quickstart.ai.feature.text.AudioTranslationViewModel
-import com.google.firebase.quickstart.ai.feature.text.CourseRecommendationsRoute
-import com.google.firebase.quickstart.ai.feature.text.CourseRecommendationsViewModel
 import com.google.firebase.quickstart.ai.feature.text.DocumentComparisonRoute
 import com.google.firebase.quickstart.ai.feature.text.DocumentComparisonViewModel
 import com.google.firebase.quickstart.ai.feature.text.GoogleSearchGroundingRoute
 import com.google.firebase.quickstart.ai.feature.text.GoogleSearchGroundingViewModel
 import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorRoute
 import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorViewModel
-import com.google.firebase.quickstart.ai.feature.text.ImageGenerationRoute
-import com.google.firebase.quickstart.ai.feature.text.ImageGenerationViewModel
+import com.google.firebase.quickstart.ai.feature.text.NanoBanana2Route
+import com.google.firebase.quickstart.ai.feature.text.NanoBanana2ViewModel
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaProRoute
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaProViewModel
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaRoute
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateRoute
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.text.SvgRoute
@@ -38,8 +40,6 @@ import com.google.firebase.quickstart.ai.feature.text.ThinkingChatRoute
 import com.google.firebase.quickstart.ai.feature.text.ThinkingChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.TranslationRoute
 import com.google.firebase.quickstart.ai.feature.text.TranslationViewModel
-import com.google.firebase.quickstart.ai.feature.text.TravelTipsRoute
-import com.google.firebase.quickstart.ai.feature.text.TravelTipsViewModel
 import com.google.firebase.quickstart.ai.feature.text.VideoHashtagGeneratorRoute
 import com.google.firebase.quickstart.ai.feature.text.VideoHashtagGeneratorViewModel
 import com.google.firebase.quickstart.ai.feature.text.VideoSummarizationRoute
@@ -121,11 +121,27 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.IMAGEN)
     ),
     Sample(
-        title = "Gemini 2.5 Flash Image (aka nanobanana)",
-        description = "Generate and/or edit images using Gemini 2.5 Flash Image aka nanobanana",
-        route = ImageGenerationRoute,
+        title = "Gemini 3.1 Flash Image (Nano Banana 2)",
+        description = "Generate and/or edit images using Nano Banana 2",
+        route = NanoBanana2Route,
         screenType = ScreenType.CHAT,
-        viewModelClass = ImageGenerationViewModel::class,
+        viewModelClass = NanoBanana2ViewModel::class,
+        categories = listOf(Category.NANO_BANANA)
+    ),
+    Sample(
+        title = "Gemini 3 Pro Image (Nano Banana Pro)",
+        description = "Generate and/or edit images using Nano Banana Pro",
+        route = NanoBananaProRoute,
+        screenType = ScreenType.CHAT,
+        viewModelClass = NanoBananaProViewModel::class,
+        categories = listOf(Category.NANO_BANANA)
+    ),
+    Sample(
+        title = "Gemini 2.5 Flash Image (Nano Banana)",
+        description = "Generate and/or edit images using Gemini 2.5 Flash Image aka nanobanana",
+        route = NanoBananaRoute,
+        screenType = ScreenType.CHAT,
+        viewModelClass = NanoBananaViewModel::class,
         categories = listOf(Category.NANO_BANANA)
     ),
     Sample(
