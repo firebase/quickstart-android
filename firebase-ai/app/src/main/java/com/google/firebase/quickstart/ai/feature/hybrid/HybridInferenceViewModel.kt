@@ -28,16 +28,17 @@ object HybridInferenceRoute
 
 @OptIn(PublicPreviewAPI::class)
 class HybridInferenceViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(HybridInferenceUiState(
-        expenses = listOf(
-            Expense(UUID.randomUUID().toString(), "Lunch", 15.50),
-            Expense(UUID.randomUUID().toString(), "Coffee", 4.75)
+    private val _uiState = MutableStateFlow(
+        HybridInferenceUiState(
+            expenses = listOf(
+                Expense(UUID.randomUUID().toString(), "Lunch", 15.50),
+                Expense(UUID.randomUUID().toString(), "Coffee", 4.75)
+            )
         )
-    ))
+    )
     val uiState: StateFlow<HybridInferenceUiState> = _uiState.asStateFlow()
 
-    private val model = Firebase.ai(backend = GenerativeBackend.googleAI())
-        .generativeModel(
+    private val model = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
             modelName = "gemini-3.1-flash-lite-preview",
             onDeviceConfig = OnDeviceConfig(mode = InferenceMode.PREFER_ON_DEVICE)
         )
@@ -58,15 +59,22 @@ class HybridInferenceViewModel : ViewModel() {
                             is DownloadStatus.DownloadStarted -> {
                                 _uiState.update { it.copy(modelStatus = "Downloading model...") }
                             }
+
                             is DownloadStatus.DownloadInProgress -> {
                                 val progress = downloadStatus.totalBytesDownloaded
                                 _uiState.update { it.copy(modelStatus = "Downloading: $progress bytes downloaded") }
                             }
+
                             is DownloadStatus.DownloadCompleted -> {
                                 _uiState.update { it.copy(modelStatus = "Model ready") }
                             }
+
                             is DownloadStatus.DownloadFailed -> {
-                                _uiState.update { it.copy(modelStatus = "Download failed", errorMessage = "Model download failed") }
+                                _uiState.update {
+                                    it.copy(
+                                        modelStatus = "Download failed", errorMessage = "Model download failed"
+                                    )
+                                }
                             }
                         }
                     }
@@ -119,15 +127,12 @@ class HybridInferenceViewModel : ViewModel() {
         // Simple parsing: "Store, Price"
         val parts = text
             // Sometimes the output contains single quotes
-            .replace("'", "")
-            .split(",", limit = 2)
+            .replace("'", "").split(",", limit = 2)
         if (parts.size >= 2) {
             val name = parts[0].trim()
-            val priceStr = parts[1].trim()
-                .replace("$", "")
-                .replace(",", "")
+            val priceStr = parts[1].trim().replace("$", "").replace(",", "")
             val price = priceStr.toDoubleOrNull() ?: 0.0
-            
+
             val newExpense = Expense(UUID.randomUUID().toString(), name, price)
             _uiState.update { it.copy(expenses = it.expenses + newExpense) }
         } else {
