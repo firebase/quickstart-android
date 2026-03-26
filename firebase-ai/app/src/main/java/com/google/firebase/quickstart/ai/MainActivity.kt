@@ -27,6 +27,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenViewModel
 import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
@@ -36,6 +37,7 @@ import com.google.firebase.quickstart.ai.ui.ImagenScreen
 import com.google.firebase.quickstart.ai.ui.ServerPromptScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
+import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
 import com.google.firebase.quickstart.ai.ui.SvgScreen
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
@@ -122,6 +124,10 @@ class MainActivity : ComponentActivity() {
                                             @SuppressLint("MissingPermission")
                                             StreamRealtimeVideoScreen(it)
                                         }
+                                    }
+
+                                    ScreenType.HYBRID -> {
+                                        (vm as? HybridInferenceViewModel)?.let { HybridInferenceScreen(it) }
                                     }
                                 }
                             }

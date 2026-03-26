@@ -2,6 +2,8 @@ package com.google.firebase.quickstart.ai.ui.navigation
 
 import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamVideoViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceRoute
+import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeAudioRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
 import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenGenerationRoute
@@ -239,5 +241,13 @@ val FIREBASE_AI_SAMPLES = listOf(
         screenType = ScreenType.SVG,
         viewModelClass = SvgViewModel::class,
         categories = listOf(Category.IMAGE, Category.TEXT)
+    ),
+    Sample(
+        title = "Hybrid Receipt Scanner",
+        description = "Use hybrid inference to scan receipts and extract expense data on-device whenever possible.",
+        route = HybridInferenceRoute,
+        screenType = ScreenType.HYBRID,
+        viewModelClass = HybridInferenceViewModel::class,
+        categories = listOf(Category.TEXT, Category.IMAGE)
     )
 )

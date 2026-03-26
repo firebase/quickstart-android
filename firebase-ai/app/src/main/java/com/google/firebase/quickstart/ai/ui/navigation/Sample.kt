@@ -21,7 +21,8 @@ enum class ScreenType {
     SVG,
     SERVER_PROMPT,
     BIDI,
-    BIDI_VIDEO
+    BIDI_VIDEO,
+    HYBRID
 }
 
 data class Sample(
