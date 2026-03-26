@@ -55,7 +55,7 @@ class ImagenStyleTransferViewModel : ImagenViewModel() {
     override suspend fun performGeneration(
         inputText: String,
         currentState: ImagenUiState.Success
-    ): ImagenGenerationResponse<ImagenInlineImage> {
+    ): List<Bitmap> {
         val attachedImage = currentState.attachedImage!!
         return imagenModel.editImage(
             listOf(
@@ -63,6 +63,6 @@ class ImagenStyleTransferViewModel : ImagenViewModel() {
                 ImagenStyleReference(attachedImage.toImagenInlineImage(), 1, "an art style")
             ),
             "Generate an image in an art style [1] based on the following caption: $inputText",
-        )
+        ).images.map { it.asBitmap() }
     }
 }

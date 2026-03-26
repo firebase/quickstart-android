@@ -30,7 +30,7 @@ abstract class ImagenViewModel : ViewModel() {
     protected abstract suspend fun performGeneration(
         inputText: String,
         currentState: ImagenUiState.Success
-    ): ImagenGenerationResponse<ImagenInlineImage>
+    ): List<Bitmap>
 
     fun generateImages(inputText: String) {
         val currentState = (_uiState.value as? ImagenUiState.Success) ?: ImagenUiState.Success()
@@ -39,7 +39,7 @@ abstract class ImagenViewModel : ViewModel() {
             _uiState.value = ImagenUiState.Loading
             try {
                 val imageResponse = performGeneration(inputText, currentState)
-                _uiState.value = currentState.copy(images = imageResponse.images.map { it.asBitmap() })
+                _uiState.value = currentState.copy(images = imageResponse)
             } catch (e: Exception) {
                 _uiState.value = ImagenUiState.Error(e.localizedMessage ?: "Unknown error")
             }

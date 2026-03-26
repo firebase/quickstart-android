@@ -31,6 +31,7 @@ class ImageGenerationViewModel : ChatViewModel() {
             modelName = "gemini-2.5-flash-image",
             generationConfig = generationConfig {
                 responseModalities = listOf(ResponseModality.TEXT, ResponseModality.IMAGE)
+                candidateCount = 4
             }
         )
         chat = generativeModel.startChat()
@@ -38,6 +39,7 @@ class ImageGenerationViewModel : ChatViewModel() {
 
     override suspend fun performSendMessage(prompt: Content, currentMessages: List<UiChatMessage>) {
         val response = chat.sendMessage(prompt)
+
         validateAndDisplayResponse(response, currentMessages)
     }
 }

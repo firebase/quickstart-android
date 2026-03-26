@@ -54,7 +54,7 @@ class ImagenSubjectReferenceViewModel : ImagenViewModel() {
     override suspend fun performGeneration(
         inputText: String,
         currentState: ImagenUiState.Success
-    ): ImagenGenerationResponse<ImagenInlineImage> {
+    ): List<Bitmap> {
         val attachedImage = currentState.attachedImage!!
         return imagenModel.editImage(
             listOf(
@@ -67,6 +67,6 @@ class ImagenSubjectReferenceViewModel : ImagenViewModel() {
             ),
             "Create an image about An animal [1] to match the description: " +
                     inputText.replace("<subject>", "An animal [1]"),
-        )
+        ).images.map { it.asBitmap() }
     }
 }

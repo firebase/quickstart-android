@@ -34,7 +34,7 @@ class ImagenTemplateViewModel : ImagenViewModel() {
     override suspend fun performGeneration(
         inputText: String,
         currentState: ImagenUiState.Success
-    ): ImagenGenerationResponse<ImagenInlineImage> {
+    ): List<Bitmap> {
         return try {
             templateImagenModel.generateImages("imagen-basic", mapOf("prompt" to inputText))
         } catch (e: Exception) {
@@ -47,6 +47,6 @@ class ImagenTemplateViewModel : ImagenViewModel() {
             } else {
                 throw e
             }
-        }
+        }.images.map { it.asBitmap() }
     }
 }

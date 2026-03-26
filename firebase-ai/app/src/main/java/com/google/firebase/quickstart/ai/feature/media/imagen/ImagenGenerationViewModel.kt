@@ -2,9 +2,11 @@ package com.google.firebase.quickstart.ai.feature.media.imagen
 
 import android.graphics.Bitmap
 import com.google.firebase.Firebase
+import com.google.firebase.ai.GenerativeModel
 import com.google.firebase.ai.ImagenModel
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.ImagePart
 import com.google.firebase.ai.type.ImagenGenerationResponse
 import com.google.firebase.ai.type.ImagenImageFormat
 import com.google.firebase.ai.type.ImagenInlineImage
@@ -12,7 +14,12 @@ import com.google.firebase.ai.type.ImagenPersonFilterLevel
 import com.google.firebase.ai.type.ImagenSafetyFilterLevel
 import com.google.firebase.ai.type.ImagenSafetySettings
 import com.google.firebase.ai.type.PublicPreviewAPI
+import com.google.firebase.ai.type.ResponseModality
+import com.google.firebase.ai.type.ThinkingLevel
+import com.google.firebase.ai.type.generationConfig
 import com.google.firebase.ai.type.imagenGenerationConfig
+import com.google.firebase.ai.type.thinkingConfig
+import com.google.firebase.ai.type.toImagenInlineImage
 import com.google.firebase.quickstart.ai.ui.ImagenUiState
 import kotlinx.serialization.Serializable
 
@@ -28,28 +35,37 @@ class ImagenGenerationViewModel : ImagenViewModel() {
     override val additionalImage: Bitmap? = null
     override val imageLabels: List<String> = emptyList()
 
-    private val imagenModel: ImagenModel
+    private val generativeModel: GenerativeModel
 
     init {
-        imagenModel = Firebase.ai(
+        generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
-        ).imagenModel(
-            modelName = "imagen-4.0-generate-001",
-            generationConfig = imagenGenerationConfig {
-                numberOfImages = 4
-                imageFormat = ImagenImageFormat.png()
-            },
-            safetySettings = ImagenSafetySettings(
-                safetyFilterLevel = ImagenSafetyFilterLevel.BLOCK_LOW_AND_ABOVE,
-                personFilterLevel = ImagenPersonFilterLevel.BLOCK_ALL
-            )
+        ).generativeModel(
+            modelName = "gemini-3.1-flash-image-preview",
+            generationConfig = generationConfig {
+                responseModalities = listOf(ResponseModality.TEXT, ResponseModality.IMAGE)
+//                candidateCount = 4
+                thinkingConfig = thinkingConfig {
+                    thinkingLevel = ThinkingLevel.MINIMAL
+                }
+            }
         )
     }
 
     override suspend fun performGeneration(
         inputText: String,
         currentState: ImagenUiState.Success
-    ): ImagenGenerationResponse<ImagenInlineImage> {
-        return imagenModel.generateImages(inputText)
+    ): List<Bitmap> {
+        val bitmaps = arrayListOf<Bitmap>()
+        generativeModel.generateContent(inputText)
+            .candidates.forEach { candidate ->
+                candidate.content.parts.filterIsInstance<ImagePart>()
+                    .forEach {
+                        bitmaps.add(it.image)
+                    }
+            }
+
+        return bitmaps
+//        return imagenModel.generateImages(inputText)
     }
 }

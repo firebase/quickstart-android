@@ -57,7 +57,7 @@ class ImagenInpaintingViewModel : ImagenViewModel() {
     override suspend fun performGeneration(
         inputText: String,
         currentState: ImagenUiState.Success
-    ): ImagenGenerationResponse<ImagenInlineImage> {
+    ): List<Bitmap> {
         val bitmap = currentState.attachedImage!!
         val mask = when (currentState.selectedOption) {
             "Foreground" -> ImagenForegroundMask()
@@ -67,6 +67,6 @@ class ImagenInpaintingViewModel : ImagenViewModel() {
             listOfNotNull(ImagenRawImage(bitmap.toImagenInlineImage()), mask),
             inputText,
             ImagenEditingConfig(ImagenEditMode.INPAINT_INSERTION)
-        )
+        ).images.map { it.asBitmap() }
     }
 }

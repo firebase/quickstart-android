@@ -58,7 +58,7 @@ class ImagenOutpaintingViewModel : ImagenViewModel() {
     override suspend fun performGeneration(
         inputText: String,
         currentState: ImagenUiState.Success
-    ): ImagenGenerationResponse<ImagenInlineImage> {
+    ): List<Bitmap> {
         val bitmap = currentState.attachedImage!!
         val position = when (currentState.selectedOption) {
             "Top" -> ImagenImagePlacement.TOP_CENTER
@@ -77,6 +77,6 @@ class ImagenOutpaintingViewModel : ImagenViewModel() {
             listOf(sourceImage, ImagenRawMask(mask.image!!, 0.05)),
             inputText,
             ImagenEditingConfig(ImagenEditMode.OUTPAINT)
-        )
+        ).images.map { it.asBitmap() }
     }
 }
