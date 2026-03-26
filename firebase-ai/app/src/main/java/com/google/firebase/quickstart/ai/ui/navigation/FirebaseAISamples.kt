@@ -248,6 +248,6 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = HybridInferenceRoute,
         screenType = ScreenType.HYBRID,
         viewModelClass = HybridInferenceViewModel::class,
-        categories = listOf(Category.TEXT, Category.IMAGE)
+        categories = listOf(Category.TEXT, Category.IMAGE, Category.HYBRID)
     )
 )
