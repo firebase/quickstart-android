@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import java.util.UUID
 
 @Serializable
@@ -106,10 +107,11 @@ class HybridInferenceViewModel : ViewModel() {
                     text(
                         """
                         Extract the store name and the total price from this receipt.
-                        Output only in CSV format like 'Store:Price'.
+                        Output only in JSON format containg 2 fields '{name,price}'.
+                        Do not include any currency signs or backticks or any text around it.
                         Examples:
-                        - 'FakeStore:5.50'
-                        - 'SomeStore:2.35'
+                        - {"name": "FakeStore", "price": "2.0"}
+                        - {"name": "SomeMarket", "price": "3.5"}
                         """.trimIndent()
                     )
                 }
@@ -132,19 +134,15 @@ class HybridInferenceViewModel : ViewModel() {
     }
 
     private fun parseAndAddExpense(text: String) {
-        // Simple parsing: "Store, Price"
-        val parts = text
-            // Sometimes the output contains single quotes
-            .replace("'", "").split(":", limit = 2)
-        if (parts.size >= 2) {
-            val name = parts[0].trim()
-            val priceStr = parts[1].trim().replace("$", "").replace(",", "")
-            val price = priceStr.toDoubleOrNull() ?: 0.0
-
-            val newExpense = Expense(name, price)
+        val json = text
+            // The on-device model sometimes outputs backticks, so we remove those
+            .replace("```json", "")
+            .replace("```", "")
+        try {
+            val newExpense = Json.decodeFromString<Expense>(json)
             _uiState.update { it.copy(expenses = it.expenses + newExpense) }
-        } else {
-            _uiState.update { it.copy(errorMessage = "Unexpected AI output format: $text") }
+        } catch (e: Exception) {
+            _uiState.update { it.copy(errorMessage = e.localizedMessage) }
         }
     }
 }

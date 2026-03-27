@@ -1,8 +1,6 @@
 package com.google.firebase.quickstart.ai.ui
 
-import android.graphics.BitmapFactory
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -49,20 +47,10 @@ fun HybridInferenceScreen(
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri ->
-            uri?.let { imageUri ->
-                try {
-                    context.contentResolver.openInputStream(imageUri)?.use { stream ->
-                        val bitmap = BitmapFactory.decodeStream(stream)
-                        bitmap?.let { viewModel.scanReceipt(it) }
-                    }
-                } catch (e: Exception) {
-                    // Handle error
-                    e.printStackTrace()
-                }
-            }
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicturePreview(),
+        onResult = { bitmap ->
+            bitmap?.let { viewModel.scanReceipt(it) }
         }
     )
 
@@ -70,7 +58,7 @@ fun HybridInferenceScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    launcher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    cameraLauncher.launch(null)
                 },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
