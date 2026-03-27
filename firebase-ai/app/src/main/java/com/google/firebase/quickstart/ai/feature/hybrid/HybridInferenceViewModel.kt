@@ -31,8 +31,8 @@ class HybridInferenceViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         HybridInferenceUiState(
             expenses = listOf(
-                Expense(UUID.randomUUID().toString(), "Lunch", 15.50),
-                Expense(UUID.randomUUID().toString(), "Coffee", 4.75)
+                Expense("Lunch", 15.50),
+                Expense("Coffee", 4.75)
             )
         )
     )
@@ -107,7 +107,9 @@ class HybridInferenceViewModel : ViewModel() {
                         """
                         Extract the store name and the total price from this receipt.
                         Output only in CSV format like 'Store:Price'.
-                        Example: 'Starbucks:5.50'"
+                        Examples:
+                        - 'FakeStore:5.50'
+                        - 'SomeStore:2.35'
                         """.trimIndent()
                     )
                 }
@@ -139,7 +141,7 @@ class HybridInferenceViewModel : ViewModel() {
             val priceStr = parts[1].trim().replace("$", "").replace(",", "")
             val price = priceStr.toDoubleOrNull() ?: 0.0
 
-            val newExpense = Expense(UUID.randomUUID().toString(), name, price)
+            val newExpense = Expense(name, price)
             _uiState.update { it.copy(expenses = it.expenses + newExpense) }
         } else {
             _uiState.update { it.copy(errorMessage = "Unexpected AI output format: $text") }
