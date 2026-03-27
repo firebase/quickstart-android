@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.ai.InferenceMode
+import com.google.firebase.ai.InferenceSource
 import com.google.firebase.ai.OnDeviceConfig
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.ondevice.DownloadStatus
@@ -32,8 +33,8 @@ class HybridInferenceViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(
         HybridInferenceUiState(
             expenses = listOf(
-                Expense("Lunch", 15.50),
-                Expense("Coffee", 4.75)
+                Expense("Lunch", 15.50, "Example data"),
+                Expense("Coffee", 4.75, "Example data")
             )
         )
     )
@@ -81,7 +82,6 @@ class HybridInferenceViewModel : ViewModel() {
                     }
                 }
             } catch (e: Exception) {
-                Log.e("HybridVM", "Error checking model status", e)
                 _uiState.update { it.copy(modelStatus = "Error checking status", errorMessage = e.message) }
             }
         }
@@ -109,6 +109,7 @@ class HybridInferenceViewModel : ViewModel() {
                         Extract the store name and the total price from this receipt.
                         Output only in JSON format containg 2 fields '{name,price}'.
                         Do not include any currency signs or backticks or any text around it.
+                        Use dots for decimals.
                         Examples:
                         - {"name": "FakeStore", "price": "2.0"}
                         - {"name": "SomeMarket", "price": "3.5"}
@@ -118,14 +119,18 @@ class HybridInferenceViewModel : ViewModel() {
 
                 val response = model.generateContent(prompt)
                 val text = response.text
-                Log.d("HybridVM", "Response is: $text")
+                val inferenceMode = if (response.inferenceSource == InferenceSource.ON_DEVICE) {
+                    "On-device"
+                } else {
+                    "Cloud"
+                }
+                Log.d("HybridVM", "$inferenceMode response: $text")
                 if (text != null) {
-                    parseAndAddExpense(text)
+                    parseAndAddExpense(text, inferenceMode)
                 } else {
                     _uiState.update { it.copy(errorMessage = "Could not extract data") }
                 }
             } catch (e: Exception) {
-                Log.e("HybridVM", "Error scanning receipt", e)
                 _uiState.update { it.copy(errorMessage = "Error: ${e.message}") }
             } finally {
                 _uiState.update { it.copy(isScanning = false) }
@@ -133,13 +138,13 @@ class HybridInferenceViewModel : ViewModel() {
         }
     }
 
-    private fun parseAndAddExpense(text: String) {
+    private fun parseAndAddExpense(text: String, inferenceMode: String) {
         val json = text
             // The on-device model sometimes outputs backticks, so we remove those
             .replace("```json", "")
             .replace("```", "")
         try {
-            val newExpense = Json.decodeFromString<Expense>(json)
+            val newExpense = Json.decodeFromString<Expense>(json).copy(inferenceMode = inferenceMode)
             _uiState.update { it.copy(expenses = it.expenses + newExpense) }
         } catch (e: Exception) {
             _uiState.update { it.copy(errorMessage = e.localizedMessage) }

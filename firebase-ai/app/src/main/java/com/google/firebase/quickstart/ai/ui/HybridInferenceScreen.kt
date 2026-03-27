@@ -134,7 +134,7 @@ fun HybridInferenceScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(uiState.expenses) { expense ->
-                        ExpenseItem(expense.name, expense.price)
+                        ExpenseItem(expense.name, expense.price, expense.inferenceMode)
                     }
                 }
             }
@@ -152,7 +152,7 @@ fun HybridInferenceScreen(
 }
 
 @Composable
-fun ExpenseItem(name: String, price: Double) {
+fun ExpenseItem(name: String, price: Double, inferenceMode: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -164,11 +164,20 @@ fun ExpenseItem(name: String, price: Double) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                name,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium
-            )
+            Column {
+                Text(
+                    name,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium
+                )
+                if (inferenceMode.isNotEmpty()) {
+                    Text(
+                        inferenceMode,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.Gray
+                    )
+                }
+            }
             Text(
                 "$${String.format("%.2f", price)}",
                 style = MaterialTheme.typography.bodyLarge,
