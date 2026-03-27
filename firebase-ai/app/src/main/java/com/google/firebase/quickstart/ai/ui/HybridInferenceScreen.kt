@@ -52,14 +52,15 @@ fun HybridInferenceScreen(
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            uri?.let {
+            uri?.let { imageUri ->
                 try {
-                    context.contentResolver.openInputStream(it)?.use { stream ->
+                    context.contentResolver.openInputStream(imageUri)?.use { stream ->
                         val bitmap = BitmapFactory.decodeStream(stream)
                         bitmap?.let { viewModel.scanReceipt(it) }
                     }
                 } catch (e: Exception) {
                     // Handle error
+                    e.printStackTrace()
                 }
             }
         }

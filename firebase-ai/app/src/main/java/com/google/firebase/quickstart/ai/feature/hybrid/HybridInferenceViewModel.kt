@@ -39,9 +39,9 @@ class HybridInferenceViewModel : ViewModel() {
     val uiState: StateFlow<HybridInferenceUiState> = _uiState.asStateFlow()
 
     private val model = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
-            modelName = "gemini-3.1-flash-lite-preview",
-            onDeviceConfig = OnDeviceConfig(mode = InferenceMode.PREFER_ON_DEVICE)
-        )
+        modelName = "gemini-3.1-flash-lite-preview",
+        onDeviceConfig = OnDeviceConfig(mode = InferenceMode.PREFER_ON_DEVICE)
+    )
 
     init {
         checkAndDownloadModel()
@@ -103,7 +103,13 @@ class HybridInferenceViewModel : ViewModel() {
             try {
                 val prompt = content {
                     image(bitmap)
-                    text("Extract the store name and the total price from this receipt. Output only in CSV format like 'Store,Price'. Example: 'Starbucks,5.50'")
+                    text(
+                        """
+                        Extract the store name and the total price from this receipt.
+                        Output only in CSV format like 'Store:Price'.
+                        Example: 'Starbucks:5.50'"
+                        """.trimIndent()
+                    )
                 }
 
                 val response = model.generateContent(prompt)
@@ -127,7 +133,7 @@ class HybridInferenceViewModel : ViewModel() {
         // Simple parsing: "Store, Price"
         val parts = text
             // Sometimes the output contains single quotes
-            .replace("'", "").split(",", limit = 2)
+            .replace("'", "").split(":", limit = 2)
         if (parts.size >= 2) {
             val name = parts[0].trim()
             val priceStr = parts[1].trim().replace("$", "").replace(",", "")
