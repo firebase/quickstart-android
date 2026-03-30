@@ -12,7 +12,8 @@ enum class Category(
     AUDIO("Audio"),
     DOCUMENT("Document"),
     FUNCTION_CALLING("Function calling"),
-    LIVE_API("Live API Streaming")
+    LIVE_API("Live API Streaming"),
+    HYBRID("Hybrid inference")
 }
 
 enum class ScreenType {
@@ -21,7 +22,8 @@ enum class ScreenType {
     SVG,
     SERVER_PROMPT,
     BIDI,
-    BIDI_VIDEO
+    BIDI_VIDEO,
+    HYBRID
 }
 
 data class Sample(

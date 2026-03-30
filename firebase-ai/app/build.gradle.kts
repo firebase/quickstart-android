@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.ai"
-        minSdk = 23
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -73,6 +73,7 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.ai)
+    implementation(libs.firebase.ai.ondevice)
 
     // Image loading
     implementation(libs.coil.compose)
