@@ -6,18 +6,6 @@ import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeAudioRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenGenerationRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenGenerationViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenInpaintingRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenInpaintingViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenOutpaintingRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenOutpaintingViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenStyleTransferRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenStyleTransferViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenSubjectReferenceRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenSubjectReferenceViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenTemplateRoute
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationRoute
 import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationViewModel
 import com.google.firebase.quickstart.ai.feature.text.AudioTranslationRoute
@@ -100,46 +88,6 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.IMAGE)
     ),
     Sample(
-        title = "Imagen 4 - image generation",
-        description = "Generate images using Imagen 4",
-        route = ImagenGenerationRoute,
-        screenType = ScreenType.IMAGEN,
-        viewModelClass = ImagenGenerationViewModel::class,
-        categories = listOf(Category.IMAGE)
-    ),
-    Sample(
-        title = "Imagen 3 - Inpainting (Vertex AI)",
-        description = "Replace part of an image using Imagen 3",
-        route = ImagenInpaintingRoute,
-        screenType = ScreenType.IMAGEN,
-        viewModelClass = ImagenInpaintingViewModel::class,
-        categories = listOf(Category.IMAGE)
-    ),
-    Sample(
-        title = "Imagen 3 - Outpainting (Vertex AI)",
-        description = "Expand an image by drawing in more background",
-        route = ImagenOutpaintingRoute,
-        screenType = ScreenType.IMAGEN,
-        viewModelClass = ImagenOutpaintingViewModel::class,
-        categories = listOf(Category.IMAGE)
-    ),
-    Sample(
-        title = "Imagen 3 - Subject Reference (Vertex AI)",
-        description = "Generate an image using a referenced subject (must be an animal)",
-        route = ImagenSubjectReferenceRoute,
-        screenType = ScreenType.IMAGEN,
-        viewModelClass = ImagenSubjectReferenceViewModel::class,
-        categories = listOf(Category.IMAGE)
-    ),
-    Sample(
-        title = "Imagen 3 - Style Transfer (Vertex AI)",
-        description = "Change the art style of a cat picture using a reference",
-        route = ImagenStyleTransferRoute,
-        screenType = ScreenType.IMAGEN,
-        viewModelClass = ImagenStyleTransferViewModel::class,
-        categories = listOf(Category.IMAGE)
-    ),
-    Sample(
         title = "Gemini 2.5 Flash Image (aka nanobanana)",
         description = "Generate and/or edit images using Gemini 2.5 Flash Image aka nanobanana",
         route = ImageGenerationRoute,
@@ -207,15 +155,6 @@ val FIREBASE_AI_SAMPLES = listOf(
         screenType = ScreenType.CHAT,
         viewModelClass = GoogleSearchGroundingViewModel::class,
         categories = listOf(Category.TEXT)
-    ),
-    Sample(
-        title = "Server Prompt Template - Imagen",
-        description = "Generate an image using a server prompt template. Note that you need to setup the template in " +
-                "the Firebase console before running this demo.",
-        route = ImagenTemplateRoute,
-        screenType = ScreenType.IMAGEN,
-        viewModelClass = ImagenTemplateViewModel::class,
-        categories = listOf(Category.IMAGE)
     ),
     Sample(
         title = "Server Prompt Templates - Gemini",

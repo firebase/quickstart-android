@@ -18,7 +18,7 @@ To try out this sample app, you need to use latest stable version of Android Stu
 
 * [Set up your Android app for Firebase][setup-android]
   * Use the package name `com.google.firebase.quickstart.ai`
-* [Set up Firebase AI Logic][setup-ai-logic] 
+* [Set up Firebase AI Logic][setup-ai-logic]
 * Run the app on an Android device or emulator.
 
 ## Features
@@ -34,13 +34,7 @@ You can find the implementation for each feature by clicking on the links below:
 - [Server Prompt Templates - Gemini](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ServerPromptTemplateViewModel.kt): Generate an invoice using server prompt templates.
 
 ### Image analysis / generation
-- [Imagen 4 - image generation](app/src/main/java/com/google/firebase/quickstart/ai/feature/media/imagen/ImagenGenerationViewModel.kt): Generate images using Imagen 4
-- [Imagen 3 - Inpainting (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/media/imagen/ImagenInpaintingViewModel.kt): Replace part of an image using Imagen 3
-- [Imagen 3 - Outpainting (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/media/imagen/ImagenOutpaintingViewModel.kt): Expand an image by drawing in more background
-- [Imagen 3 - Subject Reference (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/media/imagen/ImagenSubjectReferenceViewModel.kt): Generate an image using a referenced subject (must be an animal)
-- [Imagen 3 - Style Transfer (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/media/imagen/ImagenStyleTransferViewModel.kt): Change the art style of a cat picture using a reference
 - [Gemini 2.5 Flash Image (aka nanobanana)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ImageGenerationViewModel.kt): Generate and/or edit images using Gemini 2.5 Flash Image aka nanobanana
-- [Server Prompt Template - Imagen](app/src/main/java/com/google/firebase/quickstart/ai/feature/media/imagen/ImagenTemplateViewModel.kt): Generate an image using a server prompt template.
 - [SVG Generator](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/SvgViewModel.kt): Use Gemini 3 Flash preview to create SVG illustrations
 - [Blog post creator (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ImageBlogCreatorViewModel.kt): Create a blog post from an image file stored in Cloud Storage.
 
