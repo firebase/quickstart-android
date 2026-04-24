@@ -34,6 +34,7 @@ You can find the implementation for each feature by clicking on the links below:
 - [Server Prompt Templates - Gemini](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ServerPromptTemplateViewModel.kt): Generate an invoice using server prompt templates.
 
 ### Image analysis / generation
+- [Gemini 2.5 Flash Image (aka nanobanana)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ImageGenerationViewModel.kt): Generate and/or edit images using Gemini 2.5 Flash Image aka nanobanana
 - [SVG Generator](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/SvgViewModel.kt): Use Gemini 3 Flash preview to create SVG illustrations
 - [Blog post creator (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ImageBlogCreatorViewModel.kt): Create a blog post from an image file stored in Cloud Storage.
 
