@@ -18,7 +18,6 @@ enum class Category(
 
 enum class ScreenType {
     CHAT,
-    IMAGEN,
     SVG,
     SERVER_PROMPT,
     BIDI,

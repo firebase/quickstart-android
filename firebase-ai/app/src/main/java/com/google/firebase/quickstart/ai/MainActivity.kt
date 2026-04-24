@@ -28,12 +28,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
-import com.google.firebase.quickstart.ai.feature.media.imagen.ImagenViewModel
 import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
 import com.google.firebase.quickstart.ai.ui.ChatScreen
-import com.google.firebase.quickstart.ai.ui.ImagenScreen
 import com.google.firebase.quickstart.ai.ui.ServerPromptScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
@@ -98,10 +96,6 @@ class MainActivity : ComponentActivity() {
                                 when (sample.screenType) {
                                     ScreenType.CHAT -> {
                                         (vm as? ChatViewModel)?.let { ChatScreen(it) }
-                                    }
-
-                                    ScreenType.IMAGEN -> {
-                                        (vm as? ImagenViewModel)?.let { ImagenScreen(it) }
                                     }
 
                                     ScreenType.SVG -> {
