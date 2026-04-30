@@ -54,7 +54,7 @@ fun MenuScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(vertical = 16.dp)
+            .padding(top = 16.dp)
     ) {
         var selectedCategory by rememberSaveable { mutableStateOf(filters.first()) }
         Text(
@@ -88,7 +88,7 @@ fun MenuScreen(
         Text(
             text = "Samples",
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+            modifier = Modifier.padding(all = 16.dp)
         )
         val filteredSamples = samples.filter {
             it.categories.contains(selectedCategory)

@@ -44,7 +44,7 @@ You can find the implementation for each feature by clicking on the links below:
 - [Thinking](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ThinkingChatViewModel.kt): Gemini 2.5 Flash with dynamic thinking
 - [Translation from audio (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioTranslationViewModel.kt): Translate an audio file stored in Cloud Storage
 - [Blog post creator (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ImageBlogCreatorViewModel.kt): Create a blog post from an image file stored in Cloud Storage.
-- [Document comparison (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/DocumentComparisonViewModel.kt): Compare the contents of 2 documents.
+- [Document comparison (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/DocumentComparisonViewModel.kt): Compare the contents of 2 documents stored in Cloud Storage.
 - [Hashtags for a video (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/VideoHashtagGeneratorViewModel.kt): Generate hashtags for a video ad stored in Cloud Storage
 
 ### Tools and function calling

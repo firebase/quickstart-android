@@ -120,8 +120,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Document comparison (Vertex AI)",
-        description = "Compare the contents of 2 documents." +
-                " Only supported by the Vertex AI Gemini API because the documents are stored in Cloud Storage",
+        description = "Compare the contents of 2 documents stored in Cloud Storage",
         route = DocumentComparisonRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = DocumentComparisonViewModel::class,
