@@ -57,11 +57,6 @@ fun MenuScreen(
             .padding(top = 16.dp)
     ) {
         var selectedCategory by rememberSaveable { mutableStateOf(filters.first()) }
-        Text(
-            text = filterTitle,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
         LazyRow {
             items(filters) { capability ->
                 FilterChip(
@@ -85,17 +80,12 @@ fun MenuScreen(
                 )
             }
         }
-        Text(
-            text = "Samples",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(all = 16.dp)
-        )
         val filteredSamples = samples.filter {
             it.categories.contains(selectedCategory)
         }
         LazyVerticalGrid(
             columns = GridCells.Adaptive(MIN_CARD_SIZE),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)
         ) {
             items(filteredSamples) { sample ->
                 SampleItem(sample.title, sample.description, onItemClicked = {
