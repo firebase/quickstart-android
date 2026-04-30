@@ -35,7 +35,7 @@ fun MainMenuScreen(
     onSampleClicked: (Sample) -> Unit
 ) {
     MenuScreen(
-        filterTitle = "Filter by use case:",
+        filterTitle = "Filter:",
         filters = Category.entries.toList(),
         samples = FIREBASE_AI_SAMPLES,
         onSampleClicked = {
@@ -57,7 +57,7 @@ fun MenuScreen(
             .padding(16.dp)
     ) {
         var selectedCategory by rememberSaveable { mutableStateOf(filters.first()) }
-        Text(text = filterTitle, style = MaterialTheme.typography.titleLarge)
+        Text(text = filterTitle, style = MaterialTheme.typography.titleMedium)
         LazyRow {
             items(filters) { capability ->
                 FilterChip(

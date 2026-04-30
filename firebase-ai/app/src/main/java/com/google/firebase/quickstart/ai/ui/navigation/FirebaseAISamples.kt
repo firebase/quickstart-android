@@ -1,11 +1,11 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
-import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
-import com.google.firebase.quickstart.ai.feature.live.StreamVideoViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
+import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeAudioRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
+import com.google.firebase.quickstart.ai.feature.live.StreamVideoViewModel
 import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationRoute
 import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationViewModel
 import com.google.firebase.quickstart.ai.feature.text.AudioTranslationRoute
@@ -47,12 +47,36 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.GEMINI3)
     ),
     Sample(
+        title = "SVG Generator",
+        description = "Use Gemini 3 Flash preview to create SVG illustrations",
+        route = SvgRoute,
+        screenType = ScreenType.SVG,
+        viewModelClass = SvgViewModel::class,
+        categories = listOf(Category.GEMINI3)
+    ),
+    Sample(
         title = "Audio Summarization",
         description = "Use Gemini 3.1 Flash Lite to summarize an audio file",
         route = AudioSummarizationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = AudioSummarizationViewModel::class,
         categories = listOf(Category.MULTIMODAL_UNDERSTANDING),
+    ),
+    Sample(
+        title = "Summarize video",
+        description = "Summarize a video and extract important dialogue.",
+        route = VideoSummarizationRoute,
+        screenType = ScreenType.CHAT,
+        viewModelClass = VideoSummarizationViewModel::class,
+        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
+    ),
+    Sample(
+        title = "Thinking",
+        description = "Gemini 2.5 Flash with dynamic thinking",
+        route = ThinkingChatRoute,
+        screenType = ScreenType.CHAT,
+        viewModelClass = ThinkingChatViewModel::class,
+        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
         title = "Translation from audio (Vertex AI)",
@@ -72,23 +96,23 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Gemini 3.1 Flash Image (Nano Banana 2)",
-        description = "Generate and/or edit images using Nano Banana 2",
+        description = "Generate and/or edit images using Nano Banana 2 preview",
         route = NanoBanana2Route,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBanana2ViewModel::class,
-        categories = listOf(Category.NANO_BANANA)
+        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
     ),
     Sample(
         title = "Gemini 3 Pro Image (Nano Banana Pro)",
-        description = "Generate and/or edit images using Nano Banana Pro",
+        description = "Generate and/or edit images using Nano Banana Pro preview",
         route = NanoBananaProRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaProViewModel::class,
-        categories = listOf(Category.NANO_BANANA)
+        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
     ),
     Sample(
         title = "Gemini 2.5 Flash Image (Nano Banana)",
-        description = "Generate and/or edit images using Nano Banana",
+        description = "Generate and/or edit images using Nano Banana (GA)",
         route = NanoBananaRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaViewModel::class,
@@ -109,14 +133,6 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = VideoHashtagGeneratorRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = VideoHashtagGeneratorViewModel::class,
-        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
-    ),
-    Sample(
-        title = "Summarize video",
-        description = "Summarize a video and extract important dialogue.",
-        route = VideoSummarizationRoute,
-        screenType = ScreenType.CHAT,
-        viewModelClass = VideoSummarizationViewModel::class,
         categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
@@ -163,22 +179,6 @@ val FIREBASE_AI_SAMPLES = listOf(
         screenType = ScreenType.SERVER_PROMPT,
         viewModelClass = ServerPromptTemplateViewModel::class,
         categories = listOf(Category.SERVER_PROMPTS),
-    ),
-    Sample(
-        title = "Thinking",
-        description = "Gemini 2.5 Flash with dynamic thinking",
-        route = ThinkingChatRoute,
-        screenType = ScreenType.CHAT,
-        viewModelClass = ThinkingChatViewModel::class,
-        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
-    ),
-    Sample(
-        title = "SVG Generator",
-        description = "Use Gemini 3 Flash preview to create SVG illustrations",
-        route = SvgRoute,
-        screenType = ScreenType.SVG,
-        viewModelClass = SvgViewModel::class,
-        categories = listOf(Category.GEMINI3)
     ),
     Sample(
         title = "Hybrid Receipt Scanner",
