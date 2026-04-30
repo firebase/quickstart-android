@@ -12,16 +12,16 @@ enum class Category(
     TOOLS_FC("Tools and Function calling"),
     LIVE_API("Live API streaming"),
     SERVER_PROMPTS("Server prompt templates"),
-    IMAGEN("Imagen")
+    HYBRID("Hybrid inference")
 }
 
 enum class ScreenType {
     CHAT,
-    IMAGEN,
     SVG,
     SERVER_PROMPT,
     BIDI,
-    BIDI_VIDEO
+    BIDI_VIDEO,
+    HYBRID
 }
 
 data class Sample(
