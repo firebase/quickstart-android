@@ -47,7 +47,7 @@ You can find the implementation for each feature by clicking on the links below:
 - [Document comparison (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/DocumentComparisonViewModel.kt): Compare the contents of 2 documents.
 - [Hashtags for a video (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/VideoHashtagGeneratorViewModel.kt): Generate hashtags for a video ad stored in Cloud Storage
 
-### Tools and Function calling
+### Tools and function calling
 - [Grounding with Google Search](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/GoogleSearchGroundingViewModel.kt): Use Grounding with Google Search to get responses based on up-to-date information from the web.
 - [Weather Chat](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/WeatherChatViewModel.kt): Use function calling to get the weather conditions for a specific US city on a specific date.
 - [Gemini Live (audio input)](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/StreamAudioViewModel.kt): Use bidirectional streaming to get information about weather conditions for a specific US city on a specific date

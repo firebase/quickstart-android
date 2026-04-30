@@ -9,7 +9,7 @@ enum class Category(
     GEMINI3("Gemini 3"),
     NANO_BANANA("Nano Banana"),
     MULTIMODAL_UNDERSTANDING("Multimodal understanding"),
-    TOOLS_FC("Tools and Function calling"),
+    TOOLS_FC("Tools and function calling"),
     LIVE_API("Live API streaming"),
     SERVER_PROMPTS("Server prompt templates"),
     HYBRID("Hybrid inference")
