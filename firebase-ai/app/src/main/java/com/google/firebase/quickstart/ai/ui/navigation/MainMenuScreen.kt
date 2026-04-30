@@ -54,10 +54,11 @@ fun MenuScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 16.dp)
     ) {
         var selectedCategory by rememberSaveable { mutableStateOf(filters.first()) }
-        LazyRow {
+        LazyRow(
+            modifier = Modifier.padding(vertical = 8.dp)
+        ) {
             items(filters) { capability ->
                 FilterChip(
                     onClick = { selectedCategory = capability },
@@ -85,7 +86,7 @@ fun MenuScreen(
         }
         LazyVerticalGrid(
             columns = GridCells.Adaptive(MIN_CARD_SIZE),
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp)
         ) {
             items(filteredSamples) { sample ->
                 SampleItem(sample.title, sample.description, onItemClicked = {
