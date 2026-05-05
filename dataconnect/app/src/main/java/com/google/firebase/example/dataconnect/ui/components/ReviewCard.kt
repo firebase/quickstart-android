@@ -33,7 +33,7 @@ fun ReviewCard(
     movieName: String? = null
 ) {
     val configuration = LocalConfiguration.current
-    val locale = ConfigurationCompat.getLocales(configuration)[0] ?: Locale.getDefault()
+    val locale = ConfigurationCompat.getLocales(configuration)[0]
 
     Card(
         modifier = Modifier
