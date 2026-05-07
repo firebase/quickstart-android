@@ -51,7 +51,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.9.8")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.12.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
 
     // Firebase Realtime Database
     implementation("com.google.firebase:firebase-database")
