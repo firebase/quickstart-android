@@ -23,7 +23,7 @@ class GoogleSearchGroundingViewModel : ChatViewModel() {
         val generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).generativeModel(
-            modelName = "gemini-2.5-flash",
+            modelName = "gemini-3.1-flash-lite",
             tools = listOf(Tool.googleSearch())
         )
         chat = generativeModel.startChat()

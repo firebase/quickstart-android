@@ -23,7 +23,7 @@ class CourseRecommendationsViewModel : ChatViewModel() {
         val generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).generativeModel(
-            modelName = "gemini-2.5-flash",
+            modelName = "gemini-3.1-flash-lite",
             systemInstruction = content {
                 text(
                     "You are a chatbot for the county's performing and fine arts" +

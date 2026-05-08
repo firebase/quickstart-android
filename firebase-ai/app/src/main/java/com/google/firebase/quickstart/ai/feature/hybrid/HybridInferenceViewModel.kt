@@ -41,7 +41,7 @@ class HybridInferenceViewModel : ViewModel() {
     val uiState: StateFlow<HybridInferenceUiState> = _uiState.asStateFlow()
 
     private val model = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
-        modelName = "gemini-3.1-flash-lite-preview",
+        modelName = "gemini-3.1-flash-lite",
         onDeviceConfig = OnDeviceConfig(mode = InferenceMode.PREFER_ON_DEVICE)
     )
 
