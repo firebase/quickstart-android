@@ -45,14 +45,14 @@ dependencies {
     implementation(project(":internal:lintchecks"))
     implementation(project(":internal:chooserx"))
 
-    implementation("com.google.android.material:material:1.13.0")
+    implementation("com.google.android.material:material:1.14.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
     implementation(platform("com.google.firebase:firebase-bom:34.13.0"))
 
     // ADD the SDK to the "prerelease" variant only (example)
-    implementation("com.google.firebase:firebase-appdistribution:16.0.0-beta18")
+    implementation("com.google.firebase:firebase-appdistribution:16.0.0-beta19")
 
     // For an optimal experience using App Distribution, add the Firebase SDK
     // for Google Analytics. This is recommended, but not required.
