@@ -28,7 +28,7 @@ class AudioSummarizationViewModel : ChatViewModel() {
         val generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).generativeModel(
-            modelName = "gemini-3.1-flash-lite-preview"
+            modelName = "gemini-3.1-flash-lite"
         )
         chat = generativeModel.startChat(
             listOf(

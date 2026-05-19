@@ -24,7 +24,7 @@ class TravelTipsViewModel : ChatViewModel() {
         val generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).generativeModel(
-            modelName = "gemini-2.5-flash",
+            modelName = "gemini-3.1-flash-lite",
             systemInstruction = content {
                 text(
                     "You are a Travel assistant. You will answer" +
