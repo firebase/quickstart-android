@@ -1,6 +1,5 @@
 package com.google.firebase.quickstart.ai.feature.text
 
-import android.util.Log
 import kotlinx.serialization.Serializable
 
 import androidx.lifecycle.ViewModel
@@ -61,8 +60,8 @@ class SvgViewModel : ViewModel() {
                 val response = generativeModel.generateContent(prompt)
                 val newSvg = response.text
                     // Remove the ```xml [...] ``` around the svg
-                    ?.replace("```xml", "")
-                    ?.replace("```", "")
+                    ?.removePrefix("```xml")
+                    ?.removeSuffix("```")
                     ?.trimIndent()
                 if (newSvg != null) {
                     _uiState.value = SvgUiState.Success(listOf(newSvg) + currentSvgs)

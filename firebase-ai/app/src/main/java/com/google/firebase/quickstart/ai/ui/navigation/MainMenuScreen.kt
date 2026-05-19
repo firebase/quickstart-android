@@ -35,7 +35,6 @@ fun MainMenuScreen(
     onSampleClicked: (Sample) -> Unit
 ) {
     MenuScreen(
-        filterTitle = "Filter:",
         filters = Category.entries.toList(),
         samples = FIREBASE_AI_SAMPLES,
         onSampleClicked = {
@@ -46,7 +45,6 @@ fun MainMenuScreen(
 
 @Composable
 fun MenuScreen(
-    filterTitle: String,
     filters: List<Category>,
     samples: List<Sample>,
     onSampleClicked: (sample: Sample) -> Unit = {}
