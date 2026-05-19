@@ -29,7 +29,7 @@ You can find the implementation for each feature by clicking on the links below:
 
 ### Gemini 3
 - [Translate text](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/TranslationViewModel.kt): Use Gemini 3.1 Flash-Lite to translate text
-- [SVG Generator](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/SvgViewModel.kt): Use Gemini 3 Flash preview to create SVG illustrations
+- [SVG Generator](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/SvgViewModel.kt): Use Gemini 3.5 Flash to create SVG illustrations
 - [Gemini 3.1 Flash Image (Nano Banana 2)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/NanoBanana2ViewModel.kt): Generate and/or edit images using Nano Banana 2 preview
 - [Gemini 3 Pro Image (Nano Banana Pro)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/NanoBananaProViewModel.kt): Generate and/or edit images using Nano Banana Pro preview
 
@@ -41,7 +41,6 @@ You can find the implementation for each feature by clicking on the links below:
 ### Multimodal understanding
 - [Audio Summarization](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioSummarizationViewModel.kt): Use Gemini 3.1 Flash Lite to summarize an audio file
 - [Summarize video](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/VideoSummarizationViewModel.kt): Summarize a video and extract important dialogue.
-- [Thinking](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ThinkingChatViewModel.kt): Gemini 2.5 Flash with dynamic thinking
 - [Translation from audio (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioTranslationViewModel.kt): Translate an audio file stored in Cloud Storage
 - [Blog post creator (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ImageBlogCreatorViewModel.kt): Create a blog post from an image file stored in Cloud Storage.
 - [Document comparison (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/DocumentComparisonViewModel.kt): Compare the contents of 2 documents stored in Cloud Storage.

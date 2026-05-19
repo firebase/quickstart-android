@@ -26,8 +26,6 @@ import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateRoute
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.text.SvgRoute
 import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
-import com.google.firebase.quickstart.ai.feature.text.ThinkingChatRoute
-import com.google.firebase.quickstart.ai.feature.text.ThinkingChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.TranslationRoute
 import com.google.firebase.quickstart.ai.feature.text.TranslationViewModel
 import com.google.firebase.quickstart.ai.feature.text.VideoHashtagGeneratorRoute
@@ -68,14 +66,6 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = VideoSummarizationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = VideoSummarizationViewModel::class,
-        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
-    ),
-    Sample(
-        title = "Thinking",
-        description = "Gemini 2.5 Flash with dynamic thinking",
-        route = ThinkingChatRoute,
-        screenType = ScreenType.CHAT,
-        viewModelClass = ThinkingChatViewModel::class,
         categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
