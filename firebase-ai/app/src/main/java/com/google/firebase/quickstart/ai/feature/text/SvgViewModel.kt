@@ -8,6 +8,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.ai.GenerativeModel
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
+import com.google.firebase.ai.type.ThinkingLevel
 import com.google.firebase.ai.type.content
 import com.google.firebase.ai.type.generationConfig
 import com.google.firebase.ai.type.thinkingConfig
@@ -31,7 +32,7 @@ class SvgViewModel : ViewModel() {
         generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).generativeModel(
-            modelName = "gemini-3-flash-preview",
+            modelName = "gemini-3.5-flash",
             systemInstruction = content {
                 text(
                     """
@@ -45,7 +46,7 @@ class SvgViewModel : ViewModel() {
             },
             generationConfig = generationConfig {
                 thinkingConfig {
-                    thinkingBudget = -1
+                    thinkingLevel = ThinkingLevel.HIGH
                 }
             }
         )
@@ -58,6 +59,10 @@ class SvgViewModel : ViewModel() {
             try {
                 val response = generativeModel.generateContent(prompt)
                 val newSvg = response.text
+                    // Remove the ```xml [...] ``` around the svg
+                    ?.removePrefix("```xml")
+                    ?.removeSuffix("```")
+                    ?.trimIndent()
                 if (newSvg != null) {
                     _uiState.value = SvgUiState.Success(listOf(newSvg) + currentSvgs)
                 } else {

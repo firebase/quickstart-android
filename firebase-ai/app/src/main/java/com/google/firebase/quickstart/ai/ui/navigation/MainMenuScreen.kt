@@ -35,7 +35,6 @@ fun MainMenuScreen(
     onSampleClicked: (Sample) -> Unit
 ) {
     MenuScreen(
-        filterTitle = "Filter by use case:",
         filters = Category.entries.toList(),
         samples = FIREBASE_AI_SAMPLES,
         onSampleClicked = {
@@ -46,7 +45,6 @@ fun MainMenuScreen(
 
 @Composable
 fun MenuScreen(
-    filterTitle: String,
     filters: List<Category>,
     samples: List<Sample>,
     onSampleClicked: (sample: Sample) -> Unit = {}
@@ -54,11 +52,11 @@ fun MenuScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
         var selectedCategory by rememberSaveable { mutableStateOf(filters.first()) }
-        Text(text = filterTitle, style = MaterialTheme.typography.titleLarge)
-        LazyRow {
+        LazyRow(
+            modifier = Modifier.padding(vertical = 8.dp)
+        ) {
             items(filters) { capability ->
                 FilterChip(
                     onClick = { selectedCategory = capability },
@@ -77,21 +75,16 @@ fun MenuScreen(
                     } else {
                         null
                     },
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier.padding(horizontal = 4.dp)
                 )
             }
         }
-        Text(
-            text = "Samples",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(top = 16.dp)
-        )
         val filteredSamples = samples.filter {
             it.categories.contains(selectedCategory)
         }
         LazyVerticalGrid(
             columns = GridCells.Adaptive(MIN_CARD_SIZE),
-            modifier = Modifier
+            modifier = Modifier.padding(horizontal = 16.dp)
         ) {
             items(filteredSamples) { sample ->
                 SampleItem(sample.title, sample.description, onItemClicked = {
