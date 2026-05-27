@@ -10,6 +10,8 @@ import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationRoute
 import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationViewModel
 import com.google.firebase.quickstart.ai.feature.text.AudioTranslationRoute
 import com.google.firebase.quickstart.ai.feature.text.AudioTranslationViewModel
+import com.google.firebase.quickstart.ai.feature.text.AutoFunctionCallRoute
+import com.google.firebase.quickstart.ai.feature.text.AutoFunctionCallViewModel
 import com.google.firebase.quickstart.ai.feature.text.DocumentComparisonRoute
 import com.google.firebase.quickstart.ai.feature.text.DocumentComparisonViewModel
 import com.google.firebase.quickstart.ai.feature.text.GoogleSearchGroundingRoute
@@ -134,12 +136,21 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.TOOLS_FC)
     ),
     Sample(
-        title = "Weather Chat",
+        title = "Manual function calling",
         description = "Use function calling to get the weather conditions" +
                 " for a specific US city on a specific date.",
         route = WeatherChatRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = WeatherChatViewModel::class,
+        categories = listOf(Category.TOOLS_FC)
+    ),
+    Sample(
+        title = "Automatic function calling",
+        description = "Use automatic function calling to get the weather conditions" +
+                " for a specific US city on a specific date.",
+        route = AutoFunctionCallRoute,
+        screenType = ScreenType.CHAT,
+        viewModelClass = AutoFunctionCallViewModel::class,
         categories = listOf(Category.TOOLS_FC)
     ),
     Sample(
