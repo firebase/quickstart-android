@@ -48,7 +48,8 @@ You can find the implementation for each feature by clicking on the links below:
 
 ### Tools and function calling
 - [Grounding with Google Search](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/GoogleSearchGroundingViewModel.kt): Use Grounding with Google Search to get responses based on up-to-date information from the web.
-- [Weather Chat](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/WeatherChatViewModel.kt): Use function calling to get the weather conditions for a specific US city on a specific date.
+- [Manual function calling](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/WeatherChatViewModel.kt): Use function calling to get the weather conditions for a specific US city on a specific date.
+- [Automatic function calling](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AutoFunctionCallViewModel.kt): Use automatic function calling to get the weather conditions for a specific US city on a specific date.
 - [Gemini Live (audio input)](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/StreamAudioViewModel.kt): Use bidirectional streaming to get information about weather conditions for a specific US city on a specific date
 - [Gemini Live (video input)](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/StreamVideoViewModel.kt): Use bidirectional streaming to chat with Gemini using your phone's camera
 
