@@ -67,7 +67,7 @@ class AutoFunctionCallViewModel : ChatViewModel() {
 
         return if (city == null || state == null || date == null) {
             // Tell the model there was an error
-            throw FirebaseAutoFunctionException("Unable to fetch weather - all the parameters were null")
+            throw FirebaseAutoFunctionException("Unable to fetch weather - one of the parameters were null")
         } else {
             // Execute the function call and return the response
             val functionResponse = WeatherRepository
