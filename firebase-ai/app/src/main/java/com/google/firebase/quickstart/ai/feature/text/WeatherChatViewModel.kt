@@ -36,7 +36,7 @@ class WeatherChatViewModel : ChatViewModel() {
             modelName = "gemini-3.1-flash-lite",
             tools = listOf(
                 Tool.functionDeclarations(
-                    listOf(
+                    functionDeclarations = listOf(
                         FunctionDeclaration(
                             "fetchWeather",
                             "Get the weather conditions for a specific US city on a specific date.",
