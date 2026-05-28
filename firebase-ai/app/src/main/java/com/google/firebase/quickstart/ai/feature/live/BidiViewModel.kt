@@ -25,7 +25,7 @@ abstract class BidiViewModel : ViewModel() {
     // The permission check is handled by the view that calls this function.
     @SuppressLint("MissingPermission")
     suspend fun startConversation() {
-        liveSession.startAudioConversation(::handler)
+        liveSession.startAudioConversation()
     }
 
     fun endConversation() {

@@ -28,7 +28,7 @@ class StreamVideoViewModel : BidiViewModel() {
         val liveModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).liveModel(
-            modelName = "gemini-2.5-flash-native-audio-preview-09-2025",
+            modelName = "gemini-2.5-flash-native-audio-preview-12-2025",
             generationConfig = liveGenerationConfig,
         )
         runBlocking { liveSession = liveModel.connect() }

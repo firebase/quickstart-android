@@ -51,7 +51,7 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3C
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil3Compose" }
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil3Compose" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation"}
-firebase-ai = { module = "com.google.firebase:firebase-ai" }
+firebase-ai = { module = "com.google.firebase:firebase-ai", version = "17.13.0-LIVEAUTOFC" }
 firebase-ai-ondevice = { module = "com.google.firebase:firebase-ai-ondevice", version = "16.0.0-beta02" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
