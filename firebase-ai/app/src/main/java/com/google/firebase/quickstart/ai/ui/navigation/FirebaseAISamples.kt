@@ -88,7 +88,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Gemini 3.1 Flash Image (Nano Banana 2)",
-        description = "Generate and/or edit images using Nano Banana 2 preview",
+        description = "Generate and/or edit images using Nano Banana 2",
         route = NanoBanana2Route,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBanana2ViewModel::class,
@@ -96,7 +96,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Gemini 3 Pro Image (Nano Banana Pro)",
-        description = "Generate and/or edit images using Nano Banana Pro preview",
+        description = "Generate and/or edit images using Nano Banana Pro",
         route = NanoBananaProRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaProViewModel::class,
@@ -104,7 +104,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Gemini 2.5 Flash Image (Nano Banana)",
-        description = "Generate and/or edit images using Nano Banana (GA)",
+        description = "Generate and/or edit images using Nano Banana",
         route = NanoBananaRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaViewModel::class,
@@ -187,6 +187,5 @@ val FIREBASE_AI_SAMPLES = listOf(
         screenType = ScreenType.HYBRID,
         viewModelClass = HybridInferenceViewModel::class,
         categories = listOf(Category.HYBRID)
-
     )
 )

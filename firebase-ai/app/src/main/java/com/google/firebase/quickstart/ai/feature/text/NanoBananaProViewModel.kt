@@ -5,10 +5,12 @@ import kotlinx.serialization.Serializable
 import com.google.firebase.Firebase
 import com.google.firebase.ai.Chat
 import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.AspectRatio
 import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.generationConfig
+import com.google.firebase.ai.type.imageConfig
 import com.google.firebase.quickstart.ai.ui.UiChatMessage
 
 @Serializable
@@ -36,9 +38,13 @@ class NanoBananaProViewModel : ChatViewModel() {
         val generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).generativeModel(
-            modelName = "gemini-3-pro-image-preview",
+            modelName = "gemini-3-pro-image",
             generationConfig = generationConfig {
                 responseModalities = listOf(ResponseModality.TEXT, ResponseModality.IMAGE)
+                // Optionally specify additional configuration
+                imageConfig = imageConfig {
+                    aspectRatio = AspectRatio.SQUARE_1x1
+                }
             }
         )
         chat = generativeModel.startChat()
