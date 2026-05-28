@@ -20,10 +20,9 @@ import java.util.Locale
 object NanoBanana2Route
 
 class NanoBanana2ViewModel : ChatViewModel() {
-    private val currentMonthAndYear = SimpleDateFormat("MMM yyyy", Locale.US)
-        .format(Date())
-
-    override val initialPrompt: String = """
+    override val initialPrompt: String by lazy {
+        val currentMonthAndYear = SimpleDateFormat("MMM yyyy", Locale.US).format(Date())
+        """
         A photo of a glossy magazine cover, the minimal blue cover
         has the large bold words Nano Banana. The text is in a serif
         font and fills the view. No other text. In front of the text
@@ -33,6 +32,7 @@ class NanoBanana2ViewModel : ChatViewModel() {
         a barcode. The magazine is on a shelf against an orange plastered
         wall, within a designer store.
         """.trimIndent()
+    }
 
     private val chat: Chat
 
