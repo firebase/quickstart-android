@@ -154,22 +154,22 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.TOOLS_FC)
     ),
     Sample(
-        title = "Gemini Live (audio input)",
+        title = "Gemini 3.1 Flash Live preview (audio input)",
         description = "Use bidirectional streaming to get information about" +
                 " weather conditions for a specific US city on a specific date",
         route = StreamRealtimeAudioRoute,
         screenType = ScreenType.BIDI,
         viewModelClass = StreamAudioViewModel::class,
-        categories = listOf(Category.LIVE_API, Category.TOOLS_FC)
+        categories = listOf(Category.GEMINI3, Category.LIVE_API, Category.TOOLS_FC)
     ),
     Sample(
-        title = "Gemini Live (video input)",
+        title = "Gemini 3.1 Flash Live preview (video input)",
         description = "Use bidirectional streaming to chat with Gemini using your" +
                 " phone's camera",
         route = StreamRealtimeVideoRoute,
         screenType = ScreenType.BIDI_VIDEO,
         viewModelClass = StreamVideoViewModel::class,
-        categories = listOf(Category.LIVE_API, Category.TOOLS_FC)
+        categories = listOf(Category.GEMINI3, Category.LIVE_API)
     ),
     Sample(
         title = "Server Prompt Templates - Gemini",
