@@ -4,13 +4,12 @@ import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
+import com.google.firebase.ai.DownloadStatus
 import com.google.firebase.ai.InferenceMode
 import com.google.firebase.ai.InferenceSource
 import com.google.firebase.ai.OnDeviceConfig
+import com.google.firebase.ai.OnDeviceModelStatus
 import com.google.firebase.ai.ai
-import com.google.firebase.ai.ondevice.DownloadStatus
-import com.google.firebase.ai.ondevice.FirebaseAIOnDevice
-import com.google.firebase.ai.ondevice.OnDeviceModelStatus
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.content
@@ -49,11 +48,11 @@ class HybridInferenceViewModel : ViewModel() {
     private fun checkAndDownloadModel() {
         viewModelScope.launch {
             try {
-                val status = FirebaseAIOnDevice.checkStatus()
+                val status = model.onDeviceExtension?.checkStatus()
                 updateStatus(status)
 
                 if (status == OnDeviceModelStatus.DOWNLOADABLE) {
-                    FirebaseAIOnDevice.download().collect { downloadStatus ->
+                    model.onDeviceExtension?.download()?.collect { downloadStatus ->
                         when (downloadStatus) {
                             is DownloadStatus.DownloadStarted -> {
                                 uiState.update { it.copy(modelStatus = "Downloading model...") }
@@ -84,13 +83,12 @@ class HybridInferenceViewModel : ViewModel() {
         }
     }
 
-    private fun updateStatus(status: OnDeviceModelStatus) {
+    private fun updateStatus(status: OnDeviceModelStatus?) {
         val statusText = when (status) {
             OnDeviceModelStatus.AVAILABLE -> "Model available"
             OnDeviceModelStatus.DOWNLOADABLE -> "Model downloadable"
             OnDeviceModelStatus.DOWNLOADING -> "Model downloading..."
-            OnDeviceModelStatus.UNAVAILABLE -> "On-device model unavailable"
-            else -> "Unknown"
+            else -> "On-device model unavailable"
         }
         uiState.update { it.copy(modelStatus = statusText) }
     }
