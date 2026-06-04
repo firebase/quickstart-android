@@ -11,20 +11,27 @@ import com.google.firebase.quickstart.ai.ui.ChatUiState
 import com.google.firebase.quickstart.ai.ui.UiChatMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @OptIn(PublicPreviewAPI::class)
 abstract class ChatViewModel : ViewModel() {
 
-    protected val _uiState = MutableStateFlow<ChatUiState>(ChatUiState.Success)
-    val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<ChatUiState>
+        field = MutableStateFlow<ChatUiState>(ChatUiState.Success)
 
-    protected val _messages = MutableStateFlow<List<UiChatMessage>>(emptyList())
-    val messages: StateFlow<List<UiChatMessage>> = _messages.asStateFlow()
+    val messages: StateFlow<List<UiChatMessage>>
+        field = MutableStateFlow<List<UiChatMessage>>(emptyList())
 
-    protected val _attachments = MutableStateFlow<List<Attachment>>(emptyList())
-    val attachments: StateFlow<List<Attachment>> = _attachments.asStateFlow()
+    val attachments: StateFlow<List<Attachment>>
+        field = MutableStateFlow<List<Attachment>>(emptyList())
+
+    protected fun updateUiState(state: ChatUiState) {
+        uiState.value = state
+    }
+
+    protected fun updateMessages(list: List<UiChatMessage>) {
+        messages.value = list
+    }
 
     abstract val initialPrompt: String
 
@@ -40,14 +47,14 @@ abstract class ChatViewModel : ViewModel() {
             .text(userMessage)
             .build()
 
-        _messages.value = _messages.value + UiChatMessage(prompt)
+        messages.value = messages.value + UiChatMessage(prompt)
 
         viewModelScope.launch {
-            _uiState.value = ChatUiState.Loading
+            uiState.value = ChatUiState.Loading
             try {
-                performSendMessage(prompt, _messages.value)
+                performSendMessage(prompt, messages.value)
             } catch (e: Exception) {
-                _uiState.value = ChatUiState.Error(e.localizedMessage ?: "Unknown error")
+                uiState.value = ChatUiState.Error(e.localizedMessage ?: "Unknown error")
             } finally {
                 contentBuilder = Content.Builder() // reset the builder
             }
@@ -76,13 +83,13 @@ abstract class ChatViewModel : ViewModel() {
             && candidate.groundingMetadata?.groundingChunks?.isNotEmpty() == true
             && candidate.groundingMetadata?.searchEntryPoint == null
         ) {
-            _uiState.value = ChatUiState.Error(
+            uiState.value = ChatUiState.Error(
                 "Could not display the response because it was missing required attribution components."
             )
         } else {
-            _messages.value = currentMessages + UiChatMessage(candidate.content, candidate.groundingMetadata)
-            _attachments.value = emptyList()
-            _uiState.value = ChatUiState.Success
+            messages.value = currentMessages + UiChatMessage(candidate.content, candidate.groundingMetadata)
+            attachments.value = emptyList()
+            uiState.value = ChatUiState.Success
         }
     }
 
@@ -98,7 +105,7 @@ abstract class ChatViewModel : ViewModel() {
             contentBuilder.inlineData(fileInBytes, mimeType ?: "text/plain")
         }
 
-        _attachments.value = _attachments.value + Attachment(fileName ?: "Unnamed file")
+        attachments.value = attachments.value + Attachment(fileName ?: "Unnamed file")
     }
 
     protected fun decodeBitmapFromImage(input: ByteArray) =
