@@ -36,8 +36,18 @@ import com.google.firebase.quickstart.ai.feature.text.VideoSummarizationRoute
 import com.google.firebase.quickstart.ai.feature.text.VideoSummarizationViewModel
 import com.google.firebase.quickstart.ai.feature.text.WeatherChatRoute
 import com.google.firebase.quickstart.ai.feature.text.WeatherChatViewModel
+import com.google.firebase.quickstart.ai.feature.text.SpeechConfigRoute
+import com.google.firebase.quickstart.ai.feature.text.SpeechConfigViewModel
 
 val FIREBASE_AI_SAMPLES = listOf(
+    Sample(
+        title = "Speech Configuration & TTS",
+        description = "Test multi-speaker text-to-speech recitation across various languages using SpeechConfig",
+        route = SpeechConfigRoute,
+        screenType = ScreenType.SPEECH_CONFIG,
+        viewModelClass = SpeechConfigViewModel::class,
+        categories = listOf(Category.GEMINI3)
+    ),
     Sample(
         title = "Translate text",
         description = "Use Gemini 3.1 Flash-Lite to translate text",

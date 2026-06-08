@@ -37,6 +37,8 @@ import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
 import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
 import com.google.firebase.quickstart.ai.ui.SvgScreen
+import com.google.firebase.quickstart.ai.ui.SpeechConfigScreen
+import com.google.firebase.quickstart.ai.feature.text.SpeechConfigViewModel
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
 import com.google.firebase.quickstart.ai.ui.navigation.ScreenType
@@ -122,6 +124,10 @@ class MainActivity : ComponentActivity() {
 
                                     ScreenType.HYBRID -> {
                                         (vm as? HybridInferenceViewModel)?.let { HybridInferenceScreen(it) }
+                                    }
+
+                                    ScreenType.SPEECH_CONFIG -> {
+                                        (vm as? SpeechConfigViewModel)?.let { SpeechConfigScreen(it) }
                                     }
                                 }
                             }
