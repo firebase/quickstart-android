@@ -51,7 +51,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
     implementation("androidx.annotation:annotation:1.10.0")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
-    implementation("androidx.core:core-ktx:1.18.0")
+    implementation("androidx.core:core-ktx:1.19.0")
 
     // Required when asking for permission to post notifications (starting in Android 13)
     implementation("androidx.activity:activity-ktx:1.13.0")
@@ -60,7 +60,7 @@ dependencies {
     implementation("com.google.android.material:material:1.14.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.14.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.14.1"))
 
     // Firebase Cloud Messaging
     implementation("com.google.firebase:firebase-messaging")
