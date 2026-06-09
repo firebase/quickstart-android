@@ -11,12 +11,12 @@ tasks {
 
 android {
     namespace = "com.google.firebase.quickstart.fcm"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.google.firebase.quickstart.fcm"
         minSdk = 23
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
@@ -51,7 +51,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
     implementation("androidx.annotation:annotation:1.10.0")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
-    implementation("androidx.core:core-ktx:1.18.0")
+    implementation("androidx.core:core-ktx:1.19.0")
 
     // Required when asking for permission to post notifications (starting in Android 13)
     implementation("androidx.activity:activity-ktx:1.13.0")

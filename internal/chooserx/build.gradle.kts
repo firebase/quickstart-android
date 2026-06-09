@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.firebase.example.internal"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 16
@@ -20,7 +20,7 @@ android {
     }
 
     lint {
-        targetSdk = 36
+        targetSdk = 37
     }
 
 }
