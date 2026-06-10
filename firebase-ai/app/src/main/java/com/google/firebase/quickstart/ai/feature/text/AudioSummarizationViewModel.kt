@@ -40,8 +40,8 @@ class AudioSummarizationViewModel : ChatViewModel() {
                     )
                 }
             ))
-        _messages.value = chat.history.map { UiChatMessage(it) }
-        _uiState.value = ChatUiState.Success
+        updateMessages(chat.history.map { UiChatMessage(it) })
+        updateUiState(ChatUiState.Success)
     }
 
     override suspend fun performSendMessage(prompt: Content, currentMessages: List<UiChatMessage>) {

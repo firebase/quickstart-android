@@ -22,8 +22,8 @@ class ServerPromptTemplateViewModel : ViewModel() {
     val initialPrompt = "Jane Doe"
     val allowEmptyPrompt = false
     
-    private val _uiState = MutableStateFlow<ServerPromptUiState>(ServerPromptUiState.Success())
-    val uiState: StateFlow<ServerPromptUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<ServerPromptUiState>
+        field = MutableStateFlow<ServerPromptUiState>(ServerPromptUiState.Success())
 
     private var templateGenerativeModel: TemplateGenerativeModel
 
@@ -35,13 +35,13 @@ class ServerPromptTemplateViewModel : ViewModel() {
 
     fun generate(inputText: String) {
         viewModelScope.launch {
-            _uiState.value = ServerPromptUiState.Loading
+            uiState.value = ServerPromptUiState.Loading
             try {
                 val response = templateGenerativeModel
                     .generateContent("input-system-instructions", mapOf("customerName" to inputText))
-                _uiState.value = ServerPromptUiState.Success(response.text)
+                uiState.value = ServerPromptUiState.Success(response.text)
             } catch (e: Exception) {
-                _uiState.value = ServerPromptUiState.Error(
+                uiState.value = ServerPromptUiState.Error(
                     if (e.localizedMessage?.contains("not found") == true) {
                         """
                         Template was not found, please verify that your project contains a template 

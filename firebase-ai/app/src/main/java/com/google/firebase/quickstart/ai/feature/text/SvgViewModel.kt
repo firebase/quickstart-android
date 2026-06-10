@@ -23,8 +23,8 @@ import kotlinx.coroutines.launch
 object SvgRoute
 
 class SvgViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow<SvgUiState>(SvgUiState.Success())
-    val uiState: StateFlow<SvgUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<SvgUiState>
+        field = MutableStateFlow<SvgUiState>(SvgUiState.Success())
 
     private val generativeModel: GenerativeModel
 
@@ -53,8 +53,8 @@ class SvgViewModel : ViewModel() {
     }
 
     fun generateSVG(prompt: String) {
-        val currentSvgs = (_uiState.value as? SvgUiState.Success)?.svgs ?: emptyList()
-        _uiState.value = SvgUiState.Loading
+        val currentSvgs = (uiState.value as? SvgUiState.Success)?.svgs ?: emptyList()
+        uiState.value = SvgUiState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = generativeModel.generateContent(prompt)
@@ -64,12 +64,12 @@ class SvgViewModel : ViewModel() {
                     ?.removeSuffix("```")
                     ?.trimIndent()
                 if (newSvg != null) {
-                    _uiState.value = SvgUiState.Success(listOf(newSvg) + currentSvgs)
+                    uiState.value = SvgUiState.Success(listOf(newSvg) + currentSvgs)
                 } else {
-                    _uiState.value = SvgUiState.Success(currentSvgs)
+                    uiState.value = SvgUiState.Success(currentSvgs)
                 }
             } catch (e: Exception) {
-                _uiState.value = SvgUiState.Error(e.localizedMessage ?: "Unknown error")
+                uiState.value = SvgUiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

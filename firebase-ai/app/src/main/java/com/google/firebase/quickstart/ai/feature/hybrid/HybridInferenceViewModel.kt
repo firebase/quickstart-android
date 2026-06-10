@@ -1,44 +1,40 @@
 package com.google.firebase.quickstart.ai.feature.hybrid
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
+import com.google.firebase.ai.DownloadStatus
 import com.google.firebase.ai.InferenceMode
 import com.google.firebase.ai.InferenceSource
 import com.google.firebase.ai.OnDeviceConfig
+import com.google.firebase.ai.OnDeviceModelStatus
 import com.google.firebase.ai.ai
-import com.google.firebase.ai.ondevice.DownloadStatus
-import com.google.firebase.ai.ondevice.FirebaseAIOnDevice
-import com.google.firebase.ai.ondevice.OnDeviceModelStatus
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.content
 import com.google.firebase.quickstart.ai.ui.HybridInferenceUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import java.util.UUID
 
 @Serializable
 object HybridInferenceRoute
 
 @OptIn(PublicPreviewAPI::class)
 class HybridInferenceViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(
-        HybridInferenceUiState(
-            expenses = listOf(
-                Expense("Lunch", 15.50, "Example data"),
-                Expense("Coffee", 4.75, "Example data")
+    val uiState: StateFlow<HybridInferenceUiState>
+        field = MutableStateFlow(
+            HybridInferenceUiState(
+                expenses = listOf(
+                    Expense("Lunch", 15.50, "Example data"),
+                    Expense("Coffee", 4.75, "Example data")
+                )
             )
         )
-    )
-    val uiState: StateFlow<HybridInferenceUiState> = _uiState.asStateFlow()
 
     private val model = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
         modelName = "gemini-3.1-flash-lite",
@@ -52,27 +48,27 @@ class HybridInferenceViewModel : ViewModel() {
     private fun checkAndDownloadModel() {
         viewModelScope.launch {
             try {
-                val status = FirebaseAIOnDevice.checkStatus()
+                val status = model.onDeviceExtension?.checkStatus()
                 updateStatus(status)
 
                 if (status == OnDeviceModelStatus.DOWNLOADABLE) {
-                    FirebaseAIOnDevice.download().collect { downloadStatus ->
+                    model.onDeviceExtension?.download()?.collect { downloadStatus ->
                         when (downloadStatus) {
                             is DownloadStatus.DownloadStarted -> {
-                                _uiState.update { it.copy(modelStatus = "Downloading model...") }
+                                uiState.update { it.copy(modelStatus = "Downloading model...") }
                             }
 
                             is DownloadStatus.DownloadInProgress -> {
                                 val progress = downloadStatus.totalBytesDownloaded
-                                _uiState.update { it.copy(modelStatus = "Downloading: $progress bytes downloaded") }
+                                uiState.update { it.copy(modelStatus = "Downloading: $progress bytes downloaded") }
                             }
 
                             is DownloadStatus.DownloadCompleted -> {
-                                _uiState.update { it.copy(modelStatus = "Model ready") }
+                                uiState.update { it.copy(modelStatus = "Model ready") }
                             }
 
                             is DownloadStatus.DownloadFailed -> {
-                                _uiState.update {
+                                uiState.update {
                                     it.copy(
                                         modelStatus = "Download failed", errorMessage = "Model download failed"
                                     )
@@ -82,25 +78,24 @@ class HybridInferenceViewModel : ViewModel() {
                     }
                 }
             } catch (e: Exception) {
-                _uiState.update { it.copy(modelStatus = "Error checking status", errorMessage = e.message) }
+                uiState.update { it.copy(modelStatus = "Error checking status", errorMessage = e.message) }
             }
         }
     }
 
-    private fun updateStatus(status: OnDeviceModelStatus) {
+    private fun updateStatus(status: OnDeviceModelStatus?) {
         val statusText = when (status) {
             OnDeviceModelStatus.AVAILABLE -> "Model available"
             OnDeviceModelStatus.DOWNLOADABLE -> "Model downloadable"
             OnDeviceModelStatus.DOWNLOADING -> "Model downloading..."
-            OnDeviceModelStatus.UNAVAILABLE -> "On-device model unavailable"
-            else -> "Unknown"
+            else -> "On-device model unavailable"
         }
-        _uiState.update { it.copy(modelStatus = statusText) }
+        uiState.update { it.copy(modelStatus = statusText) }
     }
 
     fun scanReceipt(bitmap: Bitmap) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isScanning = true, errorMessage = null) }
+            uiState.update { it.copy(isScanning = true, errorMessage = null) }
             try {
                 val prompt = content {
                     image(bitmap)
@@ -124,16 +119,15 @@ class HybridInferenceViewModel : ViewModel() {
                 } else {
                     "Cloud"
                 }
-                Log.d("HybridVM", "$inferenceMode response: $text")
                 if (text != null) {
                     parseAndAddExpense(text, inferenceMode)
                 } else {
-                    _uiState.update { it.copy(errorMessage = "Could not extract data") }
+                    uiState.update { it.copy(errorMessage = "Could not extract data") }
                 }
             } catch (e: Exception) {
-                _uiState.update { it.copy(errorMessage = "Error: ${e.message}") }
+                uiState.update { it.copy(errorMessage = "Error: ${e.message}") }
             } finally {
-                _uiState.update { it.copy(isScanning = false) }
+                uiState.update { it.copy(isScanning = false) }
             }
         }
     }
@@ -145,9 +139,9 @@ class HybridInferenceViewModel : ViewModel() {
             .replace("```", "")
         try {
             val newExpense = Json.decodeFromString<Expense>(json).copy(inferenceMode = inferenceMode)
-            _uiState.update { it.copy(expenses = it.expenses + newExpense) }
+            uiState.update { it.copy(expenses = it.expenses + newExpense) }
         } catch (e: Exception) {
-            _uiState.update { it.copy(errorMessage = e.localizedMessage) }
+            uiState.update { it.copy(errorMessage = e.localizedMessage) }
         }
     }
 }

@@ -33,8 +33,8 @@ class VideoSummarizationViewModel : ChatViewModel() {
             }
         )
 
-        _messages.value = chatHistory.map { UiChatMessage(it) }
-        _uiState.value = ChatUiState.Success
+        updateMessages(chatHistory.map { UiChatMessage(it) })
+        updateUiState(ChatUiState.Success)
 
         val generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
