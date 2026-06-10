@@ -3,14 +3,14 @@ plugins {
 }
 android {
     namespace = "com.firebase.lintchecks"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 16
     }
 
     lint {
-        targetSdk = 36
+        targetSdk = 37
     }
 }
 

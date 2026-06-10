@@ -8,12 +8,12 @@ android {
     namespace = "com.google.samples.quickstart.functions"
     // Changes the test build type for instrumented tests to "stage".
     testBuildType = "release"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.google.samples.quickstart.functions"
         minSdk = 23
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
