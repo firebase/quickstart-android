@@ -158,9 +158,86 @@ class HybridInferenceViewModel : ViewModel() {
             val parsedExpenses = Json.decodeFromString<List<Expense>>(json).map {
                 it.copy(inferenceMode = inferenceMode)
             }
-            uiState.update { it.copy(expenses = parsedExpenses) }
+            uiState.update { it.copy(expenses = parsedExpenses, splitResult = emptyList()) }
         } catch (e: Exception) {
             uiState.update { it.copy(errorMessage = "Parsing failed: ${e.localizedMessage}") }
+        }
+    }
+
+    fun updateExpenseAssignment(index: Int, names: String) {
+        uiState.update { state ->
+            val updated = state.expenses.mapIndexed { i, exp ->
+                if (i == index) exp.copy(assignedTo = names) else exp
+            }
+            state.copy(expenses = updated)
+        }
+    }
+
+    fun clearSplit() {
+        uiState.update { it.copy(splitResult = emptyList()) }
+    }
+
+    fun calculateSplit() {
+        val currentExpenses = uiState.value.expenses
+        if (currentExpenses.isEmpty()) {
+            uiState.update { it.copy(errorMessage = "No items to split") }
+            return
+        }
+
+        viewModelScope.launch {
+            uiState.update { it.copy(isCalculatingSplit = true, errorMessage = null) }
+            try {
+                val itemsRepresentation = currentExpenses.joinToString("\n") { exp ->
+                    "- ${exp.name}: ${exp.price} (Assigned to: ${exp.assignedTo.ifBlank { "Unassigned / Shared" }})"
+                }
+
+                val prompt = content {
+                    text(
+                        """
+                        Based on this list of items from a receipt and who chose each item, calculate how much each person owes.
+                        
+                        Items:
+                        $itemsRepresentation
+                        
+                        Rules for calculation:
+                        1. If an item has multiple names assigned (e.g., comma-separated like "Alice, Bob"), split the price of that item equally among them.
+                        2. If an item has no assigned names (empty/blank or "Unassigned / Shared"), split its cost equally among all unique people identified across all other items. If no people are assigned to any items at all, split the entire cost of all items equally among a single general user/group named "Shared".
+                        3. Calculate the total amount for each unique person.
+                        4. Build a concise breakdown explanation of what they are paying for (e.g., "eggs ($1.00) + potatoes ($1.50) + shared milk ($1.00)").
+                        
+                        Output only in JSON format as a list of persons where each person contains exactly 3 fields:
+                        - 'name' (String)
+                        - 'amount' (Double, the total amount they owe)
+                        - 'breakdown' (String, a concise breakdown of how the amount was calculated)
+                        
+                        Do not include any currency signs or backticks or any explanation or markdown wrappers or any text around the JSON array.
+                        
+                        Example format:
+                        [
+                          {"name": "Alice", "amount": 3.5, "breakdown": "eggs ($1.00) + potatoes ($1.50) + shared milk ($1.00)"},
+                          {"name": "Bob", "amount": 2.5, "breakdown": "milk ($1.00) + shared milk ($1.00) + potatoes ($0.50)"}
+                        ]
+                        """.trimIndent()
+                    )
+                }
+
+                val response = model.generateContent(prompt)
+                val text = response.text
+                if (text != null) {
+                    val json = text
+                        .replace("```json", "")
+                        .replace("```", "")
+                        .trim()
+                    val parsedSplit = Json.decodeFromString<List<PersonSplit>>(json)
+                    uiState.update { it.copy(splitResult = parsedSplit) }
+                } else {
+                    uiState.update { it.copy(errorMessage = "Could not calculate split") }
+                }
+            } catch (e: Exception) {
+                uiState.update { it.copy(errorMessage = "Split calculation error: ${e.message}") }
+            } finally {
+                uiState.update { it.copy(isCalculatingSplit = false) }
+            }
         }
     }
 }

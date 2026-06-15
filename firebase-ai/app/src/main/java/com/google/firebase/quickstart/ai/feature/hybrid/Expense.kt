@@ -6,5 +6,13 @@ import kotlinx.serialization.Serializable
 data class Expense(
     val name: String,
     val price: Double,
-    val inferenceMode: String = ""
+    val inferenceMode: String = "",
+    val assignedTo: String = ""
+)
+
+@Serializable
+data class PersonSplit(
+    val name: String,
+    val amount: Double,
+    val breakdown: String
 )
