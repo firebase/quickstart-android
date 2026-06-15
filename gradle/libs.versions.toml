@@ -2,7 +2,7 @@
 activityCompose = "1.13.0"
 agp = "9.2.1"
 camerax = "1.6.1"
-coil3Compose = "3.4.0"
+coil3Compose = "3.5.0"
 composeBom = "2026.05.01"
 composeNavigation = "2.9.8"
 coreKtx = "1.19.0"
