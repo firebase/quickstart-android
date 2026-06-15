@@ -134,7 +134,7 @@ fun HybridInferenceScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                "Expenses",
+                "Scanned Items",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -143,7 +143,7 @@ fun HybridInferenceScreen(
 
             if (uiState.expenses.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No expenses yet. Scan a receipt to add one.", color = Color.Gray)
+                    Text("No scanned items yet. Scan a receipt to add them.", color = Color.Gray)
                 }
             } else {
                 LazyColumn(

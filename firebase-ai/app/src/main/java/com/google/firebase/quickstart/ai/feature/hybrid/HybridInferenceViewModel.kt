@@ -8,11 +8,15 @@ import com.google.firebase.ai.DownloadStatus
 import com.google.firebase.ai.InferenceMode
 import com.google.firebase.ai.InferenceSource
 import com.google.firebase.ai.OnDeviceConfig
+import com.google.firebase.ai.OnDeviceModelOption
 import com.google.firebase.ai.OnDeviceModelStatus
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.PublicPreviewAPI
+import com.google.firebase.ai.type.ThinkingLevel
 import com.google.firebase.ai.type.content
+import com.google.firebase.ai.type.generationConfig
+import com.google.firebase.ai.type.thinkingConfig
 import com.google.firebase.quickstart.ai.ui.HybridInferenceUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,15 +34,24 @@ class HybridInferenceViewModel : ViewModel() {
         field = MutableStateFlow(
             HybridInferenceUiState(
                 expenses = listOf(
-                    Expense("Lunch", 15.50, "Example data"),
-                    Expense("Coffee", 4.75, "Example data")
+                    Expense("eggs", 2.00, "Example data"),
+                    Expense("Milk", 1.00, "Example data"),
+                    Expense("Potatoes", 3.00, "Example data")
                 )
             )
         )
 
     private val model = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
-        modelName = "gemini-3.1-flash-lite",
-        onDeviceConfig = OnDeviceConfig(mode = InferenceMode.PREFER_ON_DEVICE)
+        modelName = "gemini-3.5-flash",
+        generationConfig {
+            thinkingConfig {
+                thinkingLevel = ThinkingLevel.MEDIUM
+            }
+        },
+        onDeviceConfig = OnDeviceConfig(
+            mode = InferenceMode.PREFER_ON_DEVICE,
+            modelOption = OnDeviceModelOption.PREVIEW
+        )
     )
 
     init {
@@ -101,13 +114,16 @@ class HybridInferenceViewModel : ViewModel() {
                     image(bitmap)
                     text(
                         """
-                        Extract the store name and the total price from this receipt.
-                        Output only in JSON format containg 2 fields '{name,price}'.
-                        Do not include any currency signs or backticks or any text around it.
+                        Extract all the items and their prices from this receipt.
+                        Output only in JSON format as a list of items where each item contains exactly 2 fields 'name' and 'price'.
+                        Do not include any currency signs or backticks or any explanation or markdown wrappers or any text around the JSON array.
                         Use dots for decimals.
-                        Examples:
-                        - {"name": "FakeStore", "price": "2.0"}
-                        - {"name": "SomeMarket", "price": "3.5"}
+                        Example format:
+                        [
+                          {"name": "eggs", "price": 2.0},
+                          {"name": "Milk", "price": 1.0},
+                          {"name": "Potatoes", "price": 3.0}
+                        ]
                         """.trimIndent()
                     )
                 }
@@ -120,7 +136,7 @@ class HybridInferenceViewModel : ViewModel() {
                     "Cloud"
                 }
                 if (text != null) {
-                    parseAndAddExpense(text, inferenceMode)
+                    parseAndAddExpenses(text, inferenceMode)
                 } else {
                     uiState.update { it.copy(errorMessage = "Could not extract data") }
                 }
@@ -132,16 +148,19 @@ class HybridInferenceViewModel : ViewModel() {
         }
     }
 
-    private fun parseAndAddExpense(text: String, inferenceMode: String) {
+    private fun parseAndAddExpenses(text: String, inferenceMode: String) {
         val json = text
             // The on-device model sometimes outputs backticks, so we remove those
             .replace("```json", "")
             .replace("```", "")
+            .trim()
         try {
-            val newExpense = Json.decodeFromString<Expense>(json).copy(inferenceMode = inferenceMode)
-            uiState.update { it.copy(expenses = it.expenses + newExpense) }
+            val parsedExpenses = Json.decodeFromString<List<Expense>>(json).map {
+                it.copy(inferenceMode = inferenceMode)
+            }
+            uiState.update { it.copy(expenses = parsedExpenses) }
         } catch (e: Exception) {
-            uiState.update { it.copy(errorMessage = e.localizedMessage) }
+            uiState.update { it.copy(errorMessage = "Parsing failed: ${e.localizedMessage}") }
         }
     }
 }
