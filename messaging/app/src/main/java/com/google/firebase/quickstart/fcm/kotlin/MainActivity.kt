@@ -85,23 +85,18 @@ class MainActivity : AppCompatActivity() {
             // [END subscribe_topics]
         }
 
-        binding.logTokenButton.setOnClickListener {
-            // Get token
-            // [START log_reg_token]
-            Firebase.messaging.token.addOnCompleteListener(
+        binding.logRegistrationButton.setOnClickListener {
+            // Get FCM Registration
+            // [START log_reg]
+            Firebase.messaging.register().addOnCompleteListener(
                 OnCompleteListener { task ->
                     if (!task.isSuccessful) {
-                        Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                        Log.w(TAG, "Fetching FCM registration failed", task.exception)
                         return@OnCompleteListener
                     }
 
-                    // Get new FCM registration token
-                    val token = task.result
-
-                    // Log and toast
-                    val msg = getString(R.string.msg_token_fmt, token)
-                    Log.d(TAG, msg)
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                  // If the registration task is success, the onRegistered callback in
+                  // FirebaseMessagingService will be invoked and the registration will be logged from there.
                 },
             )
             // [END log_reg_token]

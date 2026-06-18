@@ -33,7 +33,7 @@
         android:text="@string/subscribe_to_weather" />
 
     <Button
-        android:id="@+id/logTokenButton"
+        android:id="@+id/logRegistrationButton"
         android:layout_width="@dimen/standard_field_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
