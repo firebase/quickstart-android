@@ -24,6 +24,8 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -51,6 +53,7 @@ import androidx.work.WorkManager;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     /**
      * Called when message is received.
@@ -147,11 +150,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // Log and toast
     String msg = getString(R.string.msg_registration_fmt, installationId);
     Log.d(TAG, msg);
-    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    handler.post(() -> Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show());
   }
   // [END onRegistered]
 
-  // [START onRegistered]
+  // [START onUnregistered]
   /**
    * Called when the current app instance has been successfully unregistered from FCM via a call to
    * {@code FirebaseMessaging.unregister()}.
@@ -167,13 +170,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
    */
   @Override
   public void onUnregistered(@NonNull String installationId) {
-    super.onUnregistered(installationId);
     // Remove FCM registration associated with the app instance on the app server
     // so that the app server will not try to send FCM messages to the un registered app instance.
     removeRegistrationFromServer(installationId);
   }
 
-  // [START onRegistered]
+  // [END onUnregistered]
 
     /**
      * Schedule async work using WorkManager.

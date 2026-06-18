@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                   // FirebaseMessagingService will be invoked and the registration will be logged from there.
                 },
             )
-            // [END log_reg_token]
+            // [END log_reg]
         }
 
         Toast.makeText(this, "See README for setup instructions", Toast.LENGTH_SHORT).show()
