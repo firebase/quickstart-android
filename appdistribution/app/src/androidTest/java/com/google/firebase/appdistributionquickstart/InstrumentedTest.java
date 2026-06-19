@@ -48,20 +48,20 @@ public class InstrumentedTest {
 
   @After
   public void tearDown() {
-      getView(R.id.collapse_button).perform(click());
+      getView(com.google.firebase.inappmessaging.display.R.id.collapse_button).perform(click());
   }
 
 
   @Test
   public void testFiamDisplaysOnForegroundCampaign() {
     reopen_app(); // reopen app to correctly trigger fetch
-    getView(R.id.modal_root).check(matches(isDisplayed()));
+    getView(com.google.firebase.inappmessaging.display.R.id.modal_root).check(matches(isDisplayed()));
   }
 
   @Test
   public void testFiamDisplaysContextualTriggerCampaign() {
     onView(withId(R.id.eventTriggerButton)).perform(click());
-    getView(R.id.modal_root).check(matches(isDisplayed()));
+    getView(com.google.firebase.inappmessaging.display.R.id.modal_root).check(matches(isDisplayed()));
   }
 
   private void reopen_app() {
