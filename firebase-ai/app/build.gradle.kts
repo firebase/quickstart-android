@@ -1,9 +1,19 @@
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.ksp)
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("org.jetbrains.kotlin:kotlin-stdlib:2.0.21")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.0.21")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21")
+    }
 }
 
 android {
@@ -30,8 +40,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+        freeCompilerArgs += listOf(
+            "-XXLanguage:+ExplicitBackingFields",
+            "-Xskip-metadata-version-check",
+            "-Xskip-prerelease-check"
+        )
     }
     buildFeatures {
         compose = true
@@ -66,6 +84,7 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.extensions)
+    implementation("com.google.guava:guava:33.3.1-android")
 
     // Material for XML-based theme
     implementation(libs.material)
@@ -74,6 +93,10 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.ai)
     implementation(libs.firebase.ai.ondevice)
+    implementation(libs.genai.prompt)
+    implementation(libs.genai.structured.output)
+    ksp(libs.firebase.ai.ksp.processor)
+    ksp(libs.genai.structured.compiler)
 
     // Image loading
     implementation(libs.coil.compose)

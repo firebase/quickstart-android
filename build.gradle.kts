@@ -8,13 +8,15 @@ plugins {
     alias(libs.plugins.firebase.perf) apply false
     alias(libs.plugins.navigation.safeargs) apply false
     alias(libs.plugins.gradle.versions) apply true
+    alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.ksp) apply false
 }
 
 allprojects {
     repositories {
-        google()
         mavenLocal()
+        google()
         mavenCentral()
     }
 }
