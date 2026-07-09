@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.ai
 
+import kotlin.reflect.KClass
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -26,20 +27,56 @@ import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
+import com.google.firebase.quickstart.ai.feature.structured.StructuredOutputRoute
+import com.google.firebase.quickstart.ai.feature.structured.StructuredOutputViewModel
+import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
+import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeAudioRoute
+import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
+import com.google.firebase.quickstart.ai.feature.live.StreamVideoViewModel
+import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationRoute
+import com.google.firebase.quickstart.ai.feature.text.AudioSummarizationViewModel
+import com.google.firebase.quickstart.ai.feature.text.AudioTranslationRoute
+import com.google.firebase.quickstart.ai.feature.text.AudioTranslationViewModel
+import com.google.firebase.quickstart.ai.feature.text.AutoFunctionCallRoute
+import com.google.firebase.quickstart.ai.feature.text.AutoFunctionCallViewModel
 import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
+import com.google.firebase.quickstart.ai.feature.text.DocumentComparisonRoute
+import com.google.firebase.quickstart.ai.feature.text.DocumentComparisonViewModel
+import com.google.firebase.quickstart.ai.feature.text.GoogleSearchGroundingRoute
+import com.google.firebase.quickstart.ai.feature.text.GoogleSearchGroundingViewModel
+import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorRoute
+import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorViewModel
+import com.google.firebase.quickstart.ai.feature.text.NanoBanana2Route
+import com.google.firebase.quickstart.ai.feature.text.NanoBanana2ViewModel
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaLiteRoute
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaLiteViewModel
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaProRoute
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaProViewModel
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaRoute
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaViewModel
+import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateRoute
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
+import com.google.firebase.quickstart.ai.feature.text.SvgRoute
 import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
+import com.google.firebase.quickstart.ai.feature.text.TranslationRoute
+import com.google.firebase.quickstart.ai.feature.text.TranslationViewModel
+import com.google.firebase.quickstart.ai.feature.text.VideoHashtagGeneratorRoute
+import com.google.firebase.quickstart.ai.feature.text.VideoHashtagGeneratorViewModel
+import com.google.firebase.quickstart.ai.feature.text.VideoSummarizationRoute
+import com.google.firebase.quickstart.ai.feature.text.VideoSummarizationViewModel
+import com.google.firebase.quickstart.ai.feature.text.WeatherChatRoute
+import com.google.firebase.quickstart.ai.feature.text.WeatherChatViewModel
 import com.google.firebase.quickstart.ai.ui.ChatScreen
+import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
 import com.google.firebase.quickstart.ai.ui.ServerPromptScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
-import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
+import com.google.firebase.quickstart.ai.ui.StructuredOutputScreen
 import com.google.firebase.quickstart.ai.ui.SvgScreen
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
-import com.google.firebase.quickstart.ai.ui.navigation.ScreenType
 import com.google.firebase.quickstart.ai.ui.theme.FirebaseAILogicTheme
 
 class MainActivity : ComponentActivity() {
@@ -84,48 +121,32 @@ class MainActivity : ComponentActivity() {
                         }
 
                         // Add navigation for all of the samples
-                        FIREBASE_AI_SAMPLES.forEach { sample ->
-                            composable(
-                                route = sample.route::class,
-                                typeMap = emptyMap()
-                            ) {
-                                val viewModelClass = sample.viewModelClass?.java
-                                    ?: return@composable
-                                val vm = viewModel(modelClass = viewModelClass)
-
-                                when (sample.screenType) {
-                                    ScreenType.CHAT -> {
-                                        (vm as? ChatViewModel)?.let { ChatScreen(it) }
-                                    }
-
-                                    ScreenType.SVG -> {
-                                        (vm as? SvgViewModel)?.let { SvgScreen(it) }
-                                    }
-
-                                    ScreenType.SERVER_PROMPT -> {
-                                        (vm as? ServerPromptTemplateViewModel)?.let { ServerPromptScreen(it) }
-                                    }
-
-                                    ScreenType.BIDI -> {
-                                        (vm as? BidiViewModel)?.let {
-                                            @SuppressLint("MissingPermission")
-                                            StreamRealtimeScreen(it)
-                                        }
-                                    }
-
-                                    ScreenType.BIDI_VIDEO -> {
-                                        (vm as? BidiViewModel)?.let {
-                                            @SuppressLint("MissingPermission")
-                                            StreamRealtimeVideoScreen(it)
-                                        }
-                                    }
-
-                                    ScreenType.HYBRID -> {
-                                        (vm as? HybridInferenceViewModel)?.let { HybridInferenceScreen(it) }
-                                    }
-                                }
-                            }
+                        composable<TranslationRoute> { ChatScreen(viewModel<TranslationViewModel>()) }
+                        composable<SvgRoute> { SvgScreen(viewModel<SvgViewModel>()) }
+                        composable<AudioSummarizationRoute> { ChatScreen(viewModel<AudioSummarizationViewModel>()) }
+                        composable<VideoSummarizationRoute> { ChatScreen(viewModel<VideoSummarizationViewModel>()) }
+                        composable<AudioTranslationRoute> { ChatScreen(viewModel<AudioTranslationViewModel>()) }
+                        composable<ImageBlogCreatorRoute> { ChatScreen(viewModel<ImageBlogCreatorViewModel>()) }
+                        composable<NanoBananaLiteRoute> { ChatScreen(viewModel<NanoBananaLiteViewModel>()) }
+                        composable<NanoBanana2Route> { ChatScreen(viewModel<NanoBanana2ViewModel>()) }
+                        composable<NanoBananaProRoute> { ChatScreen(viewModel<NanoBananaProViewModel>()) }
+                        composable<NanoBananaRoute> { ChatScreen(viewModel<NanoBananaViewModel>()) }
+                        composable<DocumentComparisonRoute> { ChatScreen(viewModel<DocumentComparisonViewModel>()) }
+                        composable<VideoHashtagGeneratorRoute> { ChatScreen(viewModel<VideoHashtagGeneratorViewModel>()) }
+                        composable<GoogleSearchGroundingRoute> { ChatScreen(viewModel<GoogleSearchGroundingViewModel>()) }
+                        composable<WeatherChatRoute> { ChatScreen(viewModel<WeatherChatViewModel>()) }
+                        composable<AutoFunctionCallRoute> { ChatScreen(viewModel<AutoFunctionCallViewModel>()) }
+                        composable<StreamRealtimeAudioRoute> {
+                            @SuppressLint("MissingPermission")
+                            StreamRealtimeScreen(viewModel<StreamAudioViewModel>())
                         }
+                        composable<StreamRealtimeVideoRoute> {
+                            @SuppressLint("MissingPermission")
+                            StreamRealtimeVideoScreen(viewModel<StreamVideoViewModel>())
+                        }
+                        composable<ServerPromptTemplateRoute> { ServerPromptScreen(viewModel<ServerPromptTemplateViewModel>()) }
+                        composable<HybridInferenceRoute> { HybridInferenceScreen(viewModel<HybridInferenceViewModel>()) }
+                        composable<StructuredOutputRoute> { StructuredOutputScreen(viewModel<StructuredOutputViewModel>()) }
                     }
                 }
             }

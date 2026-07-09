@@ -2,6 +2,8 @@ package com.google.firebase.quickstart.ai.ui.navigation
 
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
+import com.google.firebase.quickstart.ai.feature.structured.StructuredOutputRoute
+import com.google.firebase.quickstart.ai.feature.structured.StructuredOutputViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeAudioRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
@@ -197,5 +199,13 @@ val FIREBASE_AI_SAMPLES = listOf(
         screenType = ScreenType.HYBRID,
         viewModelClass = HybridInferenceViewModel::class,
         categories = listOf(Category.HYBRID)
+    ),
+    Sample(
+        title = "Structured & Hybrid Output",
+        description = "Test generateObject and generateContent across Cloud, On-Device (ML Kit), and Hybrid fallback modes with Logcat logging.",
+        route = StructuredOutputRoute,
+        screenType = ScreenType.STRUCTURED,
+        viewModelClass = StructuredOutputViewModel::class,
+        categories = listOf(Category.HYBRID, Category.GEMINI3)
     )
 )
