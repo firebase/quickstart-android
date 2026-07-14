@@ -94,7 +94,6 @@ dependencies {
     implementation(libs.firebase.ai)
     implementation(libs.firebase.ai.ondevice)
     implementation(libs.genai.prompt)
-    implementation(libs.genai.structured.output)
     ksp(libs.firebase.ai.ksp.processor)
     ksp(libs.genai.structured.compiler)
 

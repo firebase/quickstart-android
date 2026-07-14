@@ -56,6 +56,7 @@ firebase-ai = { module = "com.google.firebase:firebase-ai", version = "17.14.0" 
 firebase-ai-ondevice = { module = "com.google.firebase:firebase-ai-ondevice", version = "16.0.0-beta04" }
 firebase-ai-ksp-processor = { module = "com.google.firebase:firebase-ai-ksp-processor", version = "16.0.2" }
 genai-prompt = { module = "com.google.mlkit:genai-prompt", version.ref = "genaiPrompt" }
+genai-schema = { module = "com.google.mlkit:genai-schema", version = "1.0.0-alpha1" }
 genai-structured-output = { module = "com.google.mlkit:genai-structured-output", version = "1.0.0-alpha1" }
 genai-structured-compiler = { module = "com.google.mlkit:genai-structured-compiler", version = "1.0.0-alpha1" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }

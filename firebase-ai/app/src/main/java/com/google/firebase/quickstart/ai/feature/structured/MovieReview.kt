@@ -1,7 +1,7 @@
 package com.google.firebase.quickstart.ai.feature.structured
 
-import com.google.firebase.ai.annotations.Generable
-import com.google.firebase.ai.annotations.Guide
+import com.google.mlkit.genai.structuredoutput.annotations.Generable
+import com.google.mlkit.genai.structuredoutput.annotations.Guide
 import kotlinx.serialization.Serializable
 
 @Generable(description = "A structured review and analysis of a movie or TV show")
