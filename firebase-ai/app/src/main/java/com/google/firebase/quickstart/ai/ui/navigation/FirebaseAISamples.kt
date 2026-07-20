@@ -20,6 +20,8 @@ import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorRoute
 import com.google.firebase.quickstart.ai.feature.text.ImageBlogCreatorViewModel
 import com.google.firebase.quickstart.ai.feature.text.NanoBanana2Route
 import com.google.firebase.quickstart.ai.feature.text.NanoBanana2ViewModel
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaLiteRoute
+import com.google.firebase.quickstart.ai.feature.text.NanoBananaLiteViewModel
 import com.google.firebase.quickstart.ai.feature.text.NanoBananaProRoute
 import com.google.firebase.quickstart.ai.feature.text.NanoBananaProViewModel
 import com.google.firebase.quickstart.ai.feature.text.NanoBananaRoute
@@ -85,6 +87,14 @@ val FIREBASE_AI_SAMPLES = listOf(
         screenType = ScreenType.CHAT,
         viewModelClass = ImageBlogCreatorViewModel::class,
         categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
+    ),
+    Sample(
+        title = "Gemini 3.1 Flash Image Lite (Nano Banana Lite)",
+        description = "Generate and/or edit images using Nano Banana Lite",
+        route = NanoBananaLiteRoute,
+        screenType = ScreenType.CHAT,
+        viewModelClass = NanoBananaLiteViewModel::class,
+        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
     ),
     Sample(
         title = "Gemini 3.1 Flash Image (Nano Banana 2)",

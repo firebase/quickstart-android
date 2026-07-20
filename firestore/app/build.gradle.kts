@@ -51,7 +51,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.14.1"))
+    implementation(platform("com.google.firebase:firebase-bom:34.16.0"))
 
     // Firestore
     implementation("com.google.firebase:firebase-firestore")
@@ -79,9 +79,9 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.9.8")
 
     // Android architecture components
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    annotationProcessor("androidx.lifecycle:lifecycle-compiler:2.10.0")
+    annotationProcessor("androidx.lifecycle:lifecycle-compiler:2.11.0")
 
     // Third-party libraries
     implementation("me.zhanghai.android.materialratingbar:library:1.4.0")
@@ -91,7 +91,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-contrib:3.7.0")
     androidTestImplementation("androidx.test:rules:1.7.0")
     androidTestImplementation("androidx.test:runner:1.7.0")
-    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.4.0")
     androidTestImplementation("junit:junit:4.13.2")
     androidTestImplementation("org.hamcrest:hamcrest-library:3.0")
     androidTestImplementation("com.google.firebase:firebase-auth")

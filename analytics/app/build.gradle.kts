@@ -48,10 +48,10 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("androidx.preference:preference-ktx:1.2.1")
     // Needed to override the version used by preference-ktx
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.11.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.14.1"))
+    implementation(platform("com.google.firebase:firebase-bom:34.16.0"))
 
     // Firebase Analytics
     implementation("com.google.firebase:firebase-analytics")
