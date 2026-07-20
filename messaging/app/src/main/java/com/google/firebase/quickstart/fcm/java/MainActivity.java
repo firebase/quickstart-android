@@ -106,30 +106,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        binding.logTokenButton.setOnClickListener(new View.OnClickListener() {
+        binding.logRegistrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get token
-                // [START log_reg_token]
-                FirebaseMessaging.getInstance().getToken()
-                    .addOnCompleteListener(new OnCompleteListener<String>() {
-                        @Override
-                        public void onComplete(@NonNull Task<String> task) {
-                          if (!task.isSuccessful()) {
-                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-                            return;
-                          }
+                // Get FCM Registration
+                // [START log_reg]
+                FirebaseMessaging.getInstance().register()
+                    .addOnCompleteListener(task -> {
+                      if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration failed", task.getException());
+                      }
 
-                          // Get new FCM registration token
-                          String token = task.getResult();
-
-                          // Log and toast
-                          String msg = getString(R.string.msg_token_fmt, token);
-                          Log.d(TAG, msg);
-                          Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        }
+                      // If the registration task is success, the onRegistered callback in
+                      // FirebaseMessagingService will be invoked and the registration will be logged from there.
                     });
-                // [END log_reg_token]
+                // [END log_reg]
             }
         });
 

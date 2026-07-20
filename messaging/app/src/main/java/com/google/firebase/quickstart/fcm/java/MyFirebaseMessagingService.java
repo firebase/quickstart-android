@@ -24,9 +24,14 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.quickstart.fcm.R;
@@ -48,6 +53,7 @@ import androidx.work.WorkManager;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     /**
      * Called when message is received.
@@ -106,26 +112,70 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     // [END receive_message]
 
 
-    // [START on_new_token]
-    /**
-     * There are two scenarios when onNewToken is called:
-     * 1) When a new token is generated on initial app startup
-     * 2) Whenever an existing token is changed
-     * Under #2, there are three scenarios when the existing token is changed:
-     * A) App is restored to a new device
-     * B) User uninstalls/reinstalls the app
-     * C) User clears app data
-     */
-    @Override
-    public void onNewToken(String token) {
-        Log.d(TAG, "Refreshed token: " + token);
+    // [START onRegistered]
+  /**
+   * Called when the current app instance has been successfully registered with FCM.
+   *
+   * <p>This method provides the unique Firebase Installation ID (FID), which should be used to
+   * target this app instance for direct-send messaging.
+   *
+   * <p>This callback is triggered in the following scenarios:
+   *
+   * <ul>
+   *   <li>When the registration first succeeds after app install (if auto-init is enabled).
+   *   <li>When the registration is refreshed due to invalidation or updates (if auto-init is
+   *       enabled).
+   *   <li>Immediately after a direct call to {@link FirebaseMessaging#register()}.
+   * </ul>
+   *
+   * <p>Ensure the provided `installationId` is uploaded if it hasn't been previously or it might
+   * have been deleted on 404s.
+   *
+   * <p><b>Note:</b> To use this API, you must enable it by adding {@code <meta-data
+   * android:name="firebase_messaging_installation_id_enabled" android:value="true" />} to your
+   * app's manifest.
+   *
+   * @param installationId The Firebase Installation ID used for sending messages to the current app
+   *     instance.
+   */
+  @Override
+  public void onRegistered(@NonNull String installationId) {
+    Log.d(TAG, "Registration: " + installationId);
 
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // FCM registration token to your app server.
-        sendRegistrationToServer(token);
-    }
-    // [END on_new_token]
+    // If you want to send messages to this application instance or
+    // manage these apps subscriptions on the server side, send the
+    // FCM registration to your app server.
+    sendRegistrationToServer(installationId);
+
+    // Log and toast
+    String msg = getString(R.string.msg_registration_fmt, installationId);
+    Log.d(TAG, msg);
+    handler.post(() -> Toast.makeText(getBaseContext(), msg, Toast.LENGTH_SHORT).show());
+  }
+  // [END onRegistered]
+
+  // [START onUnregistered]
+  /**
+   * Called when the current app instance has been successfully unregistered from FCM via a call to
+   * {@code FirebaseMessaging.unregister()}.
+   *
+   * <p>This method confirms that the specified FID is no longer active for receiving FCM messages.
+   *
+   * <p><b>Note:</b> To use this API, you must enable it by adding {@code <meta-data
+   * android:name="firebase_messaging_installation_id_enabled" android:value="true" />} to your
+   * app's manifest.
+   *
+   * @param installationId The Firebase Installation ID of the current app instance that was
+   *     unregistered with FCM.
+   */
+  @Override
+  public void onUnregistered(@NonNull String installationId) {
+    // Remove FCM registration associated with the app instance on the app server
+    // so that the app server will not try to send FCM messages to the un registered app instance.
+    removeRegistrationFromServer(installationId);
+  }
+
+  // [END onUnregistered]
 
     /**
      * Schedule async work using WorkManager.
@@ -146,16 +196,28 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     /**
-     * Persist token to third-party servers.
+     * Persist registration to third-party servers.
      *
-     * Modify this method to associate the user's FCM registration token with any
+     * Modify this method to associate the user's FCM registration with any
      * server-side account maintained by your application.
      *
-     * @param token The new token.
+     * @param registration The new FCM registration.
      */
-    private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+    private void sendRegistrationToServer(String registration) {
+        // TODO: Implement this method to send FCM registration to your app server.
     }
+
+  /**
+   * Remove registration from third-party servers.
+   *
+   * Modify this method to disassociate the user's FCM registration with any
+   * server-side account maintained by your application.
+   *
+   * @param registration The FCM registration which is unregistered.
+   */
+  private void removeRegistrationFromServer(String registration) {
+    // TODO: Implement this method to remove FCM registration from your app server.
+  }
 
     /**
      * Create and show a simple notification containing the received FCM message.

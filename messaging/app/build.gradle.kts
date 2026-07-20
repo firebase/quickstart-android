@@ -69,7 +69,7 @@ dependencies {
     // for Google Analytics. This is recommended, but not required.
     implementation("com.google.firebase:firebase-analytics")
 
-    implementation("com.google.firebase:firebase-installations:19.1.2")
+    implementation("com.google.firebase:firebase-installations:19.1.0")
 
     implementation("androidx.work:work-runtime:2.11.2")
 
