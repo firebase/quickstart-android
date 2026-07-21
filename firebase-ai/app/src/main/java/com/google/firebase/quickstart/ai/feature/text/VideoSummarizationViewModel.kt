@@ -39,7 +39,7 @@ class VideoSummarizationViewModel : ChatViewModel() {
         val generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).generativeModel(
-            modelName = "gemini-3.1-flash-lite"
+            modelName = "gemini-3.5-flash-lite"
         )
         chat = generativeModel.startChat(chatHistory)
     }
