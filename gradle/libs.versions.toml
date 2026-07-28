@@ -70,4 +70,4 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
 navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "composeNavigation" }
-gradle-versions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersions" }
+gradle-versions = { id = "io.github.ben-manes.versions", version.ref = "gradleVersions" }
