@@ -77,9 +77,17 @@ fun isBlockListed(candidate: ModuleComponentIdentifier): Boolean {
     }
 }
 
+// TODO(b/522845800): remove this once the bug with AGP 9.3.x and lint has been fixed
+fun isBuggyAGP(candidate: ModuleComponentIdentifier): Boolean {
+  // Skip versions <= 9.3.1
+  return candidate.toString().lowercase().contains("com.android.application") &&
+          candidate.version.replace(".", "").toInt() <= 931
+}
+
 tasks.withType<DependencyUpdatesTask> {
     rejectVersionIf {
-        (isNonStable(candidate) && notFromFirebase(candidate)) || isBlockListed(candidate)
+        (isNonStable(candidate) && notFromFirebase(candidate)) || isBlockListed(candidate) ||
+                isBuggyAGP(candidate)
     }
 }
 
