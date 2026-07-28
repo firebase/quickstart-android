@@ -15,7 +15,6 @@
  */
 'use strict';
 
-const capitalizeSentence = require('capitalize-sentence');
 const Filter = require('bad-words');
 const badWordsFilter = new Filter();
 
@@ -56,4 +55,9 @@ function isShouting(message) {
 // and remove exclamation points.
 function stopShouting(message) {
   return capitalizeSentence(message.toLowerCase()).replace(/!+/g, '.');
+}
+
+function capitalizeSentence(text) {
+  if (!text || typeof text !== "string") return "";
+  return text.replace(/(^\s*\w|[\.\!\?]\s*\w)/g, (match) => match.toUpperCase());
 }
