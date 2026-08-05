@@ -203,6 +203,17 @@ fun StructuredOutputScreen(
                             }
                         }
                     }
+                    androidx.compose.material3.HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                    Text(
+                        text = "Main Performance: ${review.mainPerformance.actorName} (${review.mainPerformance.performanceRating}/10)",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    Text(
+                        text = "Cast Info: Directed by ${review.castInfo.castingDirector} [Lead: ${review.castInfo.leadActor.actorName}, Supporting size: ${review.castInfo.supportingActors.size}]",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
                     Text(
                         text = "Inference Source: ${uiState.inferenceSource ?: "UNKNOWN"}",
                         style = MaterialTheme.typography.labelMedium,

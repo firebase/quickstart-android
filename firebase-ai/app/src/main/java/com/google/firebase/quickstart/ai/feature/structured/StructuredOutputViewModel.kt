@@ -96,12 +96,31 @@ class StructuredOutputViewModel : ViewModel() {
 
                     GenerationWorkflow.GENERATE_CONTENT -> {
                         Log.d(TAG, "Executing generateContent with manual schema...")
+                        val nestedSchema = JsonSchema.obj(
+                            properties = mapOf(
+                                "actorName" to JsonSchema.string(),
+                                "performanceRating" to JsonSchema.integer()
+                            ),
+                            clazz = MovieReview.CharacterPerformance::class
+                        )
+
+                        val compositeSchema = JsonSchema.obj(
+                            properties = mapOf(
+                                "castingDirector" to JsonSchema.string(),
+                                "leadActor" to nestedSchema,
+                                "supportingActors" to JsonSchema.array(items = nestedSchema)
+                            ),
+                            clazz = CastInfo::class
+                        )
+
                         val manualSchema = JsonSchema.obj(
                             properties = mapOf(
                                 "title" to JsonSchema.string(),
                                 "summary" to JsonSchema.string(),
                                 "rating" to JsonSchema.integer(),
-                                "tags" to JsonSchema.array(items = JsonSchema.string())
+                                "tags" to JsonSchema.array(items = JsonSchema.string()),
+                                "mainPerformance" to nestedSchema,
+                                "castInfo" to compositeSchema
                             ),
                             clazz = MovieReview::class
                         )
