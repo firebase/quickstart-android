@@ -72,7 +72,7 @@ dependencies {
 
     // Firebase
     implementation(platform(libs.firebase.bom))
-    implementation("com.google.firebase:firebase-ai:17.15.0")
+    implementation(libs.firebase.ai)
     implementation(libs.firebase.ai.ondevice)
 
     // Image loading
