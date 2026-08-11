@@ -11,7 +11,7 @@ For more information about Firebase AI Logic, visit the [documentation](http://f
 
 ### Prerequisites
 *   **Google AI (Gemini) API Key**: Most samples work out of the box with the Google AI SDK.
-*   **Vertex AI**: Samples marked with *(Vertex AI)* require you to enable the Vertex AI API in your Google Cloud project and have your files in Cloud Storage.
+*   **Agent Platform**: Samples marked with *(Agent Platform)* require you to enable the Agent Platform API in your Google Cloud project and have your files in Cloud Storage.
 *   **Server Prompt Templates**: These samples require you to set up templates in the [Firebase Console](https://console.firebase.google.com/project/_/ai-logic).
 
 ## Getting Started
@@ -41,10 +41,10 @@ You can find the implementation for each feature by clicking on the links below:
 ### Multimodal understanding
 - [Audio Summarization](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioSummarizationViewModel.kt): Use Gemini 3.1 Flash Lite to summarize an audio file
 - [Summarize video](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/VideoSummarizationViewModel.kt): Summarize a video and extract important dialogue.
-- [Translation from audio (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioTranslationViewModel.kt): Translate an audio file stored in Cloud Storage
-- [Blog post creator (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ImageBlogCreatorViewModel.kt): Create a blog post from an image file stored in Cloud Storage.
-- [Document comparison (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/DocumentComparisonViewModel.kt): Compare the contents of 2 documents stored in Cloud Storage.
-- [Hashtags for a video (Vertex AI)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/VideoHashtagGeneratorViewModel.kt): Generate hashtags for a video ad stored in Cloud Storage
+- [Translation from audio (Agent Platform)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioTranslationViewModel.kt): Translate an audio file stored in Cloud Storage
+- [Blog post creator (Agent Platform)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ImageBlogCreatorViewModel.kt): Create a blog post from an image file stored in Cloud Storage.
+- [Document comparison (Agent Platform)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/DocumentComparisonViewModel.kt): Compare the contents of 2 documents stored in Cloud Storage.
+- [Hashtags for a video (Agent Platform)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/VideoHashtagGeneratorViewModel.kt): Generate hashtags for a video ad stored in Cloud Storage
 
 ### Tools and function calling
 - [Grounding with Google Search](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/GoogleSearchGroundingViewModel.kt): Use Grounding with Google Search to get responses based on up-to-date information from the web.

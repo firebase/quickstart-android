@@ -20,7 +20,7 @@ class DocumentComparisonViewModel : ChatViewModel() {
     private val chat: Chat
 
     init {
-        val generativeModel = Firebase.ai(backend = GenerativeBackend.vertexAI()).generativeModel(
+        val generativeModel = Firebase.ai(backend = GenerativeBackend.agentPlatform()).generativeModel(
             modelName = "gemini-3.1-flash-lite"
         )
         chat = generativeModel.startChat()

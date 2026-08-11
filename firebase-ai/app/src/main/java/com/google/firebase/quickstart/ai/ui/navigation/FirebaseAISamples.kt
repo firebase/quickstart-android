@@ -73,7 +73,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
-        title = "Translation from audio (Vertex AI)",
+        title = "Translation from audio (Agent Platform)",
         description = "Translate an audio file stored in Cloud Storage",
         route = AudioTranslationRoute,
         screenType = ScreenType.CHAT,
@@ -81,7 +81,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
-        title = "Blog post creator (Vertex AI)",
+        title = "Blog post creator (Agent Platform)",
         description = "Create a blog post from an image file stored in Cloud Storage.",
         route = ImageBlogCreatorRoute,
         screenType = ScreenType.CHAT,
@@ -121,7 +121,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.NANO_BANANA)
     ),
     Sample(
-        title = "Document comparison (Vertex AI)",
+        title = "Document comparison (Agent Platform)",
         description = "Compare the contents of 2 documents stored in Cloud Storage",
         route = DocumentComparisonRoute,
         screenType = ScreenType.CHAT,
@@ -129,7 +129,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
-        title = "Hashtags for a video (Vertex AI)",
+        title = "Hashtags for a video (Agent Platform)",
         description = "Generate hashtags for a video ad stored in Cloud Storage",
         route = VideoHashtagGeneratorRoute,
         screenType = ScreenType.CHAT,
