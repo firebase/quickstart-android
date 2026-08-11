@@ -42,7 +42,7 @@ import com.google.firebase.quickstart.ai.feature.text.WeatherChatViewModel
 val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Translate text",
-        description = "Use Gemini 3.1 Flash-Lite to translate text",
+        description = "Use Gemini 3.5 Flash-Lite to translate text",
         route = TranslationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = TranslationViewModel::class,
@@ -50,7 +50,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "SVG Generator",
-        description = "Use Gemini 3.5 Flash to create SVG illustrations",
+        description = "Use Gemini 3.6 Flash to create SVG illustrations",
         route = SvgRoute,
         screenType = ScreenType.SVG,
         viewModelClass = SvgViewModel::class,
@@ -58,7 +58,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Audio Summarization",
-        description = "Use Gemini 3.1 Flash Lite to summarize an audio file",
+        description = "Use Gemini 3.5 Flash-Lite to summarize an audio file",
         route = AudioSummarizationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = AudioSummarizationViewModel::class,

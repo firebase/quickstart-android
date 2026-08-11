@@ -23,8 +23,7 @@ class VideoHashtagGeneratorViewModel : ChatViewModel() {
 
     init {
         val generativeModel = Firebase.ai(backend = GenerativeBackend.agentPlatform()).generativeModel(
-            modelName = "gemini-3.1-flash-lite"
-        )
+            modelName = "gemini-3.5-flash-lite")
         chat = generativeModel.startChat()
 
         // Pre-attach the video

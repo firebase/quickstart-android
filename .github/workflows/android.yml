@@ -4,6 +4,9 @@ on:
   pull_request:
   push:
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number  || github.ref }}
   cancel-in-progress: true
@@ -13,18 +16,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+          persist-credentials: false
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
       with:
         distribution: 'zulu'
         java-version: 17
     - name: Install Node to use the Firebase CLI
-      uses: actions/setup-node@v6
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
       with:
         node-version: 24
     - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
+      uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
     - name: Check Snippets
       run: python scripts/checksnippets.py
     - name: Copy mock google_services.json
