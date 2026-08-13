@@ -50,7 +50,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "SVG Generator",
-        description = "Use Gemini 3.6 Flash to create SVG illustrations",
+        description = "Use Gemini 3.7 Flash to create SVG illustrations",
         route = SvgRoute,
         screenType = ScreenType.SVG,
         viewModelClass = SvgViewModel::class,
