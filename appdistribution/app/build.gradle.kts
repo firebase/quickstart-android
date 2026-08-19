@@ -49,7 +49,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.2")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
 
     // ADD the SDK to the "prerelease" variant only (example)
     implementation("com.google.firebase:firebase-appdistribution:16.0.0-beta20")

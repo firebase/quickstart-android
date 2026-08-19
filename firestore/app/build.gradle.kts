@@ -51,7 +51,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
 
     // Firestore
     implementation("com.google.firebase:firebase-firestore")
@@ -67,7 +67,7 @@ dependencies {
 
     // Support Libs
     implementation("androidx.activity:activity-ktx:1.13.0")
-    implementation("androidx.appcompat:appcompat:1.7.1")
+    implementation("androidx.appcompat:appcompat:1.8.0")
     implementation("androidx.core:core-ktx:1.19.0")
     implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
     implementation("androidx.cardview:cardview:1.0.0")
