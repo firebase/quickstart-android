@@ -24,8 +24,7 @@ android {
     }
     getByName("debug") {
       //            configure<FirebasePerfExtension> {
-      //                 Set this flag to 'false' to disable @AddTrace annotation processing
-      // and
+      //                 Set this flag to 'false' to disable @AddTrace annotation processing and
       //                 automatic HTTP/S network request monitoring
       //                 for a specific build variant at compile time.
       //                setInstrumentationEnabled(true)
@@ -50,7 +49,7 @@ dependencies {
   implementation(project(":internal:chooserx"))
 
   // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-  implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+  implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
 
   // Firebase Performance Monitoring
   implementation("com.google.firebase:firebase-perf")

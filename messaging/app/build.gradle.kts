@@ -47,12 +47,12 @@ dependencies {
 
   // Required when asking for permission to post notifications (starting in Android 13)
   implementation("androidx.activity:activity-ktx:1.13.0")
-  implementation("androidx.fragment:fragment-ktx:1.8.9")
+  implementation("androidx.fragment:fragment-ktx:1.9.0")
 
   implementation("com.google.android.material:material:1.14.0")
 
   // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-  implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+  implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
 
   // Firebase Cloud Messaging
   implementation("com.google.firebase:firebase-messaging")

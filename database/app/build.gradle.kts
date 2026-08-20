@@ -40,14 +40,14 @@ dependencies {
   implementation(project(":internal:lintchecks"))
   implementation(project(":internal:chooserx"))
 
-  implementation("androidx.appcompat:appcompat:1.7.1")
+  implementation("androidx.appcompat:appcompat:1.8.0")
   implementation("androidx.recyclerview:recyclerview:1.4.0")
   implementation("com.google.android.material:material:1.14.0")
   implementation("androidx.navigation:navigation-fragment-ktx:2.9.8")
   implementation("androidx.navigation:navigation-ui-ktx:2.9.8")
 
   // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-  implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+  implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
 
   // Firebase Realtime Database
   implementation("com.google.firebase:firebase-database")

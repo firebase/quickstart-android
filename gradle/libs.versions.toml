@@ -3,13 +3,13 @@ activityCompose = "1.13.0"
 agp = "9.2.1"
 camerax = "1.6.1"
 coil3Compose = "3.5.0"
-composeBom = "2026.06.01"
+composeBom = "2026.08.00"
 composeNavigation = "2.9.8"
 coreKtx = "1.19.0"
 espressoCore = "3.7.0"
-firebaseBom = "34.17.0"
+firebaseBom = "34.18.0"
 googleServices = "4.5.0"
-firebaseCrashlytics = "3.0.7"
+firebaseCrashlytics = "3.0.8"
 firebasePerf = "2.0.2"
 gradleVersions = "0.61.0"
 junit = "4.13.2"
@@ -54,7 +54,7 @@ coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil3Compose" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation"}
 firebase-ai = { module = "com.google.firebase:firebase-ai" }
-firebase-ai-ondevice = { module = "com.google.firebase:firebase-ai-ondevice", version = "16.0.0-beta04" }
+firebase-ai-ondevice = { module = "com.google.firebase:firebase-ai-ondevice", version = "16.0.0-beta05" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
