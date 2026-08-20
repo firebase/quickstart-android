@@ -1,7 +1,5 @@
 package com.google.firebase.quickstart.ai.feature.text
 
-import kotlinx.serialization.Serializable
-
 import com.google.firebase.Firebase
 import com.google.firebase.ai.Chat
 import com.google.firebase.ai.ai
@@ -10,42 +8,42 @@ import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.content
 import com.google.firebase.quickstart.ai.ui.ChatUiState
 import com.google.firebase.quickstart.ai.ui.UiChatMessage
+import kotlinx.serialization.Serializable
 
-@Serializable
-object VideoSummarizationRoute
+@Serializable object VideoSummarizationRoute
 
 class VideoSummarizationViewModel : ChatViewModel() {
 
-    override val initialPrompt: String = "I have attached the video file. Provide a description of" +
-            " the video. The description should also contain" +
-            " anything important which people say in the video."
+  override val initialPrompt: String =
+    "I have attached the video file. Provide a description of" +
+      " the video. The description should also contain" +
+      " anything important which people say in the video."
 
-    private val chat: Chat
+  private val chat: Chat
 
-    init {
-        val chatHistory = listOf(
-            content { text("Can you help me with the description of a video file?") },
-            content("model") {
-                text(
-                    "Sure! Click on the attach button below and choose a" +
-                            " video file for me to describe."
-                )
-            }
-        )
+  init {
+    val chatHistory =
+      listOf(
+        content { text("Can you help me with the description of a video file?") },
+        content("model") {
+          text(
+            "Sure! Click on the attach button below and choose a" +
+              " video file for me to describe."
+          )
+        },
+      )
 
-        updateMessages(chatHistory.map { UiChatMessage(it) })
-        updateUiState(ChatUiState.Success)
+    updateMessages(chatHistory.map { UiChatMessage(it) })
+    updateUiState(ChatUiState.Success)
 
-        val generativeModel = Firebase.ai(
-            backend = GenerativeBackend.googleAI()
-        ).generativeModel(
-            modelName = "gemini-3.5-flash-lite"
-        )
-        chat = generativeModel.startChat(chatHistory)
-    }
+    val generativeModel =
+      Firebase.ai(backend = GenerativeBackend.googleAI())
+        .generativeModel(modelName = "gemini-3.5-flash-lite")
+    chat = generativeModel.startChat(chatHistory)
+  }
 
-    override suspend fun performSendMessage(prompt: Content, currentMessages: List<UiChatMessage>) {
-        val response = chat.sendMessage(prompt)
-        validateAndDisplayResponse(response, currentMessages)
-    }
+  override suspend fun performSendMessage(prompt: Content, currentMessages: List<UiChatMessage>) {
+    val response = chat.sendMessage(prompt)
+    validateAndDisplayResponse(response, currentMessages)
+  }
 }

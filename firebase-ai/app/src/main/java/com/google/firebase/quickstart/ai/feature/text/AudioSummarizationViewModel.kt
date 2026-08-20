@@ -1,7 +1,5 @@
 package com.google.firebase.quickstart.ai.feature.text
 
-import kotlinx.serialization.Serializable
-
 import com.google.firebase.Firebase
 import com.google.firebase.ai.Chat
 import com.google.firebase.ai.ai
@@ -10,42 +8,43 @@ import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.content
 import com.google.firebase.quickstart.ai.ui.ChatUiState
 import com.google.firebase.quickstart.ai.ui.UiChatMessage
+import kotlinx.serialization.Serializable
 
-@Serializable
-object AudioSummarizationRoute
+@Serializable object AudioSummarizationRoute
 
 class AudioSummarizationViewModel : ChatViewModel() {
 
-    override val initialPrompt: String =
-        """
-        I have attached the audio file. Please analyze it and summarize 
-        the contents of the audio as bullet points.            
-        """.trimIndent()
+  override val initialPrompt: String =
+    """
+    I have attached the audio file. Please analyze it and summarize 
+    the contents of the audio as bullet points.            
+    """
+      .trimIndent()
 
-    private val chat: Chat
+  private val chat: Chat
 
-    init {
-        val generativeModel = Firebase.ai(
-            backend = GenerativeBackend.googleAI()
-        ).generativeModel(
-            modelName = "gemini-3.5-flash-lite"
+  init {
+    val generativeModel =
+      Firebase.ai(backend = GenerativeBackend.googleAI())
+        .generativeModel(modelName = "gemini-3.5-flash-lite")
+    chat =
+      generativeModel.startChat(
+        listOf(
+          content { text("Can you help me summarize an audio file?") },
+          content("model") {
+            text(
+              "Of course! Click on the attach button" +
+                " below and choose an audio file for me to summarize."
+            )
+          },
         )
-        chat = generativeModel.startChat(
-            listOf(
-                content { text("Can you help me summarize an audio file?") },
-                content("model") {
-                    text(
-                        "Of course! Click on the attach button" +
-                                " below and choose an audio file for me to summarize."
-                    )
-                }
-            ))
-        updateMessages(chat.history.map { UiChatMessage(it) })
-        updateUiState(ChatUiState.Success)
-    }
+      )
+    updateMessages(chat.history.map { UiChatMessage(it) })
+    updateUiState(ChatUiState.Success)
+  }
 
-    override suspend fun performSendMessage(prompt: Content, currentMessages: List<UiChatMessage>) {
-        val response = chat.sendMessage(prompt)
-        validateAndDisplayResponse(response, currentMessages)
-    }
+  override suspend fun performSendMessage(prompt: Content, currentMessages: List<UiChatMessage>) {
+    val response = chat.sendMessage(prompt)
+    validateAndDisplayResponse(response, currentMessages)
+  }
 }

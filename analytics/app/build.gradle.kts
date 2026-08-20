@@ -1,63 +1,59 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.google.services)
+  alias(libs.plugins.android.application)
+  alias(libs.plugins.google.services)
 }
 
-tasks {
-    check.dependsOn("assembleDebugAndroidTest")
-}
+tasks { check.dependsOn("assembleDebugAndroidTest") }
 
 android {
-    namespace = "com.google.firebase.quickstart.analytics"
-    compileSdk = 37
+  namespace = "com.google.firebase.quickstart.analytics"
+  compileSdk = 37
 
-    defaultConfig {
-        applicationId = "com.google.firebase.quickstart.analytics"
-        minSdk = 23
-        targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        multiDexEnabled = true
-    }
+  defaultConfig {
+    applicationId = "com.google.firebase.quickstart.analytics"
+    minSdk = 23
+    targetSdk = 37
+    versionCode = 1
+    versionName = "1.0"
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    multiDexEnabled = true
+  }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
+  buildTypes {
+    getByName("release") {
+      isMinifyEnabled = false
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
+  }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
 
-    buildFeatures {
-        viewBinding = true
-    }
+  buildFeatures { viewBinding = true }
 }
 
 dependencies {
-    implementation(project(":internal:lintchecks"))
-    implementation(project(":internal:chooserx"))
+  implementation(project(":internal:lintchecks"))
+  implementation(project(":internal:chooserx"))
 
-    implementation("com.google.android.material:material:1.14.0")
-    implementation("androidx.appcompat:appcompat:1.8.0")
-    implementation("androidx.preference:preference-ktx:1.2.1")
-    // Needed to override the version used by preference-ktx
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.11.0")
+  implementation("com.google.android.material:material:1.14.0")
+  implementation("androidx.appcompat:appcompat:1.8.0")
+  implementation("androidx.preference:preference-ktx:1.2.1")
+  // Needed to override the version used by preference-ktx
+  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.11.0")
 
-    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
+  // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
+  implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
 
-    // Firebase Analytics
-    implementation("com.google.firebase:firebase-analytics")
+  // Firebase Analytics
+  implementation("com.google.firebase:firebase-analytics")
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    androidTestImplementation("androidx.test:rules:1.7.0")
-    androidTestImplementation("androidx.test:runner:1.7.0")
-    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+  androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+  androidTestImplementation("androidx.test:rules:1.7.0")
+  androidTestImplementation("androidx.test:runner:1.7.0")
+  androidTestImplementation("androidx.test.ext:junit:1.3.0")
 }

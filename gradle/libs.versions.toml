@@ -16,9 +16,11 @@ junit = "4.13.2"
 junitVersion = "1.3.0"
 kotlin = "2.4.10"
 kotlinxSerializationCore = "1.11.0"
+ktfmt = "0.61"
 lifecycle = "2.11.0"
 material = "1.14.0"
 materialIcons = "1.7.8"
+spotless = "8.10.0"
 webkit = "1.14.0"
 
 [libraries]
@@ -71,3 +73,4 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
 navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "composeNavigation" }
 gradle-versions = { id = "io.github.ben-manes.versions", version.ref = "gradleVersions" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

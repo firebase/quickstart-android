@@ -14,24 +14,20 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.example.dataconnect.R
 
 @Composable
-fun ErrorCard(
-    errorMessage: String?
-) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
-        modifier = Modifier.padding(16.dp)
-            .fillMaxWidth()
-    ) {
-        Text(
-            text = errorMessage ?: stringResource(R.string.unknown_error),
-            modifier = Modifier.padding(16.dp)
-                .fillMaxWidth()
-        )
-    }
+fun ErrorCard(errorMessage: String?) {
+  Card(
+    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+    modifier = Modifier.padding(16.dp).fillMaxWidth(),
+  ) {
+    Text(
+      text = errorMessage ?: stringResource(R.string.unknown_error),
+      modifier = Modifier.padding(16.dp).fillMaxWidth(),
+    )
+  }
 }
 
 @Composable
 @Preview
 fun ErrorCardPreview() {
-    ErrorCard("Something went terribly wrong :(")
+  ErrorCard("Something went terribly wrong :(")
 }

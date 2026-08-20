@@ -12,25 +12,23 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ToggleButton(
-    iconEnabled: ImageVector,
-    iconDisabled: ImageVector,
-    textEnabled: String,
-    textDisabled: String,
-    isEnabled: Boolean,
-    onToggle: (newValue: Boolean) -> Unit
+  iconEnabled: ImageVector,
+  iconDisabled: ImageVector,
+  textEnabled: String,
+  textDisabled: String,
+  isEnabled: Boolean,
+  onToggle: (newValue: Boolean) -> Unit,
 ) {
-    val onClick = {
-        onToggle(!isEnabled)
+  val onClick = { onToggle(!isEnabled) }
+  if (isEnabled) {
+    FilledTonalButton(onClick) {
+      Icon(iconEnabled, textEnabled)
+      Text(textEnabled, modifier = Modifier.padding(horizontal = 4.dp))
     }
-    if (isEnabled) {
-        FilledTonalButton(onClick) {
-            Icon(iconEnabled, textEnabled)
-            Text(textEnabled, modifier = Modifier.padding(horizontal = 4.dp))
-        }
-    } else {
-        OutlinedButton(onClick) {
-            Icon(iconDisabled, textDisabled)
-            Text(textDisabled, modifier = Modifier.padding(horizontal = 4.dp))
-        }
+  } else {
+    OutlinedButton(onClick) {
+      Icon(iconDisabled, textDisabled)
+      Text(textDisabled, modifier = Modifier.padding(horizontal = 4.dp))
     }
+  }
 }

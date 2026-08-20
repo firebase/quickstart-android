@@ -20,124 +20,125 @@ import com.google.samples.quickstart.admobexample.databinding.FragmentFirstBindi
 
 class FirstFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
-    private val binding get() = _binding!!
-    private var interstitialAd: InterstitialAd? = null
-    private lateinit var adView: AdView
-    private lateinit var loadInterstitialButton: Button
+  private var _binding: FragmentFirstBinding? = null
+  private val binding
+    get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
-        return binding.root
+  private var interstitialAd: InterstitialAd? = null
+  private lateinit var adView: AdView
+  private lateinit var loadInterstitialButton: Button
+
+  override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?,
+  ): View {
+    _binding = FragmentFirstBinding.inflate(inflater, container, false)
+    return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    adView = binding.adView
+    loadInterstitialButton = binding.loadInterstitialButton
+
+    checkIds()
+
+    // Initialize the Google Mobile Ads SDK
+    MobileAds.initialize(requireContext())
+
+    requestNewInterstitial()
+
+    loadInterstitialButton.setOnClickListener {
+      if (interstitialAd != null) {
+        interstitialAd?.show(requireActivity())
+      } else {
+        goToNextFragment()
+      }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    // Disable button if an interstitial ad is not loaded yet.
+    loadInterstitialButton.isEnabled = interstitialAd != null
+  }
 
-        adView = binding.adView
-        loadInterstitialButton = binding.loadInterstitialButton
+  /** Load a new interstitial ad asynchronously. */
+  private fun requestNewInterstitial() {
+    // AdMob ad unit IDs are not currently stored inside the google-services.json file.
+    // Developers using AdMob can store them as custom values in a string resource file or
+    // simply use constants. Note that the ad units used here are configured to return only test
+    // ads, and should not be used outside this sample.
+    val adRequest = AdRequest.Builder().build()
 
-        checkIds()
+    adView.loadAd(adRequest)
 
-        // Initialize the Google Mobile Ads SDK
-        MobileAds.initialize(requireContext())
+    InterstitialAd.load(
+      requireContext(),
+      getString(R.string.interstitial_ad_unit_id),
+      adRequest,
+      object : InterstitialAdLoadCallback() {
+        override fun onAdLoaded(ad: InterstitialAd) {
+          super.onAdLoaded(ad)
+          interstitialAd = ad
+          // Ad received, ready to display
+          loadInterstitialButton.isEnabled = true
 
-        requestNewInterstitial()
-
-        loadInterstitialButton.setOnClickListener {
-            if (interstitialAd != null) {
-                interstitialAd?.show(requireActivity())
-            } else {
+          interstitialAd?.fullScreenContentCallback =
+            object : FullScreenContentCallback() {
+              override fun onAdDismissedFullScreenContent() {
+                super.onAdDismissedFullScreenContent()
                 goToNextFragment()
+              }
             }
         }
 
-        // Disable button if an interstitial ad is not loaded yet.
-        loadInterstitialButton.isEnabled = interstitialAd != null
-    }
-
-    /**
-     * Load a new interstitial ad asynchronously.
-     */
-    private fun requestNewInterstitial() {
-        // AdMob ad unit IDs are not currently stored inside the google-services.json file.
-        // Developers using AdMob can store them as custom values in a string resource file or
-        // simply use constants. Note that the ad units used here are configured to return only test
-        // ads, and should not be used outside this sample.
-        val adRequest = AdRequest.Builder().build()
-
-        adView.loadAd(adRequest)
-
-        InterstitialAd.load(
-            requireContext(),
-            getString(R.string.interstitial_ad_unit_id),
-            adRequest,
-            object : InterstitialAdLoadCallback() {
-                override fun onAdLoaded(ad: InterstitialAd) {
-                    super.onAdLoaded(ad)
-                    interstitialAd = ad
-                    // Ad received, ready to display
-                    loadInterstitialButton.isEnabled = true
-
-                    interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-                        override fun onAdDismissedFullScreenContent() {
-                            super.onAdDismissedFullScreenContent()
-                            goToNextFragment()
-                        }
-                    }
-                }
-
-                override fun onAdFailedToLoad(error: LoadAdError) {
-                    super.onAdFailedToLoad(error)
-                    interstitialAd = null
-                    Log.w(TAG, "onAdFailedToLoad:${error.message}")
-                }
-            },
-        )
-    }
-
-    private fun goToNextFragment() {
-        findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-    }
-
-    /** Called when leaving the activity  */
-    override fun onPause() {
-        adView.pause()
-        super.onPause()
-    }
-
-    /** Called when returning to the activity  */
-    override fun onResume() {
-        super.onResume()
-        adView.resume()
-        if (interstitialAd == null) {
-            requestNewInterstitial()
+        override fun onAdFailedToLoad(error: LoadAdError) {
+          super.onAdFailedToLoad(error)
+          interstitialAd = null
+          Log.w(TAG, "onAdFailedToLoad:${error.message}")
         }
-    }
+      },
+    )
+  }
 
-    /** Called before the activity is destroyed  */
-    override fun onDestroy() {
-        adView.destroy()
-        super.onDestroy()
-    }
+  private fun goToNextFragment() {
+    findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+  }
 
-    private fun checkIds() {
-        if (TEST_APP_ID == getString(R.string.admob_app_id)) {
-            Log.w(TAG, "Your admob_app_id is not configured correctly, please see the README")
-        }
-    }
+  /** Called when leaving the activity */
+  override fun onPause() {
+    adView.pause()
+    super.onPause()
+  }
 
-    companion object {
-        private const val TAG = "FirstFragment"
-        private const val TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713"
+  /** Called when returning to the activity */
+  override fun onResume() {
+    super.onResume()
+    adView.resume()
+    if (interstitialAd == null) {
+      requestNewInterstitial()
     }
+  }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+  /** Called before the activity is destroyed */
+  override fun onDestroy() {
+    adView.destroy()
+    super.onDestroy()
+  }
+
+  private fun checkIds() {
+    if (TEST_APP_ID == getString(R.string.admob_app_id)) {
+      Log.w(TAG, "Your admob_app_id is not configured correctly, please see the README")
     }
+  }
+
+  companion object {
+    private const val TAG = "FirstFragment"
+    private const val TEST_APP_ID = "ca-app-pub-3940256099942544~3347511713"
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+  }
 }

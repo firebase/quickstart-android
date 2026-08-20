@@ -81,543 +81,463 @@ import com.google.firebase.ai.type.WebGroundingChunk
 import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
 import kotlinx.coroutines.launch
 
-
 @Composable
-fun ChatScreen(
-    chatViewModel: ChatViewModel
-) {
-    val uiState by chatViewModel.uiState.collectAsStateWithLifecycle()
-    val messages by chatViewModel.messages.collectAsStateWithLifecycle()
-    val attachments by chatViewModel.attachments.collectAsStateWithLifecycle()
+fun ChatScreen(chatViewModel: ChatViewModel) {
+  val uiState by chatViewModel.uiState.collectAsStateWithLifecycle()
+  val messages by chatViewModel.messages.collectAsStateWithLifecycle()
+  val attachments by chatViewModel.attachments.collectAsStateWithLifecycle()
 
-    val initialPrompt: String = chatViewModel.initialPrompt
+  val initialPrompt: String = chatViewModel.initialPrompt
 
-    val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+  val listState = rememberLazyListState()
+  val coroutineScope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        ChatList(
-            messages,
-            listState,
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(0.5f)
-        )
-        
-        Box(
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = MaterialTheme.colorScheme.surfaceContainer)
-            ) {
-                if (uiState is ChatUiState.Loading) {
-                    LinearProgressIndicator(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
-                }
-                (uiState as? ChatUiState.Error)?.let {
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.errorContainer
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(
-                            text = it.message,
-                            modifier = Modifier.padding(16.dp),
-                            color = MaterialTheme.colorScheme.onErrorContainer
-                        )
-                    }
-                }
-                AttachmentsList(attachments)
-                val context = LocalContext.current
-                val contentResolver = context.contentResolver
-                MessageInput(
-                    initialPrompt = initialPrompt,
-                    onSendMessage = { inputText ->
-                        chatViewModel.sendMessage(inputText)
-                    },
-                    resetScroll = {
-                        coroutineScope.launch {
-                            listState.scrollToItem(0)
-                        }
-                    },
-                    onFileAttached = { uri ->
-                        val mimeType = contentResolver.getType(uri).orEmpty()
-                        var fileName: String? = null
-                        // Fetch file name and size
-                        contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-                            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                            val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-                            cursor.moveToFirst()
-                            val humanReadableSize = Formatter.formatShortFileSize(
-                                context,
-                                cursor.getLong(sizeIndex)
-                            )
-                            fileName = "${cursor.getString(nameIndex)} ($humanReadableSize)"
-                        }
+  Column(modifier = Modifier.fillMaxSize()) {
+    ChatList(messages, listState, modifier = Modifier.fillMaxSize().weight(0.5f))
 
-                        contentResolver.openInputStream(uri)?.use { stream ->
-                            val bytes = stream.readBytes()
-                            chatViewModel.attachFile(bytes, mimeType, fileName)
-                        }
-                    },
-                    isLoading = uiState is ChatUiState.Loading
-                )
-            }
+    Box(contentAlignment = Alignment.BottomCenter) {
+      Column(
+        modifier =
+          Modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.surfaceContainer)
+      ) {
+        if (uiState is ChatUiState.Loading) {
+          LinearProgressIndicator(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+          )
         }
+        (uiState as? ChatUiState.Error)?.let {
+          Card(
+            colors =
+              CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+            modifier = Modifier.fillMaxWidth(),
+          ) {
+            Text(
+              text = it.message,
+              modifier = Modifier.padding(16.dp),
+              color = MaterialTheme.colorScheme.onErrorContainer,
+            )
+          }
+        }
+        AttachmentsList(attachments)
+        val context = LocalContext.current
+        val contentResolver = context.contentResolver
+        MessageInput(
+          initialPrompt = initialPrompt,
+          onSendMessage = { inputText -> chatViewModel.sendMessage(inputText) },
+          resetScroll = { coroutineScope.launch { listState.scrollToItem(0) } },
+          onFileAttached = { uri ->
+            val mimeType = contentResolver.getType(uri).orEmpty()
+            var fileName: String? = null
+            // Fetch file name and size
+            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+              val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+              val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+              cursor.moveToFirst()
+              val humanReadableSize =
+                Formatter.formatShortFileSize(context, cursor.getLong(sizeIndex))
+              fileName = "${cursor.getString(nameIndex)} ($humanReadableSize)"
+            }
+
+            contentResolver.openInputStream(uri)?.use { stream ->
+              val bytes = stream.readBytes()
+              chatViewModel.attachFile(bytes, mimeType, fileName)
+            }
+          },
+          isLoading = uiState is ChatUiState.Loading,
+        )
+      }
     }
+  }
 }
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
-fun ChatBubbleItem(
-    message: UiChatMessage
-) {
-    val isModelMessage = message.content.role == "model"
+fun ChatBubbleItem(message: UiChatMessage) {
+  val isModelMessage = message.content.role == "model"
 
-    val isDarkTheme = isSystemInDarkTheme()
+  val isDarkTheme = isSystemInDarkTheme()
 
-    val backgroundColor = when (message.content.role) {
-        "user" -> MaterialTheme.colorScheme.tertiaryContainer
-        else -> MaterialTheme.colorScheme.secondaryContainer
+  val backgroundColor =
+    when (message.content.role) {
+      "user" -> MaterialTheme.colorScheme.tertiaryContainer
+      else -> MaterialTheme.colorScheme.secondaryContainer
     }
 
-    val textColor = if (isModelMessage) {
-        MaterialTheme.colorScheme.onBackground
+  val textColor =
+    if (isModelMessage) {
+      MaterialTheme.colorScheme.onBackground
     } else {
-        MaterialTheme.colorScheme.onTertiaryContainer
+      MaterialTheme.colorScheme.onTertiaryContainer
     }
 
-    val bubbleShape = if (isModelMessage) {
-        RoundedCornerShape(4.dp, 20.dp, 20.dp, 20.dp)
+  val bubbleShape =
+    if (isModelMessage) {
+      RoundedCornerShape(4.dp, 20.dp, 20.dp, 20.dp)
     } else {
-        RoundedCornerShape(20.dp, 4.dp, 20.dp, 20.dp)
+      RoundedCornerShape(20.dp, 4.dp, 20.dp, 20.dp)
     }
 
-    val horizontalAlignment = if (isModelMessage) {
-        Alignment.Start
+  val horizontalAlignment =
+    if (isModelMessage) {
+      Alignment.Start
     } else {
-        Alignment.End
+      Alignment.End
     }
 
-    Column(
-        horizontalAlignment = horizontalAlignment,
-        modifier = Modifier
-            .padding(horizontal = 8.dp, vertical = 4.dp)
-            .fillMaxWidth()
-    ) {
-        Text(
-            text = message.content.role?.uppercase() ?: "USER",
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(bottom = 4.dp)
-        )
-        Row {
-            BoxWithConstraints {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = backgroundColor),
-                    shape = bubbleShape,
-                    modifier = Modifier.widthIn(0.dp, maxWidth * 0.9f)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                    ) {
-                        message.content.parts.forEach { part ->
-                            when (part) {
-                                is TextPart -> {
-                                    if (part.isThought) {
-                                        ThoughtBubble(part.text)
-                                    } else {
-                                        Text(
-                                            text = part.text.trimIndent(),
-                                            modifier = Modifier.fillMaxWidth(),
-                                            color = textColor
-                                        )
-                                    }
-                                }
-
-                                is ImagePart -> {
-                                    Image(
-                                        bitmap = part.image.asImageBitmap(),
-                                        contentDescription = "Attached image",
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(bottom = 4.dp)
-                                    )
-                                }
-
-                                is InlineDataPart -> {
-                                    // TODO: show a human readable version of audio, PDFs and videos
-                                    val attachmentType = if (part.mimeType.contains("audio")) {
-                                        "audio attached"
-                                    } else if (part.mimeType.contains("application/pdf")) {
-                                        "PDF attached"
-                                    } else if (part.mimeType.contains("video")) {
-                                        "video"
-                                    } else {
-                                        "file attached"
-                                    }
-                                    Text(
-                                        text = "($attachmentType)",
-                                        modifier = Modifier
-                                            .padding(4.dp)
-                                            .fillMaxWidth(),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        textAlign = TextAlign.End
-                                    )
-                                }
-
-                                is FileDataPart -> {
-                                    Text(
-                                        text = part.uri,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        textAlign = TextAlign.End,
-                                        modifier = Modifier
-                                            .background(
-                                                backgroundColor.copy(
-                                                    red = backgroundColor.red * 0.7f,
-                                                    green = backgroundColor.green * 0.7f,
-                                                    blue = backgroundColor.blue * 0.7f
-                                                )
-                                            )
-                                            .padding(4.dp)
-                                            .fillMaxWidth()
-                                    )
-                                }
-                            }
-                        }
-                        message.groundingMetadata?.let { metadata ->
-                            HorizontalDivider(modifier = Modifier.padding(vertical = 18.dp))
-
-                            // Search Entry Point (WebView)
-                            metadata.searchEntryPoint?.let { searchEntryPoint ->
-                                val context = LocalContext.current
-                                AndroidView(
-                                    factory = {
-                                        WebView(it).apply {
-                                            webViewClient = object : WebViewClient() {
-                                                override fun shouldOverrideUrlLoading(
-                                                    view: WebView?,
-                                                    request: WebResourceRequest?
-                                                ): Boolean {
-                                                    request?.url?.let { uri ->
-                                                        val intent = Intent(Intent.ACTION_VIEW, uri)
-                                                        context.startActivity(intent)
-                                                    }
-                                                    // Return true to indicate we handled the URL loading
-                                                    return true
-                                                }
-                                            }
-
-                                            setBackgroundColor(Color.TRANSPARENT)
-                                            loadDataWithBaseURL(
-                                                null,
-                                                searchEntryPoint.renderedContent,
-                                                "text/html",
-                                                "UTF-8",
-                                                null
-                                            )
-                                        }
-                                    },
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(22.dp))
-                                        .fillMaxHeight()
-                                        .fillMaxWidth()
-                                )
-                            }
-
-                            if (metadata.groundingChunks.isNotEmpty()) {
-                                Text(
-                                    text = "Sources",
-                                    style = MaterialTheme.typography.titleSmall,
-                                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-                                )
-                                metadata.groundingChunks.forEach { chunk ->
-                                    chunk.web?.let { SourceLinkView(it) }
-                                }
-                            }
-                        }
-                    }
+  Column(
+    horizontalAlignment = horizontalAlignment,
+    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp).fillMaxWidth(),
+  ) {
+    Text(
+      text = message.content.role?.uppercase() ?: "USER",
+      style = MaterialTheme.typography.bodySmall,
+      modifier = Modifier.padding(bottom = 4.dp),
+    )
+    Row {
+      BoxWithConstraints {
+        Card(
+          colors = CardDefaults.cardColors(containerColor = backgroundColor),
+          shape = bubbleShape,
+          modifier = Modifier.widthIn(0.dp, maxWidth * 0.9f),
+        ) {
+          Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
+            message.content.parts.forEach { part ->
+              when (part) {
+                is TextPart -> {
+                  if (part.isThought) {
+                    ThoughtBubble(part.text)
+                  } else {
+                    Text(
+                      text = part.text.trimIndent(),
+                      modifier = Modifier.fillMaxWidth(),
+                      color = textColor,
+                    )
+                  }
                 }
+
+                is ImagePart -> {
+                  Image(
+                    bitmap = part.image.asImageBitmap(),
+                    contentDescription = "Attached image",
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
+                  )
+                }
+
+                is InlineDataPart -> {
+                  // TODO: show a human readable version of audio, PDFs and videos
+                  val attachmentType =
+                    if (part.mimeType.contains("audio")) {
+                      "audio attached"
+                    } else if (part.mimeType.contains("application/pdf")) {
+                      "PDF attached"
+                    } else if (part.mimeType.contains("video")) {
+                      "video"
+                    } else {
+                      "file attached"
+                    }
+                  Text(
+                    text = "($attachmentType)",
+                    modifier = Modifier.padding(4.dp).fillMaxWidth(),
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.End,
+                  )
+                }
+
+                is FileDataPart -> {
+                  Text(
+                    text = part.uri,
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.End,
+                    modifier =
+                      Modifier.background(
+                          backgroundColor.copy(
+                            red = backgroundColor.red * 0.7f,
+                            green = backgroundColor.green * 0.7f,
+                            blue = backgroundColor.blue * 0.7f,
+                          )
+                        )
+                        .padding(4.dp)
+                        .fillMaxWidth(),
+                  )
+                }
+              }
             }
+            message.groundingMetadata?.let { metadata ->
+              HorizontalDivider(modifier = Modifier.padding(vertical = 18.dp))
+
+              // Search Entry Point (WebView)
+              metadata.searchEntryPoint?.let { searchEntryPoint ->
+                val context = LocalContext.current
+                AndroidView(
+                  factory = {
+                    WebView(it).apply {
+                      webViewClient =
+                        object : WebViewClient() {
+                          override fun shouldOverrideUrlLoading(
+                            view: WebView?,
+                            request: WebResourceRequest?,
+                          ): Boolean {
+                            request?.url?.let { uri ->
+                              val intent = Intent(Intent.ACTION_VIEW, uri)
+                              context.startActivity(intent)
+                            }
+                            // Return true to indicate we handled the
+                            // URL loading
+                            return true
+                          }
+                        }
+
+                      setBackgroundColor(Color.TRANSPARENT)
+                      loadDataWithBaseURL(
+                        null,
+                        searchEntryPoint.renderedContent,
+                        "text/html",
+                        "UTF-8",
+                        null,
+                      )
+                    }
+                  },
+                  modifier = Modifier.clip(RoundedCornerShape(22.dp)).fillMaxHeight().fillMaxWidth(),
+                )
+              }
+
+              if (metadata.groundingChunks.isNotEmpty()) {
+                Text(
+                  text = "Sources",
+                  style = MaterialTheme.typography.titleSmall,
+                  modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+                )
+                metadata.groundingChunks.forEach { chunk -> chunk.web?.let { SourceLinkView(it) } }
+              }
+            }
+          }
         }
+      }
     }
+  }
 }
 
 @Composable
-fun SourceLinkView(
-    webChunk: WebGroundingChunk
-) {
-    val context = LocalContext.current
-    val annotatedString = AnnotatedString.Builder(webChunk.title ?: "Untitled Source").apply {
+fun SourceLinkView(webChunk: WebGroundingChunk) {
+  val context = LocalContext.current
+  val annotatedString =
+    AnnotatedString.Builder(webChunk.title ?: "Untitled Source")
+      .apply {
         addStyle(
-            style = SpanStyle(
-                color = MaterialTheme.colorScheme.primary,
-                textDecoration = TextDecoration.Underline
+          style =
+            SpanStyle(
+              color = MaterialTheme.colorScheme.primary,
+              textDecoration = TextDecoration.Underline,
             ),
-            start = 0,
-            end = webChunk.title?.length ?: "Untitled Source".length
+          start = 0,
+          end = webChunk.title?.length ?: "Untitled Source".length,
         )
         webChunk.uri?.let { addStringAnnotation("URL", it, 0, it.length) }
-    }.toAnnotatedString()
+      }
+      .toAnnotatedString()
 
-    Row(modifier = Modifier.padding(bottom = 8.dp)) {
-        Icon(
-            Icons.Default.Attachment,
-            contentDescription = "Source link",
-            modifier = Modifier.padding(end = 8.dp)
-        )
-        ClickableText(text = annotatedString, onClick = { offset ->
-            annotatedString.getStringAnnotations(tag = "URL", start = offset, end = offset)
-                .firstOrNull()?.let { annotation ->
-                    context.startActivity(Intent(Intent.ACTION_VIEW, annotation.item.toUri()))
-                }
-        })
-    }
+  Row(modifier = Modifier.padding(bottom = 8.dp)) {
+    Icon(
+      Icons.Default.Attachment,
+      contentDescription = "Source link",
+      modifier = Modifier.padding(end = 8.dp),
+    )
+    ClickableText(
+      text = annotatedString,
+      onClick = { offset ->
+        annotatedString
+          .getStringAnnotations(tag = "URL", start = offset, end = offset)
+          .firstOrNull()
+          ?.let { annotation ->
+            context.startActivity(Intent(Intent.ACTION_VIEW, annotation.item.toUri()))
+          }
+      },
+    )
+  }
 }
 
 @Composable
 fun ChatList(
-    chatMessages: List<UiChatMessage>,
-    listState: LazyListState,
-    modifier: Modifier = Modifier
+  chatMessages: List<UiChatMessage>,
+  listState: LazyListState,
+  modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        reverseLayout = true,
-        state = listState,
-        modifier = modifier
-    ) {
-        items(chatMessages.reversed()) { message ->
-            ChatBubbleItem(message)
-        }
-    }
+  LazyColumn(reverseLayout = true, state = listState, modifier = modifier) {
+    items(chatMessages.reversed()) { message -> ChatBubbleItem(message) }
+  }
 }
 
 @Composable
 fun MessageInput(
-    initialPrompt: String,
-    onSendMessage: (String) -> Unit,
-    resetScroll: () -> Unit = {},
-    onFileAttached: (Uri) -> Unit,
-    isLoading: Boolean = false
+  initialPrompt: String,
+  onSendMessage: (String) -> Unit,
+  resetScroll: () -> Unit = {},
+  onFileAttached: (Uri) -> Unit,
+  isLoading: Boolean = false,
 ) {
-    var userMessage by rememberSaveable { mutableStateOf(initialPrompt) }
+  var userMessage by rememberSaveable { mutableStateOf(initialPrompt) }
 
-    Row(
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth()
+  Row(modifier = Modifier.padding(8.dp).fillMaxWidth()) {
+    OutlinedTextField(
+      value = userMessage,
+      label = { Text("Message") },
+      onValueChange = { userMessage = it },
+      keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
+      modifier =
+        Modifier.align(Alignment.CenterVertically).padding(end = 4.dp).fillMaxWidth().weight(1f),
+    )
+    AttachmentsMenu(
+      modifier = Modifier.align(Alignment.CenterVertically),
+      onFileAttached = onFileAttached,
+    )
+    IconButton(
+      onClick = {
+        if (userMessage.isNotBlank()) {
+          onSendMessage(userMessage)
+          userMessage = ""
+          resetScroll()
+        }
+      },
+      enabled = !isLoading,
+      modifier =
+        Modifier.align(Alignment.CenterVertically)
+          .clip(CircleShape)
+          .background(
+            color =
+              if (isLoading) {
+                IconButtonDefaults.iconButtonColors().disabledContainerColor
+              } else {
+                MaterialTheme.colorScheme.primary
+              }
+          ),
     ) {
-        OutlinedTextField(
-            value = userMessage,
-            label = { Text("Message") },
-            onValueChange = { userMessage = it },
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences
-            ),
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(end = 4.dp)
-                .fillMaxWidth()
-                .weight(1f)
+      Icon(
+        Icons.AutoMirrored.Default.Send,
+        contentDescription = "Send",
+        tint = MaterialTheme.colorScheme.onPrimary,
+        modifier = Modifier.fillMaxSize().padding(8.dp),
+      )
+    }
+  }
+}
+
+@Composable
+fun AttachmentsMenu(modifier: Modifier = Modifier, onFileAttached: (Uri) -> Unit) {
+  var expanded by remember { mutableStateOf(false) }
+
+  val openDocument =
+    rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+      uri?.let { onFileAttached(it) }
+    }
+  Box(modifier = modifier.padding(end = 4.dp)) {
+    IconButton(onClick = { expanded = !expanded }) {
+      Icon(
+        Icons.Default.AttachFile,
+        contentDescription = "Attach",
+        modifier = Modifier.fillMaxSize().padding(4.dp),
+      )
+    }
+    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+      Text(
+        text = "Attach",
+        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.primary,
+      )
+      DropdownMenuItem(
+        text = { Text("Image / Video") },
+        onClick = {
+          openDocument.launch(arrayOf("image/*", "video/*"))
+          expanded = !expanded
+        },
+      )
+      DropdownMenuItem(
+        text = { Text("Audio") },
+        onClick = {
+          openDocument.launch(arrayOf("audio/*"))
+          expanded = !expanded
+        },
+      )
+      DropdownMenuItem(
+        text = { Text("Document (PDF)") },
+        onClick = {
+          openDocument.launch(arrayOf("application/pdf"))
+          expanded = !expanded
+        },
+      )
+    }
+  }
+}
+
+@Composable
+fun AttachmentsList(attachments: List<Attachment>) {
+  Column(modifier = Modifier.fillMaxWidth()) {
+    attachments.forEach { attachment ->
+      Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)) {
+        Icon(
+          Icons.Default.Attachment,
+          contentDescription = "Attachment icon",
+          modifier = Modifier.padding(4.dp).align(Alignment.CenterVertically),
         )
-        AttachmentsMenu(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            onFileAttached = onFileAttached
+        Column(modifier = Modifier.align(Alignment.CenterVertically)) {
+          attachment.image?.let {
+            Image(
+              bitmap = it.asImageBitmap(),
+              contentDescription = attachment.fileName,
+              modifier = Modifier,
+            )
+          }
+          Text(
+            text = attachment.fileName,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(horizontal = 4.dp),
+          )
+        }
+      }
+    }
+  }
+}
+
+@Composable
+fun ThoughtBubble(text: String) {
+  var expanded by remember { mutableStateOf(false) }
+
+  Column(
+    modifier =
+      Modifier.fillMaxWidth()
+        .padding(vertical = 4.dp)
+        .clip(RoundedCornerShape(8.dp))
+        .background(MaterialTheme.colorScheme.tertiaryContainer)
+        .clickable { expanded = !expanded }
+        .padding(8.dp)
+  ) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+      Icon(
+        imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+        contentDescription = if (expanded) "Collapse thoughts" else "Expand thoughts",
+        modifier = Modifier.padding(end = 8.dp),
+        tint = MaterialTheme.colorScheme.onTertiaryContainer,
+      )
+      Text(
+        text = "Thoughts",
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onTertiaryContainer,
+      )
+    }
+
+    AnimatedVisibility(visible = expanded) {
+      Column {
+        HorizontalDivider(
+          modifier = Modifier.padding(vertical = 8.dp),
+          color = MaterialTheme.colorScheme.onTertiaryContainer,
         )
-        IconButton(
-            onClick = {
-                if (userMessage.isNotBlank()) {
-                    onSendMessage(userMessage)
-                    userMessage = ""
-                    resetScroll()
-                }
-            },
-            enabled = !isLoading,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .clip(CircleShape)
-                .background(
-                    color = if (isLoading) {
-                        IconButtonDefaults.iconButtonColors().disabledContainerColor
-                    } else {
-                        MaterialTheme.colorScheme.primary
-                    }
-                )
-        ) {
-            Icon(
-                Icons.AutoMirrored.Default.Send,
-                contentDescription = "Send",
-                tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp)
-            )
-        }
+        Text(
+          text = text.trimIndent(),
+          style = MaterialTheme.typography.bodySmall.copy(fontStyle = FontStyle.Italic),
+          modifier = Modifier.fillMaxWidth(),
+          color = MaterialTheme.colorScheme.onTertiaryContainer,
+        )
+      }
     }
-}
-
-@Composable
-fun AttachmentsMenu(
-    modifier: Modifier = Modifier,
-    onFileAttached: (Uri) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    val openDocument = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
-        uri?.let {
-            onFileAttached(it)
-        }
-    }
-    Box(
-        modifier = modifier
-            .padding(end = 4.dp)
-    ) {
-        IconButton(
-            onClick = {
-                expanded = !expanded
-            }
-        ) {
-            Icon(
-                Icons.Default.AttachFile,
-                contentDescription = "Attach",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(4.dp)
-            )
-        }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            Text(
-                text = "Attach",
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
-            )
-            DropdownMenuItem(
-                text = { Text("Image / Video") },
-                onClick = {
-                    openDocument.launch(arrayOf("image/*", "video/*"))
-                    expanded = !expanded
-                }
-            )
-            DropdownMenuItem(
-                text = { Text("Audio") },
-                onClick = {
-                    openDocument.launch(arrayOf("audio/*"))
-                    expanded = !expanded
-                }
-            )
-            DropdownMenuItem(
-                text = { Text("Document (PDF)") },
-                onClick = {
-                    openDocument.launch(arrayOf("application/pdf"))
-                    expanded = !expanded
-                }
-            )
-        }
-    }
-}
-
-
-@Composable
-fun AttachmentsList(
-    attachments: List<Attachment>
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        attachments.forEach { attachment ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            ) {
-                Icon(
-                    Icons.Default.Attachment,
-                    contentDescription = "Attachment icon",
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .align(Alignment.CenterVertically)
-                )
-                Column(modifier = Modifier.align (Alignment.CenterVertically)) {
-                    attachment.image?.let {
-                        Image(
-                            bitmap = it.asImageBitmap(),
-                            contentDescription = attachment.fileName,
-                            modifier = Modifier
-                        )
-                    }
-                    Text(
-                        text = attachment.fileName,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ThoughtBubble(
-    text: String
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.tertiaryContainer)
-            .clickable { expanded = !expanded }
-            .padding(8.dp)
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Icon(
-                imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                contentDescription = if (expanded) "Collapse thoughts" else "Expand thoughts",
-                modifier = Modifier.padding(end = 8.dp),
-                tint = MaterialTheme.colorScheme.onTertiaryContainer
-            )
-            Text(
-                text = "Thoughts",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onTertiaryContainer
-            )
-        }
-
-        AnimatedVisibility(visible = expanded) {
-            Column {
-                HorizontalDivider(
-                    modifier = Modifier.padding(vertical = 8.dp),
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                )
-                Text(
-                    text = text.trimIndent(),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontStyle = FontStyle.Italic
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                )
-            }
-        }
-    }
+  }
 }
