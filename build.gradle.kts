@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.navigation.safeargs) apply false
     alias(libs.plugins.gradle.versions) apply true
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.spotless) apply true
 }
 
 allprojects {
@@ -19,40 +20,17 @@ allprojects {
     }
 }
 
-val ktlint by configurations.creating
-
-dependencies {
-    ktlint("com.pinterest:ktlint:0.49.1") {
-        attributes {
-            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
-        }
+spotless {
+    kotlin {
+        target("**/*.kt")
+        targetExclude("**/build/**")
+        ktfmt(libs.versions.ktfmt.get()).kotlinlangStyle()
     }
-}
-
-tasks.register<JavaExec>("ktlintCheck") {
-    val outputDir = "${project.layout.buildDirectory}/reports/ktlint/"
-    val inputFiles = project.fileTree("src").include("**/*.kt")
-    val outputFile = "${outputDir}ktlint-checkstyle-report.xml"
-
-    // See: https://medium.com/@vanniktech/making-your-gradle-tasks-incremental-7f26e4ef09c3
-    inputs.files(inputFiles)
-    outputs.file(outputFile)
-
-    group = LifecycleBasePlugin.VERIFICATION_GROUP
-    description = "Check Kotlin code style"
-    classpath = ktlint
-    mainClass.set("com.pinterest.ktlint.Main")
-
-    args(
-        "--format",
-        "--code-style=android_studio",
-        "--reporter=plain",
-        "--reporter=checkstyle,output=${outputFile}",
-        "**/*.kt",
-        "!**/build/**"
-    )
-
-    jvmArgs("--add-opens=java.base/java.lang=ALL-UNNAMED")
+    kotlinGradle {
+        target("**/*.gradle.kts")
+        targetExclude("**/build/**")
+        ktfmt(libs.versions.ktfmt.get()).kotlinlangStyle()
+    }
 }
 
 fun notFromFirebase(candidate: ModuleComponentIdentifier): Boolean {
