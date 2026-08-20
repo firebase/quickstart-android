@@ -26,82 +26,47 @@ import coil3.compose.AsyncImage
 
 val ACTOR_CARD_SIZE = 64.dp
 
-/**
- * Used to represent an actor in a list UI
- */
-data class Actor(
-    val id: String,
-    val name: String,
-    val imageUrl: String
-)
+/** Used to represent an actor in a list UI */
+data class Actor(val id: String, val name: String, val imageUrl: String)
 
-/**
- * Displays a scrollable horizontal list of actors.
- */
+/** Displays a scrollable horizontal list of actors. */
 @Composable
 fun ActorsList(
-    modifier: Modifier = Modifier,
-    listTitle: String,
-    actors: List<Actor>? = emptyList(),
-    onActorClicked: (actorId: String) -> Unit
+  modifier: Modifier = Modifier,
+  listTitle: String,
+  actors: List<Actor>? = emptyList(),
+  onActorClicked: (actorId: String) -> Unit,
 ) {
-    Column(
-        modifier = modifier.padding(horizontal = 16.dp)
-            .fillMaxWidth()
-    ) {
-        Text(
-            text = listTitle,
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        LazyRow {
-            items(actors.orEmpty()) { actor ->
-                ActorTile(actor, onActorClicked)
-            }
-        }
-    }
+  Column(modifier = modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
+    Text(text = listTitle, style = MaterialTheme.typography.headlineMedium)
+    Spacer(modifier = Modifier.height(8.dp))
+    LazyRow { items(actors.orEmpty()) { actor -> ActorTile(actor, onActorClicked) } }
+  }
 }
 
-/**
- * Used to display each actor item in the list.
- */
+/** Used to display each actor item in the list. */
 @Composable
-fun ActorTile(
-    actor: Actor,
-    onActorClicked: (actorId: String) -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .padding(end = 8.dp)
-            .clickable {
-                onActorClicked(actor.id)
-            }
+fun ActorTile(actor: Actor, onActorClicked: (actorId: String) -> Unit) {
+  Card(modifier = Modifier.padding(end = 8.dp).clickable { onActorClicked(actor.id) }) {
+    Row(
+      verticalAlignment = Alignment.CenterVertically,
+      modifier =
+        Modifier.sizeIn(maxWidth = 160.dp, maxHeight = ACTOR_CARD_SIZE + 16.dp)
+          .padding(8.dp)
+          .fillMaxWidth(),
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .sizeIn(
-                    maxWidth = 160.dp,
-                    maxHeight = ACTOR_CARD_SIZE + 16.dp
-                )
-                .padding(8.dp)
-                .fillMaxWidth()
-        ) {
-            AsyncImage(
-                model = actor.imageUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .size(ACTOR_CARD_SIZE)
-                    .clip(CircleShape)
-            )
-            Text(
-                text = actor.name,
-                style = MaterialTheme.typography.bodyLarge,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
+      AsyncImage(
+        model = actor.imageUrl,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.padding(end = 8.dp).size(ACTOR_CARD_SIZE).clip(CircleShape),
+      )
+      Text(
+        text = actor.name,
+        style = MaterialTheme.typography.bodyLarge,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+      )
     }
+  }
 }

@@ -19,48 +19,43 @@ import com.google.firebase.example.dataconnect.ui.components.Movie
 import com.google.firebase.example.dataconnect.ui.components.MoviesList
 import kotlinx.serialization.Serializable
 
-@Serializable
-object MoviesRoute
+@Serializable object MoviesRoute
 
 @Composable
 fun MoviesScreen(
-    onMovieClicked: (movie: String) -> Unit,
-    moviesViewModel: MoviesViewModel = viewModel()
+  onMovieClicked: (movie: String) -> Unit,
+  moviesViewModel: MoviesViewModel = viewModel(),
 ) {
-    val movies by moviesViewModel.uiState.collectAsState()
-    MoviesScreen(movies, onMovieClicked)
+  val movies by moviesViewModel.uiState.collectAsState()
+  MoviesScreen(movies, onMovieClicked)
 }
 
 @Composable
-fun MoviesScreen(
-    uiState: MoviesUIState,
-    onMovieClicked: (movie: String) -> Unit
-) {
-    when (uiState) {
-        MoviesUIState.Loading -> LoadingScreen()
-        is MoviesUIState.Error -> ErrorCard(uiState.errorMessage)
-        is MoviesUIState.Success -> {
-            val scrollState = rememberScrollState()
-            Column(
-                modifier = Modifier
-                    .verticalScroll(scrollState)
-            ) {
-                MoviesList(
-                    listTitle = stringResource(R.string.title_top_10_movies),
-                    movies = uiState.top10movies.mapNotNull {
-                        Movie(it.id.toString(), it.imageUrl, it.title, it.rating?.toFloat())
-                    },
-                    onMovieClicked = onMovieClicked
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                MoviesList(
-                    listTitle = stringResource(R.string.title_latest_movies),
-                    movies = uiState.latestMovies.mapNotNull {
-                        Movie(it.id.toString(), it.imageUrl, it.title, it.rating?.toFloat())
-                    },
-                    onMovieClicked = onMovieClicked
-                )
-            }
-        }
+fun MoviesScreen(uiState: MoviesUIState, onMovieClicked: (movie: String) -> Unit) {
+  when (uiState) {
+    MoviesUIState.Loading -> LoadingScreen()
+    is MoviesUIState.Error -> ErrorCard(uiState.errorMessage)
+    is MoviesUIState.Success -> {
+      val scrollState = rememberScrollState()
+      Column(modifier = Modifier.verticalScroll(scrollState)) {
+        MoviesList(
+          listTitle = stringResource(R.string.title_top_10_movies),
+          movies =
+            uiState.top10movies.mapNotNull {
+              Movie(it.id.toString(), it.imageUrl, it.title, it.rating?.toFloat())
+            },
+          onMovieClicked = onMovieClicked,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        MoviesList(
+          listTitle = stringResource(R.string.title_latest_movies),
+          movies =
+            uiState.latestMovies.mapNotNull {
+              Movie(it.id.toString(), it.imageUrl, it.title, it.rating?.toFloat())
+            },
+          onMovieClicked = onMovieClicked,
+        )
+      }
     }
+  }
 }

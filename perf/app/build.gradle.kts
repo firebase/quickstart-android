@@ -1,68 +1,66 @@
-
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.google.services)
-    alias(libs.plugins.firebase.perf)
+  alias(libs.plugins.android.application)
+  alias(libs.plugins.google.services)
+  alias(libs.plugins.firebase.perf)
 }
 
 android {
-    namespace = "com.google.firebase.quickstart.perfmon"
-    compileSdk = 37
+  namespace = "com.google.firebase.quickstart.perfmon"
+  compileSdk = 37
 
-    defaultConfig {
-        applicationId = "com.google.firebase.quickstart.perfmon"
-        minSdk = 23
-        targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
+  defaultConfig {
+    applicationId = "com.google.firebase.quickstart.perfmon"
+    minSdk = 23
+    targetSdk = 37
+    versionCode = 1
+    versionName = "1.0"
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+  }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-        getByName("debug") {
-//            configure<FirebasePerfExtension> {
-//                 Set this flag to 'false' to disable @AddTrace annotation processing and
-//                 automatic HTTP/S network request monitoring
-//                 for a specific build variant at compile time.
-//                setInstrumentationEnabled(true)
-//            }
-        }
+  buildTypes {
+    getByName("release") {
+      isMinifyEnabled = false
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+    getByName("debug") {
+      //            configure<FirebasePerfExtension> {
+      //                 Set this flag to 'false' to disable @AddTrace annotation processing
+      // and
+      //                 automatic HTTP/S network request monitoring
+      //                 for a specific build variant at compile time.
+      //                setInstrumentationEnabled(true)
+      //            }
     }
+  }
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+  }
 
-    buildFeatures {
-        viewBinding = true
-    }
-    lint {
-        // TODO(thatfiredev): Remove this once
-        //  https://github.com/bumptech/glide/issues/4940 is fixed
-        disable.add("NotificationPermission")
-    }
+  buildFeatures { viewBinding = true }
+  lint {
+    // TODO(thatfiredev): Remove this once
+    //  https://github.com/bumptech/glide/issues/4940 is fixed
+    disable.add("NotificationPermission")
+  }
 }
 
 dependencies {
-    implementation(project(":internal:lintchecks"))
-    implementation(project(":internal:chooserx"))
+  implementation(project(":internal:lintchecks"))
+  implementation(project(":internal:chooserx"))
 
-    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
+  // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
+  implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
 
-    // Firebase Performance Monitoring
-    implementation("com.google.firebase:firebase-perf")
+  // Firebase Performance Monitoring
+  implementation("com.google.firebase:firebase-perf")
 
-    implementation("com.google.android.material:material:1.14.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")
+  implementation("com.google.android.material:material:1.14.0")
+  implementation("androidx.constraintlayout:constraintlayout:2.2.2")
+  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")
 
-    implementation("com.github.bumptech.glide:glide:4.12.0")
+  implementation("com.github.bumptech.glide:glide:4.12.0")
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+  testImplementation("junit:junit:4.13.2")
+  androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
 }

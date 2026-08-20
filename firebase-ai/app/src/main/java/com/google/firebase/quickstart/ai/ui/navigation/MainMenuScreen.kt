@@ -31,99 +31,71 @@ import androidx.compose.ui.unit.dp
 val MIN_CARD_SIZE = 180.dp
 
 @Composable
-fun MainMenuScreen(
-    onSampleClicked: (Sample) -> Unit
-) {
-    MenuScreen(
-        filters = Category.entries.toList(),
-        samples = FIREBASE_AI_SAMPLES,
-        onSampleClicked = {
-            onSampleClicked(it)
-        }
-    )
+fun MainMenuScreen(onSampleClicked: (Sample) -> Unit) {
+  MenuScreen(
+    filters = Category.entries.toList(),
+    samples = FIREBASE_AI_SAMPLES,
+    onSampleClicked = { onSampleClicked(it) },
+  )
 }
 
 @Composable
 fun MenuScreen(
-    filters: List<Category>,
-    samples: List<Sample>,
-    onSampleClicked: (sample: Sample) -> Unit = {}
+  filters: List<Category>,
+  samples: List<Sample>,
+  onSampleClicked: (sample: Sample) -> Unit = {},
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        var selectedCategory by rememberSaveable { mutableStateOf(filters.first()) }
-        LazyRow(
-            modifier = Modifier.padding(vertical = 8.dp)
-        ) {
-            items(filters) { capability ->
-                FilterChip(
-                    onClick = { selectedCategory = capability },
-                    label = {
-                        Text(capability.label)
-                    },
-                    selected = selectedCategory == capability,
-                    leadingIcon = if (selectedCategory == capability) {
-                        {
-                            Icon(
-                                imageVector = Icons.Filled.Done,
-                                contentDescription = "Done icon",
-                                modifier = Modifier.size(FilterChipDefaults.IconSize)
-                            )
-                        }
-                    } else {
-                        null
-                    },
-                    modifier = Modifier.padding(horizontal = 4.dp)
+  Column(modifier = Modifier.fillMaxSize()) {
+    var selectedCategory by rememberSaveable { mutableStateOf(filters.first()) }
+    LazyRow(modifier = Modifier.padding(vertical = 8.dp)) {
+      items(filters) { capability ->
+        FilterChip(
+          onClick = { selectedCategory = capability },
+          label = { Text(capability.label) },
+          selected = selectedCategory == capability,
+          leadingIcon =
+            if (selectedCategory == capability) {
+              {
+                Icon(
+                  imageVector = Icons.Filled.Done,
+                  contentDescription = "Done icon",
+                  modifier = Modifier.size(FilterChipDefaults.IconSize),
                 )
-            }
-        }
-        val filteredSamples = samples.filter {
-            it.categories.contains(selectedCategory)
-        }
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(MIN_CARD_SIZE),
-            modifier = Modifier.padding(horizontal = 16.dp)
-        ) {
-            items(filteredSamples) { sample ->
-                SampleItem(sample.title, sample.description, onItemClicked = {
-                    onSampleClicked(sample)
-                })
-            }
-        }
+              }
+            } else {
+              null
+            },
+          modifier = Modifier.padding(horizontal = 4.dp),
+        )
+      }
     }
+    val filteredSamples = samples.filter { it.categories.contains(selectedCategory) }
+    LazyVerticalGrid(
+      columns = GridCells.Adaptive(MIN_CARD_SIZE),
+      modifier = Modifier.padding(horizontal = 16.dp),
+    ) {
+      items(filteredSamples) { sample ->
+        SampleItem(sample.title, sample.description, onItemClicked = { onSampleClicked(sample) })
+      }
+    }
+  }
 }
 
 @Composable
-fun SampleItem(
-    titleResId: String,
-    descriptionResId: String,
-    onItemClicked: () -> Unit = {}
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = MIN_CARD_SIZE)
-            .padding(4.dp)
-            .clickable {
-                onItemClicked()
-            }
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(all = 16.dp)
-                .fillMaxSize()
-        ) {
-            Text(
-                text = titleResId,
-                style = MaterialTheme.typography.labelLarge
-            )
-            Text(
-                text = descriptionResId,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 8.dp)
-            )
-        }
+fun SampleItem(titleResId: String, descriptionResId: String, onItemClicked: () -> Unit = {}) {
+  Card(
+    modifier =
+      Modifier.fillMaxWidth().heightIn(min = MIN_CARD_SIZE).padding(4.dp).clickable {
+        onItemClicked()
+      }
+  ) {
+    Column(modifier = Modifier.padding(all = 16.dp).fillMaxSize()) {
+      Text(text = titleResId, style = MaterialTheme.typography.labelLarge)
+      Text(
+        text = descriptionResId,
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier.padding(top = 8.dp),
+      )
     }
+  }
 }

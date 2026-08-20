@@ -8,18 +8,18 @@ import com.google.firebase.fiamquickstart.kotlin.KotlinMainActivity
 
 class EntryChoiceActivity : BaseEntryChoiceActivity() {
 
-    override fun getChoices(): List<Choice> {
-        return listOf(
-            Choice(
-                "Java",
-                "Run the Firebase In App Messaging quickstart written in Java.",
-                Intent(this, MainActivity::class.java),
-            ),
-            Choice(
-                "Kotlin",
-                "Run the Firebase In App Messaging quickstart written in Kotlin.",
-                Intent(this, KotlinMainActivity::class.java),
-            ),
-        )
-    }
+  override fun getChoices(): List<Choice> {
+    return listOf(
+      Choice(
+        "Java",
+        "Run the Firebase In App Messaging quickstart written in Java.",
+        Intent(this, MainActivity::class.java),
+      ),
+      Choice(
+        "Kotlin",
+        "Run the Firebase In App Messaging quickstart written in Kotlin.",
+        Intent(this, KotlinMainActivity::class.java),
+      ),
+    )
+  }
 }

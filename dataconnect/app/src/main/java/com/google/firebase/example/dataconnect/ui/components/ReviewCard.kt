@@ -23,74 +23,62 @@ import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-
 @Composable
 fun ReviewCard(
-    userName: String,
-    date: LocalDate,
-    rating: Double,
-    text: String,
-    movieName: String? = null
+  userName: String,
+  date: LocalDate,
+  rating: Double,
+  text: String,
+  movieName: String? = null,
 ) {
-    val configuration = LocalConfiguration.current
-    val locale = ConfigurationCompat.getLocales(configuration)[0]
+  val configuration = LocalConfiguration.current
+  val locale = ConfigurationCompat.getLocales(configuration)[0]
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
+  Card(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+    Column(
+      modifier =
+        Modifier.background(color = MaterialTheme.colorScheme.secondaryContainer).padding(16.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.secondaryContainer)
-                .padding(16.dp)
-        ) {
-            Text(
-                text = if (movieName != null) {
-                    "$userName on $movieName"
-                } else {
-                    userName
-                },
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleLarge
-            )
-            Row(
-                modifier = Modifier.padding(bottom = 8.dp)
-            ) {
-                Text(
-                    text =
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val dateFormatter = DateTimeFormatter.ofPattern("dd MMM, yyyy", locale)
-                            date.toJavaLocalDate().format(dateFormatter)
-                        } else {
-                            val parseableDateString = date.run {
-                                val year = "$year".padStart(4, '0')
-                                val month = "$month".padStart(2, '0')
-                                val day = "$day".padStart(2, '0')
-                                "$year-$month-$day"
-                            }
-                            val dateParser = SimpleDateFormat("y-M-d", Locale.US)
-                            val parsedDate = dateParser.parse(parseableDateString) ?:
-                              throw Exception("INTERNAL ERROR: unparseable date string: $parseableDateString")
-                            val dateFormatter = SimpleDateFormat("dd MMM, yyyy", locale)
-                            dateFormatter.format(parsedDate)
-                        },
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Rating: ",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = "$rating",
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-            Text(
-                text = text,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+      Text(
+        text =
+          if (movieName != null) {
+            "$userName on $movieName"
+          } else {
+            userName
+          },
+        fontWeight = FontWeight.Bold,
+        style = MaterialTheme.typography.titleLarge,
+      )
+      Row(modifier = Modifier.padding(bottom = 8.dp)) {
+        Text(
+          text =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+              val dateFormatter = DateTimeFormatter.ofPattern("dd MMM, yyyy", locale)
+              date.toJavaLocalDate().format(dateFormatter)
+            } else {
+              val parseableDateString =
+                date.run {
+                  val year = "$year".padStart(4, '0')
+                  val month = "$month".padStart(2, '0')
+                  val day = "$day".padStart(2, '0')
+                  "$year-$month-$day"
+                }
+              val dateParser = SimpleDateFormat("y-M-d", Locale.US)
+              val parsedDate =
+                dateParser.parse(parseableDateString)
+                  ?: throw Exception(
+                    "INTERNAL ERROR: unparseable date string: $parseableDateString"
+                  )
+              val dateFormatter = SimpleDateFormat("dd MMM, yyyy", locale)
+              dateFormatter.format(parsedDate)
+            },
+          style = MaterialTheme.typography.titleMedium,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = "Rating: ", style = MaterialTheme.typography.titleMedium)
+        Text(text = "$rating", style = MaterialTheme.typography.titleMedium)
+      }
+      Text(text = text, modifier = Modifier.fillMaxWidth())
     }
+  }
 }

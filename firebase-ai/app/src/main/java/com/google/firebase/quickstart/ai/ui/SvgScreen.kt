@@ -25,106 +25,84 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.SubcomposeAsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.svg.SvgDecoder
 import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
-import kotlinx.coroutines.Dispatchers
 import java.nio.ByteBuffer
+import kotlinx.coroutines.Dispatchers
 
 @Composable
-fun SvgScreen(
-    svgViewModel: SvgViewModel
-) {
-    var prompt by rememberSaveable { mutableStateOf("A kitten") }
-    val uiState by svgViewModel.uiState.collectAsStateWithLifecycle()
-    
-    val isLoading = uiState is SvgUiState.Loading
-    val errorMessage = (uiState as? SvgUiState.Error)?.message
-    val generatedSvgs = (uiState as? SvgUiState.Success)?.svgs ?: emptyList()
+fun SvgScreen(svgViewModel: SvgViewModel) {
+  var prompt by rememberSaveable { mutableStateOf("A kitten") }
+  val uiState by svgViewModel.uiState.collectAsStateWithLifecycle()
 
-    Column {
-        ElevatedCard(
-            modifier = Modifier
-                .padding(all = 16.dp)
-                .fillMaxWidth(),
-            shape = MaterialTheme.shapes.large
-        ) {
-            OutlinedTextField(
-                value = prompt,
-                label = { Text("Generate a SVG of") },
-                placeholder = { Text("Enter text to generate image") },
-                onValueChange = { prompt = it },
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-            )
-            TextButton(
-                onClick = {
-                    svgViewModel.generateSVG(prompt)
-                },
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 16.dp)
-                    .align(Alignment.End)
-            ) {
-                Text("Generate")
-            }
-        }
-        if (isLoading) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .padding(all = 8.dp)
-                    .align(Alignment.CenterHorizontally)
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(generatedSvgs) { svg ->
-                Card(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                        .fillMaxWidth(),
-                    shape = MaterialTheme.shapes.large,
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                ) {
-                    SubcomposeAsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(ByteBuffer.wrap(svg.toByteArray()))
-                            .decoderFactory(SvgDecoder.Factory())
-                            .decoderCoroutineContext(Dispatchers.Main)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = "Generated SVG",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                }
-            }
-        }
-        errorMessage?.let {
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth(),
-                shape = MaterialTheme.shapes.large,
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer
-                )
-            ) {
-                Text(
-                    text = it,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.padding(all = 16.dp)
-                )
-            }
-        }
+  val isLoading = uiState is SvgUiState.Loading
+  val errorMessage = (uiState as? SvgUiState.Error)?.message
+  val generatedSvgs = (uiState as? SvgUiState.Success)?.svgs ?: emptyList()
+
+  Column {
+    ElevatedCard(
+      modifier = Modifier.padding(all = 16.dp).fillMaxWidth(),
+      shape = MaterialTheme.shapes.large,
+    ) {
+      OutlinedTextField(
+        value = prompt,
+        label = { Text("Generate a SVG of") },
+        placeholder = { Text("Enter text to generate image") },
+        onValueChange = { prompt = it },
+        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+      )
+      TextButton(
+        onClick = { svgViewModel.generateSVG(prompt) },
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp).align(Alignment.End),
+      ) {
+        Text("Generate")
+      }
     }
+    if (isLoading) {
+      Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.padding(all = 8.dp).align(Alignment.CenterHorizontally),
+      ) {
+        CircularProgressIndicator()
+      }
+    }
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+      items(generatedSvgs) { svg ->
+        Card(
+          modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).fillMaxWidth(),
+          shape = MaterialTheme.shapes.large,
+          colors =
+            CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onSecondaryContainer),
+        ) {
+          SubcomposeAsyncImage(
+            model =
+              ImageRequest.Builder(LocalContext.current)
+                .data(ByteBuffer.wrap(svg.toByteArray()))
+                .decoderFactory(SvgDecoder.Factory())
+                .decoderCoroutineContext(Dispatchers.Main)
+                .crossfade(true)
+                .build(),
+            contentDescription = "Generated SVG",
+            modifier = Modifier.fillMaxWidth(),
+          )
+        }
+      }
+    }
+    errorMessage?.let {
+      Card(
+        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
+        shape = MaterialTheme.shapes.large,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),
+      ) {
+        Text(
+          text = it,
+          color = MaterialTheme.colorScheme.error,
+          modifier = Modifier.padding(all = 16.dp),
+        )
+      }
+    }
+  }
 }
