@@ -1,6 +1,6 @@
 [versions]
 activityCompose = "1.13.0"
-agp = "9.2.1"
+agp = "9.3.2"
 camerax = "1.6.1"
 coil3Compose = "3.5.0"
 composeBom = "2026.08.00"
