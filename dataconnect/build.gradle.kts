@@ -5,19 +5,23 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
 }
 
-tasks {
-    register<Exec>("dataconnectCompile") {
-        workingDir = project.file("./dataconnect")
-        if (org.apache.tools.ant.taskdefs.condition.Os.isFamily(org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS)) {
-            commandLine("npx.cmd", "-y", "firebase-tools@latest", "dataconnect:compile")
-        } else {
-            commandLine("npx", "-y", "firebase-tools@latest", "dataconnect:compile")
-        }
-        isIgnoreExitValue = true
+val dataconnectCompile = tasks.register<Exec>("dataconnectCompile") {
+    workingDir = project.file("./dataconnect")
+    if (org.apache.tools.ant.taskdefs.condition.Os.isFamily(org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS)) {
+        commandLine("npx.cmd", "-y", "firebase-tools@latest", "dataconnect:compile")
+    } else {
+        commandLine("npx", "-y", "firebase-tools@latest", "dataconnect:compile")
     }
+    isIgnoreExitValue = true
+}
 
-    register("clean", Delete::class) {
-        delete(rootProject.layout.buildDirectory)
-        finalizedBy("dataconnectCompile")
+tasks.register("clean", Delete::class) {
+    delete(rootProject.layout.buildDirectory)
+    finalizedBy(dataconnectCompile)
+}
+
+subprojects {
+    tasks.matching { it.name == "preBuild" }.configureEach {
+        dependsOn(dataconnectCompile)
     }
 }
