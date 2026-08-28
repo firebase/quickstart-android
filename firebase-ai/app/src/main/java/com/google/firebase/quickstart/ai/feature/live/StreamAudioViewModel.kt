@@ -2,6 +2,7 @@ package com.google.firebase.quickstart.ai.feature.live
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.AudioTranscriptionConfig
@@ -19,10 +20,12 @@ import com.google.firebase.ai.type.Transcription
 import com.google.firebase.ai.type.Voice
 import com.google.firebase.ai.type.liveGenerationConfig
 import com.google.firebase.quickstart.ai.feature.text.functioncalling.WeatherRepository.Companion.fetchWeather
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
@@ -135,8 +138,10 @@ class StreamAudioViewModel : ViewModel() {
 
     // The permission check is handled by the view that calls this function.
     @SuppressLint("MissingPermission")
-    suspend fun startConversation() {
-        liveSession.startAudioConversation(::handleFunctionCall, ::handleTranscription)
+    fun startConversation() {
+        viewModelScope.launch(Dispatchers.IO) {
+            liveSession.startAudioConversation(::handleFunctionCall, ::handleTranscription)
+        }
     }
 
     fun endConversation() {

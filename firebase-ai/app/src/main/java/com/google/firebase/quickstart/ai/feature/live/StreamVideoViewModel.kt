@@ -16,6 +16,7 @@ import com.google.firebase.ai.type.SpeechConfig
 import com.google.firebase.ai.type.Transcription
 import com.google.firebase.ai.type.Voice
 import com.google.firebase.ai.type.liveGenerationConfig
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -84,8 +85,10 @@ class StreamVideoViewModel : ViewModel() {
 
     // The permission check is handled by the view that calls this function.
     @SuppressLint("MissingPermission")
-    suspend fun startConversation() {
-        liveSession.startAudioConversation(null, ::handleTranscription)
+    fun startConversation() {
+        viewModelScope.launch(Dispatchers.IO) {
+            liveSession.startAudioConversation(null, ::handleTranscription)
+        }
     }
 
     fun endConversation() {

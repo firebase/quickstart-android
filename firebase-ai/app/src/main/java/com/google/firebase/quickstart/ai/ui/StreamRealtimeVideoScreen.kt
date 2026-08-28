@@ -48,8 +48,6 @@ fun StreamRealtimeVideoScreen(viewModel: StreamVideoViewModel) {
     val transcriptions by viewModel.transcriptions.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
 
-    val scope = rememberCoroutineScope()
-
     val context = LocalContext.current
     var hasPermissions by remember {
         mutableStateOf(
@@ -81,7 +79,7 @@ fun StreamRealtimeVideoScreen(viewModel: StreamVideoViewModel) {
     DisposableEffect(hasPermissions) {
         if (hasPermissions) {
             viewModel.clearTranscriptions()
-            scope.launch { viewModel.startConversation() }
+            viewModel.startConversation()
         }
         onDispose { viewModel.endConversation() }
     }

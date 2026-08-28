@@ -30,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,9 +46,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
 import com.google.firebase.quickstart.ai.feature.live.TranscriptionItem
 import com.google.firebase.quickstart.ai.feature.live.TranscriptionSpeaker
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @RequiresPermission(Manifest.permission.RECORD_AUDIO)
 @Composable
@@ -55,6 +53,12 @@ fun StreamRealtimeScreen(viewModel: StreamAudioViewModel) {
     val isConversationActive = remember { mutableStateOf(false) }
     val transcriptions by viewModel.transcriptions.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.endConversation()
+        }
+    }
 
     LaunchedEffect(transcriptions.size, transcriptions.lastOrNull()?.text) {
         if (transcriptions.isNotEmpty()) {
@@ -162,9 +166,7 @@ fun StreamRealtimeScreen(viewModel: StreamAudioViewModel) {
                 IconButton(
                     onClick = {
                         viewModel.clearTranscriptions()
-                        CoroutineScope(Dispatchers.IO).launch {
-                            viewModel.startConversation()
-                        }
+                        viewModel.startConversation()
                         isConversationActive.value = true
                     },
                     modifier = Modifier
