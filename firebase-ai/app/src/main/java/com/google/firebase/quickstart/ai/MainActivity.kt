@@ -26,16 +26,17 @@ import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
+import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
+import com.google.firebase.quickstart.ai.feature.live.StreamVideoViewModel
 import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
 import com.google.firebase.quickstart.ai.ui.ChatScreen
+import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
 import com.google.firebase.quickstart.ai.ui.ServerPromptScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
-import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
 import com.google.firebase.quickstart.ai.ui.SvgScreen
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
@@ -107,14 +108,14 @@ class MainActivity : ComponentActivity() {
                                     }
 
                                     ScreenType.BIDI -> {
-                                        (vm as? BidiViewModel)?.let {
+                                        (vm as? StreamAudioViewModel)?.let {
                                             @SuppressLint("MissingPermission")
                                             StreamRealtimeScreen(it)
                                         }
                                     }
 
                                     ScreenType.BIDI_VIDEO -> {
-                                        (vm as? BidiViewModel)?.let {
+                                        (vm as? StreamVideoViewModel)?.let {
                                             @SuppressLint("MissingPermission")
                                             StreamRealtimeVideoScreen(it)
                                         }

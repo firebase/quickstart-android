@@ -42,7 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
+import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
 import com.google.firebase.quickstart.ai.feature.live.TranscriptionItem
 import com.google.firebase.quickstart.ai.feature.live.TranscriptionSpeaker
 import kotlinx.coroutines.CoroutineScope
@@ -51,9 +51,9 @@ import kotlinx.coroutines.launch
 
 @RequiresPermission(Manifest.permission.RECORD_AUDIO)
 @Composable
-fun StreamRealtimeScreen(bidiView: BidiViewModel) {
+fun StreamRealtimeScreen(viewModel: StreamAudioViewModel) {
     val isConversationActive = remember { mutableStateOf(false) }
-    val transcriptions by bidiView.transcriptions.collectAsStateWithLifecycle()
+    val transcriptions by viewModel.transcriptions.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
 
     LaunchedEffect(transcriptions.size, transcriptions.lastOrNull()?.text) {
@@ -140,7 +140,7 @@ fun StreamRealtimeScreen(bidiView: BidiViewModel) {
             if (isConversationActive.value) {
                 IconButton(
                     onClick = {
-                        bidiView.endConversation()
+                        viewModel.endConversation()
                         isConversationActive.value = false
                     },
                     modifier = Modifier
@@ -161,9 +161,9 @@ fun StreamRealtimeScreen(bidiView: BidiViewModel) {
             } else {
                 IconButton(
                     onClick = {
-                        bidiView.clearTranscriptions()
+                        viewModel.clearTranscriptions()
                         CoroutineScope(Dispatchers.IO).launch {
-                            bidiView.startConversation()
+                            viewModel.startConversation()
                         }
                         isConversationActive.value = true
                     },

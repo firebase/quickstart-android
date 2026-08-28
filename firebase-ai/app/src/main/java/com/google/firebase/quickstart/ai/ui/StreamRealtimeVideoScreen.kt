@@ -36,16 +36,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
+import com.google.firebase.quickstart.ai.feature.live.StreamVideoViewModel
 import com.google.firebase.quickstart.ai.feature.live.TranscriptionItem
 import com.google.firebase.quickstart.ai.feature.live.TranscriptionSpeaker
 import kotlinx.coroutines.launch
 
 @RequiresPermission(allOf = [Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA])
 @Composable
-fun StreamRealtimeVideoScreen(bidiView: BidiViewModel) {
+fun StreamRealtimeVideoScreen(viewModel: StreamVideoViewModel) {
     val backgroundColor = MaterialTheme.colorScheme.background
-    val transcriptions by bidiView.transcriptions.collectAsStateWithLifecycle()
+    val transcriptions by viewModel.transcriptions.collectAsStateWithLifecycle()
     val listState = rememberLazyListState()
 
     val scope = rememberCoroutineScope()
@@ -80,10 +80,10 @@ fun StreamRealtimeVideoScreen(bidiView: BidiViewModel) {
 
     DisposableEffect(hasPermissions) {
         if (hasPermissions) {
-            bidiView.clearTranscriptions()
-            scope.launch { bidiView.startConversation() }
+            viewModel.clearTranscriptions()
+            scope.launch { viewModel.startConversation() }
         }
-        onDispose { bidiView.endConversation() }
+        onDispose { viewModel.endConversation() }
     }
 
     Surface(modifier = Modifier.fillMaxSize(), color = backgroundColor) {
@@ -93,7 +93,7 @@ fun StreamRealtimeVideoScreen(bidiView: BidiViewModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.5f),
-                    onFrameCaptured = { bitmap -> bidiView.sendVideoFrame(bitmap) },
+                    onFrameCaptured = { bitmap -> viewModel.sendVideoFrame(bitmap) },
                 )
                 Box(
                     modifier = Modifier
