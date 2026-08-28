@@ -2,6 +2,7 @@ package com.google.firebase.quickstart.ai.feature.live
 
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.AudioTranscriptionConfig
 import com.google.firebase.ai.type.FunctionCallPart
 import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.FunctionResponsePart
@@ -28,6 +29,8 @@ class StreamAudioViewModel : BidiViewModel() {
         val liveGenerationConfig = liveGenerationConfig {
             speechConfig = SpeechConfig(voice = Voice("CHARON"))
             responseModality = ResponseModality.AUDIO
+            inputAudioTranscription = AudioTranscriptionConfig()
+            outputAudioTranscription = AudioTranscriptionConfig()
         }
 
         val liveModel =

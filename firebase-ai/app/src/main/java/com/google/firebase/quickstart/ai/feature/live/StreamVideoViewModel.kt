@@ -2,6 +2,7 @@ package com.google.firebase.quickstart.ai.feature.live
 
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.AudioTranscriptionConfig
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.ResponseModality
@@ -20,6 +21,8 @@ class StreamVideoViewModel : BidiViewModel() {
         val liveGenerationConfig = liveGenerationConfig {
             speechConfig = SpeechConfig(voice = Voice("CHARON"))
             responseModality = ResponseModality.AUDIO
+            inputAudioTranscription = AudioTranscriptionConfig()
+            outputAudioTranscription = AudioTranscriptionConfig()
         }
 
         // Note that each backend supports a different set of models.
