@@ -123,7 +123,11 @@ fun StreamRealtimeScreen(viewModel: StreamAudioViewModel) {
             ) {
                 if (transcriptions.isEmpty()) {
                     Text(
-                        text = if (isConversationActive.value) "Transcriptions will appear here..." else "No active transcription",
+                        text = if (isConversationActive.value) {
+                            "Transcriptions will appear here..."
+                        } else {
+                            "No active transcription"
+                        },
                         color = MaterialTheme.colorScheme.outline,
                         style = MaterialTheme.typography.bodyMedium
                     )
