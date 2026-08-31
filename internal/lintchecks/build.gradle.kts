@@ -6,7 +6,7 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        minSdk = 16
+        minSdk = 24
     }
 
     lint {
