@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.google.firebase.example.fireeats"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
@@ -75,8 +75,8 @@ dependencies {
     implementation("com.google.android.material:material:1.14.0")
     implementation("androidx.media:media:1.8.0")
     implementation("androidx.recyclerview:recyclerview:1.4.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.9.8")
-    implementation("androidx.navigation:navigation-ui-ktx:2.9.8")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.10.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.10.0")
 
     // Android architecture components
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")

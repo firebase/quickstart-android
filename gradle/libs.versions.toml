@@ -1,10 +1,10 @@
 [versions]
 activityCompose = "1.13.0"
 agp = "9.3.2"
-camerax = "1.6.1"
-coil3Compose = "3.5.0"
+camerax = "1.6.2"
+coil3Compose = "3.6.0"
 composeBom = "2026.08.00"
-composeNavigation = "2.9.8"
+composeNavigation = "2.10.0"
 coreKtx = "1.19.0"
 espressoCore = "3.7.0"
 firebaseBom = "34.18.0"
