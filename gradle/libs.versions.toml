@@ -1,8 +1,8 @@
 [versions]
 activityCompose = "1.13.0"
-agp = "9.3.2"
+agp = "9.4.0"
 camerax = "1.6.2"
-coil3Compose = "3.6.0"
+coil3Compose = "3.6.1"
 composeBom = "2026.08.00"
 composeNavigation = "2.10.0"
 coreKtx = "1.19.0"
