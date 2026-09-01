@@ -22,7 +22,7 @@ allprojects {
 val ktlint by configurations.creating
 
 dependencies {
-    ktlint("com.pinterest:ktlint:0.50.0") {
+    ktlint("com.pinterest:ktlint:0.49.1") {
         attributes {
             attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
         }
@@ -71,7 +71,10 @@ fun isBlockListed(candidate: ModuleComponentIdentifier): Boolean {
             "androidx.webkit:webkit",
             "com.facebook.android",
             "com.google.guava",
-            "com.github.bumptech.glide"
+            "com.github.bumptech.glide",
+            // TODO(firebase/quickstart-android#2832):
+            //  Unpin ktlint once we migrate to ktfmt
+            "com.pinterest:ktlint"
     ).any { keyword ->
         keyword in candidate.toString().lowercase()
     }
