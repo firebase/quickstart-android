@@ -28,8 +28,8 @@ To try out this sample app, you need to use latest stable version of Android Stu
 You can find the implementation for each feature by clicking on the links below:
 
 ### Gemini 3
-- [Translate text](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/TranslationViewModel.kt): Use Gemini 3.1 Flash-Lite to translate text
-- [SVG Generator](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/SvgViewModel.kt): Use Gemini 3.5 Flash to create SVG illustrations
+- [Translate text](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/TranslationViewModel.kt): Use Gemini 3.5 Flash-Lite to translate text
+- [SVG Generator](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/SvgViewModel.kt): Use Gemini 3.8 Flash to create SVG illustrations
 - [Gemini 3.1 Flash Image (Nano Banana 2)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/NanoBanana2ViewModel.kt): Generate and/or edit images using Nano Banana 2
 - [Gemini 3 Pro Image (Nano Banana Pro)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/NanoBananaProViewModel.kt): Generate and/or edit images using Nano Banana Pro
 
@@ -39,7 +39,7 @@ You can find the implementation for each feature by clicking on the links below:
 - [Gemini 2.5 Flash Image (Nano Banana)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/NanoBananaViewModel.kt): Generate and/or edit images using Nano Banana
 
 ### Multimodal understanding
-- [Audio Summarization](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioSummarizationViewModel.kt): Use Gemini 3.1 Flash Lite to summarize an audio file
+- [Audio Summarization](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioSummarizationViewModel.kt): Use Gemini 3.5 Flash Lite to summarize an audio file
 - [Summarize video](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/VideoSummarizationViewModel.kt): Summarize a video and extract important dialogue.
 - [Translation from audio (Agent Platform)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioTranslationViewModel.kt): Translate an audio file stored in Cloud Storage
 - [Blog post creator (Agent Platform)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ImageBlogCreatorViewModel.kt): Create a blog post from an image file stored in Cloud Storage.

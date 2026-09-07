@@ -32,7 +32,7 @@ class SvgViewModel : ViewModel() {
         generativeModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).generativeModel(
-            modelName = "gemini-3.7-flash",
+            modelName = "gemini-3.8-flash",
             systemInstruction = content {
                 text(
                     """
