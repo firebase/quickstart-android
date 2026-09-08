@@ -39,7 +39,7 @@ You can find the implementation for each feature by clicking on the links below:
 - [Gemini 2.5 Flash Image (Nano Banana)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/NanoBananaViewModel.kt): Generate and/or edit images using Nano Banana
 
 ### Multimodal understanding
-- [Audio Summarization](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioSummarizationViewModel.kt): Use Gemini 3.5 Flash Lite to summarize an audio file
+- [Audio Summarization](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioSummarizationViewModel.kt): Use Gemini 3.5 Flash-Lite to summarize an audio file
 - [Summarize video](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/VideoSummarizationViewModel.kt): Summarize a video and extract important dialogue.
 - [Translation from audio (Agent Platform)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/AudioTranslationViewModel.kt): Translate an audio file stored in Cloud Storage
 - [Blog post creator (Agent Platform)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ImageBlogCreatorViewModel.kt): Create a blog post from an image file stored in Cloud Storage.
