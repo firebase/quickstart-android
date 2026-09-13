@@ -36,7 +36,7 @@ class StreamAudioViewModel : BidiViewModel() {
                     // Note that each backend supports a different set of models.
                     // See our documentation for a breakdown of models by backend:
                     // https://firebase.google.com/docs/ai-logic/live-api#supported-models
-                    modelName = "gemini-2.5-flash-native-audio-preview-09-2025",
+                    modelName = "gemini-3.1-flash-live-preview",
                     generationConfig = liveGenerationConfig,
                     tools = listOf(
                         Tool.functionDeclarations(
