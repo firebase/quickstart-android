@@ -17,6 +17,8 @@
 
 const {onCall, HttpsError} = require('firebase-functions/v2/https')
 const {initializeApp} = require("firebase-admin/app");
+const {getDatabase} = require('firebase-admin/database');
+const {getMessaging} = require('firebase-admin/messaging');
 
 const sanitizer = require('./sanitizer');
 
@@ -87,14 +89,14 @@ exports.addMessage = onCall((request) => {
 
   // [START returnMessageAsync]
   // Saving the new message to the Realtime Database.
-  const sanitizedMessage = sanitizeText(text); // Sanitize the message.
-  return admin.database().ref('/messages').push({
+  const sanitizedMessage = sanitizer.sanitizeText(text); // Sanitize the message.
+  return getDatabase().ref('/messages').push({
     text: sanitizedMessage,
     author: { uid, name, picture, email },
   }).then(() => {
     // Optionally send a push notification with the message.
     if (request.data.push && request.instanceIdToken) {
-      return admin.messaging().send({
+      return getMessaging().send({
         token: request.instanceIdToken,
         data: { text: sanitizedMessage },
       });
