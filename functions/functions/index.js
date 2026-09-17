@@ -25,12 +25,12 @@ initializeApp();
 // [START allAdd]
 // [START addFunctionTrigger]
 // Adds two numbers to each other.
-exports.addNumbers = onCall((data) => {
+exports.addNumbers = onCall((request) => {
 // [END addFunctionTrigger]
   // [START readAddData]
   // Numbers passed from the client.
-  const firstNumber = data.firstNumber;
-  const secondNumber = data.secondNumber;
+  const firstNumber = request.data.firstNumber;
+  const secondNumber = request.data.secondNumber;
   // [END readAddData]
 
   // [START addHttpsError]
@@ -56,11 +56,11 @@ exports.addNumbers = onCall((data) => {
 
 // [START messageFunctionTrigger]
 // Saves a message to the Firebase Realtime Database but sanitizes the text by removing swearwords.
-exports.addMessage = onCall((data, context) => {
+exports.addMessage = onCall((request) => {
   // [START_EXCLUDE]
   // [START readMessageData]
   // Message text passed from the client.
-  const text = data.text;
+  const text = request.data.text;
   // [END readMessageData]
   // [START messageHttpsErrors]
   // Checking attribute.
@@ -70,7 +70,7 @@ exports.addMessage = onCall((data, context) => {
         'one arguments "text" containing the message text to add.');
   }
   // Checking that the user is authenticated.
-  if (!context.auth) {
+  if (!request.auth) {
     // Throwing an HttpsError so that the client gets the error details.
     throw new HttpsError('failed-precondition', 'The function must be called ' +
         'while authenticated.');
@@ -79,10 +79,10 @@ exports.addMessage = onCall((data, context) => {
 
   // [START authIntegration]
   // Authentication / user information is automatically added to the request.
-  const uid = context.auth.uid;
-  const name = context.auth.token.name || null;
-  const picture = context.auth.token.picture || null;
-  const email = context.auth.token.email || null;
+  const uid = request.auth.uid;
+  const name = request.auth.token.name || null;
+  const picture = request.auth.token.picture || null;
+  const email = request.auth.token.email || null;
   // [END authIntegration]
 
   // [START returnMessageAsync]
@@ -93,9 +93,9 @@ exports.addMessage = onCall((data, context) => {
     author: { uid, name, picture, email },
   }).then(() => {
     // Optionally send a push notification with the message.
-    if (data.push && context.instanceIdToken) {
+    if (request.data.push && request.instanceIdToken) {
       return admin.messaging().send({
-        token: context.instanceIdToken,
+        token: request.instanceIdToken,
         data: { text: sanitizedMessage },
       });
     }
