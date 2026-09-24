@@ -6,6 +6,7 @@ import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.SpeechConfig
+import com.google.firebase.ai.type.ThinkingLevel
 import com.google.firebase.ai.type.Voice
 import com.google.firebase.ai.type.liveGenerationConfig
 import kotlinx.coroutines.runBlocking
@@ -20,6 +21,8 @@ class StreamVideoViewModel : BidiViewModel() {
         val liveGenerationConfig = liveGenerationConfig {
             speechConfig = SpeechConfig(voice = Voice("CHARON"))
             responseModality = ResponseModality.AUDIO
+            // Note: thinkingLevel (thinking_level) is omitted when using gemini-3.8-live
+            // thinkingLevel = ThinkingLevel.LOW
         }
 
         // Note that each backend supports a different set of models.
@@ -28,7 +31,7 @@ class StreamVideoViewModel : BidiViewModel() {
         val liveModel = Firebase.ai(
             backend = GenerativeBackend.googleAI()
         ).liveModel(
-            modelName = "gemini-2.5-flash-native-audio-preview-09-2025",
+            modelName = "gemini-3.8-live",
             generationConfig = liveGenerationConfig,
         )
         runBlocking { liveSession = liveModel.connect() }

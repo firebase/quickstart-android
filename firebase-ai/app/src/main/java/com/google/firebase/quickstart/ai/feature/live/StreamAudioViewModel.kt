@@ -2,6 +2,7 @@ package com.google.firebase.quickstart.ai.feature.live
 
 import com.google.firebase.Firebase
 import com.google.firebase.ai.ai
+import com.google.firebase.ai.type.FunctionBehavior
 import com.google.firebase.ai.type.FunctionCallPart
 import com.google.firebase.ai.type.FunctionDeclaration
 import com.google.firebase.ai.type.FunctionResponsePart
@@ -10,6 +11,7 @@ import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.ResponseModality
 import com.google.firebase.ai.type.Schema
 import com.google.firebase.ai.type.SpeechConfig
+import com.google.firebase.ai.type.ThinkingLevel
 import com.google.firebase.ai.type.Tool
 import com.google.firebase.ai.type.Voice
 import com.google.firebase.ai.type.liveGenerationConfig
@@ -28,6 +30,8 @@ class StreamAudioViewModel : BidiViewModel() {
         val liveGenerationConfig = liveGenerationConfig {
             speechConfig = SpeechConfig(voice = Voice("CHARON"))
             responseModality = ResponseModality.AUDIO
+            // Note: thinkingLevel (thinking_level) is omitted when using gemini-3.8-live
+            // thinkingLevel = ThinkingLevel.LOW
         }
 
         val liveModel =
@@ -36,15 +40,15 @@ class StreamAudioViewModel : BidiViewModel() {
                     // Note that each backend supports a different set of models.
                     // See our documentation for a breakdown of models by backend:
                     // https://firebase.google.com/docs/ai-logic/live-api#supported-models
-                    modelName = "gemini-2.5-flash-native-audio-preview-09-2025",
+                    modelName = "gemini-3.8-live",
                     generationConfig = liveGenerationConfig,
                     tools = listOf(
                         Tool.functionDeclarations(
                             listOf(
                                 FunctionDeclaration(
-                                    "fetchWeather",
-                                    "Get the weather conditions for a specific US city on a specific date.",
-                                    mapOf(
+                                    name = "fetchWeather",
+                                    description = "Get the weather conditions for a specific US city on a specific date.",
+                                    parameters = mapOf(
                                         "city" to Schema.string("The US city of the location."),
                                         "state" to Schema.string("The US state of the location."),
                                         "date" to Schema.string(
@@ -52,6 +56,7 @@ class StreamAudioViewModel : BidiViewModel() {
                                                     " Date must be in the format: YYYY-MM-DD."
                                         ),
                                     ),
+                                    behavior = FunctionBehavior.NON_BLOCKING,
                                 )
                             )
                         )

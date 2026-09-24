@@ -21,6 +21,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,16 +34,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.firebase.ai.type.InteractionStatus
+import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
+@OptIn(PublicPreviewAPI::class)
 @RequiresPermission(Manifest.permission.RECORD_AUDIO)
 @Composable
 fun StreamRealtimeScreen(bidiView: BidiViewModel) {
     val isConversationActive = remember { mutableStateOf(false) }
+    val interactionStatus by bidiView.interactionStatus.collectAsState()
+    val turnComplete by bidiView.turnComplete.collectAsState()
     val backgroundColor =
         MaterialTheme.colorScheme.background
     Surface(
@@ -74,6 +81,24 @@ fun StreamRealtimeScreen(bidiView: BidiViewModel) {
                         fontSize = 18.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = when (interactionStatus) {
+                            InteractionStatus.IN_PROGRESS -> "Status: Thinking / Tool in progress (IN_PROGRESS)"
+                            InteractionStatus.IDLE -> "Status: Idle (IDLE)"
+                            else -> "Status: Listening..."
+                        },
+                        fontSize = 15.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    if (turnComplete) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Turn Complete: true",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 } else {
                     // Idle state UI
                     Text(
