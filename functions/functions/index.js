@@ -31,8 +31,8 @@ exports.addNumbers = onCall((request) => {
 // [END addFunctionTrigger]
   // [START readAddData]
   // Numbers passed from the client.
-  const firstNumber = request.data.firstNumber;
-  const secondNumber = request.data.secondNumber;
+  const firstNumber = request.data?.firstNumber;
+  const secondNumber = request.data?.secondNumber;
   // [END readAddData]
 
   // [START addHttpsError]
@@ -62,7 +62,7 @@ exports.addMessage = onCall((request) => {
   // [START_EXCLUDE]
   // [START readMessageData]
   // Message text passed from the client.
-  const text = request.data.text;
+  const text = request.data?.text;
   // [END readMessageData]
   // [START messageHttpsErrors]
   // Checking attribute.
