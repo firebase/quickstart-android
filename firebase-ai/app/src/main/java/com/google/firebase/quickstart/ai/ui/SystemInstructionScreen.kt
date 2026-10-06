@@ -44,16 +44,16 @@ fun SystemInstructionScreen(
     viewModel: SystemInstructionViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    var prompt by remember { mutableStateOf("Tell me a fun fact about space.") }
-    var primaryInstruction by remember {
+    var prompt by rememberSaveable { mutableStateOf("Tell me a fun fact about space.") }
+    var primaryInstruction by rememberSaveable {
         mutableStateOf("Respond like a 17th-century pirate in 1-2 short sentences.")
     }
-    var secondaryInstruction by remember {
+    var secondaryInstruction by rememberSaveable {
         mutableStateOf("Always end your response with the phrase 'Arrr, matey!'")
     }
-    var selectedCase by remember { mutableStateOf(SystemInstructionCase.SINGLE_TEXT) }
-    var selectedMode by remember { mutableStateOf(InferenceMode.ONLY_ON_DEVICE) }
-    var selectedMethod by remember { mutableStateOf(GenerationMethod.UNARY) }
+    var selectedCase by rememberSaveable { mutableStateOf(SystemInstructionCase.SINGLE_TEXT) }
+    var selectedMode by rememberSaveable { mutableStateOf(InferenceMode.ONLY_ON_DEVICE) }
+    var selectedMethod by rememberSaveable { mutableStateOf(GenerationMethod.UNARY) }
 
     Column(
         modifier = Modifier
