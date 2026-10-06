@@ -24,8 +24,6 @@ import com.google.firebase.quickstart.ai.feature.text.NanoBananaLiteRoute
 import com.google.firebase.quickstart.ai.feature.text.NanoBananaLiteViewModel
 import com.google.firebase.quickstart.ai.feature.text.NanoBananaProRoute
 import com.google.firebase.quickstart.ai.feature.text.NanoBananaProViewModel
-import com.google.firebase.quickstart.ai.feature.text.NanoBananaRoute
-import com.google.firebase.quickstart.ai.feature.text.NanoBananaViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateRoute
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.text.SvgRoute
@@ -111,14 +109,6 @@ val FIREBASE_AI_SAMPLES = listOf(
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaProViewModel::class,
         categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
-    ),
-    Sample(
-        title = "Gemini 2.5 Flash Image (Nano Banana)",
-        description = "Generate and/or edit images using Nano Banana",
-        route = NanoBananaRoute,
-        screenType = ScreenType.CHAT,
-        viewModelClass = NanoBananaViewModel::class,
-        categories = listOf(Category.NANO_BANANA)
     ),
     Sample(
         title = "Document comparison (Agent Platform)",
