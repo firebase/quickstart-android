@@ -24,7 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,9 +32,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.firebase.ai.InferenceMode
 import com.google.firebase.ai.type.PublicPreviewAPI
+import com.google.firebase.quickstart.ai.MainActivity
 import com.google.firebase.quickstart.ai.feature.hybrid.GenerationMethod
+import com.google.firebase.quickstart.ai.feature.hybrid.InferenceModeOption
 import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionCase
 import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionViewModel
 
@@ -52,7 +53,7 @@ fun SystemInstructionScreen(
         mutableStateOf("Always end your response with the phrase 'Arrr, matey!'")
     }
     var selectedCase by rememberSaveable { mutableStateOf(SystemInstructionCase.SINGLE_TEXT) }
-    var selectedMode by rememberSaveable { mutableStateOf(InferenceMode.ONLY_ON_DEVICE) }
+    var selectedMode by rememberSaveable { mutableStateOf(InferenceModeOption.ONLY_ON_DEVICE) }
     var selectedMethod by rememberSaveable { mutableStateOf(GenerationMethod.UNARY) }
 
     Column(
@@ -138,17 +139,11 @@ fun SystemInstructionScreen(
             modifier = Modifier.horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val modes = listOf(
-                InferenceMode.ONLY_ON_DEVICE to "ONLY_ON_DEVICE",
-                InferenceMode.PREFER_ON_DEVICE to "PREFER_ON_DEVICE",
-                InferenceMode.PREFER_IN_CLOUD to "PREFER_IN_CLOUD",
-                InferenceMode.ONLY_IN_CLOUD to "ONLY_IN_CLOUD"
-            )
-            modes.forEach { (mode, label) ->
+            InferenceModeOption.entries.forEach { modeOption ->
                 FilterChip(
-                    selected = selectedMode == mode,
-                    onClick = { selectedMode = mode },
-                    label = { Text(label) }
+                    selected = selectedMode == modeOption,
+                    onClick = { selectedMode = modeOption },
+                    label = { Text(modeOption.label) }
                 )
             }
         }
@@ -178,8 +173,9 @@ fun SystemInstructionScreen(
                     primaryInstruction = primaryInstruction,
                     secondaryInstruction = secondaryInstruction,
                     case = selectedCase,
-                    mode = selectedMode,
-                    method = selectedMethod
+                    mode = selectedMode.mode,
+                    method = selectedMethod,
+                    testImage = MainActivity.catImage
                 )
             },
             enabled = !uiState.isLoading,
@@ -196,7 +192,8 @@ fun SystemInstructionScreen(
             Text("Run System Instruction Test")
         }
 
-        if (uiState.errorMessage != null) {
+        val errorMessage = uiState.errorMessage
+        if (errorMessage != null) {
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.errorContainer
@@ -211,7 +208,7 @@ fun SystemInstructionScreen(
                         color = MaterialTheme.colorScheme.onErrorContainer
                     )
                     Text(
-                        text = uiState.errorMessage!!,
+                        text = errorMessage,
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onErrorContainer
                     )
@@ -219,7 +216,8 @@ fun SystemInstructionScreen(
             }
         }
 
-        if (uiState.responseText != null) {
+        val responseText = uiState.responseText
+        if (responseText != null) {
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer
@@ -255,7 +253,7 @@ fun SystemInstructionScreen(
                         }
                     }
                     Text(
-                        text = uiState.responseText!!,
+                        text = responseText,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )

@@ -1,5 +1,6 @@
 package com.google.firebase.quickstart.ai.feature.hybrid
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,8 +15,9 @@ import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.GenerativeBackend
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.ai.type.content
-import com.google.firebase.quickstart.ai.MainActivity
 import com.google.firebase.quickstart.ai.ui.SystemInstructionUiState
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -38,9 +40,19 @@ enum class GenerationMethod(val label: String) {
 }
 
 @OptIn(PublicPreviewAPI::class)
+enum class InferenceModeOption(val label: String, val mode: InferenceMode) {
+    ONLY_ON_DEVICE("ONLY_ON_DEVICE", InferenceMode.ONLY_ON_DEVICE),
+    PREFER_ON_DEVICE("PREFER_ON_DEVICE", InferenceMode.PREFER_ON_DEVICE),
+    PREFER_IN_CLOUD("PREFER_IN_CLOUD", InferenceMode.PREFER_IN_CLOUD),
+    ONLY_IN_CLOUD("ONLY_IN_CLOUD", InferenceMode.ONLY_IN_CLOUD)
+}
+
+@OptIn(PublicPreviewAPI::class)
 class SystemInstructionViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(SystemInstructionUiState())
     val uiState: StateFlow<SystemInstructionUiState> = _uiState
+
+    private var testJob: Job? = null
 
     private val statusCheckModel = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
         modelName = "gemini-3.5-flash-lite",
@@ -61,23 +73,23 @@ class SystemInstructionViewModel : ViewModel() {
                     OnDeviceModelStatus.DOWNLOADING -> "Model downloading..."
                     else -> "On-device model unavailable"
                 }
-                uiState.update { it.copy(modelStatus = statusText) }
+                _uiState.update { it.copy(modelStatus = statusText) }
 
                 if (status == OnDeviceModelStatus.DOWNLOADABLE) {
                     statusCheckModel.onDeviceExtension?.download()?.collect { downloadStatus ->
                         when (downloadStatus) {
                             is DownloadStatus.DownloadStarted -> {
-                                uiState.update { it.copy(modelStatus = "Downloading model...") }
+                                _uiState.update { it.copy(modelStatus = "Downloading model...") }
                             }
                             is DownloadStatus.DownloadInProgress -> {
                                 val progress = downloadStatus.totalBytesDownloaded
-                                uiState.update { it.copy(modelStatus = "Downloading: $progress bytes") }
+                                _uiState.update { it.copy(modelStatus = "Downloading: $progress bytes") }
                             }
                             is DownloadStatus.DownloadCompleted -> {
-                                uiState.update { it.copy(modelStatus = "Model available") }
+                                _uiState.update { it.copy(modelStatus = "Model available") }
                             }
                             is DownloadStatus.DownloadFailed -> {
-                                uiState.update {
+                                _uiState.update {
                                     it.copy(
                                         modelStatus = "Download failed",
                                         errorMessage = "Model download failed"
@@ -88,7 +100,7 @@ class SystemInstructionViewModel : ViewModel() {
                     }
                 }
             } catch (e: Exception) {
-                uiState.update {
+                _uiState.update {
                     it.copy(
                         modelStatus = "Error checking status",
                         errorMessage = e.localizedMessage ?: e.toString()
@@ -101,7 +113,8 @@ class SystemInstructionViewModel : ViewModel() {
     private fun buildSystemInstruction(
         case: SystemInstructionCase,
         primaryInstruction: String,
-        secondaryInstruction: String
+        secondaryInstruction: String,
+        testImage: Bitmap?
     ): Content? {
         return when (case) {
             SystemInstructionCase.SINGLE_TEXT -> content {
@@ -113,7 +126,9 @@ class SystemInstructionViewModel : ViewModel() {
             }
             SystemInstructionCase.NON_TEXT_PART -> content {
                 text(primaryInstruction)
-                image(MainActivity.catImage)
+                if (testImage != null) {
+                    image(testImage)
+                }
             }
             SystemInstructionCase.NONE -> null
         }
@@ -125,10 +140,12 @@ class SystemInstructionViewModel : ViewModel() {
         secondaryInstruction: String,
         case: SystemInstructionCase,
         mode: InferenceMode,
-        method: GenerationMethod
+        method: GenerationMethod,
+        testImage: Bitmap? = null
     ) {
-        viewModelScope.launch {
-            uiState.update {
+        testJob?.cancel()
+        testJob = viewModelScope.launch {
+            _uiState.update {
                 it.copy(
                     isLoading = true,
                     errorMessage = null,
@@ -138,7 +155,8 @@ class SystemInstructionViewModel : ViewModel() {
                 )
             }
 
-            val systemInstruction = buildSystemInstruction(case, primaryInstruction, secondaryInstruction)
+            val systemInstruction =
+                buildSystemInstruction(case, primaryInstruction, secondaryInstruction, testImage)
             val partsSummary = systemInstruction?.parts?.joinToString(", ") { part ->
                 part::class.java.simpleName
             } ?: "null"
@@ -170,10 +188,8 @@ class SystemInstructionViewModel : ViewModel() {
                     GenerationMethod.STREAMING -> {
                         model.generateContentStream(promptText).collect { chunk ->
                             fullText += chunk.text.orEmpty()
-                            if (chunk.inferenceSource != null) {
-                                source = chunk.inferenceSource
-                            }
-                            uiState.update {
+                            source = chunk.inferenceSource
+                            _uiState.update {
                                 it.copy(
                                     responseText = fullText,
                                     inferenceSource = formatInferenceSource(source)
@@ -201,7 +217,7 @@ class SystemInstructionViewModel : ViewModel() {
                     $fullText
                 """.trimIndent()
 
-                uiState.update {
+                _uiState.update {
                     it.copy(
                         isLoading = false,
                         responseText = fullText,
@@ -209,6 +225,8 @@ class SystemInstructionViewModel : ViewModel() {
                         logOutput = summaryLog
                     )
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 val causeName = e.cause?.let { " (cause: ${it::class.java.simpleName})" }.orEmpty()
                 Log.e(TAG, "<<< [SYSTEM INSTRUCTION TEST - FAILURE] <<<", e)
@@ -224,7 +242,7 @@ class SystemInstructionViewModel : ViewModel() {
                     Message: ${e.localizedMessage ?: e.toString()}
                 """.trimIndent()
 
-                uiState.update {
+                _uiState.update {
                     it.copy(
                         isLoading = false,
                         errorMessage = "${e::class.java.simpleName}$causeName: ${e.localizedMessage ?: e.toString()}",
