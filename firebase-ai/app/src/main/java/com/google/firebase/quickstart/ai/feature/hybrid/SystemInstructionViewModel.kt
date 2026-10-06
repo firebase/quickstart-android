@@ -39,8 +39,8 @@ enum class GenerationMethod(val label: String) {
 
 @OptIn(PublicPreviewAPI::class)
 class SystemInstructionViewModel : ViewModel() {
-    val uiState: StateFlow<SystemInstructionUiState>
-        field = MutableStateFlow(SystemInstructionUiState())
+    private val _uiState = MutableStateFlow(SystemInstructionUiState())
+    val uiState: StateFlow<SystemInstructionUiState> = _uiState
 
     private val statusCheckModel = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
         modelName = "gemini-3.5-flash-lite",
