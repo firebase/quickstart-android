@@ -24,8 +24,6 @@ import com.google.firebase.quickstart.ai.feature.text.NanoBananaLiteRoute
 import com.google.firebase.quickstart.ai.feature.text.NanoBananaLiteViewModel
 import com.google.firebase.quickstart.ai.feature.text.NanoBananaProRoute
 import com.google.firebase.quickstart.ai.feature.text.NanoBananaProViewModel
-import com.google.firebase.quickstart.ai.feature.text.NanoBananaRoute
-import com.google.firebase.quickstart.ai.feature.text.NanoBananaViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateRoute
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.text.SvgRoute
@@ -89,36 +87,28 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
-        title = "Gemini 3.1 Flash Image Lite (Nano Banana Lite)",
-        description = "Generate and/or edit images using Nano Banana Lite",
-        route = NanoBananaLiteRoute,
-        screenType = ScreenType.CHAT,
-        viewModelClass = NanoBananaLiteViewModel::class,
-        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
-    ),
-    Sample(
-        title = "Gemini 3.1 Flash Image (Nano Banana 2)",
-        description = "Generate and/or edit images using Nano Banana 2",
+        title = "Gemini Nano Banana 2.1",
+        description = "Generate and/or edit images using Nano Banana 2.1",
         route = NanoBanana2Route,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBanana2ViewModel::class,
         categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
     ),
     Sample(
-        title = "Gemini 3 Pro Image (Nano Banana Pro)",
+        title = "Nano Banana 2 Lite (Gemini 3.1 Flash Image Lite)",
+        description = "Generate and/or edit images using Nano Banana 2 Lite",
+        route = NanoBananaLiteRoute,
+        screenType = ScreenType.CHAT,
+        viewModelClass = NanoBananaLiteViewModel::class,
+        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
+    ),
+    Sample(
+        title = "Nano Banana Pro (Gemini 3 Pro Image)",
         description = "Generate and/or edit images using Nano Banana Pro",
         route = NanoBananaProRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaProViewModel::class,
         categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
-    ),
-    Sample(
-        title = "Gemini 2.5 Flash Image (Nano Banana)",
-        description = "Generate and/or edit images using Nano Banana",
-        route = NanoBananaRoute,
-        screenType = ScreenType.CHAT,
-        viewModelClass = NanoBananaViewModel::class,
-        categories = listOf(Category.NANO_BANANA)
     ),
     Sample(
         title = "Document comparison (Agent Platform)",
