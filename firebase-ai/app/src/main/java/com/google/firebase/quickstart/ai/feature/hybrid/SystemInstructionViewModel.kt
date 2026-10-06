@@ -91,7 +91,7 @@ class SystemInstructionViewModel : ViewModel() {
                 uiState.update {
                     it.copy(
                         modelStatus = "Error checking status",
-                        errorMessage = e.message
+                        errorMessage = e.localizedMessage ?: e.toString()
                     )
                 }
             }
