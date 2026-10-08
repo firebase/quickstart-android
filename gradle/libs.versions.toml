@@ -54,6 +54,7 @@ compose-navigation = { group = "androidx.navigation", name = "navigation-compose
 firebase-ai = { module = "com.google.firebase:firebase-ai", version = "18.0.0" }
 firebase-ai-ondevice = { module = "com.google.firebase:firebase-ai-ondevice", version = "16.0.0-beta06" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationCore" }

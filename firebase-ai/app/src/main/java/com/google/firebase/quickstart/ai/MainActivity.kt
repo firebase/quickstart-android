@@ -49,13 +49,13 @@ import com.google.firebase.quickstart.ai.ui.theme.FirebaseAILogicTheme
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         if (BuildConfig.DEBUG) {
             Firebase.appCheck.installAppCheckProviderFactory(
                 DebugAppCheckProviderFactory.getInstance()
             )
         }
-            DebugAppCheckProviderFactory.getInstance()
-        )
         enableEdgeToEdge()
         catImage = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.cat)
         setContent {
