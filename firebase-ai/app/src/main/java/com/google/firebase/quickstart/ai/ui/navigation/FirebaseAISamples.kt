@@ -202,7 +202,8 @@ val FIREBASE_AI_SAMPLES = listOf(
     ),
     Sample(
         title = "Hybrid System Instructions",
-        description = "Test systemInstruction (single text, multiple text parts, and non-text part validation) across On-Device, Hybrid, and Cloud inference modes.",
+        description = """Test systemInstruction (single text, multiple text parts, and non-text part validation) 
+            | across On-Device, Hybrid, and Cloud inference modes.""".trimMargin(),
         route = SystemInstructionRoute,
         screenType = ScreenType.SYSTEM_INSTRUCTION,
         viewModelClass = SystemInstructionViewModel::class,
