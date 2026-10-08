@@ -2,6 +2,8 @@ package com.google.firebase.quickstart.ai.ui.navigation
 
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionRoute
+import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeAudioRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
@@ -196,6 +198,14 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = HybridInferenceRoute,
         screenType = ScreenType.HYBRID,
         viewModelClass = HybridInferenceViewModel::class,
+        categories = listOf(Category.HYBRID)
+    ),
+    Sample(
+        title = "Hybrid System Instructions",
+        description = "Test systemInstruction (single text, multiple text parts, and non-text part validation) across On-Device, Hybrid, and Cloud inference modes.",
+        route = SystemInstructionRoute,
+        screenType = ScreenType.SYSTEM_INSTRUCTION,
+        viewModelClass = SystemInstructionViewModel::class,
         categories = listOf(Category.HYBRID)
     )
 )

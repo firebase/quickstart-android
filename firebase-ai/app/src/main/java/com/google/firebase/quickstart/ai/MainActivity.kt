@@ -31,6 +31,7 @@ import com.google.firebase.appcheck.appCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionViewModel
 import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
@@ -40,6 +41,7 @@ import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
 import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
 import com.google.firebase.quickstart.ai.ui.SvgScreen
+import com.google.firebase.quickstart.ai.ui.SystemInstructionScreen
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
 import com.google.firebase.quickstart.ai.ui.navigation.ScreenType
@@ -128,6 +130,10 @@ class MainActivity : ComponentActivity() {
 
                                     ScreenType.HYBRID -> {
                                         (vm as? HybridInferenceViewModel)?.let { HybridInferenceScreen(it) }
+                                    }
+
+                                    ScreenType.SYSTEM_INSTRUCTION -> {
+                                        (vm as? SystemInstructionViewModel)?.let { SystemInstructionScreen(it) }
                                     }
                                 }
                             }
