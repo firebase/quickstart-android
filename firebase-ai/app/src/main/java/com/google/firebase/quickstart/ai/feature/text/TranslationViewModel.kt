@@ -23,7 +23,8 @@ class TranslationViewModel : ChatViewModel() {
 
     init {
         val generativeModel = Firebase.ai(
-            backend = GenerativeBackend.googleAI()
+            backend = GenerativeBackend.googleAI(),
+            useLimitedUseAppCheckTokens = true
         ).generativeModel(
             modelName = "gemini-3.5-flash-lite",
             systemInstruction = content {

@@ -36,7 +36,10 @@ class HybridInferenceViewModel : ViewModel() {
             )
         )
 
-    private val model = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
+    private val model = Firebase.ai(
+        backend = GenerativeBackend.googleAI(),
+        useLimitedUseAppCheckTokens = true
+    ).generativeModel(
         modelName = "gemini-3.5-flash-lite",
         onDeviceConfig = OnDeviceConfig(mode = InferenceMode.PREFER_ON_DEVICE)
     )
