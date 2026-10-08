@@ -38,7 +38,8 @@ class NanoBanana2ViewModel : ChatViewModel() {
 
     init {
         val generativeModel = Firebase.ai(
-            backend = GenerativeBackend.googleAI()
+            backend = GenerativeBackend.googleAI(),
+            useLimitedUseAppCheckTokens = true
         ).generativeModel(
             modelName = "gemini-3.1-flash-image",
             generationConfig = generationConfig {
