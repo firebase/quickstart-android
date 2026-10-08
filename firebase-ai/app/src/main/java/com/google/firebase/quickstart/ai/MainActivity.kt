@@ -49,9 +49,11 @@ import com.google.firebase.quickstart.ai.ui.theme.FirebaseAILogicTheme
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Firebase.appCheck.installAppCheckProviderFactory(
+        if (BuildConfig.DEBUG) {
+            Firebase.appCheck.installAppCheckProviderFactory(
+                DebugAppCheckProviderFactory.getInstance()
+            )
+        }
             DebugAppCheckProviderFactory.getInstance()
         )
         enableEdgeToEdge()
