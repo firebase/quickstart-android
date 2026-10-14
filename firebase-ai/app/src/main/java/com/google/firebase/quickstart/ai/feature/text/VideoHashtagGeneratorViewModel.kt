@@ -22,7 +22,10 @@ class VideoHashtagGeneratorViewModel : ChatViewModel() {
     private val chat: Chat
 
     init {
-        val generativeModel = Firebase.ai(backend = GenerativeBackend.agentPlatform()).generativeModel(
+        val generativeModel = Firebase.ai(
+            backend = GenerativeBackend.agentPlatform(),
+            useLimitedUseAppCheckTokens = true
+        ).generativeModel(
             modelName = "gemini-3.5-flash-lite")
         chat = generativeModel.startChat()
 

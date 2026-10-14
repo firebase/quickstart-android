@@ -26,9 +26,13 @@ import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.Firebase
+import com.google.firebase.appcheck.appCheck
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionViewModel
 import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
@@ -39,6 +43,7 @@ import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
 import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
 import com.google.firebase.quickstart.ai.ui.SvgScreen
 import com.google.firebase.quickstart.ai.ui.ThinkingModeScreen
+import com.google.firebase.quickstart.ai.ui.SystemInstructionScreen
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
 import com.google.firebase.quickstart.ai.ui.navigation.ScreenType
@@ -48,6 +53,11 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (BuildConfig.DEBUG) {
+            Firebase.appCheck.installAppCheckProviderFactory(
+                DebugAppCheckProviderFactory.getInstance()
+            )
+        }
         enableEdgeToEdge()
         catImage = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.cat)
         setContent {
@@ -128,6 +138,8 @@ class MainActivity : ComponentActivity() {
 
                                     ScreenType.THINKING_MODE -> {
                                         (vm as? ThinkingModeViewModel)?.let { ThinkingModeScreen(it) }
+                                    ScreenType.SYSTEM_INSTRUCTION -> {
+                                        (vm as? SystemInstructionViewModel)?.let { SystemInstructionScreen(it) }
                                     }
                                 }
                             }

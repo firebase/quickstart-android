@@ -26,7 +26,8 @@ class StreamVideoViewModel : BidiViewModel() {
         // See our documentation for a breakdown of models by backend:
         // https://firebase.google.com/docs/ai-logic/live-api#supported-models
         val liveModel = Firebase.ai(
-            backend = GenerativeBackend.googleAI()
+            backend = GenerativeBackend.googleAI(),
+            useLimitedUseAppCheckTokens = true
         ).liveModel(
             modelName = "gemini-2.5-flash-native-audio-preview-09-2025",
             generationConfig = liveGenerationConfig,

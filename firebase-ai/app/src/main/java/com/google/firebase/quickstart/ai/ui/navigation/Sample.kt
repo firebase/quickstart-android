@@ -22,7 +22,8 @@ enum class ScreenType {
     BIDI,
     BIDI_VIDEO,
     HYBRID,
-    THINKING_MODE
+    THINKING_MODE,
+    SYSTEM_INSTRUCTION
 }
 
 data class Sample(

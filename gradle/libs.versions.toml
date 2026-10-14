@@ -1,20 +1,20 @@
 [versions]
 activityCompose = "1.13.0"
-agp = "9.3.0"
+agp = "9.4.1"
 camerax = "1.6.2"
-coil3Compose = "3.6.2"
+coil3Compose = "3.6.3"
 composeBom = "2026.09.00"
-composeNavigation = "2.10.1"
-coreKtx = "1.19.0"
+composeNavigation = "2.10.2"
+coreKtx = "1.19.1"
 espressoCore = "3.7.0"
-firebaseBom = "34.19.0"
+firebaseBom = "35.0.0"
 googleServices = "4.5.0"
 firebaseCrashlytics = "3.0.8"
 firebasePerf = "2.0.2"
-gradleVersions = "0.63.1"
+gradleVersions = "0.65.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
-kotlin = "2.4.20"
+kotlin = "2.4.21"
 kotlinxSerializationCore = "1.11.0"
 lifecycle = "2.11.0"
 material = "1.14.0"
@@ -54,6 +54,7 @@ compose-navigation = { group = "androidx.navigation", name = "navigation-compose
 firebase-ai = { module = "com.google.firebase:firebase-ai", version = "18.0.0" }
 firebase-ai-ondevice = { module = "com.google.firebase:firebase-ai-ondevice", version = "16.0.0-beta06" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationCore" }
