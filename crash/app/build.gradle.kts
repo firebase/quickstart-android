@@ -52,7 +52,7 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.13.0")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:35.0.0"))
+    implementation(platform("com.google.firebase:firebase-bom:35.0.1"))
 
     // Firebase Crashlytics
     implementation("com.google.firebase:firebase-crashlytics")
@@ -62,7 +62,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 
     // For use in the CustomKeySamples -- for testing Google Api Availability.
-    implementation("com.google.android.gms:play-services-base:18.11.0")
+    implementation("com.google.android.gms:play-services-base:18.11.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
