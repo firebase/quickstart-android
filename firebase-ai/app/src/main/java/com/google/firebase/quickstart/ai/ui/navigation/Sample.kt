@@ -22,6 +22,7 @@ enum class ScreenType {
     BIDI,
     BIDI_VIDEO,
     HYBRID,
+    THINKING_MODE,
     SYSTEM_INSTRUCTION
 }
 
