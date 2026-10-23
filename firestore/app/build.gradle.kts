@@ -51,7 +51,7 @@ dependencies {
     implementation(project(":internal:chooserx"))
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:35.0.2"))
+    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
 
     // Firestore
     implementation("com.google.firebase:firebase-firestore")
