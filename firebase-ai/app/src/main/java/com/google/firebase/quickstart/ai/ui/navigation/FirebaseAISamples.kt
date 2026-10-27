@@ -4,6 +4,8 @@ import com.google.firebase.quickstart.ai.feature.hybrid.HybridImagePatternRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridImagePatternViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeRoute
+import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
@@ -208,6 +210,15 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = HybridImagePatternRoute,
         screenType = ScreenType.HYBRID_IMAGE_PATTERN,
         viewModelClass = HybridImagePatternViewModel::class,
+        categories = listOf(Category.HYBRID)
+    ),
+    Sample(
+        title = "Hybrid Thinking Mode",
+        description = "Test enableThinking and response.thoughtSummary across On-Device, Hybrid, and Cloud " +
+                "inference modes.",
+        route = ThinkingModeRoute,
+        screenType = ScreenType.THINKING_MODE,
+        viewModelClass = ThinkingModeViewModel::class,
         categories = listOf(Category.HYBRID)
     ),
     Sample(
