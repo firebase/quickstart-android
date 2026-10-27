@@ -3,6 +3,7 @@ package com.google.firebase.quickstart.ai.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,6 +39,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -49,10 +51,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.ai.type.PublicPreviewAPI
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridImagePatternViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.InferenceModeOption
+import java.io.File
 
 @OptIn(PublicPreviewAPI::class)
 @Composable
@@ -62,17 +66,17 @@ fun HybridImagePatternScreen(
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     var activeImageSlot by rememberSaveable { mutableIntStateOf(1) }
+    // Uri the camera app writes the full-resolution capture to. Saved across process death.
+    var pendingCaptureUri by rememberSaveable { mutableStateOf<Uri?>(null) }
 
     val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicturePreview(),
-        onResult = { bitmap ->
-            if (bitmap != null) {
-                if (activeImageSlot == 1) {
-                    viewModel.setFirstImage(bitmap)
-                } else {
-                    viewModel.setSecondImage(bitmap)
-                }
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { success ->
+            val uri = pendingCaptureUri
+            if (success && uri != null) {
+                viewModel.loadImageFromUri(context.contentResolver, uri, slot = activeImageSlot)
             }
+            pendingCaptureUri = null
         }
     )
 
@@ -85,11 +89,23 @@ fun HybridImagePatternScreen(
         }
     )
 
+    fun launchCamera() {
+        val captureDir = File(context.cacheDir, "camera").apply { mkdirs() }
+        val captureFile = File(captureDir, "capture_${System.currentTimeMillis()}.jpg")
+        val uri = FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            captureFile
+        )
+        pendingCaptureUri = uri
+        cameraLauncher.launch(uri)
+    }
+
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            cameraLauncher.launch(null)
+            launchCamera()
         }
     }
 
@@ -98,7 +114,7 @@ fun HybridImagePatternScreen(
         val permissionCheckResult =
             ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
         if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-            cameraLauncher.launch(null)
+            launchCamera()
         } else {
             permissionLauncher.launch(Manifest.permission.CAMERA)
         }
