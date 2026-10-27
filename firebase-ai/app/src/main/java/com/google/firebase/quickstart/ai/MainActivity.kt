@@ -138,6 +138,8 @@ class MainActivity : ComponentActivity() {
 
                                     ScreenType.THINKING_MODE -> {
                                         (vm as? ThinkingModeViewModel)?.let { ThinkingModeScreen(it) }
+                                    }
+
                                     ScreenType.SYSTEM_INSTRUCTION -> {
                                         (vm as? SystemInstructionViewModel)?.let { SystemInstructionScreen(it) }
                                     }

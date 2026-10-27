@@ -41,19 +41,6 @@ enum class OnDeviceModelOptionSelection(val label: String, val option: OnDeviceM
     STABLE("STABLE", OnDeviceModelOption.STABLE)
 }
 
-enum class GenerationMethod(val label: String) {
-    UNARY("generateContent"),
-    STREAMING("generateContentStream")
-}
-
-@OptIn(PublicPreviewAPI::class)
-enum class InferenceModeOption(val label: String, val mode: InferenceMode) {
-    ONLY_ON_DEVICE("ONLY_ON_DEVICE", InferenceMode.ONLY_ON_DEVICE),
-    PREFER_ON_DEVICE("PREFER_ON_DEVICE", InferenceMode.PREFER_ON_DEVICE),
-    PREFER_IN_CLOUD("PREFER_IN_CLOUD", InferenceMode.PREFER_IN_CLOUD),
-    ONLY_IN_CLOUD("ONLY_IN_CLOUD", InferenceMode.ONLY_IN_CLOUD)
-}
-
 @OptIn(PublicPreviewAPI::class)
 class ThinkingModeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ThinkingModeUiState())
