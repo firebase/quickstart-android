@@ -23,7 +23,8 @@ enum class ScreenType {
     BIDI_VIDEO,
     HYBRID,
     THINKING_MODE,
-    SYSTEM_INSTRUCTION
+    SYSTEM_INSTRUCTION,
+    FUNCTION_CALLING
 }
 
 data class Sample(
@@ -32,5 +33,5 @@ data class Sample(
     val route: Any,
     val screenType: ScreenType,
     val viewModelClass: KClass<out ViewModel>? = null,
-    val categories: List<Category>,
+    val categories: List<Category>
 )
