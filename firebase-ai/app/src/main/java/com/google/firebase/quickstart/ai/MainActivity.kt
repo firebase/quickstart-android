@@ -21,29 +21,29 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.appCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
-import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.FunctionCallingViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
-import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeViewModel
+import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
 import com.google.firebase.quickstart.ai.feature.text.ChatViewModel
 import com.google.firebase.quickstart.ai.feature.text.ServerPromptTemplateViewModel
 import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
 import com.google.firebase.quickstart.ai.ui.ChatScreen
+import com.google.firebase.quickstart.ai.ui.FunctionCallingScreen
+import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
 import com.google.firebase.quickstart.ai.ui.ServerPromptScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
-import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
 import com.google.firebase.quickstart.ai.ui.SvgScreen
-import com.google.firebase.quickstart.ai.ui.ThinkingModeScreen
 import com.google.firebase.quickstart.ai.ui.SystemInstructionScreen
+import com.google.firebase.quickstart.ai.ui.ThinkingModeScreen
 import com.google.firebase.quickstart.ai.ui.navigation.FIREBASE_AI_SAMPLES
 import com.google.firebase.quickstart.ai.ui.navigation.MainMenuScreen
 import com.google.firebase.quickstart.ai.ui.navigation.ScreenType
@@ -142,6 +142,10 @@ class MainActivity : ComponentActivity() {
 
                                     ScreenType.SYSTEM_INSTRUCTION -> {
                                         (vm as? SystemInstructionViewModel)?.let { SystemInstructionScreen(it) }
+                                    }
+
+                                    ScreenType.FUNCTION_CALLING -> {
+                                        (vm as? FunctionCallingViewModel)?.let { FunctionCallingScreen(it) }
                                     }
                                 }
                             }
