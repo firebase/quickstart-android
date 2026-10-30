@@ -116,9 +116,9 @@ class FunctionCallingViewModel : ViewModel() {
     }
 
     private suspend fun fetchWeatherAuto(input: JsonObject): FunctionResponsePart {
-        val city = input["city"]?.jsonPrimitive?.content
-        val state = input["state"]?.jsonPrimitive?.content
-        val date = input["date"]?.jsonPrimitive?.content
+        val city = (input["city"] as? JsonPrimitive)?.content
+        val state = (input["state"] as? JsonPrimitive)?.content
+        val date = (input["date"] as? JsonPrimitive)?.content
 
         return if (city == null || state == null || date == null) {
             throw FirebaseAutoFunctionException("Unable to fetch weather - parameters were missing")
