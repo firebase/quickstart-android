@@ -1,5 +1,7 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
+import com.google.firebase.quickstart.ai.feature.hybrid.HybridImagePatternRoute
+import com.google.firebase.quickstart.ai.feature.hybrid.HybridImagePatternViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeRoute
@@ -200,6 +202,14 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = HybridInferenceRoute,
         screenType = ScreenType.HYBRID,
         viewModelClass = HybridInferenceViewModel::class,
+        categories = listOf(Category.HYBRID)
+    ),
+    Sample(
+        title = "Hybrid Image Pattern Finder",
+        description = "Use hybrid inference to compare 2 images and find common patterns between them.",
+        route = HybridImagePatternRoute,
+        screenType = ScreenType.HYBRID_IMAGE_PATTERN,
+        viewModelClass = HybridImagePatternViewModel::class,
         categories = listOf(Category.HYBRID)
     ),
     Sample(
