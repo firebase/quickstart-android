@@ -140,27 +140,29 @@ class MainActivity : ComponentActivity() {
 
                                     ScreenType.HYBRID_IMAGE_PATTERN -> {
                                         (vm as? HybridImagePatternViewModel)?.let { HybridImagePatternScreen(it) }
-
-                                    ScreenType.THINKING_MODE -> {
-                                        (vm as? ThinkingModeViewModel)?.let { ThinkingModeScreen(it) }
                                     }
 
-                                    ScreenType.SYSTEM_INSTRUCTION -> {
-                                        (vm as? SystemInstructionViewModel)?.let { SystemInstructionScreen(it) }
+                                        ScreenType.THINKING_MODE -> {
+                                            (vm as? ThinkingModeViewModel)?.let { ThinkingModeScreen(it) }
+                                        }
+
+                                        ScreenType.SYSTEM_INSTRUCTION -> {
+                                            (vm as? SystemInstructionViewModel)?.let { SystemInstructionScreen(it) }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-            navController.addOnDestinationChangedListener { _, destination, _ ->
-                if (destination.route == "mainMenu") {
-                    topBarTitle = getString(R.string.app_name)
+                navController.addOnDestinationChangedListener { _, destination, _ ->
+                    if (destination.route == "mainMenu") {
+                        topBarTitle = getString(R.string.app_name)
+                    }
                 }
             }
         }
-    }
+
 
     companion object {
         lateinit var catImage: Bitmap
