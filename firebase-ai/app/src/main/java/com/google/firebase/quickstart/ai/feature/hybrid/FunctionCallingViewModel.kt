@@ -12,6 +12,7 @@ import com.google.firebase.ai.OnDeviceModelOption
 import com.google.firebase.ai.OnDeviceModelStatus
 import com.google.firebase.ai.ai
 import com.google.firebase.ai.type.AutoFunctionDeclaration
+import com.google.firebase.ai.type.Content
 import com.google.firebase.ai.type.FirebaseAutoFunctionException
 import com.google.firebase.ai.type.FunctionCallPart
 import com.google.firebase.ai.type.FunctionDeclaration
@@ -32,9 +33,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.contentOrNull
 
 @Serializable
 object FunctionCallingRoute
@@ -54,6 +56,47 @@ class FunctionCallingViewModel : ViewModel() {
     private var testJob: Job? = null
     private var statusJob: Job? = null
 
+    private val manualTools: List<Tool> = listOf(
+        Tool.functionDeclarations(
+            listOf(
+                FunctionDeclaration(
+                    name = "fetchWeather",
+                    description = WEATHER_TOOL_DESCRIPTION,
+                    parameters = mapOf(
+                        "city" to Schema.string("The US city of the location."),
+                        "state" to Schema.string("The US state of the location."),
+                        "date" to Schema.string(
+                            "The date for which to get the weather. Date must be in the format: YYYY-MM-DD."
+                        )
+                    )
+                )
+            )
+        )
+    )
+
+    private val autoTools: List<Tool> = listOf(
+        Tool.functionDeclarations(
+            autoFunctionDeclarations = listOf(
+                AutoFunctionDeclaration.create(
+                    functionName = "fetchWeather",
+                    description = WEATHER_TOOL_DESCRIPTION,
+                    inputSchema = JsonSchema.obj(
+                        properties = mapOf(
+                            "city" to JsonSchema.string("The US city of the location."),
+                            "state" to JsonSchema.string("The US state of the location."),
+                            "date" to JsonSchema.string(
+                                "The date for which to get the weather. Date must be in the format: YYYY-MM-DD."
+                            )
+                        )
+                    ),
+                    functionReference = ::fetchWeatherAuto
+                )
+            )
+        )
+    )
+
+    private val unsupportedTools: List<Tool> = listOf(Tool.googleSearch())
+
     init {
         checkAndDownloadModel()
     }
@@ -62,8 +105,11 @@ class FunctionCallingViewModel : ViewModel() {
         statusJob?.cancel()
         statusJob = viewModelScope.launch {
             try {
-                val statusCheckModel = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
-                    modelName = "gemini-3.5-flash-lite",
+                val statusCheckModel = Firebase.ai(
+                    backend = GenerativeBackend.googleAI(),
+                    useLimitedUseAppCheckTokens = true
+                ).generativeModel(
+                    modelName = MODEL_NAME,
                     onDeviceConfig = OnDeviceConfig(
                         mode = InferenceMode.PREFER_ON_DEVICE,
                         modelOption = modelOption
@@ -115,17 +161,58 @@ class FunctionCallingViewModel : ViewModel() {
         }
     }
 
+    private fun Map<String, JsonElement>.stringArg(key: String): String? =
+        (this[key] as? JsonPrimitive)?.contentOrNull?.takeIf { it != "null" }
+
     private suspend fun fetchWeatherAuto(input: JsonObject): FunctionResponsePart {
-        val city = (input["city"] as? JsonPrimitive)?.content
-        val state = (input["state"] as? JsonPrimitive)?.content
-        val date = (input["date"] as? JsonPrimitive)?.content
+        val city = input.stringArg("city")
+        val state = input.stringArg("state")
+        val date = input.stringArg("date")
 
         return if (city == null || state == null || date == null) {
-            throw FirebaseAutoFunctionException("Unable to fetch weather - parameters were missing")
+            throw FirebaseAutoFunctionException(MISSING_PARAMS_MESSAGE)
         } else {
             val response = WeatherRepository.fetchWeather(city, state, date)
             FunctionResponsePart("fetchWeather", response)
         }
+    }
+
+    private suspend fun executeManualWeatherCall(call: FunctionCallPart): JsonObject {
+        val city = call.args.stringArg("city")
+        val state = call.args.stringArg("state")
+        val date = call.args.stringArg("date")
+
+        return if (city == null || state == null || date == null) {
+            JsonObject(mapOf("error" to JsonPrimitive(MISSING_PARAMS_MESSAGE)))
+        } else {
+            WeatherRepository.fetchWeather(city, state, date)
+        }
+    }
+
+    private fun extractAutoHistoryDetails(
+        history: List<Content>,
+        functionCallInfos: MutableList<FunctionCallInfo>
+    ): String? {
+        var lastExecutionResult: String? = null
+        for (entry in history) {
+            for (part in entry.parts) {
+                when (part) {
+                    is FunctionCallPart -> {
+                        functionCallInfos.add(
+                            FunctionCallInfo(
+                                name = part.name,
+                                args = part.args.toString(),
+                                id = part.id
+                            )
+                        )
+                    }
+                    is FunctionResponsePart -> {
+                        lastExecutionResult = part.response.toString()
+                    }
+                }
+            }
+        }
+        return lastExecutionResult
     }
 
     fun runTest(
@@ -159,44 +246,18 @@ class FunctionCallingViewModel : ViewModel() {
             Log.i(TAG, "==========================================================")
 
             try {
-                val manualWeatherDeclaration = FunctionDeclaration(
-                    name = "fetchWeather",
-                    description = "Get the weather conditions for a specific US city on a specific date.",
-                    parameters = mapOf(
-                        "city" to Schema.string("The US city of the location."),
-                        "state" to Schema.string("The US state of the location."),
-                        "date" to Schema.string(
-                            "The date for which to get the weather. Date must be in the format: YYYY-MM-DD."
-                        )
-                    )
-                )
-
-                val autoWeatherDeclaration = AutoFunctionDeclaration.create(
-                    functionName = "fetchWeather",
-                    description = "Get the weather conditions for a specific US city on a specific date.",
-                    inputSchema = JsonSchema.obj(
-                        properties = mapOf(
-                            "city" to JsonSchema.string("The US city of the location."),
-                            "state" to JsonSchema.string("The US state of the location."),
-                            "date" to JsonSchema.string(
-                                "The date for which to get the weather. Date must be in the format: YYYY-MM-DD."
-                            )
-                        )
-                    ),
-                    functionReference = ::fetchWeatherAuto
-                )
-
                 val tools: List<Tool>? = when (toolOption) {
-                    FunctionToolOption.MANUAL -> listOf(Tool.functionDeclarations(listOf(manualWeatherDeclaration)))
-                    FunctionToolOption.AUTO -> listOf(
-                        Tool.functionDeclarations(autoFunctionDeclarations = listOf(autoWeatherDeclaration))
-                    )
-                    FunctionToolOption.UNSUPPORTED -> listOf(Tool.googleSearch())
+                    FunctionToolOption.MANUAL -> manualTools
+                    FunctionToolOption.AUTO -> autoTools
+                    FunctionToolOption.UNSUPPORTED -> unsupportedTools
                     FunctionToolOption.NONE -> null
                 }
 
-                val model = Firebase.ai(backend = GenerativeBackend.googleAI()).generativeModel(
-                    modelName = "gemini-3.5-flash-lite",
+                val model = Firebase.ai(
+                    backend = GenerativeBackend.googleAI(),
+                    useLimitedUseAppCheckTokens = true
+                ).generativeModel(
+                    modelName = MODEL_NAME,
                     tools = tools,
                     onDeviceConfig = OnDeviceConfig(
                         mode = mode,
@@ -209,61 +270,22 @@ class FunctionCallingViewModel : ViewModel() {
                 var fullText = ""
                 var executionResult: String? = null
                 var source: InferenceSource? = null
-                var totalChunks = 0
 
                 when (method) {
                     GenerationMethod.UNARY -> {
-                        val response = model.generateContent(promptText)
-                        val calls = response.functionCalls
-                        fullText = response.text.orEmpty()
-                        source = response.inferenceSource
+                        if (toolOption == FunctionToolOption.AUTO) {
+                            val chat = model.startChat()
+                            val response = chat.sendMessage(promptText)
+                            fullText = response.text.orEmpty()
+                            source = response.inferenceSource
+                            executionResult = extractAutoHistoryDetails(chat.history, functionCallInfos)
+                        } else {
+                            val response = model.generateContent(promptText)
+                            val calls = response.functionCalls
+                            fullText = response.text.orEmpty()
+                            source = response.inferenceSource
 
-                        calls.forEach { call ->
-                            functionCallInfos.add(
-                                FunctionCallInfo(
-                                    name = call.name,
-                                    args = call.args.toString(),
-                                    id = call.id
-                                )
-                            )
-                        }
-
-                        if (toolOption == FunctionToolOption.MANUAL && calls.isNotEmpty()) {
-                            val firstCall = calls.first()
-                            val city = (firstCall.args["city"] as? JsonPrimitive)?.content ?: "Boston"
-                            val state = (firstCall.args["state"] as? JsonPrimitive)?.content ?: "MA"
-                            val date = (firstCall.args["date"] as? JsonPrimitive)?.content ?: "2024-10-17"
-                            val weatherJson = WeatherRepository.fetchWeather(city, state, date)
-                            executionResult = weatherJson.toString()
-
-                            val followUp = model.generateContent(
-                                content(role = "user") { text(promptText) },
-                                content(role = "model") { part(firstCall) },
-                                content(role = "user") {
-                                    part(FunctionResponsePart(firstCall.name, weatherJson, firstCall.id))
-                                }
-                            )
-                            fullText = followUp.text.orEmpty()
-                            source = followUp.inferenceSource
-                        } else if (toolOption == FunctionToolOption.AUTO && calls.isNotEmpty()) {
-                            val firstCall = calls.first()
-                            val city = (firstCall.args["city"] as? JsonPrimitive)?.content ?: "Boston"
-                            val state = (firstCall.args["state"] as? JsonPrimitive)?.content ?: "MA"
-                            val date = (firstCall.args["date"] as? JsonPrimitive)?.content ?: "2024-10-17"
-                            executionResult = WeatherRepository.fetchWeather(city, state, date).toString()
-                        }
-                    }
-
-                    GenerationMethod.STREAMING -> {
-                        val detectedCalls = mutableListOf<FunctionCallPart>()
-                        model.generateContentStream(promptText).collect { chunk ->
-                            totalChunks++
-                            val chunkText = chunk.text
-                            if (!chunkText.isNullOrEmpty()) {
-                                fullText += chunkText
-                            }
-                            chunk.functionCalls.forEach { call ->
-                                detectedCalls.add(call)
+                            for (call in calls) {
                                 functionCallInfos.add(
                                     FunctionCallInfo(
                                         name = call.name,
@@ -272,33 +294,97 @@ class FunctionCallingViewModel : ViewModel() {
                                     )
                                 )
                             }
-                            source = chunk.inferenceSource
-                            _uiState.update {
-                                it.copy(
-                                    functionCalls = functionCallInfos.toList(),
-                                    responseText = fullText.ifEmpty { null },
-                                    inferenceSource = formatInferenceSource(source)
+
+                            if (toolOption == FunctionToolOption.MANUAL && calls.isNotEmpty()) {
+                                val firstCall = calls.first()
+                                val weatherJson = executeManualWeatherCall(firstCall)
+                                executionResult = weatherJson.toString()
+
+                                val followUp = model.generateContent(
+                                    content(role = "user") { text(promptText) },
+                                    content(role = "model") { part(firstCall) },
+                                    content(role = "user") {
+                                        part(FunctionResponsePart(firstCall.name, weatherJson, firstCall.id))
+                                    }
                                 )
+                                fullText = followUp.text.orEmpty()
+                                source = followUp.inferenceSource
                             }
                         }
+                    }
 
-                        if (toolOption == FunctionToolOption.MANUAL && detectedCalls.isNotEmpty()) {
-                            val firstCall = detectedCalls.first()
-                            val city = (firstCall.args["city"] as? JsonPrimitive)?.content ?: "Boston"
-                            val state = (firstCall.args["state"] as? JsonPrimitive)?.content ?: "MA"
-                            val date = (firstCall.args["date"] as? JsonPrimitive)?.content ?: "2024-10-17"
-                            val weatherJson = WeatherRepository.fetchWeather(city, state, date)
-                            executionResult = weatherJson.toString()
-
-                            val followUp = model.generateContent(
-                                content(role = "user") { text(promptText) },
-                                content(role = "model") { part(firstCall) },
-                                content(role = "user") {
-                                    part(FunctionResponsePart(firstCall.name, weatherJson, firstCall.id))
+                    GenerationMethod.STREAMING -> {
+                        if (toolOption == FunctionToolOption.AUTO) {
+                            val chat = model.startChat()
+                            chat.sendMessageStream(promptText).collect { chunk ->
+                                val chunkText = chunk.text
+                                if (!chunkText.isNullOrEmpty()) {
+                                    fullText += chunkText
                                 }
-                            )
-                            fullText = followUp.text.orEmpty()
-                            source = followUp.inferenceSource
+                                source = chunk.inferenceSource
+                                _uiState.update {
+                                    it.copy(
+                                        responseText = fullText.ifEmpty { null },
+                                        inferenceSource = formatInferenceSource(source)
+                                    )
+                                }
+                            }
+                            executionResult = extractAutoHistoryDetails(chat.history, functionCallInfos)
+                        } else {
+                            val detectedCalls = mutableListOf<FunctionCallPart>()
+                            model.generateContentStream(promptText).collect { chunk ->
+                                val chunkText = chunk.text
+                                if (!chunkText.isNullOrEmpty()) {
+                                    fullText += chunkText
+                                }
+                                for (call in chunk.functionCalls) {
+                                    detectedCalls.add(call)
+                                    functionCallInfos.add(
+                                        FunctionCallInfo(
+                                            name = call.name,
+                                            args = call.args.toString(),
+                                            id = call.id
+                                        )
+                                    )
+                                }
+                                source = chunk.inferenceSource
+                                _uiState.update {
+                                    it.copy(
+                                        functionCalls = functionCallInfos.toList(),
+                                        responseText = fullText.ifEmpty { null },
+                                        inferenceSource = formatInferenceSource(source)
+                                    )
+                                }
+                            }
+
+                            if (toolOption == FunctionToolOption.MANUAL && detectedCalls.isNotEmpty()) {
+                                val firstCall = detectedCalls.first()
+                                val weatherJson = executeManualWeatherCall(firstCall)
+                                executionResult = weatherJson.toString()
+                                fullText = ""
+
+                                model.generateContentStream(
+                                    content(role = "user") { text(promptText) },
+                                    content(role = "model") { part(firstCall) },
+                                    content(role = "user") {
+                                        part(FunctionResponsePart(firstCall.name, weatherJson, firstCall.id))
+                                    }
+                                ).collect { followUpChunk ->
+                                    val chunkText = followUpChunk.text
+                                    if (!chunkText.isNullOrEmpty()) {
+                                        fullText += chunkText
+                                    }
+                                    source = followUpChunk.inferenceSource
+                                    _uiState.update {
+                                        it.copy(
+                                            functionCalls = functionCallInfos.toList(),
+                                            functionExecutionResult = executionResult,
+                                            responseText = fullText.ifEmpty { null },
+                                            inferenceSource = formatInferenceSource(source)
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -384,5 +470,9 @@ class FunctionCallingViewModel : ViewModel() {
 
     companion object {
         private const val TAG = "FunctionCallingDemo"
+        private const val MODEL_NAME = "gemini-3.5-flash-lite"
+        private const val WEATHER_TOOL_DESCRIPTION =
+            "Get the weather conditions for a specific US city on a specific date."
+        private const val MISSING_PARAMS_MESSAGE = "Unable to fetch weather - parameters were missing"
     }
 }

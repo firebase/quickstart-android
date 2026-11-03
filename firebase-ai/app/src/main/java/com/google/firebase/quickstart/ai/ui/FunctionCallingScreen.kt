@@ -90,7 +90,7 @@ fun FunctionCallingScreen(
             modifier = Modifier.horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            FunctionToolOption.entries.forEach { option ->
+            for (option in FunctionToolOption.entries) {
                 FilterChip(
                     selected = selectedToolOption == option,
                     onClick = { selectedToolOption = option },
@@ -108,12 +108,14 @@ fun FunctionCallingScreen(
             modifier = Modifier.horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            OnDeviceModelOptionSelection.entries.forEach { modelOpt ->
+            for (modelOpt in OnDeviceModelOptionSelection.entries) {
                 FilterChip(
                     selected = selectedModelOption == modelOpt,
                     onClick = {
-                        selectedModelOption = modelOpt
-                        viewModel.checkAndDownloadModel(modelOpt.option)
+                        if (selectedModelOption != modelOpt) {
+                            selectedModelOption = modelOpt
+                            viewModel.checkAndDownloadModel(modelOpt.option)
+                        }
                     },
                     label = { Text(modelOpt.label) }
                 )
@@ -137,7 +139,7 @@ fun FunctionCallingScreen(
             modifier = Modifier.horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            InferenceModeOption.entries.forEach { modeOption ->
+            for (modeOption in InferenceModeOption.entries) {
                 FilterChip(
                     selected = selectedMode == modeOption,
                     onClick = { selectedMode = modeOption },
@@ -155,7 +157,7 @@ fun FunctionCallingScreen(
             modifier = Modifier.horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            GenerationMethod.entries.forEach { method ->
+            for (method in GenerationMethod.entries) {
                 FilterChip(
                     selected = selectedMethod == method,
                     onClick = { selectedMethod = method },
@@ -212,7 +214,8 @@ fun FunctionCallingScreen(
             }
         }
 
-        if (uiState.functionCalls.isNotEmpty()) {
+        val execResult = uiState.functionExecutionResult
+        if (uiState.functionCalls.isNotEmpty() || execResult != null) {
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
@@ -223,40 +226,43 @@ fun FunctionCallingScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(
-                        text = "Function Call(s) Detected (response.functionCalls)",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-                    uiState.functionCalls.forEach { call ->
-                        Column(modifier = Modifier.padding(vertical = 4.dp)) {
-                            Text(
-                                text = "Function: ${call.name}",
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.SemiBold,
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                            Text(
-                                text = "Arguments: ${call.args}",
-                                style = MaterialTheme.typography.bodySmall,
-                                fontFamily = FontFamily.Monospace,
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                            if (call.id != null) {
+                    if (uiState.functionCalls.isNotEmpty()) {
+                        Text(
+                            text = "Function Call(s) Detected",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                        for (call in uiState.functionCalls) {
+                            Column(modifier = Modifier.padding(vertical = 4.dp)) {
                                 Text(
-                                    text = "ID: ${call.id}",
+                                    text = "Function: ${call.name}",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                                )
+                                Text(
+                                    text = "Arguments: ${call.args}",
                                     style = MaterialTheme.typography.bodySmall,
                                     fontFamily = FontFamily.Monospace,
                                     color = MaterialTheme.colorScheme.onTertiaryContainer
                                 )
+                                if (call.id != null) {
+                                    Text(
+                                        text = "ID: ${call.id}",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        fontFamily = FontFamily.Monospace,
+                                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                                    )
+                                }
                             }
                         }
                     }
 
-                    val execResult = uiState.functionExecutionResult
                     if (execResult != null) {
-                        Spacer(modifier = Modifier.size(4.dp))
+                        if (uiState.functionCalls.isNotEmpty()) {
+                            Spacer(modifier = Modifier.size(4.dp))
+                        }
                         Text(
                             text = "Execution Result:",
                             style = MaterialTheme.typography.labelMedium,
