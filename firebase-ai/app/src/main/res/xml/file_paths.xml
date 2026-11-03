@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Temporary full-resolution captures for ActivityResultContracts.TakePicture() -->
+    <cache-path
+        name="camera_captures"
+        path="camera/" />
+</paths>

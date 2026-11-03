@@ -28,6 +28,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.appcheck.appCheck
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory
 import com.google.firebase.quickstart.ai.feature.hybrid.FunctionCallingViewModel
+import com.google.firebase.quickstart.ai.feature.live.BidiViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.HybridImagePatternViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeViewModel
@@ -38,6 +40,7 @@ import com.google.firebase.quickstart.ai.feature.text.SvgViewModel
 import com.google.firebase.quickstart.ai.ui.ChatScreen
 import com.google.firebase.quickstart.ai.ui.FunctionCallingScreen
 import com.google.firebase.quickstart.ai.ui.HybridInferenceScreen
+import com.google.firebase.quickstart.ai.ui.HybridImagePatternScreen
 import com.google.firebase.quickstart.ai.ui.ServerPromptScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeScreen
 import com.google.firebase.quickstart.ai.ui.StreamRealtimeVideoScreen
@@ -136,12 +139,17 @@ class MainActivity : ComponentActivity() {
                                         (vm as? HybridInferenceViewModel)?.let { HybridInferenceScreen(it) }
                                     }
 
-                                    ScreenType.THINKING_MODE -> {
-                                        (vm as? ThinkingModeViewModel)?.let { ThinkingModeScreen(it) }
+                                    ScreenType.HYBRID_IMAGE_PATTERN -> {
+                                        (vm as? HybridImagePatternViewModel)?.let { HybridImagePatternScreen(it) }
                                     }
 
-                                    ScreenType.SYSTEM_INSTRUCTION -> {
-                                        (vm as? SystemInstructionViewModel)?.let { SystemInstructionScreen(it) }
+                                        ScreenType.THINKING_MODE -> {
+                                            (vm as? ThinkingModeViewModel)?.let { ThinkingModeScreen(it) }
+                                        }
+
+                                        ScreenType.SYSTEM_INSTRUCTION -> {
+                                            (vm as? SystemInstructionViewModel)?.let { SystemInstructionScreen(it) }
+                                        }
                                     }
 
                                     ScreenType.FUNCTION_CALLING -> {
@@ -152,14 +160,14 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-            }
-            navController.addOnDestinationChangedListener { _, destination, _ ->
-                if (destination.route == "mainMenu") {
-                    topBarTitle = getString(R.string.app_name)
+                navController.addOnDestinationChangedListener { _, destination, _ ->
+                    if (destination.route == "mainMenu") {
+                        topBarTitle = getString(R.string.app_name)
+                    }
                 }
             }
         }
-    }
+
 
     companion object {
         lateinit var catImage: Bitmap
