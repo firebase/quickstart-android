@@ -54,8 +54,8 @@ You can find the implementation for each feature by clicking on the links below:
 - [Gemini Live (video input)](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/StreamVideoViewModel.kt): Use bidirectional streaming to chat with Gemini using your phone's camera
 
 ### Live API streaming
-- [Gemini Live (audio input)](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/StreamAudioViewModel.kt): Use bidirectional streaming to get information about weather conditions for a specific US city on a specific date
-- [Gemini Live (video input)](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/StreamVideoViewModel.kt): Use bidirectional streaming to chat with Gemini using your phone's camera
+- [Gemini 3.1 Flash Live preview (audio input)](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/StreamAudioViewModel.kt): Use bidirectional streaming to get information about weather conditions for a specific US city on a specific date
+- [Gemini 3.1 Flash Live preview (video input)](app/src/main/java/com/google/firebase/quickstart/ai/feature/live/StreamVideoViewModel.kt): Use bidirectional streaming to chat with Gemini using your phone's camera
 
 ### Server prompt templates
 - [Server Prompt Templates - Gemini](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/ServerPromptTemplateViewModel.kt): Generate an invoice using server prompt templates.
