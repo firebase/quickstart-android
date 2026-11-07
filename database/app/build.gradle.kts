@@ -51,7 +51,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.10.2")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:35.0.2"))
+    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
 
     // Firebase Realtime Database
     implementation("com.google.firebase:firebase-database")
@@ -59,7 +59,7 @@ dependencies {
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
 
-    implementation("com.firebaseui:firebase-ui-database:9.1.1")
+    implementation("com.firebaseui:firebase-ui-database:10.0.0")
 
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation("androidx.arch.core:core-runtime:2.2.0")
