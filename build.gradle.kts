@@ -13,8 +13,8 @@ plugins {
 
 allprojects {
     repositories {
-        google()
         mavenLocal()
+        google()
         mavenCentral()
     }
 }

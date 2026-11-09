@@ -21,7 +21,10 @@ enum class ScreenType {
     SERVER_PROMPT,
     BIDI,
     BIDI_VIDEO,
-    HYBRID
+    HYBRID,
+    HYBRID_IMAGE_PATTERN,
+    THINKING_MODE,
+    SYSTEM_INSTRUCTION
 }
 
 data class Sample(

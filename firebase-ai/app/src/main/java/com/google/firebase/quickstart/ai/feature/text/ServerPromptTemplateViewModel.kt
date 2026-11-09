@@ -29,7 +29,8 @@ class ServerPromptTemplateViewModel : ViewModel() {
 
     init {
         templateGenerativeModel = Firebase.ai(
-            backend = GenerativeBackend.googleAI()
+            backend = GenerativeBackend.googleAI(),
+            useLimitedUseAppCheckTokens = true
         ).templateGenerativeModel()
     }
 
