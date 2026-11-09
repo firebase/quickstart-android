@@ -87,7 +87,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
     ),
     Sample(
-        title = "Gemini Nano Banana 2.1",
+        title = "Nano Banana 2.1",
         description = "Generate and/or edit images using Nano Banana 2.1",
         route = NanoBanana2Route,
         screenType = ScreenType.CHAT,
