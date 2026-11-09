@@ -54,7 +54,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.10.2")
 
     // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
-    implementation(platform("com.google.firebase:firebase-bom:35.0.2"))
+    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
 
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
