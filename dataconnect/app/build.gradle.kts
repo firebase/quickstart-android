@@ -1,5 +1,3 @@
-import com.android.build.api.variant.HostTestBuilder
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.serialization)
@@ -40,11 +38,6 @@ android {
     buildFeatures {
         compose = true
     }
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.13"
     }
@@ -55,12 +48,6 @@ android {
     }
     sourceSets.getByName("main") {
         kotlin.directories.add("build/generated/sources")
-    }
-}
-
-androidComponents {
-    beforeVariants { variantBuilder ->
-        variantBuilder.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = true
     }
 }
 
