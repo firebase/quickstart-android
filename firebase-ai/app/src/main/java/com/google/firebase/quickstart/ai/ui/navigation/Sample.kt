@@ -24,7 +24,8 @@ enum class ScreenType {
     HYBRID,
     HYBRID_IMAGE_PATTERN,
     THINKING_MODE,
-    SYSTEM_INSTRUCTION
+    SYSTEM_INSTRUCTION,
+    FUNCTION_CALLING
 }
 
 data class Sample(

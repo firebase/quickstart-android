@@ -1,13 +1,15 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
+import com.google.firebase.quickstart.ai.feature.hybrid.FunctionCallingRoute
+import com.google.firebase.quickstart.ai.feature.hybrid.FunctionCallingViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridImagePatternRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridImagePatternViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
-import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeRoute
-import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeRoute
+import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeAudioRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
@@ -229,5 +231,14 @@ val FIREBASE_AI_SAMPLES = listOf(
         screenType = ScreenType.SYSTEM_INSTRUCTION,
         viewModelClass = SystemInstructionViewModel::class,
         categories = listOf(Category.HYBRID)
+    ),
+    Sample(
+        title = "Hybrid Function Calling",
+        description = "Test function calling tools across On-Device, Hybrid, and Cloud " +
+            "inference modes with automatic cloud fallback.",
+        route = FunctionCallingRoute,
+        screenType = ScreenType.FUNCTION_CALLING,
+        viewModelClass = FunctionCallingViewModel::class,
+        categories = listOf(Category.HYBRID, Category.TOOLS_FC)
     )
 )
