@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 enum class Category(
     val label: String
 ) {
-    GEMINI3("Gemini 3"),
+    FEATURED("Featured"),
     NANO_BANANA("Nano Banana"),
     MULTIMODAL_UNDERSTANDING("Multimodal understanding"),
     TOOLS_FC("Tools and function calling"),
