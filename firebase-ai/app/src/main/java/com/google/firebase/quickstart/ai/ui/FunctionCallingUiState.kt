@@ -10,7 +10,7 @@ data class FunctionCallingUiState(
     val modelStatus: String = "Checking model status...",
     val isLoading: Boolean = false,
     val functionCalls: List<FunctionCallInfo> = emptyList(),
-    val functionExecutionResult: String? = null,
+    val functionExecutionResults: List<String> = emptyList(),
     val responseText: String? = null,
     val inferenceSource: String? = null,
     val logOutput: String = "Configure function calling options above and tap Run.",

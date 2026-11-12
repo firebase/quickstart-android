@@ -122,7 +122,7 @@ class FunctionCallingViewModel : ViewModel() {
                     OnDeviceModelStatus.DOWNLOADING -> "Model downloading..."
                     else -> "On-device model unavailable"
                 }
-                _uiState.update { it.copy(modelStatus = statusText) }
+                _uiState.update { it.copy(modelStatus = statusText, errorMessage = null) }
 
                 if (status == OnDeviceModelStatus.DOWNLOADABLE) {
                     statusCheckModel.onDeviceExtension?.download()?.collect { downloadStatus ->
@@ -135,7 +135,7 @@ class FunctionCallingViewModel : ViewModel() {
                                 _uiState.update { it.copy(modelStatus = "Downloading: $progress bytes") }
                             }
                             is DownloadStatus.DownloadCompleted -> {
-                                _uiState.update { it.copy(modelStatus = "Model available") }
+                                _uiState.update { it.copy(modelStatus = "Model available", errorMessage = null) }
                             }
                             is DownloadStatus.DownloadFailed -> {
                                 _uiState.update {
@@ -178,6 +178,9 @@ class FunctionCallingViewModel : ViewModel() {
     }
 
     private suspend fun executeManualWeatherCall(call: FunctionCallPart): JsonObject {
+        if (call.name != "fetchWeather") {
+            return JsonObject(mapOf("error" to JsonPrimitive("Unknown function: ${call.name}")))
+        }
         val city = call.args.stringArg("city")
         val state = call.args.stringArg("state")
         val date = call.args.stringArg("date")
@@ -189,16 +192,19 @@ class FunctionCallingViewModel : ViewModel() {
         }
     }
 
-    private fun extractAutoHistoryDetails(
-        history: List<Content>,
-        functionCallInfos: MutableList<FunctionCallInfo>
-    ): String? {
-        var lastExecutionResult: String? = null
+    private data class AutoHistoryDetails(
+        val functionCalls: List<FunctionCallInfo>,
+        val executionResults: List<String>
+    )
+
+    private fun extractAutoHistoryDetails(history: List<Content>): AutoHistoryDetails {
+        val functionCalls = mutableListOf<FunctionCallInfo>()
+        val executionResults = mutableListOf<String>()
         for (entry in history) {
             for (part in entry.parts) {
                 when (part) {
                     is FunctionCallPart -> {
-                        functionCallInfos.add(
+                        functionCalls.add(
                             FunctionCallInfo(
                                 name = part.name,
                                 args = part.args.toString(),
@@ -207,12 +213,12 @@ class FunctionCallingViewModel : ViewModel() {
                         )
                     }
                     is FunctionResponsePart -> {
-                        lastExecutionResult = part.response.toString()
+                        executionResults.add(part.response.toString())
                     }
                 }
             }
         }
-        return lastExecutionResult
+        return AutoHistoryDetails(functionCalls, executionResults)
     }
 
     fun runTest(
@@ -229,7 +235,7 @@ class FunctionCallingViewModel : ViewModel() {
                     isLoading = true,
                     errorMessage = null,
                     functionCalls = emptyList(),
-                    functionExecutionResult = null,
+                    functionExecutionResults = emptyList(),
                     responseText = null,
                     inferenceSource = null,
                     logOutput = "Running inference..."
@@ -261,14 +267,13 @@ class FunctionCallingViewModel : ViewModel() {
                     tools = tools,
                     onDeviceConfig = OnDeviceConfig(
                         mode = mode,
-                        modelOption = modelOptionSelection.option,
-                        tools = tools
+                        modelOption = modelOptionSelection.option
                     )
                 )
 
                 val functionCallInfos = mutableListOf<FunctionCallInfo>()
+                val executionResults = mutableListOf<String>()
                 var fullText = ""
-                var executionResult: String? = null
                 var source: InferenceSource? = null
 
                 when (method) {
@@ -278,7 +283,9 @@ class FunctionCallingViewModel : ViewModel() {
                             val response = chat.sendMessage(promptText)
                             fullText = response.text.orEmpty()
                             source = response.inferenceSource
-                            executionResult = extractAutoHistoryDetails(chat.history, functionCallInfos)
+                            val historyDetails = extractAutoHistoryDetails(chat.history)
+                            functionCallInfos.addAll(historyDetails.functionCalls)
+                            executionResults.addAll(historyDetails.executionResults)
                         } else {
                             val response = model.generateContent(promptText)
                             val calls = response.functionCalls
@@ -296,15 +303,23 @@ class FunctionCallingViewModel : ViewModel() {
                             }
 
                             if (toolOption == FunctionToolOption.MANUAL && calls.isNotEmpty()) {
-                                val firstCall = calls.first()
-                                val weatherJson = executeManualWeatherCall(firstCall)
-                                executionResult = weatherJson.toString()
+                                val responseParts = calls.map { call ->
+                                    val weatherJson = executeManualWeatherCall(call)
+                                    executionResults.add(weatherJson.toString())
+                                    FunctionResponsePart(call.name, weatherJson, call.id)
+                                }
 
                                 val followUp = model.generateContent(
                                     content(role = "user") { text(promptText) },
-                                    content(role = "model") { part(firstCall) },
+                                    content(role = "model") {
+                                        for (call in calls) {
+                                            part(call)
+                                        }
+                                    },
                                     content(role = "user") {
-                                        part(FunctionResponsePart(firstCall.name, weatherJson, firstCall.id))
+                                        for (responsePart in responseParts) {
+                                            part(responsePart)
+                                        }
                                     }
                                 )
                                 fullText = followUp.text.orEmpty()
@@ -329,7 +344,9 @@ class FunctionCallingViewModel : ViewModel() {
                                     )
                                 }
                             }
-                            executionResult = extractAutoHistoryDetails(chat.history, functionCallInfos)
+                            val historyDetails = extractAutoHistoryDetails(chat.history)
+                            functionCallInfos.addAll(historyDetails.functionCalls)
+                            executionResults.addAll(historyDetails.executionResults)
                         } else {
                             val detectedCalls = mutableListOf<FunctionCallPart>()
                             model.generateContentStream(promptText).collect { chunk ->
@@ -358,16 +375,24 @@ class FunctionCallingViewModel : ViewModel() {
                             }
 
                             if (toolOption == FunctionToolOption.MANUAL && detectedCalls.isNotEmpty()) {
-                                val firstCall = detectedCalls.first()
-                                val weatherJson = executeManualWeatherCall(firstCall)
-                                executionResult = weatherJson.toString()
+                                val responseParts = detectedCalls.map { call ->
+                                    val weatherJson = executeManualWeatherCall(call)
+                                    executionResults.add(weatherJson.toString())
+                                    FunctionResponsePart(call.name, weatherJson, call.id)
+                                }
                                 fullText = ""
 
                                 model.generateContentStream(
                                     content(role = "user") { text(promptText) },
-                                    content(role = "model") { part(firstCall) },
+                                    content(role = "model") {
+                                        for (call in detectedCalls) {
+                                            part(call)
+                                        }
+                                    },
                                     content(role = "user") {
-                                        part(FunctionResponsePart(firstCall.name, weatherJson, firstCall.id))
+                                        for (responsePart in responseParts) {
+                                            part(responsePart)
+                                        }
                                     }
                                 ).collect { followUpChunk ->
                                     val chunkText = followUpChunk.text
@@ -378,7 +403,7 @@ class FunctionCallingViewModel : ViewModel() {
                                     _uiState.update {
                                         it.copy(
                                             functionCalls = functionCallInfos.toList(),
-                                            functionExecutionResult = executionResult,
+                                            functionExecutionResults = executionResults.toList(),
                                             responseText = fullText.ifEmpty { null },
                                             inferenceSource = formatInferenceSource(source)
                                         )
@@ -401,6 +426,12 @@ class FunctionCallingViewModel : ViewModel() {
                     "<none>"
                 }
 
+                val resultsSummary = if (executionResults.isNotEmpty()) {
+                    executionResults.joinToString("\n") { "- $it" }
+                } else {
+                    "<none>"
+                }
+
                 val summaryLog = """
                     === INPUT ===
                     toolOption: ${toolOption.label}
@@ -414,8 +445,8 @@ class FunctionCallingViewModel : ViewModel() {
                     Function Calls (${functionCallInfos.size}):
                     $callsSummary
 
-                    Execution Result:
-                    ${executionResult ?: "<none>"}
+                    Execution Results (${executionResults.size}):
+                    $resultsSummary
 
                     Final Response (${fullText.length} chars):
                     $fullText
@@ -425,8 +456,8 @@ class FunctionCallingViewModel : ViewModel() {
                     it.copy(
                         isLoading = false,
                         functionCalls = functionCallInfos,
-                        functionExecutionResult = executionResult,
-                        responseText = fullText,
+                        functionExecutionResults = executionResults,
+                        responseText = fullText.ifEmpty { null },
                         inferenceSource = sourceName,
                         logOutput = summaryLog
                     )

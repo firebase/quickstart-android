@@ -214,8 +214,7 @@ fun FunctionCallingScreen(
             }
         }
 
-        val execResult = uiState.functionExecutionResult
-        if (uiState.functionCalls.isNotEmpty() || execResult != null) {
+        if (uiState.functionCalls.isNotEmpty() || uiState.functionExecutionResults.isNotEmpty()) {
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.tertiaryContainer
@@ -259,29 +258,31 @@ fun FunctionCallingScreen(
                         }
                     }
 
-                    if (execResult != null) {
+                    if (uiState.functionExecutionResults.isNotEmpty()) {
                         if (uiState.functionCalls.isNotEmpty()) {
                             Spacer(modifier = Modifier.size(4.dp))
                         }
                         Text(
-                            text = "Execution Result:",
+                            text = "Execution Result(s):",
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
-                        Text(
-                            text = execResult,
-                            style = MaterialTheme.typography.bodySmall,
-                            fontFamily = FontFamily.Monospace,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                        )
+                        for (result in uiState.functionExecutionResults) {
+                            Text(
+                                text = result,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = FontFamily.Monospace,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        }
                     }
                 }
             }
         }
 
         val responseText = uiState.responseText
-        if (responseText != null) {
+        if (!responseText.isNullOrEmpty()) {
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer

@@ -70,7 +70,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = AudioSummarizationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = AudioSummarizationViewModel::class,
-        categories = listOf(Category.MULTIMODAL_UNDERSTANDING)
+        categories = listOf(Category.MULTIMODAL_UNDERSTANDING),
     ),
     Sample(
         title = "Summarize video",
@@ -147,7 +147,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Grounding with Google Search",
         description = "Use Grounding with Google Search to get responses based on up-to-date information from the" +
-            " web.",
+                " web.",
         route = GoogleSearchGroundingRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = GoogleSearchGroundingViewModel::class,
@@ -156,7 +156,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Manual function calling",
         description = "Use function calling to get the weather conditions" +
-            " for a specific US city on a specific date.",
+                " for a specific US city on a specific date.",
         route = WeatherChatRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = WeatherChatViewModel::class,
@@ -165,7 +165,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Automatic function calling",
         description = "Use automatic function calling to get the weather conditions" +
-            " for a specific US city on a specific date.",
+                " for a specific US city on a specific date.",
         route = AutoFunctionCallRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = AutoFunctionCallViewModel::class,
@@ -174,7 +174,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Gemini Live (audio input)",
         description = "Use bidirectional streaming to get information about" +
-            " weather conditions for a specific US city on a specific date",
+                " weather conditions for a specific US city on a specific date",
         route = StreamRealtimeAudioRoute,
         screenType = ScreenType.BIDI,
         viewModelClass = StreamAudioViewModel::class,
@@ -183,7 +183,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Gemini Live (video input)",
         description = "Use bidirectional streaming to chat with Gemini using your" +
-            " phone's camera",
+                " phone's camera",
         route = StreamRealtimeVideoRoute,
         screenType = ScreenType.BIDI_VIDEO,
         viewModelClass = StreamVideoViewModel::class,
@@ -192,11 +192,11 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Server Prompt Templates - Gemini",
         description = "Generate an invoice using server prompt templates.  Note that you need to setup the template" +
-            " in the Firebase console before running this demo.",
+                " in the Firebase console before running this demo.",
         route = ServerPromptTemplateRoute,
         screenType = ScreenType.SERVER_PROMPT,
         viewModelClass = ServerPromptTemplateViewModel::class,
-        categories = listOf(Category.SERVER_PROMPTS)
+        categories = listOf(Category.SERVER_PROMPTS),
     ),
     Sample(
         title = "Hybrid Receipt Scanner",
@@ -217,7 +217,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Hybrid Thinking Mode",
         description = "Test enableThinking and response.thoughtSummary across On-Device, Hybrid, and Cloud " +
-            "inference modes.",
+                "inference modes.",
         route = ThinkingModeRoute,
         screenType = ScreenType.THINKING_MODE,
         viewModelClass = ThinkingModeViewModel::class,
@@ -226,8 +226,7 @@ val FIREBASE_AI_SAMPLES = listOf(
     Sample(
         title = "Hybrid System Instructions",
         description = """Test systemInstruction (single text, multiple text parts, and non-text part validation) 
-            | across On-Device, Hybrid, and Cloud inference modes.
-        """.trimMargin(),
+            | across On-Device, Hybrid, and Cloud inference modes.""".trimMargin(),
         route = SystemInstructionRoute,
         screenType = ScreenType.SYSTEM_INSTRUCTION,
         viewModelClass = SystemInstructionViewModel::class,
