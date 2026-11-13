@@ -74,15 +74,25 @@ fun isBlockListed(candidate: ModuleComponentIdentifier): Boolean {
             "com.github.bumptech.glide",
             // TODO(firebase/quickstart-android#2832):
             //  Unpin ktlint once we migrate to ktfmt
-            "com.pinterest:ktlint"
+            "com.pinterest:ktlint",
+            // Can't update to 10.x until we're Compose-only
+            "com.firebaseui",
+
     ).any { keyword ->
         keyword in candidate.toString().lowercase()
     }
 }
 
+fun isBuggyAGP(candidate: ModuleComponentIdentifier): Boolean {
+    // Skip 'com.android.application' and 'com.android.library' versions <= 9.5.1
+    return candidate.toString().lowercase().contains("com.android.") &&
+            candidate.version.replace(".", "").toInt() <= 951
+}
+
 tasks.withType<DependencyUpdatesTask> {
     rejectVersionIf {
-        (isNonStable(candidate) && notFromFirebase(candidate)) || isBlockListed(candidate)
+        (isNonStable(candidate) && notFromFirebase(candidate)) || isBlockListed(candidate) ||
+                isBuggyAGP(candidate)
     }
 }
 
