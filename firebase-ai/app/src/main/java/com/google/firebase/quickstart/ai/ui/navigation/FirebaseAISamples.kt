@@ -49,20 +49,20 @@ import com.google.firebase.quickstart.ai.feature.text.WeatherChatViewModel
 
 val FIREBASE_AI_SAMPLES = listOf(
     Sample(
+        title = "SVG Generator",
+        description = "Use Gemini 4 Hydrogen to create SVG illustrations",
+        route = SvgRoute,
+        screenType = ScreenType.SVG,
+        viewModelClass = SvgViewModel::class,
+        categories = listOf(Category.FEATURED)
+    ),
+    Sample(
         title = "Translate text",
         description = "Use Gemini 3.5 Flash-Lite to translate text",
         route = TranslationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = TranslationViewModel::class,
-        categories = listOf(Category.GEMINI3)
-    ),
-    Sample(
-        title = "SVG Generator",
-        description = "Use Gemini 3.8 Flash to create SVG illustrations",
-        route = SvgRoute,
-        screenType = ScreenType.SVG,
-        viewModelClass = SvgViewModel::class,
-        categories = listOf(Category.GEMINI3)
+        categories = listOf(Category.FEATURED)
     ),
     Sample(
         title = "Audio Summarization",
@@ -102,7 +102,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = NanoBananaLiteRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaLiteViewModel::class,
-        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
+        categories = listOf(Category.NANO_BANANA, Category.FEATURED)
     ),
     Sample(
         title = "Gemini 3.1 Flash Image (Nano Banana 2)",
@@ -110,7 +110,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = NanoBanana2Route,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBanana2ViewModel::class,
-        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
+        categories = listOf(Category.NANO_BANANA, Category.FEATURED)
     ),
     Sample(
         title = "Gemini 3 Pro Image (Nano Banana Pro)",
@@ -118,7 +118,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = NanoBananaProRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaProViewModel::class,
-        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
+        categories = listOf(Category.NANO_BANANA, Category.FEATURED)
     ),
     Sample(
         title = "Gemini 2.5 Flash Image (Nano Banana)",
