@@ -30,7 +30,6 @@ You can find the implementation for each feature by clicking on the links below:
 ### Gemini 3 & 4
 - [SVG Generator](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/SvgViewModel.kt): Use Gemini 4 Hydrogen to create SVG illustrations
 - [Translate text](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/TranslationViewModel.kt): Use Gemini 3.5 Flash-Lite to translate text
-- [SVG Generator](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/SvgViewModel.kt): Use Gemini 3.8 Flash to create SVG illustrations
 - [Nano Banana 2.1](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/NanoBanana2ViewModel.kt): Generate and/or edit images using Nano Banana 2.1
 - [Nano Banana 2 Lite (Gemini 3.1 Flash Image Lite)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/NanoBananaLiteViewModel.kt): Generate and/or edit images using Nano Banana 2 Lite
 - [Nano Banana Pro (Gemini 3 Pro Image)](app/src/main/java/com/google/firebase/quickstart/ai/feature/text/NanoBananaProViewModel.kt): Generate and/or edit images using Nano Banana Pro
