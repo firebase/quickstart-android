@@ -41,7 +41,7 @@ class NanoBanana2ViewModel : ChatViewModel() {
             backend = GenerativeBackend.googleAI(),
             useLimitedUseAppCheckTokens = true
         ).generativeModel(
-            modelName = "gemini-3.1-flash-image",
+            modelName = "gemini-nano-banana-2.1",
             generationConfig = generationConfig {
                 responseModalities = listOf(ResponseModality.TEXT, ResponseModality.IMAGE)
                 // Optionally specify additional configuration
