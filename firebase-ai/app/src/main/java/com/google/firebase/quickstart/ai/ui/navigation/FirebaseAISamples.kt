@@ -1,13 +1,15 @@
 package com.google.firebase.quickstart.ai.ui.navigation
 
+import com.google.firebase.quickstart.ai.feature.hybrid.FunctionCallingRoute
+import com.google.firebase.quickstart.ai.feature.hybrid.FunctionCallingViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridImagePatternRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridImagePatternViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.HybridInferenceViewModel
-import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeRoute
-import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeViewModel
 import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionRoute
 import com.google.firebase.quickstart.ai.feature.hybrid.SystemInstructionViewModel
+import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeRoute
+import com.google.firebase.quickstart.ai.feature.hybrid.ThinkingModeViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamAudioViewModel
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeAudioRoute
 import com.google.firebase.quickstart.ai.feature.live.StreamRealtimeVideoRoute
@@ -45,20 +47,20 @@ import com.google.firebase.quickstart.ai.feature.text.WeatherChatViewModel
 
 val FIREBASE_AI_SAMPLES = listOf(
     Sample(
+        title = "SVG Generator",
+        description = "Use Gemini 4 Hydrogen to create SVG illustrations",
+        route = SvgRoute,
+        screenType = ScreenType.SVG,
+        viewModelClass = SvgViewModel::class,
+        categories = listOf(Category.FEATURED)
+    ),
+    Sample(
         title = "Translate text",
         description = "Use Gemini 3.5 Flash-Lite to translate text",
         route = TranslationRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = TranslationViewModel::class,
-        categories = listOf(Category.GEMINI3)
-    ),
-    Sample(
-        title = "SVG Generator",
-        description = "Use Gemini 3.8 Flash to create SVG illustrations",
-        route = SvgRoute,
-        screenType = ScreenType.SVG,
-        viewModelClass = SvgViewModel::class,
-        categories = listOf(Category.GEMINI3)
+        categories = listOf(Category.FEATURED)
     ),
     Sample(
         title = "Audio Summarization",
@@ -98,7 +100,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = NanoBanana2Route,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBanana2ViewModel::class,
-        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
+        categories = listOf(Category.NANO_BANANA, Category.FEATURED)
     ),
     Sample(
         title = "Nano Banana 2 Lite (Gemini 3.1 Flash Image Lite)",
@@ -106,7 +108,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = NanoBananaLiteRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaLiteViewModel::class,
-        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
+        categories = listOf(Category.NANO_BANANA, Category.FEATURED)
     ),
     Sample(
         title = "Nano Banana Pro (Gemini 3 Pro Image)",
@@ -114,7 +116,7 @@ val FIREBASE_AI_SAMPLES = listOf(
         route = NanoBananaProRoute,
         screenType = ScreenType.CHAT,
         viewModelClass = NanoBananaProViewModel::class,
-        categories = listOf(Category.NANO_BANANA, Category.GEMINI3)
+        categories = listOf(Category.NANO_BANANA, Category.FEATURED)
     ),
     Sample(
         title = "Document comparison (Agent Platform)",
@@ -219,5 +221,14 @@ val FIREBASE_AI_SAMPLES = listOf(
         screenType = ScreenType.SYSTEM_INSTRUCTION,
         viewModelClass = SystemInstructionViewModel::class,
         categories = listOf(Category.HYBRID)
+    ),
+    Sample(
+        title = "Hybrid Function Calling",
+        description = "Test function calling tools across On-Device, Hybrid, and Cloud " +
+            "inference modes with automatic cloud fallback.",
+        route = FunctionCallingRoute,
+        screenType = ScreenType.FUNCTION_CALLING,
+        viewModelClass = FunctionCallingViewModel::class,
+        categories = listOf(Category.HYBRID, Category.TOOLS_FC)
     )
 )

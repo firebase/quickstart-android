@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 enum class Category(
     val label: String
 ) {
-    GEMINI3("Gemini 3"),
+    FEATURED("Featured"),
     NANO_BANANA("Nano Banana"),
     MULTIMODAL_UNDERSTANDING("Multimodal understanding"),
     TOOLS_FC("Tools and function calling"),
@@ -24,7 +24,8 @@ enum class ScreenType {
     HYBRID,
     HYBRID_IMAGE_PATTERN,
     THINKING_MODE,
-    SYSTEM_INSTRUCTION
+    SYSTEM_INSTRUCTION,
+    FUNCTION_CALLING
 }
 
 data class Sample(

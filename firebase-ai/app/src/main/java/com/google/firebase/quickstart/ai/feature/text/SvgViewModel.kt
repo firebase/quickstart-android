@@ -33,7 +33,7 @@ class SvgViewModel : ViewModel() {
             backend = GenerativeBackend.googleAI(),
             useLimitedUseAppCheckTokens = true
         ).generativeModel(
-            modelName = "gemini-3.8-flash",
+            modelName = "gemini-4-hydrogen",
             systemInstruction = content {
                 text(
                     """
