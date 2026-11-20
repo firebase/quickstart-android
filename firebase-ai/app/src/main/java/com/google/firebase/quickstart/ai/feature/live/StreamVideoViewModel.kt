@@ -29,7 +29,7 @@ class StreamVideoViewModel : BidiViewModel() {
             backend = GenerativeBackend.googleAI(),
             useLimitedUseAppCheckTokens = true
         ).liveModel(
-            modelName = "gemini-2.5-flash-native-audio-preview-09-2025",
+            modelName = "gemini-3.1-flash-live-preview",
             generationConfig = liveGenerationConfig,
         )
         runBlocking { liveSession = liveModel.connect() }
