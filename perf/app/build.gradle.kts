@@ -59,7 +59,7 @@ dependencies {
 
     implementation("com.google.android.material:material:1.14.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.1")
 
     implementation("com.github.bumptech.glide:glide:4.12.0")
 
