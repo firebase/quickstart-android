@@ -6,7 +6,11 @@ plugins {
 
 android {
     namespace = "com.google.firebase.appdistributionquickstart"
-    compileSdk = 37
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 1
+        }
+    }
 
     defaultConfig {
         applicationId = "com.google.firebase.appdistributionquickstart"

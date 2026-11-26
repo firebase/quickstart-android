@@ -6,7 +6,11 @@ plugins {
 
 android {
     namespace = "com.google.firebase.fiamquickstart"
-    compileSdk = 37
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 1
+        }
+    }
     defaultConfig {
         applicationId = "com.google.firebase.fiamquickstart"
         minSdk = 24

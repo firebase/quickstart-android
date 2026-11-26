@@ -11,7 +11,11 @@ tasks {
 
 android {
     namespace= "com.google.firebase.quickstart.auth"
-    compileSdk = 37
+    compileSdk {
+        version = release(37) {
+            minorApiLevel = 1
+        }
+    }
     flavorDimensions += "minSdkVersion"
 
     defaultConfig {
