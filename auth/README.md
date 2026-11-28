@@ -17,6 +17,7 @@ Getting Started
 - Go to the [Firebase Console][fir-console] and navigate to your project:
   - Select the **Auth** panel and then click the **Sign In Method** tab.
   - Click **Google** and turn on the **Enable** switch, then click **Save**.
+  - Download the updated `google-services.json` file (it now contains the OAuth client information required for Google Sign In) and copy it to the `app/` directory, replacing the old file.
 - Run the sample app on your device or emulator.
     - Select **GoogleSignInActivity** from the main screen.
     - Click the **Sign In** button to begin.
